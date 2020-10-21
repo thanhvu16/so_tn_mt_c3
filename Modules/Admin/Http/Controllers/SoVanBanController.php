@@ -24,22 +24,22 @@ class SoVanBanController extends Controller
     {
         $tendonvi = $request->get('ten_don_vi');
         $tenviettat = $request->get('ten_viet_tat');
-        $mahanhchinh = $request->get('ma_hanh_chinh');
+        $loaiso = $request->get('loai_so');
         $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')
             ->where(function ($query) use ($tendonvi) {
                 if (!empty($tendonvi)) {
-                    return $query->where('ten_don_vi', 'LIKE', "%$tendonvi%");
+                    return $query->where('ten_so_van_ban', 'LIKE', "%$tendonvi%");
                 }
             })->where(function ($query) use ($tenviettat) {
                 if (!empty($tenviettat)) {
                     return $query->where('ten_viet_tat', 'LIKE', "%$tenviettat%");
                 }
             })
-            ->where(function ($query) use ($mahanhchinh) {
-                if (!empty($mahanhchinh)) {
-                    return $query->where('ma_hanh_chinh', 'LIKE', "%$mahanhchinh%");
+            ->where(function ($query) use ($loaiso) {
+                if (!empty($loaiso)) {
+                    return $query->where('loai_so', 'LIKE', "%$loaiso%");
                 }
-            })->paginate(1);
+            })->paginate(5);
         return view('admin::So_van_ban.danh_sach', compact('ds_sovanban'));
     }
 
@@ -86,7 +86,9 @@ class SoVanBanController extends Controller
      */
     public function edit($id)
     {
-        return view('admin::edit');
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
+        return view('admin::So_van_ban.edit', compact('sovanban','donvi'));
     }
 
     /**
@@ -97,7 +99,14 @@ class SoVanBanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
+        $sovanban->ten_viet_tat = $request->ten_viet_tat;
+        $sovanban->loai_so = $request->loai_so;
+        $sovanban->so_don_vi = $request->don_vi;
+        $sovanban->mo_ta = $request->mo_ta;
+        $sovanban->save();
+        return redirect()->route('danhsachsovanban')->with('success', 'Cập nhât thành công !');
     }
 
     /**

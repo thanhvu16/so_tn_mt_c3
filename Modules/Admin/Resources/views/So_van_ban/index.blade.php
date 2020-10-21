@@ -15,7 +15,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên sổ văn bản</label>
-                                    <input type="text" class="form-control" name="ten_don_vi" id="exampleInputEmail1"
+                                    <input type="text" class="form-control" name="ten_so_van_ban" id="exampleInputEmail1"
                                            placeholder="Tên sổ văn bản" required>
                                 </div>
                             </div>
@@ -37,6 +37,7 @@
                                 <div class="form-group">
                                     <label>Loại Sổ</label>
                                     <select name="loai_so" class="form-control lay-so">
+                                        <option value="">Chọn loại sổ</option>
                                         <option value="1">Sổ đến</option>
                                         <option value="2">Sổ đi</option>
                                         <option value="3">Sổ dùng chung</option>

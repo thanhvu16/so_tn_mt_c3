@@ -91,7 +91,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số văn bản: <b>{{ $ds_donvi->total() }}</b>
+                                    Tổng số đơn vị: <b>{{ $ds_donvi->total() }}</b>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {!! $ds_donvi->appends(['ten_don_vi' => Request::get('ten_don_vi'),'ma_hanh_chinh' => Request::get('ma_hanh_chinh'),
