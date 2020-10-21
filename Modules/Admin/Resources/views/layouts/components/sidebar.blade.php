@@ -39,6 +39,48 @@
                 </ul>
             </li>
         </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="{{ Route::is('don-vi.index') || Route::is('danhsachdonvi') ? 'active' : '' }} treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Đơn Vị</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Route::is('danhsachdonvi') ? 'active' : '' }}"><a href="{{route('danhsachdonvi')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('don-vi.index') ? 'active' : '' }}"><a href="{{route('don-vi.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="{{ Route::is('chuc-vu.index') || Route::is('danhsachchucvu') ? 'active' : '' }} treeview ">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Chức Vụ</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Route::is('danhsachchucvu') ? 'active' : '' }}"><a href="{{route('danhsachchucvu')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('chuc-vu.index') ? 'active' : '' }}"><a href="{{route('chuc-vu.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="{{ Route::is('so-van-ban.index') || Route::is('danhsachsovanban') ? 'active' : '' }} treeview ">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>Sổ Văn Bản</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Route::is('danhsachsovanban') ? 'active' : '' }}"><a href="{{route('danhsachsovanban')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('so-van-ban.index') ? 'active' : '' }}"><a href="{{route('so-van-ban.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+        </ul>
     </section>
     <!-- /.sidebar -->
 </aside>
