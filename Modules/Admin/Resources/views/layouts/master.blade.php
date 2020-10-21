@@ -19,7 +19,10 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ url('theme/dist/css/skins/_all-skins.min.css') }}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/all.css') }}">
     <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ url('css/style.css') }}">
 
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -70,11 +73,55 @@
 <script src="{{ url('theme/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 <!-- ChartJS -->
 <script src="{{ url('theme/bower_components/chart.js/Chart.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ url('theme/dist/js/pages/dashboard2.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ url('theme/dist/js/demo.js') }}'"></script>
-<script src="{{ url('theme/plugins/toastr/toastr.min.js') }}'"></script>
+<script src="{{ url('theme/dist/js/demo.js') }}"></script>
+<script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
+<!-- iCheck 1.0.1 -->
+<script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
+
+<script type="text/javascript">
+    var APP_URL = {!! json_encode(url('/')) !!}
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    window.flashMessages = [];
+
+    @if ($message = session('success'))
+    toastr.success("{{ $message }}");
+
+    @elseif ($message = session('warning'))
+    toastr.warning("{{ $message }}");
+
+    @elseif ($message = session('error'))
+    toastr.error("{{ $message }}");
+
+    @elseif ($message = session('info'))
+    toastr.info("{{ $message }}");
+    @endif
+
+        toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+<script src="{{ url('js/script.js') }}"></script>
 @yield('script')
 </body>
 </html>
