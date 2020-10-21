@@ -65,6 +65,8 @@ class SoVanBanController extends Controller
         $sovanban->so_don_vi = $request->don_vi;
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();
+
+
         return redirect()->route('danhsachsovanban')->with('success','Thêm mới thành công !');
     }
 
