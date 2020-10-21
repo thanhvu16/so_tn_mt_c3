@@ -13,3 +13,4 @@
 
 Route::get('/', 'AdminController@index')->name('home');
 
+Route::resource('nguoi-dung', 'NguoiDungController');
