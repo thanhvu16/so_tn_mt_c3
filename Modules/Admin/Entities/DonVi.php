@@ -20,5 +20,6 @@ class DonVi extends Model
         'dieu_hanh'
 
     ];
+
 }
 

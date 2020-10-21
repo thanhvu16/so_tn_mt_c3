@@ -71,7 +71,7 @@
 
                                 </tr>
                             @empty
-                                <td class="text-center" colspan="7" style="vertical-align: middle">Không có dữ liệu !
+                                <td class="text-center" colspan="5" style="vertical-align: middle">Không có dữ liệu !
                                 </td>
                             @endforelse
 
@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số văn bản: <b>{{ $ds_chucvu->total() }}</b>
+                                    Tổng số chức vụ: <b>{{ $ds_chucvu->total() }}</b>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {!! $ds_chucvu->appends(['ten_chuc_vu' => Request::get('ten_chuc_vu'),

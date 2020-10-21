@@ -18,5 +18,9 @@ class SoVanBan extends Model
         'loai_so',
         'so_don_vi'
     ];
+    public function donvi()
+    {
+        return $this->hasOne(Donvi::class, 'id', 'so_don_vi');
+    }
 }
 
