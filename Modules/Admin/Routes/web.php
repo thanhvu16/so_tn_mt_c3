@@ -28,3 +28,6 @@ Route::get('danh-sach-so-van-ban', 'SoVanBanController@danhsach')->name('danhsac
 Route::resource('so-van-ban', 'SoVanBanController')->except('show');
 Route::post('so-van-ban/delete/{id}', array('as' => 'xoasovanban', 'uses' => 'SoVanBanController@destroy'));
 
+//
+Route::resource('vai-tro', 'VaiTroController');
+Route::resource('chuc-nang', 'ChucNangController');

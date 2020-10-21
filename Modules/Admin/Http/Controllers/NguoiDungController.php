@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Hash;
+use Hash, DB, Auth;
+use Modules\Admin\Entities\ChucVu;
+use Modules\Admin\Entities\DonVi;
+use Spatie\Permission\Models\Role;
 
 class NguoiDungController extends Controller
 {
@@ -14,13 +17,24 @@ class NguoiDungController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+    public function __construct()
+    {
+        $this->middleware(['role:admin', 'permission:thêm người dùng|sửa người dùng|xoá người dùng'],
+            ['only' => ['index', 'show']]);
+        $this->middleware('permission:thêm người dùng', ['only' => ['create', 'store']]);
+        $this->middleware('permission:xoá người dùng', ['only' => ['destroy']]);
+//        $this->middleware('permission:sửa người dùng', ['only' => ['edit','update']]);
+
+    }
+
     public function index()
     {
         $users = User::where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')->orderBy('id', 'DESC')
             ->paginate(PER_PAGE);
 
-        $order  = ($users->currentPage() - 1) * PER_PAGE + 1;
+        $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
         return view('admin::nguoi-dung.index', compact('users', 'order'));
     }
@@ -31,7 +45,11 @@ class NguoiDungController extends Controller
      */
     public function create()
     {
-        return view('admin::nguoi-dung.create');
+        $roles = Role::all();
+        $danhSachChucVu = ChucVu::all();
+        $danhSachDonVi = DonVi::all();
+
+        return view('admin::nguoi-dung.create', compact('roles', 'danhSachDonVi', 'danhSachChucVu'));
     }
 
     /**
@@ -98,7 +116,12 @@ class NguoiDungController extends Controller
         }
         $user->save();
 
-        return redirect()->route('nguoi-dung.index')->with('success','Thêm mới thành công .');
+        if (!empty($request->get('role_id'))) {
+            $role = Role::findById($request->get('role_id'));
+            $user->assignRole($role->name);
+        }
+
+        return redirect()->route('nguoi-dung.index')->with('success', 'Thêm mới thành công .');
 
     }
 
@@ -120,8 +143,12 @@ class NguoiDungController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $roles = Role::all();
+        $danhSachChucVu = ChucVu::all();
+        $danhSachDonVi = DonVi::all();
 
-        return view('admin::nguoi-dung.edit', compact('user'));
+        return view('admin::nguoi-dung.edit', compact('user',
+            'roles', 'danhSachChucVu', 'danhSachDonVi'));
     }
 
     /**
@@ -177,6 +204,17 @@ class NguoiDungController extends Controller
             $user->password = Hash::make($data['password']);
             $user->save();
         }
+
+        if (!empty($request->get('role_id'))) {
+            $role = Role::findById($request->get('role_id'));
+
+            $permissions = $role->permissions->pluck('name')->toArray();
+
+            DB::table('model_has_roles')->where('model_id', $id)->delete();
+            $user->assignRole($role->name);
+            $user->syncPermissions($permissions);
+        }
+
 
         return redirect()->back()->with('success', 'Cập nhật thành công.');
 

@@ -81,3 +81,8 @@ span.required {
 .user-panel>.image>img {
     height: 45px !important;
 }
+
+.select2-container--default .select2-selection--single {
+     border-radius: 1px !important;
+    height: 34px !important;
+}
