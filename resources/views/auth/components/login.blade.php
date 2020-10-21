@@ -1,133 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bootstrap Sign in Form with Facebook and Twitter Buttons</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <style>
-        .login-form {
-            width: 400px;
-            margin: 30px auto;
-        }
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Quản lý văn bản | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ url('theme/dist/css/AdminLTE.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/square/blue.css') }}">
+    <link rel="stylesheet" href="{{ url('css/style.css') }}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-        .login-form form {
-            margin-bottom: 15px;
-            background: #f7f7f7;
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-
-        .login-form h2 {
-            margin: 0 0 15px;
-        }
-
-        .form-control, .login-btn {
-            border-radius: 2px;
-        }
-
-        .input-group-prepend .fa {
-            font-size: 18px;
-        }
-
-        .login-btn {
-            font-size: 15px;
-            font-weight: bold;
-            min-height: 40px;
-        }
-
-        .social-btn .btn {
-            border: none;
-            margin: 10px 3px 0;
-            opacity: 1;
-        }
-
-        .social-btn .btn:hover {
-            opacity: 0.9;
-        }
-
-        .social-btn .btn-secondary, .social-btn .btn-secondary:active {
-            background: #507cc0 !important;
-        }
-
-        .social-btn .btn-info, .social-btn .btn-info:active {
-            background: #64ccf1 !important;
-        }
-
-        .social-btn .btn-danger, .social-btn .btn-danger:active {
-            background: #df4930 !important;
-        }
-
-        .or-seperator {
-            margin-top: 20px;
-            text-align: center;
-            border-top: 1px solid #ccc;
-        }
-
-        .or-seperator i {
-            padding: 0 10px;
-            background: #f7f7f7;
-            position: relative;
-            top: -11px;
-            z-index: 1;
-        }
-
-        .invalid-feedback {
-            display: block !important;
-        }
-    </style>
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body>
-<div class="login-form">
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-        <h2 class="text-center">Đăng nhập</h2>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <span class="fa fa-user"></span>
-                    </span>
-                </div>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="/"><b>Admin</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Đăng nhập để bắt đầu ứng dụng</p>
+
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="form-group has-feedback">
                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
-                       name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                       name="username" value="{{ old('username') }}" required autocomplete="username" placeholder="Nhập tài khoản">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="fa fa-lock"></i>
-                    </span>
-                </div>
+            <div class="form-group has-feedback">
                 <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
                        required autocomplete="current-password" placeholder="Nhập mật khẩu...">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-            </div>
-            @error('username')
-            <span class="invalid-feedback" role="alert">
+                @error('username')
+                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-            @enderror
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary login-btn btn-block">Đăng nhập</button>
-        </div>
-        <div class="clearfix">
-            <label class="float-left form-check-label">
-                <input type="checkbox" type="checkbox" name="remember"
-                       id="remember" {{ old('remember') ? 'checked' : '' }}> Ghi nhớ đăng nhập</label>
-            <a href="#" class="float-right">Quên mật khẩu?</a>
-        </div>
-    </form>
+                @enderror
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" type="checkbox" name="remember"
+                                   id="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <!-- /.social-auth-links -->
+        <a href="#">I forgot my password</a><br>
+    </div>
+    <!-- /.login-box-body -->
 </div>
+<!-- /.login-box -->
+
+<!-- jQuery 3 -->
+<script src="{{ url('theme/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ url('theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- iCheck -->
+<script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' /* optional */
+        });
+    });
+</script>
 </body>
 </html>
