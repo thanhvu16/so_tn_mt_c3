@@ -68,11 +68,11 @@
                                     <td class="text-center">
                                         <form method="POST" action="{{route('xoadonvi',$donvi->id)}}">
                                             @csrf
-                                            <a class="btn btn-color-blue btn-icon btn-light"
+                                            <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
                                                href="{{route('don-vi.edit',$donvi->id)}}" role="button" title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-color-red btn-icon btn-light" role="button"
+                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
                                                     title="Xóa">
                                                 <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
                                             </button>

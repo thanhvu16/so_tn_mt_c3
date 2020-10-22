@@ -30,10 +30,10 @@
                                     <label for="exampleInputEmail1">Tìm theo loại sổ</label>
                                     <select name="loai_so" class="form-control lay-so">
                                         <option value="">Chọn loại sổ</option>
-                                        <option value="1" {{ isset($sovanban) && $sovanban->loai_so == 1 ? 'selected' : '' }}>Sổ đến</option>
-                                        <option value="2" {{ isset($sovanban) && $sovanban->loai_so == 2 ? 'selected' : '' }}>Sổ đi</option>
-                                        <option value="3" {{ isset($sovanban) && $sovanban->loai_so == 3 ? 'selected' : '' }}>Sổ dùng chung</option>
-                                        <option value="4" {{ isset($sovanban) && $sovanban->loai_so == 4 ? 'selected' : '' }}>Sổ riêng</option>
+                                        <option value="1" {{ Request::get('loai_so') == 1 ? 'selected' : '' }}>Sổ đến</option>
+                                        <option value="2" {{ Request::get('loai_so') == 2 ? 'selected' : '' }}>Sổ đi</option>
+                                        <option value="3" {{ Request::get('loai_so') == 3 ? 'selected' : '' }}>Sổ dùng chung</option>
+                                        <option value="4" {{ Request::get('loai_so') == 4 ? 'selected' : '' }}>Sổ riêng</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3" style="margin-top: 20px">
@@ -68,14 +68,14 @@
                                     <td class="text-center" style="vertical-align: middle">@if($sovanban->loai_so == 3)Sổ dùng chung @elseif($sovanban->loai_so ==2) Sổ đi @elseif($sovanban->loai_so == 1) Sổ đến @else Sổ riêng @endif</td>
                                     <td class="text-center" style="vertical-align: middle">{{$sovanban->donvi->ten_don_vi ?? ''}}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{route('xoadonvi',$sovanban->id)}}">
+                                        <form method="POST" action="{{route('xoasovanban',$sovanban->id)}}">
                                             @csrf
-                                            <a class="btn btn-color-blue btn-icon btn-light"
+                                            <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
                                                href="{{route('so-van-ban.edit',$sovanban->id)}}" role="button"
                                                title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-color-red btn-icon btn-light" role="button"
+                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
                                                     title="Xóa">
                                                 <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
                                             </button>

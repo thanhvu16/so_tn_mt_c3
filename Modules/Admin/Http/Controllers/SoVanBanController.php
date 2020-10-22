@@ -63,7 +63,10 @@ class SoVanBanController extends Controller
         $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
         $sovanban->ten_viet_tat = $request->ten_viet_tat;
         $sovanban->loai_so = $request->loai_so;
-        $sovanban->so_don_vi = $request->don_vi;
+        if($request->loai_so == 4)
+        {
+            $sovanban->so_don_vi = $request->don_vi;
+        }
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();
         return redirect()->route('danhsachsovanban')->with('success', 'Thêm mới thành công !');
@@ -103,7 +106,10 @@ class SoVanBanController extends Controller
         $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
         $sovanban->ten_viet_tat = $request->ten_viet_tat;
         $sovanban->loai_so = $request->loai_so;
-        $sovanban->so_don_vi = $request->don_vi;
+        if($request->loai_so == 4)
+        {
+            $sovanban->so_don_vi = $request->don_vi;
+        }
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();
         return redirect()->route('danhsachsovanban')->with('success', 'Cập nhât thành công !');
@@ -116,6 +122,8 @@ class SoVanBanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $sovanban->delete();
+        return redirect()->route('danhsachsovanban')->with('success', 'Xóa thành công !');
     }
 }

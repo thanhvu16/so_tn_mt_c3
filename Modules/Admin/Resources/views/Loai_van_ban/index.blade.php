@@ -1,66 +1,64 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Sổ Văn Bản')
+@section('page_title', 'Loại Văn Bản')
 @section('content')
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Cập nhật đơn vị</h3>
+                        <h3 class="box-title">Thêm đơn vị</h3>
                     </div>
-                    <form action="{{route('so-van-ban.update',$sovanban->id)}}" method="post" enctype="multipart/form-data"
+                    <form role="form" action="{{route('loai-van-ban.store')}}" method="post" enctype="multipart/form-data"
                           id="myform">
-                        @method('PUT')
                         @csrf
                         <div class="box-body">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Tên sổ văn bản</label>
-                                    <input type="text" class="form-control" value="{{$sovanban->ten_so_van_ban}}" name="ten_so_van_ban" id="exampleInputEmail1"
-                                           placeholder="Tên sổ văn bản" required>
+                                    <label for="exampleInputEmail1">Tên loai văn bản</label>
+                                    <input type="text" class="form-control" name="ten_loai_van_ban" id="exampleInputEmail1"
+                                           placeholder="Tên loại văn bản" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail2">Tên viết tắt</label>
-                                    <input type="text" class="form-control" value="{{$sovanban->ten_viet_tat}}" name="ten_viet_tat" id="exampleInputEmail2"
+                                    <input type="text" class="form-control" name="ten_viet_tat" id="exampleInputEmail2"
                                            placeholder="Tên viết tắt" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Mô tả</label>
-                                    <input type="text" class="form-control" value="{{$sovanban->mo_ta}}" name="mo_ta" id="exampleInputEmail3"
+                                    <input type="text" class="form-control" name="mo_ta" id="exampleInputEmail3"
                                            placeholder="Mô tả" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Loại Sổ</label>
+                                    <label>Loại văn bản</label>
                                     <select name="loai_so" class="form-control lay-so">
-                                        <option value="">Chọn loại sổ</option>
-                                        <option value="1" {{ isset($sovanban) && $sovanban->loai_so == 1 ? 'selected' : '' }}>Sổ đến</option>
-                                        <option value="2" {{ isset($sovanban) && $sovanban->loai_so == 2 ? 'selected' : '' }}>Sổ đi</option>
-                                        <option value="3" {{ isset($sovanban) && $sovanban->loai_so == 3 ? 'selected' : '' }}>Sổ dùng chung</option>
-                                        <option value="4" {{ isset($sovanban) && $sovanban->loai_so == 4 ? 'selected' : '' }}>Sổ riêng</option>
+                                        <option value="">Chọn loại văn bản</option>
+                                        <option value="1">Áp dụng cho vb đến</option>
+                                        <option value="2">Áp dụng cho vb đi</option>
+                                        <option value="3">Dùng chung</option>
+                                        <option value="4">Dùng riêng</option>
                                     </select>
 
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group @if($sovanban->so_don_vi == null) hidden @endif don-vi">
-                                    <label>Loại Sổ</label>
+                                <div class="form-group hidden don-vi">
+                                    <label>Đơn vị riêng</label>
                                     <select name="don_vi" class="form-control ">
-                                        <option value="">Chọn đơn vị</option>
                                         @foreach($donvi as $ds_dv)
-                                            <option value="{{$ds_dv->id}}"  {{ $sovanban->so_don_vi == $ds_dv->id && $sovanban->so_don_vi != null ? 'selected' : '' }}>{{$ds_dv->ten_don_vi}}</option>
+                                            <option value="{{$ds_dv->id}}">{{$ds_dv->ten_don_vi}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
                                 </div>
                             </div>
                         </div>
