@@ -48,7 +48,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group hidden don-vi">
-                                    <label>Loại Sổ</label>
+                                    <label>Đơn vị riêng</label>
                                     <select name="don_vi" class="form-control ">
                                         @foreach($donvi as $ds_dv)
                                             <option value="{{$ds_dv->id}}">{{$ds_dv->ten_don_vi}}</option>

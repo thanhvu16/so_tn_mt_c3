@@ -14,22 +14,11 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                </ul>
-            </li>
+
 
             <li class="{{ Route::is('don-vi.index') || Route::is('danhsachdonvi') ? 'active' : '' }} treeview">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Đơn Vị</span>
+                    <i class="fa fa-university" aria-hidden="true"></i> <span>Đơn Vị</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -44,7 +33,7 @@
 
             <li class="{{ Route::is('chuc-vu.index') || Route::is('danhsachchucvu') ? 'active' : '' }} treeview ">
                 <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Chức Vụ</span>
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Chức Vụ</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -59,7 +48,7 @@
 
             <li class="{{ Route::is('so-van-ban.index') || Route::is('danhsachsovanban') ? 'active' : '' }} treeview ">
                 <a href="#">
-                    <i class="fa fa-cogs"></i> <span>Sổ văn bản</span>
+                    <i class="fa fa-book" aria-hidden="true"></i> <span>Sổ văn bản</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -70,6 +59,51 @@
                             href="{{route('danhsachsovanban')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
                     <li class="{{ Route::is('so-van-ban.index') ? 'active' : '' }}"><a
                             href="{{route('so-van-ban.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+            <li class="{{ Route::is('loai-van-ban.index') || Route::is('danhsachloaivanban') ? 'active' : '' }} treeview ">
+                <a href="#">
+                    <i class="fa fa-database" aria-hidden="true"></i> <span>Loại văn bản</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li class="{{ Route::is('danhsachloaivanban') ? 'active' : '' }}"><a
+                            href="{{route('danhsachloaivanban')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('loai-van-ban.index') ? 'active' : '' }}"><a
+                            href="{{route('loai-van-ban.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+            <li class="{{ Route::is('do-bao-mat.index') || Route::is('danhsachdobaomat') ? 'active' : '' }} treeview ">
+                <a href="#">
+                    <i class="fa fa-shield" aria-hidden="true"></i> <span>Độ bảo mật</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li class="{{ Route::is('danhsachdobaomat') ? 'active' : '' }}"><a
+                            href="{{route('danhsachdobaomat')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('do-bao-mat.index') ? 'active' : '' }}"><a
+                            href="{{route('do-bao-mat.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
+                </ul>
+            </li>
+            <li class="{{ Route::is('do-khan-cap.index') || Route::is('danhsachdokhancap') ? 'active' : '' }} treeview ">
+                <a href="#">
+                    <i class="fa fa-bolt" aria-hidden="true"></i> <span>Độ khẩn cấp</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+
+                    <li class="{{ Route::is('danhsachdokhancap') ? 'active' : '' }}"><a
+                            href="{{route('danhsachdokhancap')}}"><i class="fa fa-circle-o"></i> Danh sách</a></li>
+                    <li class="{{ Route::is('do-khan-cap.index') ? 'active' : '' }}"><a
+                            href="{{route('do-khan-cap.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
                 </ul>
             </li>
 
