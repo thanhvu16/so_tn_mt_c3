@@ -107,7 +107,9 @@
                 </ul>
             </li>
 
-            <li class="treeview {{ Route::is('nguoi-dung.index') ? 'active menu-open' : '' }} }} ">
+             @role('admin')
+            <li class="treeview {{ Route::is('nguoi-dung.index') || Route::is('nguoi-dung.create') || Route::is('chuc-nang.index')
+               || Route::is('vai-tro.index') ? 'active menu-open' : '' }} }} ">
                 <a href="#">
                     <i class="fa fa-cogs"></i> <span>Cấu hình hệ thống</span>
                     <span class="pull-right-container">
@@ -116,8 +118,11 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Route::is('nguoi-dung.index') ? 'active' : '' }}"><a href="{{ route('nguoi-dung.index') }}"><i class="fa fa-circle-o"></i> Người dùng</a></li>
+                    <li class="{{ Route::is('vai-tro.index') ? 'active' : '' }}"><a href="{{ route('vai-tro.index') }}"><i class="fa fa-circle-o"></i>Quyền hạn</a></li>
+                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>
                 </ul>
             </li>
+            @endrole
         </ul>
     </section>
     <!-- /.sidebar -->

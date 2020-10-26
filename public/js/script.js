@@ -40,3 +40,5 @@ $('.btn-remove-item').on('click', function () {
 
     return confirm('Bạn muốn xóa dữ liệu này?');
 });
+
+$('.select2').select2()

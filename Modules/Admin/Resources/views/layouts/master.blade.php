@@ -21,8 +21,12 @@
     <link rel="stylesheet" href="{{ url('theme/dist/css/skins/_all-skins.min.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/all.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/select2/dist/css/select2.min.css') }}">
+    <!-- toastr -->
     <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
+
 
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -78,6 +82,8 @@
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ url('theme/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}

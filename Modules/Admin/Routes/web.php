@@ -40,3 +40,6 @@ Route::get('danh-sach-do-bao-mat', 'DoMatController@danhsach')->name('danhsachdo
 Route::resource('do-bao-mat', 'DoMatController')->except('show');
 Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'DoMatController@destroy'));
 
+//
+Route::resource('vai-tro', 'VaiTroController');
+Route::resource('chuc-nang', 'ChucNangController');

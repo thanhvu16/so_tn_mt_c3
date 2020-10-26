@@ -11,10 +11,12 @@
                             <i class="fa fa-user"></i> Quản lý người dùng
                         </a>
                     </li>
-                    <li class="{{ Request::get('tab') == 'tab_2' ? 'active' : null }}">
-                        <a href="{{ route('nguoi-dung.create') }}">
-                            <i class="fa fa-plus"></i> Thêm mới</a>
-                    </li>
+                    @can('thêm người dùng')
+                        <li class="{{ Request::get('tab') == 'tab_2' ? 'active' : null }}">
+                            <a href="{{ route('nguoi-dung.create') }}">
+                                <i class="fa fa-plus"></i> Thêm mới</a>
+                        </li>
+                    @endcan
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane {{ Request::get('tab') == 'tab_1' || empty(Request::get('tab')) ? 'active' : null }}" id="tab_1">
@@ -40,20 +42,24 @@
                                         <td>{{ $user->ho_ten }}</td>
                                         <td>{{ $user->chuc_vu_id }}</td>
                                         <td>{{ $user->don_vi_id }}</td>
-                                        <td>{{ $user->trang_thai == 1 ? 'Nam' : 'Nữ' }}</td>
+                                        <td>{{ $user->gioi_tinh == 1 ? 'Nam' : 'Nữ' }}</td>
                                         <td class="text-center">{!! getStatusLabel($user->trang_thai) !!}</td>
                                         <td class="text-center">
-                                            <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm" href="{{ route('nguoi-dung.edit', $user->id) }}"
-                                               role="button" title="Sửa">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <form method="POST" action="{{ route('nguoi-dung.destroy', $user->id) }}" accept-charset="UTF-8" style="display:inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                            </form>
+                                            @can('sửa người dùng')
+                                                <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm" href="{{ route('nguoi-dung.edit', $user->id) }}"
+                                                   role="button" title="Sửa">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endcan
+                                            @can('xoá người dùng')
+                                                <form method="POST" action="{{ route('nguoi-dung.destroy', $user->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

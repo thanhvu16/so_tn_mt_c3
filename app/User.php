@@ -6,10 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -30,6 +32,7 @@ class User extends Authenticatable
         'so_dien_thoai_ky_sim',
         'don_vi_id',
         'chuc_vu_id',
+        'role_id',
         'chu_ky_chinh',
         'chu_ky_nhay',
         'trang_thai'
@@ -52,4 +55,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function checkRole()
+    {
+        $role = Role::findById($this->role_id);
+
+        if ($role->name == 'admin') {
+            return true;
+        }
+
+        return false;
+
+    }
 }
