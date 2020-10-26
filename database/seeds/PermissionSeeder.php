@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Common\AllPermission;
 
 class PermissionSeeder extends Seeder
 {
@@ -25,24 +26,29 @@ class PermissionSeeder extends Seeder
         }
 
         //nguoi dung
-        $permission = Permission::create(['name' => 'thêm người dùng']);
-        $permission = Permission::create(['name' => 'sửa người dùng']);
-        $permission = Permission::create(['name' => 'xoá người dùng']);
+        Permission::findOrCreate(AllPermission::themNguoiDung());
+        Permission::findOrCreate(AllPermission::suaNguoiDung());
+        Permission::findOrCreate(AllPermission::xoaNguoiDung());
 
-        if ($role) {
-            $permissions = Permission::take(4)->get();
-            $role->syncPermissions($permissions);
-        }
 
         //don vi
-        $permission = Permission::create(['name' => 'thêm đơn vị']);
-        $permission = Permission::create(['name' => 'sửa đơn vị']);
-        $permission = Permission::create(['name' => 'xoá đơn vị']);
+        Permission::findOrCreate(AllPermission::themDonVi());
+        Permission::findOrCreate(AllPermission::suaDonVi());
+        Permission::findOrCreate(AllPermission::xoaDonVi());
 
         //chuc vu
-        $permission = Permission::create(['name' => 'thêm chức vụ']);
-        $permission = Permission::create(['name' => 'sửa chức vụ']);
-        $permission = Permission::create(['name' => 'xoá chức vụ']);
+        Permission::findOrCreate(AllPermission::themChucVu());
+        Permission::findOrCreate(AllPermission::suaChucVu());
+        Permission::findOrCreate(AllPermission::xoaChucVu());
+
+
+
+
+
+        if ($role) {
+            $permissions = Permission::all();
+            $role->syncPermissions($permissions);
+        }
 
     }
 }

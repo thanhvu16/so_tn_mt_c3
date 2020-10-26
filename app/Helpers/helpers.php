@@ -43,3 +43,12 @@ if (!function_exists('getStatusLabel')) {
     }
 }
 
+if (!function_exists('canPermission')) {
+    function canPermission($permission)
+    {
+        if (!Auth::user()->can($permission)) {
+            return abort(403);
+        }
+    }
+}
+

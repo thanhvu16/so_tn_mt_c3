@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -17,19 +18,10 @@ class NguoiDungController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-
-    public function __construct()
-    {
-        $this->middleware(['role:admin', 'permission:thêm người dùng|sửa người dùng|xoá người dùng'],
-            ['only' => ['index', 'show']]);
-        $this->middleware('permission:thêm người dùng', ['only' => ['create', 'store']]);
-        $this->middleware('permission:xoá người dùng', ['only' => ['destroy']]);
-//        $this->middleware('permission:sửa người dùng', ['only' => ['edit','update']]);
-
-    }
-
     public function index(Request $request)
     {
+        canPermission(AllPermission::themNguoiDung());
+
         $donViId = $request->get('don_vi_id') ?? null;
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
@@ -77,6 +69,8 @@ class NguoiDungController extends Controller
      */
     public function create()
     {
+        canPermission(AllPermission::themNguoiDung());
+
         $roles = Role::all();
         $danhSachChucVu = ChucVu::all();
         $danhSachDonVi = DonVi::all();
@@ -91,6 +85,8 @@ class NguoiDungController extends Controller
      */
     public function store(Request $request)
     {
+        canPermission(AllPermission::themNguoiDung());
+
         $this->validate($request,
             [
                 'username' => 'required|unique:users,username',
@@ -174,6 +170,8 @@ class NguoiDungController extends Controller
      */
     public function edit($id)
     {
+//        canPermission(AllPermission::suaNguoiDung());
+
         $user = User::findOrFail($id);
         $roles = Role::all();
         $danhSachChucVu = ChucVu::all();
@@ -191,6 +189,8 @@ class NguoiDungController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        canPermission(AllPermission::suaNguoiDung());
+
         $user = User::findOrFail($id);
 
         $data = $request->all();
@@ -259,6 +259,8 @@ class NguoiDungController extends Controller
      */
     public function destroy($id)
     {
+        canPermission(AllPermission::xoaNguoiDung());
+
         $user = User::findOrFail($id);
 
         $user->delete();
