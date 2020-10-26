@@ -28,15 +28,47 @@ class NguoiDungController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('trang_thai', ACTIVE)
-            ->whereNull('deleted_at')->orderBy('id', 'DESC')
+        $donViId = $request->get('don_vi_id') ?? null;
+        $chucVuId = $request->get('chuc_vu_id') ?? null;
+        $hoTen = $request->get('ho_ten') ?? null;
+        $username = $request->get('username') ?? null;
+
+        $users = User::with('chucVu', 'donVi')
+            ->where('trang_thai', ACTIVE)
+            ->where(function ($query) use ($donViId) {
+                if (!empty($donViId)) {
+                    return $query->where('don_vi_id', $donViId);
+                }
+            })
+            ->where(function ($query) use ($chucVuId) {
+                if (!empty($chucVuId)) {
+                    return $query->where('chuc_vu_id', $chucVuId);
+                }
+            })
+            ->where(function ($query) use ($hoTen) {
+                if (!empty($hoTen)) {
+                    return $query->where('ho_ten', $hoTen);
+                }
+            })
+
+            ->where(function ($query) use ($username) {
+                if (!empty($username)) {
+                    return $query->where('username', $username);
+                }
+            })
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC')
             ->paginate(PER_PAGE);
 
         $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
-        return view('admin::nguoi-dung.index', compact('users', 'order'));
+        $danhSachChucVu = ChucVu::all();
+        $danhSachDonVi = DonVi::all();
+
+        return view('admin::nguoi-dung.index', compact('users', 'order',
+            'danhSachDonVi', 'danhSachChucVu'));
     }
 
     /**

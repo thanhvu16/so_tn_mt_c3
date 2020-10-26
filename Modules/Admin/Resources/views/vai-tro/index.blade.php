@@ -54,13 +54,15 @@
                                            role="button" title="Sửa">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <form method="POST" action="{{ route('vai-tro.destroy', $role->id) }}" accept-charset="UTF-8" style="display:inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </form>
+                                        @if ($role->name != strtolower('admin'))
+                                            <form method="POST" action="{{ route('vai-tro.destroy', $role->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
 
                                 </tr>

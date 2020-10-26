@@ -79,7 +79,7 @@
                         <option value="">-- Chọn đơn vị --</option>
                         @if (count($danhSachDonVi) > 0)
                             @foreach($danhSachDonVi as $donVi)
-                                <option value="{{ $donVi->id }}" {{ isset($user) && $user->don_vi_id == $donVi->id ? 'selected' : '' }}>{{ $chucVu->ten_don_vi }}</option>
+                                <option value="{{ $donVi->id }}" {{ isset($user) && $user->don_vi_id == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
                             @endforeach
                         @endif
                     </select>

@@ -20,6 +20,56 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane {{ Request::get('tab') == 'tab_1' || empty(Request::get('tab')) ? 'active' : null }}" id="tab_1">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <form action="{{route('nguoi-dung.index')}}" method="get">
+                                    <div class="col-md-3 form-group">
+                                        <label for="exampleInputEmail1">Tìm theo đơn vị</label>
+                                        <select name="don_vi_id" class="form-control select2">
+                                            <option value="">-- tất cả --</option>
+                                            @if (count($danhSachDonVi) > 0)
+                                                @foreach($danhSachDonVi as $donVi)
+                                                    <option value="{{ $donVi->id }}" {{ Request::get('don_vi_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3 form-group">
+                                        <label for="exampleInputEmail1">Tìm theo chức vụ</label>
+                                        <select name="chuc_vu_id" class="form-control select2">
+                                            <option value="">-- tất cả --</option>
+                                            @if (count($danhSachChucVu) > 0)
+                                                @foreach($danhSachChucVu as $chucVu)
+                                                    <option value="{{ $chucVu->id }}" {{ Request::get('chuc_vu_id') == $chucVu->id ? 'selected' : '' }}>{{ $chucVu->ten_chuc_vu }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo họ tên</label>
+                                        <input type="text" class="form-control" value="{{Request::get('ho_ten')}}"
+                                               name="ho_ten"
+                                               placeholder="Nhập họ tên...">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo tài khoản</label>
+                                        <input type="text" class="form-control" value="{{Request::get('username')}}"
+                                               name="username"
+                                               placeholder="Nhập tài khoản...">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                        @if (!empty(Request::get('don_vi_id')) || !empty(Request::get('chuc_vu_id')) ||
+                                            !empty(Request::get('ho_ten')) || !empty(Request::get('username')))
+                                            <a href="{{ route('nguoi-dung.index') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
+                                        @endif
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="box-body">
                             <table class="table table-bordered table-striped table-hover table-responsive">
                                 <thead>
@@ -40,8 +90,8 @@
                                         <td>{{ $order++ }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->ho_ten }}</td>
-                                        <td>{{ $user->chuc_vu_id }}</td>
-                                        <td>{{ $user->don_vi_id }}</td>
+                                        <td>{{ $user->chucVu->ten_chuc_vu ?? null }}</td>
+                                        <td>{{ $user->donVi->ten_don_vi ?? null }}</td>
                                         <td>{{ $user->gioi_tinh == 1 ? 'Nam' : 'Nữ' }}</td>
                                         <td class="text-center">{!! getStatusLabel($user->trang_thai) !!}</td>
                                         <td class="text-center">
@@ -78,7 +128,8 @@
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="pagination pagination-sm no-margin pull-right">
-                                        {{ $users->render() }}
+                                        {!! $users->appends(['don_vi_id' => Request::get('don_vi_id'), 'chuc_vu_id' => Request::get('chuc_vu_id'),
+                                       'ho_ten' => Request::get('ho_ten'),'username' =>Request::get('username') ])->render() !!}
                                     </div>
                                 </div>
                             </div>

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Admin\Entities\ChucVu;
+use Modules\Admin\Entities\DonVi;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -66,5 +68,15 @@ class User extends Authenticatable
 
         return false;
 
+    }
+
+    public function chucVu()
+    {
+        return $this->belongsTo(ChucVu::class, 'chuc_vu_id', 'id');
+    }
+
+    public function donVi()
+    {
+        return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
     }
 }
