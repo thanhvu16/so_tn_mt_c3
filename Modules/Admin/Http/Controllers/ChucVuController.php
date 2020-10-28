@@ -31,7 +31,7 @@ class ChucVuController extends Controller
                     return $query->where('ten_viet_tat', 'LIKE', "%$tenviettat%");
                 }
             })
-            ->paginate(5);
+            ->paginate(PER_PAGE);
         return view('admin::Chuc_vu.danh_sach',compact('ds_chucvu'));
     }
     /**

@@ -24,6 +24,11 @@
         <div class="form-group col-md-9">
             <div class="row">
                 <div class="form-group col-md-4">
+                    <label class="col-form-label" for="ho-ten">Họ tên @include('admin::required')</label>
+                    <input type="text" name="ho_ten" id="ho-ten" class="form-control" placeholder="Nhập họ tên..."
+                           value="{{ old('ho_ten', isset($user) ? $user->ho_ten : '') }}" required="">
+                </div>
+                <div class="form-group col-md-4">
                     <label for="username" class="col-form-label">Tài khoản @include('admin::required')</label>
                     <input type="text" id="username" name="username"
                            class="form-control @error('username') is-invalid @enderror"
@@ -33,22 +38,11 @@
                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
-
-
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="password">Mật khẩu @include('admin::required')</label>
                     <input type="password" id="password" name="password" class="form-control"
                            placeholder="Nhập mật khẩu..." value="" {{ isset($user) ? '' : 'required' }}>
                 </div>
-
-
-                <div class="form-group col-md-4">
-                    <label class="col-form-label" for="ho-ten">Họ tên @include('admin::required')</label>
-                    <input type="text" name="ho_ten" id="ho-ten" class="form-control" placeholder="Nhập họ tên..."
-                           value="{{ old('ho_ten', isset($user) ? $user->ho_ten : '') }}" required="">
-                </div>
-
-
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="ma-nhan-su">Mã nhân sự</label>
                     <input type="text" name="ma_nhan_su" id="ma-nhan-su" placeholder="Nhập mã nhân sự..."

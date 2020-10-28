@@ -26,7 +26,7 @@
                                     <label for="exampleInputEmail2">Tên viết tắt</label>
                                     <input type="text" class="form-control" value="{{$donvi->ten_viet_tat}}"
                                            name="ten_viet_tat" id="exampleInputEmail2"
-                                           placeholder="Tên viết tắt" required>
+                                           placeholder="Tên viết tắt" >
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -34,7 +34,7 @@
                                     <label for="exampleInputEmail3">Mã hành chính</label>
                                     <input type="text" class="form-control" value="{{$donvi->ma_hanh_chinh}}"
                                            name="ma_hanh_chinh" id="exampleInputEmail3"
-                                           placeholder="Mã hành chính" required>
+                                           placeholder="Mã hành chính" >
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -42,7 +42,7 @@
                                     <label for="exampleInputEmail4">Địa chỉ</label>
                                     <input type="text" value="{{$donvi->dia_chi}}" class="form-control" name="dia_chi"
                                            id="exampleInputEmail4"
-                                           placeholder="Địa chỉ" required>
+                                           placeholder="Địa chỉ" >
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -50,7 +50,7 @@
                                     <label for="exampleInputEmail4">Điện thoại</label>
                                     <input type="text" value="{{$donvi->so_dien_thoai}}" class="form-control"
                                            name="dien_thoai" id="exampleInputEmail4"
-                                           placeholder="Điện thoại" required>
+                                           placeholder="Điện thoại" >
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -58,7 +58,7 @@
                                     <label for="exampleInputEmail4">Email</label>
                                     <input type="text" value="{{$donvi->email}}" class="form-control" name="email"
                                            id="exampleInputEmail4"
-                                           placeholder="Email" required>
+                                           placeholder="Email" >
                                 </div>
                             </div>
                             <div class="col-md-3">

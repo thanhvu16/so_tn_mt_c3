@@ -15,7 +15,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
 
-
+            @role('admin')
             <li class="{{ Route::is('don-vi.index') || Route::is('danhsachdonvi') ? 'active' : '' }} treeview">
                 <a href="#">
                     <i class="fa fa-university" aria-hidden="true"></i> <span>Đơn Vị</span>
@@ -106,8 +106,6 @@
                             href="{{route('do-khan-cap.index')}}"><i class="fa fa-circle-o"></i> Thêm mới</a></li>
                 </ul>
             </li>
-
-             @role('admin')
             <li class="treeview {{ Route::is('nguoi-dung.index') || Route::is('nguoi-dung.create') || Route::is('chuc-nang.index')
                || Route::is('vai-tro.index') ? 'active menu-open' : '' }} }} ">
                 <a href="#">

@@ -86,3 +86,21 @@ span.required {
      border-radius: 1px !important;
     height: 34px !important;
 }
+
+.form-control:focus {
+    border-color: #1f91f3 !important;
+    box-shadow: none;
+}
+
+.select2 *:focus {
+    border-color: #1f91f3  !important;
+}
+
+textarea:focus {
+    border-color: #1f91f3  !important;
+}
+
+select.form-control:focus {
+    border-color: #1f91f3  !important;
+}
+

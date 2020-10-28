@@ -39,7 +39,7 @@ class SoVanBanController extends Controller
                 if (!empty($loaiso)) {
                     return $query->where('loai_so', 'LIKE', "%$loaiso%");
                 }
-            })->paginate(5);
+            })->paginate(PER_PAGE);
         return view('admin::So_van_ban.danh_sach', compact('ds_sovanban'));
     }
 

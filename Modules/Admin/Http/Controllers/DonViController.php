@@ -38,7 +38,7 @@ class DonViController extends Controller
                 if (!empty($mahanhchinh)) {
                     return $query->where('ma_hanh_chinh', 'LIKE', "%$mahanhchinh%");
                 }
-            })->paginate(1);
+            })->paginate(PER_PAGE);
         return view('admin::Don_vi.danh_sach', compact('ds_donvi'));
     }
 

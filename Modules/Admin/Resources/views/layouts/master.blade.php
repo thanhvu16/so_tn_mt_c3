@@ -26,8 +26,8 @@
     <!-- toastr -->
     <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
-
-
+    <link rel="icon" href="{{ asset('images/ha_noi.png') }}" type="image/x-icon">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

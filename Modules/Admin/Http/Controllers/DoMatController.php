@@ -27,7 +27,7 @@ class DoMatController extends Controller
                     return $query->where('ten_muc_do', 'LIKE', "%$tenmucdo%");
                 }
             })
-            ->paginate(5);
+            ->paginate(PER_PAGE);
         return view('admin::Do_mat.danh_sach',compact('ds_mucdo'));
     }
 
