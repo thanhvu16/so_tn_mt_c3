@@ -21,5 +21,7 @@ class DonVi extends Model
 
     ];
 
+    const DIEU_HANH = 1;
+
 }
 

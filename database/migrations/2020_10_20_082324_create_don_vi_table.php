@@ -22,6 +22,7 @@ class CreateDonViTable extends Migration
             $table->integer('so_dien_thoai')->nullable();
             $table->string('email')->nullable();
             $table->tinyInteger('dieu_hanh')->default(1)->comment('1: Có điều hành 0: không có điều hành');
+            $table->tinyInteger('migrated')->nullable()->comment('1: da chay migrate null: chua chay migrate');
             $table->softDeletes();
             $table->timestamps();
         });

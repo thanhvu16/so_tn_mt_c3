@@ -97,7 +97,7 @@
                             <option value="">-- Chọn quyền hạn --</option>
                             @if (count($roles) > 0)
                                 @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ isset($user) && $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    <option value="{{ $role->id }}" {{ isset($user) && $user->role_id == $role->id ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
                                 @endforeach
                             @endif
                         </select>

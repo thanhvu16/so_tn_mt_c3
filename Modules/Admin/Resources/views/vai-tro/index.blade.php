@@ -48,21 +48,21 @@
                             @forelse($roles as $key => $role)
                                 <tr>
                                     <td class="text-center" style="vertical-align: middle">{{ $key+1 }}</td>
-                                    <td class="text-center" style="vertical-align: middle">{{ $role->name }}</td>
+                                    <td class="text-center" style="vertical-align: middle">{{ ucfirst($role->name) }}</td>
                                     <td class="text-center">
                                         <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm" href="{{ route('vai-tro.edit', $role->id) }}"
                                            role="button" title="Sửa">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        @if ($role->name != strtolower('admin'))
-                                            <form method="POST" action="{{ route('vai-tro.destroy', $role->id) }}" accept-charset="UTF-8" style="display:inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+{{--                                        @if ($role->name != strtolower('admin'))--}}
+{{--                                            <form method="POST" action="{{ route('vai-tro.destroy', $role->id) }}" accept-charset="UTF-8" style="display:inline">--}}
+{{--                                                @csrf--}}
+{{--                                                @method('DELETE')--}}
+{{--                                                <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button" title="Xóa">--}}
+{{--                                                    <i class="fa fa-trash" aria-hidden="true"></i>--}}
+{{--                                                </button>--}}
+{{--                                            </form>--}}
+{{--                                        @endif--}}
                                     </td>
 
                                 </tr>

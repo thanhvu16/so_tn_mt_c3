@@ -15,7 +15,7 @@
                         <input type="text" id="name" name="name"
                                class="form-control @error('name') is-invalid @enderror"
                                placeholder="Nhập tên quyền hạn"
-                               value="{{ old('name', isset($role) ? $role->name : '') }}" required="">
+                               value="{{ old('name', isset($role) ? $role->name : '') }}" required="" {{ isset($role) ? 'disabled' : '' }}>
                         @error('name')
                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
