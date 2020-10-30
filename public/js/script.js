@@ -42,3 +42,20 @@ $('.btn-remove-item').on('click', function () {
 });
 
 $('.select2').select2()
+
+
+function showLoading() {
+    $('body').loadingModal({
+        position: 'auto',
+        text: '',
+        color: '#fff',
+        opacity: '0.7',
+        backgroundColor: 'rgb(0,0,0)',
+        // animation: 'fadingCircle'
+        animation: 'wave'
+    });
+}
+function hideLoading() {
+    $('body').loadingModal('destroy');
+
+}

@@ -11,6 +11,13 @@
 |
 */
 
-Route::prefix('vanbanden')->group(function() {
-    Route::get('/', 'VanBanDenController@index');
-});
+//Route::prefix('vanbanden')->group(function() {
+//    Route::get('/', 'VanBanDenController@index');
+//
+//
+//    Route::get('danh-sach-do-bao-mat', 'DoMatController@danhsach')->name('danhsachdobaomat');
+//    Route::resource('do-bao-mat', 'DoMatController')->except('show');
+//    Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'DoMatController@destroy'));
+//});
+Route::resource('van-ban-den', 'VanBanDenController');
+Route::post('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));

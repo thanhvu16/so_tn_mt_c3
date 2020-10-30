@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -16,12 +17,14 @@ class SoVanBanController extends Controller
      */
     public function index()
     {
+        canPermission(AllPermission::themSoVanBan());
         $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         return view('admin::So_van_ban.index', compact('donvi'));
     }
 
     public function danhsach(Request $request)
     {
+        canPermission(AllPermission::themSoVanBan());
         $tendonvi = $request->get('ten_don_vi');
         $tenviettat = $request->get('ten_viet_tat');
         $loaiso = $request->get('loai_so');
@@ -59,6 +62,7 @@ class SoVanBanController extends Controller
      */
     public function store(Request $request)
     {
+        canPermission(AllPermission::themSoVanBan());
         $sovanban = new SoVanBan();
         $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
         $sovanban->ten_viet_tat = $request->ten_viet_tat;
@@ -89,6 +93,7 @@ class SoVanBanController extends Controller
      */
     public function edit($id)
     {
+        canPermission(AllPermission::suaSoVanBan());
         $sovanban= SoVanBan::where('id', $id)->first();
         $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         return view('admin::So_van_ban.edit', compact('sovanban','donvi'));
@@ -102,6 +107,7 @@ class SoVanBanController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        canPermission(AllPermission::suaSoVanBan());
         $sovanban= SoVanBan::where('id', $id)->first();
         $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
         $sovanban->ten_viet_tat = $request->ten_viet_tat;
@@ -122,6 +128,7 @@ class SoVanBanController extends Controller
      */
     public function destroy($id)
     {
+        canPermission(AllPermission::xoaSoVanBan());
         $sovanban= SoVanBan::where('id', $id)->first();
         $sovanban->delete();
         return redirect()->route('danhsachsovanban')->with('success', 'Xóa thành công !');

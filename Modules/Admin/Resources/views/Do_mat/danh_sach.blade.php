@@ -46,17 +46,25 @@
                                         style="vertical-align: middle">@if($mucdo->deleted_at == null)<span
                                             class="label label-success">Hoạt động</span>@else @endif</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{route('xoadobaomat',$mucdo->id)}}">
-                                            @csrf
+                                        @can('sửa độ mật')
+
                                             <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
-                                               href="{{route('do-bao-mat.edit',$mucdo->id)}}" role="button" title="Sửa">
+                                               href="{{route('do-bao-mat.edit',$mucdo->id)}}" role="button"
+                                               title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
+                                        @endcan
+                                        @can('xoá độ mật')
+                                            <form method="POST" action="{{route('xoadobaomat',$mucdo->id)}}">
+                                                @csrf
+                                                <button
+                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
+                                                    role="button"
                                                     title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                        </form>
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
 
                                     </td>
 

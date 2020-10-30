@@ -30,10 +30,18 @@
                                     <label for="exampleInputEmail1">Tìm theo loại áp dụng</label>
                                     <select name="loai_ap_dung" class="form-control lay-so">
                                         <option value="">Chọn loại sổ</option>
-                                        <option value="1" {{ Request::get('loai_ap_dung') == 1 ? 'selected' : '' }}>Áp dụng cho vb đến</option>
-                                        <option value="2" {{ Request::get('loai_ap_dung') == 2 ? 'selected' : '' }}>Áp dụng cho vb đi</option>
-                                        <option value="3" {{ Request::get('loai_ap_dung') == 3 ? 'selected' : '' }}>Dùng chung</option>
-                                        <option value="4" {{ Request::get('loai_ap_dung') == 4 ? 'selected' : '' }}>Dùng riêng</option>
+                                        <option value="1" {{ Request::get('loai_ap_dung') == 1 ? 'selected' : '' }}>Áp
+                                            dụng cho vb đến
+                                        </option>
+                                        <option value="2" {{ Request::get('loai_ap_dung') == 2 ? 'selected' : '' }}>Áp
+                                            dụng cho vb đi
+                                        </option>
+                                        <option value="3" {{ Request::get('loai_ap_dung') == 3 ? 'selected' : '' }}>Dùng
+                                            chung
+                                        </option>
+                                        <option value="4" {{ Request::get('loai_ap_dung') == 4 ? 'selected' : '' }}>Dùng
+                                            riêng
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-md-3" style="margin-top: 20px">
@@ -65,21 +73,33 @@
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$loaivanban->ten_viet_tat}}</td>
                                     <td class="text-center" style="vertical-align: middle">{{$loaivanban->mo_ta}}</td>
-                                    <td class="text-center" style="vertical-align: middle">@if($loaivanban->loai_van_ban == 3)Dùng chung @elseif($loaivanban->loai_van_ban ==2) Văn bản đi @elseif($loaivanban->loai_van_ban == 1) Văn bản đến @else Loại riêng @endif</td>
-                                    <td class="text-center" style="vertical-align: middle">{{$loaivanban->donvi->ten_don_vi ?? ''}}</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">@if($loaivanban->loai_van_ban == 3)Dùng
+                                        chung @elseif($loaivanban->loai_van_ban ==2) Văn bản
+                                        đi @elseif($loaivanban->loai_van_ban == 1) Văn bản đến @else Loại
+                                        riêng @endif</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{$loaivanban->donvi->ten_don_vi ?? ''}}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{route('xoaloaivanban',$loaivanban->id)}}">
-                                            @csrf
+
+                                        @can('sửa loại văn bản')
                                             <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
                                                href="{{route('loai-van-ban.edit',$loaivanban->id)}}" role="button"
                                                title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
+                                        @endcan
+                                        @can('xoá loại văn bản')
+                                            <form method="POST" action="{{route('xoaloaivanban',$loaivanban->id)}}">
+                                                @csrf
+                                                <button
+                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
+                                                    role="button"
                                                     title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                        </form>
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
 
                                     </td>
 
