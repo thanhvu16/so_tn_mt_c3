@@ -20,5 +20,6 @@ class RoleSeeder extends Seeder
         Role::findOrCreate('văn thư đơn vị');
         Role::findOrCreate('văn thư huyện');
         Role::findOrCreate('chuyên viên');
+        Role::findOrCreate('tham mưu');
     }
 }

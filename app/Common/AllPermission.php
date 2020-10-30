@@ -50,4 +50,9 @@ class AllPermission
     {
         return 'xoá chức vụ';
     }
+
+    public static function thamMuu()
+    {
+        return 'tham mưu';
+    }
 }

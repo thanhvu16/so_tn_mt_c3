@@ -42,7 +42,8 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::xoaChucVu());
 
 
-
+        //tham mưu văn bản
+        Permission::findOrCreate(AllPermission::thamMuu());
 
 
         if ($role) {
