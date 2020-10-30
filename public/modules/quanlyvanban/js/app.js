@@ -16,3 +16,27 @@ function noidungvanban(fileName) {
 
     $('.layout2').append(htmlForm);
 }
+$('.check-so-den-vb').on('change', function () {
+    let soVanBanId = $(this).val();
+    let donViId = $(this).data('don-vi');
+
+    $.ajax({
+        url: APP_URL + '/so-den',
+        type: 'POST',
+        beforeSend: showLoading(),
+        data: {
+            donViId: donViId,
+            soVanBanId: soVanBanId
+        },
+
+
+    })
+        .done(function (res) {
+            hideLoading();
+            if (res.html) {
+                var soDen = res.html;
+                $('[name=so_den]').val(soDen);
+            }
+        });
+
+});

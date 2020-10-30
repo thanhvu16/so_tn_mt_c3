@@ -20,3 +20,4 @@
 //    Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'DoMatController@destroy'));
 //});
 Route::resource('van-ban-den', 'VanBanDenController');
+Route::post('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));
