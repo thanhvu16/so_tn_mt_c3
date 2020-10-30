@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Hash, DB, Auth;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
-use Modules\VanBanDen\Entities\VanBanDen;
+use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use Spatie\Permission\Models\Role;
 
 class NguoiDungController extends Controller

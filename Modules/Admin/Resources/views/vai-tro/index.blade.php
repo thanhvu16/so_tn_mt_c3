@@ -21,15 +21,18 @@
                 <div class="tab-pane active" id="tab_1">
                     <div class="col-md-12 mt-2">
                         <div class="row">
-                            <form action="{{route('danhsachdonvi')}}" method="get">
+                            <form action="{{ route('vai-tro.index') }}" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo quyền </label>
                                     <input type="text" class="form-control" value="{{Request::get('name')}}"
                                            name="name"
                                            placeholder="nhập tên quyền">
                                 </div>
-                                <div class="col-md-3" style="margin-top: 20px">
+                                <div class="col-md-3" style="margin-top: 22px">
                                     <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                    @if (!empty(Request::get('name')))
+                                        <a href="{{ route('vai-tro.index') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
+                                    @endif
                                 </div>
                             </form>
 
