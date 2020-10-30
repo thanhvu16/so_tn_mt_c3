@@ -147,7 +147,22 @@ class AllPermission
         return 'thêm dự thảo văn bản';
     }
 
+    //chu tich
+    public static function chuTich()
+    {
+        return 'chủ tịch';
+    }
 
+    //phó chu tich
+    public static function phoChuTich()
+    {
+        return 'phó chủ tịch';
+    }
+
+    public static function truongPhong()
+    {
+        return 'trưởng phòng';
+    }
 
 
 

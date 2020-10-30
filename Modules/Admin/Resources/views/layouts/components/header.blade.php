@@ -28,7 +28,7 @@
                             <img src="{{ !empty(auth::user()->anh_dai_dien) ? getUrlFile(auth::user()->anh_dai_dien) : asset('images/default-user.png') }}" class="img-circle" alt="User Image">
 
                             <p>
-                                {{ auth::user()->ho_ten }} - Web Developer
+                                {{ auth::user()->ho_ten }} ({{ auth::user()->chucVu->ten_viet_tat ?? 'N/A' }}) - {{ auth::user()->donVi->ten_don_vi ?? '' }}
                                 <small>{{ date('d/m') }}. {{ date('Y') }}</small>
                             </p>
                         </li>

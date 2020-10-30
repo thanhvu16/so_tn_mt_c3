@@ -14,33 +14,37 @@ class CreateVanBanDenTable extends Migration
     public function up()
     {
 
-        Schema::create('van_ban_den', function (Blueprint $table) {
-            $table->id();
-            $table->integer('loai_van_ban_id')->nullable();
-            $table->integer('so_van_ban_id')->nullable();
-            $table->integer('so_den')->nullable();
-            $table->string('so_ky_hieu')->nullable();
-            $table->date('ngay_ban_hanh')->nullable();
-            $table->string('co_quan_ban_hanh')->nullable();
-            $table->string('nguoi_ky')->nullable();
-            $table->string('chuc_vu')->nullable();
-            $table->text('trich_yeu')->nullable();
-            $table->string('noi_dung')->nullable();
-            $table->string('tom_tat')->nullable();
-            $table->integer('do_khan_cap_id')->nullable();
-            $table->integer('do_bao_mat_id')->nullable();
-            $table->string('noi_gui_den')->nullable();
-            $table->date('ngay_hop')->nullable();
-            $table->time('gio_hop')->nullable();
-            $table->string('noi_dung_hop')->nullable();
-            $table->string('dia_diem')->nullable();
-            $table->date('han_xu_ly')->nullable();
-            $table->integer('lanh_dao_tham_muu')->nullable()
-                ->comment('id lanh dao tham muu van ban');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('van_ban_den')) {
 
-        $danhSachDonVi = \Modules\Admin\Entities\DonVi::where('dieu_hanh', 1)->get();
+            Schema::create('van_ban_den', function (Blueprint $table) {
+                $table->id();
+                $table->integer('loai_van_ban_id')->nullable();
+                $table->integer('so_van_ban_id')->nullable();
+                $table->integer('so_den')->nullable();
+                $table->string('so_ky_hieu')->nullable();
+                $table->date('ngay_ban_hanh')->nullable();
+                $table->string('co_quan_ban_hanh')->nullable();
+                $table->string('nguoi_ky')->nullable();
+                $table->string('chuc_vu')->nullable();
+                $table->text('trich_yeu')->nullable();
+                $table->string('noi_dung')->nullable();
+                $table->string('tom_tat')->nullable();
+                $table->integer('do_khan_cap_id')->nullable();
+                $table->integer('do_bao_mat_id')->nullable();
+                $table->string('noi_gui_den')->nullable();
+                $table->date('ngay_hop')->nullable();
+                $table->time('gio_hop')->nullable();
+                $table->string('noi_dung_hop')->nullable();
+                $table->string('dia_diem')->nullable();
+                $table->date('han_xu_ly')->nullable();
+                $table->integer('lanh_dao_tham_muu')->nullable()
+                    ->comment('id lanh dao tham muu van ban');
+                $table->timestamps();
+            });
+        }
+
+        $danhSachDonVi = \Modules\Admin\Entities\DonVi::where('dieu_hanh', 1)
+            ->whereNull('migrated')->get();
 
         if (count($danhSachDonVi) > 0) {
             foreach ($danhSachDonVi as $donVi) {
