@@ -2,9 +2,15 @@
 
 namespace Modules\VanBanDen\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Modules\Admin\Entities\DoKhan;
+use Modules\Admin\Entities\DoMat;
+use Modules\Admin\Entities\LoaiVanBan;
+use Modules\Admin\Entities\SoVanBan;
+use auth;
 
 class VanBanDenController extends Controller
 {
@@ -14,7 +20,8 @@ class VanBanDenController extends Controller
      */
     public function index()
     {
-        return view('vanbanden::index');
+
+        return view('vanbanden::van_ban_den.index');
     }
 
     /**
@@ -23,7 +30,23 @@ class VanBanDenController extends Controller
      */
     public function create()
     {
-        return view('vanbanden::create');
+        $user = auth::user();
+        $user ->can('văn thư đơn vị');
+//        dd($user ->can('văn thư đơn vị'));
+//        if($user ->can('văn thư huyện') == true)
+//        {
+//            dd(1);
+//        }else{
+//            dd(0);
+//        }
+        $soden =0;
+        $domat = DoMat::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $users = User::permission('tham mưu')->where('trang_thai', ACTIVE)->get();
+
+        return view('vanbanden::van_ban_den.create',compact('domat','dokhan','loaivanban','sovanban','users'));
     }
 
     /**
