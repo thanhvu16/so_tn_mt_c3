@@ -25,6 +25,7 @@ class LoaiVanBanController extends Controller
     public function danhsach(Request $request)
     {
         canPermission(AllPermission::themLoaiVanBan());
+        $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         $tenloaivanban = $request->get('ten_loai_van_ban');
         $tenviettat = $request->get('ten_viet_tat');
         $loaiapdung = $request->get('loai_ap_dung');
@@ -43,7 +44,7 @@ class LoaiVanBanController extends Controller
                     return $query->where('loai_van_ban', 'LIKE', "%$loaiapdung%");
                 }
             })->paginate(PER_PAGE);
-        return view('admin::Loai_van_ban.danh_sach', compact('ds_loaivanban'));
+        return view('admin::Loai_van_ban.danh_sach', compact('ds_loaivanban','donvi'));
     }
 
     /**

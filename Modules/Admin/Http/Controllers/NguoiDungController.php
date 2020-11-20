@@ -59,6 +59,8 @@ class NguoiDungController extends Controller
 
         $danhSachChucVu = ChucVu::all();
         $danhSachDonVi = DonVi::all();
+//        $danhSachDonVi = DonVi::where('id',3)->first();
+//        dd($danhSachDonVi);
 
         return view('admin::nguoi-dung.index', compact('users', 'order',
             'danhSachDonVi', 'danhSachChucVu'));

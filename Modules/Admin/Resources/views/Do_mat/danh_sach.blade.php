@@ -11,6 +11,23 @@
                         <h3 class="box-title">Danh sách độ bảo mật</h3>
                     </div>
                     <!-- /.box-header -->
+                    <div class="col-md-3 form-group mt-4">
+                        <button type="button" class="btn btn-sm btn-info waves-effect waves-light mb-1"
+                                data-toggle="collapse"
+                                href="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            THÊM MỨC ĐỘ BẢO MẬT</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="collapse " id="collapseExample">
+                                <div class="row">
+                                    @include('admin::Do_mat.index')
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
                             <form action="{{route('danhsachdobaomat')}}" method="get">

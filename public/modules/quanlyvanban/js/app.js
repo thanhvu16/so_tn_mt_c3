@@ -16,6 +16,10 @@ function noidungvanban(fileName) {
 
     $('.layout2').append(htmlForm);
 }
+$("body").on("click", ".btn-remove-file", function () {
+
+    $(this).parents(".remove-multi-file").remove();
+});
 $('.check-so-den-vb').on('change', function () {
     let soVanBanId = $(this).val();
     let donViId = $(this).data('don-vi');
@@ -40,3 +44,25 @@ $('.check-so-den-vb').on('change', function () {
         });
 
 });
+function duthaovanban() {
+    let htmlForm = `<div class="remove-multi-file col-md-12">
+                         <div class="row">
+                           <div class="col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Tên tệp tin</label>
+                                <input class="form-control" name="txt_file[]" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="url-file" class="col-form-label">File hồ sơ</label>
+                                <div class="form-line input-group control-group">
+                                    <input type="file" id="url-file" name="file_name[]" class="form-control">
+                                    <div class="input-group-btn customize-group-btn">
+                                        <span class="btn btn-danger btn-remove-file" type="button">
+                                        <i class="fa fa-remove"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+    $('.duthaovb').append(htmlForm);
+}

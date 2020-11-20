@@ -10,10 +10,29 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách đơn vị</h3>
                     </div>
+                    <div class="col-md-3 form-group mt-4">
+                        <button type="button" class="btn btn-sm btn-info waves-effect waves-light mb-1"
+                                data-toggle="collapse"
+                                href="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            THÊM CHỨC VỤ</button>
+                    </div>
+
                     <!-- /.box-header -->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="collapse " id="collapseExample">
+                                <div class="row">
+                                    @include('admin::chuc_vu.index')
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
                             <form action="{{route('danhsachchucvu')}}" method="get">
+
                                 <div class="col-md-3 form-group">
                                     <label for="exampleInputEmail1">Tìm theo tên đơn vị</label>
                                     <input type="text" class="form-control" value="{{Request::get('ten_chuc_vu')}}"
@@ -34,6 +53,7 @@
                         </div>
                     </div>
                     <div class="box-body">
+
                         <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
@@ -48,7 +68,7 @@
                             @forelse($ds_chucvu as $key=>$chucvu)
                                 <tr>
                                     <td class="text-center" style="vertical-align: middle">{{$key+1}}</td>
-                                    <td class="text-center" style="vertical-align: middle">{{$chucvu->ten_chuc_vu}}</td>
+                                    <td class="text-left" style="vertical-align: middle">{{$chucvu->ten_chuc_vu}}</td>
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$chucvu->ten_viet_tat}}</td>
                                     <td class="text-center"

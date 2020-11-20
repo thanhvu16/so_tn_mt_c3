@@ -32,7 +32,17 @@ class ChucVuController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
-        return view('admin::Chuc_vu.danh_sach',compact('ds_chucvu'));
+//        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-get-list?page=2&numberrow=10";
+//        $ds_chucvu1 = api_list($url);
+//        $ds_chucvu= json_decode($ds_chucvu1);
+//        dd($ds_chucvu);
+//        $count = count($ds_chucvu);
+//        dd($ds_chucvu1);
+//        echo '<pre>';
+//        print_r($ds_chucvu2);
+//        echo '</pre>';
+
+        return view('admin::Chuc_vu.api_danh_sach',compact('ds_chucvu'));
     }
     /**
      * Show the form for creating a new resource.
@@ -50,11 +60,17 @@ class ChucVuController extends Controller
      */
     public function store(Request $request)
     {
-        $chucvu = new ChucVu();
-        $chucvu->ten_chuc_vu = $request->ten_chuc_vu;
-        $chucvu->ten_viet_tat = $request->ten_viet_tat;
-        $chucvu->save();
-        return redirect()->route('danhsachchucvu')->with('success','Thêm mới thành công !');
+        $araytable = array();
+        $araytable= array(
+            'ten_chuc_vu'=>$request->ten_chuc_vu,
+            'ten_viet_tat'=>$request->ten_viet_tat
+        );
+
+        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-chuc-vu-save";
+        $a = api_add($araytable,$url);
+
+
+//        return redirect()->route('danhsachchucvu')->with('success','Thêm mới thành công !');
     }
 
     /**

@@ -1,13 +1,13 @@
-@extends('admin::layouts.master')
-@section('page_title', 'Đơn Vị')
-@section('content')
-    <section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Thêm đơn vị</h3>
-                    </div>
+{{--@extends('admin::layouts.master')--}}
+{{--@section('page_title', 'Đơn Vị')--}}
+{{--@section('content')--}}
+{{--    <section class="content">--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-md-12">--}}
+{{--                <div class="box box-primary">--}}
+{{--                    <div class="box-header with-border">--}}
+{{--                        <h3 class="box-title">Thêm đơn vị</h3>--}}
+{{--                    </div>--}}
                     <form role="form" action="{{route('don-vi.store')}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
@@ -80,8 +80,8 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </section>
-@endsection
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </section>--}}
+{{--@endsection--}}

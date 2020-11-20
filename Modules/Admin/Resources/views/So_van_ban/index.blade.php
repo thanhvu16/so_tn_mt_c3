@@ -1,13 +1,13 @@
-@extends('admin::layouts.master')
-@section('page_title', 'Sổ Văn Bản')
-@section('content')
-    <section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Thêm đơn vị</h3>
-                    </div>
+{{--@extends('admin::layouts.master')--}}
+{{--@section('page_title', 'Sổ Văn Bản')--}}
+{{--@section('content')--}}
+{{--    <section class="content">--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-md-12">--}}
+{{--                <div class="box box-primary">--}}
+{{--                    <div class="box-header with-border">--}}
+{{--                        <h3 class="box-title">Thêm đơn vị</h3>--}}
+{{--                    </div>--}}
                     <form role="form" action="{{route('so-van-ban.store')}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
@@ -30,7 +30,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Mô tả</label>
                                     <input type="text" class="form-control" name="mo_ta" id="exampleInputEmail3"
-                                           placeholder="Mô tả" required>
+                                           placeholder="Mô tả" >
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -63,11 +63,11 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </section>
-@endsection
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </section>--}}
+{{--@endsection--}}
 @section('script')
     <script type="text/javascript">
         $('.lay-so').on('change', function (e) {
