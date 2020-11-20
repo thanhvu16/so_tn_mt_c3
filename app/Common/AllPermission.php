@@ -127,6 +127,27 @@ class AllPermission
     {
         return 'Văn thư huyện';
     }
+    // văn thư
+    public static function themVanBanDen()
+    {
+        return 'thêm văn bản đến';
+    }
+
+    public static function suaVanBanDen()
+    {
+        return 'sửa văn bản đến';
+    }
+    public static function xoaVanBanDen()
+    {
+        return 'xóa văn bản đến';
+    }
+    // văn thư
+    public static function themDuThao()
+    {
+        return 'thêm dự thảo văn bản';
+    }
+
+
 
 
 

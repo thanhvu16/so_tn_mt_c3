@@ -59,3 +59,4 @@ function hideLoading() {
     $('body').loadingModal('destroy');
 
 }
+

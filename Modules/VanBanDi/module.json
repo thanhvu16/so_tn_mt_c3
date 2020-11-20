@@ -1,0 +1,13 @@
+{
+    "name": "VanBanDi",
+    "alias": "vanbandi",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\VanBanDi\\Providers\\VanBanDiServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

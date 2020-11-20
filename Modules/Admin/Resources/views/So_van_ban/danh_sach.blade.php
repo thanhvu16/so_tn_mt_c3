@@ -10,6 +10,23 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách sổ văn bản</h3>
                     </div>
+                    <div class="col-md-3 form-group mt-4">
+                        <button type="button" class="btn btn-sm btn-info waves-effect waves-light mb-1"
+                                data-toggle="collapse"
+                                href="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            THÊM SỔ VĂN BẢN</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="collapse " id="collapseExample">
+                                <div class="row">
+                                    @include('admin::So_van_ban.index')
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <!-- /.box-header -->
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">

@@ -58,6 +58,7 @@ class DonViController extends Controller
      */
     public function store(Request $request)
     {
+
         $donvi = new DonVi();
         $donvi->ten_don_vi = $request->ten_don_vi;
         $donvi->ten_viet_tat = $request->ten_viet_tat;
