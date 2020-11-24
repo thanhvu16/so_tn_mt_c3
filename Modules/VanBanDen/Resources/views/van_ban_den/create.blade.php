@@ -14,7 +14,7 @@
                         <div class="box-body">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Loại văn bản <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail1">Loại văn bản <span style="color: red">*</span></label>
                                     <select class="form-control select2" autofocus name="loai_van_ban" required>
                                         <option value="">-- Chọn loại văn bản --</option>
                                         @foreach($loaivanban as $loaivanbands)
@@ -25,7 +25,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail2">Sổ văn bản <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail2">Sổ văn bản <span style="color: red">*</span></label>
                                     <select class="form-control select2 check-so-den-vb" data-don-vi="{{auth::user()->id}}" name="so_van_ban" required>
                                         <option value="">-- Chọn sổ văn bản --</option>
                                             @foreach($sovanban as $data)
@@ -43,35 +43,35 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4"
                                            placeholder="Số ký hiệu" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Ngày ban hành <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Ngày ban hành <span style="color: red">*</span></label>
                                     <input type="date" class="form-control" name="ngay_ban_hanh" id="exampleInputEmail5"
                                            placeholder="" required >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="co_quan_ban_hanh" id="exampleInputEmail6"
                                            placeholder="Cơ quan ban hành" required >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Người ký <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Người ký <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="nguoi_ky" id="exampleInputEmail7"
                                            placeholder="Người ký" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">*</span></label>
                                     <select class="form-control select2"  name="lanh_dao_tham_muu" required>
                                         <option value="">-- Chọn lãnh đạo tham mưu --</option>
                                         @foreach($users as $nguoidung)
@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Trích yếu <span style="color: red">(*)</span></label>
+                                    <label for="exampleInputEmail4">Trích yếu <span style="color: red">*</span></label>
                                     <textarea class="form-control" name="trich_yeu" rows="3" required></textarea>
                                 </div>
                             </div>

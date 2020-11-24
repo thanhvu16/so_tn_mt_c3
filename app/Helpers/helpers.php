@@ -105,3 +105,17 @@ function api_add($arr ,$url)
 
 
 }
+function dateFromBusinessDays($days, $dateTime=null) {
+    $dateTime = is_null($dateTime) ? time() : strtotime(str_replace('/', '-', $dateTime));
+    $_day = 0;
+    $_direction = $days == 0 ? 0 : intval($days/abs($days));
+    $_day_value = (60 * 60 * 24);
+    while($_day !== $days) {
+        $dateTime += $_direction * $_day_value;
+        $_day_w = date("w", $dateTime);
+        if ($_day_w > 0 && $_day_w < 6) {
+            $_day += $_direction * 1;
+        }
+    }
+    return date('Y-m-d',$dateTime);
+}

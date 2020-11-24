@@ -115,7 +115,7 @@
                                             <label for="han_giai_quyet" class="col-form-label">Hạn giải quyết</label>
                                             <div id="">
                                                 <input type="date" class="form-control"
-                                                      name="han_giai_quyet[]" value="  {{$van_ban_den->han_giai_quyet}}">
+                                                      name="han_giai_quyet[]" value="{{$van_ban_den->han_giai_quyet}}">
                                             </div>
 
                                         </div>

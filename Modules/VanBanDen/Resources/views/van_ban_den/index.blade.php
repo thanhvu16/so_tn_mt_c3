@@ -55,7 +55,7 @@
                                                    id="vb_so_den"
                                                    placeholder="Số đến văn bản">
                                         </div>
-                                        <div class="form-group col-md-4" style="margin-top: -15px">
+                                        <div class="form-group col-md-4" ngayketthuc>
                                             <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
                                             <input type="text" name="vb_so_ky_hieu"
                                                    value="{{Request::get('vb_so_ky_hieu')}}"
@@ -63,7 +63,7 @@
                                                    id="sokyhieu"
                                                    placeholder="Số ký hiệu">
                                         </div>
-                                        <div class="form-group col-md-4" style="margin-top: -15px">
+                                        <div class="form-group col-md-4" ngayketthuc>
                                             <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>
                                             <div id="">
                                                 <input class="form-control " id="vb_ngay_ban_hanh"
@@ -71,7 +71,7 @@
                                                        name="start_date">
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-4" style="margin-top: -15px">
+                                        <div class="form-group col-md-4" ngayketthuc>
                                             <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>
                                             <div id="">
                                                 <input class="form-control " id="vb_ngay_ban_hanh"
@@ -79,27 +79,27 @@
                                                        name="end_date">
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-4" style="margin-top: -15px">
+                                        <div class="form-group col-md-4" ngayketthuc>
                                             <label for="co_quan_ban_hanh_id" class="col-form-label">Cơ quan ban
                                                 hành</label>
                                             <input type="text" name="co_quan_ban_hanh_id"
                                                    value="{{Request::get('co_quan_ban_hanh_id')}}"
                                                    class="form-control">
                                         </div>
-                                        <div class="form-group col-md-4" style="margin-top: -15px">
+                                        <div class="form-group col-md-4" ngayketthuc>
                                             <label for="sokyhieu" class="col-form-label">Người ký</label>
                                             <input type="text" value="{{Request::get('nguoi_ky_id')}}"
                                                    name="nguoi_ky_id"
                                                    class="form-control">
                                         </div>
 
-                                        <div class="form-group col-md-12" style="margin-top: -15px">
+                                        <div class="form-group col-md-12" ngayketthuc>
                                             <label for="sokyhieu" class="col-form-label ">Trích yếu</label>
                                             <textarea rows="3"  class="form-control" placeholder="nội dung"
                                                       name="vb_trich_yeu"
                                                       type="text">{{Request::get('vb_trich_yeu')}}</textarea>
                                         </div>
-                                        <div class="form-group col-md-3" style="margin-top: -15px">
+                                        <div class="form-group col-md-3" ngayketthuc>
                                             <button type="submit" class="btn btn-primary" name="search">Tìm kiếm
                                             </button>
                                         </div>
@@ -138,8 +138,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
-                                                    (Số trang: {{$vbDen->so_trang}}) | (Hạn xử
-                                        lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})<br>
+                                                    (Số trang: {{$vbDen->so_trang}}) | (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <div class="text-right " style="pointer-events: auto">
