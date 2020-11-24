@@ -14,7 +14,16 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-
+            @hasanyrole('văn thư đơn vị|văn thư huyện')
+            <li class="{{ Route::is('dsvanbandentumail') || Route::is('vanbandentumail') ? 'active' : '' }} ">
+                <a href="{{route('dsvanbandentumail')}}">
+                    <i class="fa fa-university" ></i> <span>Hòm thư công</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+            </li>
+            @endrole
             @role('admin')
             <li class="{{ Route::is('don-vi.index') || Route::is('danhsachdonvi') ? 'active' : '' }} ">
                 <a href="{{route('danhsachdonvi')}}">

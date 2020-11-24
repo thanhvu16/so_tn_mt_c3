@@ -162,7 +162,7 @@
                                     @endif
                                 </tr>
                             @empty
-                                <td colspan="8" class="text-center">Không tìm thấy dữ liệu.</td>
+                                <td colspan="8" class="text-center">Không có dữ liệu.</td>
                             @endforelse
                             </tbody>
                         </table>

@@ -1,5 +1,6 @@
 {
     "Admin": true,
     "VanBanDen": true,
-    "VanBanDi": true
+    "VanBanDi": true,
+    "LayVanBanTuEmail": true
 }
