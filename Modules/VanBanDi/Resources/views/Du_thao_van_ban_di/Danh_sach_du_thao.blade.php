@@ -151,7 +151,7 @@
                                                    title="Sửa">
                                                     <i class="fas fa-file-signature"></i>
                                                 </a><br><br>
-                                                <a href=""
+                                                <a href="{{route('duthaodelete',$data->id)}}"
                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
                                                    role="button" title="Xóa">
                                                     <i class="fa fa-trash"></i></a>

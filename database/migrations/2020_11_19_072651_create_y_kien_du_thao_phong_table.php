@@ -13,7 +13,7 @@ class CreateYKienDuThaoPhongTable extends Migration
      */
     public function up()
     {
-        Schema::create('dtvb_y_kien_du_thao_phong_khac', function (Blueprint $table) {
+        Schema::create('dtvb_y_kien_du_thao_phong', function (Blueprint $table) {
             $table->id();
             $table->integer('can_bo_id')->nullable();
             $table->integer('du_thao_vb_id')->nullable();
