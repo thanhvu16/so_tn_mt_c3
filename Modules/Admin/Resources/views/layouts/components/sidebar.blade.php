@@ -121,6 +121,13 @@
                 </ul>
             </li>
             @endcan
+            @role('tham mưu')
+                @include('admin::layouts.components.sidebar_tham_muu')
+            @endrole
+
+            @hasanyrole('chủ tịch|phó chủ tịch')
+                @include('admin::layouts.components.sidebar_lanh_dao')
+            @endrole
         </ul>
     </section>
     <!-- /.sidebar -->

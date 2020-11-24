@@ -1,0 +1,13 @@
+{
+    "name": "DieuHanhVanBanDen",
+    "alias": "dieuhanhvanbanden",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\DieuHanhVanBanDen\\Providers\\DieuHanhVanBanDenServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
