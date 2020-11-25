@@ -29,7 +29,7 @@
                 <a href="{{route('danhsachdonvi')}}">
                     <i class="fa fa-university" ></i> <span>Đơn Vị</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
                 </a>
             </li>
@@ -38,7 +38,7 @@
                 <a href="{{route('danhsachchucvu')}}">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Chức Vụ</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
                 </a>
             </li>
@@ -47,7 +47,7 @@
                 <a href="{{route('danhsachsovanban')}}">
                     <i class="fa fa-book" aria-hidden="true"></i> <span>Sổ văn bản</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+
             </span>
                 </a>
             </li>
@@ -55,7 +55,7 @@
                 <a href="{{route('danhsachloaivanban')}}">
                     <i class="fa fa-database" aria-hidden="true"></i> <span>Loại văn bản</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
                 </a>
             </li>
@@ -63,7 +63,7 @@
                 <a href="{{route('danhsachdobaomat')}}">
                     <i class="fa fa-shield" aria-hidden="true"></i> <span>Độ bảo mật</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
                 </a>
             </li>
@@ -71,7 +71,7 @@
                 <a href="{{route('danhsachdokhancap')}}">
                     <i class="fa fa-bolt" aria-hidden="true"></i> <span>Độ khẩn cấp</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
                 </a>
             </li>
