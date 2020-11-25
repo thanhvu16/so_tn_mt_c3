@@ -1,5 +1,3 @@
-
-
 @extends('admin::layouts.master')
 @section('page_title', 'Sửa dự thảo')
 @section('content')
@@ -14,6 +12,7 @@
                           action="{{  route('du-thao-van-ban.update',$duthao->id)}}"
                           method="post" enctype="multipart/form-data" id="formCreateDoc">
                         @csrf
+                        @method('PUT')
                         <div class="box-body">
                         <div class=" col-md-3">
                             <label for="loai_van_ban_id" class="col-form-label">Loại văn bản</label>
@@ -107,23 +106,23 @@
                                    value="{{isset($duthao)? $duthao->han_xu_ly: ''}}" type="date"
                                    name="han_xu_ly">
                         </div>
-                        {{--                                    <div class="col-md-12">--}}
-                        {{--                                       <span style="color: red">(*)</span> <span style="color: black;font-style: italic;">Danh sách file đã upload:&ensp; </span>--}}
-                        {{--                                            @foreach($file as $key=>$data)--}}
-                        {{--                                               <a href="{{$data->getUrlFile()}}"--}}
-                        {{--                                                                         target="_blank">--}}
-                        {{--                                                   @if($data->stt == 1)--}}
-                        {{--                                                       [file phiếu trình]--}}
-                        {{--                                                   @elseif($data->stt == 2)--}}
-                        {{--                                                       [file trình ký]--}}
-                        {{--                                                       @elseif($data->stt == 3)--}}
-                        {{--                                                       [file hồ sơ]--}}
-                        {{--                                                       @endif--}}
-                        {{--                                                    &ensp;</a>--}}
-                        {{--                                                    <a href="{{route('delete_duthao',$data->id)}}" class="btn-remove-item" style="color: red"><i class="far fa-trash-alt"></i></a> &ensp; &ensp;@if(count($file) == $key+1) @else &nbsp;|&nbsp; @endif&ensp; &ensp;--}}
+                        <div class="col-md-12">
+                           <span style="color: red">(*)</span> <span style="color: black;font-style: italic;">Danh sách file đã upload:&ensp; </span>
+                                @foreach($file as $key=>$data)
+                                   <a href="{{$data->getUrlFile()}}"
+                                                             target="_blank">
+                                       @if($data->stt == 1)
+                                           [file phiếu trình]
+                                       @elseif($data->stt == 2)
+                                           [file trình ký]
+                                           @elseif($data->stt == 3)
+                                           [file hồ sơ]
+                                           @endif
+                                        &ensp;</a>
+                                        <a href="{{route('delete_file_duthao',$data->id)}}" class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" style="color: red"><i class="fa fa-trash"></i></a> &ensp; &ensp;@if(count($file) == $key+1) @else &nbsp;|&nbsp; @endif&ensp; &ensp;
 
-                        {{--                                            @endforeach--}}
-                        {{--                                    </div>--}}
+                                @endforeach
+                        </div>
                         <div class="col-md-12 mt-1">
                             <div class=" row duthaovb">
                                 <div class="col-md-3 ">
