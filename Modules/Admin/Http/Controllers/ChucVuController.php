@@ -43,7 +43,7 @@ class ChucVuController extends Controller
 //        print_r($ds_chucvu2);
 //        echo '</pre>';
 
-        return view('admin::Chuc_vu.danh_sach', compact('ds_chucvu'));
+        return view('admin::chuc_vu.danh_sach', compact('ds_chucvu'));
     }
 
     /**

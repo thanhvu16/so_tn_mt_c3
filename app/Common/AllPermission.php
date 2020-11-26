@@ -141,10 +141,35 @@ class AllPermission
     {
         return 'xóa văn bản đến';
     }
-    // văn thư
+    //Dự thảo văn bản
     public static function themDuThao()
     {
         return 'thêm dự thảo văn bản';
+    }
+
+    public static function suaDuThao()
+    {
+        return 'sửa dự thảo';
+    }
+
+    public static function xoaDuThao()
+    {
+        return 'xóa dự thảo';
+    }
+    //Góp ý dự thảo văn bản
+    public static function themGopY()
+    {
+        return 'thêm góp ý';
+    }
+
+    public static function suaGopY()
+    {
+        return 'sửa góp ý';
+    }
+
+    public static function xoaGopY()
+    {
+        return 'xóa góp y';
     }
 
     //chu tich
@@ -163,6 +188,9 @@ class AllPermission
     {
         return 'trưởng phòng';
     }
+
+
+
 
 
 

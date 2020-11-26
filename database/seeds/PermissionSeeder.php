@@ -70,7 +70,13 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::xoaVanBanDen());
         //Dự thảo văn bản đi
         Permission::findOrCreate(AllPermission::themDuThao());
+        Permission::findOrCreate(AllPermission::suaDuThao());
+        Permission::findOrCreate(AllPermission::xoaDuThao());
 
+        //Góp ý dự thảo
+        Permission::findOrCreate(AllPermission::themGopY());
+        Permission::findOrCreate(AllPermission::suaGopY());
+        Permission::findOrCreate(AllPermission::xoaGopY());
 
 
         if ($role) {
