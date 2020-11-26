@@ -1,0 +1,13 @@
+{
+    "name": "LayVanBanTuEmail",
+    "alias": "layvanbantuemail",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\LayVanBanTuEmail\\Providers\\LayVanBanTuEmailServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
