@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -16,12 +17,15 @@ class LoaiVanBanController extends Controller
      */
     public function index()
     {
+        canPermission(AllPermission::themLoaiVanBan());
         $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         return view('admin::Loai_van_ban.index', compact('donvi'));
     }
 
     public function danhsach(Request $request)
     {
+        canPermission(AllPermission::themLoaiVanBan());
+        $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         $tenloaivanban = $request->get('ten_loai_van_ban');
         $tenviettat = $request->get('ten_viet_tat');
         $loaiapdung = $request->get('loai_ap_dung');
@@ -40,7 +44,7 @@ class LoaiVanBanController extends Controller
                     return $query->where('loai_van_ban', 'LIKE', "%$loaiapdung%");
                 }
             })->paginate(PER_PAGE);
-        return view('admin::Loai_van_ban.danh_sach', compact('ds_loaivanban'));
+        return view('admin::Loai_van_ban.danh_sach', compact('ds_loaivanban','donvi'));
     }
 
     /**
@@ -59,6 +63,7 @@ class LoaiVanBanController extends Controller
      */
     public function store(Request $request)
     {
+        canPermission(AllPermission::themLoaiVanBan());
         $loaivanban = new LoaiVanBan();
         $loaivanban->ten_loai_van_ban = $request->ten_loai_van_ban;
         $loaivanban->ten_viet_tat = $request->ten_viet_tat;
@@ -89,6 +94,7 @@ class LoaiVanBanController extends Controller
      */
     public function edit($id)
     {
+        canPermission(AllPermission::suaLoaiVanBan());
         $loaivanban= LoaiVanBan::where('id', $id)->first();
         $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         return view('admin::Loai_van_ban.edit', compact('loaivanban','donvi'));
@@ -124,6 +130,7 @@ class LoaiVanBanController extends Controller
      */
     public function destroy($id)
     {
+        canPermission(AllPermission::xoaLoaiVanBan());
         $loaivanban= LoaiVanBan::where('id', $id)->first();
         $loaivanban->delete();
         return redirect()->route('danhsachloaivanban')->with('success', 'Xóa thành công !');

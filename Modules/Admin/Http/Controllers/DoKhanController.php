@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -15,11 +16,13 @@ class DoKhanController extends Controller
      */
     public function index()
     {
+        canPermission(AllPermission::themDoKhan());
         return view('admin::Do_khan.index');
     }
 
     public function danhsach(Request $request)
     {
+        canPermission(AllPermission::themDoKhan());
         $tenmucdo = $request->get('ten_muc_do');
         $ds_mucdo = DoKhan::wherenull('deleted_at')->orderBy('ten_muc_do','asc')
             ->where(function ($query) use ($tenmucdo) {
@@ -47,6 +50,7 @@ class DoKhanController extends Controller
      */
     public function store(Request $request)
     {
+        canPermission(AllPermission::themDoKhan());
         $do_mat = new DoKhan();
         $do_mat->ten_muc_do = $request->ten_muc_do;
         $do_mat->mo_ta = $request->mo_ta;
@@ -71,6 +75,7 @@ class DoKhanController extends Controller
      */
     public function edit($id)
     {
+        canPermission(AllPermission::suaDoKhan());
         $mucdo = DoKhan::where('id',$id)->first();
         return view('admin::Do_khan.edit',compact('mucdo'));
     }
@@ -97,6 +102,7 @@ class DoKhanController extends Controller
      */
     public function destroy($id)
     {
+        canPermission(AllPermission::xoaDoKhan());
         $mucdo = DoKhan::where('id',$id)->first();
         $mucdo->delete();
         return redirect()->route('danhsachdokhancap')->with('success','Xóa thành công !');

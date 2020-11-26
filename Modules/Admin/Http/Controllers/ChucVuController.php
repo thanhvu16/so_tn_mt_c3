@@ -17,11 +17,12 @@ class ChucVuController extends Controller
     {
         return view('admin::Chuc_vu.index');
     }
+
     public function danhsach(Request $request)
     {
         $tenchucvu = $request->get('ten_chuc_vu');
         $tenviettat = $request->get('ten_viet_tat');
-        $ds_chucvu = ChucVu::wherenull('deleted_at')->orderBy('ten_chuc_vu','asc')
+        $ds_chucvu = ChucVu::wherenull('deleted_at')->orderBy('ten_chuc_vu', 'asc')
             ->where(function ($query) use ($tenchucvu) {
                 if (!empty($tenchucvu)) {
                     return $query->where('ten_chuc_vu', 'LIKE', "%$tenchucvu%");
@@ -32,8 +33,19 @@ class ChucVuController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
-        return view('admin::Chuc_vu.danh_sach',compact('ds_chucvu'));
+//        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-get-list?page=2&numberrow=10";
+//        $ds_chucvu1 = api_list($url);
+//        $ds_chucvu= json_decode($ds_chucvu1);
+//        dd($ds_chucvu);
+//        $count = count($ds_chucvu);
+//        dd($ds_chucvu1);
+//        echo '<pre>';
+//        print_r($ds_chucvu2);
+//        echo '</pre>';
+
+        return view('admin::chuc_vu.danh_sach', compact('ds_chucvu'));
     }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable
@@ -50,11 +62,22 @@ class ChucVuController extends Controller
      */
     public function store(Request $request)
     {
+//        $araytable = array();
+//        $araytable= array(
+//            'ten_chuc_vu'=>$request->ten_chuc_vu,
+//            'ten_viet_tat'=>$request->ten_viet_tat
+//        );
+//
+//        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-chuc-vu-save";
+//        $a = api_add($araytable,$url);
+
         $chucvu = new ChucVu();
         $chucvu->ten_chuc_vu = $request->ten_chuc_vu;
         $chucvu->ten_viet_tat = $request->ten_viet_tat;
         $chucvu->save();
-        return redirect()->route('danhsachchucvu')->with('success','Thêm mới thành công !');
+
+
+        return redirect()->route('danhsachchucvu')->with('success', 'Thêm mới thành công !');
     }
 
     /**
@@ -74,8 +97,8 @@ class ChucVuController extends Controller
      */
     public function edit($id)
     {
-        $chucvu = ChucVu::where('id',$id)->first();
-        return view('admin::Chuc_vu.edit',compact('chucvu'));
+        $chucvu = ChucVu::where('id', $id)->first();
+        return view('admin::Chuc_vu.edit', compact('chucvu'));
     }
 
     /**
@@ -86,11 +109,11 @@ class ChucVuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $chucvu = ChucVu::where('id',$id)->first();
+        $chucvu = ChucVu::where('id', $id)->first();
         $chucvu->ten_chuc_vu = $request->ten_chuc_vu;
         $chucvu->ten_viet_tat = $request->ten_viet_tat;
         $chucvu->save();
-        return redirect()->route('danhsachchucvu')->with('success','Cập nhật thành công !');
+        return redirect()->route('danhsachchucvu')->with('success', 'Cập nhật thành công !');
     }
 
     /**
@@ -100,9 +123,9 @@ class ChucVuController extends Controller
      */
     public function destroy($id)
     {
-        $chucvu = ChucVu::where('id',$id)->first();
+        $chucvu = ChucVu::where('id', $id)->first();
         $chucvu->delete();
-        return redirect()->route('danhsachchucvu')->with('success','Xóa thành công !');
+        return redirect()->route('danhsachchucvu')->with('success', 'Xóa thành công !');
     }
 }
 

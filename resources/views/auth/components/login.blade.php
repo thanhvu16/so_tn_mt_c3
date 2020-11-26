@@ -41,7 +41,7 @@
             @csrf
             <div class="form-group has-feedback">
                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
-                       name="username" value="{{ old('username') }}" required autocomplete="username" placeholder="Nhập tài khoản">
+                       name="username" value="{{ old('username') }}" required autocomplete="username" placeholder="Nhập tài khoản" autofocus>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">

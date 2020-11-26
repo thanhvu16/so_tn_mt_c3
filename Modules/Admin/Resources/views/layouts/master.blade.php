@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
     <link rel="icon" href="{{ asset('images/ha_noi.png') }}" type="image/x-icon">
+    <link href="{{ url('theme/plugins/loadingModal/css/jquery.loadingModal.css')}}" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -61,6 +62,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
+
 <script src="{{ url('theme/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ url('theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -84,6 +86,7 @@
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ url('theme/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{url('theme/plugins/loadingModal/js/jquery.loadingModal.js')}}"></script>
 
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}

@@ -10,6 +10,23 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách sổ văn bản</h3>
                     </div>
+                    <div class="col-md-3 form-group mt-4">
+                        <button type="button" class="btn btn-sm btn-info waves-effect waves-light mb-1"
+                                data-toggle="collapse"
+                                href="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            THÊM SỔ VĂN BẢN</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="collapse " id="collapseExample">
+                                <div class="row">
+                                    @include('admin::So_van_ban.index')
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <!-- /.box-header -->
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
@@ -30,10 +47,16 @@
                                     <label for="exampleInputEmail1">Tìm theo loại sổ</label>
                                     <select name="loai_so" class="form-control lay-so">
                                         <option value="">Chọn loại sổ</option>
-                                        <option value="1" {{ Request::get('loai_so') == 1 ? 'selected' : '' }}>Sổ đến</option>
-                                        <option value="2" {{ Request::get('loai_so') == 2 ? 'selected' : '' }}>Sổ đi</option>
-                                        <option value="3" {{ Request::get('loai_so') == 3 ? 'selected' : '' }}>Sổ dùng chung</option>
-                                        <option value="4" {{ Request::get('loai_so') == 4 ? 'selected' : '' }}>Sổ riêng</option>
+                                        <option value="1" {{ Request::get('loai_so') == 1 ? 'selected' : '' }}>Sổ đến
+                                        </option>
+                                        <option value="2" {{ Request::get('loai_so') == 2 ? 'selected' : '' }}>Sổ đi
+                                        </option>
+                                        <option value="3" {{ Request::get('loai_so') == 3 ? 'selected' : '' }}>Sổ dùng
+                                            chung
+                                        </option>
+                                        <option value="4" {{ Request::get('loai_so') == 4 ? 'selected' : '' }}>Sổ
+                                            riêng
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-md-3" style="margin-top: 20px">
@@ -65,21 +88,31 @@
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$sovanban->ten_viet_tat}}</td>
                                     <td class="text-center" style="vertical-align: middle">{{$sovanban->mo_ta}}</td>
-                                    <td class="text-center" style="vertical-align: middle">@if($sovanban->loai_so == 3)Sổ dùng chung @elseif($sovanban->loai_so ==2) Sổ đi @elseif($sovanban->loai_so == 1) Sổ đến @else Sổ riêng @endif</td>
-                                    <td class="text-center" style="vertical-align: middle">{{$sovanban->donvi->ten_don_vi ?? ''}}</td>
+                                    <td class="text-center" style="vertical-align: middle">@if($sovanban->loai_so == 3)
+                                            Sổ dùng chung @elseif($sovanban->loai_so ==2) Sổ
+                                            đi @elseif($sovanban->loai_so == 1) Sổ đến @else Sổ riêng @endif</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{$sovanban->donvi->ten_don_vi ?? ''}}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{route('xoasovanban',$sovanban->id)}}">
-                                            @csrf
+
+                                        @can('sửa sổ văn bản')
                                             <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
                                                href="{{route('so-van-ban.edit',$sovanban->id)}}" role="button"
                                                title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
+                                        @endcan
+                                        @can('xoá sổ văn bản')
+                                            <form method="POST" action="{{route('xoasovanban',$sovanban->id)}}">
+                                                @csrf
+                                                <button
+                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
+                                                    role="button"
                                                     title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                        </form>
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
 
                                     </td>
 

@@ -1,4 +1,7 @@
 {
     "Admin": true,
-    "VanBanDen": true
+    "VanBanDen": true,
+    "VanBanDi": true,
+    "LayVanBanTuEmail": true,
+    "DieuHanhVanBanDen": true
 }

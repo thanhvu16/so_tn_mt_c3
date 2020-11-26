@@ -11,6 +11,23 @@
                         <h3 class="box-title">Danh sách mức độ khẩn cấp</h3>
                     </div>
                     <!-- /.box-header -->
+                    <div class="col-md-3 form-group mt-4">
+                        <button type="button" class="btn btn-sm btn-info waves-effect waves-light mb-1"
+                                data-toggle="collapse"
+                                href="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            THÊM MỨC ĐỘ KHẨN CẤP</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                        <div class="collapse " id="collapseExample">
+                            <div class="row">
+                                @include('admin::Do_khan.index')
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
                             <form action="{{route('danhsachdokhancap')}}" method="get">
@@ -46,17 +63,24 @@
                                         style="vertical-align: middle">@if($mucdo->deleted_at == null)<span
                                             class="label label-success">Hoạt động</span>@else @endif</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{route('xoadokhan',$mucdo->id)}}">
-                                            @csrf
+                                        @can('sửa độ khẩn')
                                             <a class="btn-action btn btn-color-blue btn-icon btn-light btn-sm"
-                                               href="{{route('do-khan-cap.edit',$mucdo->id)}}" role="button" title="Sửa">
+                                               href="{{route('do-khan-cap.edit',$mucdo->id)}}" role="button"
+                                               title="Sửa">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
+                                        @endcan
+                                        @can('xoá độ khẩn')
+                                            <form method="POST" action="{{route('xoadokhan',$mucdo->id)}}">
+                                                @csrf
+                                                <button
+                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
+                                                    role="button"
                                                     title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                        </form>
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
 
                                     </td>
 
