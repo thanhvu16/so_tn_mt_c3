@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
     <link rel="icon" href="{{ asset('images/ha_noi.png') }}" type="image/x-icon">
     <link href="{{ url('theme/plugins/loadingModal/css/jquery.loadingModal.css')}}" rel="stylesheet" />
+    <link href="{{ url('theme/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -87,6 +88,7 @@
 <!-- Select2 -->
 <script src="{{ url('theme/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{url('theme/plugins/loadingModal/js/jquery.loadingModal.js')}}"></script>
+<script src="{{url('theme/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
 
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}

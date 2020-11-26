@@ -28,7 +28,7 @@ class CanBoPhongDuThao extends Model
     }
     public function gopyFile()
     {
-        return $this->hasMany(\Modules\VanBanDi\Entities\Filecanbogopyduthao::class, 'can_bo_gop_y', 'can_bo_id')->where('trang_thai',1);
+        return $this->hasMany(\Modules\VanBanDi\Entities\Filecanbogopyduthao::class, 'can_bo_gop_y', 'id')->where('trang_thai',1);
     }
     public function gopyFilecanbophong()
     {

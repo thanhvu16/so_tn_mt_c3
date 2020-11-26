@@ -59,4 +59,7 @@ function hideLoading() {
     $('body').loadingModal('destroy');
 
 }
+$(".timepicker").timepicker({
+    showInputs: false
+});
 

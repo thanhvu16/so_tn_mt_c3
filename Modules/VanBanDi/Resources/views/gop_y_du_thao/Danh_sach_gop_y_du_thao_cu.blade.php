@@ -46,7 +46,7 @@
                                     @csrf
                                     <tr>
                                         <td>{{$key+1}}</td>
-                                        <td>
+                                        <td class="text-center">
                                             {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}
                                         </td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
@@ -56,11 +56,17 @@
                                                 style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
 
                                         </td>
-                                        <td>
+                                        <td class="text-center" style="vertical-align: middle">
                                             @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
                                                 <a href="{{$item->getUrlFile()}}" target="_blank">
-                                                    [File dự thảo {{$key+1}}]
-                                                </a>
+                                                    @if($item->stt == 1)
+                                                        [file phiếu trình]
+                                                    @elseif($item->stt == 2)
+                                                        [file trình ký]
+                                                    @elseif($item->stt == 3)
+                                                        [file hồ sơ]
+                                                    @endif
+                                                </a><br>
 
                                             @empty
                                             @endforelse
@@ -114,13 +120,16 @@
                                         </td>
                                     </tr>
                                 </form>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                                    <div class="modal-dialog" role="document">
+
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <h4 class="modal-title" id="exampleModalLabel"><i class="fas fa-file-alt btn-color-blue"></i> Sửa ý kiến1 </h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span></button>
+                                                <h4 class="modal-title"><i
+                                                        class="fa  fa-wrench"></i> Sửa góp ý</h4>
                                             </div>
                                             <form class="form-row"  method="post" action="{{route('sugopy')}}" enctype="multipart/form-data">
                                                 @csrf
@@ -148,9 +157,14 @@
                                                 </div>
 
                                             </form>
-
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-outline">Save changes</button>
+                                            </div>
                                         </div>
+                                        <!-- /.modal-content -->
                                     </div>
+                                    <!-- /.modal-dialog -->
                                 </div>
                             @empty
                             @endforelse
@@ -159,8 +173,8 @@
                                       method="post" enctype="multipart/form-data">
                                     @csrf
                                     <tr>
-                                        <td>{{$key+1}}</td>
-                                        <td>
+                                        <td>{{$key+1+$key2}}</td>
+                                        <td class="text-center">
                                             {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}
                                         </td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
@@ -170,11 +184,18 @@
                                                 style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
 
                                         </td>
-                                        <td>
+                                        <td class="text-center" style="vertical-align: middle">
                                             @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
                                                 <a href="{{$item->getUrlFile()}}" target="_blank">
-                                                    [File dự thảo {{$key+1}}]
-                                                </a>
+                                                    @if($item->stt == 1)
+                                                        [file phiếu trình]
+                                                    @elseif($item->stt == 2)
+                                                        [file trình ký]
+                                                    @elseif($item->stt == 3)
+                                                        [file hồ sơ]
+                                                    @endif
+                                                </a><br>
+
 
                                             @empty
                                             @endforelse
@@ -200,13 +221,17 @@
                                         </td>
                                     </tr>
                                 </form>
-                                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                                    <div class="modal-dialog" role="document">
+
+
+                                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <h4 class="modal-title" id="exampleModalLabel"><i class="fas fa-file-alt btn-color-blue"></i> Sửa ý kiến 2 </h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span></button>
+                                                <h4 class="modal-title"><i
+                                                        class="fa  fa-wrench"></i> Sửa góp ý</h4>
                                             </div>
                                             <form class="form-row"  method="post" action="{{route('sugopy')}}" enctype="multipart/form-data">
                                                 @csrf
@@ -234,13 +259,20 @@
                                                 </div>
 
                                             </form>
-
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-outline">Save changes</button>
+                                            </div>
                                         </div>
+                                        <!-- /.modal-content -->
                                     </div>
+                                    <!-- /.modal-dialog -->
                                 </div>
                             @empty
                                 <tr>
+                                    @if($key2 == 0 && $key1 == 0)
                                     <td colspan="7" class="text-center">Không có dữ liệu</td>
+                                    @endif
                                 </tr>
                             @endforelse
                             </tbody>

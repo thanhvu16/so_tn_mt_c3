@@ -1,0 +1,13 @@
+{
+    "name": "GiayMoiDi",
+    "alias": "giaymoidi",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\GiayMoiDi\\Providers\\GiayMoiDiServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
