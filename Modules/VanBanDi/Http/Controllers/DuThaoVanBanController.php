@@ -58,7 +58,6 @@ class DuThaoVanBanController extends Controller
     public function store(Request $request)
     {
         //file
-        $uploadPath = public_path('vanBanDiFile_' . date('Y'));
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
         $tenfilehoso = !empty($request['txt_file']) ? $request['txt_file'] : null;
         $filehoso = !empty($request['file_name']) ? $request['file_name'] : null;

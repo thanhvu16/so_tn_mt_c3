@@ -23,3 +23,8 @@ Route::get('du-thao-van-ban/delete/{id}', ['as' =>'duthaodelete' , 'uses' => 'Du
 Route::match(['get', 'post'], 'delete-file-du-thao/{id}', ['as' =>'delete_file_duthao' , 'uses' => 'DuThaoVanBanController@delete_duthao']);
 Route::match(['get', 'post'], 'tao_du_thao_lan_tiep/{id}', ['as' =>'tao_du_thao_lan_tiep' , 'uses' => 'DuThaoVanBanController@tao_du_thao_lan_tiep']);
 Route::match(['get', 'post'], 'Van-ban-di', ['as' =>'tao_van_ban_di' , 'uses' => 'DuThaoVanBanController@tao_van_ban_di']);
+Route::get('danh-sach-gop-y', array('as' => 'danhsachgopy', 'uses' => 'GopYVanbanDiController@danhsachgopy'));
+Route::get('danh-sach-da-gop-y', array('as' => 'danhsachgopyxong', 'uses' => 'GopYVanbanDiController@danhsachgopyxong'));
+Route::post('gop-y/{id}', array('as' => 'gopy', 'uses' => 'GopYVanbanDiController@gopy'));
+Route::match(['get', 'post'], 'Sua_gop_y', ['as' =>'sugopy' , 'uses' => 'GopYVanbanDiController@sugopy']);
+Route::match(['get', 'post','put'], 'them-gop-y-vb-ngoai/{id}', ['as' =>'themgopyvbngoai' , 'uses' => 'GopYVanbanDiController@themgopyvbngoai']);

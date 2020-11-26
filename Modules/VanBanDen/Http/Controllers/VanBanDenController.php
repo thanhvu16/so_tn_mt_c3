@@ -134,7 +134,7 @@ class VanBanDenController extends Controller
     {
         $nam = date("Y");
         $soDenvb = VanBanDen::where([
-//            'don_vi_id' => $request->donViId,
+            'don_vi_id' => auth::user()->don_vi_id,
             'so_van_ban_id' => $request->soVanBanId
 //            'trang_thai' => 1
         ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
