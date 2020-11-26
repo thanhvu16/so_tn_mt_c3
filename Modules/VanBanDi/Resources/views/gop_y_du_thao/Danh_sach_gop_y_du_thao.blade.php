@@ -177,7 +177,7 @@
                                       method="post" enctype="multipart/form-data">
                                     @csrf
                                     <tr>
-                                        <td>{{$key+1}}</td>
+                                        <td>{{$key+1+$key2}}</td>
                                         <td>{{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang) ) ?? '' }}</td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td><a href=""
@@ -304,7 +304,9 @@
                                     </div><!-- /.modal-dialog -->
                                 </div>
                             @empty
-
+                                @if($key2 == 0 && $key1 == 0)
+                                    <td colspan="7" class="text-center">Không có dữ liệu</td>
+                                @endif
                             @endforelse
                             </tbody>
 

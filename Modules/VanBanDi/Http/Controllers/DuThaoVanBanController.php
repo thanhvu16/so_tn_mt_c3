@@ -3,6 +3,7 @@
 namespace Modules\VanBanDi\Http\Controllers;
 
 
+use App\Common\AllPermission;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
@@ -30,6 +31,7 @@ class DuThaoVanBanController extends Controller
      */
     public function index()
     {
+        canPermission(AllPermission::themDuThao());
         $donvikhongdieuhanh= DonVi::where('dieu_hanh', '!=',1)->whereNull('deleted_at')->get();
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
@@ -57,6 +59,7 @@ class DuThaoVanBanController extends Controller
      */
     public function store(Request $request)
     {
+        canPermission(AllPermission::themDuThao());
         //file
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
         $tenfilehoso = !empty($request['txt_file']) ? $request['txt_file'] : null;
@@ -255,6 +258,7 @@ class DuThaoVanBanController extends Controller
      */
     public function edit($id)
     {
+        canPermission(AllPermission::suaDuThao());
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $lanhdaotrongphong = User::where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
@@ -912,6 +916,7 @@ class DuThaoVanBanController extends Controller
      */
     public function destroy($id)
     {
+        canPermission(AllPermission::xoaDuThao());
         $duthao = Duthaovanbandi::where('id',$id)->first();
         $duthao->delete();
         return redirect()->route('Danhsachduthao')->with('success','Xóa thành công !');

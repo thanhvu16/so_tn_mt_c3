@@ -1,0 +1,13 @@
+{
+    "name": "GiayMoiDen",
+    "alias": "giaymoiden",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\GiayMoiDen\\Providers\\GiayMoiDenServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

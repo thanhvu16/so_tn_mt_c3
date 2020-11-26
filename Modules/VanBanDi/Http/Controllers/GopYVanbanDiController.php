@@ -25,7 +25,9 @@ class GopYVanbanDiController extends Controller
     public function danhsachgopy()
     {
         $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
+        $key2 = count($canbogopy);
         $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
+        $key1 = count($canbogopyngoai);
         $nguoinhan = null;
         switch (auth::user()->role_id) {
             case 1:
@@ -52,13 +54,15 @@ class GopYVanbanDiController extends Controller
             case 11:
                 break;
         }
-        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','nguoinhan'));
+        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','nguoinhan','key2','key1'));
     }
     public function danhsachgopyxong()
     {
         $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => auth::user()->id])->whereIn('trang_thai', [2, 12])->get();
+        $key2 = count($canbogopy);
         $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id])->whereIn('trang_thai', [2, 12])->get();
-        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao_cu', compact('canbogopy', 'canbogopyngoai'));
+        $key1 = count($canbogopyngoai);
+        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao_cu', compact('canbogopy', 'canbogopyngoai','key2','key1'));
     }
 
     public function gopy(Request $request, $id)
@@ -171,6 +175,76 @@ class GopYVanbanDiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Góp ý thành công !');
+    }
+
+    public function sugopy(Request $request)
+    {
+        $uploadPath = FILE_Y_KIEN_GOP_Y;
+        $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        $txtFiles = !empty($request['txt_file']) ? $request['txt_file'] : null;
+
+        if ($request->type == 1) {
+            $gopy = CanBoPhongDuThao::where('id', $request->id_can_bo)->first();
+            $gopy->y_kien = $request->y_kien_sua;
+            $gopy->save();
+
+            if ($multiFiles && count($multiFiles) > 0) {
+                $filegopy = Filecanbogopyduthao::where(['can_bo_gop_y' => $request->id_can_bo, 'Du_thao_id' => $request->id_van_ban])->get();
+                foreach ($filegopy as $filevb) {
+                    $fileid = Filecanbogopyduthao::where('id', $filevb->id)->first();
+                    $fileid->trang_thai = 0;
+                    $fileid->save();
+                }
+                foreach ($multiFiles as $key => $getFile) {
+                    $extFile = $getFile->extension();
+                    $fileduthao = new Filecanbogopyduthao();
+                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                    $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
+                    if (!File::exists($uploadPath)) {
+                        File::makeDirectory($uploadPath, 0775, true, true);
+                    }
+                    $getFile->move($uploadPath, $fileName);
+                    $fileduthao->duong_dan = $urlFile;
+                    $fileduthao->duoi_file = $extFile;
+                    $fileduthao->Du_thao_id = $request->id_van_ban;
+                    $fileduthao->can_bo_gop_y = $request->id_can_bo;
+                    $fileduthao->save();
+                }
+
+            }
+        } else {
+            $gopy = CanBoPhongDuThaoKhac::where('id', $request->id_can_bo)->first();
+            $gopy->y_kien = $request->y_kien_sua;
+            $gopy->save();
+
+            if ($multiFiles && count($multiFiles) > 0) {
+                $filegopy = Filecanbogopyduthaongoai::where(['can_bo_gop_y' => $request->id_can_bo, 'Du_thao_id' => $request->id_van_ban])->get();
+                foreach ($filegopy as $filevb) {
+                    $fileid = Filecanbogopyduthaongoai::where('id', $filevb->id)->first();
+                    $fileid->trang_thai = 0;
+                    $fileid->save();
+                }
+                foreach ($multiFiles as $key => $getFile) {
+                    $extFile = $getFile->extension();
+                    $fileduthao = new Filecanbogopyduthaongoai();
+                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                    $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
+                    if (!File::exists($uploadPath)) {
+                        File::makeDirectory($uploadPath, 0775, true, true);
+                    }
+                    $getFile->move($uploadPath, $fileName);
+                    $fileduthao->duong_dan = $urlFile;
+                    $fileduthao->duoi_file = $extFile;
+                    $fileduthao->Du_thao_id = $request->id_van_ban;
+                    $fileduthao->can_bo_gop_y = $request->id_can_bo;
+                    $fileduthao->save();
+                }
+
+            }
+        }
+        return redirect()->back()->with('success', 'Cập nhật góp ý thành công !');
     }
 
     /**
