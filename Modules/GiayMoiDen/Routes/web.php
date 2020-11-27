@@ -22,4 +22,5 @@
 //    ]
 //);
 Route::resource('giay-moi-den', 'GiayMoiDenController');
+Route::post('giay-moi-den/delete/{id}', ['as' =>'giaymoidelete' , 'uses' => 'GiayMoiDenController@destroy']);
 //Route::get('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));

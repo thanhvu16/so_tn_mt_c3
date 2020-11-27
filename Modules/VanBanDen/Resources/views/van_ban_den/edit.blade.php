@@ -158,7 +158,9 @@
                             </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <button
+                                        class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>
+                                        <span>Cập nhật</span></button>
                                 </div>
                             </div>
                         </div>

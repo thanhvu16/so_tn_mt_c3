@@ -77,6 +77,14 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::themGopY());
         Permission::findOrCreate(AllPermission::suaGopY());
         Permission::findOrCreate(AllPermission::xoaGopY());
+        //Giấy mời đến
+        Permission::findOrCreate(AllPermission::themGiayMoiDen());
+        Permission::findOrCreate(AllPermission::suaGiayMoiDen());
+        Permission::findOrCreate(AllPermission::xoaGiayMoiDen());
+        //Giấy mời đi
+        Permission::findOrCreate(AllPermission::themGiayMoiDi());
+        Permission::findOrCreate(AllPermission::suaGiayMoiDi());
+        Permission::findOrCreate(AllPermission::xoaGiayMoiDi());
 
 
         if ($role) {
