@@ -20,6 +20,10 @@ if (!function_exists('uploadFile')) {
         return $urlFile;
     }
 }
+function strSlugFileName($title, $separator = '-', $language = 'en')
+{
+    return Str::slug($title, $separator, $language);
+}
 
 if (!function_exists('getUrlFile')) {
     function getUrlFile($urlFile)

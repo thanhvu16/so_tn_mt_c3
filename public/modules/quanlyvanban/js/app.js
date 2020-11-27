@@ -1,3 +1,10 @@
+$("body").on("click", ".btn-remove-file", function () {
+
+    $(this).parents(".remove-multi-file").remove();
+});
+
+
+
 function noidungvanban(fileName) {
     let htmlForm = `<div class="remove-multi-file">
                      <div class="row">
@@ -9,6 +16,11 @@ function noidungvanban(fileName) {
                             <label for="vb_ngay_ban_hanh" class="col-form-label">Hạn giải quyết</label>
                             <div>
                                 <input type="date" class="form-control" name="han_giai_quyet[]">
+                                        <div class="input-group-btn customize-group-btn">
+                                        <span class="btn btn-danger btn-remove-file" type="button">
+                                        <i class="fa fa-remove"></i></span>
+                                    </div>
+
                             </div>
                         </div>
                      </div>
@@ -16,10 +28,71 @@ function noidungvanban(fileName) {
 
     $('.layout2').append(htmlForm);
 }
-$("body").on("click", ".btn-remove-file", function () {
+function multiUploadFilevanban(fileName) {
+    let htmlForm = `<div class="remove-multi-file col-md-12 ">
+                         <div class="row">
+                            <div class="col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Tên tệp tin</label>
+                                <input class="form-control" name="txt_file[]" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="url-file" class="col-form-label">Chọn tệp</label>
+                                <div class="form-line input-group control-group">
+                                    <input type="file" id="url-file" name="${fileName}" class="form-control">
+                                    <div class="input-group-btn customize-group-btn">
+                                        <span class="btn btn-danger btn-remove-file" type="button">
+                                        <i class="fa fa-remove"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 
-    $(this).parents(".remove-multi-file").remove();
-});
+    $('.increment').append(htmlForm);
+}
+
+function themgiaymoi(fileName) {
+    let htmlForm = `<div class="remove-multi-file">
+                     <div class="row">
+                       <div class="col-md-12" style="margin-top: 20px;margin-bottom: 20px">
+                            <label for="detail-job">Nội dung họp</label>
+                            <textarea name="${fileName}" placeholder="nhập nội dung " rows="3"
+                                      class="form-control no-resize noi-dung-chi-dao"
+                                      aria-required="true"></textarea>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <div class="form-group">
+                                <label for="">Giờ họp</label>
+                                 <div class="input-group">
+                                                <input type="time" name="gio_hop_con[]" value="" class="form-control timepicker">
+
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <div class="form-group">
+                                <label for="">Ngày họp</label>
+                                <input type="date" class="form-control"
+                                       value=""
+                                       name="ngay_hop_con[]" placeholder="Nhập ngày họp">
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <div class="form-group">
+                                <label for="">Địa điểm</label>
+                                <input type="text" value=""
+                                       placeholder="Nhập địa điểm" class="form-control" name="dia_diem_con[]">
+                            </div>
+                        </div>
+                     </div>
+                    </div>`;
+
+    $('.layout3').append(htmlForm);
+}
+
 $('.check-so-den-vb').on('change', function () {
     let soVanBanId = $(this).val();
     let donViId = $(this).data('don-vi');

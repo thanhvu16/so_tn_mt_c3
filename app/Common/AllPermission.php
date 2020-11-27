@@ -171,6 +171,36 @@ class AllPermission
     {
         return 'xóa góp y';
     }
+    //Giấy mời đến
+    public static function themGiayMoiDen()
+    {
+        return 'thêm giấy mời đến';
+    }
+
+    public static function suaGiayMoiDen()
+    {
+        return 'sửa giấy mời đến';
+    }
+
+    public static function xoaGiayMoiDen()
+    {
+        return 'xóa giấy mời đến';
+    }
+    //Giấy mời đi
+    public static function themGiayMoiDi()
+    {
+        return 'thêm giấy mời đi';
+    }
+
+    public static function suaGiayMoiDi()
+    {
+        return 'sửa giấy mời đi';
+    }
+
+    public static function xoaGiayMoiDi()
+    {
+        return 'xóa giấy mời đi';
+    }
 
     //chu tich
     public static function chuTich()

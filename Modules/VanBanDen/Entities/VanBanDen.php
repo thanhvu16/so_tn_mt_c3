@@ -5,6 +5,7 @@ namespace Modules\VanBanDen\Entities;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\LoaiVanBan;
@@ -16,9 +17,11 @@ use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class VanBanDen extends Model
 {
+    use Notifiable, SoftDeletes, HasRoles;
     protected $table = 'van_ban_den';
 
 
