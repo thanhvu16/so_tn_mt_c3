@@ -18,6 +18,7 @@ use File, auth, DB;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
+use function GuzzleHttp\Promise\all;
 
 class VanBanDenController extends Controller
 {
@@ -126,8 +127,23 @@ class VanBanDenController extends Controller
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $users = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $ngaynhan = date('Y-m-d');
+        $songay = 10;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
 
-        return view('vanbanden::van_ban_den.create',compact('domat','dokhan','loaivanban','sovanban','users'));
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+
+        return view('vanbanden::van_ban_den.create',compact('domat','dokhan','loaivanban','sovanban','users','hangiaiquyet'));
     }
 
     public function laysoden(Request $request)
@@ -575,6 +591,28 @@ class VanBanDenController extends Controller
         }
         return redirect()->route('dsvanbandentumail')->with('success', 'Thêm văn bản thành công !');
 
+    }
+
+    public function kiemTraTrichYeu(Request $request)
+    {
+        $user=auth::user();
+        $so_ky_hieu = $request->input('so_ky_hieu');
+        $ngay_ban_hanh = $request->input('ngay_ban_hanh');
+        $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngay_ban_hanh])->orderBy('id', 'desc')->take(5)->get();
+        $ds_nguoiDung = User::orderBy('created_at', 'desc')->get(['id', 'ho_ten'])->toArray();
+        $ds_nguoiDung = array_column($ds_nguoiDung, 'ho_ten', 'id');
+        $ds_nguoiKy = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get(['id', 'ho_ten'])->toArray();
+        $ds_nguoiKy = array_column($ds_nguoiKy, 'ho_ten', 'id');
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get(['id', 'ten_loai_van_ban'])->toArray();
+        $ds_loaiVanBan = array_column($ds_loaiVanBan, 'ten_loai_van_ban', 'id');
+        $returnHTML = $data->isNotEmpty() ? view('vanbanden::van_ban_den.check_trung_van_ban',
+            compact('data', 'ds_nguoiDung', 'ds_nguoiKy', 'ds_loaiVanBan'))->render() : '';
+        return response()->json(
+            [
+                'is_relate' => $data->isNotEmpty() ? true : false,
+                'html' => $returnHTML
+            ]
+        );
     }
 
     function filename_extension($filename)

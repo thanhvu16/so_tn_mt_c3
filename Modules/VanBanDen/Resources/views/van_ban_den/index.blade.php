@@ -212,7 +212,7 @@
                                                            class="hidden" name="txt_file[]">
                                                 </div>
                                                 <div class="form-group col-md-4" >
-                                                    <button class="btn btn-primary">Tải lên</button>
+                                                    <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
                                                 </div>
 
                                             </form>

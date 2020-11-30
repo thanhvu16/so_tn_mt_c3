@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\LoaiVanBan;
+use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -130,10 +131,26 @@ class GiayMoiDenController extends Controller
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
 
+        $ngaynhan = date('Y-m-d');
+        $songay = 8;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+
 
         return view('giaymoiden::giay_moi_den.create',compact( 'ds_nguoiKy', 'ds_soVanBan', 'ds_loaiVanBan',
             'ds_doKhanCap', 'ds_mucBaoMat' , 'sodengiaymoi',
-            'gioHop', 'date', 'nguoi_dung'));
+            'gioHop', 'date', 'nguoi_dung','hangiaiquyet'));
     }
 
     /**
@@ -153,7 +170,7 @@ class GiayMoiDenController extends Controller
 
         try {
             DB::beginTransaction();
-            $sokyhieu = $request->vb_so_ky_hieu;
+            $sokyhieu = $request->so_ky_hieu;
             $nguoiky = $request->nguoi_ky_id;
             $coquanbanhanh = $request->co_quan_ban_hanh_id;
             $loaivanban = $request->loai_van_ban_id;
@@ -166,7 +183,7 @@ class GiayMoiDenController extends Controller
             $giohopcon = $request->gio_hop_con;
             $ngay_hop_con = $request->ngay_hop_con;
             $dia_diem_con = $request->dia_diem_con;
-            $ngaybanhanh = $request->vb_ngay_ban_hanh;
+            $ngaybanhanh = $request->ngay_ban_hanh;
             $chucvu = $request->chuc_vu;
 
 
@@ -225,6 +242,7 @@ class GiayMoiDenController extends Controller
                 $vanbandv->han_xu_ly = $request->vb_han_xu_ly;
                 $vanbandv->loai_van_ban_id = $loaivanban;
                 $vanbandv->trich_yeu = $trichyeu;
+                $vanbandv->chuc_vu = $chucvu;
                 //họp chính
                 $vanbandv->gio_hop = $gio_hop_chinh_fomart;
                 $vanbandv->ngay_hop = $ngayhopchinh;

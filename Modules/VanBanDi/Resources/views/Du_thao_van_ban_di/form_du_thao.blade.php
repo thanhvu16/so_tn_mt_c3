@@ -68,7 +68,7 @@
 
     <div class=" col-md-3  mt-1">
         <label for="loai_van_ban_id" class="col-form-label">Ngày tháng</label>
-        <input type="date" class="form-control" name="ngay_thang" placeholder="......">
+        <input type="date" class="form-control" value="{{$date}}" name="ngay_thang" placeholder="......">
     </div>
     <div class=" col-md-3  mt-1">
         <label for="vb_ngay_ban_hanh" class="col-form-label">Hạn xử lý</label>

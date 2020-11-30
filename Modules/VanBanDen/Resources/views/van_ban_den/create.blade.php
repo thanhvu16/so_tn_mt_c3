@@ -51,7 +51,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Ngày ban hành <span style="color: red">*</span></label>
-                                    <input type="date" class="form-control" name="ngay_ban_hanh" id="exampleInputEmail5"
+                                    <input type="date" class="form-control vanbantrung" name="ngay_ban_hanh" id="exampleInputEmail5"
                                            placeholder="" required >
                                 </div>
                             </div>
@@ -151,13 +151,16 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control" name="han_xu_ly" placeholder="Hạn xử lý" required>
+                                    <input type="date" class="form-control" name="han_xu_ly" value="{{$hangiaiquyet}}" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>
                                 </div>
+                            </div>
+                            <div id="moda-search" class="modal fade" role="dialog">
+
                             </div>
                         </div>
                     </form>
