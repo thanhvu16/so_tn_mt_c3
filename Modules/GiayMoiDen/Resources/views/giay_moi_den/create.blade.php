@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" name="vb_so_ky_hieu"
+                                <input type="text" name="so_ky_hieu"
                                        value=""
                                        required autofocus
                                        class="form-control file_insert"
@@ -39,12 +39,12 @@
                             </div>
 
                             <div class="form-group col-md-3">
-                                <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành <span
+                                <label for="ngay_ban_hanh" class="col-form-label">Ngày ban hành <span
                                         class="color-red">*</span></label>
-                                <input class="form-control "
+                                <input class="form-control vanbantrung"
                                        id="vb_ngay_ban_hanh"
                                        value="" required type="date"
-                                       name="vb_ngay_ban_hanh">
+                                       name="ngay_ban_hanh">
                             </div>
                             <div class="col-md-3" hidden style="margin-top: 10px">
                                 <div class="form-group">
@@ -201,7 +201,7 @@
 
                             <div class=" col-md-3 " >
                                 <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>
-                                <input class="form-control" value="{{isset($vanban) ? $vanban->vb_han_xu_ly : ''}}"
+                                <input class="form-control" value="{{$hangiaiquyet}}"
                                        name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">
                                 <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id"
                                        value="{{auth::user()->don_vi_id}}">
@@ -242,7 +242,11 @@
                                 </div>
                             </div>
 
+
                         </form>
+                        <div id="moda-search" class="modal fade" role="dialog">
+
+                        </div>
                     </div>
                 </div>
             </div>

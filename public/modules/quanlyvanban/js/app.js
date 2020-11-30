@@ -28,6 +28,31 @@ function noidungvanban(fileName) {
 
     $('.layout2').append(htmlForm);
 }
+
+$('.vanbantrung').on('blur', function (e) {
+    var so_ky_hieu = $('[name=so_ky_hieu]').val();
+    var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
+    e.preventDefault();
+    $.ajax({
+        url: APP_URL + '/kiem_tra_trich_yeu',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            so_ky_hieu: so_ky_hieu,
+            ngay_ban_hanh: ngay_ban_hanh,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+    }).done(function (res) {
+        if (res.is_relate) {
+            $('#moda-search').html(res.html);
+            $('#moda-search').modal('show');
+        } else {
+            // $('#formCreateDoc').submit();
+            // $('#formCreateDoc').submit();
+        }
+
+    });
+})
 function multiUploadFilevanban(fileName) {
     let htmlForm = `<div class="remove-multi-file col-md-12 ">
                          <div class="row">
@@ -139,3 +164,8 @@ function duthaovanban() {
 
     $('.duthaovb').append(htmlForm);
 }
+$('.layidnguoiky').on('change', function () {
+    let chucVu = $(this).find('option:selected').data('chuc-vu');
+    console.log(chucVu);
+    $('[name=chuc_vu]').val(chucVu);
+})

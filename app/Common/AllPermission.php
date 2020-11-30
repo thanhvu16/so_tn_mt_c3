@@ -201,6 +201,21 @@ class AllPermission
     {
         return 'xóa giấy mời đi';
     }
+    //Văn bản đi
+    public static function themVanBanDi()
+    {
+        return 'thêm văn bản đi';
+    }
+
+    public static function suaVanBanDi()
+    {
+        return 'sửa văn bản đi';
+    }
+
+    public static function xoaVanBanDi()
+    {
+        return 'xóa văn bản đi';
+    }
 
     //chu tich
     public static function chuTich()

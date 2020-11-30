@@ -1,26 +1,26 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Sửa văn bản đi')
+@section('page_title', 'Thêm văn bản đi')
 @section('content')
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Sửa văn bản đi</h3>
+                        <h3 class="box-title">Văn bản đi</h3>
                     </div>
                     <div class="box-body">
                         <form class="form-row"
-                              action="{{ route('van-ban-di.update',$vanbandi->id)}}"
+                              action="{{ route('van-ban-di.store')}}"
                               method="post" enctype="multipart/form-data" id="formCreateDoc">
                             @csrf
-                            @method('PUT')
+
                             <div class="form-group col-md-3">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
                                 <select class="form-control show-tick " autofocus name="loaivanban_id" id="loaivanban_id" required>
-                                    <option value="">-- Chọn Loại Văn Bản-</option>
-                                    @foreach ($ds_loaiVanBan as $data)
-                                        <option value="{{$data->id}}"    {{isset($vanbandi) && $vanbandi->loai_van_ban_id == $data->id    ? 'selected ': ''}}
-                                        >{{$data->ten_loai_van_ban}}</option>
+                                    <option value="">-- Chọn Loại Văn Bản --</option>
+                                    @foreach ($ds_loaiVanBan as $loaiVanBan)
+                                        <option value="{{$loaiVanBan->id}}"
+                                        >{{$loaiVanBan->ten_loai_van_ban}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -28,7 +28,7 @@
                                 <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span class="color-red">*</span></label>
                                 <select class="form-control show-tick" name="sovanban_id" required>
                                     @foreach ($ds_soVanBan as $data)
-                                        <option value="{{ $data->id }}"  {{$vanbandi->so_van_ban_id == $data->id ? 'selected' : ''}}
+                                        <option value="{{ $data->id }}"
                                         >{{ $data->ten_so_van_ban}}</option>
                                     @endforeach
                                 </select>
@@ -36,7 +36,7 @@
 
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" value="{{$vanbandi->so_ky_hieu}}"
+                                <input type="text" value=""
                                        id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
                                        placeholder="Nhập ký hiệu văn bản đi..." required>
                             </div>
@@ -44,7 +44,7 @@
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Ngày ban hành <span class="color-red">*</span></label>
                                 <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh" class="form-control"
-                                       value="{{$vanbandi->ngay_ban_hanh}}"
+                                       value=""
                                        autocomplete="off" required>
                             </div>
 
@@ -53,20 +53,20 @@
                                 <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
                                     <option value="">-- Chọn đơn vị soạn thảo --</option>
                                     @foreach ($ds_DonVi as $donVi)
-                                        <option value="{{ $donVi->id }}" {{$vanbandi->don_vi_soan_thao == $donVi->id ? 'selected' : ''}}
+                                        <option value="{{ $donVi->ma_id }}"
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            {{--                            <div class="form-group col-md-3">--}}
-                            {{--                                <label for="sokyhieu" class="col-form-label">Người duyệt</label>--}}
-                            {{--                                <select name="nguoi_nhan" id="" class="form-control ">--}}
-                            {{--                                    @foreach ($nguoinhan as $data)--}}
-                            {{--                                        <option value="{{ $data->id }}"--}}
-                            {{--                                        >{{ $data->ho_ten}}</option>--}}
-                            {{--                                    @endforeach--}}
-                            {{--                                </select>--}}
-                            {{--                            </div>--}}
+                            <div class="form-group col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Người duyệt</label>
+                                <select name="nguoi_nhan" id="" class="form-control ">
+                                    @foreach ($nguoinhan as $data)
+                                        <option value="{{ $data->id }}"
+                                        >{{ $data->ho_ten}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
 
 
@@ -76,20 +76,20 @@
                                 <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" required>
                                     <option value="">-- Chọn Người Ký --</option>
                                     @foreach ($ds_nguoiKy as $nguoiKy)
-                                        <option data-chuc-vu ="{{ $nguoiKy->chucvu->ten_chuc_vu ?? null }}" value="{{ $nguoiKy->id }}" {{$vanbandi->nguoi_ky == $nguoiKy->id ? 'selected' : ''}}
+                                        <option data-chuc-vu ="{{ $nguoiKy->chucvu->ten_chuc_vu ?? null }}" value="{{ $nguoiKy->id }}"
                                         >{{$nguoiKy->ho_ten}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-3" >
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Chức vụ</label>
-                                <input type="text" class="form-control" placeholder="chức vụ" name="chuc_vu" value="{{$vanbandi->chuc_vu}}">
+                                <input type="text" class="form-control" placeholder="chức vụ" name="chuc_vu" value="">
                             </div>
 
                             <div class="form-group col-md-12">
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
-                                          required>{{$vanbandi->trich_yeu}}</textarea>
+                                          required></textarea>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nhận trong thành phố</label>
@@ -98,7 +98,7 @@
                                         multiple
                                         data-placeholder=" Chọn đơn vị nhận ...">
                                     @foreach ($emailtrongthanhpho as $email)
-                                        <option value="{{ $email->id }}" {{  in_array($email->id, $lay_emailtrongthanhpho->pluck('email')->toArray()) ? 'selected' : '' }}
+                                        <option value="{{ $email->id }}"
                                         >{{ $email->ten_don_vi}}</option>
                                     @endforeach
 
@@ -111,7 +111,7 @@
                                         multiple
                                         data-placeholder=" Chọn đơn vị nhận ...">
                                     @foreach ($emailngoaithanhpho as $emailngoai)
-                                        <option value="{{ $emailngoai->id }}" {{  in_array($emailngoai->id, $lay_emailngoaithanhpho->pluck('email')->toArray()) ? 'selected' : '' }}
+                                        <option value="{{ $emailngoai->id }}"
                                         >{{ $emailngoai->ten_don_vi}}</option>
                                     @endforeach
 
@@ -124,7 +124,7 @@
                                 <label for="loai_van_ban_id" class="col-form-label">Độ khẩn</label>
                                 <select class="form-control show-tick" name="dokhan_id" required>--}}
                                     @foreach ($ds_doKhanCap as $doKhanCap)
-                                        <option value="{{ $doKhanCap->id }}" {{$vanbandi->do_khan_cap_id == $doKhanCap->id ? 'selected' : ''}}
+                                        <option value="{{ $doKhanCap->id }}"
                                         >{{ $doKhanCap->ten_muc_do}}</option>
                                     @endforeach
                                 </select>
@@ -133,15 +133,14 @@
                                 <label for="do_mat_id" class="col-form-label">Độ mật</label>
                                 <select class="form-control show-tick " name="dobaomat_id" required>--}}
                                     @foreach ($ds_mucBaoMat as $doBaoMat)
-                                        <option value="{{ $doBaoMat->id }}" {{$vanbandi->do_bao_mat_id == $doBaoMat->id ? 'selected' : ''}}
+                                        <option value="{{ $doBaoMat->id }}"
                                         >{{ $doBaoMat->ten_muc_do}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-3 mt-4">
-                                <button
-                                    class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>
-                                    <span>Cập nhật</span></button>
+                                <button  type="submit" class="btn btn-info waves-effect waves-light"><i class="fa fa fa-plus mr-1"></i>
+                                    <span>Tạo văn bản</span></button>
                             </div>
                         </form>
                     </div>

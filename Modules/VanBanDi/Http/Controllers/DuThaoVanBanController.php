@@ -31,7 +31,7 @@ class DuThaoVanBanController extends Controller
      */
     public function index()
     {
-        canPermission(AllPermission::themDuThao());
+        $date = Carbon::now()->format('Y-m-d');
         $donvikhongdieuhanh= DonVi::where('dieu_hanh', '!=',1)->whereNull('deleted_at')->get();
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
@@ -40,7 +40,7 @@ class DuThaoVanBanController extends Controller
 //        $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
 
         $ds_nguoiKy = User::orderBy('username', 'desc')->whereNull('deleted_at')->get();
-        return view('vanbandi::Du_thao_van_ban_di.index', compact('ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac'));
+        return view('vanbandi::Du_thao_van_ban_di.index', compact('ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac','date'));
     }
 
     /**
