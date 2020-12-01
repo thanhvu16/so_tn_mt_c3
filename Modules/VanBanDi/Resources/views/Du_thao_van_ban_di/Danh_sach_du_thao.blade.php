@@ -52,12 +52,12 @@
                                             @empty
                                             @endforelse
                                         </div>
-                                        <a href="{{route('laythongtinduthaocu',$data->id)}}"
-                                           role="button" class="btn btn-primary color-white">Tạo dự thảo
-                                            lần {{$data -> lan_du_thao + 1}}</a>
+                                        <a  href="{{route('laythongtinduthaocu',$data->id)}}"
+                                           role="button" class="btn btn-primary color-white"><span style="color: white">Tạo dự thảo
+                                            lần {{$data -> lan_du_thao + 1}}</span></a>
                                         <a href="{{route('thongtinvanban',$data->id)}}" role="button"
-                                           class="btn btn-success color-white">Tạo văn bản
-                                            đi</a>
+                                           class="btn btn-success color-white"><span style="color: white">Tạo văn bản đi</span>
+                                            </a>
                                     </td>
                                     <td>
                                         <div class="form-control" style="height: 150px;overflow: auto">

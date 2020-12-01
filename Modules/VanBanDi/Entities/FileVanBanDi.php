@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDi\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,7 +25,10 @@ class FileVanBanDi extends Model
     {
         return asset($this->duong_dan);
     }
-
+    public function nguoiDung()
+    {
+        return $this->belongsTo(User::class, 'nguoi_dung_id', 'id');
+    }
 
 }
 

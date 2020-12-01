@@ -15,11 +15,13 @@ class RoleSeeder extends Seeder
         //
         Role::findOrCreate('chủ tịch');
         Role::findOrCreate('phó chủ tịch');
-        Role::findOrCreate('trưởng phòng đơn vị');
-        Role::findOrCreate('phó phòng đơn vị');
+        Role::findOrCreate('trưởng phòng ');
+        Role::findOrCreate('phó phòng ');
         Role::findOrCreate('văn thư đơn vị');
         Role::findOrCreate('văn thư huyện');
         Role::findOrCreate('chuyên viên');
         Role::findOrCreate('tham mưu');
+        Role::findOrCreate('chánh văn phong');
+        Role::findOrCreate('phó tránh văn phòng');
     }
 }

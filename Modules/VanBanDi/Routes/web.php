@@ -31,3 +31,16 @@ Route::post('gop-y/{id}', array('as' => 'gopy', 'uses' => 'GopYVanbanDiControlle
 Route::match(['get', 'post'], 'Sua_gop_y', ['as' =>'sugopy' , 'uses' => 'GopYVanbanDiController@sugopy']);
 Route::match(['get', 'post','put'], 'them-gop-y-vb-ngoai/{id}', ['as' =>'themgopyvbngoai' , 'uses' => 'GopYVanbanDiController@themgopyvbngoai']);
 Route::match(['get', 'post','put'], 'multiple-file-di', ['as' =>'multiple_file_di' , 'uses' => 'VanBanDiController@multiple_file_di']);
+Route::match(['get', 'post','put'], 'van-ban-di-cho-duyet', ['as' =>'danh_sach_vb_di_cho_duyet' , 'uses' => 'VanBanDiController@ds_van_ban_di_cho_duyet']);
+Route::match(['get', 'post','put'], 'duyet-vb-ky-token', ['as' =>'duyetvbditoken' , 'uses' => 'VanBanDiController@duyetvbditoken']);
+Route::match(['get', 'post','put'], 'van-ban-di-cho-so', ['as' =>'vanbandichoso' , 'uses' => 'VanBanDiController@vanbandichoso']);
+Route::post('them-don-don-vi-nhan', 'DuThaoVanBanController@themDonViNhanVanBanDi')->name('van_ban_di.them_don_vi_nhan');
+Route::get('chi-tiet-van-ban/{id}', array('as' => 'Quytrinhxulyvanbandi', 'uses' => 'VanBanDiController@Quytrinhxulyvanbandi'));
+Route::match(['get', 'post','put'], 'chi-tiet-truyen-nhan/{id}', ['as' =>'quytrinhtruyennhangopy' , 'uses' => 'GopYVanbanDiController@quytrinhtruyennhangopy']);
+
+//sửa lại
+Route::match(['get', 'post','put'], 'cap-so-van-ban/{id}', ['as' =>'Capsovanbandi' , 'uses' => 'VanBanDiController@Capsovanbandi']);
+//Route::match(['get', 'post','put'], 'sua-van-ban-di-cho-so/{id}', ['as' =>'suavanbandichocapso' ,'uses' => 'DuThaoVanBanController@suavanbandichocapso']);
+//Route::match(['get', 'post','put'], 'Xoa-van-ban-di-cho-so/{id}', ['as' =>'xoavanbandichocapso' , 'uses' => 'DuThaoVanBanController@xoavanbandichocapso']);
+
+Route::post('ky-dien-tu-qua-sim', 'DuThaoVanBanController@kydientu')->name('van_ban.ky_dt_qua_sim');

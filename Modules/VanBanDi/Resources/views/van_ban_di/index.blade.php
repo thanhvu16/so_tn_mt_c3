@@ -140,8 +140,8 @@
                                                 class="font-bold color-red">{{$vbDi->so_di}}</span></p>
                                     </td>
                                     <td style="text-align: justify"><a
-                                            href=""
-                                            title="{{$vbDi->vb_trichyeu}}">{{$vbDi->trich_yeu}}</a>
+                                            href="{{route('Quytrinhxulyvanbandi',$vbDi->id)}}"
+                                            title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
                                             @forelse($vbDi->filetrinhky as $filedata)
                                                 <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File trình ký]</a>
@@ -174,7 +174,6 @@
                                     </td>
                                     <td class="text-center" style="vertical-align: middle">
                                             @hasanyrole('văn thư đơn vị|văn thư huyện')
-                                            @if(auth::user()->id == $vbDi->nguoi_tao)
                                                 <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
                                                     @csrf
                                                     <a href="{{route('van-ban-di.edit',$vbDi->id)}}"
@@ -190,9 +189,6 @@
                                                     </button>
                                                     <input type="text" class="hidden" value="{{$vbDi->id}}" name="id_vb">
                                                 </form>
-                                            @else
-                                                -
-                                            @endif
                                             @endrole
                                     </td>
                                 </tr>

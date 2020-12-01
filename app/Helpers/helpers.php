@@ -123,3 +123,8 @@ function dateFromBusinessDays($days, $dateTime=null) {
     }
     return date('Y-m-d',$dateTime);
 }
+function dateformat($format)
+{
+    $ngay = date('d-m-Y', strtotime($format)) ;
+    return $ngay;
+}
