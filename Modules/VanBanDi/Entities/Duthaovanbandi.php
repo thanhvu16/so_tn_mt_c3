@@ -5,6 +5,7 @@ namespace Modules\VanBanDi\Entities;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Admin\Entities\LoaiVanBan;
 
 
 class Duthaovanbandi extends Model
@@ -50,7 +51,7 @@ class Duthaovanbandi extends Model
     }
     public function nguoidung2()
     {
-        return $this->belongsTo(NguoiDung::class,'nguoi_ky');
+        return $this->belongsTo(User::class,'nguoi_ky');
     }
     public function caclanduthao()
     {

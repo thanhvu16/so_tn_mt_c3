@@ -1,8 +1,3 @@
-
-
-
-
-
 @extends('admin::layouts.master')
 @section('page_title', 'Tạo văn bản đi')
 @section('content')
@@ -42,6 +37,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @if($nguoinhan != null)
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Người nhận <span style="color: red">*</span></label>
                                 <select name="nguoi_nhan" id="" class="form-control dropdown-search">
@@ -51,9 +47,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" style="font-size:16px"
+                                <input type="text"
                                        value="{{ old('vb_sokyhieu', isset($vanbanduthao) ? $vanbanduthao->so_ky_hieu : '') }}"
                                        id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
                                        placeholder="Nhập số ký hiệu văn bản đi..." required>
@@ -96,14 +93,14 @@
                             </div>
                             <div class="form-group col-md-3" >
                                 <label for="sokyhieu" class="col-form-label">Chức vụ <span class="color-red">*</span></label>
-                                <input type="text" style="font-size:16px"
+                                <input type="text"
                                        value="{{isset($vanbanduthao) ? $vanbanduthao->chuc_vu : ''}}"
                                        id="chuc_vu" name="chuc_vu"  class="form-control"
                                        placeholder="chức vụ..." required>
                             </div>
                             <div class="form-group col-md-12" >
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
-                                <textarea rows="3" style="font-size:16px" name="vb_trichyeu" class="form-control no-resize"
+                                <textarea rows="3"  name="vb_trichyeu" class="form-control no-resize"
                                           placeholder="Nhập nội dung trích yếu ..."
                                           required>{{ old('vb_trichyeu', isset($vanbanduthao) ? $vanbanduthao->vb_trich_yeu : '') }}</textarea>
                             </div>

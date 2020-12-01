@@ -53,20 +53,22 @@
                                 <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
                                     <option value="">-- Chọn đơn vị soạn thảo --</option>
                                     @foreach ($ds_DonVi as $donVi)
-                                        <option value="{{ $donVi->ma_id }}"
+                                        <option value="{{ $donVi->id }}"{{  auth::user()->don_vi_id == $donVi->id ? 'selected' : '' }}
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Người duyệt</label>
-                                <select name="nguoi_nhan" id="" class="form-control ">
-                                    @foreach ($nguoinhan as $data)
-                                        <option value="{{ $data->id }}"
-                                        >{{ $data->ho_ten}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            @if($nguoinhan != null)
+                                <div class="form-group col-md-3">
+                                    <label for="sokyhieu" class="col-form-label">Người duyệt</label>
+                                    <select name="nguoi_nhan" id="" class="form-control ">
+                                        @foreach ($nguoinhan as $data)
+                                            <option value="{{ $data->id }}"
+                                            >{{ $data->ho_ten}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
 
 
 

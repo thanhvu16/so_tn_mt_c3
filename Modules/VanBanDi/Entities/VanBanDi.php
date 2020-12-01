@@ -38,7 +38,7 @@ class VanBanDi extends Model
         return $this->belongsTo(LoaiVanBan::class,'loai_van_ban_id');
     }
     public function sovanban(){
-        return $this->belongsTo(SoVanBan::class,'sovanban_id');
+        return $this->belongsTo(SoVanBan::class,'so_van_ban_id');
     }
 
     public function domat(){
@@ -75,7 +75,7 @@ class VanBanDi extends Model
     }
     public function loaiVanBanid()
     {
-        return $this->belongsTo(LoaiVanBan::class, 'loaivanban_id', 'id');
+        return $this->belongsTo(LoaiVanBan::class, 'loai_van_ban_id', 'id');
     }
 
 

@@ -30,28 +30,15 @@ class GopYVanbanDiController extends Controller
         $key1 = count($canbogopyngoai);
         $nguoinhan = null;
         switch (auth::user()->role_id) {
-            case 1:
+
+            case QUYEN_PHO_PHONG:
+                $nguoinhan = User::role([ CHUYEN_VIEN])->where('don_vi_id',auth::user()->don_vi_id)->get();
                 break;
-            case 2:
+            case QUYEN_TRUONG_PHONG:
+                $nguoinhan = User::role([ PHO_PHONG])->get();
                 break;
-            case 3:
-                break;
-            case 4:
-                $nguoinhan = User::where('don_vi_id', auth::user()->don_vi_id)->whereIn('role_id', [3, 5])->get();
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 11:
+            case QUYEN_CHU_TICH:
+                $nguoinhan = User::role([PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
                 break;
         }
         return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','nguoinhan','key2','key1'));
@@ -245,6 +232,13 @@ class GopYVanbanDiController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Cập nhật góp ý thành công !');
+    }
+    public function quytrinhtruyennhangopy($id)
+    {
+
+        $quatrinhtruyennhanphong = CanBoPhongDuThao::where('du_thao_vb_id', $id)->get();
+        $quatrinhtruyennhankhac = CanBoPhongDuThaoKhac::where('du_thao_vb_id', $id)->get();
+        return view('vanbandi::Du_thao_van_ban_di.Quytrinhtruyennhangopy', compact('quatrinhtruyennhanphong', 'quatrinhtruyennhankhac'));
     }
 
     /**
