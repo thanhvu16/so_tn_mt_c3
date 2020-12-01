@@ -121,9 +121,6 @@
                                     </td>
                                     <td>
                                         <p>
-                                            {{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}
-                                        </p>
-                                        <p>
                                             <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ !empty($vanBanDen->checkDonViChuTri) ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"

@@ -34,9 +34,12 @@
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="25%" class="text-center">Tóm tắt VB</th>
+                                <th width="22%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th class="text-center" width="7%">
+                                    <input id="check-all" type="checkbox" name="check_all" value="">
+                                </th>
                             </tr>
                             </thead>
                             <tbody class="text-justify">
@@ -61,23 +64,25 @@
                                         <p>
                                             {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
                                         </p>
-                                        {{--                                        @if ($vanBanDen->vanBanTraLai)--}}
-                                        {{--                                            <p class="color-red"><b>Lý--}}
-                                        {{--                                                    do trả--}}
-                                        {{--                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>--}}
-                                        {{--                                            </p>--}}
-                                        {{--                                            <p>--}}
-                                        {{--                                                ({{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}--}}
-                                        {{--                                                - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}--}}
-                                        {{--                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}--}}
-                                        {{--                                                )</p>--}}
-                                        {{--                                        @endif--}}
+                                        @if ($vanBanDen->vanBanTraLai)
+                                            <p class="color-red"><b>Lý
+                                                    do trả
+                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>
+                                            </p>
+                                            <p>
+                                                (Cán bộ trả lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
+                                                - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}
+                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
+                                                )</p>
+                                        @endif
                                         <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
-                                               data-id="{{ $vanBanDen->id }}">
-                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
+                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="1">
+                                                <span><i class="fa fa-reply"></i> Chuyển lại tham mưu</span>
                                             </a>
                                         </p>
+                                        <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="2">
+                                            <span> <i class="fa fa-reply"></i> Chuyển báo cáo lại chủ tịch</span>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">
@@ -91,7 +96,7 @@
                                                     <option value="">Chọn đơn vị chủ trì</option>
                                                     @forelse($danhSachDonVi as $donVi)
                                                         <option
-                                                            value="{{ $donVi->id }}">{{ $donVi->ten_don_vi }}</option>
+                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViChuTri) && $vanBanDen->checkDonViChuTri->don_vi_id == $donVi->id ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -107,7 +112,7 @@
                                                     form="form-tham-muu">
                                                     @forelse($danhSachDonVi as $donVi)
                                                         <option
-                                                            value="{{ $donVi->id }}">{{ $donVi->ten_don_vi }}</option>
+                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -132,20 +137,25 @@
                                     </td>
                                     <td>
                                         <p>
-                                            {{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}
-                                        </p>
-                                        <p>
                                             <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"
-                                                 class="form-control {{ !empty($vanBanDen->getTextDonViChuTri(auth::user()->id, null)) ? 'show' : 'hide' }}"
-                                                 form="form-tham-muu"
-                                                 rows="3">{{ $vanBanDen->getTextDonViChuTri(auth::user()->id, null)->noi_dung ?? null }}</textarea>
+                                                      class="form-control {{ !empty($vanBanDen->checkDonViChuTri) ? 'show' : 'hide' }}"
+                                                      form="form-tham-muu"
+                                                      rows="3">{{ $vanBanDen->checkDonViChuTri->noi_dung ?? null }}</textarea>
                                         </p>
                                         <p>
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
-                                                class="form-control {{ !empty($vanBanDen->getTextDonViChuTri(auth::user()->id, 1)) ? 'show' : 'hide' }}"
-                                                form="form-tham-muu"
-                                                rows="3">{{ $vanBanDen->getTextDonViChuTri(auth::user()->id, 1)->noi_dung ?? null }}</textarea>
+                                                      class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
+                                                      form="form-tham-muu"
+                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                    {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
+                                                @endif
+                                            </textarea>
                                         </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <label style="color: red; font-weight: 500 !important;" for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>
+                                        <input id="checkbox{{ $vanBanDen->id }}" type="checkbox" name="duyet[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->id }}" class="duyet sub-check">
+
                                     </td>
                                 </tr>
                             @empty
@@ -256,6 +266,64 @@
 
         });
 
+        // check all
+        let allId = [];
+
+        $(document).on('change', 'input[name=check_all]', function () {
+
+            if ($(this).is(':checked',true))
+            {
+                $(this).closest('.data-row').find(".sub-check").prop('checked', true);
+
+                $(this).closest('.data-row').find('.sub-check:checked').each(function() {
+                    allId.push($(this).val());
+                });
+
+                if (allId.length != 0) {
+                    $('.btn-duyet-all').removeClass('disabled');
+                    $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(allId));
+                }
+            }
+            else
+            {
+                $(this).closest('.data-row').find(".sub-check").prop('checked', false);
+                $('.btn-duyet-all').addClass('disabled');
+                allId = [];
+                $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(allId));
+            }
+
+        });
+
+
+        $('.sub-check').on('click', function () {
+
+            let id = $(this).val();
+
+            if ($(this).is(':checked')) {
+
+                if (allId.indexOf(id) === -1) {
+                    allId.push(id);
+                }
+
+                $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(allId));
+            } else {
+
+                var index = allId.indexOf(id);
+
+                if (index > -1) {
+                    allId.splice(index, 1);
+                }
+
+                $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(allId));
+            }
+
+            if (allId.length != 0) {
+                $('.btn-duyet-all').removeClass('disabled');
+            } else {
+                $('.btn-duyet-all').addClass('disabled');
+            }
+        });
+
         function checkVanBanDenId(vanBanDenDonViId) {
 
             if (ArrVanBanDenDonViId.indexOf(vanBanDenDonViId) === -1) {
@@ -264,7 +332,7 @@
 
             $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(ArrVanBanDenDonViId));
 
-            $('.btn-duyet-all').removeClass('disabled');
+            // $('.btn-duyet-all').removeClass('disabled');
         }
 
         function removeVanBanDenDonViId(vanBanDenDonViId) {
@@ -279,7 +347,10 @@
         // tra lai van ban
         $('.tra-lai-van-ban').on('click', function () {
             let id = $(this).data('id');
+            let traLai = $(this).data('tra-lai');
+
             $('#modal-tra-lai').find('input[name="van_ban_den_id"]').val(id);
+            $('#modal-tra-lai').find('input[name="type"]').val(traLai);
         });
 
         $('.btn-submit').on('click', function () {

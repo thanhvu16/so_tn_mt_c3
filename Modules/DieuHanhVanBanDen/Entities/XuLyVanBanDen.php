@@ -2,7 +2,9 @@
 
 namespace Modules\DieuHanhVanBanDen\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class XuLyVanBanDen extends Model
 {
@@ -28,4 +30,20 @@ class XuLyVanBanDen extends Model
     const QUYEN_GIA_HAN = 1;
     const LA_CAN_BO_CHI_DAO = 1;
     const HOAN_THANH_VB = 1;
+
+
+    public function canBoChuyen()
+    {
+        return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id');
+    }
+
+    public function canBoNhan()
+    {
+        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id');
+    }
+
+    public function vanBanDen()
+    {
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+    }
 }

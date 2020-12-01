@@ -159,3 +159,28 @@ table tbody td a:hover {
     border-radius: unset !important;
     padding: unset !important;
 }
+
+.table-responsive.box-panel h3 {
+    margin: 0;
+    background-color: #d2d6de;
+    font-size: 14px;
+    padding: 16px;
+    height: 49px;
+}
+
+.color-black{
+    color: #0a0a0a;
+}
+
+.table-responsive.box-panel h3 a:hover {
+    cursor: pointer;
+    color: #336eea !important;
+}
+
+.table-responsive.box-panel h3 a:active {
+    color: #336eea !important;
+}
+
+.table-responsive.box-panel h3 a:focus {
+    color: #336eea !important;
+}

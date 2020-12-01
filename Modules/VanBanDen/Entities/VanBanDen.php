@@ -15,6 +15,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
+use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
@@ -24,6 +25,8 @@ class VanBanDen extends Model
     use Notifiable, SoftDeletes, HasRoles;
     protected $table = 'van_ban_den';
 
+    const CHU_TICH_NHAN_VB = 1;
+    const PHO_CHU_TICH_NHAN_VB = 2;
 
     protected $fillable = [];
 
@@ -94,14 +97,39 @@ class VanBanDen extends Model
 
     public function checkDonViChuTri()
     {
-        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')
-            ->where('can_bo_chuyen_id', auth::user()->id);
+        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id');
     }
 
     public function checkDonViPhoiHop()
     {
-        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id')
-            ->where('can_bo_chuyen_id', auth::user()->id);
+        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id');
     }
 
+    public function vanBanTraLai()
+    {
+        return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_nhan_id', auth::user()->id)
+            ->whereNull('status')
+            ->orderBy('id','DESC');
+    }
+
+    public function xuLyVanBanDen()
+    {
+        return $this->hasMany(XuLyVanBanDen::class, 'van_ban_den_id', 'id')->whereNull('status');
+    }
+
+    public function XuLyVanBanDenTraLai()
+    {
+        return $this->hasMany(XuLyVanBanDen::class, 'van_ban_den_id', 'id')->where('status', XuLyVanBanDen::STATUS_TRA_LAI);
+    }
+
+    public function donViChuTri()
+    {
+        return $this->hasMany(DonViChuTri::class, 'van_ban_den_id', 'id');
+    }
+
+    public function donViPhoiHop()
+    {
+        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id');
+    }
 }

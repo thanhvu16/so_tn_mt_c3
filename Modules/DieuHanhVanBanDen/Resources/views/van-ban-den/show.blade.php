@@ -91,7 +91,12 @@
                     </div>
                     @endif
                 </div>
-                <div class="col-md-12 mt-2">
+                @include('dieuhanhvanbanden::van-ban-den.log_xu_ly_van_ban_den', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDen ])
+                @include('dieuhanhvanbanden::van-ban-den.log_tra_lai_van_ban', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDenTraLai ])
+                @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_chu_tri', ['chuyenNhanVanBanDonViChuTri' => $vanBanDen->donViChuTri ])
+                @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_phoi_hop', ['chuyenNhanVanBanDonViPhoiHop' => $vanBanDen->donViPhoiHop ])
+
+                <div class="col-md-12 mt-3">
                     <a class="btn btn-default go-back" data-original-title="" title="">Quay lại &gt;&gt;</a>
                 </div>
             </div>

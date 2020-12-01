@@ -8,9 +8,11 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Auth, DB;
+use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
+use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
@@ -38,11 +40,13 @@ class PhanLoaiVanBanController extends Controller
 
         $chuTich = User::role('chủ tịch')->first();
         $danhSachPhoChuTich = User::role('phó chủ tịch')->get();
+        $danhSachDonVi = DonVi::whereNull('deleted_at')
+            ->where('id', '!=', $user->don_vi_id)->get();
 
 
         return view('dieuhanhvanbanden::phan-loai-van-ban.index',
             compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',
-                'danhSachPhoChuTich', 'chuTich'));
+                'danhSachPhoChuTich', 'chuTich', 'danhSachDonVi'));
     }
 
     /**
@@ -73,8 +77,14 @@ class PhanLoaiVanBanController extends Controller
         $noiDungPhoChuTich = $data['noi_dung_pho_chu_tich'] ?? null;
         $canBoChiDao = null;
         $type = $request->get('type') ?? null;
-        $statusTraiLai = $request->get('van-ban_tra_lai') ?? null;
+        $statusTraiLai = $request->get('van_ban_tra_lai') ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
+        $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
+        $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
+        $textDonViChuTri = $data['don_vi_chu_tri'] ?? null;
+        $textDonViPhoiHop = $data['don_vi_phoi_hop'] ?? null;
+
+        $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
 
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             try {
@@ -211,6 +221,68 @@ class PhanLoaiVanBanController extends Controller
                         LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
                             $vanBanDenId);
                     }
+
+                    // luu don vi chu tri
+                    $nguoiDung = User::where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                        ->where('trang_thai', ACTIVE)
+                        ->where(function ($query) use ($chucVuTP) {
+                            if (!empty($chucVuTP)) {
+                                return $query->where('chuc_vu_id', $chucVuTP->id);
+                            }
+                        })
+                        ->whereNull('deleted_at')->first();
+
+                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+
+                    $dataLuuDonViChuTri = [
+                        'van_ban_den_id' => $vanBanDenId,
+                        'can_bo_chuyen_id' => $currentUser->id,
+                        'can_bo_nhan_id' => $nguoiDung->id ?? null,
+                        'noi_dung' => $textDonViChuTri[$vanBanDenId],
+                        'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
+                        'user_id' => $currentUser->id,
+                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null
+                    ];
+
+                    DonViChuTri::where([
+                        'van_ban_den_id' => $vanBanDenId,
+                        'hoan_thanh'  => null
+                    ])->delete();
+
+                    $donViChuTri = new DonViChuTri();
+                    $donViChuTri->fill($dataLuuDonViChuTri);
+                    $donViChuTri->save();
+
+                    // luu vet van ban den
+                    $luuVetVanBanDen = new LogXuLyVanBanDen();
+                    $luuVetVanBanDen->fill($dataLuuDonViChuTri);
+                    $luuVetVanBanDen->save();
+
+                    //data don vi phoi hop
+
+                    $dataLuuDonViPhoiHop = [
+                        'van_ban_den_id' => $vanBanDenId,
+                        'can_bo_chuyen_id' => $currentUser->id,
+                        'can_bo_nhan_id' => $nguoiDung->id ?? null,
+                        'noi_dung' => $textDonViPhoiHop[$vanBanDenId],
+                        'don_vi_phoi_hop_id' => isset($danhSachDonViPhoiHopIds[$vanBanDenId]) ? \GuzzleHttp\json_encode($danhSachDonViPhoiHopIds[$vanBanDenId]) : null,
+                        'user_id' => $currentUser->id
+                    ];
+
+                    // luu vet van ban den
+                    $luuVetVanBanDen = new LogXuLyVanBanDen();
+                    $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
+                    $luuVetVanBanDen->save();
+
+                    // luu don vi phoi hop
+                    DonViPhoiHop::where([
+                        'van_ban_den_id' => $vanBanDenId,
+                        'chuyen_tiep'  => null,
+                        'hoan_thanh'  => null
+                    ])->delete();
+                    if (isset($danhSachDonViPhoiHopIds[$vanBanDenId])) {
+                        DonViPhoiHop::luuDonViPhoiHop($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
+                    }
                 }
 
                 DB::commit();
@@ -235,6 +307,9 @@ class PhanLoaiVanBanController extends Controller
 
         $danhSachPhoChuTich = User::role('phó chủ tịch')->get();
 
+        $danhSachDonVi = DonVi::whereNull('deleted_at')
+            ->where('id', '!=', $user->don_vi_id)->get();
+
         if ($user->hasRole(AllPermission::chuTich())) {
             $active = 1;
         }
@@ -254,9 +329,6 @@ class PhanLoaiVanBanController extends Controller
                 ->paginate(PER_PAGE);
 
             $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
-
-            $danhSachDonVi = DonVi::whereNull('deleted_at')
-                ->where('id', '!=', $user->don_vi_id)->get();
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai_pct',
                 compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active'));
@@ -284,6 +356,6 @@ class PhanLoaiVanBanController extends Controller
 
         return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai',
             compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',
-                'danhSachPhoChuTich', 'chuTich', 'active'));
+                'danhSachPhoChuTich', 'chuTich', 'active', 'danhSachDonVi'));
     }
 }

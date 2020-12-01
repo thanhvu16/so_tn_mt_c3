@@ -14,10 +14,13 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title mt-2">Văn bản đã {{ auth::user()->hasRole('tham mưu') ? 'phân loại' : 'chỉ đạo' }}</h3>
+                                <h3 class="box-title mt-2">Văn bản
+                                    đã {{ auth::user()->hasRole('tham mưu') ? 'phân loại' : 'chỉ đạo' }}</h3>
                             </div>
                             <div class="col-md-6">
-                                <form action="{{ !empty($active) ? route('van-ban-lanh-dao-xu-ly.store') : route('phan-loai-van-ban.store') }}" method="post" id="form-tham-muu">
+                                <form
+                                    action="{{ !empty($active) ? route('van-ban-lanh-dao-xu-ly.store') : route('phan-loai-van-ban.store') }}"
+                                    method="post" id="form-tham-muu">
                                     @csrf
                                     <input type="hidden" name="van_ban_den_id" value="">
                                     <input type="hidden" name="type" value="update">
@@ -79,19 +82,19 @@
                                     <td>
                                         <div class="dau-viec-chi-tiet">
                                             @if (empty($active))
-                                            <p>
-                                                <select name="chu_tich_id[{{ $vanBanDen->id }}]"
-                                                        id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
-                                                        data-id="{{ $vanBanDen->id }}"
-                                                        class="form-control dropdown-search chu-tich"
-                                                        placeholder="Chọn chủ tịch chủ trì"
-                                                        data-id="{{ $vanBanDen->id }}"
-                                                        form="form-tham-muu">
-                                                    <option value="">Chọn Chủ tịch chủ trì</option>
-                                                    <option
-                                                        value="{{ $chuTich->id ?? null }}" {{ !empty($vanBanDen->checkCanBoNhan([$chuTich->id])) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
-                                                </select>
-                                            </p>
+                                                <p>
+                                                    <select name="chu_tich_id[{{ $vanBanDen->id }}]"
+                                                            id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
+                                                            data-id="{{ $vanBanDen->id }}"
+                                                            class="form-control dropdown-search chu-tich"
+                                                            placeholder="Chọn chủ tịch chủ trì"
+                                                            data-id="{{ $vanBanDen->id }}"
+                                                            form="form-tham-muu">
+                                                        <option value="">Chọn Chủ tịch chủ trì</option>
+                                                        <option
+                                                            value="{{ $chuTich->id ?? null }}" {{ !empty($vanBanDen->checkCanBoNhan([$chuTich->id])) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
+                                                    </select>
+                                                </p>
                                             @endif
                                             <p>
                                                 <select
@@ -131,38 +134,89 @@
                                                     @endforelse
                                                 </select>
                                             </p>
+                                            <p>
+                                                <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
+                                                        id="don-vi-chu-tri-{{ $vanBanDen->id }}"
+                                                        class="form-control don-vi-chu-tri dropdown-search select2"
+                                                        data-placeholder="Chọn đơn vị chủ trì"
+                                                        data-id="{{ $vanBanDen->id }}"
+                                                        form="form-tham-muu">
+                                                    <option value="">Chọn đơn vị chủ trì</option>
+                                                    @forelse($danhSachDonVi as $donVi)
+                                                        <option
+                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViChuTri) && $vanBanDen->checkDonViChuTri->don_vi_id == $donVi->id ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <select
+                                                    name="don_vi_phoi_hop_id[{{ $vanBanDen->id }}][]"
+                                                    id="don-vi-phoi-hop-{{ $vanBanDen->id }}"
+                                                    class="form-control select2 don-vi-phoi-hop"
+                                                    multiple
+                                                    data-placeholder=" Chọn đơn vị phối hợp"
+                                                    data-id="{{ $vanBanDen->id }}"
+                                                    form="form-tham-muu">
+                                                    @forelse($danhSachDonVi as $donVi)
+                                                        <option
+                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </p>
                                             <!-- chu tich -->
                                             @if ($active)
-                                                    @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
-                                                        <p>
-                                                            <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->han_xu_ly ?? null }}" class="form-control change-han-xu-ly"
-                                                                   form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
-                                                        </p>
-                                                    @endif
+                                                @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
+                                                    <p>
+                                                        <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{ $vanBanDen->han_xu_ly ?? null }}"
+                                                               class="form-control change-han-xu-ly"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
+                                                    </p>
+                                                @endif
 
-                                                    <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
-                                                           form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
-                                                    {{ $vanBanDen->checkVanBanQuanTrong() ? 'checked' : null }} class="check-van-ban-quan-trong">
-                                                    <label for="van-ban-quan-trong{{ $vanBanDen->id }}" class="color-red font-weight-normal">
-                                                        VB Quan trọng
-                                                    </label>
+                                                <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
+                                                       name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
+                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
+                                                       {{ $vanBanDen->checkVanBanQuanTrong() ? 'checked' : null }} class="check-van-ban-quan-trong">
+                                                <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
+                                                       class="color-red font-weight-normal">
+                                                    VB Quan trọng
+                                                </label>
                                             @endif
                                         </div>
                                     </td>
                                     <td>
                                         @if (empty($active))
-                                        <p>
+                                            <p>
                                             <textarea name="noi_dung_chu_tich[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
                                                       class="form-control noi-dung-chu-tich {{ !empty($vanBanDen->checkCanBoNhan([$chuTich->id])) ? 'show' : 'hide' }}"
                                                       rows="5">{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->noi_dung ?? '' }}</textarea>
-                                        </p>
+                                            </p>
                                         @endif
                                         <p>
                                             <textarea
                                                 name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
-                                                form="form-tham-muu" class="form-control {{ !empty($danhSachPhoChuTich->pluck('id')->toArray()) ? 'show' : 'hide' }}"
+                                                form="form-tham-muu"
+                                                class="form-control {{ !empty($danhSachPhoChuTich->pluck('id')->toArray()) ? 'show' : 'hide' }}"
                                                 rows="3">{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}</textarea>
+                                        </p>
+                                        <p>
+                                            <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"
+                                                      class="form-control {{ !empty($vanBanDen->checkDonViChuTri) ? 'show' : 'hide' }}"
+                                                      form="form-tham-muu"
+                                                      rows="3">{{ $vanBanDen->checkDonViChuTri->noi_dung ?? null }}</textarea>
+                                        </p>
+                                        <p>
+                                            <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
+                                                      class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
+                                                      form="form-tham-muu"
+                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                    {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
+                                                @endif
+                                            </textarea>
                                         </p>
                                     </td>
                                     <td>
@@ -239,7 +293,7 @@
             let textChuTich = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text() + ' xem xét';
 
             if (id) {
-                let txtChiDao = 'Kính báo cáo Chủ tịch '+ textChuTich + ', giao PCT ' + textPhoChuTich;
+                let txtChiDao = 'Kính báo cáo Chủ tịch ' + textChuTich + ', giao PCT ' + textPhoChuTich;
 
                 // check empty chu tich
                 if (checkChuTich && checkChuTich.length > 0) {
@@ -256,7 +310,7 @@
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
-                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo Chủ tịch '+textChuTich);
+                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo Chủ tịch ' + textChuTich);
             }
         });
 
@@ -268,6 +322,77 @@
         $('.change-han-xu-ly').on('change', function () {
             vanBanDenDonViId = $(this).data('id');
             checkVanBanDenId(vanBanDenDonViId);
+        });
+
+
+        $('body').on('change', '.don-vi-chu-tri', function () {
+            let $this = $(this);
+            let arrId = $this.find("option:selected").map(function () {
+                return parseInt(this.value);
+            }).get();
+
+            let id = $(this).val();
+
+            vanBanDenDonViId = $this.data('id');
+
+            let donViChuTri = $(this).find("option:selected").map(function () {
+                return this.text;
+            }).get();
+
+            if (donViChuTri.length > 0 && id.length > 0) {
+                checkVanBanDenId(vanBanDenDonViId);
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
+            } else {
+                removeVanBanDenDonViId(vanBanDenDonViId);
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).addClass('hide');
+            }
+
+            if (arrId) {
+                //lấy danh sach cán bộ phối hơp
+                $.ajax({
+                    url: APP_URL + '/list-don-vi-phoi-hop/' + JSON.stringify(arrId),
+                    type: 'GET',
+                })
+                    .done(function (response) {
+                        var html = '<option value="">chọn đơn vị phối hợp</option>';
+                        if (response.success) {
+
+                            let selectAttributes = response.data.map((function (attribute) {
+                                return `<option value="${attribute.id}" >${attribute.ten_don_vi}</option>`;
+                            }));
+
+                            $this.parents('.dau-viec-chi-tiet').find('.don-vi-phoi-hop').html(selectAttributes);
+                            $this.parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).text(' ').addClass('hide');
+                        } else {
+                            $this.parents('.dau-viec-chi-tiet').find('.don-vi-phoi-hop').html(html);
+                        }
+                    })
+                    .fail(function (error) {
+                        toastr['error'](error.message, 'Thông báo hệ thống');
+                    });
+            }
+
+        });
+
+        $('body').on('change', '.don-vi-phoi-hop', function () {
+
+            let donViPhoiHop = $(this).find("option:selected").map(function () {
+                return this.text;
+            }).get();
+
+            vanBanDenDonViId = $(this).data('id');
+
+            if (donViPhoiHop.length > 0) {
+
+                checkVanBanDenId(vanBanDenDonViId);
+
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.toString());
+            } else {
+                removeVanBanDenDonViId(vanBanDenDonViId);
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).addClass('hide');
+            }
+
+
         });
 
         function checkVanBanDenId(vanBanDenDonViId) {

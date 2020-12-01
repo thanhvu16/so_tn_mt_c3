@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Auth;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class DonViPhoiHop extends Model
 {
@@ -29,7 +30,7 @@ class DonViPhoiHop extends Model
 
         $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
 
-        if (count($arrDonViId) > 0) {
+        if (!empty($arrDonViId) && count($arrDonViId) > 0) {
                 DonViPhoiHop::where([
                     'van_ban_den_id' => $vanBanDenId,
                     'chuyen_tiep'  => null,
@@ -63,5 +64,20 @@ class DonViPhoiHop extends Model
     public function donVi()
     {
         return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
+    }
+
+    public function canBoChuyen()
+    {
+        return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id');
+    }
+
+    public function canBoNhan()
+    {
+        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id');
+    }
+
+    public function vanBanDen()
+    {
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
     }
 }

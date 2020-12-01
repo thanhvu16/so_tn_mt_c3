@@ -45,7 +45,8 @@ class DieuHanhVanBanDenController extends Controller
      */
     public function show($id)
     {
-        $vanBanDen = VanBanDen::with('loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat')
+        $vanBanDen = VanBanDen::with('loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
+            'xuLyVanBanDen', 'XuLyVanBanDenTraLai', 'donViChuTri', 'donViPhoiHop')
             ->findOrFail($id);
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();

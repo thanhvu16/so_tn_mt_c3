@@ -8,6 +8,7 @@ define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den');
 define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
 define('ACTIVE', 1);
 define('INACTIVE', 2);
+
 //rold_id
 define('QUYEN_CHUYEN_VIEN', 3);
 define('QUYEN_PHO_PHONG', 5);

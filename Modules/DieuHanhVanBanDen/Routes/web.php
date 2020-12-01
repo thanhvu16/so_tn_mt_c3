@@ -17,7 +17,7 @@
 
 Route::resource('phan-loai-van-ban', 'PhanLoaiVanBanController');
 
-Route::get('chi-tiet-van-ban/{id}', 'DieuHanhVanBanDenController@show')->name('van_ban_den_chi_tiet.show');
+Route::get('van-ban-den-chi-tiet/{id}', 'DieuHanhVanBanDenController@show')->name('van_ban_den_chi_tiet.show');
 
 Route::get('van-ban-da-phan-loai', 'PhanLoaiVanBanController@daPhanLoai')->name('phan-loai-van-ban.da_phan_loai');
 
