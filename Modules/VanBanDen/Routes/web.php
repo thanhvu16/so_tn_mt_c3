@@ -30,3 +30,4 @@ Route::match(['get', 'post','put'], 'van-ban-den-tu-mail', ['as' =>'vanbandentum
 Route::match(['get', 'post','put'], 'kiem_tra_trich_yeu', ['as' =>'ktratrichyeu', 'uses' => 'VanBanDenController@kiemTraTrichYeu']);
 Route::post('ds-van-ban-den-tu-mail/delete-email/{id}','VanBanDenController@deleteEmail')->name('delete-email');
 Route::post('ds-van-ban-den-tu-mail/luu-van-ban-tu-mail','VanBanDenController@luuvanbantumail')->name('luuvanbantumail');
+Route::post('van-ban-den/vao-so-van-ban','DonViNhanVanBanDenController@vaosovanbandvnhan')->name('vaosovanbandvnhan');

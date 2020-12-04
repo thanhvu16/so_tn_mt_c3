@@ -138,6 +138,7 @@
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <div class="text-right " style="pointer-events: auto">
+                                            @if($vbDen->vanBanDenFile)
                                             @forelse($vbDen->vanBanDenFile as $key=>$item)
                                                 <a href="{{$item->getUrlFile()}}" target="_blank">
                                                     @if($item->duoi_file == 'pdf')<i
@@ -151,6 +152,7 @@
                                                 |&nbsp; @endif
                                             @empty
                                             @endforelse
+                                            @endif
                                             @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
                                                 <a title="Cập nhật file" href="{{route('ds_file',$vbDen->vb_den_id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif
                                         </div>

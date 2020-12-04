@@ -328,7 +328,7 @@ class VanBanDenController extends Controller
                 $vanbandv->save();
             }
         }
-        return redirect()->back()->with('success','Thêm văn bản thành công !!');
+        return redirect()->route('van-ban-den.index')->with('success','Thêm văn bản thành công !!');
     }
 
     public function multiple_file(Request $request)
@@ -746,6 +746,7 @@ class VanBanDenController extends Controller
             return substr($filename, $pos + 1);
         }
     }
+
 }
 
 
