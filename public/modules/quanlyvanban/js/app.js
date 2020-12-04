@@ -166,6 +166,5 @@ function duthaovanban() {
 }
 $('.layidnguoiky').on('change', function () {
     let chucVu = $(this).find('option:selected').data('chuc-vu');
-    console.log(chucVu);
     $('[name=chuc_vu]').val(chucVu);
 })

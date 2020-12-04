@@ -241,7 +241,8 @@ class PhanLoaiVanBanController extends Controller
                         'noi_dung' => $textDonViChuTri[$vanBanDenId],
                         'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                         'user_id' => $currentUser->id,
-                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null
+                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+                        'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null,
                     ];
 
                     DonViChuTri::where([

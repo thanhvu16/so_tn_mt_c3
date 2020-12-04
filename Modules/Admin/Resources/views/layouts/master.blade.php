@@ -90,6 +90,9 @@
 <script src="{{ url('theme/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{url('theme/plugins/loadingModal/js/jquery.loadingModal.js')}}"></script>
 <script src="{{url('theme/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
+<!---moment js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
 

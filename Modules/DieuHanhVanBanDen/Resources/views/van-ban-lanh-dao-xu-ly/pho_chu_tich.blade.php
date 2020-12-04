@@ -159,7 +159,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <td colspan="5" class="text-center">Không tìm
+                                <td colspan="6" class="text-center">Không tìm
                                     thấy dữ liệu.
                                 </td>
                             @endforelse

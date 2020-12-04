@@ -10,6 +10,7 @@ use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 
 class VanBanTraLaiController extends Controller
 {
@@ -52,6 +53,12 @@ class VanBanTraLaiController extends Controller
                 ->whereNull('status')
                 ->first();
 
+            $chuyenNhanDonViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)->where('can_bo_nhan_id', $currentUser->id)
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->first();
+
+
             // check van ban tra lai
             $checkVanBanTraLai = VanBanTraLai::where('van_ban_den_id', $vanBanDenId)
                 ->where('can_bo_nhan_id', $currentUser->id)->whereNull('status')->first();
@@ -60,7 +67,7 @@ class VanBanTraLaiController extends Controller
                 $checkVanBanTraLai->save();
             }
 
-            $canBoNhan = $xuLyVanBanDen->can_bo_chuyen_id;
+            $canBoNhan = $xuLyVanBanDen->can_bo_chuyen_id ?? null;
 
             $dataVanBanTraLai = [
                 'van_ban_den_id' => $vanBanDenId,
@@ -91,6 +98,32 @@ class VanBanTraLaiController extends Controller
                     }
                     break;
 
+                case 5:
+                    // chuyen vien tra lai
+                    $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
+                    $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                    $vanBanDen->trinh_tu_nhan_van_ban = 4;
+                    $vanBanDen->save();
+
+                    break;
+
+                case 4:
+                    $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
+                    $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                    $vanBanDen->trinh_tu_nhan_van_ban = 3;
+                    $vanBanDen->save();
+                    break;
+
+                case 3:
+                    $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
+                    $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                    $vanBanDen->trinh_tu_nhan_van_ban = 2;
+                    $vanBanDen->save();
+                    break;
+
                 default:
                     $vanBanDen->trinh_tu_nhan_van_ban = null;
                     $vanBanDen->save();
@@ -107,7 +140,7 @@ class VanBanTraLaiController extends Controller
             $dataXuLyVanBanDen = [
                 'van_ban_den_id' => $vanBanDenId,
                 'can_bo_chuyen_id' => $currentUser->id,
-                'can_bo_nhan_id' => $xuLyVanBanDen->can_bo_chuyen_id,
+                'can_bo_nhan_id' => $canBoNhan,
                 'noi_dung' => $noiDung,
                 'tom_tat' => $xuLyVanBanDen->tom_tat ?? null,
                 'user_id' => $currentUser->id,

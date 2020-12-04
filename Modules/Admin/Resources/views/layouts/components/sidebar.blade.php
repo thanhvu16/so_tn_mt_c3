@@ -27,13 +27,16 @@
             @hasanyrole('chủ tịch|phó chủ tịch')
                 @include('admin::layouts.components.sidebar_lanh_dao')
             @endrole
-            @role('chuyên viên')
+            @role(CHUYEN_VIEN)
+                @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_chuyen_vien')
             @endrole
-            @role('Trưởng phòng')
+            @role(TRUONG_PHONG)
+                @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_truong_phong')
             @endrole
-            @role('Phó phòng')
+            @role(PHO_PHONG)
+                @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_phong')
             @endrole
             @role('phó tránh văn phòng')

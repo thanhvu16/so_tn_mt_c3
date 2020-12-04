@@ -23,6 +23,10 @@ class DonViChuTri extends Model
         'hoan_thanh'
     ];
 
+    const HOAN_THANH_VB = 1;
+    const CHUYEN_TIEP = 1;
+    const GIAI_QUYET = 2;
+
     public function canBoChuyen()
     {
         return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id');

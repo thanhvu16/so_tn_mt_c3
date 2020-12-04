@@ -30,3 +30,19 @@ Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonV
 Route::post('save-don-vi-chu-tri', 'VanBanLanhDaoXuLyController@saveDonViChuTri')->name('van-ban-lanh-dao.save_don_vi_chu_tri');
 
 Route::resource('van-ban-tra-lai', 'VanBanTraLaiController');
+
+Route::resource('van-ban-den-don-vi', 'VanBanDenDonViController');
+
+Route::get('list-can-bo-phoi-hop/{id}', 'VanBanDenDonViController@getCanBoPhoiHop');
+
+Route::get('van-ban-da-chi-dao', 'VanBanDenDonViController@vanBanDaChiDao')->name('van_ban_don_vi.da_chi_dao');
+
+Route::resource('gia-han-van-ban', 'GiaHanVanBanController');
+
+Route::post('duyet-gia-han-van-ban', 'GiaHanVanBanController@duyetGiaHan');
+
+Route::resource('giai-quyet-van-ban', 'GiaiQuyetVanBanController');
+
+Route::get('van-ban-den-hoan-thanh-cho-duyet', 'VanBanDenHoanThanhController@choDuyet')->name('van-ban-den-hoan-thanh.cho-duyet');
+
+Route::post('duyet-van-ban', 'VanBanDenHoanThanhController@duyetVanBan');

@@ -15,7 +15,8 @@
                             <b>Số Ký hiệu: </b>{{ $vanBanDen->so_ky_hieu ?? null }}
                         </p>
                         <p>
-                            <b>Loại văn bản:</b> {{ isset($vanBanDen->loaiVanBan) ? $vanBanDen->loaiVanBan->ten_loai_van_ban : null }}
+                            <b>Loại văn
+                                bản:</b> {{ isset($vanBanDen->loaiVanBan) ? $vanBanDen->loaiVanBan->ten_loai_van_ban : null }}
                         </p>
                         <p>
                             <b>Số đến:</b>
@@ -25,7 +26,8 @@
                     <div class="col-md-4">
                         <p>
                             <b>Ngày
-                                ban hành:</b> {{ !empty($vanBanDen->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->ngay_ban_hanh)) : null }}
+                                ban
+                                hành:</b> {{ !empty($vanBanDen->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->ngay_ban_hanh)) : null }}
                         </p>
                         <p>
                             <b>Cơ quan ban hành: </b> {{ $vanBanDen->co_quan_ban_hanh ?? null }}
@@ -75,26 +77,44 @@
                         </p>
                     </div>
                     @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->so_van_ban_id == $loaiVanBanGiayMoi->id)
-                    <div class="col-md-12">
-                        <label class="col-form-label">Nội dung họp:</label> {{ $vanBanDen->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
-                        <br>
-                        <i>
-                            (Vào hồi {{ $vanBanDen->gio_hop }}
-                            ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
-                            , tại {{ $vanBanDen->dia_diem }})
-                        </i>
-                    </div>
+                        <div class="col-md-12">
+                            <label class="col-form-label">Nội dung
+                                họp:</label> {{ $vanBanDen->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
+                            <br>
+                            <i>
+                                (Vào hồi {{ $vanBanDen->gio_hop }}
+                                ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
+                                , tại {{ $vanBanDen->dia_diem }})
+                            </i>
+                        </div>
                     @endif
                     @if (isset($vanBanDen->noi_dung))
-                    <div class="col-md-12 mt-2">
-                        <label class="col-form-label">Nội dung :</label> {{ $vanBanDen->noi_dung ?? null }}
-                    </div>
+                        <div class="col-md-12 mt-2">
+                            <label class="col-form-label">Nội dung :</label> {{ $vanBanDen->noi_dung ?? null }}
+                        </div>
                     @endif
                 </div>
-                @include('dieuhanhvanbanden::van-ban-den.log_xu_ly_van_ban_den', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDen ])
-                @include('dieuhanhvanbanden::van-ban-den.log_tra_lai_van_ban', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDenTraLai ])
-                @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_chu_tri', ['chuyenNhanVanBanDonViChuTri' => $vanBanDen->donViChuTri ])
-                @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_phoi_hop', ['chuyenNhanVanBanDonViPhoiHop' => $vanBanDen->donViPhoiHop ])
+            @include('dieuhanhvanbanden::van-ban-den.log_xu_ly_van_ban_den', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDen ])
+            @include('dieuhanhvanbanden::van-ban-den.log_tra_lai_van_ban', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDenTraLai ])
+            @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_chu_tri', ['chuyenNhanVanBanDonViChuTri' => $vanBanDen->donViChuTri ])
+            @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_phoi_hop', ['chuyenNhanVanBanDonViPhoiHop' => $vanBanDen->donViPhoiHop ])
+            @include('dieuhanhvanbanden::van-ban-den.log_gia_han_van_ban', ['giaHanVanBanDonVi' => $vanBanDen->giaHanVanBan ])
+
+            <!--giai quyet van ban-->
+                <div class="col-md-12 mt-4">
+                    <label>
+                        <input type="radio" name="status_action" id="van-ban-tra-loi" value="1">
+                        <b>Văn bản cần trả lời</b>
+                    </label>
+                    &nbsp;
+                    &nbsp;
+                    <label>
+                        <input type="radio" name="status_action" id="van-ban-luu" value="2">
+                        <b>Văn bản lưu</b>
+                    </label>
+
+                    @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
+                </div>
 
                 <div class="col-md-12 mt-3">
                     <a class="btn btn-default go-back" data-original-title="" title="">Quay lại &gt;&gt;</a>
@@ -102,5 +122,22 @@
             </div>
         </div>
     </section>
+@endsection
+@section('script')
+    <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+
+<script type="text/javascript">
+        $('input[name="status_action"]').on('click', function () {
+            let status = $(this).val();
+            if (status == 1) {
+                $('.form-du-thao').removeClass('hide');
+                $('.truc-tiep-giai-quyet').addClass('hide');
+                $('.select2').select2();
+            } else {
+                $('.truc-tiep-giai-quyet').removeClass('hide');
+                $('.form-du-thao').addClass('hide');
+            }
+        });
+    </script>
 @endsection
 

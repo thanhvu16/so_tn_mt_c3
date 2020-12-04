@@ -47,8 +47,10 @@ class VanBanLanhDaoXuLyController extends Controller
             ->where('trinh_tu_nhan_van_ban', $active)
             ->paginate(PER_PAGE);
 
-        $chuTich = User::role('chủ tịch')->first();
-        $danhSachPhoChuTich = User::role('phó chủ tịch')->get();
+        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)->first();
+        $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            ->where('trang_thai', ACTIVE)
+            ->get();
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
@@ -209,9 +211,13 @@ class VanBanLanhDaoXuLyController extends Controller
                         }
 
                         //luu can bo xem de biet
+                        LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
+                            ->whereNull('don_vi_id')
+                            ->delete();
+
                         if (!empty($arrLanhDaoXemDeBiet[$vanBanDenId])) {
                             LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
-                                $vanBanDenId);
+                                $vanBanDenId, $type = null);
                         }
 
                         // active trinh tu nhan van ban
@@ -235,7 +241,8 @@ class VanBanLanhDaoXuLyController extends Controller
                             'noi_dung' => $textDonViChuTri[$vanBanDenId],
                             'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                             'user_id' => $currentUser->id,
-                            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null
+                            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+                            'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null
                         ];
 
                         DonViChuTri::where([
@@ -435,7 +442,8 @@ class VanBanLanhDaoXuLyController extends Controller
                         'noi_dung' => $textDonViChuTri[$vanBanDenId],
                         'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                         'user_id' => $currentUser->id,
-                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null
+                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+                        'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null
                     ];
 
                     // luu don vi chu tri

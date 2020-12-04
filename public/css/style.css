@@ -184,3 +184,36 @@ table tbody td a:hover {
 .table-responsive.box-panel h3 a:focus {
     color: #336eea !important;
 }
+
+input[type=date] {
+    position: relative;
+    color: white;
+}
+
+input[type=date]:before {
+    position: absolute;
+    content: attr(data-date);
+    display: inline-block;
+    color: black;
+}
+
+input[type=date]::-webkit-datetime-edit, input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-clear-button {
+    display: none;
+}
+
+input[type=date]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0;
+    color: black;
+    opacity: 1;
+}
+
+.required {
+    color: red;
+}
+
+hr.border-dashed {
+    border: 1px dashed #56b3d8;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}

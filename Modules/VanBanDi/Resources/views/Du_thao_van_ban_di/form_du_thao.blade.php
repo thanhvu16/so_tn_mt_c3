@@ -1,11 +1,11 @@
-<form class="form-row"
+<form class="row"
       action="{{  route('du-thao-van-ban.store')}}"
       method="post" enctype="multipart/form-data" id="formCreateDoc">
     @csrf
 
     <div class=" col-md-3 form-group">
-        <label for="exampleInputEmail2">Loại văn bản<span class="color-red">*</span></label>
-        <select class="form-control" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
+        <label for="exampleInputEmail2">Loại văn bản <span class="color-red">*</span></label>
+        <select class="form-control select2" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
             <option value="">Chọn loại văn bản</option>
             @foreach ($ds_loaiVanBan as $loaiVanBan)
                 <option value="{{ $loaiVanBan->id }}" >{{ $loaiVanBan->ten_loai_van_ban }}</option>
@@ -13,7 +13,7 @@
         </select>
     </div>
     <div class=" col-md-3 form-group">
-        <label for="exampleInputEmail2">Cán bộ trong phòng góp ý<span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Cán bộ trong phòng góp ý <span class="color-red">*</span></label>
         <select name="lanh_dao_phong_phoi_hop[]" id="lanh_dao_phong_phoi_hop"
                 class="form-control select2"
                 multiple="multiple"
@@ -72,7 +72,7 @@
     </div>
     <div class=" col-md-3  form-group">
         <label for="vb_ngay_ban_hanh" class="col-form-label">Hạn xử lý</label>
-        <input class="form-control" id="so_trang"
+        <input class="form-control"
                value="" type="date"
                name="han_xu_ly">
     </div>
@@ -87,9 +87,9 @@
 
 
             <div class="col-md-3  mt-1 ">
-                <label for="sokyhieu" class="col-form-label">File trình ký</label>
+                <label for="url-file-trinh-ky" class="col-form-label">File trình ký</label>
                 <div class="form-line input-group control-group">
-                <input type="file" id="url-file" name="file_trinh_ky[]" class="form-control">
+                <input type="file" id="url-file-trinh-ky" name="file_trinh_ky[]" class="form-control">
                 </div>
             </div>
             <div class="col-md-3   mt-1">
@@ -120,6 +120,3 @@
 
 </form>
 
-@section('script')
-    <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
-@endsection

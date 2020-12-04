@@ -16,11 +16,9 @@ class LanhDaoXemDeBiet extends Model
         'user_id'
     ];
 
-    public static function saveLanhDaoXemDeBiet($arrLanhDaoId, $vanBanDenId)
+    public static function saveLanhDaoXemDeBiet($arrLanhDaoId, $vanBanDenId, $type)
     {
-        LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
-            ->whereNull('don_vi_id')
-            ->delete();
+
 
         if (!empty($arrLanhDaoId) && count($arrLanhDaoId) > 0) {
             foreach ($arrLanhDaoId as $lanhDaoId) {
@@ -28,6 +26,7 @@ class LanhDaoXemDeBiet extends Model
                 $lanhDaoPhoiHop->van_ban_den_id = $vanBanDenId;
                 $lanhDaoPhoiHop->lanh_dao_id = $lanhDaoId;
                 $lanhDaoPhoiHop->user_id = auth::user()->id;
+                $lanhDaoPhoiHop->don_vi_id = !empty($type) ? auth::user()->don_vi_id : null;
                 $lanhDaoPhoiHop->save();
             }
         }

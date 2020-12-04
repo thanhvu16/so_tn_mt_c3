@@ -6,6 +6,7 @@ define('UPLOAD_FILE_VAN_BAN_DEN', 'uploads/van-ban-den');
 define('UPLOAD_FILE_VAN_BAN_DI', 'uploads/van-ban-di');
 define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den');
 define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
+define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet');
 define('ACTIVE', 1);
 define('INACTIVE', 2);
 
@@ -28,8 +29,8 @@ define('UBND_HUYEN', 8);
 CONST THAM_MUU = 'tham mưu';
 CONST VAN_THU = 'Văn thư';
 CONST CHUYEN_VIEN = 'chuyên viên';
-CONST TRUONG_PHONG = 'Trưởng phòng';
-CONST PHO_PHONG = 'Phó phòng';
+CONST TRUONG_PHONG = 'trưởng phòng';
+CONST PHO_PHONG = 'phó phòng';
 CONST CHU_TICH = 'chủ tịch';
 CONST PHO_CHUC_TICH = 'phó chủ tịch';
 CONST TRUONG_PHONG_DON_VI = 'trưởng phòng đơn vị';

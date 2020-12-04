@@ -19,3 +19,6 @@
         </div>
     </section>
 @endsection
+@section('script')
+    <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+@endsection

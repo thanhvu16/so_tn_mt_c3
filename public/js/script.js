@@ -63,3 +63,46 @@ $(".timepicker").timepicker({
     showInputs: false
 });
 
+
+
+$("input[type=date]").on("change", function() {
+    if (this.value) {
+        this.setAttribute(
+            "data-date",
+            moment(this.value, "YYYY-MM-DD")
+                // .format( this.getAttribute("data-date-format") )
+                .format("DD/MM/YYYY")
+        )
+    } else {
+
+        $(this).attr('data-date', 'dd/mm/yyyy');
+    }
+
+}).trigger("change");
+
+// upload file giai quyet van ban
+function multiUploadFile(fileName) {
+    let htmlForm = `<div class="remove-multi-file">
+                     <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="ten_file" class="col-form-label">Tên tệp tin</label>
+                            <input type="text" class="form-control" name="txt_file[]" value=""
+                             placeholder="Nhập tên file..." required>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <div class="">
+                                <label for="url-file" class="col-form-label">Chọn tệp</label>
+                                <div class="form-line input-group control-group">
+                                    <input type="file" name="${fileName}" class="form-control">
+                                    <div class="input-group-btn customize-group-btn">
+                                        <span class="btn btn-danger btn-remove-file" type="button">
+                                        <i class="fa fa-remove"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                    </div>`;
+
+    $('.increment').append(htmlForm);
+}
