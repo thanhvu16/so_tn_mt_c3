@@ -21,6 +21,8 @@ define('QUYEN_VAN_THU_DON_VI', 11);
 define('QUYEN_VAN_THU_HUYEN', 12);
 define('QUYEN_CHANH_VAN_PHONG', 13);
 define('QUYEN_PHO_CHANH_VAN_PHONG', 14);
+//id của đơn vị UBND Huyện
+define('UBND_HUYEN', 8);
 
 //rold
 CONST THAM_MUU = 'tham mưu';
@@ -34,3 +36,5 @@ CONST TRUONG_PHONG_DON_VI = 'trưởng phòng đơn vị';
 CONST PHO_PHONG_DON_VI = 'phó phòng đơn vị';
 CONST VAN_THU_DON_VI = 'văn thư đơn vị';
 CONST VAN_THU_HUYEN = 'văn thư huyện';
+CONST CHANH_VAN_PHONG = 'chánh văn phong';
+CONST PHO_CHANH_VAN_PHONG = 'phó tránh văn phòng';

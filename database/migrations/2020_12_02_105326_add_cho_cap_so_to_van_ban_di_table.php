@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeVbHuyenDvToVanBanDiTable extends Migration
+class AddChoCapSoToVanBanDiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddTypeVbHuyenDvToVanBanDiTable extends Migration
     public function up()
     {
         Schema::table('van_ban_di', function (Blueprint $table) {
-            $table->integer('van_ban_huyen_ky')->nullable()->comment('văn bản của đơn vị');
+            $table->tinyInteger('cho_cap_so')->default(1);
         });
     }
 
@@ -26,7 +26,8 @@ class AddTypeVbHuyenDvToVanBanDiTable extends Migration
     public function down()
     {
         Schema::table('van_ban_di', function (Blueprint $table) {
-            $table->dropColumn('van_ban_huyen_ky');
+            $table->dropColumn('cho_cap_so');
         });
+
     }
 }

@@ -36,6 +36,12 @@
             @role('Phó phòng')
                 @include('admin::layouts.components.sidebar_pho_phong')
             @endrole
+            @role('phó tránh văn phòng')
+                @include('admin::layouts.components.sidebar_pho_chanh_van_phong')
+            @endrole
+            @role('chánh văn phong')
+                @include('admin::layouts.components.sidebar_chanh_van_phong')
+            @endrole
             {{--            @can('thêm dự thảo văn bản')--}}
             {{--            @endcan--}}
         </ul>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeVbHuyenDvToVanBanDiTable extends Migration
+class AddFileChinhToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTypeVbHuyenDvToVanBanDiTable extends Migration
      */
     public function up()
     {
-        Schema::table('van_ban_di', function (Blueprint $table) {
-            $table->integer('van_ban_huyen_ky')->nullable()->comment('văn bản của đơn vị');
+        Schema::table('file_van_ban_di', function (Blueprint $table) {
+            $table->tinyInteger('file_chinh_gui_di')->default(1)->comment('1 file bình thường 2 file đã ký số hoặc upload lên');
         });
     }
 
@@ -25,8 +25,8 @@ class AddTypeVbHuyenDvToVanBanDiTable extends Migration
      */
     public function down()
     {
-        Schema::table('van_ban_di', function (Blueprint $table) {
-            $table->dropColumn('van_ban_huyen_ky');
+        Schema::table('file_van_ban_di', function (Blueprint $table) {
+            //
         });
     }
 }

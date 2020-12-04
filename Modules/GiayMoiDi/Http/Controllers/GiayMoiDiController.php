@@ -17,7 +17,9 @@ use Modules\Admin\Entities\MailTrongThanhPho;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDi\Entities\NoiNhanMail;
 use Modules\VanBanDi\Entities\NoiNhanMailNgoai;
+use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 use Modules\VanBanDi\Entities\VanBanDi;
+use Modules\VanBanDi\Entities\VanBanDiChoDuyet;
 
 class GiayMoiDiController extends Controller
 {
@@ -208,29 +210,30 @@ class GiayMoiDiController extends Controller
     {
         canPermission(AllPermission::themGiayMoiDi());
         $user= auth::user();
-//        $donvicap2 = Donvi::where(['cap_don_vi' => DON_VI_CAP_2, 'trang_thai' => 1])->whereNull('deleted_at')->first();
-//        $nguoinhan = null;
-//        switch ($this->user->donvi->cap_don_vi) {
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                switch ($this->user->vai_tro) {
-//                    case 1:
-//                        break;
-//                    case 2:
-//                        $nguoinhan = NguoiDung::where('donvi_id', $donvicap2->ma_id)->whereIn('vai_tro', [2, 3])->orderBy('ho_ten', 'asc')->get();
-//                        break;
-//                    case 3:
-//                        $nguoinhan = NguoiDung::where('donvi_id', $this->user->donvi_id)->whereIn('vai_tro', [2])->orderBy('ho_ten', 'asc')->get();
-//                        break;
-//                    case 4:
-//                        $nguoinhan = NguoiDung::where('donvi_id', $this->user->donvi_id)->whereIn('vai_tro', [2, 3])->orderBy('ho_ten', 'asc')->get();
-//                        break;
-//                }
-//                break;
-//        }
+        switch (auth::user()->role_id) {
+            case QUYEN_CHUYEN_VIEN:
+                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_PHO_PHONG:
+                $nguoinhan = User::role([ TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_TRUONG_PHONG:
+                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_PHO_CHUC_TICH:
+                $nguoinhan = User::role([CHU_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_CHU_TICH:
+                $nguoinhan = null;
+                break;
+            case QUYEN_VAN_THU_DON_VI:
+                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_VAN_THU_HUYEN:
+                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH,QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+
+        }
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
@@ -239,7 +242,6 @@ class GiayMoiDiController extends Controller
         $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $nguoinhan = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
         return view('giaymoidi::giay_moi_di.create',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_loaiVanBan','ds_soVanBan',
             'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi'));
     }
@@ -253,6 +255,7 @@ class GiayMoiDiController extends Controller
     {
         $donvinhanmailtrongtp = !empty($request['don_vi_nhan_trong_thanh_php']) ? $request['don_vi_nhan_trong_thanh_php'] : null;
         $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
+        $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $gio_hop= date ('H:i',strtotime($request->gio_hop));
         $vanbandi = new VanBanDi();
         $vanbandi->trich_yeu = $request->vb_trichyeu;
@@ -273,28 +276,18 @@ class GiayMoiDiController extends Controller
         $vanbandi->nguoi_tao = auth::user()->id;
         $vanbandi->save();
 
-//        $canbonhan = new Vanbandichoduyet();
-//        $canbonhan->van_ban_di_id = $vanbandi->id;
-//        $canbonhan->can_bo_chuyen_id = $vanbandi->nguoi_tao;
-//        $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
-//        $canbonhan->save();
+        $canbonhan = new VanBanDiChoDuyet();
+        $canbonhan->van_ban_di_id = $vanbandi->id;
+        $canbonhan->can_bo_chuyen_id = $vanbandi->nguoi_tao;
+        $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
+        $canbonhan->save();
 
-        if ($donvinhanmailtrongtp && count($donvinhanmailtrongtp) > 0) {
-            foreach ($donvinhanmailtrongtp as $key => $trong) {
-                $mailtrong = new NoiNhanMail();
-                $mailtrong->van_ban_di_id = $vanbandi->id;
-                $mailtrong->email = $trong;
-                $mailtrong->save();
-
-
-            }
-        }
-        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
-            foreach ($donvinhanmailngoaitp as $key => $ngoai) {
-                $mailngoai = new NoiNhanMailNgoai();
-                $mailngoai->van_ban_di_id = $vanbandi->id;
-                $mailngoai->email = $ngoai;
-                $mailngoai->save();
+        if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
+            foreach ($donvinhanvanbandi as $key => $donvi) {
+                $donvinhan = new NoiNhanVanBanDi();
+                $donvinhan->van_ban_di_id = $vanbandi->id;
+                $donvinhan->don_vi_id_nhan = $donvi;
+                $donvinhan->save();
             }
         }
         return redirect()->route('giay-moi-di.index')->with('success', 'Thêm giấy mời thành công ! ');
@@ -327,12 +320,36 @@ class GiayMoiDiController extends Controller
         $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $nguoinhan = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        switch (auth::user()->role_id) {
+            case QUYEN_CHUYEN_VIEN:
+                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_PHO_PHONG:
+                $nguoinhan = User::role([ TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_TRUONG_PHONG:
+                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_PHO_CHUC_TICH:
+                $nguoinhan = User::role([CHU_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_CHU_TICH:
+                $nguoinhan = null;
+                break;
+            case QUYEN_VAN_THU_DON_VI:
+                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+            case QUYEN_VAN_THU_HUYEN:
+                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH,QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+                break;
+
+        }
         $giaymoidi = VanBanDi::where('id',$id)->first();
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
+        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
         return view('giaymoidi::giay_moi_di.edit',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_loaiVanBan','ds_soVanBan',
-            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi','giaymoidi','lay_emailngoaithanhpho','lay_emailtrongthanhpho'));
+            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi','giaymoidi','lay_emailngoaithanhpho','lay_emailtrongthanhpho','lay_noi_nhan_van_ban_di'));
 
     }
 
@@ -361,56 +378,28 @@ class GiayMoiDiController extends Controller
         $vanbandi->dia_diem = $request->dia_diem;
         $vanbandi->user_id = $request->nguoi_nhan;
         $vanbandi->save();
-        $donvinhanmailtrongtp = !empty($request['don_vi_nhan_trong_thanh_php']) ? $request['don_vi_nhan_trong_thanh_php'] : null;
-        $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
-        $mailtrongtp = NoiNhanMail::where(['van_ban_di_id' => $id, 'status' => 1])->get();
-        $mailngoaitp = NoiNhanMailNgoai::where(['van_ban_di_id' => $id, 'status' => 1])->get();
-        $iddonviphong = $mailtrongtp->pluck('email')->toArray();
-        $iddoviphongkhac = $mailngoaitp->pluck('email')->toArray();
-        if ($donvinhanmailtrongtp && count($donvinhanmailtrongtp) > 0) {
-            if (array_diff($donvinhanmailtrongtp, $iddonviphong) == null && count($iddonviphong) == count($donvinhanmailtrongtp)) {
+        $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
+        $noinhanvb = NoiNhanVanBanDi::where(['van_ban_di_id' => $id, 'trang_thai' => 1])->get();
+        $idnoinhanvb = $noinhanvb->pluck('don_vi_id_nhan')->toArray();
+        if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
+
+            if (array_diff($donvinhanvanbandi, $idnoinhanvb) == null && count($idnoinhanvb) == count($donvinhanvanbandi)) {
                 //đây là trường hợp không thay đổi
             } else {
-                $mailtrong = NoiNhanMail::where('van_ban_di_id', $id)->get();
-                if (count($mailtrong) > 0) {
-                    foreach ($mailtrong as $key => $xoahet) {
-                        $mailtrongxoa = NoiNhanMail::where('id', $xoahet->id)->first();
-                        $mailtrongxoa->status = 0;
-                        $mailtrongxoa->save();
+                $noinhanvb = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->get();
+                if (count($noinhanvb) > 0) {
+                    foreach ($noinhanvb as $key => $data) {
+                        $noinhanvbdi = NoiNhanVanBanDi::where(['id' => $data->id])->first();
+                        $noinhanvbdi->delete();
                     }
                 }
-
-
-                foreach ($donvinhanmailtrongtp as $key => $trong) {
-                    $laymailmoi = new NoiNhanMail();
-                    $laymailmoi->van_ban_di_id = $vanbandi->id;
-                    $laymailmoi->email = $trong;
-                    $laymailmoi->save();
-
-
+                foreach ($donvinhanvanbandi as $key => $trong) {
+                    $laydonvimoi = new NoiNhanVanBanDi();
+                    $laydonvimoi->van_ban_di_id = $vanbandi->id;
+                    $laydonvimoi->don_vi_id_nhan = $trong;
+                    $laydonvimoi->save();
                 }
             }
-        }
-        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
-            if (array_diff($donvinhanmailngoaitp, $iddoviphongkhac) == null && count($iddoviphongkhac) == count($donvinhanmailngoaitp)) {
-                //đây là trường hợp không thay đổi
-            } else {
-                $mailngoai = NoiNhanMailNgoai::where('van_ban_di_id', $id)->get();
-                if (count($mailngoai) > 0) {
-                    foreach ($mailngoai as $key => $xoahetngoai) {
-                        $mailngoaixoa = NoiNhanMailNgoai::where('id', $xoahetngoai->id)->first();
-                        $mailngoaixoa->status = 0;
-                        $mailngoaixoa->save();
-                    }
-                }
-                foreach ($donvinhanmailngoaitp as $key => $ngoai) {
-                    $mailngoaimoi = new NoiNhanMailNgoai();
-                    $mailngoaimoi->van_ban_di_id = $vanbandi->id;
-                    $mailngoaimoi->email = $ngoai;
-                    $mailngoaimoi->save();
-                }
-            }
-
         }
         return redirect()->back()
             ->with('failed', 'Cập nhật thành công !');

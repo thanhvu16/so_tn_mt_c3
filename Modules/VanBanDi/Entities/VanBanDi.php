@@ -50,11 +50,14 @@ class VanBanDi extends Model
 
 
     public function dvSoanThao(){
-         return $this->belongsTo(DonVi::class,'donvisoanthao_id');
+         return $this->belongsTo(DonVi::class,'don_vi_soan_thao');
     }
     public function vanBanDiFile()
     {
         return $this->hasMany(FileVanBanDi::class, 'van_ban_di_id', 'id');
+    }
+    public function filechinh(){
+        return $this->hasMany(FileVanBanDi::class,'van_ban_di_id')->where('file_chinh_gui_di',2);
     }
     public function filephieutrinh(){
         return $this->hasMany(FileVanBanDi::class,'van_ban_di_id')->where('trang_thai',1);
@@ -72,6 +75,9 @@ class VanBanDi extends Model
     }
     public function mailngoaitp(){
         return $this->hasMany(NoiNhanMailNgoai::class,'van_ban_di_id')->where('status',1);
+    }
+    public function donvinhanvbdi(){
+        return $this->hasMany(NoiNhanVanBanDi::class,'van_ban_di_id');
     }
     public function loaiVanBanid()
     {

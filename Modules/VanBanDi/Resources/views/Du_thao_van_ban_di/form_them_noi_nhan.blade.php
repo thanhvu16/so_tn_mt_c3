@@ -1,33 +1,18 @@
 
-<div class="modal fade" id="modal-them-noi-nhan" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="modal-them-noi-nhan">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">#Thêm đơn vị </h4>
-            </div>
             <form action="{{ route('van_ban_di.them_don_vi_nhan') }}" method="POST">
                 @csrf
-                <input type="hidden" name="van_ban_di_id" value="">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><i
+                            class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
+                </div>
                 <div class="modal-body">
-                    <div class="col-md-12 form-group">
                         <div class="form-group col-md-12">
-                            <label for="don-vi-nhan" class="col-form-label">Đơn vị nhận trong thành phố</label>
-                            <select name="don_vi_nhan_trong_thanh_pho[]" id="don-vi-nhan"
-                                    class="form-control select2"
-                                    multiple
-                                    data-placeholder=" Chọn đơn vị nhận ...">
-                                @foreach ($emailTrongThanhPho as $email)
-                                    <option value="{{ $email->id }}"
-                                    >{{ $email->ten_don_vi}}</option>
-                                @endforeach
-
-                            </select>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="don_vi_nhan_ngoai" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
+                            <label for="don_vi_nhan_ngoai" class="col-form-label">Đơn vị nhận ngoài thành phố</label><br>
                             <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                     class="form-control select2"
                                     multiple="multiple"
@@ -39,19 +24,11 @@
 
                             </select>
                         </div>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Gửi</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
                 </div>
             </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline">Save changes</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
