@@ -8,10 +8,9 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Vào sổ văn Bản Đến</h3>
                     </div>
-                    <form role="form" action="{{route('van-ban-den.store')}}" method="post" enctype="multipart/form-data"
+                    <form role="form" action="{{route('vaosovanbandvnhan')}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
-                        @method('PUT')
                         <div class="box-body">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -48,6 +47,7 @@
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">(*)</span></label>
                                     <input type="text" class="form-control" value="{{$van_ban_den->vanbandi->so_ky_hieu}}" name="so_ky_hieu" id="exampleInputEmail4"
                                            placeholder="Số ký hiệu" required>
+                                    <input type="text" class="hidden" value="{{$id}}" name="id_van_ban_di">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -134,7 +134,7 @@
                                     <select class="form-control select2"  name="do_khan">
                                         {{--                                        <option value="">-- Chọn độ khẩn --</option>--}}
                                         @foreach($dokhan as $dokhands)
-                                            <option value="{{ $dokhands->id }}" {{ $nguoidung->id }}"  >{{ $dokhands->ten_muc_do }}</option>
+                                            <option value="{{ $dokhands->id }}"  >{{ $dokhands->ten_muc_do }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -145,7 +145,7 @@
                                     <select class="form-control select2"  name="do_mat">
                                         {{--                                        <option value="">-- Chọn độ mật--</option>--}}
                                         @foreach($domat as $domatds)
-                                            <option value="{{ $domatds->id }}" {{ $nguoidung->id }}" >{{ $domatds->ten_muc_do }}</option>
+                                            <option value="{{ $domatds->id }}"  >{{ $domatds->ten_muc_do }}</option>
                                         @endforeach
                                     </select>
                                 </div>
