@@ -201,6 +201,7 @@ class DonViNhanVanBanDenController extends Controller
         $layvanbandi = NoiNhanVanBanDi::where('id',$request->id_van_ban_di)->first();
         $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id',$layvanbandi->van_ban_di_id)->get();
         if($updatenoinhan){
+            //update
             foreach ($updatenoinhan as $data)
             {
                 $trangthai = NoiNhanVanBanDi::where('id',$data->id)->first();
