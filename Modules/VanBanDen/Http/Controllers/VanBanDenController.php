@@ -44,12 +44,7 @@ class VanBanDenController extends Controller
         if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH|| auth::user()->role_id == QUYEN_PHO_CHUC_TICH||
             auth::user()->role_id == QUYEN_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG)
         {
-            $ds_vanBanDen = VanBanDen::
-//            where([
-//                'don_vi_id' => $donvi->ma_don_vi_cha,
-//                'type' => 2,
-//                'trang_thai' => 1
-            where('so_van_ban_id', '!=', 100)
+            $ds_vanBanDen = VanBanDen::where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");
@@ -106,7 +101,7 @@ class VanBanDenController extends Controller
 //                'don_vi_id' => $donvi->ma_don_vi_cha,
 //                'type' => 2,
 //                'trang_thai' => 1
-            where('so_van_ban_id', '!=', 100)
+            where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");

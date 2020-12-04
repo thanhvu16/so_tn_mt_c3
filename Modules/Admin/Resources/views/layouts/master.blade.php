@@ -85,11 +85,11 @@
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
+<script src="{{ url('theme/dist/js/pages/charts/loader.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ url('theme/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{url('theme/plugins/loadingModal/js/jquery.loadingModal.js')}}"></script>
 <script src="{{url('theme/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
-
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
 

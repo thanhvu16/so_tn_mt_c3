@@ -38,3 +38,16 @@ CONST VAN_THU_DON_VI = 'văn thư đơn vị';
 CONST VAN_THU_HUYEN = 'văn thư huyện';
 CONST CHANH_VAN_PHONG = 'chánh văn phong';
 CONST PHO_CHANH_VAN_PHONG = 'phó tránh văn phòng';
+
+
+define('COLOR_INFO', '#4fbde9');
+define('COLOR_GREEN', '#2b982b');
+define('COLOR_INFO_SHADOW', '#0269f3');
+define('COLOR_WARNING', '#f9bc0b');
+define('COLOR_TEAL', '#02a8b5');
+define('COLOR_ORANGE', '#ff9900');
+define('COLOR_RED', '#fb483a');
+define('COLOR_PURPLE', '#9368f3');
+define('COLOR_PINK', '#e061c9');
+define('COLOR_BLUE_DARK', '#4937de');
+define('COLOR_PINTEREST', '#cb2027');
