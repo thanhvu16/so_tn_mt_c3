@@ -52,7 +52,7 @@
                                                        id="vb_so_den"
                                                        placeholder="Số đến văn bản">
                                             </div>
-                                            <div class="form-group col-md-4" ngayketthuc>
+                                            <div class="form-group col-md-4" >
                                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
                                                 <input type="text" name="vb_so_ky_hieu"
                                                        value="{{Request::get('vb_so_ky_hieu')}}"
@@ -60,7 +60,7 @@
                                                        id="sokyhieu"
                                                        placeholder="Số ký hiệu">
                                             </div>
-                                            <div class="form-group col-md-4" ngayketthuc>
+                                            <div class="form-group col-md-4" >
                                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>
                                                 <div id="">
                                                     <input class="form-control " id="vb_ngay_ban_hanh"
@@ -68,7 +68,7 @@
                                                            name="start_date">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4" ngayketthuc>
+                                            <div class="form-group col-md-4" >
                                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>
                                                 <div id="">
                                                     <input class="form-control " id="vb_ngay_ban_hanh"
@@ -76,27 +76,27 @@
                                                            name="end_date">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4" ngayketthuc>
+                                            <div class="form-group col-md-4" >
                                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Cơ quan ban
                                                     hành</label>
                                                 <input type="text" name="co_quan_ban_hanh_id"
                                                        value="{{Request::get('co_quan_ban_hanh_id')}}"
                                                        class="form-control">
                                             </div>
-                                            <div class="form-group col-md-4" ngayketthuc>
+                                            <div class="form-group col-md-4" >
                                                 <label for="sokyhieu" class="col-form-label">Người ký</label>
                                                 <input type="text" value="{{Request::get('nguoi_ky_id')}}"
                                                        name="nguoi_ky_id"
                                                        class="form-control">
                                             </div>
 
-                                            <div class="form-group col-md-12" ngayketthuc>
+                                            <div class="form-group col-md-12" >
                                                 <label for="sokyhieu" class="col-form-label ">Trích yếu</label>
                                                 <textarea rows="3"  class="form-control" placeholder="nội dung"
                                                           name="vb_trich_yeu"
                                                           type="text">{{Request::get('vb_trich_yeu')}}</textarea>
                                             </div>
-                                            <div class="form-group col-md-3" ngayketthuc>
+                                            <div class="form-group col-md-3" >
                                                 <button type="submit" value="1" class="btn btn-primary" name="search">Tìm kiếm
                                                 </button>
                                             </div>
@@ -189,41 +189,42 @@
                                     </td>
 
                                 </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel">
+
+                                <div class="modal fade" id="myModal">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title"><i
-                                                        class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
-                                            </div>
-                                            <form class="form-row" method="post"
-                                                  action="{{route('multiple_file')}}"
-                                                  enctype="multipart/form-data">
+                                            <form action="{{ route('multiple_file') }}" method="POST">
                                                 @csrf
-                                                <div class="form-group col-md-12">
-                                                    <label for="sokyhieu" class="">Chọn tệp
-                                                        tin</label><br>
-                                                    <input type="file" multiple name="ten_file[]"
-                                                           accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
-                                                    <input type="text" id="url-file" value="123"
-                                                           class="hidden" name="txt_file[]">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title"><i
+                                                            class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
                                                 </div>
-                                                <div class="form-group col-md-4" >
-                                                    <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
-                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            <label for="sokyhieu" class="">Chọn tệp
+                                                                tin<br><small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                                        sổ văn bản + số đi + năm (vd:
+                                                                        QD-1-2020.pdf))</i></small>
+                                                            </label>
 
+                                                            <input type="file" multiple name="ten_file[]"
+                                                                   accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
+                                                            <input type="text" id="url-file" value="123"
+                                                                   class="hidden" name="txt_file[]">
+                                                        </div>
+                                                        <div class="form-group col-md-4" >
+                                                            <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                </div>
                                             </form>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-outline">Save changes</button>
-                                            </div>
                                         </div>
-                                        <!-- /.modal-content -->
                                     </div>
-                                    <!-- /.modal-dialog -->
                                 </div>
 
                             @empty
@@ -259,10 +260,8 @@
         function showModal() {
             $("#myModal").modal('show');
         }
-
-
     </script>
-
+@endsection
 
 
 

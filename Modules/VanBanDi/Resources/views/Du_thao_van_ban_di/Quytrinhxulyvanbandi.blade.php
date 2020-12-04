@@ -14,7 +14,14 @@
                                 <div class="col-md-12 mt-2"></div>
                                 <div class="col-md-4">
                                     <label for="" class="col-md-4">Nơi nhận:</label>
-                                    <span></span>
+                                    <span>@if(count($vanbandi->donvinhanvbdi)>0)
+                                            @forelse($vanbandi->donvinhanvbdi as $key=>$item)
+
+                                                    {{$item->laytendonvinhan->ten_don_vi ?? ''}},
+
+                                            @empty
+                                            @endforelse
+                                        @endif</span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="" class="col-md-4">Số kí hiệu:</label>
@@ -85,14 +92,7 @@
                                                 <td class="text-center" >{{$data->loaivanban->ten_loai_van_ban}}</td>
                                                 <td class="text-center">{{$data->so_ky_hieu}}</td>
                                                 <td class="text-center">
-{{--                                                                                                                @forelse($data->vanbandi->mailtrongtp as $key=>$item)--}}
-{{--                                                                                                                    - {{$item->laytendonvi->ten_don_vi}}<br>--}}
-{{--                                                                                                                @empty--}}
-{{--                                                                                                                @endforelse--}}
-{{--                                                                                                                @forelse($data->vanbandi->mailngoaitp as $key=>$item)--}}
-{{--                                                                                                                    - {{$item->laytendonvingoai->ten_don_vi}}<br>--}}
-{{--                                                                                                                @empty--}}
-{{--                                                                                                                @endforelse--}}
+
                                                 </td>
                                                 <td><a href="{{route('quytrinhtruyennhangopy',$data->id)}}">{{$data->vb_trich_yeu}}</a></td>
                                                 <td>

@@ -93,7 +93,7 @@
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
                                           required></textarea>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 hidden">
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nhận trong thành phố</label>
                                 <select name="don_vi_nhan_trong_thanh_php[]" id="don_vi_nhan"
                                         class="form-control select2"
@@ -106,7 +106,20 @@
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 ">
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
+                                <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
+                                        class="form-control select2"
+                                        multiple
+                                        data-placeholder=" Chọn đơn vị nhận ...">
+                                    @foreach ($ds_DonVi as $donVi)
+                                        <option value="{{ $donVi->id }}"
+                                        >{{ $donVi->ten_don_vi }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12 hidden">
                                 <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
@@ -122,26 +135,57 @@
 
 
 
-                            <div class="form-group col-md-3" >
-                                <label for="loai_van_ban_id" class="col-form-label">Độ khẩn</label>
-                                <select class="form-control show-tick" name="dokhan_id" required>--}}
-                                    @foreach ($ds_doKhanCap as $doKhanCap)
-                                        <option value="{{ $doKhanCap->id }}"
-                                        >{{ $doKhanCap->ten_muc_do}}</option>
-                                    @endforeach
-                                </select>
+
+
+                            <div class="col-md-12">
+                                <div class=" row duthaovb">
+                                    <div class="form-group col-md-3" >
+                                        <label for="loai_van_ban_id" class="col-form-label">Độ khẩn</label>
+                                        <select class="form-control show-tick" name="dokhan_id" required>--}}
+                                            @foreach ($ds_doKhanCap as $doKhanCap)
+                                                <option value="{{ $doKhanCap->id }}"
+                                                >{{ $doKhanCap->ten_muc_do}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="do_mat_id" class="col-form-label">Độ mật</label>
+                                        <select class="form-control show-tick " name="dobaomat_id" required>--}}
+                                            @foreach ($ds_mucBaoMat as $doBaoMat)
+                                                <option value="{{ $doBaoMat->id }}"
+                                                >{{ $doBaoMat->ten_muc_do}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3  mt-1 ">
+                                        <label for="sokyhieu" class="col-form-label">File trình ký</label>
+                                        <div class="form-line input-group control-group">
+                                            <input type="file" id="url-file" name="file_trinh_ky[]" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3   mt-1">
+                                        <label for="url-file" class="col-form-label">File phiếu trình</label>
+                                        <div class="form-line input-group control-group">
+                                            <input type="file" id="url-file" name="file_phieu_trinh[]" class="form-control">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row clearfix"></div>
+                                    <div class="col-md-offset-9 mt-2 text-right" style="color: white">
+                                        <a class="btn btn-primary btn-xs" onclick="duthaovanban()" role="button"
+                                        ><i class="fa fa-plus"></i>
+                                        </a>
+                                        <b class="text-danger"> Thêm file hồ sơ</b>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="do_mat_id" class="col-form-label">Độ mật</label>
-                                <select class="form-control show-tick " name="dobaomat_id" required>--}}
-                                    @foreach ($ds_mucBaoMat as $doBaoMat)
-                                        <option value="{{ $doBaoMat->id }}"
-                                        >{{ $doBaoMat->ten_muc_do}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3 mt-4">
-                                <button  type="submit" class="btn btn-info waves-effect waves-light"><i class="fa fa fa-plus mr-1"></i>
+
+                            <div class="form-group col-md-3 mt-1">
+                                <button  type="submit" class="btn btn-info waves-effect waves-light"><i class="fa fa-plus-square-o mr-1"></i>
                                     <span>Tạo văn bản</span></button>
                             </div>
                         </form>

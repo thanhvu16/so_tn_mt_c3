@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-md-12 mt-3">
                         <div class="row">
-                            <form action="{{route('giay-moi-di.index')}}" method="get">
+                            <form action="{{route('dacoso')}}" method="get">
                                 <div class="col-md-12 collapse {{ Request::get('search') == 1 ? 'in' : '' }}" id="collapseExample">
                                     <div class="row">
 {{--                                        <div class="form-group col-md-3">--}}
@@ -74,6 +74,7 @@
                                                 <!-- /.input group -->
                                             </div>
                                         </div>
+                                        <div class="row clearfix"></div>
                                         <div class="col-md-3" >
                                             <div class="form-group">
                                                 <label for="">Ngày họp từ</label>
@@ -203,12 +204,10 @@
                                     </td>
                                     <td class="visible-lg">
 
-                                        @forelse($vbDi->mailtrongtp as $key=>$item)
-                                            - {{$item->laytendonvi->ten_don_vi}}<br>
-                                        @empty
-                                        @endforelse
-                                        @forelse($vbDi->mailngoaitp as $key=>$item)
-                                            - {{$item->laytendonvingoai->ten_don_vi}}<br>
+                                        @forelse($vbDi->donvinhanvbdi as $key=>$item)
+                                            <p>
+                                                - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
+                                            </p>
                                         @empty
                                         @endforelse
 

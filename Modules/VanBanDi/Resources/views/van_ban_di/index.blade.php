@@ -12,17 +12,38 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 ">
-                        <a role="button" onclick="showModal()" class="btn btn-primary ">
-                            <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
-                        <a class=" btn btn-primary" data-toggle="collapse"
-                           href="#collapseExample"
-                           aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
-                                style="font-size: 14px">Tìm kiếm văn bản</span>
-                        </a>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <a role="button" onclick="showModal()" class="btn btn-primary ">
+                                    <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
+                                <a class=" btn btn-primary" data-toggle="collapse"
+                                   href="#collapseExample"
+                                   aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
+                                        style="font-size: 14px">Tìm kiếm văn bản</span>
+                                </a>
+                            </div>
+
+                        </div>
+                       @role('văn thư đơn vị')
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-offset-8">
+                                    <select class="form-control show-tick select2-search"
+                                            name="don_vi_van_ban" form="search_vb" onchange="this.form.submit()" id="">
+                                        <option value="2" {{Request::get('don_vi_van_ban') == 2 ? 'selected' : ''}}>Văn bản huyện</option>
+                                        <option value="1" {{Request::get('don_vi_van_ban') == 1 ? 'selected' : ''}}>Văn bản đơn vị</option>
+                                        <option  value="" {{Request::get('don_vi_van_ban') == '' ? 'selected' : ''}}>Tất cả văn bản</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        @endrole
+
                     </div>
                     <div class="col-md-12 mt-3">
                         <div class="row">
-                            <form action="{{route('van-ban-di.index')}}" method="get">
+                            <form action="{{route('van-ban-di.index')}}" id="search_vb" method="get">
                                 <div class="col-md-12 collapse {{ Request::get('search') == 1 ? 'in' : '' }}" id="collapseExample">
                                     <div class="row">
                                         <div class="form-group col-md-3">
@@ -163,12 +184,10 @@
                                     </td>
                                     <td>
                                         {{--                                                    {{$vbDi->mailtrongtp}}--}}
-                                        @forelse($vbDi->mailtrongtp as $key=>$item)
-                                            - {{$item->laytendonvi->ten_don_vi}}<br>
-                                        @empty
-                                        @endforelse
-                                        @forelse($vbDi->mailngoaitp as $key=>$item)
-                                            - {{$item->laytendonvingoai->ten_don_vi}}<br>
+                                        @forelse($vbDi->donvinhanvbdi as $key=>$item)
+                                            <p>
+                                                - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
+                                            </p>
                                         @empty
                                         @endforelse
                                     </td>
@@ -213,47 +232,45 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalLabel">
+
+
+
+                    <div class="modal fade" id="myModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span></button>
-                                    <h4 class="modal-title"><i
-                                            class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
-                                </div>
-                                <form class="form-row" method="post"
-                                      action="{{route('multiple_file_di')}}"
-                                      enctype="multipart/form-data">
+                                <form action="{{ route('multiple_file_di') }}" method="POST">
                                     @csrf
-                                    <div class="form-group col-md-12">
-                                        <label for="sokyhieu" class="col-form-label">Chọn tệp tin
-                                            <br>
-                                            <small><i>(Đặt tên file theo định dạng: tên viết tắt
-                                                    loại văn bản + số đi + năm (vd:
-                                                    QD-1-2020.pdf))</i></small>
-                                        </label><br>
-                                        <input type="file" multiple name="ten_file[]"
-                                               accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
-                                        <input type="text" id="url-file" value="123" class="hidden"
-                                               name="txt_file[]">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title"><i
+                                                class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
                                     </div>
-                                    <div class="form-group col-md-4" >
-                                        <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label for="sokyhieu" class="col-form-label">Chọn tệp tin
+                                                    <br>
+                                                    <small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                            loại văn bản + số đi + năm (vd:
+                                                            QD-1-2020.pdf))</i></small>
+                                                </label><br>
+                                                <input type="file" multiple name="ten_file[]"
+                                                       accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
+                                                <input type="text" id="url-file" value="123" class="hidden"
+                                                       name="txt_file[]">
+                                            </div>
+                                            <div class="form-group col-md-4" >
+                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                    <div class="modal-footer">
+                                    </div>
                                 </form>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-outline">Save changes</button>
-                                </div>
                             </div>
-                            <!-- /.modal-content -->
                         </div>
-                        <!-- /.modal-dialog -->
                     </div>
-
 
 
                 </div>

@@ -235,7 +235,7 @@
 
                                     <div class=" col-md-3 mt-4" style="margin-top: 35px">
                                         <button
-                                            class="btn btn-primary" type="submit"><i class="fa fa fa-plus mr-1"></i>
+                                            class="btn btn-primary" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
                                             <span>Thêm mới</span></button>
                                     </div>
 

@@ -3,7 +3,7 @@
       method="post" enctype="multipart/form-data" id="formCreateDoc">
     @csrf
 
-    <div class=" col-md-3">
+    <div class=" col-md-3 form-group">
         <label for="exampleInputEmail2">Loại văn bản<span class="color-red">*</span></label>
         <select class="form-control" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
             <option value="">Chọn loại văn bản</option>
@@ -12,7 +12,7 @@
             @endforeach
         </select>
     </div>
-    <div class=" col-md-3">
+    <div class=" col-md-3 form-group">
         <label for="exampleInputEmail2">Cán bộ trong phòng góp ý<span class="color-red">*</span></label>
         <select name="lanh_dao_phong_phoi_hop[]" id="lanh_dao_phong_phoi_hop"
                 class="form-control select2"
@@ -25,7 +25,7 @@
         </select>
     </div>
 
-    <div class=" col-md-3">
+    <div class=" col-md-3 form-group">
         <label for="exampleInputEmail2">Cán bộ Ủy ban góp ý <span class="color-red">*</span></label>
         <select name="lanh_dao_phong_khac[]" id="lanh_dao_phong_khac"
                 class="form-control select2"
@@ -37,21 +37,21 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 form-group">
         <label for="exampleInputEmail2">Ký hiệu <span class="color-red">*</span></label>
         <input type="text" class="form-control sokyhieu" placeholder="số kí hiệu..." name="so_ky_hieu">
     </div>
-    <div class=" col-md-12  mt-1">
+    <div class=" col-md-12 form-group">
         <label for="exampleInputEmail2">Ý kiến <span class="color-red">*</span></label>
         <textarea rows="3" class="form-control" required placeholder="nội dung" name="y_kien"
                   type="text">{{ old('y_kien') }}</textarea>
     </div>
-    <div class=" col-md-12  mt-1">
+    <div class=" col-md-12  form-group">
         <label for="exampleInputEmail2">Trích yếu <span class="color-red">*</span></label>
         <textarea rows="3" class="form-control" required placeholder="nội dung" name="vb_trich_yeu"
                   type="text">{{ old('vb_trich_yeu') }}</textarea>
     </div>
-    <div class="col-md-3  mt-1">
+    <div class="col-md-3   form-group">
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
         <select class="form-control dropdown-search layidnguoiky"  name="nguoi_ky" id="nguoi_ky" autofocus required>
             <option>--Chọn người ký--</option>
@@ -61,16 +61,16 @@
         </select>
     </div>
 
-    <div class=" col-md-3  mt-1">
+    <div class=" col-md-3  form-group">
         <label for="loai_van_ban_id" class="col-form-label">Chức vụ</label>
         <input type="text" class="form-control" name="chuc_vu" placeholder="Chức vụ......">
     </div>
 
-    <div class=" col-md-3  mt-1">
+    <div class=" col-md-3  form-group">
         <label for="loai_van_ban_id" class="col-form-label">Ngày tháng</label>
         <input type="date" class="form-control" value="{{$date}}" name="ngay_thang" placeholder="......">
     </div>
-    <div class=" col-md-3  mt-1">
+    <div class=" col-md-3  form-group">
         <label for="vb_ngay_ban_hanh" class="col-form-label">Hạn xử lý</label>
         <input class="form-control" id="so_trang"
                value="" type="date"

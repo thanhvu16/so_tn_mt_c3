@@ -74,6 +74,7 @@
                                                 <!-- /.input group -->
                                             </div>
                                         </div>
+                                        <div class="row clearfix"></div>
                                         <div class="col-md-3" >
                                             <div class="form-group">
                                                 <label for="">Ngày họp từ</label>
@@ -203,12 +204,10 @@
                                     </td>
                                     <td class="visible-lg">
 
-                                        @forelse($vbDi->mailtrongtp as $key=>$item)
-                                            - {{$item->laytendonvi->ten_don_vi}}<br>
-                                        @empty
-                                        @endforelse
-                                        @forelse($vbDi->mailngoaitp as $key=>$item)
-                                            - {{$item->laytendonvingoai->ten_don_vi}}<br>
+                                        @forelse($vbDi->donvinhanvbdi as $key=>$item)
+                                            <p>
+                                                - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
+                                            </p>
                                         @empty
                                         @endforelse
 

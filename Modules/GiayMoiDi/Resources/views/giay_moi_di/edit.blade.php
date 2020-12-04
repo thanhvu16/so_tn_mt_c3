@@ -81,15 +81,15 @@
                                            name="dia_diem" placeholder="Địa điểm">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3" >
-                                <label for="sokyhieu" class="col-form-label">Người duyệt <span style="color: red">*</span></label>
-                                <select name="nguoi_nhan" id="" class="form-control ">
-                                    @foreach ($nguoinhan as $data)
-                                        <option value="{{ $data->id }}" {{$giaymoidi->user_id == $data->id ? 'selected' : ''}}
-                                        >{{ $data->ho_ten}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group col-md-3" >--}}
+{{--                                <label for="sokyhieu" class="col-form-label">Người duyệt <span style="color: red">*</span></label>--}}
+{{--                                <select name="nguoi_nhan" id="" class="form-control ">--}}
+{{--                                    @foreach ($nguoinhan as $data)--}}
+{{--                                        <option value="{{ $data->id }}" {{$giaymoidi->user_id == $data->id ? 'selected' : ''}}--}}
+{{--                                        >{{ $data->ho_ten}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
 
 
@@ -134,7 +134,7 @@
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
                                           required>{{$giaymoidi->trich_yeu}}</textarea>
                             </div>
-                            <div class="form-group col-md-12" >
+                            <div class="form-group col-md-12 hidden" >
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nhận trong thành phố</label>
                                 <select name="don_vi_nhan_trong_thanh_php[]" id="don_vi_nhan"
                                         class="form-control select2"
@@ -147,7 +147,7 @@
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-12" >
+                            <div class="form-group col-md-12 hidden" >
                                 <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
@@ -156,6 +156,19 @@
                                     @foreach ($emailngoaithanhpho as $emailngoai)
                                         <option value="{{ $emailngoai->id }}" {{  in_array($emailngoai->id, $lay_emailngoaithanhpho->pluck('email')->toArray()) ? 'selected' : '' }}
                                         >{{ $emailngoai->ten_don_vi}}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
+                                <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
+                                        class="form-control select2"
+                                        multiple
+                                        data-placeholder=" Chọn đơn vị nhận ...">$lay_noi_nhan_van_ban_di
+                                    @foreach ($ds_DonVi as $donVi)
+                                        <option value="{{ $donVi->id }}"{{  in_array($donVi->id, $lay_noi_nhan_van_ban_di->pluck('don_vi_id_nhan')->toArray()) ? 'selected' : '' }}
+                                        >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach
 
                                 </select>

@@ -20,40 +20,41 @@
                                 <th  class="text-center">Trích yếu</th>
                                 <th width="20%" class="text-center">Nơi nhận
                                 </th>
-                                <th width="5%" class="text-center">Tác vụ
+                                <th width="12%" class="text-center">Tác vụ
                                 </th>
-                                <th width="12%" class="text-center">Duyệt
+                                <th width="5%" class="text-center">Duyệt
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($vanbandichoso as $key=>$data)
-                                <form method="post" id="choso"
-                                      action="{{route('Capsovanbandi',$data->van_ban_di_id)}}">
-                                    @csrf
+
                                     <tr>
+                                        <form method="post" id="choso"
+                                               action="{{route('Capsovanbandi',$data->id)}}">
+                                            @csrf
                                         <td
                                             class="text-center"> {{$key+1}}</td>
                                         <td>
-                                            <p>- Số ký hiệu: {{$data->vanbandi->so_ky_hieu ?? ''}}</p>
+                                            <p>- Số ký hiệu: {{$data->so_ky_hieu ?? ''}}</p>
                                             <p>- Loại văn
-                                                bản: {{$data->vanbandi->loaivanban->ten_loai_van_ban ?? null }}</p>
+                                                bản: {{$data->loaivanban->ten_loai_van_ban ?? null }}</p>
                                             <p>- Ngày tháng: <br>
-                                                <input type="date" name="ngay_ban_hanh" class="ngay-ban-hanh-{{$data->van_ban_di_id}}" value="{{$date}}">
-                                                <input type="text" value="{{$data->van_ban_di_id}}"
-                                                       class="hidden van-ban-di-{{$data->van_ban_di_id}}" name="van_ban_di_id">
+                                                <input type="date" name="ngay_ban_hanh" class="ngay-ban-hanh-{{$data->id}}" value="{{$date}}">
+                                                <input type="text" value="{{$data->id}}"
+                                                       class="hidden van-ban-di-{{$data->id}}" name="van_ban_di_id">
                                             </p>
                                         </td>
                                         <td>
-                                            <a href="">{{$data->vanbandi->trich_yeu ?? ''}}</a><br>
+                                            <a href="">{{$data->trich_yeu ?? ''}}</a><br>
                                             <span
-                                                style="font-style: italic">(Người ký: {{$data->vanbandi->nguoidung2->ho_ten ?? ''}})</span><br>
-                                            <span style="color: black;font-weight: normal">(Ngày nhập: {{date('d/m/Y', strtotime($data->vanbandi->ngay_ban_hanh))}})
+                                                style="font-style: italic">(Người ký: {{$data->nguoidung2->ho_ten ?? ''}})</span><br>
+                                            <span style="color: black;font-weight: normal">(Ngày nhập: {{date('d/m/Y', strtotime($data->ngay_ban_hanh))}})
                                                            </span>
                                             <p>
-                                                @if (isset($data->vanbandi->filetrinhky))
+                                                @if (isset($data->filetrinhky))
                                                     - Tệp tin:
-                                                    @foreach($data->vanbandi->filetrinhky as $key => $filedata)
+                                                    @foreach($data->filetrinhky as $key => $filedata)
                                                         <a href="{{ $filedata->getUrlFile() }}"
                                                            target="popup"
                                                            class="detail-file-name seen-new-window">[file_trinh_ky]</a>
@@ -65,27 +66,49 @@
                                         </td>
                                         <td>
                                             {{--                                                        <div class="form-control" style="height: 100px;overflow: auto">--}}
-                                            @forelse($data->vanbandi->mailtrongtp as $key=>$item)
+                                            @forelse($data->donvinhanvbdi as $key=>$item)
                                                 <p>
-                                                    - {{$item->laytendonvi->ten_don_vi}}
+                                                    - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
                                                 </p>
                                             @empty
                                             @endforelse
-                                            @forelse($data->vanbandi->mailngoaitp as $key=>$item)
-                                                <p>
-                                                    - {{$item->laytendonvingoai->ten_don_vi}}
-                                                </p>
-                                            @empty
-                                            @endforelse
-                                            {{--                                                        </div>--}}
-                                            <p>
-                                                <a class="them-noi-nhan" data-toggle="modal"
-                                                   data-target="#modal-them-noi-nhan"
-                                                   data-id="{{ $data->vanbandi->id }}">
-                                                    <span><i class="fa fa-plus-square-o"></i> Thêm nơi nhận</span>
-                                                </a>
-                                            </p>
+{{--                                            @forelse($data->mailngoaitp as $key=>$item)--}}
+{{--                                                <p>--}}
+{{--                                                    - {{$item->laytendonvingoai->ten_don_vi}}--}}
+{{--                                                </p>--}}
+{{--                                            @empty--}}
+{{--                                            @endforelse--}}
+{{--                                            --}}{{--                                                        </div>--}}
+{{--                                            <p>--}}
+{{--                                                <a class="them-noi-nhan" data-toggle="modal"--}}
+{{--                                                   data-target="#modal-them-noi-nhan"--}}
+{{--                                                   data-id="{{ $data->id }}">--}}
+{{--                                                    <span><i class="fa fa-plus-square-o"></i> Thêm nơi nhận</span>--}}
+{{--                                                </a>--}}
+{{--                                            </p>--}}
                                         </td>
+                                            <td class="text-center">
+                                                <button type="submit" form="choso"
+                                                        class="btn btn-primary btn-sm"><i
+                                                        class="fa  fa-check-square-o"></i></button>
+                                                @if (isset($data->filetrinhky))
+
+                                                    @foreach($data->filetrinhky as $key => $filedata)
+                                                        @if ($filedata->trang_thai ==2)
+                                                            <br>
+                                                            <button type="button"
+                                                                    onclick="exc_sign_issued('{{ $filedata->getUrlFile() }}',100,'{{ date('d-m-Y') }}',{{$data->id}});"
+                                                                    value="{{ $data->id }}"
+                                                                    type="button" class="btn btn-primary mt-2 "><i
+                                                                    class="fa fa-pencil-square-o"
+                                                                    aria-hidden="true"></i> Đóng dấu
+                                                                phát hành
+                                                            </button>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                        </form>
                                         <td class="text-center" style="vertical-align: middle">
                                             @hasanyrole('văn thư đơn vị|văn thư huyện')
                                                 <form method="Get" action="{{route('vanbandidelete',$data->id)}}">
@@ -106,29 +129,9 @@
 
                                             @endrole
                                         </td>
-                                        <td class="text-center">
-                                        <button type="submit" form="choso"
-                                                class="btn btn-primary btn-sm"><i
-                                                class="fa  fa-check-square-o"></i></button>
-                                            @if (isset($data->vanbandi->filetrinhky))
 
-                                                @foreach($data->vanbandi->filetrinhky as $key => $filedata)
-                                                    @if ($filedata->trang_thai ==2)
-                                                        <br>
-                                                        <button type="button"
-                                                                onclick="exc_sign_issued('{{ $filedata->getUrlFile() }}',100,'{{ date('d-m-Y') }}',{{$data->van_ban_di_id}});"
-                                                                value="{{ $data->van_ban_di_id }}"
-                                                                type="button" class="btn btn-primary mt-2 "><i
-                                                                class="fa fa-pencil-square-o"
-                                                                aria-hidden="true"></i> Đóng dấu
-                                                            phát hành
-                                                        </button>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </td>
                                     </tr>
-                                </form>
+
                             @empty
                                 <td colspan="9" class="text-center">Không tìm thấy dữ liệu.</td>
                             @endforelse
