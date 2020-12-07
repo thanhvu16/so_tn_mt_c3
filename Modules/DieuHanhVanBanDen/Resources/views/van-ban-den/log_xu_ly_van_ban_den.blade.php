@@ -11,7 +11,7 @@
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row">
-                        <th>STT</th>
+                        <th class="text-center">STT</th>
                         <th>Thời gian chuyển</th>
                         <th>Chuyển từ</th>
                         <th>Nội dung</th>
@@ -22,7 +22,7 @@
                     <tbody>
                     @foreach($xuLyVanBanDen as $key => $logChuyenVanBanDen)
                         <tr>
-                            <td>{{ $key+1 }}</td>
+                            <td class="text-center">{{ $key+1 }}</td>
                             <td>{{  date('d/m/Y H:i:s', strtotime($logChuyenVanBanDen->created_at)) }}</td>
                             <td>Đ/c {{ $logChuyenVanBanDen->canBoChuyen->ho_ten ?? null }}</td>
                             <td>

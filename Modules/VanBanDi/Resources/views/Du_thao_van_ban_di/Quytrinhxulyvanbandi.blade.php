@@ -214,7 +214,7 @@
                                             <td>{{ $vanbandi->vanBanDenDonVi->co_quan_ban_hanh_id ?? null }}</td>
                                             <td class="{{ Request::get('qua_han') ? 'color-red' : null }}">
                                                 <p>
-                                                    <a href="{{ route('xu-ly-van-ban.show', $vanbandi->vanBanDenDonVi->id) }}">{{ $vanbandi->vanBanDenDonVi->vanBanDen->vb_trich_yeu }}</a>
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->id) }}">{{ $vanbandi->vanBanDenDonVi->vanBanDen->vb_trich_yeu }}</a>
                                                     @if ($vanbandi->vanBanDenDonVi->so_van_ban_id == SO_VB_GIAY_MOI)
                                                         <br>
                                                         <i>

@@ -11,7 +11,7 @@
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row">
-                        <th>STT</th>
+                        <th class="text-center">STT</th>
                         <th>Thời gian chuyển</th>
                         <th>Chuyển từ</th>
                         <th>Nội dung chuyển</th>
@@ -22,7 +22,7 @@
                     <tbody>
                     @forelse($chuyenNhanVanBanDonViChuTri as $key => $ChuyenNhanCongViec)
                         <tr>
-                            <td>{{ $key+1 }}</td>
+                            <td class="text-center">{{ $key+1 }}</td>
                             <td>{{ date('d/m/Y H:i:s', strtotime($ChuyenNhanCongViec->created_at)) }}</td>
                             <td>Đ/c {{ $ChuyenNhanCongViec->canBoChuyen->ho_ten ?? '' }}</td>
                             <td>{{ $ChuyenNhanCongViec->noi_dung ?? null }}</td>

@@ -16,11 +16,42 @@ class VanBanDenHoanThanhController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('dieuhanhvanbanden::index');
+        $currentUser = auth::user();
+
+        $date = !empty($request->get('date')) ? $request->get('date') : null;
+
+
+        if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+
+            $xuLyVanBanDen = DonViChuTri::where([
+                'don_vi_id' => $currentUser->don_vi_id,
+                'can_bo_nhan_id' => $currentUser->id,
+                'hoan_thanh' => DonViChuTri::HOAN_THANH_VB
+            ])->get();
+
+        } else {
+            $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
+                ->where('hoan_thanh', XuLyVanBanDen::HOAN_THANH_VB)
+                ->get();
+        }
+
+
+        $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+            ->whereIn('id', $arrVanBanDenId)
+            ->paginate(PER_PAGE);
+
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+
+        return view('dieuhanhvanbanden::van-ban-hoan-thanh.index', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }
 
     /**
@@ -104,7 +135,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $arrVanBanDenId = $giaiQuyetVanBan->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung')
+        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'donViChuTri', 'xuLyVanBanDen')
             ->whereIn('id', $arrVanBanDenId)
             ->paginate(PER_PAGE);
 
@@ -131,6 +162,7 @@ class VanBanDenHoanThanhController extends Controller
             // update giai quyet vb
             if ($giaiQuyetVanBan) {
                 $giaiQuyetVanBan->noi_dung_nhan_xet = $noiDung ?? null;
+                $giaiQuyetVanBan->ngay_duyet = date('Y-m-d H:i:s');
                 $giaiQuyetVanBan->status = $status;
                 $giaiQuyetVanBan->save();
             }
@@ -144,16 +176,16 @@ class VanBanDenHoanThanhController extends Controller
                     $vanBanDenDonVi->save();
 
                     //xoa chuyen nhan vb
-                    $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
-                        ->where('can_bo_nhan_id', auth::user()->id)
-                        ->whereNull('hoan_thanh')->first();
+//                    $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+//                        ->where('can_bo_nhan_id', auth::user()->id)
+//                        ->whereNull('hoan_thanh')->first();
 
-                    if ($chuyenNhanVanBanDonVi) {
-                        DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
-                            ->where('id', '>', $chuyenNhanVanBanDonVi->id)
-                            ->where('don_vi_id', auth::user()->don_vi_id)
-                            ->whereNull('hoan_thanh')->delete();
-                    }
+//                    if ($chuyenNhanVanBanDonVi) {
+//                        DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+//                            ->where('id', '>', $chuyenNhanVanBanDonVi->id)
+//                            ->where('don_vi_id', auth::user()->don_vi_id)
+//                            ->whereNull('hoan_thanh')->delete();
+//                    }
 
 
                     //update luu vet van ban
@@ -162,6 +194,7 @@ class VanBanDenHoanThanhController extends Controller
 
                     //update chuyen nhan vb don vi
                     DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->where('don_vi_id', auth::user()->don_vi_id)
                         ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
 
                     return response()->json([

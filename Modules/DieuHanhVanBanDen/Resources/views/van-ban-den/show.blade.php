@@ -99,22 +99,18 @@
             @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_chu_tri', ['chuyenNhanVanBanDonViChuTri' => $vanBanDen->donViChuTri ])
             @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_phoi_hop', ['chuyenNhanVanBanDonViPhoiHop' => $vanBanDen->donViPhoiHop ])
             @include('dieuhanhvanbanden::van-ban-den.log_gia_han_van_ban', ['giaHanVanBanDonVi' => $vanBanDen->giaHanVanBan ])
+            @include('dieuhanhvanbanden::van-ban-den.log_chuyen_vien_phoi_hop', ['danhSachPhoiHopGiaiQuyet' => $vanBanDen->chuyenVienPhoiHop])
+            @include('dieuhanhvanbanden::van-ban-den.log_don_vi_phoi_hop_giai_quyet', ['danhSachDonViPhoiHopGiaiQuyet' => $vanBanDen->donViPhoiHopGiaiquyet])
+            @include('dieuhanhvanbanden::van-ban-den.log-hoan_thanh_cong_viec')
+            @include('dieuhanhvanbanden::van-ban-den.log_du_thao_van_ban')
+            @include('dieuhanhvanbanden::van-ban-den.log_van_ban_di')
 
             <!--giai quyet van ban-->
-                <div class="col-md-12 mt-4">
-                    <label>
-                        <input type="radio" name="status_action" id="van-ban-tra-loi" value="1">
-                        <b>Văn bản cần trả lời</b>
-                    </label>
-                    &nbsp;
-                    &nbsp;
-                    <label>
-                        <input type="radio" name="status_action" id="van-ban-luu" value="2">
-                        <b>Văn bản lưu</b>
-                    </label>
-
-                    @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
-                </div>
+                @if ($vanBanDen->active != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                    @hasanyrole('trưởng phòng|phó phòng|chuyên viên')
+                        @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
+                    @endif
+                @endrole
 
                 <div class="col-md-12 mt-3">
                     <a class="btn btn-default go-back" data-original-title="" title="">Quay lại &gt;&gt;</a>
@@ -126,7 +122,7 @@
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $('input[name="status_action"]').on('click', function () {
             let status = $(this).val();
             if (status == 1) {

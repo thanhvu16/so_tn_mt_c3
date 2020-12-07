@@ -2,7 +2,7 @@
       action="{{  route('du-thao-van-ban.store')}}"
       method="post" enctype="multipart/form-data" id="formCreateDoc">
     @csrf
-
+    <input type="hidden" name="van_ban_den_don_vi_id" value="{{ isset($vanBanDen) ? $vanBanDen->id : null }}">
     <div class=" col-md-3 form-group">
         <label for="exampleInputEmail2">Loại văn bản <span class="color-red">*</span></label>
         <select class="form-control select2" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
@@ -53,7 +53,7 @@
     </div>
     <div class="col-md-3   form-group">
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
-        <select class="form-control dropdown-search layidnguoiky"  name="nguoi_ky" id="nguoi_ky" autofocus required>
+        <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" id="nguoi_ky" autofocus required>
             <option>--Chọn người ký--</option>
             @foreach ($ds_nguoiKy as $nguoiky)
                 <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>

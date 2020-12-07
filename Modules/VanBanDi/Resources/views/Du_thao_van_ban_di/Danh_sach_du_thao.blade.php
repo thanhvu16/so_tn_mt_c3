@@ -32,7 +32,7 @@
                                     <td class="text-center">{{ date('d-m-Y', strtotime($data->ngay_thang)) }}</td>
 
                                     <td style="text-align: justify"><a
-                                            href="@if($data->van_ban_den_don_vi_id != null){{route('xu-ly-van-ban.show',$data->van_ban_den_don_vi_id)}}@else#@endif"
+                                            href="@if($data->van_ban_den_don_vi_id != null){{route('van_ban_den_chi_tiet.show',$data->van_ban_den_don_vi_id)}}@else#@endif"
                                             title="{{$data->vb_trich_yeu}}">{{$data->vb_trich_yeu}}</a><br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$data->nguoiDung->ho_ten ?? ''}}&emsp;({{date_format($data->created_at, 'd-m-Y H:i:s')}})</span>

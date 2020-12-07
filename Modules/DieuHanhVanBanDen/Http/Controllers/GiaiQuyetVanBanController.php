@@ -118,7 +118,7 @@ class GiaiQuyetVanBanController extends Controller
             $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_CHO_DUYET;
             $vanBanDenDonVi->save();
 
-            return redirect()->back()->with('success', 'Hoành thành văn bản chờ duyệt.');
+            return redirect()->route('van-ban-den-hoan-thanh.cho-duyet')->with('success', 'Hoành thành văn bản chờ duyệt.');
         }
 
         return redirect()->back('warning', 'Không tìm thấy dữ liêu');

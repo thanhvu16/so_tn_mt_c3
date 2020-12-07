@@ -24,6 +24,7 @@ use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 use Modules\VanBanDi\Entities\VanBanDi;
 use auth , File ,DB;
 use Modules\VanBanDi\Entities\VanBanDiChoDuyet;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class VanBanDiController extends Controller
 {
@@ -678,25 +679,8 @@ class VanBanDiController extends Controller
                 $vanbandi -> cho_cap_so = 2;
                 $vanbandi -> save();
 
-
                 // update van ban den
-//                $vanbandi = $nguoicu->vanbandi;
-//                $vanBanDenDonVi = $vanbandi->vanBanDenDonVi;
-//                if ($vanBanDenDonVi) {
-//
-//                    $vanBanDenDonVi->active = QlvbVbDenDonVi::ACTIVE_HOAN_THANH;
-//                    $vanBanDenDonVi->hoan_thanh_dung_han = QlvbVbDenDonVi::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
-//                    $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
-//                    $vanBanDenDonVi->save();
-//
-//                    //update luu vet van ban
-//                    XuLyVanBanDen::where('van_ban_den_don_vi_id', $vanBanDenDonVi->id)
-//                        ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
-//
-//                    //update chuyen nhan vb don vi
-//                    ChuyenNhanVanBanDonVi::where('van_ban_den_don_vi_id', $vanBanDenDonVi->id)
-//                        ->update(['hoan_thanh' => ChuyenNhanVanBanDonVi::HOAN_THANH_VB]);
-//                }
+                VanBanDen::updateHoanThanhVanBanDen($vanbandi->van_ban_den_id);
 
 //                //update lich cong tac
 //                if ($vanbandi && $vanbandi->loai_vanban_giay_moi == VAN_BAN_DI_GIAY_MOI) {
@@ -859,7 +843,7 @@ class VanBanDiController extends Controller
 
         }
 
-        $soDi = $soDi + 1;
+        $soDi = f + 1;
         $vanbandi->so_di = $soDi;
         $vanbandi->save();
         return redirect()->back()->with('success', 'Cấp số thành công thành công !');

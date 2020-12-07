@@ -13,7 +13,7 @@ use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\VanBanDen\Entities\VanBanDen;
-
+use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 
 class VanBanDenDonViController extends Controller
 {
@@ -119,6 +119,62 @@ class VanBanDenDonViController extends Controller
             'danhSachChuyenVien', 'trinhTuNhanVanBan', 'order'));
     }
 
+    public function dangXuLy(Request $request)
+    {
+        $currentUser = auth::user();
+
+        $trinhTuNhanVanBan = null;
+
+        $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('status')
+            ->whereNull('hoan_thanh')
+            ->get();
+
+        $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        if ($currentUser->hasRole(CHU_TICH)) {
+            $trinhTuNhanVanBan = 1;
+        }
+
+        if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+            $trinhTuNhanVanBan = 2;
+        }
+
+        if ($currentUser->hasRole(TRUONG_PHONG)) {
+            $trinhTuNhanVanBan = 3;
+        }
+
+        if ($currentUser->hasRole(PHO_PHONG)) {
+            $trinhTuNhanVanBan = 4;
+        }
+
+        if ($currentUser->hasRole(CHUYEN_VIEN)) {
+            $trinhTuNhanVanBan = 5;
+        }
+
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHUYEN_VIEN) || $currentUser->hasRole(PHO_PHONG)) {
+            $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
+                ->where('can_bo_nhan_id', $currentUser->id)
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->get();
+
+            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+        }
+
+        $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
+            ->whereIn('id', $arrVanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
+            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->paginate(PER_PAGE);
+
+
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+
+        return view('dieuhanhvanbanden::don-vi.dang_xu_ly', compact('danhSachVanBanDen', 'order'));
+
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable
@@ -147,7 +203,6 @@ class VanBanDenDonViController extends Controller
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
-
 
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
@@ -255,7 +310,7 @@ class VanBanDenDonViController extends Controller
                     if (!empty($arrChuyenVienPhoiHopIds[$vanBanDenDonViId]) && count($arrChuyenVienPhoiHopIds[$vanBanDenDonViId]) > 0) {
                         //save chuyen vien phoi hop
                         ChuyenVienPhoiHop::savechuyenVienPhoiHop($arrChuyenVienPhoiHopIds[$vanBanDenDonViId],
-                            $vanBanDenDonViId, $currentUser->donvi_id);
+                            $vanBanDenDonViId, $currentUser->don_vi_id);
                     }
 
                     //luu can bo xem de biet
