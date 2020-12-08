@@ -1,5 +1,9 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản chờ xử lý')
+@if (empty(Request::get('chuyen_tiep')))
+    @section('page_title', 'Văn bản chờ xử lý')
+@else
+    @section('page_title', 'Văn bản đang xử lý')
+@endif
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +12,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản chờ xử lý</h4>
+                                <h4 class="header-title pt-2">Văn bản {{ empty(Request::get('chuyen_tiep')) ? 'chờ' : 'đang' }} xử lý</h4>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('van-ban-den-don-vi.store') }}" method="post"
@@ -22,15 +26,13 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => $trinhTuNhanVanBan])
-                        @include('dieuhanhvanbanden::gia-han.modal_gia_han')
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="20%" class="text-center">Tóm tắt VB</th>
-                                <th width="8%" class="text-center">Trình tự xử lý</th>
+                                <th width="14%" class="text-center">Trình tự xử lý</th>
                             </tr>
                             </thead>
                             <tbody class="text-justify">
@@ -39,7 +41,7 @@
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=phoi_hop') }}">{{ $vanBanDen->trich_yeu }}</a>
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
@@ -55,58 +57,6 @@
                                         <p>
                                             {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
                                         </p>
-                                        @if ($vanBanDen->vanBanTraLai)
-                                            <p class="color-red"><b>Lý
-                                                    do trả
-                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>
-                                            </p>
-                                            <p>
-                                                (Cán bộ trả
-                                                lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
-                                                - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}
-                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
-                                                )</p>
-                                        @endif
-                                        @if (!empty($vanBanDen->giaHanVanBanTraLai()))
-                                            <p>
-                                                <i><b>Trả lại gia hạn:</b> {{ $vanBanDen->giaHanVanBanTraLai()->noi_dung }}</i>
-                                            </p>
-                                            <p>
-                                                ({{ $vanBanDen->giaHanVanBanTraLai()->canBoChuyen->ho_ten .' - '. date('d/m/Y', strtotime($vanBanDen->giaHanVanBanTraLai()->created_at))}})
-                                            </p>
-                                        @endif
-
-                                        @if ($vanBanDen->giaiQuyetVanBanTraLai())
-                                            <p class="color-red"><b>Lý
-                                                    do trả lại: </b><i>{{ $vanBanDen->giaiQuyetVanBanTraLai()->noi_dung_nhan_xet ?? '' }}</i>
-                                            </p>
-                                            <p>
-                                                ({{ $vanBanDen->giaiQuyetVanBanTraLai()->canBoDuyet->ho_ten  ?? '' }}
-                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->giaiQuyetVanBanTraLai()->updated_at)) }}
-                                                )</p>
-                                        @endif
-
-                                        <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
-                                               data-id="{{ $vanBanDen->id }}">
-                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
-                                            </a>
-                                        </p>
-                                        @if (empty($vanBanDen->giaHanVanBanLanhDaoDuyet(1)) || !empty($vanBanDen->giaHanVanBanTraLai()))
-                                            @if (empty($vanBanDen->giaHanVanBanLanhDaoDuyet(3)))
-                                            <div class="form-group mt-1">
-                                                <button type="button"
-                                                        class="btn btn-danger btn-gia-han waves-effect btn-sm"
-                                                        data-toggle="modal"
-                                                        data-target="#modal-de_xuat_gia_han"
-                                                        data-id="{{ $vanBanDen->id }}"
-                                                        data-han="{{ isset($vanBanDen) && !empty($vanBanDen->han_xu_ly) ?  $vanBanDen->han_xu_ly : null }}"
-                                                        data-whatever="@mdo">
-                                                    <i class="fa fa-clock-o"></i> Gia hạn
-                                                </button>
-                                            </div>
-                                            @endif
-                                        @endif
                                     </td>
                                     <td>
                                         @if($vanBanDen->xuLyVanBanDen)
@@ -131,14 +81,6 @@
                                             <p>
                                                 <i>(<b>Gia hạn thêm chờ
                                                         duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoDuyet(1)->thoi_han_de_xuat)) }}
-                                                    )</i>
-                                            </p>
-                                        @endif
-
-                                        @if (!empty($vanBanDen->giaHanVanBanLanhDaoDuyet(3)))
-                                            <p>
-                                                <i>(<b>Gia hạn đã
-                                                        duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoDuyet(3)->thoi_han_de_xuat)) }}
                                                     )</i>
                                             </p>
                                         @endif

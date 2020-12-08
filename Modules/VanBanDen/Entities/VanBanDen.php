@@ -17,10 +17,14 @@ use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
+use Modules\VanBanDi\Entities\DuThaoVanBan;
+use Modules\VanBanDi\Entities\Duthaovanbandi;
+use Modules\VanBanDi\Entities\VanBanDi;
 use Spatie\Permission\Traits\HasRoles;
 
 class VanBanDen extends Model
@@ -155,6 +159,15 @@ class VanBanDen extends Model
             ->first();
     }
 
+    public function donViPhoiHopVanBan($canBoNhanId)
+    {
+
+        return DonViPhoiHop::where('van_ban_den_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('can_bo_nhan_id', $canBoNhanId)
+            ->first();
+    }
+
     public function getChuyenVienPhoiHop()
     {
         $danhSachChuyenVien = ChuyenVienPhoiHop::where('van_ban_den_id', $this->id)
@@ -174,6 +187,15 @@ class VanBanDen extends Model
     {
 
         return DonViChuTri::where('van_ban_den_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->whereIn('can_bo_nhan_id', $canBoNhanId)
+            ->first();
+    }
+
+    public function checkChuyenVienPhoiHopThucHien($canBoNhanId)
+    {
+
+        return DonViPhoiHop::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
             ->whereIn('can_bo_nhan_id', $canBoNhanId)
             ->first();
@@ -221,4 +243,97 @@ class VanBanDen extends Model
             ->first();
     }
 
+    public function giaiQuyetVanBan()
+    {
+        return $this->hasMany(GiaiQuyetVanBan::class, 'van_ban_den_id', 'id');
+    }
+
+    public function giaiQuyetVanBanTraLai()
+    {
+        return GiaiQuyetVanBan::where('van_ban_den_id', $this->id)
+            ->where('user_id', auth::user()->id)
+            ->where('status', GiaiQuyetVanBan::STATUS_TRA_LAI)
+            ->orderBy('id', 'DESC')->first();
+    }
+
+    public function giaiQuyetVanBanHoanThanh()
+    {
+        return GiaiQuyetVanBan::where('van_ban_den_id', $this->id)
+            ->where('status', GiaiQuyetVanBan::STATUS_DA_DUYET)
+            ->orderBy('id', 'DESC')
+            ->first();
+    }
+
+    // get can bo don vi phoi hop giai quyet hoan thanh
+    public function chuyenVienPhoiHopGiaiQuyet()
+    {
+        return $this->hasOne(ChuyenVienPhoiHop::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_nhan_id', auth::user()->id)
+            ->where('status', ChuyenVienPhoiHop::CHUYEN_VIEN_GIAI_QUYET);
+    }
+
+    public function phoiHopGiaiQuyetByUserId()
+    {
+        return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
+            ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_CHUYEN_VIEN_PHOI_HOP)
+            ->where('user_id', auth::user()->id);
+    }
+
+    public function donViPhoiHopGiaiQuyetByUserId()
+    {
+        return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
+            ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
+            ->where('user_id', auth::user()->id);
+    }
+
+    public function chuyenVienPhoiHop()
+    {
+        return $this->hasMany(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_CHUYEN_VIEN_PHOI_HOP);
+    }
+
+    public function donViPhoiHopGiaiquyet()
+    {
+        return $this->hasMany(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP);
+    }
+
+    // get can bo don vi phoi hop giai quyet hoan thanh
+    public function giaiQuyetPhoiHopHoanThanh()
+    {
+        return  DonViPhoiHop::where([
+            'van_ban_den_id' => $this->id,
+            'can_bo_nhan_id' => auth::user()->id,
+            'hoan_thanh' => DonViPhoiHop::GIAI_QUYET
+        ])->first();
+    }
+
+    public function duThaoVanBan()
+    {
+        return $this->hasMany(Duthaovanbandi::class, 'van_ban_den_don_vi_id', 'id');
+    }
+
+    public static function updateHoanThanhVanBanDen($vanBanDenId)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+
+        if ($vanBanDen) {
+            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+            $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
+            $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
+            $vanBanDen->save();
+
+            //update luu vet van ban
+            XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
+                ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
+
+            //update chuyen nhan vb don vi
+            DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+                ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
+        }
+    }
+
+    public function vanBanDi()
+    {
+        return $this->hasOne(VanBanDi::class, 'van_ban_den_id', 'id')
+            ->orderBy('id', 'DESC');
+    }
 }

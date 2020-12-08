@@ -27,6 +27,8 @@ use Modules\VanBanDi\Entities\NoiNhanMailNgoai;
 use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 use Modules\VanBanDi\Entities\VanBanDi;
 use Modules\VanBanDi\Entities\VanBanDiChoDuyet;
+use Modules\VanBanDen\Entities\VanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Spatie\Permission\Models\Role;
 use function GuzzleHttp\Promise\all;
 
@@ -126,7 +128,27 @@ class DuThaoVanBanController extends Controller
         $duthao_id->du_thao_id = $duthao->id;
         $duthao_id->save();
 
+        //check van ban tra loi
+        if (!empty($request->get('van_ban_den_don_vi_id'))) {
+            $vanBanDen = VanBanDen::where('id', (int)$request->get('van_ban_den_don_vi_id'))->first();
+            if ($vanBanDen) {
+                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_CHO_DUYET;
+                $vanBanDen->van_ban_can_tra_loi = 1;
+                $vanBanDen->save();
 
+                //xoa chuyen nhan vb
+                $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+                    ->where('can_bo_nhan_id', auth::user()->id)
+                    ->whereNull('hoan_thanh')->first();
+
+                if ($chuyenNhanVanBanDonVi) {
+                    DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+                        ->where('don_vi_id', auth::user()->don_vi_id)
+                        ->where('id', '>', $chuyenNhanVanBanDonVi->id)
+                        ->whereNull('hoan_thanh')->delete();
+                }
+            }
+        }
 
         if ($filehoso && count($filehoso) > 0) {
             foreach ($filehoso as $key => $getFile) {
@@ -751,7 +773,7 @@ class DuThaoVanBanController extends Controller
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->nguoi_ky = $request->nguoiky_id;
         $vanbandi->nguoi_tao = auth::user()->id;
-//        $vanbandi->van_ban_den_don_vi_id = $request->van_ban_den_don_vi_id ?? null;
+        $vanbandi->van_ban_den_id = $duthaochot->van_ban_den_don_vi_id ?? null;
         if ($duthaochot->loai_van_ban_id == 1000) {
             $vanbandi->loai_van_ban_giay_moi = 2;
         } else {

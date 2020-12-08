@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản hoàn thành chờ duyệt')
+@section('page_title', 'Văn bản hoàn thành')
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản hoàn thành chờ duyệt</h4>
+                                <h4 class="header-title pt-2">Văn bản hoàn thành</h4>
                             </div>
                         </div>
                     </div>
@@ -16,17 +16,20 @@
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
-                                <th width="2%">STT</th>
-                                <th width="30%">Trích yếu - Thông tin</th>
-                                <th width="20%">Trình tự xử lý</th>
-                                <th width="20%">Kết quả</th>
-                                <th width="25%">Tác vụ</th>
+                                <th width="2%" class="text-center">STT</th>
+                                <th width="22%" class="text-center">Thông tin</th>
+                                <th width="30%" class="text-center">Trích yếu - nội dung</th>
+                                <th width="20%" class="text-center">Trình tự xử lý</th>
+                                <th width="20%" class="text-center">Kết quả</th>
                             </tr>
                             </thead>
                             <tbody class="text-justify">
                             @forelse($danhSachVanBanDen as $vanBanDen)
                                 <tr class="duyet-vb">
                                     <td class="text-center">{{ $order++ }}</td>
+                                    <td>
+                                        @include('dieuhanhvanbanden::van-ban-den.info')
+                                    </td>
                                     <td>
                                         <p>
                                             <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->trich_yeu }}</a>
@@ -39,7 +42,6 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>
                                         @if($vanBanDen->xuLyVanBanDen)
@@ -61,34 +63,38 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->noi_dung ?? null }}</p>
-
-                                        @if (isset($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile))
-                                            @foreach($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile as $key => $file)
-                                                <a href="{{ $file->getUrlFile() }}"
-                                                   target="popup"
-                                                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                @if (count($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile)-1 != $key)
-                                                    &nbsp;|&nbsp;
+                                        @if ($vanBanDen->van_ban_can_tra_loi == 1 && !empty($vanBanDen->vanBanDi))
+                                            @if (!empty($vanBanDen->vanBanDi->so_di))
+                                                <p>Văn bản đi số <span class="color-red"><b>{{ $vanBanDen->vanBanDi->so_di ?? '' }}</b></span></p>
+                                            @endif
+                                            <p><a href="{{ route('Quytrinhxulyvanbandi',$vanBanDen->vanBanDi->id) }}">{{ $vanBanDen->vanBanDi->trich_yeu ?? null }}</a></p>
+                                            <p>
+                                                @if (isset($vanBanDen->vanBanDi->filechinh))
+                                                    tệp tin: <br>
+                                                    @foreach($vanBanDen->vanBanDi->filechinh as $key => $file)
+                                                        <a href="{{ $file->getUrlFile() }}"
+                                                           target="popup"
+                                                           class="detail-file-name seen-new-window">[{{ cutStr($file->ten_file) }}]</a>
+                                                        @if (count($vanBanDen->vanBanDi->filechinh)-1 != $key)
+                                                            &nbsp;|&nbsp;
+                                                        @endif
+                                                    @endforeach
                                                 @endif
-                                            @endforeach
+                                            </p>
+                                        @else
+                                            <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanh()->noi_dung ?? null }}</p>
+
+                                            @if (isset($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile))
+                                                @foreach($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile as $key => $file)
+                                                    <a href="{{ $file->getUrlFile() }}"
+                                                       target="popup"
+                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                                                    @if (count($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile)-1 != $key)
+                                                        &nbsp;|&nbsp;
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         @endif
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="giai_quyet_van_ban_id" value="{{  $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->id }}">
-                                        <div class="col-md-12 form-group">
-                                                        <textarea class="form-control noi-dung" name="noi_dung"
-                                                                  rows="3"
-                                                                  required placeholder="nhập nội dung ...."></textarea><br>
-                                            <button
-                                                class="btn btn-sm waves-effect btn-primary btn-choose-status"
-                                                data-id="{{ $vanBanDen->id }}" data-type="1"><i class="fa fa-check"></i> Duyệt
-                                            </button>
-                                            <button
-                                                class="btn btn-sm waves-effect btn-danger btn-choose-status"
-                                                data-id="{{ $vanBanDen->id }}" data-type="2"><i class="fa fa-undo"></i> Trả lại
-                                            </button>
-                                        </div>
                                     </td>
                                 </tr>
                             @empty

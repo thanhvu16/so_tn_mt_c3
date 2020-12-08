@@ -5,6 +5,7 @@
 @endif
 <p class="text-initial">- Nơi gửi
     đến: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
+<p class="text-initial">- Số đến: <span class="color-red text-bold">{{ $vanBanDen->so_den ?? null }}</span></p>
 <p class="text-initial">- Ngày
     nhập: {{  !empty($vanBanDen->created_at) ? date('d/m/Y', strtotime($vanBanDen->created_at)) : null }}</p>
 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)

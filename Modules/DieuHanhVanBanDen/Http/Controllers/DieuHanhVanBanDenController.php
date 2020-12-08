@@ -50,7 +50,7 @@ class DieuHanhVanBanDenController extends Controller
     {
         $vanBanDen = VanBanDen::with('loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
             'xuLyVanBanDen', 'XuLyVanBanDenTraLai', 'donViChuTri', 'donViPhoiHop',
-            'giaHanVanBan')
+            'giaHanVanBan', 'chuyenVienPhoiHopGiaiQuyet', 'duThaoVanBan')
             ->findOrFail($id);
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();

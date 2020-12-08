@@ -46,3 +46,19 @@ Route::resource('giai-quyet-van-ban', 'GiaiQuyetVanBanController');
 Route::get('van-ban-den-hoan-thanh-cho-duyet', 'VanBanDenHoanThanhController@choDuyet')->name('van-ban-den-hoan-thanh.cho-duyet');
 
 Route::post('duyet-van-ban', 'VanBanDenHoanThanhController@duyetVanBan');
+
+Route::get('van-ban-hoan-thanh', 'VanBanDenHoanThanhController@index')->name('van-ban-den-hoan-thanh.index');
+
+Route::get('van-ban-den-chuyen-vien-phoi-hop', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.index');
+
+Route::post('phoi-hop-giai-quyet', 'VanBanDenPhoiHopController@phoiHopGiaiQuyet')->name('phoi_hop_giai_quyet.store');
+
+Route::get('van-ban-den-chuyen-vien-phoi-hop-da-xu-ly', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.da_xu_ly');
+
+Route::get('van-ban-den-phoi-hop', 'VanBanDenPhoiHopController@index')->name('van-ban-den-phoi-hop.index');
+Route::post('van-ban-den-phoi-hop/store', 'VanBanDenPhoiHopController@store')->name('van-ban-den-phoi-hop.store');
+
+Route::get('van-ban-den-phoi-hop-dang-xu-ly', 'VanBanDenPhoiHopController@index')->name('van-ban-den-phoi-hop.dang-xu-ly');
+Route::get('van-ban-den-phoi-hop-da-xu-ly', 'VanBanDenPhoiHopController@donViPhoiHopDaXuLy')->name('van-ban-den-phoi-hop.da-xu-ly');
+
+Route::get('van-ban-den-dang-xu-ly', 'VanBanDenDonViController@dangXuLy')->name('van-ban-den-don-vi.dang_xu_ly');

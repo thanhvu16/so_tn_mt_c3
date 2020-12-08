@@ -128,3 +128,14 @@ function dateformat($format)
     $ngay = date('d-m-Y', strtotime($format)) ;
     return $ngay;
 }
+
+if (!function_exists('cutStr')) {
+
+    function cutStr($str)
+    {
+        $rest = substr($str, 0, 22);
+        $newStr = str_replace($rest, '', $str);
+
+        return $newStr;
+    }
+}

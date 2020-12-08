@@ -11,7 +11,7 @@
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row">
-                        <th>STT</th>
+                        <th class="text-center">STT</th>
                         <th>Thời gian chuyển</th>
                         <th>Người chuyển</th>
                         <th>Người nhận</th>
@@ -23,7 +23,7 @@
                     <tbody>
                         @forelse($giaHanVanBanDonVi as $key => $giaHan)
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td class="text-center">{{ $key+1 }}</td>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($giaHan->created_at)) }}</td>
                                 <td>Đ/c {{ $giaHan->canBoChuyen->ho_ten ?? '' }}</td>
                                 <td>Đ/c {{ $giaHan->CanBoNhan->ho_ten ?? '' }}</td>
