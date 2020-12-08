@@ -11,6 +11,7 @@ define('ACTIVE', 1);
 define('INACTIVE', 2);
 
 //rold_id
+define('ADMIN', 1);
 define('QUYEN_CHUYEN_VIEN', 3);
 define('QUYEN_PHO_PHONG', 5);
 define('QUYEN_TRUONG_PHONG', 4);
@@ -37,7 +38,7 @@ CONST TRUONG_PHONG_DON_VI = 'trưởng phòng đơn vị';
 CONST PHO_PHONG_DON_VI = 'phó phòng đơn vị';
 CONST VAN_THU_DON_VI = 'văn thư đơn vị';
 CONST VAN_THU_HUYEN = 'văn thư huyện';
-CONST CHANH_VAN_PHONG = 'chánh văn phong';
+CONST CHANH_VAN_PHONG = 'chánh văn phòng';
 CONST PHO_CHANH_VAN_PHONG = 'phó tránh văn phòng';
 
 

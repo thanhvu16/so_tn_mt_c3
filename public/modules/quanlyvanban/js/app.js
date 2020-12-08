@@ -168,3 +168,70 @@ $('.layidnguoiky').on('change', function () {
     let chucVu = $(this).find('option:selected').data('chuc-vu');
     $('[name=chuc_vu]').val(chucVu);
 })
+$('.lay_van_ban').on('click', function (e) {
+    var noi_gui_den = $('[name=noi_gui_den]').val();
+    var vb_trich_yeu = $('[name=vb_trich_yeu]').val();
+    var vb_so_ky_hieu = $('[name=vb_so_ky_hieu]').val();
+    var loai_van_ban = $('[name=loai_van_ban]:checked').val();
+    console.log(loai_van_ban);
+    e.preventDefault();
+    $.ajax({
+        beforeSend: showLoading(),
+        url: APP_URL + '/lay-danh-sach-tim-kiem',
+        type: 'POST',
+        dataType: 'json',
+
+        data: {
+            vb_trich_yeu: vb_trich_yeu,
+            noi_gui_den: noi_gui_den,
+            vb_so_ky_hieu: vb_so_ky_hieu,
+            loai_van_ban: loai_van_ban,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+
+    }).done(function (res) {
+        hideLoading();
+        let data = res.data.data;
+        let type = res.loaiVanBan;
+        let dataAppend = '';
+        let dataAppend2 = '';
+
+        if (type == 2) {
+
+            dataAppend = data.map((function (item) {
+                return `<tr>
+                    <td class="text-center">
+                        <div class="custom-control custom-radio ">
+                            <input type="radio" id="luachon${item.id}" value="${item.id}"
+                                   name="id_van_ban"
+                                   class="custom-control-input">
+                            <label class="custom-control-label" for="luachon${item.id}"></label>
+                            <input name="loai_van_ban" value="${type}" class="hidden">
+                        </div>
+                    </td>
+                    <td>${item.trich_yeu}</td>
+                </tr>`;
+            }));
+            $('.data-append').html(dataAppend);
+        } else {
+            dataAppend2 = data.map((function (item) {
+                return  `<tr>
+                    <td class="text-center">
+                        <div class="custom-control custom-radio ">
+                            <input type="radio" id="luachon${item.id}" value="${item.id}"
+                                   name="id_van_ban"
+                                   class="custom-control-input">
+                            <label class="custom-control-label" for="luachon${item.id}"></label>
+                        </div>
+                        <input name="loai_van_ban" value="${type}" class="hidden">
+                    </td>
+                    <td>${item.trich_yeu}</td>
+        </tr>`;
+            }));
+            $('.data-append').html(dataAppend2);
+        }
+
+
+
+    });
+})

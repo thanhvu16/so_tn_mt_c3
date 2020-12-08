@@ -18,8 +18,11 @@
             @role('admin')
             @include('admin::layouts.components.sidebar_admin')
             @endrole
-            @hasanyrole('văn thư đơn vị|văn thư huyện')
-            @include('admin::layouts.components.sidebar_van_thu')
+            @hasanyrole('văn thư đơn vị')
+            @include('admin::layouts.components.sidebar_van_thu_don_vi')
+            @endrole
+            @hasanyrole('văn thư huyện')
+            @include('admin::layouts.components.sidebar_van_thu_huyen')
             @endrole
             @role('tham mưu')
                 @include('admin::layouts.components.sidebar_tham_muu')
@@ -42,9 +45,19 @@
             @role('phó tránh văn phòng')
                 @include('admin::layouts.components.sidebar_pho_chanh_van_phong')
             @endrole
-            @role('chánh văn phong')
+            @role('chánh văn phòng')
                 @include('admin::layouts.components.sidebar_chanh_van_phong')
             @endrole
+{{--            <li class="{{ Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.index') ? 'active' : '' }} ">--}}
+{{--                <a href="{{route('danh-gia-can-bo.index')}}">--}}
+{{--                    <i class="fa fa-users" ></i> <span>Đánh giá cán bộ</span>--}}
+{{--                    <span class="pull-right-container">--}}
+
+{{--            </span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+
+
             {{--            @can('thêm dự thảo văn bản')--}}
             {{--            @endcan--}}
         </ul>

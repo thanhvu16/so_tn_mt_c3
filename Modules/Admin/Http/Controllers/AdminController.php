@@ -24,6 +24,9 @@ class AdminController extends Controller
 
     public function index()
     {
+        if (auth::user()->role_id ==  ADMIN) {
+            return redirect()->route('nguoi-dung.index');
+        }
         $vanThuVanBanDiPiceCharts = [];
         $vanThuVanBanDenPiceCharts = [];
         $vanThuVanBanDiCoLors = [];
@@ -84,7 +87,6 @@ class AdminController extends Controller
 //        array_push($duThaoPiceCharts, array('dự thảo chờ góp ý', $gopy));
 //        array_push($duThaoPiceCharts, array('Danh sách văn bản đi chờ duyệt', $vanbandichoduyet));
 //        array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
-
 
 
         return view('admin::index',compact(
