@@ -70,7 +70,7 @@
 
 
                             @empty
-                                <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>
+                                <td colspan="7" class="text-center">Không tìm thấy dữ liệu.</td>
                             @endforelse
                             </tbody>
                         </table>

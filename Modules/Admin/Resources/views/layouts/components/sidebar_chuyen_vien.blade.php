@@ -33,7 +33,6 @@
     </a>
     <ul class="treeview-menu">
         <li class="{{ Route::is('giay-moi-di.index') ? 'active' : '' }}"><a href="{{ route('giay-moi-di.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
-        <li class="{{ Route::is('dacoso') ? 'active' : '' }}"><a href="{{ route('dacoso') }}"><i class="fa fa-circle-o"></i>Danh sách test</a></li>
         <li class="{{ Route::is('giay-moi-di.create') ? 'active' : '' }}"><a href="{{ route('giay-moi-di.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
@@ -63,5 +62,26 @@
         <li class="{{ Route::is('du-thao-van-ban.index') ? 'active' : '' }}"><a href="{{ route('du-thao-van-ban.index') }}"><i class="fa fa-circle-o"></i>Nhập mới dự thảo</a></li>
         <li class="{{ Route::is('Danhsachduthao') ? 'active' : '' }}"><a href="{{ route('Danhsachduthao') }}"><i class="fa fa-circle-o"></i>Danh sách cá nhân dự thảo</a></li>
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
+    </ul>
+</li>
+<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
+    <a href="{{route('ho-so-cong-viec.index')}}">
+        <i class="fa fa-h-square" ></i> <span>Hồ sơ công việc</span>
+        <span class="pull-right-container">
+
+            </span>
+    </a>
+</li>
+<li class="treeview {{ Route::is('danh-gia-can-bo.index') || Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.edit') ? 'active menu-open' : '' }} }} ">
+    <a href="#">
+        <i class="fa fa-users"></i> <span>Đánh giá cán bộ</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('danh-gia-can-bo.index') ? 'active' : '' }}"><a href="{{ route('danh-gia-can-bo.index') }}"><i class="fa fa-circle-o"></i>Cá nhân tự đánh giá</a></li>
+        {{--                    <li class="{{ Route::is('danh-gia-can-bo.create') ? 'active' : '' }}"><a href="{{ route('danh-gia-can-bo.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>--}}
+        {{--                    <li class="{{ Route::is('vanbandichoso') ? 'active' : '' }}"><a href="{{ route('vanbandichoso') }}"><i class="fa fa-circle-o"></i> Danh sách chờ số</a></li>--}}
     </ul>
 </li>

@@ -5,5 +5,7 @@
     "LayVanBanTuEmail": true,
     "DieuHanhVanBanDen": true,
     "GiayMoiDen": true,
-    "GiayMoiDi": true
+    "GiayMoiDi": true,
+    "HoSoCongViec": true,
+    "DanhGiaCanBo": true
 }

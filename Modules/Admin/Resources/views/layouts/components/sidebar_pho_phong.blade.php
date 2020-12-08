@@ -14,3 +14,27 @@
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
+<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
+    <a href="{{route('ho-so-cong-viec.index')}}">
+        <i class="fa fa-h-square" ></i> <span>Hồ sơ công việc</span>
+        <span class="pull-right-container">
+
+            </span>
+    </a>
+</li>
+<li class="treeview {{ Route::is('danh-gia-can-bo.index') || Route::is('captrendanhgia') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">
+    <a href="#">
+        <i class="fa fa-users"></i> <span>Đánh giá cán bộ</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('danh-gia-can-bo.index') ? 'active' : '' }}"><a
+                href="{{ route('danh-gia-can-bo.index') }}"><i class="fa fa-circle-o"></i>Cá nhân tự đánh giá</a>
+        </li>
+        <li class="{{ Route::is('captrendanhgia') ? 'active' : '' }}"><a
+                href="{{ route('captrendanhgia') }}"><i class="fa fa-circle-o"></i>Cấp trên đánh giá</a></li>
+        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>
+    </ul>
+</li>

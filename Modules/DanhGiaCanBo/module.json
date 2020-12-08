@@ -1,0 +1,13 @@
+{
+    "name": "DanhGiaCanBo",
+    "alias": "danhgiacanbo",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\DanhGiaCanBo\\Providers\\DanhGiaCanBoServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

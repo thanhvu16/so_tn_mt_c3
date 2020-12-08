@@ -15,7 +15,7 @@ use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
-use File, auth , DB;
+use File, auth, DB;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 
 class GiayMoiDenController extends Controller
@@ -26,13 +26,13 @@ class GiayMoiDenController extends Controller
      */
     public function index(Request $request)
     {
-        $user= auth::user();
-        $ds_nguoiKy = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $user = auth::user();
+        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
         //search
         $trichyeu = $request->get('trich_yeu');
@@ -43,11 +43,11 @@ class GiayMoiDenController extends Controller
         $nguoi_ky = $request->get('nguoi_ky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
-        if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH|| auth::user()->role_id == QUYEN_PHO_CHUC_TICH||
-            auth::user()->role_id == QUYEN_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG)
-        {
+        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_PHO_CHUC_TICH ||
+            auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG) {
             $ds_vanBanDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
+                'type' => 1,
                 'so_van_ban_id' => 100
             ])->where(function ($query) use ($trichyeu) {
                 if (!empty($trichyeu)) {
@@ -94,11 +94,10 @@ class GiayMoiDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        }
-        elseif (auth::user()->role_id == QUYEN_CHUYEN_VIEN||auth::user()->role_id == QUYEN_PHO_PHONG||auth::user()->role_id == QUYEN_TRUONG_PHONG||auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-        {
-            $ds_vanBanDen = VanBanDenDonVi::where([
+        } elseif (auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_PHO_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG || auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+            $ds_vanBanDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
+                'type' => 2,
                 'so_van_ban_id' => 100
             ])->where(function ($query) use ($trichyeu) {
                 if (!empty($trichyeu)) {
@@ -147,7 +146,7 @@ class GiayMoiDenController extends Controller
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
         }
 
-        return view('giaymoiden::giay_moi_den.index',compact('ds_vanBanDen'));
+        return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen'));
     }
 
     /**
@@ -179,14 +178,13 @@ class GiayMoiDenController extends Controller
         }
 
 
-
-        $user= auth::user();
-        $ds_nguoiKy = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $user = auth::user();
+        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
         $ngaynhan = date('Y-m-d');
         $songay = 8;
@@ -205,9 +203,9 @@ class GiayMoiDenController extends Controller
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
 
 
-        return view('giaymoiden::giay_moi_den.create',compact( 'ds_nguoiKy', 'ds_soVanBan', 'ds_loaiVanBan',
-            'ds_doKhanCap', 'ds_mucBaoMat' , 'sodengiaymoi',
-            'gioHop', 'date', 'nguoi_dung','hangiaiquyet'));
+        return view('giaymoiden::giay_moi_den.create', compact('ds_nguoiKy', 'ds_soVanBan', 'ds_loaiVanBan',
+            'ds_doKhanCap', 'ds_mucBaoMat', 'sodengiaymoi',
+            'gioHop', 'date', 'nguoi_dung', 'hangiaiquyet'));
     }
 
     /**
@@ -218,7 +216,7 @@ class GiayMoiDenController extends Controller
     public function store(Request $request)
     {
 
-        $gio_hop_chinh_fomart= date ('H:i',strtotime($request->gio_hop_chinh));
+        $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
         $requestData = $request->all();
         $multiFiles = !empty($requestData['ten_file']) ? $requestData['ten_file'] : null;
         $giaymoicom = !empty($requestData['noi_dung_hop_con']) ? $requestData['noi_dung_hop_con'] : null;
@@ -233,7 +231,7 @@ class GiayMoiDenController extends Controller
             $loaivanban = $request->loai_van_ban_id;
             $trichyeu = $request->vb_trich_yeu;
             //họp chính
-            $giohopchinh =$gio_hop_chinh_fomart;
+            $giohopchinh = $gio_hop_chinh_fomart;
             $ngayhopchinh = $request->ngay_hop_chinh;
             $diadiemchinh = $request->dia_diem_chinh;
             //họp phụ
@@ -243,8 +241,7 @@ class GiayMoiDenController extends Controller
             $ngaybanhanh = $request->ngay_ban_hanh;
             $chucvu = $request->chuc_vu;
 
-            if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
-            {
+            if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
                 if ($giaymoicom && $giaymoicom[0] != null) {
                     foreach ($giaymoicom as $key => $data) {
                         $vanbandv = new VanBanDen();
@@ -259,17 +256,18 @@ class GiayMoiDenController extends Controller
                         $vanbandv->han_xu_ly = $request->vb_han_xu_ly;
                         $vanbandv->han_giai_quyet = $request->vb_han_xu_ly;
                         $vanbandv->loai_van_ban_id = $loaivanban;
+                        $vanbandv->type = 1;
                         $vanbandv->trich_yeu = $trichyeu;
                         //họp chính
-                        $vanbandv->gio_hop= $giohopchinh;
+                        $vanbandv->gio_hop = $giohopchinh;
                         $vanbandv->ngay_hop = $ngayhopchinh;
                         $vanbandv->dia_diem = $diadiemchinh;
                         //họp con
                         if ($request->gio_hop_con[$key] == null) {
                             $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
                         } else {
-                            $gio_hop_phu= date ('H:i',strtotime($giohopcon[$key]));
-                            $vanbandv->gio_hop_phu= $gio_hop_phu;
+                            $gio_hop_phu = date('H:i', strtotime($giohopcon[$key]));
+                            $vanbandv->gio_hop_phu = $gio_hop_phu;
                         }
                         if ($request->dia_diem_con[$key] == null) {
                             $vanbandv->dia_diem_phu = $diadiemchinh;
@@ -301,6 +299,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
                     $vanbandv->chuc_vu = $chucvu;
+                    $vanbandv->type = 1;
                     //họp chính
                     $vanbandv->gio_hop = $gio_hop_chinh_fomart;
                     $vanbandv->ngay_hop = $ngayhopchinh;
@@ -313,8 +312,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
                 }
-            }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-            {
+            } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
                 if ($giaymoicom && $giaymoicom[0] != null) {
                     foreach ($giaymoicom as $key => $data) {
                         $vanbandv = new VanBanDenDonVi();
@@ -330,16 +328,17 @@ class GiayMoiDenController extends Controller
                         $vanbandv->han_giai_quyet = $request->vb_han_xu_ly;
                         $vanbandv->loai_van_ban_id = $loaivanban;
                         $vanbandv->trich_yeu = $trichyeu;
+                        $vanbandv->type = 2;
                         //họp chính
-                        $vanbandv->gio_hop= $giohopchinh;
+                        $vanbandv->gio_hop = $giohopchinh;
                         $vanbandv->ngay_hop = $ngayhopchinh;
                         $vanbandv->dia_diem = $diadiemchinh;
                         //họp con
                         if ($request->gio_hop_con[$key] == null) {
                             $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
                         } else {
-                            $gio_hop_phu= date ('H:i',strtotime($giohopcon[$key]));
-                            $vanbandv->gio_hop_phu= $gio_hop_phu;
+                            $gio_hop_phu = date('H:i', strtotime($giohopcon[$key]));
+                            $vanbandv->gio_hop_phu = $gio_hop_phu;
                         }
                         if ($request->dia_diem_con[$key] == null) {
                             $vanbandv->dia_diem_phu = $diadiemchinh;
@@ -371,6 +370,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
                     $vanbandv->chuc_vu = $chucvu;
+                    $vanbandv->type = 2;
                     //họp chính
                     $vanbandv->gio_hop = $gio_hop_chinh_fomart;
                     $vanbandv->ngay_hop = $ngayhopchinh;
@@ -386,26 +386,26 @@ class GiayMoiDenController extends Controller
             }
 
 
-        if ($multiFiles && count($multiFiles) > 0) {
-            foreach ($multiFiles as $key => $getFile) {
-                $extFile = $getFile->extension();
-                $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
-                $vbDenFile = new FileVanBanDen();
-                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
-                $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
-                if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+            if ($multiFiles && count($multiFiles) > 0) {
+                foreach ($multiFiles as $key => $getFile) {
+                    $extFile = $getFile->extension();
+                    $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
+                    $vbDenFile = new FileVanBanDen();
+                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                    $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
+                    if (!File::exists($uploadPath)) {
+                        File::makeDirectory($uploadPath, 0775, true, true);
+                    }
+                    $getFile->move($uploadPath, $fileName);
+                    $vbDenFile->ten_file = $ten;
+                    $vbDenFile->duong_dan = $urlFile;
+                    $vbDenFile->duoi_file = $extFile;
+                    $vbDenFile->vb_den_id = $vanbandv->id;
+                    $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                    $vbDenFile->save();
                 }
-                $getFile->move($uploadPath, $fileName);
-                $vbDenFile->ten_file = $ten;
-                $vbDenFile->duong_dan = $urlFile;
-                $vbDenFile->duoi_file = $extFile;
-                $vbDenFile->vb_den_id = $vanbandv->id;
-                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
             }
-        }
 
             DB::commit();
 
@@ -442,19 +442,20 @@ class GiayMoiDenController extends Controller
         $vanban = VanBanDen::where('id', $id)->first();
         $soDen = VanBanDen::where([
             'don_vi_id' => auth::user()->don_vi_id,
-            'so_van_ban_id' => 100
+            'so_van_ban_id' => 100,
+
         ])->max('so_den');
 
         $sodengiaymoi = $soDen + 1;
-        $user= auth::user();
-        $ds_nguoiKy = User::where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $user = auth::user();
+        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
-        return view('giaymoiden::giay_moi_den.edit',compact('vanban','sodengiaymoi','ds_loaiVanBan','ds_nguoiKy','ds_soVanBan','ds_doKhanCap','ds_mucBaoMat','nguoi_dung'));
+        return view('giaymoiden::giay_moi_den.edit', compact('vanban', 'sodengiaymoi', 'ds_loaiVanBan', 'ds_nguoiKy', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung'));
     }
 
     /**
@@ -472,17 +473,11 @@ class GiayMoiDenController extends Controller
         $giohopcon = !empty($request['gio_hop_con']) ? $request['gio_hop_con'] : null;
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
         $txtFiles = !empty($request['txt_file']) ? $request['txt_file'] : null;
-        $gio_hop= date ('H:i',strtotime($request->gio_hop_chinh));
+        $gio_hop = date('H:i', strtotime($request->gio_hop_chinh));
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
 
-        if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
-        {
-            $vanbandv = VanBanDen::where('id', $id)->first();
-        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-        {
-            $vanbandv = VanBanDenDonVi::where('id', $id)->first();
-        }
 
+        $vanbandv = VanBanDen::where('id', $id)->first();
         $vanbandv->so_den = $request->vb_so_den;
         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
 
@@ -493,11 +488,11 @@ class GiayMoiDenController extends Controller
         $vanbandv->trich_yeu = $request->trich_yeu;
         $vanbandv->ngay_ban_hanh = $request->vb_ngay_ban_hanh;
 
-        $vanbandv->gio_hop= $gio_hop;
+        $vanbandv->gio_hop = $gio_hop;
         $vanbandv->ngay_hop = $request->ngay_hop_chinh;
         $vanbandv->dia_diem = $request->dia_diem_chinh;
         if ($giaymoicom && $giaymoicom[0] != null) {
-            $gio_hop_phu= date ('H:i',strtotime($giohopcon[0]));
+            $gio_hop_phu = date('H:i', strtotime($giohopcon[0]));
             $vanbandv->gio_hop_phu = $gio_hop_phu;
             $vanbandv->ngay_hop_phu = $ngay_hop_con[0];
             $vanbandv->dia_diem_phu = $dia_diem_con[0];

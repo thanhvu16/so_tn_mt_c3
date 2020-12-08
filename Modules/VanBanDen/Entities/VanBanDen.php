@@ -53,6 +53,10 @@ class VanBanDen extends Model
     {
         return $this->belongsTo(LoaiVanBan::class, 'loai_van_ban_id', 'id');
     }
+    public function vanBanDenFilehs()
+    {
+        return $this->hasMany(FileVanBanDen::class, 'vb_den_id', 'id');
+    }
 
     public function soVanBan()
     {

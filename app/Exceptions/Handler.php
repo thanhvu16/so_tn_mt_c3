@@ -50,6 +50,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException($exception->getMessage(), $exception);
+        }
+
+        if ($exception instanceof TokenMismatchException) {
+
+            return redirect(route('login'))->with('warning', 'Thời gian đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
+        }
         return parent::render($request, $exception);
     }
 }
