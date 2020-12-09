@@ -195,13 +195,13 @@ class VanBanDenController extends Controller
         $nam = date("Y");
         if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -350,7 +350,7 @@ class VanBanDenController extends Controller
             $soden = (int)$tachchuoi[1];
             $yearsfile = (int)$tachchuoi[2];
             $sovanban = SoVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
-            $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+            $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden,'don_vi_id'=> auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
             if ($vanban) {
                 $vbDenFile = new FileVanBanDen();
                 $getFile->move($uploadPath, $fileName);

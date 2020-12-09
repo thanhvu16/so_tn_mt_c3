@@ -42,7 +42,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="sokyhieu" class="col-form-label">Sổ văn bản <span style="color: red">*</span></label>
                                     <select class="form-control  select-so-van-ban check-so-den-vb"
-                                            data-don-vi="{{auth::user()->id}}" name="so_van_ban" required id="so_van_ban_id">
+                                            data-don-vi="{{auth::user()->don_vi_id}}" name="so_van_ban" required id="so_van_ban_id">
                                         <option value="">-- Chọn sổ văn bản --</option>
                                         @foreach ($ds_soVanBan as $soVanBan)
                                             <option

@@ -70,14 +70,47 @@
 
 
                             @empty
-                                <td colspan="7" class="text-center">Không tìm thấy dữ liệu.</td>
                             @endforelse
+                            @forelse ($vanbanhuyenxuongdonvi as $key=>$vbDen2)
+                                <tr>
+                                    <td class="text-center">{{$donvinhancount+1}}</td>
+                                    <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
+                                    <td>
+                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu}}</p>
+                                    </td>
+                                    <td style="text-align: justify">
+                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id)}}" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a><br>
+
+                                    </td>
+                                    <td>
+                                        <div class="text-center " style="pointer-events: auto">
+                                            @forelse($vbDen2->vanBanDen->vanBanDenFilehs as $filedata)
+                                                <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File]</a><br>
+                                            @empty
+                                            @endforelse
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center" style="vertical-align: middle">
+{{--                                        {{$vbDen2->donvigui->ten_don_vi ?? ''}}--}} <span>Văn phòng UBND </span>
+                                    </td>
+                                    <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
+
+
+
+                                </tr>
+
+
+
+                            @empty
+                            @endforelse
+                            @if($tong < 0) <tr><td colspan="7">Không có dữ liệu</td></tr>@endif
                             </tbody>
                         </table>
                         <div class="row">
                             <div class="col-md-12" >
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số văn bản: <b>{{ $donvinhan->total() }}</b>
+                                    Tổng số văn bản: <b>{{ $tong }}</b>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {!! $donvinhan->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')

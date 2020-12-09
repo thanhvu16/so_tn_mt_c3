@@ -11,6 +11,7 @@ use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
@@ -32,7 +33,49 @@ class DonViNhanVanBanDenController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
-        return view('vanbanden::don_vi_nhan_van_ban.index',compact('donvinhan'));
+        $donvinhancount = count($donvinhan);
+        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id'=>auth::user()->don_vi_id])
+            ->where(function ($query) use ($hienthi) {
+                if (!empty($hienthi)) {
+                    if($hienthi == 2)
+                    return $query->whereNull('vao_so_van_ban');
+                    elseif($hienthi == 3){
+                        return $query->where('vao_so_van_ban', 1);
+                    }
+                }
+            })->get();
+        $donvinhancount2 = count($vanbanhuyenxuongdonvi);
+        $tong = $donvinhancount + $donvinhancount2;
+        return view('vanbanden::don_vi_nhan_van_ban.index',compact('donvinhan','vanbanhuyenxuongdonvi','donvinhancount','tong'));
+    }
+
+    public function chi_tiet_van_ban_den_don_vi(Request $request,$id)
+    {
+        $user = auth::user();
+        $domat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $users = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $ngaynhan = date('Y-m-d');
+        $songay = 10;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        $van_ban_den = DonViChuTri::where('id',$id)->first();
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        return view('vanbanden::don_vi_nhan_van_ban.van_ban_den_don_vi',compact('dokhan','domat','loaivanban','sovanban','users','id','hangiaiquyet','van_ban_den'));
+
     }
 
     /**
@@ -119,7 +162,58 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
+                    $vanbandv->type = 1;
                     $vanbandv->noi_dung = $data;
+                    if ($request->han_giai_quyet[$key] == null) {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    } else {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $han_gq[$key];
+                    }
+
+                    $vanbandv->save();
+                }
+            } else {
+                $vanbandv = new VanBanDen();
+                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                $vanbandv->so_van_ban_id = $request->so_van_ban;
+                $vanbandv->so_den = $request->so_den;
+                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                $vanbandv->trich_yeu = $request->trich_yeu;
+                $vanbandv->nguoi_ky = $request->nguoi_ky;
+                $vanbandv->do_khan_cap_id = $request->do_khan;
+                $vanbandv->do_bao_mat_id = $request->do_mat;
+                $vanbandv->han_xu_ly = $request->han_xu_ly;
+                $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                $vanbandv->type = 1;
+                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->nguoi_tao = auth::user()->id;
+                $vanbandv->save();
+            }
+        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
+        {
+            if ($noi_dung && $noi_dung[0] != null) {
+                foreach ($noi_dung as $key => $data) {
+                    $vanbandv = new VanBanDen();
+                    $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                    $vanbandv->so_van_ban_id = $request->so_van_ban;
+                    $vanbandv->so_den = $request->so_den;
+                    $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                    $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                    $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                    $vanbandv->trich_yeu = $request->trich_yeu;
+                    $vanbandv->nguoi_ky = $request->nguoi_ky;
+                    $vanbandv->do_khan_cap_id = $request->do_khan;
+                    $vanbandv->do_bao_mat_id = $request->do_mat;
+                    $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->nguoi_tao = auth::user()->id;
+                    $vanbandv->noi_dung = $data;
+                    $vanbandv->type = 2;
                     if ($request->han_giai_quyet[$key] == null) {
                         $vanbandv->han_xu_ly = $request->han_xu_ly;
                         $vanbandv->han_giai_quyet = $request->han_xu_ly;
@@ -146,59 +240,12 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
-                $vanbandv->nguoi_tao = auth::user()->id;
-                $vanbandv->save();
-            }
-        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-        {
-            if ($noi_dung && $noi_dung[0] != null) {
-                foreach ($noi_dung as $key => $data) {
-                    $vanbandv = new VanBanDenDonVi();
-                    $vanbandv->loai_van_ban_id = $request->loai_van_ban;
-                    $vanbandv->so_van_ban_id = $request->so_van_ban;
-                    $vanbandv->so_den = $request->so_den;
-                    $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-                    $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
-                    $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
-                    $vanbandv->trich_yeu = $request->trich_yeu;
-                    $vanbandv->nguoi_ky = $request->nguoi_ky;
-                    $vanbandv->do_khan_cap_id = $request->do_khan;
-                    $vanbandv->do_bao_mat_id = $request->do_mat;
-                    $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
-                    $vanbandv->nguoi_tao = auth::user()->id;
-                    $vanbandv->noi_dung = $data;
-                    if ($request->han_giai_quyet[$key] == null) {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                    } else {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $han_gq[$key];
-                    }
-
-                    $vanbandv->save();
-                }
-            } else {
-                $vanbandv = new VanBanDenDonVi();
-                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
-                $vanbandv->so_van_ban_id = $request->so_van_ban;
-                $vanbandv->so_den = $request->so_den;
-                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
-                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
-                $vanbandv->trich_yeu = $request->trich_yeu;
-                $vanbandv->nguoi_ky = $request->nguoi_ky;
-                $vanbandv->do_khan_cap_id = $request->do_khan;
-                $vanbandv->do_bao_mat_id = $request->do_mat;
-                $vanbandv->han_xu_ly = $request->han_xu_ly;
-                $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->type = 2;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
             }
         }
-        $layvanbandi = NoiNhanVanBanDi::where('id',$request->id_van_ban_di)->first();
+        $layvanbandi = DonViChuTri::where('id',$request->id_van_ban_di)->first();
         $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id',$layvanbandi->van_ban_di_id)->get();
         if($updatenoinhan){
             //update
@@ -215,6 +262,124 @@ class DonViNhanVanBanDenController extends Controller
         return redirect()->route('van-ban-den.index')->with('success','Thêm văn bản thành công !!');
     }
 
+
+    public function vaosovanbanhuyen(Request $request)
+    {
+        $han_gq = $request->han_giai_quyet;
+        $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
+        if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
+        {
+            if ($noi_dung && $noi_dung[0] != null) {
+                foreach ($noi_dung as $key => $data) {
+                    $vanbandv = new VanBanDen();
+                    $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                    $vanbandv->so_van_ban_id = $request->so_van_ban;
+                    $vanbandv->so_den = $request->so_den;
+                    $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                    $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                    $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                    $vanbandv->trich_yeu = $request->trich_yeu;
+                    $vanbandv->nguoi_ky = $request->nguoi_ky;
+                    $vanbandv->do_khan_cap_id = $request->do_khan;
+                    $vanbandv->do_bao_mat_id = $request->do_mat;
+                    $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->nguoi_tao = auth::user()->id;
+                    $vanbandv->type = 1;
+                    $vanbandv->noi_dung = $data;
+                    if ($request->han_giai_quyet[$key] == null) {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    } else {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $han_gq[$key];
+                    }
+
+                    $vanbandv->save();
+                }
+            } else {
+                $vanbandv = new VanBanDen();
+                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                $vanbandv->so_van_ban_id = $request->so_van_ban;
+                $vanbandv->so_den = $request->so_den;
+                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                $vanbandv->trich_yeu = $request->trich_yeu;
+                $vanbandv->nguoi_ky = $request->nguoi_ky;
+                $vanbandv->do_khan_cap_id = $request->do_khan;
+                $vanbandv->do_bao_mat_id = $request->do_mat;
+                $vanbandv->han_xu_ly = $request->han_xu_ly;
+                $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                $vanbandv->type = 1;
+                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->nguoi_tao = auth::user()->id;
+                $vanbandv->save();
+            }
+        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
+        {
+            if ($noi_dung && $noi_dung[0] != null) {
+                foreach ($noi_dung as $key => $data) {
+                    $vanbandv = new VanBanDen();
+                    $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                    $vanbandv->so_van_ban_id = $request->so_van_ban;
+                    $vanbandv->so_den = $request->so_den;
+                    $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                    $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                    $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                    $vanbandv->trich_yeu = $request->trich_yeu;
+                    $vanbandv->nguoi_ky = $request->nguoi_ky;
+                    $vanbandv->do_khan_cap_id = $request->do_khan;
+                    $vanbandv->do_bao_mat_id = $request->do_mat;
+                    $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->nguoi_tao = auth::user()->id;
+                    $vanbandv->noi_dung = $data;
+                    $vanbandv->type = 2;
+                    if ($request->han_giai_quyet[$key] == null) {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    } else {
+                        $vanbandv->han_xu_ly = $request->han_xu_ly;
+                        $vanbandv->han_giai_quyet = $han_gq[$key];
+                    }
+
+                    $vanbandv->save();
+                }
+            } else {
+                $vanbandv = new VanBanDen();
+                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                $vanbandv->so_van_ban_id = $request->so_van_ban;
+                $vanbandv->so_den = $request->so_den;
+                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                $vanbandv->trich_yeu = $request->trich_yeu;
+                $vanbandv->nguoi_ky = $request->nguoi_ky;
+                $vanbandv->do_khan_cap_id = $request->do_khan;
+                $vanbandv->do_bao_mat_id = $request->do_mat;
+                $vanbandv->han_xu_ly = $request->han_xu_ly;
+                $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->type = 2;
+                $vanbandv->nguoi_tao = auth::user()->id;
+                $vanbandv->save();
+            }
+        }
+
+        $layvanbandi = DonViChuTri::where('id',$request->id_don_vi_chu_tri)->first();
+        if($layvanbandi){
+            //update
+            $layvanbandi->vao_so_van_ban = 1;
+            $layvanbandi->save();
+        }
+
+
+
+        return redirect()->route('van-ban-den.index')->with('success','Thêm văn bản thành công !!');
+    }
     /**
      * Update the specified resource in storage.
      * @param Request $request
