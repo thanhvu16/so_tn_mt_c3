@@ -9,7 +9,7 @@
                         <h3 class="box-title">Đánh giá cán bộ</h3>
                     </div>
                     <div class="box-body">
-                        <div class="row" >
+                        <div class="row" style="margin-bottom: 5px" >
                             <div class="col-md-4" >
                                 <form action="{{route('captrendanhgia')}}" method="get">
                                     <select

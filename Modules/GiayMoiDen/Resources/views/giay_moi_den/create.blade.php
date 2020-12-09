@@ -99,7 +99,7 @@
                                 <a class="btn btn-primary btn-xs" role="button" data-toggle="collapse"
                                    href="#collapseExample"
                                    aria-expanded="false" aria-controls="collapseExample"><i
-                                        class="fa fa-plus"></i>
+                                        class="fa fa-plus " ></i>
                                 </a>
                                 <b class="text-danger"> Hiển thị thêm nội dung</b>
                             </div>

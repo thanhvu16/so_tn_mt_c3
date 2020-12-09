@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Danh sách giấy mời đến</h3>
+                        <h3 class="box-title">Danh sách văn bản đến</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 ">
@@ -192,42 +192,7 @@
 
                                 </tr>
 
-                                <div class="modal fade" id="myModal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form action="{{ route('multiple_file') }}" method="POST">
-                                                @csrf
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h4 class="modal-title"><i
-                                                            class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="sokyhieu" class="">Chọn tệp
-                                                                tin<br><small><i>(Đặt tên file theo định dạng: tên viết tắt
-                                                                        sổ văn bản + số đi + năm (vd:
-                                                                        QD-1-2020.pdf))</i></small>
-                                                            </label>
 
-                                                            <input type="file" multiple name="ten_file[]"
-                                                                   accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
-                                                            <input type="text" id="url-file" value="123"
-                                                                   class="hidden" name="txt_file[]">
-                                                        </div>
-                                                        <div class="form-group col-md-4" >
-                                                            <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                             @empty
                                 <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>
@@ -249,6 +214,42 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('multiple_file') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title"><i
+                                                class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label for="sokyhieu" class="">Chọn tệp
+                                                    tin<br><small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                            sổ văn bản + số đến + năm (vd:
+                                                            QD-1-2020.pdf))</i></small>
+                                                </label>
+
+                                                <input type="file" multiple name="ten_file[]"
+                                                       accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
+                                                <input type="text" id="url-file" value="123"
+                                                       class="hidden" name="txt_file[]">
+                                            </div>
+                                            <div class="form-group col-md-4" >
+                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- /.box-body -->
 
                 </div>
@@ -260,6 +261,7 @@
 @section('script')
     <script type="text/javascript">
         function showModal() {
+            console.log(1);
             $("#myModal").modal('show');
         }
     </script>

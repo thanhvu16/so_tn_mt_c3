@@ -28,7 +28,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail2">Sổ văn bản <span style="color: red">(*)</span></label>
-                                    <select class="form-control select2 check-so-den-vb" data-don-vi="{{auth::user()->id}}" name="so_van_ban" required>
+                                    <select class="form-control select2 check-so-den-vb" data-don-vi="{{auth::user()->don_vi_id}}" name="so_van_ban" required>
                                         <option value="">-- Chọn sổ văn bản --</option>
                                         @foreach($sovanban as $data)
                                             <option value="{{ $data->id }}" {{ $van_ban_den->so_van_ban_id == $data->id ? 'selected' : '' }}>{{ $data->ten_so_van_ban }}</option>
