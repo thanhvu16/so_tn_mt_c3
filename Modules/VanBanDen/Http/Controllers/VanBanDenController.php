@@ -20,6 +20,7 @@ use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use function GuzzleHttp\Promise\all;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 
 class VanBanDenController extends Controller
 {
@@ -193,6 +194,8 @@ class VanBanDenController extends Controller
     public function laysoden(Request $request)
     {
         $nam = date("Y");
+        $soDenvb = null;
+
         if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $request->donViId,
@@ -225,9 +228,39 @@ class VanBanDenController extends Controller
         $user = auth::user();
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
-        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
-            if ($noi_dung && $noi_dung[0] != null) {
-                foreach ($noi_dung as $key => $data) {
+        try {
+            DB::beginTransaction();
+
+            if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+                if ($noi_dung && $noi_dung[0] != null) {
+                    foreach ($noi_dung as $key => $data) {
+                        $vanbandv = new VanBanDen();
+                        $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                        $vanbandv->so_van_ban_id = $request->so_van_ban;
+                        $vanbandv->so_den = $request->so_den;
+                        $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                        $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                        $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                        $vanbandv->trich_yeu = $request->trich_yeu;
+                        $vanbandv->nguoi_ky = $request->nguoi_ky;
+                        $vanbandv->do_khan_cap_id = $request->do_khan;
+                        $vanbandv->do_bao_mat_id = $request->do_mat;
+                        $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->nguoi_tao = auth::user()->id;
+                        $vanbandv->type = 1;
+                        $vanbandv->noi_dung = $data;
+                        if ($request->han_giai_quyet[$key] == null) {
+                            $vanbandv->han_xu_ly = $request->han_xu_ly;
+                            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                        } else {
+                            $vanbandv->han_xu_ly = $request->han_xu_ly;
+                            $vanbandv->han_giai_quyet = $han_gq[$key];
+                        }
+
+                        $vanbandv->save();
+                    }
+                } else {
                     $vanbandv = new VanBanDen();
                     $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
@@ -239,44 +272,47 @@ class VanBanDenController extends Controller
                     $vanbandv->nguoi_ky = $request->nguoi_ky;
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
+                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
-                    $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 1;
-                    $vanbandv->noi_dung = $data;
-                    if ($request->han_giai_quyet[$key] == null) {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                    } else {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $han_gq[$key];
-                    }
-
+                    $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->save();
                 }
-            } else {
-                $vanbandv = new VanBanDen();
-                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
-                $vanbandv->so_van_ban_id = $request->so_van_ban;
-                $vanbandv->so_den = $request->so_den;
-                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
-                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
-                $vanbandv->trich_yeu = $request->trich_yeu;
-                $vanbandv->nguoi_ky = $request->nguoi_ky;
-                $vanbandv->do_khan_cap_id = $request->do_khan;
-                $vanbandv->do_bao_mat_id = $request->do_mat;
-                $vanbandv->han_xu_ly = $request->han_xu_ly;
-                $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
-                $vanbandv->type = 1;
-                $vanbandv->nguoi_tao = auth::user()->id;
-                $vanbandv->save();
-            }
-        } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
-            if ($noi_dung && $noi_dung[0] != null) {
-                foreach ($noi_dung as $key => $data) {
+            } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+                if ($noi_dung && $noi_dung[0] != null) {
+                    foreach ($noi_dung as $key => $data) {
+                        $vanbandv = new VanBanDen();
+                        $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+                        $vanbandv->so_van_ban_id = $request->so_van_ban;
+                        $vanbandv->so_den = $request->so_den;
+                        $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                        $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                        $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                        $vanbandv->trich_yeu = $request->trich_yeu;
+                        $vanbandv->nguoi_ky = $request->nguoi_ky;
+                        $vanbandv->do_khan_cap_id = $request->do_khan;
+                        $vanbandv->do_bao_mat_id = $request->do_mat;
+                        $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->nguoi_tao = auth::user()->id;
+                        $vanbandv->type = 2;
+                        $vanbandv->noi_dung = $data;
+                        if ($request->han_giai_quyet[$key] == null) {
+                            $vanbandv->han_xu_ly = $request->han_xu_ly;
+                            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                        } else {
+                            $vanbandv->han_xu_ly = $request->han_xu_ly;
+                            $vanbandv->han_giai_quyet = $han_gq[$key];
+                        }
+                        $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                        $vanbandv->save();
+
+                        //save chuyen don vi chu tri
+                        DonViChuTri::saveDonViChuTri($vanbandv->id);
+                    }
+                } else {
                     $vanbandv = new VanBanDen();
                     $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
@@ -288,43 +324,27 @@ class VanBanDenController extends Controller
                     $vanbandv->nguoi_ky = $request->nguoi_ky;
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
+                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 2;
-                    $vanbandv->noi_dung = $data;
-                    if ($request->han_giai_quyet[$key] == null) {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                    } else {
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $han_gq[$key];
-                    }
-
+                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     $vanbandv->save();
+
+                    //save chuyen don vi chu tri
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
-            } else {
-                $vanbandv = new VanBanDen();
-                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
-                $vanbandv->so_van_ban_id = $request->so_van_ban;
-                $vanbandv->so_den = $request->so_den;
-                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
-                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
-                $vanbandv->trich_yeu = $request->trich_yeu;
-                $vanbandv->nguoi_ky = $request->nguoi_ky;
-                $vanbandv->do_khan_cap_id = $request->do_khan;
-                $vanbandv->do_bao_mat_id = $request->do_mat;
-                $vanbandv->han_xu_ly = $request->han_xu_ly;
-                $vanbandv->han_giai_quyet = $request->han_xu_ly;
-                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
-                $vanbandv->nguoi_tao = auth::user()->id;
-                $vanbandv->type = 2;
-                $vanbandv->save();
             }
+            DB::commit();
+
+            return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
         }
-        return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
 
     public function multiple_file(Request $request)

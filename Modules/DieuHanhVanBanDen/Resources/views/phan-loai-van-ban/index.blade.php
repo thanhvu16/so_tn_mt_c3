@@ -33,7 +33,7 @@
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="22%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="19%" class="text-center">Tóm tắt văn bản</th>
+                                <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 <th class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Dự họp</th>
@@ -70,7 +70,8 @@
                                                     lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>
                                             </p>
                                             <p>
-                                                (Cán bộ trả lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
+                                                (Cán bộ trả
+                                                lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
                                                 - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
@@ -82,7 +83,7 @@
                                                 <select name="chu_tich_id[{{ $vanBanDen->id }}]"
                                                         id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
-                                                        class="form-control dropdown-search chu-tich"
+                                                        class="form-control select2 chu-tich"
                                                         placeholder="Chọn chủ tịch chủ trì"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
@@ -100,7 +101,7 @@
                                                     placeholder="Chọn phó chủ tịch"
                                                     form="form-tham-muu"
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
-                                                    >
+                                                >
                                                     <option value="">Chọn phó chủ tịch chủ trì
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
@@ -194,27 +195,24 @@
                                     </td>
                                     <td>
                                         @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                                            <div class="col-md-12">
-                                                <div class="radio radio-info form-check-inline">
-                                                    <input type="radio"
-                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
-                                                           class="radio-col-cyan chu-tich-du-hop" value=""
-                                                           form="form-tham-muu">
-                                                    <label
-                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"><i>CT</i></label>
-                                                </div>
+                                            <div class="radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                       class="radio-col-cyan chu-tich-du-hop" value=""
+                                                       form="form-tham-muu">
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"><i>CT</i></label>
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="radio radio-info form-check-inline">
-                                                    <input type="radio"
-                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
-                                                           class="radio-col-cyan pho-ct-du-hop" value=""
-                                                           form="form-tham-muu">
-                                                    <label
-                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"><i>PCT</i></label>
-                                                </div>
+
+                                            <div class=" radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       class="radio-col-cyan pho-ct-du-hop" value=""
+                                                       form="form-tham-muu">
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"><i>PCT</i></label>
                                             </div>
                                         @endif
                                     </td>
@@ -379,7 +377,7 @@
                 return this.text;
             }).get();
 
-            let statusTraLai = $this.data('tra-lai');
+            let statusTraLai = $(this).data('tra-lai');
 
             vanBanDenDonViId = $(this).data('id');
 

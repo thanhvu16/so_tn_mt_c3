@@ -8,6 +8,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\LoaiVanBan;
+use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
+use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Auth;
 
@@ -61,6 +63,7 @@ class DieuHanhVanBanDenController extends Controller
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
         $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $ds_nguoiKy = null;
 
         switch (auth::user()->role_id) {
             case QUYEN_CHUYEN_VIEN:
@@ -126,5 +129,39 @@ class DieuHanhVanBanDenController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function vanBanXemDeBiet(Request $request)
+    {
+        $lanhDaoXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', auth::user()->id)->orderBy('id', 'DESC')->get();
+
+        $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
+
+        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+            ->whereIn('id', $arrVanBanDenId)
+            ->paginate(PER_PAGE);
+
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+
+        return view('dieuhanhvanbanden::van-ban-hoan-thanh.xem_de_biet', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
+    }
+
+    public function vanBanQuanTrong()
+    {
+        $vanBanQuanTrong = VanBanQuanTrong::where('user_id', auth::user()->id)->orderBy('id', 'DESC')->get();
+
+        $arrVanBanDenId = $vanBanQuanTrong->pluck('van_ban_den_id')->toArray();
+
+        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+            ->whereIn('id', $arrVanBanDenId)
+            ->paginate(PER_PAGE);
+
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+
+        return view('dieuhanhvanbanden::van-ban-hoan-thanh.van_ban_quan_trong', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }
 }

@@ -1,9 +1,5 @@
 @extends('admin::layouts.master')
-@if(Request::get('status'))
-    @section('page_title', 'Văn bản đã xử lý')
-@else
-    @section('page_title', 'Văn bản chờ xử lý')
-@endif
+@section('page_title', 'Văn bản quan trọng')
 @section('content')
     <section class="content">
         <div class="row">
@@ -12,26 +8,24 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản {{ Request::get('status') ? 'đã' : 'chờ' }} xử lý</h4>
+                                <h4 class="header-title pt-2">Văn bản quan trọng</h4>
                             </div>
                         </div>
                     </div>
                     <div class="box-body">
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
-                                <tr role="row" class="text-center">
-                                    <th width="2%" class="text-center">STT</th>
-                                    <th width="22%" class="text-center">Thông tin</th>
-                                    <th width="25%" class="text-center">Trích yếu - nội dung</th>
-                                    <th width="15%" class="text-center">Trình tự xử lý</th>
-                                    @if (Request::get('status'))
-                                        <th width="14%" class="text-center">Kết quả</th>
-                                    @endif
-                                </tr>
+                            <tr role="row" class="text-center">
+                                <th width="2%" class="text-center">STT</th>
+                                <th width="22%" class="text-center">Thông tin</th>
+                                <th width="30%" class="text-center">Trích yếu - nội dung</th>
+                                <th width="20%" class="text-center">Trình tự xử lý</th>
+                                <th width="20%" class="text-center">Kết quả</th>
+                            </tr>
                             </thead>
                             <tbody class="text-justify">
-                            @forelse($danhSachVanBanDen as $key => $vanBanDen)
-                                <tr class="tr-tham-muu">
+                            @forelse($danhSachVanBanDen as $vanBanDen)
+                                <tr class="duyet-vb">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         @include('dieuhanhvanbanden::van-ban-den.info')
@@ -39,7 +33,7 @@
                                     <td>
                                         @if($vanBanDen->hasChild())
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop') }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
@@ -51,7 +45,7 @@
                                             </p>
                                         @else
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->trich_yeu }}</a>
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
@@ -82,24 +76,43 @@
                                             @endforeach
                                         @endif
                                     </td>
-                                    @if (Request::get('status'))
-                                        <td>
-                                            <p><b>Nội dung:</b> {{ $vanBanDen->phoiHopGiaiQuyetByUserId->noi_dung ?? null }}</p>
-                                            @if (isset($vanBanDen->phoiHopGiaiQuyetByUserId->phoiHopGiaiQuyetFile))
-                                                @foreach($vanBanDen->phoiHopGiaiQuyetByUserId->phoiHopGiaiQuyetFile as $key => $file)
+                                    <td>
+                                        @if ($vanBanDen->van_ban_can_tra_loi == 1 && !empty($vanBanDen->vanBanDi))
+                                            @if (!empty($vanBanDen->vanBanDi->so_di))
+                                                <p>Văn bản đi số <span class="color-red"><b>{{ $vanBanDen->vanBanDi->so_di ?? '' }}</b></span></p>
+                                            @endif
+                                            <p><a href="{{ route('Quytrinhxulyvanbandi',$vanBanDen->vanBanDi->id) }}">{{ $vanBanDen->vanBanDi->trich_yeu ?? null }}</a></p>
+                                            <p>
+                                                @if (isset($vanBanDen->vanBanDi->filechinh))
+                                                    tệp tin: <br>
+                                                    @foreach($vanBanDen->vanBanDi->filechinh as $key => $file)
+                                                        <a href="{{ $file->getUrlFile() }}"
+                                                           target="popup"
+                                                           class="detail-file-name seen-new-window">[{{ cutStr($file->ten_file) }}]</a>
+                                                        @if (count($vanBanDen->vanBanDi->filechinh)-1 != $key)
+                                                            &nbsp;|&nbsp;
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </p>
+                                        @else
+                                            <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanh()->noi_dung ?? null }}</p>
+
+                                            @if (isset($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile))
+                                                @foreach($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile as $key => $file)
                                                     <a href="{{ $file->getUrlFile() }}"
                                                        target="popup"
                                                        class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                    @if (count($vanBanDen->phoiHopGiaiQuyetByUserId->phoiHopGiaiQuyetFile)-1 != $key)
+                                                    @if (count($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile)-1 != $key)
                                                         &nbsp;|&nbsp;
                                                     @endif
                                                 @endforeach
                                             @endif
-                                        </td>
-                                    @endif
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
-                                <td colspan="{{ Request::get('status') ? 5 : 4 }}" class="text-center">Không tìm
+                                <td colspan="5" class="text-center">Không tìm
                                     thấy dữ liệu.
                                 </td>
                             @endforelse
@@ -125,22 +138,37 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        // tra lai van ban
-        $('.tra-lai-van-ban').on('click', function () {
-            let id = $(this).data('id');
-            let traLai = $(this).data('tra-lai');
-            $('#modal-tra-lai').find('input[name="van_ban_den_id"]').val(id);
-            $('#modal-tra-lai').find('input[name="type"]').val(traLai);
-        });
+        $('.btn-choose-status').on('click', function () {
+            let text = $(this).text().trim();
+            let message = `Xác nhận ${text}`;
+            let noiDung = $(this).parents('.duyet-vb').find('.noi-dung').val();
+            let giaiQuyetVanBan = $(this).parents('.duyet-vb').find('input[name="giai_quyet_van_ban_id"]').val();
+            if (confirm(message)) {
+                let status = $(this).data('type');
+                let id = $(this).data('id');
 
-        $('.btn-gia-han').on('click', function () {
-            let id = $(this).data('id');
-            let hanCu = $(this).data('han');
-            let hanFormat = moment(hanCu, "YYYY-MM-DD").format("DD/MM/YYYY");
+                console.log(status, noiDung);
 
-            $('#modal-de_xuat_gia_han').find('input[name="van_ban_den_id"]').val(id);
-            $('#modal-de_xuat_gia_han').find('input[name="thoi_han_cu"]').val(hanFormat);
-        });
+                $.ajax({
+                    url: APP_URL + '/duyet-van-ban',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        status: status,
+                        noiDung: noiDung,
+                        giaiQuyet: giaiQuyetVanBan
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            toastr['success'](data.message, 'Thông báo hệ thống');
+                            location.reload();
+                        } else {
+                            toastr['error'](data.message, 'Thông báo hệ thống');
+                        }
 
+                    }
+                })
+            }
+        })
     </script>
 @endsection

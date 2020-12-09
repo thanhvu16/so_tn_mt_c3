@@ -221,6 +221,27 @@ class GiaHanVanBanController extends Controller
                     $giaHanVanBanLenCapTren->fill($data);
                     $giaHanVanBanLenCapTren->save();
                 } else {
+
+                    // update gia han cua don vi van thu nhap truc tiep
+                    if ($chuyenNhanVanBanDonVi && $chuyenNhanVanBanDonVi->type == 1) {
+
+                        $vanBanDenDonVi = $giaHanVanBanDonVi->vanBanDen;
+                        if ($vanBanDenDonVi) {
+                            $vanBanDenDonVi->han_xu_ly = $thoiHan;
+                            $vanBanDenDonVi->save();
+                        }
+
+                        // update gia han ban ghi null parent
+                        GiaHanVanBan::where('id', $giaHanVanBanDonVi->parent_id)
+                            ->update(['lanh_dao_duyet' => $status]);
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => $message,
+                            200
+                        ]);
+                    }
+
                     if ($chuyenNhanVanBanDonVi) {
                         $canBoNhan = $chuyenNhanVanBanDonVi->can_bo_chuyen_id;
                     } else {

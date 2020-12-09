@@ -43,7 +43,10 @@ class DonViNhanVanBanDenController extends Controller
                         return $query->where('vao_so_van_ban', 1);
                     }
                 }
-            })->get();
+            })
+            ->whereNull('parent_id')
+            ->whereNull('type')
+            ->get();
         $donvinhancount2 = count($vanbanhuyenxuongdonvi);
         $tong = $donvinhancount + $donvinhancount2;
         return view('vanbanden::don_vi_nhan_van_ban.index',compact('donvinhan','vanbanhuyenxuongdonvi','donvinhancount','tong'));
@@ -74,7 +77,8 @@ class DonViNhanVanBanDenController extends Controller
         }
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
-        return view('vanbanden::don_vi_nhan_van_ban.van_ban_den_don_vi',compact('dokhan','domat','loaivanban','sovanban','users','id','hangiaiquyet','van_ban_den'));
+        return view('vanbanden::don_vi_nhan_van_ban.van_ban_den_don_vi',compact('dokhan','domat',
+            'loaivanban','sovanban','users','id','hangiaiquyet','van_ban_den'));
 
     }
 
@@ -318,10 +322,13 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->save();
             }
         }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
+            $layvanbandi = DonViChuTri::where('id',$request->id_don_vi_chu_tri)->first();
         {
+
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
                     $vanbandv = new VanBanDen();
+                    $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
                     $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
                     $vanbandv->so_den = $request->so_den;
@@ -349,6 +356,7 @@ class DonViNhanVanBanDenController extends Controller
                 }
             } else {
                 $vanbandv = new VanBanDen();
+                $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
                 $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                 $vanbandv->so_van_ban_id = $request->so_van_ban;
                 $vanbandv->so_den = $request->so_den;
@@ -369,7 +377,6 @@ class DonViNhanVanBanDenController extends Controller
             }
         }
 
-        $layvanbandi = DonViChuTri::where('id',$request->id_don_vi_chu_tri)->first();
         if($layvanbandi){
             //update
             $layvanbandi->vao_so_van_ban = 1;

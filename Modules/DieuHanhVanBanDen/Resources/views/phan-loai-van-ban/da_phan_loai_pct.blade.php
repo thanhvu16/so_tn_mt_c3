@@ -55,7 +55,7 @@
                                     </td>
                                     <td>
                                         <p>
-                                           {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
                                         </p>
                                         {{--                                        @if ($vanBanDen->vanBanTraLai)--}}
                                         {{--                                            <p class="color-red"><b>Lý--}}
@@ -105,15 +105,19 @@
                                             @if ($active)
                                                 @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
                                                     <p>
-                                                        <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->han_xu_ly ?? null }}" class="form-control change-han-xu-ly"
+                                                        <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{ $vanBanDen->han_xu_ly ?? null }}"
+                                                               class="form-control change-han-xu-ly"
                                                                form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                     </p>
                                                 @endif
 
-                                                <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
+                                                <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
+                                                       name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
                                                        {{ $vanBanDen->checkVanBanQuanTrong() ? 'checked' : null }} class="check-van-ban-quan-trong">
-                                                <label for="van-ban-quan-trong{{ $vanBanDen->id }}" class="color-red font-weight-normal">
+                                                <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
+                                                       class="color-red font-weight-normal">
                                                     VB Quan trọng
                                                 </label>
                                             @endif
@@ -130,16 +134,42 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
-                                                        {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
+                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị
+                                                phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                    {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
                                         </p>
                                     </td>
                                     <td>
+                                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                            <p>LD dự họp:</p>
+                                            <div class="radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                       class="radio-col-cyan chu-tich-du-hop"
+                                                       value="{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac([$chuTich->id]) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                ><i>CT</i></label>
+                                            </div>
+                                            <div class="radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       class="radio-col-cyan pho-ct-du-hop"
+                                                       value="{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                ><i>PCT</i></label>
+                                            </div>
+                                        @endif
                                         @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)
                                             <button
-                                                class="btn waves-effect btn-sm btn-primary btn-update"
+                                                class="btn mt-1 waves-effect btn-sm btn-primary btn-update"
                                                 data-id="{{ $vanBanDen->id }}">Cập nhật
                                             </button>
                                         @endif

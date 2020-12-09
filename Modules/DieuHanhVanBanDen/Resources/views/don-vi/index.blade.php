@@ -33,9 +33,9 @@
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="20%" class="text-center">Tóm tắt VB</th>
+                                <th width="22%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center">Ý kiến</th>
-                                <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th width="22%" class="text-center">Chỉ đạo</th>
                                 @if ($trinhTuNhanVanBan == 4)
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
@@ -48,17 +48,31 @@
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
-                                        <p>
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
-                                            <br>
-                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                                                <i>
-                                                    (Vào hồi {{ $vanBanDen->gio_hop }}
-                                                    ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
-                                                    , tại {{ $vanBanDen->dia_diem }})
-                                                </i>
-                                            @endif
-                                        </p>
+                                        @if($vanBanDen->hasChild())
+                                            <p>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->hasChild()->trich_yeu ?? null }}</a>
+                                                <br>
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                    <i>
+                                                        (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                    </i>
+                                                @endif
+                                            </p>
+                                        @else
+                                            <p>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                <br>
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                    <i>
+                                                        (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->dia_diem }})
+                                                    </i>
+                                                @endif
+                                            </p>
+                                        @endif
                                         @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>
@@ -77,12 +91,14 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
-                                               data-id="{{ $vanBanDen->id }}">
-                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
-                                            </a>
-                                        </p>
+                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == 2) || $vanBanDen->type == 1)
+                                            <p>
+                                                <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
+                                                   data-id="{{ $vanBanDen->id }}">
+                                                    <span><i class="fa fa-reply"></i>Trả lại VB</span>
+                                                </a>
+                                            </p>
+                                        @endif
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">

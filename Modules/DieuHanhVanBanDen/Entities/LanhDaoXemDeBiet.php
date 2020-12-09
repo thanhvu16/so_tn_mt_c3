@@ -16,7 +16,7 @@ class LanhDaoXemDeBiet extends Model
         'user_id'
     ];
 
-    public static function saveLanhDaoXemDeBiet($arrLanhDaoId, $vanBanDenId, $type)
+    public static function saveLanhDaoXemDeBiet($arrLanhDaoId, $vanBanDenId, $type=null)
     {
 
 

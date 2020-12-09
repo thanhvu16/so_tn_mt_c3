@@ -4,7 +4,9 @@ namespace Modules\DieuHanhVanBanDen\Entities;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Admin\Entities\DonVi;
 use Modules\VanBanDen\Entities\VanBanDen;
+use Auth;
 
 class DonViChuTri extends Model
 {
@@ -26,6 +28,7 @@ class DonViChuTri extends Model
     const HOAN_THANH_VB = 1;
     const CHUYEN_TIEP = 1;
     const GIAI_QUYET = 2;
+    const TYPE_NHAP_TU_VAN_THU_DON_VI = 1;
 
     public function canBoChuyen()
     {
@@ -40,5 +43,32 @@ class DonViChuTri extends Model
     public function vanBanDen()
     {
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+    }
+
+    public static function saveDonViChuTri($vanBanDenId)
+    {
+        // luu don vi chu tri
+        $nguoiDung = User::role(TRUONG_PHONG)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+        $donVi = auth::user()->donVi;
+
+        $dataLuuDonViChuTri = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'noi_dung' => 'Chuyển đơn vị chủ trì: '. $donVi->ten_don_vi,
+            'don_vi_id' => $donVi->id,
+            'user_id' => auth::user()->id,
+            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+            'vao_so_van_ban' =>  1,
+            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI
+        ];
+
+        $donViChuTri = new DonViChuTri();
+        $donViChuTri->fill($dataLuuDonViChuTri);
+        $donViChuTri->save();
     }
 }

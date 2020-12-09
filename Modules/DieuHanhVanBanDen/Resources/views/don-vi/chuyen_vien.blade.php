@@ -38,17 +38,31 @@
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
-                                        <p>
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
-                                            <br>
-                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                                                <i>
-                                                    (Vào hồi {{ $vanBanDen->gio_hop }}
-                                                    ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
-                                                    , tại {{ $vanBanDen->dia_diem }})
-                                                </i>
-                                            @endif
-                                        </p>
+                                        @if($vanBanDen->hasChild())
+                                            <p>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
+                                                <br>
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                    <i>
+                                                        (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                    </i>
+                                                @endif
+                                            </p>
+                                        @else
+                                            <p>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                <br>
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                    <i>
+                                                        (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->dia_diem }})
+                                                    </i>
+                                                @endif
+                                            </p>
+                                        @endif
                                         @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>

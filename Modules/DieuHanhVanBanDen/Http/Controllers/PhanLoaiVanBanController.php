@@ -4,6 +4,7 @@ namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
 use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
+use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -86,6 +87,8 @@ class PhanLoaiVanBanController extends Controller
 
         $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
 
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             try {
                 DB::beginTransaction();
@@ -139,6 +142,42 @@ class PhanLoaiVanBanController extends Controller
 
                     // check quyen gia han van ban
                     $quyenGiaHan = null;
+
+
+                    // check lanh dao du hop
+                    if ($vanBanDen->so_van_ban_id == $giayMoi->id) {
+                        if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
+                            $tuan = date('W',strtotime($vanBanDen->ngay_hop_chinh));
+
+                            $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId[$vanBanDenId]);
+                            $noiDungMoiHop = null;
+
+                            if (!empty($lanhDaoDuHop)) {
+
+                                $noiDungMoiHop = 'Kính mời '.$lanhDaoDuHop->chucVu->ten_chuc_vu. ' '. $lanhDaoDuHop->ho_ten .' dự họp';
+                            }
+
+                            $dataLichCongTac = array(
+                                'object_id' => $vanBanDen->id,
+                                'lanh_dao_id' => $lanhDaoDuHopId[$vanBanDenId],
+                                'ngay' => $vanBanDen->ngay_hop,
+                                'gio' => $vanBanDen->gio_hop,
+                                'tuan' => $tuan,
+                                'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+                                'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $noiDungMoiHop,
+                                'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+                                'user_id' => $currentUser->id,
+                            );
+                            //check lich cong tac
+                            $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
+
+                            if (empty($lichCongTac)) {
+                                $lichCongTac = new LichCongTac();
+                            }
+                            $lichCongTac->fill($dataLichCongTac);
+                            $lichCongTac->save();
+                        }
+                    }
 
                     //chu tich
                     if (!empty($arrChuTich[$vanBanDenId])) {
@@ -242,7 +281,7 @@ class PhanLoaiVanBanController extends Controller
                         'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                         'user_id' => $currentUser->id,
                         'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
-                        'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null,
+                        'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null
                     ];
 
                     DonViChuTri::where([

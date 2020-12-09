@@ -86,7 +86,7 @@
                                                     <select name="chu_tich_id[{{ $vanBanDen->id }}]"
                                                             id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                             data-id="{{ $vanBanDen->id }}"
-                                                            class="form-control dropdown-search chu-tich"
+                                                            class="form-control select2 chu-tich"
                                                             placeholder="Chọn chủ tịch chủ trì"
                                                             data-id="{{ $vanBanDen->id }}"
                                                             form="form-tham-muu">
@@ -220,9 +220,34 @@
                                         </p>
                                     </td>
                                     <td>
+                                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                            <p>LD dự họp:</p>
+                                            <div class="radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                       class="radio-col-cyan chu-tich-du-hop"
+                                                       value="{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac([$chuTich->id]) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                ><i>CT</i></label>
+                                            </div>
+                                            <div class="radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       class="radio-col-cyan pho-ct-du-hop"
+                                                       value="{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                ><i>PCT</i></label>
+                                            </div>
+                                        @endif
                                         @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)
                                             <button
-                                                class="btn waves-effect btn-sm btn-primary btn-update"
+                                                class="btn mt-1 waves-effect btn-sm btn-primary btn-update"
                                                 data-id="{{ $vanBanDen->id }}">Cập nhật
                                             </button>
                                         @endif

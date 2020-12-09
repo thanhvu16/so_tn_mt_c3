@@ -1,5 +1,7 @@
 <li class="treeview {{ Route::is('van-ban-lanh-dao-xu-ly.index') || Route::is('phan-loai-van-ban.da_phan_loai')
- || Route::is('gia-han-van-ban.index') || Route::is('van-ban-den-don-vi.dang_xu_ly') || Route::is('van-ban-den-hoan-thanh.index') ? 'active menu-open' : '' }}">
+ || Route::is('gia-han-van-ban.index') || Route::is('van-ban-den-don-vi.dang_xu_ly') ||
+  Route::is('van-ban-den-hoan-thanh.index') || Route::is('van-ban-den-don-vi.xem_de_biet') ||
+   Route::is('van-ban-den-don-vi.quan_trong') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-th" aria-hidden="true"></i> <span>Hồ sơ công việc</span>
         <span class="pull-right-container">
@@ -18,6 +20,14 @@
         </li>
         <li class="{{ Route::is('gia-han-van-ban.index') ? 'active' : '' }}"><a
                 href="{{ route('gia-han-van-ban.index') }}"><i class="fa fa-circle-o"></i>VB xin gia hạn</a>
+        </li>
+
+        <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
+                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB xem để biết</a>
+        </li>
+
+        <li class="{{ Route::is('van-ban-den-don-vi.quan_trong') ? 'active' : '' }}"><a
+                href="{{ route('van-ban-den-don-vi.quan_trong') }}"><i class="fa fa-circle-o"></i>VB quan trọng</a>
         </li>
 
         <li class="{{ Route::is('van-ban-den-hoan-thanh.index') ? 'active' : '' }}"><a

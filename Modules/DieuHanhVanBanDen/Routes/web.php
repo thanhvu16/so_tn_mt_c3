@@ -62,3 +62,6 @@ Route::get('van-ban-den-phoi-hop-dang-xu-ly', 'VanBanDenPhoiHopController@index'
 Route::get('van-ban-den-phoi-hop-da-xu-ly', 'VanBanDenPhoiHopController@donViPhoiHopDaXuLy')->name('van-ban-den-phoi-hop.da-xu-ly');
 
 Route::get('van-ban-den-dang-xu-ly', 'VanBanDenDonViController@dangXuLy')->name('van-ban-den-don-vi.dang_xu_ly');
+
+Route::get('van-ban-xem-de-biet', 'DieuHanhVanBanDenController@vanBanXemDeBiet')->name('van-ban-den-don-vi.xem_de_biet');
+Route::get('van-ban-trong', 'DieuHanhVanBanDenController@vanBanQuanTrong')->name('van-ban-den-don-vi.quan_trong');

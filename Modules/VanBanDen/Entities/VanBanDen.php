@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDen\Entities;
 
+use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -321,6 +322,15 @@ class VanBanDen extends Model
             $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
             $vanBanDen->save();
 
+            // update van ban co parent_id
+            if ($vanBanDen->hasChild()) {
+                $vanBanDenDonVi = $vanBanDen->hasChild();
+                $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+                $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
+                $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
+                $vanBanDenDonVi->save();
+            }
+
             //update luu vet van ban
             XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
                 ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
@@ -335,5 +345,19 @@ class VanBanDen extends Model
     {
         return $this->hasOne(VanBanDi::class, 'van_ban_den_id', 'id')
             ->orderBy('id', 'DESC');
+    }
+
+    public function checkLichCongTac($arrLanhDaoId)
+    {
+        return LichCongTac::whereIn('lanh_dao_id', $arrLanhDaoId)
+            ->where('object_id', $this->id)
+            ->whereNull('type')
+            ->first();
+    }
+
+    public function hasChild()
+    {
+        return VanBanDen::where('parent_id', $this->id)->orderBy('id', 'DESC')->first();
+
     }
 }

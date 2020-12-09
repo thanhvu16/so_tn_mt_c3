@@ -155,7 +155,7 @@ class VanBanDenHoanThanhController extends Controller
             $noiDung = $request->get('noiDung');
             $giaiQuyetVanBanId = $request->get('giaiQuyet');
 
-            $vanBanDenDonVi = VanBanDen::where('id', $id)->first();
+            $vanBanDen = VanBanDen::where('id', $id)->first();
             $giaiQuyetVanBan = GiaiQuyetVanBan::where('id', $giaiQuyetVanBanId)
                 ->whereNull('status')->first();
 
@@ -168,20 +168,29 @@ class VanBanDenHoanThanhController extends Controller
             }
 
             if ($status == GiaiQuyetVanBan::STATUS_DA_DUYET) {
-                if ($vanBanDenDonVi) {
+                if ($vanBanDen) {
 
-                    $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
-                    $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
-                    $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
-                    $vanBanDenDonVi->save();
+                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+                    $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
+                    $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
+                    $vanBanDen->save();
+
+                    // update van ban co parent_id
+                    if ($vanBanDen->hasChild()) {
+                        $vanBanDenDonVi = $vanBanDen->hasChild();
+                        $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+                        $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
+                        $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
+                        $vanBanDenDonVi->save();
+                    }
 
                     //xoa chuyen nhan vb
-//                    $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+//                    $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
 //                        ->where('can_bo_nhan_id', auth::user()->id)
 //                        ->whereNull('hoan_thanh')->first();
 
 //                    if ($chuyenNhanVanBanDonVi) {
-//                        DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+//                        DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
 //                            ->where('id', '>', $chuyenNhanVanBanDonVi->id)
 //                            ->where('don_vi_id', auth::user()->don_vi_id)
 //                            ->whereNull('hoan_thanh')->delete();
@@ -189,11 +198,11 @@ class VanBanDenHoanThanhController extends Controller
 
 
                     //update luu vet van ban
-                    XuLyVanBanDen::where('van_ban_den_id', $vanBanDenDonVi->id)
+                    XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
                         ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
 
                     //update chuyen nhan vb don vi
-                    DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+                    DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
                         ->where('don_vi_id', auth::user()->don_vi_id)
                         ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
 
@@ -211,8 +220,8 @@ class VanBanDenHoanThanhController extends Controller
 
             } else {
 
-                $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::CHUYEN_VIEN_NHAN_VB;
-                $vanBanDenDonVi->save();
+                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHUYEN_VIEN_NHAN_VB;
+                $vanBanDen->save();
 
                 return response()->json([
                     'success' => true,

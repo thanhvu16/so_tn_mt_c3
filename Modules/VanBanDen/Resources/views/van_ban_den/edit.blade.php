@@ -134,7 +134,7 @@
                                     <select class="form-control select2"  name="do_khan">
                                         {{--                                        <option value="">-- Chọn độ khẩn --</option>--}}
                                         @foreach($dokhan as $dokhands)
-                                            <option value="{{ $dokhands->id }}" {{ $nguoidung->id }}" {{ $van_ban_den->do_khan == $dokhands->id ? 'selected' : '' }} >{{ $dokhands->ten_muc_do }}</option>
+                                            <option value="{{ $dokhands->id }}" {{ $van_ban_den->do_khan == $dokhands->id ? 'selected' : '' }} >{{ $dokhands->ten_muc_do }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -145,7 +145,7 @@
                                     <select class="form-control select2"  name="do_mat">
                                         {{--                                        <option value="">-- Chọn độ mật--</option>--}}
                                         @foreach($domat as $domatds)
-                                            <option value="{{ $domatds->id }}" {{ $nguoidung->id }}" {{ $van_ban_den->do_mat == $domatds->id ? 'selected' : '' }} >{{ $domatds->ten_muc_do }}</option>
+                                            <option value="{{ $domatds->id }}" {{ $van_ban_den->do_mat == $domatds->id ? 'selected' : '' }} >{{ $domatds->ten_muc_do }}</option>
                                         @endforeach
                                     </select>
                                 </div>
