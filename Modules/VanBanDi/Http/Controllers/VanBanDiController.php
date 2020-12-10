@@ -833,7 +833,7 @@ class VanBanDiController extends Controller
 
         }
 
-        $soDi = f + 1;
+        $soDi = $soDi + 1;
         $vanbandi->so_di = $soDi;
         $vanbandi->save();
         return redirect()->back()->with('success', 'Cấp số thành công thành công !');
