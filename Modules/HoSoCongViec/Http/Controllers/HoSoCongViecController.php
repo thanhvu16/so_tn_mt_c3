@@ -69,6 +69,7 @@ class HoSoCongViecController extends Controller
 
     public function lay_danh_sach_tim_kiem(Request $request)
     {
+        $user = auth::user();
         $trich_yeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
         $noi_gui_den = $request->get('noi_gui_den');
@@ -76,8 +77,8 @@ class HoSoCongViecController extends Controller
         $van_ban = null;
 
         if ($loai_van_ban == 1) {
-            if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_PHO_CHUC_TICH ||
-                auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG) {
+            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+                $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 $van_ban = VanBanDen::where(['type' => 1, 'don_vi_id' => auth::user()->don_vi_id])
                 ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
                     if (!empty($trich_yeu)) {
@@ -93,7 +94,7 @@ class HoSoCongViecController extends Controller
                             return $query->where('co_quan_ban_hanh_id', 'LIKE', "%$noi_gui_den%");
                         }
                     })->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } elseif (auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_PHO_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG || auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+            } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
                 $van_ban = VanBanDen::where(['type' => 2, 'don_vi_id' => auth::user()->don_vi_id])
                     ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
                     if (!empty($trich_yeu)) {
@@ -112,8 +113,8 @@ class HoSoCongViecController extends Controller
             }
 
         } elseif ($loai_van_ban == 2) {
-            if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_PHO_CHUC_TICH ||
-                auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG) {
+            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+                $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 $van_ban = $ds_vanBanDi = VanBanDi::where(['don_vi_soan_thao' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                     ->where(function ($query) use ($trich_yeu) {
                         if (!empty($trich_yeu)) {
@@ -125,7 +126,7 @@ class HoSoCongViecController extends Controller
                         }
                     })
                     ->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } elseif (auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_PHO_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG || auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+            } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
                 $van_ban = VanBanDi::where(['van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                     ->where(function ($query) use ($trich_yeu) {
                         if (!empty($trich_yeu)) {

@@ -29,15 +29,15 @@ class GopYVanbanDiController extends Controller
         $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
         $key1 = count($canbogopyngoai);
         $nguoinhan = null;
-        switch (auth::user()->role_id) {
+        switch (auth::user()->roles->pluck('name')[0]) {
 
-            case QUYEN_PHO_PHONG:
+            case PHO_PHONG:
                 $nguoinhan = User::role([ CHUYEN_VIEN])->where('don_vi_id',auth::user()->don_vi_id)->get();
                 break;
-            case QUYEN_TRUONG_PHONG:
+            case TRUONG_PHONG:
                 $nguoinhan = User::role([ PHO_PHONG])->get();
                 break;
-            case QUYEN_CHU_TICH:
+            case CHU_TICH:
                 $nguoinhan = User::role([PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
                 break;
         }

@@ -22,33 +22,33 @@ class LanhDaoController extends Controller
         $thang = $request->get('thang_danh_gia');
         $nguoinhan = null;
         $month = Carbon::now()->format('m');
-        switch (auth::user()->role_id) {
-            case QUYEN_CHUYEN_VIEN:
-                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
-            case QUYEN_PHO_PHONG:
-                $nguoinhan = User::role([ TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case PHO_PHONG:
+                $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
-            case QUYEN_TRUONG_PHONG:
-                $nguoinhan = User::role([ QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->get();
+            case TRUONG_PHONG:
+                $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
-            case QUYEN_PHO_CHUC_TICH:
+            case PHO_CHUC_TICH:
                 $nguoinhan = User::role([CHU_TICH])->get();
                 break;
-            case QUYEN_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH])->get();
-                break;
-            case QUYEN_PHO_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
-                break;
-            case QUYEN_CHU_TICH:
+            case CHU_TICH:
                 $nguoinhan = null;
                 break;
-            case QUYEN_VAN_THU_DON_VI:
-                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case CHANH_VAN_PHONG:
+                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
                 break;
-            case QUYEN_VAN_THU_HUYEN:
-                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH,QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case PHO_CHANH_VAN_PHONG:
+                $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
+                break;
+            case VAN_THU_DON_VI:
+                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case VAN_THU_HUYEN:
+                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
@@ -141,32 +141,33 @@ class LanhDaoController extends Controller
         $thang = $request->get('thang');
         $month = Carbon::now()->format('m');
         $nguoinhan = null;
-        switch (auth::user()->role_id) {
-            case QUYEN_CHUYEN_VIEN:
-                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
-            case QUYEN_PHO_PHONG:
-                $nguoinhan = User::role([ TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case PHO_PHONG:
+                $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
-            case QUYEN_TRUONG_PHONG:
-                $nguoinhan = User::role([ QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->get();
+            case TRUONG_PHONG:
+                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG, QUYEN_PHO_CHANH_VAN_PHONG])->get();
                 break;
-            case QUYEN_PHO_CHUC_TICH:
+            case PHO_CHUC_TICH:
+                $nguoinhan = User::role([CHU_TICH])->get();
                 break;
-            case QUYEN_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([ CHU_TICH,PHO_CHUC_TICH])->get();
-                break;
-            case QUYEN_PHO_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
-                break;
-            case QUYEN_CHU_TICH:
+            case CHU_TICH:
                 $nguoinhan = null;
                 break;
-            case QUYEN_VAN_THU_DON_VI:
-                $nguoinhan = User::role([ TRUONG_PHONG,PHO_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case CHANH_VAN_PHONG:
+                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
                 break;
-            case QUYEN_VAN_THU_HUYEN:
-                $nguoinhan = User::role([ QUYEN_CHANH_VAN_PHONG,QUYEN_PHO_CHANH_VAN_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->get();
+            case PHO_CHANH_VAN_PHONG:
+                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
+                break;
+            case VAN_THU_DON_VI:
+                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case VAN_THU_HUYEN:
+                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, QUYEN_CHANH_VAN_PHONG, QUYEN_PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
@@ -195,10 +196,10 @@ class LanhDaoController extends Controller
         //lấy đánh giá cũ và cập nhật trạng thái
         $capnhatdanhgiacu = DuyetDanhGia::where('id', $request->id_danh_gia)->first();
         $laycanbogoc = DuyetDanhGia::where('id_dau_tien', $capnhatdanhgiacu->id_dau_tien)->orderBy('created_at', 'asc')->first();
-        if (auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+        if (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)) {
             $capnhatdanhgiacu->trang_thai = 3;
             $capnhatdanhgiacu->save();
-        } elseif (auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG) {
+        } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)) {
             $capnhatdanhgiacu->trang_thai = 4;
             $capnhatdanhgiacu->save();
         }
@@ -249,9 +250,9 @@ class LanhDaoController extends Controller
             $duyetdanhgia->trang_thai = 4;
         }
 
-        if (auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG) {
+        if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)) {
             $duyetdanhgia->cap_danh_gia = 2;
-        } elseif (auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+        } elseif (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)) {
             $duyetdanhgia->cap_danh_gia = 3;
         }
 
