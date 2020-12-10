@@ -1,0 +1,13 @@
+{
+    "name": "CongViecDonVi",
+    "alias": "congviecdonvi",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\CongViecDonVi\\Providers\\CongViecDonViServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

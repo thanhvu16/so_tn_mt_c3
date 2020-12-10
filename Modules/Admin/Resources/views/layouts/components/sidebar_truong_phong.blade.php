@@ -43,6 +43,22 @@
             </span>
     </a>
 </li>
+<li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.create') || Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
+    <a href="#">
+        <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('cong-viec-don-vi.create') ? 'active' : '' }}"><a
+                href="{{ route('cong-viec-don-vi.create') }}"><i class="fa fa-circle-o"></i>Nhập công việc</a>
+        </li>
+{{--        <li class="{{ Route::is('captrendanhgiac2') ? 'active' : '' }}"><a--}}
+{{--                href="{{ route('captrendanhgiac2') }}"><i class="fa fa-circle-o"></i>Cấp trên đánh giá</a></li>--}}
+{{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
+    </ul>
+</li>
 <li class="treeview {{ Route::is('danh-gia-can-bo-c2.index') || Route::is('captrendanhgiac2') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-users"></i> <span>Đánh giá cán bộ</span>
