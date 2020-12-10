@@ -24,7 +24,7 @@
             @hasanyrole('văn thư huyện')
             @include('admin::layouts.components.sidebar_van_thu_huyen')
             @endrole
-            @role('tham mưu')
+            @hasanyrole('tham mưu|chánh văn phòng')
                 @include('admin::layouts.components.sidebar_tham_muu')
             @endrole
             @hasanyrole('chủ tịch|phó chủ tịch')

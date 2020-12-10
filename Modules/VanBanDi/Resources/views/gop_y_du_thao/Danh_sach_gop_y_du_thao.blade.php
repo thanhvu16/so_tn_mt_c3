@@ -47,7 +47,7 @@
                                     <tr>
                                         <td> {{$key+1}}</td>
                                         <td>
-                                            {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}
+                                            {{ !empty($data->thongtinduthao) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
                                         </td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td style="text-align: justify"><a href=""
@@ -57,6 +57,7 @@
 
                                         </td>
                                         <td class="text-center">
+                                            @if ($data->thongtinduthao)
                                                 @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
                                                     <a href="{{$item->getUrlFile()}}" target="_blank">
                                                         @if($item->stt == 1)
@@ -70,6 +71,7 @@
 
                                                 @empty
                                                 @endforelse
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="col-md-12">

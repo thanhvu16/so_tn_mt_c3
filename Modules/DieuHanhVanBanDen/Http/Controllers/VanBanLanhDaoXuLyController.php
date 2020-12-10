@@ -180,7 +180,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     }
 
                     // check lanh dao du hop
-                    if ($vanBanDen->so_van_ban_id == $giayMoi->id) {
+                    if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
                         if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
                             $tuan = date('W',strtotime($vanBanDen->ngay_hop_chinh));
 
