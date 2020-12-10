@@ -30,6 +30,7 @@ class VanBanDenController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
         $co_quan_ban_hanh = $request->get('co_quan_ban_hanh_id');
@@ -42,8 +43,8 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
 
 
-        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN || auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_PHO_CHUC_TICH ||
-            auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             $ds_vanBanDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
@@ -95,7 +96,7 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        } elseif (auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_PHO_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG || auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
             $ds_vanBanDen = VanBanDen::
             where([
                 'don_vi_id' => auth::user()->don_vi_id,
@@ -196,13 +197,13 @@ class VanBanDenController extends Controller
         $nam = date("Y");
         $soDenvb = null;
 
-        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-        } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
@@ -231,7 +232,7 @@ class VanBanDenController extends Controller
         try {
             DB::beginTransaction();
 
-            if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 if ($noi_dung && $noi_dung[0] != null) {
                     foreach ($noi_dung as $key => $data) {
                         $vanbandv = new VanBanDen();
@@ -280,7 +281,7 @@ class VanBanDenController extends Controller
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->save();
                 }
-            } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 if ($noi_dung && $noi_dung[0] != null) {
                     foreach ($noi_dung as $key => $data) {
                         $vanbandv = new VanBanDen();

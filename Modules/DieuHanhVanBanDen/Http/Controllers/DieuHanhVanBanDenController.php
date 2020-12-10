@@ -62,12 +62,12 @@ class DieuHanhVanBanDenController extends Controller
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG , CHUYEN_VIEN])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
 
         switch (auth::user()->role_id) {
             case QUYEN_CHUYEN_VIEN:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG,])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG,])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
                 break;
             case QUYEN_PHO_PHONG:
                 $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
