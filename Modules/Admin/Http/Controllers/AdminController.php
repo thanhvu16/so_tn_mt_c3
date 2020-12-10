@@ -24,16 +24,16 @@ class AdminController extends Controller
 
     public function index()
     {
-        if (auth::user()->role_id ==  ADMIN) {
-            return redirect()->route('nguoi-dung.index');
-        }
         $vanThuVanBanDiPiceCharts = [];
         $vanThuVanBanDenPiceCharts = [];
         $vanThuVanBanDiCoLors = [];
         $vanThuVanBanDenCoLors = [];
         $duThaoCoLors = [];
         $duThaoPiceCharts = [];
-
+        $user = auth::user();
+        if ($user->hasRole('admin')) {
+            return redirect()->route('nguoi-dung.index');
+        }
         $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => auth::user()->id, 'stt' => 1])->count();
         $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi'=> 1, 'don_vi_soan_thao'=> auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')->count();
         $ds_vanBanDen = VanBanDen::where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')->count();
@@ -89,6 +89,7 @@ class AdminController extends Controller
 //        array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
 
 
+
         return view('admin::index',compact(
 //            'getEmail' => $getEmail,
             'danhSachDuThao' ,
@@ -108,7 +109,6 @@ class AdminController extends Controller
             'duThaoCoLors',
             'ds_giaymoidi'
         ));
-//        return view('admin::index');
     }
 
     /**

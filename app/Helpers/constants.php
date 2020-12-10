@@ -9,6 +9,7 @@ define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
 define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet');
 define('ACTIVE', 1);
 define('INACTIVE', 2);
+define('HUYEN', 'ĐỨC HÒA');
 
 //rold_id
 define('ADMIN', 1);
@@ -26,6 +27,7 @@ define('QUYEN_PHO_CHANH_VAN_PHONG', 14);
 //id của đơn vị UBND Huyện
 define('UBND_HUYEN', 8);
 
+const TRANG_THAI_HOAT_DONG = 1;
 //rold
 CONST THAM_MUU = 'tham mưu';
 CONST VAN_THU = 'Văn thư';

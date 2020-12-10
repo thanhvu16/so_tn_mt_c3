@@ -27,15 +27,54 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .login-page {
+            background-color: #b1d5f4;;
+            /*background: url('hanoi-3609871.jpg');*/
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            /*max-width: 432px !important;*/
+        }
+
+
+        .body input:focus {
+            outline: 0;
+        }
+
+        .body input {
+            border-color: white;
+            background-color: white;
+            border-width: 0px;
+        }
+
+        .input-group {
+            border-bottom: 1px solid #ccc;
+        }
+        h4, h5{
+            color: #0065B3;
+        }
+        .bg-light-blue{
+            background-color: #158af1 !important;
+        }
+
+    </style>
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="margin-top: -40px">
 <div class="login-box">
-    <div class="login-logo">
-        <a href="/"><b>Đăng nhập hệ thống</b></a>
+
+    <div class="logo">
+        <a href="javascript:void(0);" class="text-center" style="margin-bottom: 11px">
+            <div class="text-center">
+                <img src="{{ asset('theme/image/logo-login-hanoi.svg') }}" style="vertical-align: middle" alt="" height="90">
+            </div>
+            <h4 style="font-weight: bold;font-family: Arial;"  class="text-center">VĂN PHÒNG UBND HUYỆN {{HUYEN}}</h4>
+            <h5 style="font-weight: bold ;font-family: Arial; " >HỆ THỐNG VĂN PHÒNG ĐIỆN TỬ</h5>
+        </a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Đăng nhập để bắt đầu ứng dụng</p>
+        <p class="login-box-msg">Đăng nhập để bắt đầu làm việc</p>
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -60,23 +99,37 @@
                 @enderror
             </div>
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-xs-7">
                     <div class="checkbox icheck">
                         <label>
-                            <input type="checkbox" type="checkbox" name="remember"
-                                   id="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                            <input type="checkbox"  type="checkbox" name="remember"
+                                   id="remember" {{ old('remember') ? 'checked' : '' }}> Duy trì đăng nhập
                         </label>
                     </div>
                 </div>
                 <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <div class="col-xs-5 mt-2 text-right">
+                    <a href="#">Quên mật khẩu</a><br>
+
                 </div>
+{{--                <div class="col-xs-offset-3">--}}
+
+{{--                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>--}}
+{{--                </div>--}}
                 <!-- /.col -->
+            </div>
+            <div class="row">
+                <div class="col-xs-6" style="float:none;margin: auto">
+                    <button class="btn btn-block bg-light-blue waves-effect" type="submit">
+                        {{--                            <i class="fa fa-arrow-circle-right"></i>--}}
+                        ĐĂNG NHẬP
+                        <i class="fa fa-arrow-circle-right" style="font-size: 18px; margin-left: 5px;"></i>
+                    </button>
+                </div>
             </div>
         </form>
         <!-- /.social-auth-links -->
-        <a href="#">I forgot my password</a><br>
+
     </div>
     <!-- /.login-box-body -->
 </div>
