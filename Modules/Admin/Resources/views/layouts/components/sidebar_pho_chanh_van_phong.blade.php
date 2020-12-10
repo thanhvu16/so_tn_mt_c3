@@ -29,7 +29,7 @@
 </li>
 <li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
     <a href="{{route('ho-so-cong-viec.index')}}">
-        <i class="fa fa-h-square" ></i> <span>Hồ sơ công việc</span>
+        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
         <span class="pull-right-container">
 
             </span>

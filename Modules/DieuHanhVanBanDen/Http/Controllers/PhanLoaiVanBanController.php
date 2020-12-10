@@ -262,12 +262,12 @@ class PhanLoaiVanBanController extends Controller
                     }
 
                     // luu don vi chu tri
-                    $nguoiDung = User::where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                        ->where('trang_thai', ACTIVE)
-                        ->where(function ($query) use ($chucVuTP) {
-                            if (!empty($chucVuTP)) {
-                                return $query->where('chuc_vu_id', $chucVuTP->id);
-                            }
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
                         })
                         ->whereNull('deleted_at')->first();
 

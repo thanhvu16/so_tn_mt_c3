@@ -26,11 +26,11 @@ class VanBanDenDonViController extends Controller
         $currentUser = auth::user();
         $trinhTuNhanVanBan = null;
 
-        if ($currentUser->hasRole(TRUONG_PHONG)) {
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 3;
         }
 
-        if ($currentUser->hasRole(PHO_PHONG)) {
+        if ($currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 4;
         }
 
@@ -50,11 +50,17 @@ class VanBanDenDonViController extends Controller
             ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->paginate(PER_PAGE);
 
-        $danhSachPhoPhong = User::role(PHO_PHONG)
-            ->where('don_vi_id', $currentUser->don_vi_id)
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+
+        $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
+            ->whereHas('roles', function ($query) use ($roles) {
+                return $query->whereIn('name', $roles);
+            })
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
+
+
 
         $danhSachChuyenVien = User::role(CHUYEN_VIEN)
             ->where('don_vi_id', $currentUser->don_vi_id)
@@ -79,11 +85,11 @@ class VanBanDenDonViController extends Controller
         $currentUser = auth::user();
         $trinhTuNhanVanBan = null;
 
-        if ($currentUser->hasRole(TRUONG_PHONG)) {
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 3;
         }
 
-        if ($currentUser->hasRole(PHO_PHONG)) {
+        if ($currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 4;
         }
 
@@ -140,11 +146,11 @@ class VanBanDenDonViController extends Controller
             $trinhTuNhanVanBan = 2;
         }
 
-        if ($currentUser->hasRole(TRUONG_PHONG)) {
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 3;
         }
 
-        if ($currentUser->hasRole(PHO_PHONG)) {
+        if ($currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 4;
         }
 
@@ -152,7 +158,8 @@ class VanBanDenDonViController extends Controller
             $trinhTuNhanVanBan = 5;
         }
 
-        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHUYEN_VIEN) || $currentUser->hasRole(PHO_PHONG)) {
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG) || $currentUser->hasRole(CHUYEN_VIEN) ||
+            $currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
             $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
                 ->where('can_bo_nhan_id', $currentUser->id)
                 ->whereNotNull('vao_so_van_ban')

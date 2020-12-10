@@ -1,0 +1,13 @@
+{
+    "name": "LichCongTac",
+    "alias": "lichcongtac",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\LichCongTac\\Providers\\LichCongTacServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -43,12 +43,11 @@ class DonViPhoiHop extends Model
             foreach ($arrDonViId as $donViId) {
                 $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
 
-                $nguoiDung = User::where('don_vi_id', $donViId)
-                    ->where('trang_thai', ACTIVE)
-                    ->where(function ($query) use ($chucVuTP) {
-                        if (!empty($chucVuTP)) {
-                            return $query->where('chuc_vu_id', $chucVuTP->id);
-                        }
+                $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                $nguoiDung = User::where('trang_thai', ACTIVE)
+                    ->where('don_vi_id', $donViId)
+                    ->whereHas('roles', function ($query) use ($roles) {
+                        return $query->whereIn('name', $roles);
                     })
                     ->whereNull('deleted_at')->first();
 

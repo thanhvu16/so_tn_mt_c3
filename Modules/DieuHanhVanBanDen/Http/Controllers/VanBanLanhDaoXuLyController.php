@@ -31,7 +31,7 @@ class VanBanLanhDaoXuLyController extends Controller
     {
         $user = auth::user();
         $active = null;
-        if ($user->hasRole('chủ tịch')) {
+        if ($user->hasRole(CHU_TICH)) {
             $active = 1;
         } else {
             $active = 2;
@@ -270,6 +270,15 @@ class VanBanLanhDaoXuLyController extends Controller
                             ->where('trang_thai', ACTIVE)
                             ->whereNull('deleted_at')->first();
 
+                        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+                        $nguoiDung = User::where('trang_thai', ACTIVE)
+                            ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                            ->whereHas('roles', function ($query) use ($roles) {
+                                return $query->whereIn('name', $roles);
+                            })
+                            ->whereNull('deleted_at')->first();
+
                         $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
 
                         $dataLuuDonViChuTri = [
@@ -420,12 +429,12 @@ class VanBanLanhDaoXuLyController extends Controller
                 DB::beginTranSaction();
 
                 foreach ($vanBanDenDonViIds as $vanBanDenId) {
-                    $nguoiDung = User::where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                        ->where('trang_thai', ACTIVE)
-                        ->where(function ($query) use ($chucVuTP) {
-                            if (!empty($chucVuTP)) {
-                                return $query->where('chuc_vu_id', $chucVuTP->id);
-                            }
+
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
                         })
                         ->whereNull('deleted_at')->first();
 

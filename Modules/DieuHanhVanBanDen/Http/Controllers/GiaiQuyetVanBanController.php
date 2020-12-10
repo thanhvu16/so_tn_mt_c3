@@ -43,8 +43,11 @@ class GiaiQuyetVanBanController extends Controller
         $data = $request->all();
         $currentUser = auth::user();
 
-        $truongPhongDonVi = User::role(TRUONG_PHONG)
-            ->where('don_vi_id', $currentUser->don_vi_id)
+        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+            ->whereHas('roles', function ($query) use ($roles) {
+                return $query->whereIn('name', $roles);
+            })
             ->where('trang_thai',ACTIVE)
             ->whereNull('deleted_at')->first();
 

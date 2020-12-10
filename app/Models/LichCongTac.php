@@ -34,7 +34,7 @@ class LichCongTac extends Model
 
     public function vanBanDen()
     {
-        return $this->belongsTo(VanBanDen::class, 'object_id', 'id')->whereNull('type');
+        return $this->hasOne(VanBanDen::class, 'id', 'object_id');
     }
 
     public function lanhDao()
@@ -65,8 +65,8 @@ class LichCongTac extends Model
         return $this->belongsTo(VanBanDi::class, 'van_ban_den_id', 'id');
     }
 
-//    public function congViecDonVi()
-//    {
+    public function congViecDonVi()
+    {
 //        return $this->hasOne(CongViecDonVi::class, 'lich_cong_tac_id', 'id');
-//    }
+    }
 }

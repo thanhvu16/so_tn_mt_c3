@@ -26,7 +26,7 @@ class VanBanDenHoanThanhController extends Controller
         $date = !empty($request->get('date')) ? $request->get('date') : null;
 
 
-        if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+        if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG])) {
 
             $xuLyVanBanDen = DonViChuTri::where([
                 'don_vi_id' => $currentUser->don_vi_id,
@@ -119,7 +119,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $currentUser = auth::user();
 
-        if ($currentUser->hasRole(TRUONG_PHONG)) {
+        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG])) {
             $giaiQuyetVanBan = GiaiQuyetVanBan::where('can_bo_duyet_id', $currentUser->id)
                 ->whereNull('status')->get();
 

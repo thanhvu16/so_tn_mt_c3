@@ -44,10 +44,21 @@
             @endrole
             @role('phó tránh văn phòng')
                 @include('admin::layouts.components.sidebar_pho_chanh_van_phong')
-            @endrole
-            @role('chánh văn phòng')
                 @include('admin::layouts.components.sidebar_chanh_van_phong')
             @endrole
+            @role('chánh văn phòng')
+                @include('admin::layouts.components.dieu_hanh_cv')
+                @include('admin::layouts.components.sidebar_chanh_van_phong')
+            @endrole
+
+
+
+{{--            <li class="{{ Route::is('lich-cong-tac.index') }}">--}}
+{{--                <a href="{{ route('lich-cong-tac.index') }}">--}}
+{{--                    <i class="fa fa-calendar"></i> <span>Lịch công tác</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+
 {{--            <li class="{{ Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.index') ? 'active' : '' }} ">--}}
 {{--                <a href="{{route('danh-gia-can-bo.index')}}">--}}
 {{--                    <i class="fa fa-users" ></i> <span>Đánh giá cán bộ</span>--}}

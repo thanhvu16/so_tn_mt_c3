@@ -8,5 +8,6 @@
     "GiayMoiDi": true,
     "HoSoCongViec": true,
     "DanhGiaCanBo": true,
-    "CongViecDonVi": true
+    "CongViecDonVi": true,
+    "LichCongTac": true
 }
