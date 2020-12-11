@@ -90,6 +90,10 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::suaVanBanDi());
         Permission::findOrCreate(AllPermission::xoaVanBanDi());
 
+        //lich cong tac
+        Permission::findOrCreate(AllPermission::xemLichCongTac());
+        Permission::findOrCreate(AllPermission::suaLichCongTac());
+        Permission::findOrCreate(AllPermission::themLichCongTac());
 
         if ($role) {
             $permissions = Permission::all();

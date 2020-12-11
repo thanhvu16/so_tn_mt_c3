@@ -41,7 +41,9 @@ $('.btn-remove-item').on('click', function () {
     return confirm('Bạn muốn xóa dữ liệu này?');
 });
 
-$('.select2').select2()
+$('.select2').select2({
+    width: '100%'
+})
 
 
 function showLoading() {
@@ -63,6 +65,10 @@ $(".timepicker").timepicker({
     showInputs: false
 });
 
+$('.time-picker-24h').timepicker({
+    showMeridian:!1,
+    showInputs: false
+});
 
 
 $("input[type=date]").on("change", function() {

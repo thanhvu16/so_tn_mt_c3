@@ -52,12 +52,13 @@
             @endrole
 
 
-
-{{--            <li class="{{ Route::is('lich-cong-tac.index') }}">--}}
-{{--                <a href="{{ route('lich-cong-tac.index') }}">--}}
-{{--                    <i class="fa fa-calendar"></i> <span>Lịch công tác</span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            @can(\App\Common\AllPermission::xemLichCongTac())
+            <li class="{{ Route::is('lich-cong-tac.index') }}">
+                <a href="{{ route('lich-cong-tac.index') }}">
+                    <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
+                </a>
+            </li>
+            @endcan
 
 {{--            <li class="{{ Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.index') ? 'active' : '' }} ">--}}
 {{--                <a href="{{route('danh-gia-can-bo.index')}}">--}}

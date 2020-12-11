@@ -234,9 +234,18 @@ class AllPermission
         return 'trưởng phòng';
     }
 
+    public static function xemLichCongTac()
+    {
+        return 'xem lịch công tác';
+    }
 
+    public static function themLichCongTac()
+    {
+        return 'thêm lịch công tác';
+    }
 
-
-
-
+    public static function suaLichCongTac()
+    {
+        return 'sửa lịch công tác';
+    }
 }

@@ -13,4 +13,9 @@
 
 Route::prefix('lich-cong-tac')->group(function() {
     Route::get('/', 'LichCongTacController@index')->name('lich-cong-tac.index');
+    Route::post('store', 'LichCongTacController@store')->name('lich-cong-tac.store');
+    Route::get('edit/{id}', 'LichCongTacController@edit');
+    Route::post('update/{id}', 'LichCongTacController@update')->name('lich-cong-tac.update');
 });
+
+Route::get('soan-bao-cao', 'SoanBaoCaoController@create')->name('soan_bao_cao.create');

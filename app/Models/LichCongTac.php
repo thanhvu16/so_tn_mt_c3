@@ -8,6 +8,7 @@ use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Illuminate\Database\Eloquent\Model;
 use Modules\VanBanDi\Entities\VanBanDi;
+use Auth;
 
 class LichCongTac extends Model
 {
@@ -62,11 +63,46 @@ class LichCongTac extends Model
 
     public function vanBanDi()
     {
-        return $this->belongsTo(VanBanDi::class, 'van_ban_den_id', 'id');
+        return $this->belongsTo(VanBanDi::class, 'object_id', 'id');
     }
 
     public function congViecDonVi()
     {
-//        return $this->hasOne(CongViecDonVi::class, 'lich_cong_tac_id', 'id');
+        return $this->hasOne(DonViChuTri::class, 'don_vi_id', 'id');
+    }
+
+    public function taoLichCongTac($vanBanDi)
+    {
+        $tuan = date('W', strtotime($vanBanDi->ngay_hop));
+
+        $lanhDaoDuHop = $this->checkLanhDaoDuHop($vanBanDi->nguoi_ky);
+        $noiDungMoiHop = $vanBanDi->noi_dung_hop ?? null;
+
+        if (!empty($lanhDaoDuHop) && empty($vanBanDi->noi_dung_hop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        $dataLichCongTac = array(
+            'van_ban_den_don_vi_id' => $vanBanDi->id,
+            'lanh_dao_id' => $lanhDaoDuHop->id,
+            'ngay' => $vanBanDi->ngay_hop,
+            'gio' => $vanBanDi->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDi->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => $noiDungMoiHop,
+            'user_id' => auth::user()->id,
+            'type' => LichCongTac::TYPE_VB_DI
+        );
+        //check lich cong tac
+        $lichCongTac = LichCongTac::where('object_id', $vanBanDi->id)
+            ->where('type', LichCongTac::TYPE_VB_DI)
+            ->first();
+
+        if (empty($lichCongTac)) {
+            $lichCongTac = new LichCongTac();
+        }
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
     }
 }

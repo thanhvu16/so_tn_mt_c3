@@ -2,6 +2,7 @@
 
 namespace Modules\LichCongTac\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -20,11 +21,13 @@ class LichCongTacController extends Controller
     public function index(Request $request)
     {
         $currentUser = Auth::user();
+
         $tuan = $request->get('tuan');
         $year = date('Y');
         $week = $tuan ? $tuan : date('W');
 
         $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
+
         $donViId = null;
 
         $ngayTuan = [
@@ -49,9 +52,19 @@ class LichCongTacController extends Controller
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
         $roles = [CHU_TICH, PHO_CHUC_TICH];
+        $id = null;
+        if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+            $id = $currentUser->id;
+        }
+
 
         $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
                 return $query->whereIn('name', $roles);
+            })
+            ->where(function ($query) use ($id) {
+                if (!empty($id)) {
+                    return $query->where('id', $id);
+                }
             })
             ->orderBy('id', 'ASC')
             ->get();
@@ -107,7 +120,37 @@ class LichCongTacController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        canPermission(AllPermission::themLichCongTac());
+        $currentUser = auth::user();
+        $tuan = date('W', strtotime($request->get('ngay')));
+
+        $dataLichCongTac = array(
+            'lanh_dao_id' => $request->get('lanh_dao_id'),
+            'ngay' => $request->get('ngay'),
+            'gio' => $request->get('gio'),
+            'tuan' => $tuan,
+            'buoi' => ($request->get('gio') <= '12:00') ? 1 : 2,
+            'noi_dung' => $request->get('noi_dung'),
+            'dia_diem' => $request->get('dia_diem'),
+            'type'  => LichCongTac::TYPE_NHAP_TRUC_TIEP,
+            'trang_thai_lich' => $request->get('trang_thai_lich'),
+            'ghi_chu' => $request->get('ghi_chu'),
+            'user_id' => $currentUser->id,
+        );
+        //check lich cong tac
+        $lichCongTac = LichCongTac::where('ngay', $request->get('ngay'))
+            ->where('gio', $request->get('gio'))
+            ->first();
+
+        if (!empty($lichCongTac)) {
+
+            return redirect()->back()->with('warning', 'Lịch này đã tồn tại, vui lòng chọn lịch khác.');
+        }
+        $lichCongTac = new LichCongTac();
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+
+        return redirect()->back()->with('success', 'Đã thêm lịch công tác thành công.');
     }
 
     /**
@@ -127,7 +170,21 @@ class LichCongTacController extends Controller
      */
     public function edit($id)
     {
-        return view('lichcongtac::edit');
+        canPermission(AllPermission::suaLichCongTac());
+
+        $lichCongTac = LichCongTac::find($id);
+
+        $roles = [CHU_TICH, PHO_CHUC_TICH];
+        $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
+            return $query->whereIn('name', $roles);
+        })
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        $returnHTML = view('lichcongtac::them_lich._edit',
+            compact('lichCongTac', 'danhSachLanhDao'))->render();
+
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
 
     /**
@@ -138,7 +195,29 @@ class LichCongTacController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $currentUser = auth::user();
+        $tuan = date('W', strtotime($request->get('ngay')));
+
+        $dataLichCongTac = array(
+            'lanh_dao_id' => $request->get('lanh_dao_id'),
+            'ngay' => $request->get('ngay'),
+            'gio' => $request->get('gio'),
+            'tuan' => $tuan,
+            'buoi' => ($request->get('gio') <= '12:00') ? 1 : 2,
+            'noi_dung' => $request->get('noi_dung'),
+            'dia_diem' => $request->get('dia_diem'),
+            'type'  => LichCongTac::TYPE_NHAP_TRUC_TIEP,
+            'trang_thai_lich' => $request->get('trang_thai_lich'),
+            'ghi_chu' => $request->get('ghi_chu'),
+            'user_id' => $currentUser->id,
+        );
+
+        //check lich cong tac
+        $lichCongTac = LichCongTac::findOrFail($id);
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+
+        return redirect()->back()->with('success', 'Cập nhật lịch công tác thành công.');
     }
 
     /**

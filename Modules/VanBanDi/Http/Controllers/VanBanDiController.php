@@ -3,6 +3,7 @@
 namespace Modules\VanBanDi\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Models\LichCongTac;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
@@ -697,8 +698,11 @@ class VanBanDiController extends Controller
                 // update van ban den
                 VanBanDen::updateHoanThanhVanBanDen($vanbandi->van_ban_den_id);
 
+                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
 //                //update lich cong tac
-//                if ($vanbandi && $vanbandi->loai_vanban_giay_moi == VAN_BAN_DI_GIAY_MOI) {
+                if ($vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
+                    LichCongTac::taoLichCongTac($vanbandi);
+                }
 //                    $tuan = date('W', strtotime($vanbandi->ngay_hop));
 //
 //                    $lanhDaoDuHop = DieuHanhVanBanDenLichCongTac::checkLanhDaoDuHop($vanbandi->nguoiky_id);

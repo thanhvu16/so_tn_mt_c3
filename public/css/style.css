@@ -185,28 +185,28 @@ table tbody td a:hover {
     color: #336eea !important;
 }
 
-input[type=date] {
-    position: relative;
-    color: white;
-}
+/*input[type=date] {*/
+/*    position: relative;*/
+/*    color: white;*/
+/*}*/
 
-input[type=date]:before {
-    position: absolute;
-    content: attr(data-date);
-    display: inline-block;
-    color: black;
-}
+/*input[type=date]:before {*/
+/*    position: absolute;*/
+/*    content: attr(data-date);*/
+/*    display: inline-block;*/
+/*    color: black;*/
+/*}*/
 
-input[type=date]::-webkit-datetime-edit, input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-clear-button {
-    display: none;
-}
+/*input[type=date]::-webkit-datetime-edit, input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-clear-button {*/
+/*    display: none;*/
+/*}*/
 
-input[type=date]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    right: 0;
-    color: black;
-    opacity: 1;
-}
+/*input[type=date]::-webkit-calendar-picker-indicator {*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    color: black;*/
+/*    opacity: 1;*/
+/*}*/
 
 .required {
     color: red;
@@ -222,6 +222,10 @@ hr.border-dashed {
     transition: all ease-in-out 0.5s;
 }
 
-.table-striped.table-lich-cong-tac>tbody>tr:nth-of-type(odd) {
+.bg-table-gray {
     background-color: #e4e3e3 !important;
+}
+
+.color-white {
+    color: white !important;
 }
