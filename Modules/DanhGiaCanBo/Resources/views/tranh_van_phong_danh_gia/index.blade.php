@@ -20,6 +20,7 @@
                             <div class="row">
                                 <div class="col-md-4" style="margin: 10px 0px;">
                                     <form action="{{route('captrendanhgia')}}" method="get">
+
                                         <select
                                             class="form-control show-tick dropdown-search select-so-van-ban"
                                             data-don-vi="26" onchange="this.form.submit()" name="thang"

@@ -176,7 +176,8 @@
                                 <form action="{{route('danhgiacaptren')}}" method="post">
                                     @csrf
                                     <tbody>
-                                    @if($data->trang_thai == 2 && (auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG))
+                                    @if($data->trang_thai == 2 && (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)))
+{{--                                        @hasanyrole('chủ tịch|chánh văn phòng| trưởng phòng')--}}
                                         <tr>
                                             <td style="vertical-align: middle;" rowspan="5"
                                                 class="text-center">{{$key+1}}</td>
@@ -983,7 +984,7 @@
                                                                   placeholder="Nhận xét của trưởng đơn vị"></textarea>
                                             </td>
                                             <td colspan="5" class="text-center" style="vertical-align: middle;">
-                                                @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                                @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                                 @else
                                                     <select name="lanhdao"
                                                             class="form-control select2-search">
@@ -1003,7 +1004,7 @@
 
                                             </td>
                                         </tr>
-
+{{--                                        @endrole--}}
                                     @else
                                         <tr>
                                             <td style="vertical-align: middle;" rowspan="5"
@@ -1108,7 +1109,7 @@
 
                                         </tr>
 
-                                        @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                        @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                             @if($data->nguoidung->id == $data->nguoidung5($data->id_dau_tien))
                                             @else
                                                 <tr>
@@ -1299,7 +1300,7 @@
                                             </td>
                                             <td colspan="9">
                                                 {{--                                                    {{isset($laydanhgiaphophong) ? 'Nhận xét của cấp phó : '. $laydanhgiaphophong->nhan_xet : ''}} --}}
-                                                @if(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_PHO_PHONG||auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_VAN_THU_HUYEN))
+                                                @if(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN)))
                                                     <i>Nhận xét của cấp phó
                                                         : {{$data->layphophongdanhgia($data->id_dau_tien,$data->can_bo_nhan)->nhan_xet}}</i>
                                                 @endif
@@ -1401,7 +1402,7 @@
 
 
                                             </tr>
-                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_PHONG||auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_VAN_THU_HUYEN))
+                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN)))
 
                                             <tr>
                                                 <td style="vertical-align: middle;">
@@ -2093,7 +2094,7 @@
 
 
 
-                                        @if((auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG||auth::user()->role_id == QUYEN_PHO_PHONG||auth::user()->role_id == QUYEN_CHUYEN_VIEN  || auth::user()->role_id == QUYEN_VAN_THU_HUYEN)&& ($data->trang_thai == 2))
+                                        @if((auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN))&& ($data->trang_thai == 2))
                                             <tr>
                                                 <td colspan="22" style="vertical-align: middle;">
 
@@ -2103,7 +2104,7 @@
                                                 </td>
                                                 <td colspan="5" class="text-center"
                                                     style="vertical-align: middle;">
-                                                    @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                                    @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                                     @else
                                                         <select name="lanhdao"
                                                                 class="form-control select2-search">
@@ -2124,7 +2125,7 @@
 
                                                 </td>
                                             </tr>
-                                        @elseif ((auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG )&& ($data->trang_thai == 3))
+                                        @elseif ((auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG) )&& ($data->trang_thai == 3))
                                             <tr>
                                                 <td colspan="22" style="vertical-align: middle;">
 
@@ -2134,7 +2135,7 @@
                                                 </td>
                                                 <td colspan="5" class="text-center"
                                                     style="vertical-align: middle;">
-                                                    @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                                    @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                                     @else
                                                         <select name="lanhdao"
                                                                 class="form-control select2-search">
@@ -2149,7 +2150,7 @@
                                                     <div style="margin-top: 10px">
                                                         <button type="submit" name="chamdiem" value="1"
                                                                 class="btn btn-primary luulai" title=""><i
-                                                                class="fas fa-pen-alt"></i> Chấm điểm
+                                                                class="fa  fa-pencil"></i> Chấm điểm
                                                         </button>
                                                         <div class="gmoi hidden">
                                                             <button type="button"  id="btnSubmit" disabled  class="btn btn-primary pull-right  " >Chấm điểm
@@ -2160,8 +2161,8 @@
                                                 </td>
                                             </tr>
                                         @else
-                                            @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
-                                            @elseif(auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_PHO_PHONG||auth::user()->role_id == QUYEN_CHUYEN_VIEN || auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
+                                            @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
+                                            @elseif(auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN))
                                             @endif
                                         @endif
                                     @endif

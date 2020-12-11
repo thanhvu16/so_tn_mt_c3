@@ -1076,7 +1076,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            @if(Auth::user()->vai_tro != 2)
                                                 <select name="lanhdao"
                                                         class="form-control  select2-search" required>
                                                     <option value="">-- Chọn lãnh đạo phụ trách --</option>
@@ -1085,17 +1084,7 @@
                                                             value="{{$nguoi_nhan->id}}">{{$nguoi_nhan->ho_ten}}</option>
                                                     @endforeach
                                                 </select>
-                                            @else
-                                                <select name="lanhdao"
-                                                        class="form-control  select2-search" required>
-                                                    <option value="">-- Chọn tránh văn phòng phụ trách --
-                                                    </option>
-                                                    @foreach($nguoinhan as $nguoi_nhan)
-                                                        <option
-                                                            value="{{$nguoi_nhan->id}}">{{$nguoi_nhan->ho_ten}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @endif
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">

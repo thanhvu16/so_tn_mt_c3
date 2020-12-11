@@ -983,7 +983,7 @@
                                                                   placeholder="Nhận xét của trưởng đơn vị"></textarea>
                                             </td>
                                             <td colspan="5" class="text-center" style="vertical-align: middle;">
-                                                @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                                @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                                 @else
                                                     <select name="lanhdao"
                                                             class="form-control select2-search">
@@ -997,7 +997,7 @@
                                                 <div style="margin-top: 10px">
                                                     <button type="submit" name="chamdiem" value=""
                                                             class="btn btn-primary" title=""><i
-                                                            class="fas fa-pen-alt"></i> Chấm điểm
+                                                            class="fa fa-pencil"></i> Chấm điểm
                                                     </button>
                                                 </div>
 
@@ -1388,12 +1388,13 @@
 
                                             </tr>
                                             <tr  style="text-align: justify">
-                                                <td colspan="9"><i>Nhận xét cá nhân : {{$data->laydanhgia($data->id_dau_tien)->nhan_xet}}</i></td>
+                                                <td colspan="9"><i>Nhận xét cá nhân  : {{$data->laydanhgia($data->id_dau_tien)->nhan_xet}}</i></td>
                                                 <td colspan="9">
                                                     {{--                                                    {{isset($laydanhgiaphophong) ? 'Nhận xét của cấp phó : '. $laydanhgiaphophong->nhan_xet : ''}} --}}
-                                                    @if( $data->canbodanhgia->role_id == QUYEN_PHO_CHUC_TICH || $data->canbodanhgia->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| $data->canbodanhgia->role_id == QUYEN_VAN_THU_HUYEN )
+                                                    @if( $data->canbodanhgia->hasRole(PHO_CHUC_TICH) || $data->canbodanhgia->hasRole(PHO_CHANH_VAN_PHONG)|| $data->canbodanhgia->hasRole(VAN_THU_HUYEN) )
                                                     @else
-                                                        @if($data->laydanhgia($data->id_dau_tien)->nguoinhan->role_id == QUYEN_PHO_CHUC_TICH || $data->laydanhgia($data->id_dau_tien)->nguoinhan->role_id == QUYEN_PHO_CHANH_VAN_PHONG||$data->laydanhgia($data->id_dau_tien)->nguoinhan->role_id == QUYEN_VAN_THU_HUYEN )
+{{--                                                        //xem lại đoạn check comment phó phòng--}}
+                                                        @if($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHU_TICH) ||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(TRUONG_PHONG) || $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHANH_VAN_PHONG)||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(VAN_THU_HUYEN) )
                                                                 <i>Nhận xét của cấp phó :{{$data->nhan_xet}}</i>  {{$data->laydanhgia($data->id_dau_tien)->nguoinhan->vai_tro}}
                                                         @else
                                                         @endif
@@ -1403,7 +1404,7 @@
 
 
                                             </tr>
-                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_VAN_THU_HUYEN))
+                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)))
 
                                             <tr>
                                                 <td style="vertical-align: middle;">
@@ -2105,7 +2106,7 @@
                                         @endif
 
 
-                                        @if (( auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG )&& ($data->trang_thai == 3))
+                                        @if (( auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG) )&& ($data->trang_thai == 3))
                                             <tr>
                                                 <td colspan="23" style="vertical-align: middle;">
 
@@ -2115,7 +2116,7 @@
                                                 </td>
                                                 <td colspan="5" class="text-center"
                                                     style="vertical-align: middle;">
-                                                    @if(auth::user()->role_id == QUYEN_CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == QUYEN_TRUONG_PHONG)
+                                                    @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
                                                     @else
                                                         <select name="lanhdao"
                                                                 class="form-control select2-search">
@@ -2128,9 +2129,10 @@
                                                         </select>
                                                     @endif
                                                     <div style="margin-top: 10px">
+
                                                         <button type="submit" name="chamdiem" value="1"
                                                                 class="btn btn-primary luulai" title=""><i
-                                                                class="fas fa-pen-alt"></i> Chấm điểm
+                                                                class="fa fa-pencil"></i> Chấm điểm
                                                         </button>
                                                         <div class="gmoi hidden">
                                                             <button type="button"  id="btnSubmit" disabled  class="btn btn-primary pull-right  " >Chấm điểm
