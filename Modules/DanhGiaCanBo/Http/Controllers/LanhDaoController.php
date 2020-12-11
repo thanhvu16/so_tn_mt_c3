@@ -183,9 +183,9 @@ class LanhDaoController extends Controller
             $thongtincanhancham = DuyetDanhGia::where(['can_bo_nhan' => auth::user()->id, 'thang' => $thang])->get();
         }
 
-        if (auth::user()->role_id == CHU_TICH || auth::user()->role_id == QUYEN_CHANH_VAN_PHONG || auth::user()->role_id == TRUONG_PHONG )  {
+        if ( auth::user()->hasRole(CHU_TICH) ||  auth::user()->hasRole(CHANH_VAN_PHONG) ||  auth::user()->hasRole(TRUONG_PHONG) )  {
             return view('danhgiacanbo::danh_gia_can_bo_c2.truong_phong', compact('thongtincanhancham', 'month', 'nguoinhan','laydanhgiacanhan','laydanhgiaphophong','laydanhgiatruongphong'));
-        } elseif( auth::user()->role_id == QUYEN_PHO_CHUC_TICH || auth::user()->role_id == QUYEN_PHO_CHANH_VAN_PHONG|| auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
+        } elseif(  auth::user()->hasRole(PHO_CHUC_TICH) ||  auth::user()->hasRole(PHO_CHANH_VAN_PHONG)||  auth::user()->hasRole(VAN_THU_HUYEN)) {
             return view('danhgiacanbo::danh_gia_can_bo_c2.pho_phong', compact('thongtincanhancham', 'month', 'nguoinhan','laydanhgiaphophong','laydanhgiaphophong','laydanhgiacanhan'));
         }
     }
@@ -193,10 +193,11 @@ class LanhDaoController extends Controller
 
     public function danhgiacaptren(Request $request)
     {
+
         //lấy đánh giá cũ và cập nhật trạng thái
         $capnhatdanhgiacu = DuyetDanhGia::where('id', $request->id_danh_gia)->first();
         $laycanbogoc = DuyetDanhGia::where('id_dau_tien', $capnhatdanhgiacu->id_dau_tien)->orderBy('created_at', 'asc')->first();
-        if (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)) {
+        if (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)) {
             $capnhatdanhgiacu->trang_thai = 3;
             $capnhatdanhgiacu->save();
         } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)) {
