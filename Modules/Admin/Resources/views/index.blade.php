@@ -4,8 +4,13 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                @include('admin::dashboard.nhap_van_ban_den')
-                @include('admin::dashboard.nhap_van_ban_di')
+                @unlessrole('văn thư huyện|văn thư đơn vị')
+                    @include('admin::dashboard.ho_so_cong_viec')
+                @endunlessrole
+                @hasanyrole('văn thư huyện|văn thư đơn vị')
+                    @include('admin::dashboard.nhap_van_ban_den')
+                    @include('admin::dashboard.nhap_van_ban_di')
+                @endrole
                 @include('admin::dashboard.du_thao_van_ban')
             </div>
         </div>
@@ -14,11 +19,32 @@
 @section('script')
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChartHoSoCoViec);
         google.charts.setOnLoadCallback(drawChartDuThaoVanBan);
         google.charts.setOnLoadCallback(drawChartNhapVanBanDen);
         google.charts.setOnLoadCallback(drawChartNhapVanBanDi);
 
 
+        function drawChartHoSoCoViec() {
+            let data = google.visualization.arrayToDataTable(<?php echo json_encode($hoSoCongViecPiceCharts,
+                JSON_NUMERIC_CHECK); ?>);
+
+            // Optional; add a title and set the width and height of the chart
+            let options = {
+                'title': '',
+                titleTextStyle: {
+                    bold: true,
+                    fontSize: 14,
+                },
+                legend: {position: 'none'},
+                colors: <?php echo json_encode($hoSoCongViecCoLors); ?>
+            };
+
+            if (document.getElementById('pie-chart-ho-so-cong-viec') != undefined) {
+                let chart = new google.visualization.PieChart(document.getElementById('pie-chart-ho-so-cong-viec'));
+                chart.draw(data, options);
+            }
+        };
 
 
         function drawChartDuThaoVanBan() {

@@ -43,10 +43,8 @@ class GiayMoiDenController extends Controller
         $nguoi_ky = $request->get('nguoi_ky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
-            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             $ds_vanBanDen = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 1,
                 'so_van_ban_id' => 100
             ])->where(function ($query) use ($trichyeu) {
@@ -94,7 +92,8 @@ class GiayMoiDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
+            $user->hasRole(VAN_THU_DON_VI) || $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             $ds_vanBanDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 2,

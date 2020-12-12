@@ -47,8 +47,7 @@ class GiayMoiDiController extends Controller
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->get();
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
-            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             //đây là văn bản của huyện
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => 1000 , 'don_vi_soan_thao' => null])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
@@ -118,7 +117,8 @@ class GiayMoiDiController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI) ) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
+            $user->hasRole(VAN_THU_DON_VI) || $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             //đây là văn bản của đơn vị
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => 1000 , 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {

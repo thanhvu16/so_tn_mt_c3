@@ -42,6 +42,9 @@ class VanBanDen extends Model
     const HOAN_THANH_VAN_BAN = 7;
     const VB_TRA_LOI = 1;
 
+    const TYPE_VB_HUYEN = 1;
+    const TYPE_VB_DON_VI = 2;
+
     protected $fillable = [];
 
     public function nguoiDung()

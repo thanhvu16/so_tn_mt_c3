@@ -43,10 +43,8 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
 
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
-            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             $ds_vanBanDen = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
@@ -96,7 +94,10 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
+            $user->hasRole(VAN_THU_DON_VI) ||
+            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+
             $ds_vanBanDen = VanBanDen::
             where([
                 'don_vi_id' => auth::user()->don_vi_id,
@@ -150,6 +151,7 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+
         }
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
         $ds_soVanBan = $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')->get();
@@ -371,7 +373,7 @@ class VanBanDenController extends Controller
             $soden = (int)$tachchuoi[1];
             $yearsfile = (int)$tachchuoi[2];
             $sovanban = SoVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
-            $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden,'don_vi_id'=> auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+            $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
             if ($vanban) {
                 $vbDenFile = new FileVanBanDen();
                 $getFile->move($uploadPath, $fileName);

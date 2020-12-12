@@ -55,8 +55,7 @@ class VanBanDiController extends Controller
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 //        $ds_vanBanDi = VanBanDi::where('loai_van_ban_giay_moi',1)->whereNull('deleted_at')
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
-            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             //đây là văn bản của huyện
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => null])->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {
@@ -124,7 +123,9 @@ class VanBanDiController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI) ) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) ||
+            $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI) ||
+            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             //đây là văn bản của đơn vị
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {

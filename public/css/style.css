@@ -229,3 +229,15 @@ hr.border-dashed {
 .color-white {
     color: white !important;
 }
+
+.btn-yellow {
+    color: white;
+    background-color: #f1df07;
+    border-color: #f1df07;
+}
+
+.btn-purple {
+    color: #fff;
+    background-color: #8552f5;
+    border-color: #8552f5;
+}

@@ -46,13 +46,15 @@ CONST PHO_CHANH_VAN_PHONG = 'phó tránh văn phòng';
 
 
 define('COLOR_INFO', '#4fbde9');
+define('COLOR_PRIMARY', '#119bea');
 define('COLOR_GREEN', '#2b982b');
 define('COLOR_INFO_SHADOW', '#0269f3');
 define('COLOR_WARNING', '#f9bc0b');
 define('COLOR_TEAL', '#02a8b5');
 define('COLOR_ORANGE', '#ff9900');
 define('COLOR_RED', '#fb483a');
-define('COLOR_PURPLE', '#9368f3');
+define('COLOR_PURPLE', '#8552f5');
 define('COLOR_PINK', '#e061c9');
 define('COLOR_BLUE_DARK', '#4937de');
 define('COLOR_PINTEREST', '#cb2027');
+define('COLOR_YELLOW', '#f1df07');

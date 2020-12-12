@@ -32,9 +32,9 @@ class VanBanLanhDaoXuLyController extends Controller
         $user = auth::user();
         $active = null;
         if ($user->hasRole(CHU_TICH)) {
-            $active = 1;
+            $active = VanBanDen::CHU_TICH_NHAN_VB;
         } else {
-            $active = 2;
+            $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
         }
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
             ->whereNull('status')
