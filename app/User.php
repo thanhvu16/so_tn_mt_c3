@@ -20,6 +20,7 @@ class User extends Authenticatable
      *
      * @var array
      */
+    CONST TRANG_THAI_HOAT_DONG = 1;
     protected $fillable = [
         'username',
         'email',

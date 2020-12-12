@@ -6,8 +6,11 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use auth;
+use DB ,auth;
 use Modules\Admin\Entities\DonVi;
+use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDonViPhoiHop;
 
 class CongViecDonViController extends Controller
 {
@@ -17,7 +20,29 @@ class CongViecDonViController extends Controller
      */
     public function index()
     {
-        return view('congviecdonvi::index');
+        $currentUser = auth::user();
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')->where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('type')
+            ->whereNull('chuyen_tiep')
+            ->orWhere('chuyen_tiep', 0)
+            ->whereNull('hoan_thanh')
+            ->paginate(PER_PAGE);
+
+        $danhSachPhoPhong = User::role(PHO_PHONG)->where('don_vi_id', $currentUser->don_vi_id)->wherenull('deleted_at')
+            ->orderBy('id', 'DESC')->get();
+
+        $danhSachChuyenVien =User::role(CHUYEN_VIEN)->where('don_vi_id', $currentUser->don_vi_id)->wherenull('deleted_at')
+            ->orderBy('id', 'DESC')->get();
+
+        $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+        if ($currentUser->hasRole(CHUYEN_VIEN) ) {
+
+            return view('congviecdonvi::cong-viec-don-vi.chuyen-vien', compact('chuyenNhanCongViecDonVi',
+                'danhSachPhoPhong', 'danhSachChuyenVien', 'order'));
+        }
+
+        return view('congviecdonvi::cong-viec-don-vi.index', compact('chuyenNhanCongViecDonVi',
+            'danhSachPhoPhong', 'danhSachChuyenVien', 'order'));
     }
 
     /**
@@ -109,7 +134,6 @@ class CongViecDonViController extends Controller
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
         $typeDonViPhoiHop = $request->get('don_vi_phoi_hop') ?? null;
-
         if (isset($chuyenNhanCongViecIds) && count($chuyenNhanCongViecIds) > 0) {
             try {
                 DB::beginTransaction();
@@ -157,7 +181,7 @@ class CongViecDonViController extends Controller
                             'can_bo_nhan_id' => $danhSachPhoPhongIds[$chuyenNhanCongViecId],
                             'noi_dung' => $chuyenNhanCongViecDonVi->noi_dung ?? null,
                             'noi_dung_chuyen' => $textnoidungPhoPhong[$chuyenNhanCongViecId],
-                            'don_vi_id' => $currentUser->donvi_id,
+                            'don_vi_id' => $currentUser->don_vi_id,
                             'han_xu_ly' => $chuyenNhanCongViecDonVi->han_xu_ly,
                             'parent_id' => $chuyenNhanCongViecDonVi ? $chuyenNhanCongViecDonVi->id : null,
                             'type' => $typeDonViPhoiHop
@@ -177,7 +201,7 @@ class CongViecDonViController extends Controller
                             'can_bo_nhan_id' => $danhSachChuyenVienIds[$chuyenNhanCongViecId],
                             'noi_dung' => $chuyenNhanCongViecDonVi->noi_dung ?? null,
                             'noi_dung_chuyen' => $textNoiDungChuyenVien[$chuyenNhanCongViecId],
-                            'don_vi_id' => $currentUser->donvi_id,
+                            'don_vi_id' => $currentUser->don_vi_id,
                             'han_xu_ly' => $chuyenNhanCongViecDonVi->han_xu_ly,
                             'type' => $typeDonViPhoiHop,
                             'parent_id' => $chuyenNhanCongViecDonVi ? $chuyenNhanCongViecDonVi->id : null
@@ -192,7 +216,7 @@ class CongViecDonViController extends Controller
                     if (!empty($arrChuyenVienPhoiHopIds[$chuyenNhanCongViecId])) {
                         //save chuyen vien phoi hop
                         CongViecDonViPhoiHop::savechuyenVienPhoiHop($arrChuyenVienPhoiHopIds[$chuyenNhanCongViecId],
-                            $chuyenNhanCongViecDonVi->cong_viec_don_vi_id, $chuyenNhanCongViecDonVi->id, $currentUser->donvi_id);
+                            $chuyenNhanCongViecDonVi->cong_viec_don_vi_id, $chuyenNhanCongViecDonVi->id, $currentUser->don_vi_id);
                     }
 
                     if (!empty($arrLanhDaoXemDeBiet[$chuyenNhanCongViecId])) {
@@ -214,6 +238,28 @@ class CongViecDonViController extends Controller
         }
     }
 
+    public function dangXuLy(Request $request)
+    {
+        $currentUser = auth::user();
+            $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')->where('can_bo_nhan_id', $currentUser->id)
+                ->whereNull('type')
+                ->where('chuyen_tiep', ChuyenNhanCongViecDonVi::CHUYEN_TIEP)
+                ->whereNull('hoan_thanh')
+                ->paginate(PER_PAGE);
+
+            $danhSachPhoPhong = User::role([ PHO_PHONG])->where('don_vi_id', $currentUser->don_vi_id)->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')->get();
+
+            $danhSachChuyenVien = User::role(CHUYEN_VIEN)->where('don_vi_id', $currentUser->don_vi_id)->whereNull('deleted_at')
+                ->where('trang_thai', User::TRANG_THAI_HOAT_DONG)
+                ->orderBy('id', 'DESC')->get();
+
+            $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+
+            return view('congviecdonvi::cong-viec-don-vi.dang-xu-ly', compact('chuyenNhanCongViecDonVi',
+                'danhSachPhoPhong', 'danhSachChuyenVien', 'order'));
+
+    }
     /**
      * Show the specified resource.
      * @param int $id
@@ -221,7 +267,65 @@ class CongViecDonViController extends Controller
      */
     public function show($id)
     {
-        return view('congviecdonvi::show');
+        $currentUser = auth::user();
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('giaHanCongViec')->findOrFail($id);
+
+//
+//        if ( $currentUser->hasRole(PHO_CHANH_VAN_PHONG,PHO_PHONG) ) {
+//            $danhSachLanhDao = User::role([CHU_TICH, CHANH_VAN_PHONG,TRUONG_PHONG])->where('don_vi_id', $currentUser->donvi_id)
+//                ->orderBy('id', 'ASC')->get();
+//        }else{
+//        $danhSachLanhDao = User::role([PHO_CHUC_TICH, PHO_CHANH_VAN_PHONG,PHO_PHONG])->where('don_vi_id', $currentUser->donvi_id)
+//            ->orderBy('id', 'ASC')->get();
+//    }
+
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                $danhSachLanhDao = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case PHO_PHONG:
+                $danhSachLanhDao = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case TRUONG_PHONG:
+                $danhSachLanhDao = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+            case PHO_CHUC_TICH:
+                $danhSachLanhDao = User::role([CHU_TICH])->get();
+                break;
+            case CHU_TICH:
+                $nguoinhan = null;
+                break;
+            case CHANH_VAN_PHONG:
+                $danhSachLanhDao = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $danhSachLanhDao = User::role([CHANH_VAN_PHONG])->get();
+                break;
+            case VAN_THU_DON_VI:
+                $danhSachLanhDao = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case VAN_THU_HUYEN:
+                $danhSachLanhDao = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+
+        }
+
+        return view('congviecdonvi::cong-viec-don-vi.show',
+            compact('chuyenNhanCongViecDonVi', 'danhSachLanhDao'));
+    }
+
+    public function congViecDaXuLy()
+    {
+        $currentUser = auth::user();
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')->where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('type')
+            ->where('chuyen_tiep', ChuyenNhanCongViecDonVi::GIAI_QUYET)
+            ->whereNull('hoan_thanh')
+            ->paginate(PER_PAGE);
+
+        $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+
+        return view('congviecdonvi::cong-viec-don-vi.da_xu_ly', compact('chuyenNhanCongViecDonVi','order'));
     }
 
     /**

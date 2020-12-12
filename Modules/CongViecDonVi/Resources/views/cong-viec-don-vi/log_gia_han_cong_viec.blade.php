@@ -3,13 +3,13 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card-box box-panel">
                 <div class="table-responsive">
-                    <h3>
+                    <span>
                         <a data-toggle="collapse" href="#gia-han-van-ban"
                            class="color-black">
-                            <i class="fas fa-link"></i> Trình tự đề xuất gia hạn:
+                            <i class="fa fa-link"></i> Trình tự đề xuất gia hạn:
                             <i class="fa fa-plus pull-right"></i>
                         </a>
-                    </h3>
+                    </span>
                     <div id="gia-han-van-ban" class="panel-collapse collapse">
                         <table class="table table-bordered table-hover mb-0">
                             <thead>

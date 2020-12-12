@@ -22,6 +22,7 @@ class DonVi extends Model
     ];
 
     const DIEU_HANH = 1;
+    const TRANG_THAI_HOAT_DONG = 1;
 
 }
 
