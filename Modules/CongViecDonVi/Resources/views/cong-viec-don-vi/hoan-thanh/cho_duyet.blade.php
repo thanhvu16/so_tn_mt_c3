@@ -1,118 +1,114 @@
-@extends('administrator::layouts.master')
+@extends('admin::layouts.master')
 @section('page_title', 'Công việc hoàn thành chờ duyệt')
 @section('content')
-    <div class="container-fluid">
+    <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="header-title mb-2">Công việc hoàn thành chờ duyệt</h4>
-                <div class="card-box pd-0">
-                    <div class="tab-content pd-0">
-                        <div class="tab-pane active">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable table-hover data-row">
-                                        <thead>
-                                        <tr role="row" class="text-center">
-                                            <th width="2%">STT</th>
-                                            <th width="30%">Nội dung - Thông tin</th>
-                                            <th width="20%">Trình tự xử lý</th>
-                                            <th width="20%">Kết quả</th>
-                                            <th width="25%">Tác vụ</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Công việc hoàn thành chờ duyệt</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-striped table-bordered dataTable table-hover data-row">
+                            <thead>
+                            <tr role="row" class="text-center">
+                                <th width="2%">STT</th>
+                                <th width="30%">Nội dung - Thông tin</th>
+                                <th width="20%">Trình tự xử lý</th>
+                                <th width="20%">Kết quả</th>
+                                <th width="25%">Tác vụ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                                        @forelse($giaiQuyetCongViecDonVi as $key => $giaiQuyetCongViec)
-                                            <tr class="duyet-vb">
-                                                <td class="text-center">{{ $key+1 }}</td>
-                                                <td>
-                                                    <p>
-                                                        <a href="{{ route('cong-viec-don-vi.show', $giaiQuyetCongViec->chuyen_nhan_cong_viec_don_vi_id) }}">{{ $giaiQuyetCongViec->congViecDonVi->noi_dung_cuoc_hop }}</a>
-                                                    </p>
-                                                    @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi->han_xu_ly))
-                                                        <p>
-                                                            - <b>Hạn xử
-                                                                lý:
-                                                                {{ date('d/m/Y', strtotime($giaiQuyetCongViec->chuyenNhanCongViecDonVi->han_xu_ly)) }}
-                                                            </b>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($giaiQuyetCongViec->congViecDonVi->congViecDonViFile))
-                                                        @foreach($giaiQuyetCongViec->congViecDonVi->congViecDonViFile as $key => $file)
-                                                            <a href="{{ $file->getUrlFile() }}"
-                                                               target="popup"
-                                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                                ]</a>
-                                                            @if (count($giaiQuyetCongViec->congViecDonVi->congViecDonViFile)-1 != $key)
-                                                                &nbsp;|&nbsp;
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy()))
-                                                        @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy() as $key => $trinhTuXuLy)
-                                                            <p>
-                                                                {{ $key+1 }}
-                                                                . {{ $trinhTuXuLy->canBoNhan->ho_ten ?? null }}
-                                                            </p>
-                                                            <hr class="border-dashed {{  count($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy())-1 == $key ? 'hide' : 'show' }}">
-                                                        @endforeach
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>
+                            @forelse($giaiQuyetCongViecDonVi as $key => $giaiQuyetCongViec)
+                                <tr class="duyet-vb">
+                                    <td class="text-center">{{ $key+1 }}</td>
+                                    <td>
+                                        <p>
+                                            <a href="{{ route('cong-viec-don-vi.show', $giaiQuyetCongViec->chuyen_nhan_cong_viec_don_vi_id) }}">{{ $giaiQuyetCongViec->congViecDonVi->noi_dung_cuoc_hop }}</a>
+                                        </p>
+                                        @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi->han_xu_ly))
+                                            <p>
+                                                - <b>Hạn xử
+                                                    lý:
+                                                    {{ date('d/m/Y', strtotime($giaiQuyetCongViec->chuyenNhanCongViecDonVi->han_xu_ly)) }}
+                                                </b>
+                                            </p>
+                                        @endif
+                                        @if (isset($giaiQuyetCongViec->congViecDonVi->congViecDonViFile))
+                                            @foreach($giaiQuyetCongViec->congViecDonVi->congViecDonViFile as $key => $file)
+                                                <a href="{{ $file->getUrlFile() }}"
+                                                   target="popup"
+                                                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}
+                                                    ]</a>
+                                                @if (count($giaiQuyetCongViec->congViecDonVi->congViecDonViFile)-1 != $key)
+                                                    &nbsp;|&nbsp;
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy()))
+                                            @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy() as $key => $trinhTuXuLy)
+                                                <p>
+                                                    {{ $key+1 }}
+                                                    . {{ $trinhTuXuLy->canBoNhan->ho_ten ?? null }}
+                                                </p>
+                                                <hr class="border-dashed {{  count($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy())-1 == $key ? 'hide' : 'show' }}">
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>
 
-                                                    @if (isset($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile))
-                                                        @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile as $key => $file)
-                                                            <a href="{{ $file->getUrlFile() }}"
-                                                               target="popup"
-                                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                            @if (count($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile)-1 != $key)
-                                                                &nbsp;|&nbsp;
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="col-md-12 form-group">
+                                        @if (isset($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile))
+                                            @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile as $key => $file)
+                                                <a href="{{ $file->getUrlFile() }}"
+                                                   target="popup"
+                                                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                                                @if (count($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile)-1 != $key)
+                                                    &nbsp;|&nbsp;
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="col-md-12 form-group">
                                                         <textarea class="form-control noi-dung" name="noi_dung"
                                                                   rows="3"
                                                                   required placeholder="nhập nội dung ...."></textarea><br>
-                                                        <button
-                                                            class="btn waves-effect btn-primary btn-choose-status"
-                                                            data-id="{{ $giaiQuyetCongViec->id }}" data-type="1">Duyệt
-                                                        </button>
-                                                        <button
-                                                            class="btn waves-effect btn-danger btn-choose-status"
-                                                            data-id="{{ $giaiQuyetCongViec->id }}" data-type="2">Trả lại
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <td colspan="5" class="text-center">Không tìm
-                                                thấy dữ liệu.
-                                            </td>
-                                        @endforelse
-                                        </tbody>
-                                    </table>
-                                    <div class="row col-md-12 mb-1">
-                                        <div class="float-left">
-                                            Tổng số công việc: <b>{{ $giaiQuyetCongViecDonVi->total() }}</b>
+                                            <button
+                                                class="btn waves-effect btn-primary btn-choose-status"
+                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="1">Duyệt
+                                            </button>
+                                            <button
+                                                class="btn waves-effect btn-danger btn-choose-status"
+                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="2">Trả lại
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div>
-                                        {{ $giaiQuyetCongViecDonVi->appends(['date'  => Request::get('date'), 'type' => Request::get('type')])->render() }}
-                                    </div>
-                                </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <td colspan="5" class="text-center">Không tìm
+                                    thấy dữ liệu.
+                                </td>
+                            @endforelse
+                            </tbody>
+                        </table>
+                        <div class="row col-md-12 mb-1">
+                            <div class="float-left">
+                                Tổng số công việc: <b>{{ $giaiQuyetCongViecDonVi->total() }}</b>
                             </div>
+                        </div>
+                        <div>
+                            {{ $giaiQuyetCongViecDonVi->appends(['date'  => Request::get('date'), 'type' => Request::get('type')])->render() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 @endsection
 @section('script')
     <script type="text/javascript">
@@ -127,7 +123,7 @@
                 console.log(status, noiDung);
 
                 $.ajax({
-                    url: '/duyet-cong-viec',
+                    url: APP_URL + '/duyet-cong-viec',
                     type: 'POST',
                     data: {
                         id: id,

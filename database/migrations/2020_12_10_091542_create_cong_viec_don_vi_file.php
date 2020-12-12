@@ -15,6 +15,9 @@ class CreateCongViecDonViFile extends Migration
     {
         Schema::create('cong_viec_don_vi_file', function (Blueprint $table) {
             $table->id();
+            $table->integer('cong_viec_don_vi_id')->nullable();
+            $table->string('ten_file')->nullable();
+            $table->string('url_file')->nullable();
             $table->timestamps();
         });
     }

@@ -3,19 +3,19 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card-box box-panel">
                 <div class="table-responsive">
-                    <h3>
+                    <span>
                         <a data-toggle="collapse" href="#van-ban-hoan-thanh"
                            class="color-black">
-                            <i class="fas fa-link"></i> Hoàn thành công việc - kết quả:
+                            <i class="fa fa-link"></i> Hoàn thành công việc - kết quả:
                             <i class="fa fa-plus pull-right"></i>
                         </a>
-                    </h3>
+                    </span>
                     <div id="van-ban-hoan-thanh" class="panel-collapse collapse">
                         <table class="table table-bordered table-hover mb-0">
                             <thead>
                             <tr role="row">
                                 <th>STT</th>
-                                <th>Thời gian hoàn thành</th>
+                                <th >Thời gian hoàn thành</th>
                                 <th>Cán bộ hoàn thành</th>
                                 <th>Nội dung</th>
                                 <th>Cán bộ duyệt</th>

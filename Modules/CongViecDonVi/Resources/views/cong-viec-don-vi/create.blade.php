@@ -9,7 +9,7 @@
                         <h3 class="box-title">Tạo công việc</h3>
                     </div>
                     <div class="box-body">
-                    <form action="{{route('cong-viec-don-vi.store')}}" method="post" enctype="multipart/form-data" class="form-row">
+                    <form action="{{route('tao-cong-viec-don-vi.store')}}" method="post" enctype="multipart/form-data" class="form-row">
                         @csrf
                         <input type="hidden" name="lich_cong_tac_id" value="{{ Request::get('lich_cong_tac_id') ?? '' }}">
                             <div class="col-md-12">
@@ -39,7 +39,7 @@
                                                         onchange="selectDonViAppend()">
                                                     @foreach($donViChuTri as $donViChutri)
                                                         <option
-                                                            value="{{ $donViChutri->ma_id }}">{{ $donViChutri->ten_don_vi }}</option>
+                                                            value="{{ $donViChutri->id }}">{{ $donViChutri->ten_don_vi }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

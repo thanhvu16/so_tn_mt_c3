@@ -1,228 +1,229 @@
-@extends('administrator::layouts.master')
+
+@extends('admin::layouts.master')
 @section('page_title', 'Công việc chờ xử lý')
 @section('content')
-    <div class="container-fluid">
+    <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="card-box pd-0">
-                    <div class="tab-content pd-0">
-                        <div class="tab-pane active">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4 class="header-title pt-2">Công việc chờ xử lý</h4>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <form action="{{ route('cong-viec-don-vi.store') }}" method="post"
-                                              id="form-tham-muu">
-                                            @csrf
-                                            <input type="hidden" name="van_ban_den_don_vi_id" value="">
-                                            <input type="hidden" name="don_vi_phoi_hop" value="{{ $typeDonViPhoiHop ?? null }}">
-                                            @if (Auth::user()->vai_tro != CHUYEN_VIEN)
-                                                <button type="button"
-                                                        class="btn btn-sm mt-1 btn-primary waves-effect btn-submit waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
-                                                        data-original-title=""
-                                                        title=""><i class="fa fa-check"></i> Duyệt
-                                                </button>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Công việc chờ xử lý</h3>
+                    </div>
+                    <div class="box-body">
+                            <form action="{{ route('cong-viec-don-vi.store') }}" method="post"
+                                  id="form-tham-muu">
+                                @csrf
+                                <input type="hidden" name="van_ban_den_don_vi_id" value="">
+                                <input type="hidden" name="don_vi_phoi_hop" value="{{ $typeDonViPhoiHop ?? null }}">
+                                @if (Auth::user()->hasRole(CHUYEN_VIEN) == false)
+                                        <button type="button"
+                                                class="btn btn-sm mt-1 btn-primary waves-effect btn-submit waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
+                                                data-original-title=""
+                                                title=""><i class="fa fa-check"></i> Duyệt
+                                        </button>
+
+                                @endif
+                            </form>
+                            <table class="table table-striped table-bordered dataTable table-hover data-row">
+                                <thead>
+                                <tr role="row" class="text-center">
+                                    <th width="4%" style="vertical-align: middle" class="text-center">STT</th>
+                                    <th width=""  class="text-center" style="vertical-align: middle">Nội dung công việc</th>
+                                    <th width="20%" class="text-center" style="vertical-align: middle">Nội dung đầu việc đơn vị</th>
+                                    <th width="15%" class="text-center" style="vertical-align: middle">ý kiến</th>
+                                    <th width="24%" class="text-center" style="vertical-align: middle">Chỉ đạo</th>
+                                    @if (Auth::user()->hasRole(PHO_PHONG) )
+                                        <th class="text-center" width="3%" style="vertical-align: middle">
+                                            Duyệt
+{{--                                            <div class="checkbox">--}}
+{{--                                                <input id="check-all" type="checkbox" name="check_all" value="">--}}
+{{--                                                <label for="check-all"></label>--}}
+{{--                                            </div>--}}
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input  id="check-all" type="checkbox" name="check_all">
+                                                </label>
+                                            </div>
+                                        </th>
+                                    @endif
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @forelse($chuyenNhanCongViecDonVi as $congViecDonVi)
+                                    <tr class="tr-tham-muu">
+                                        <td class="text-center">{{ $order++ }}</td>
+                                        <td>
+                                            <p>
+                                                <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id.'?xuly=true') }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
+                                            </p>
+                                            @if (!empty($congViecDonVi->han_xu_ly))
+                                                <p>
+                                                    - <b>Hạn xử
+                                                        lý:
+                                                        {{ date('d/m/Y', strtotime($congViecDonVi->han_xu_ly)) }}
+                                                    </b>
+                                                </p>
                                             @endif
-                                        </form>
-                                    </div>
-                                </div>
-                                <!--datatable-->
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable table-hover data-row">
-                                        <thead>
-                                        <tr role="row" class="text-center">
-                                            <th>STT</th>
-                                            <th width="30%">Nội dung công việc</th>
-                                            <th width="20%">Nội dung đầu việc đơn vị</th>
-                                            <th width="15%">ý kiến</th>
-                                            <th width="24%">Chỉ đạo</th>
-                                            @if (Auth::user()->vai_tro == CAP_PHO)
-                                                <th class="text-center" width="3%">
-                                                    Duyệt
-                                                    <div class="checkbox">
-                                                        <input id="check-all" type="checkbox" name="check_all" value="">
-                                                        <label for="check-all"></label>
-                                                    </div>
-                                                </th>
+
+                                            @if (isset($congViecDonVi->congViecDonVi->congViecDonViFile))
+                                                @foreach($congViecDonVi->congViecDonVi->congViecDonViFile as $key => $file)
+                                                    <a href="{{ $file->getUrlFile() }}"
+                                                       target="popup"
+                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                                                    @if (count($congViecDonVi->congViecDonVi->congViecDonViFile)-1 != $key)
+                                                        &nbsp;|&nbsp;
+                                                    @endif
+                                                @endforeach
                                             @endif
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                {{ $congViecDonVi->noi_dung }}
+                                            </p>
+                                        </td>
+                                        <td>
 
-                                        @forelse($chuyenNhanCongViecDonVi as $congViecDonVi)
-                                            <tr class="tr-tham-muu">
-                                                <td class="text-center">{{ $order++ }}</td>
-                                                <td>
+                                            <div class="dau-viec-chi-tiet">
+                                                @if (Auth::user()->hasRole(TRUONG_PHONG))
                                                     <p>
-                                                        <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id.'?xuly=true') }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
+                                                        <select name="pho_phong_id[{{ $congViecDonVi->id }}]"
+                                                                id="pho-phong-chu-tri-{{ $congViecDonVi->id }}"
+                                                                data-id="{{ $congViecDonVi->id }}"
+                                                                class="form-control select2 pho-phong"
+                                                                placeholder="Chọn phó phòng chủ trì"
+                                                                data-id="{{ $congViecDonVi->id }}"
+                                                                form="form-tham-muu">
+                                                            <option value="">Chọn phó phòng chủ trì</option>
+                                                            @forelse($danhSachPhoPhong as $phoPhong)
+                                                                <option
+                                                                    value="{{ $phoPhong->id }}" {{ !empty($congViecDonVi->checkCanBoNhan([$phoPhong->id])) && $congViecDonVi->checkCanBoNhan([$phoPhong->id])->can_bo_nhan_id == $phoPhong->id ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
+                                                            @empty
+                                                            @endforelse
+                                                        </select>
                                                     </p>
-                                                    @if (!empty($congViecDonVi->han_xu_ly))
-                                                        <p>
-                                                            - <b>Hạn xử
-                                                                lý:
-                                                                {{ date('d/m/Y', strtotime($congViecDonVi->han_xu_ly)) }}
-                                                            </b>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($congViecDonVi->congViecDonVi->congViecDonViFile))
-                                                        @foreach($congViecDonVi->congViecDonVi->congViecDonViFile as $key => $file)
-                                                            <a href="{{ $file->getUrlFile() }}"
-                                                               target="popup"
-                                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                            @if (count($congViecDonVi->congViecDonVi->congViecDonViFile)-1 != $key)
-                                                                &nbsp;|&nbsp;
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </td>
-                                                <td>
+                                                @endif
+                                                <p>
+                                                    <select name="chuyen_vien_id[{{ $congViecDonVi->id }}]"
+                                                            id="chuyen-vien-{{ $congViecDonVi->id }}"
+                                                            class="form-control select2 chuyen-vien"
+                                                            data-id="{{ $congViecDonVi->id }}"
+                                                            data-placeholder="Chọn chuyên viên thực hiện"
+                                                            form="form-tham-muu">
+                                                        <option value="">Chọn chuyên viên thực hiện</option>
+                                                        @forelse($danhSachChuyenVien as $chuyenVien)
+                                                            <option
+                                                                value="{{ $chuyenVien->id }}" {{ !empty($congViecDonVi->checkCanBoNhan([$chuyenVien->id])) && $congViecDonVi->checkCanBoNhan([$chuyenVien->id])->can_bo_nhan_id == $chuyenVien->id ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
+                                                        @empty
+                                                        @endforelse
+                                                    </select>
+                                                </p>
+                                                @if (!isset($typeDonViPhoiHop))
                                                     <p>
-                                                        {{ $congViecDonVi->noi_dung }}
+                                                        <select
+                                                            name="chuyen_vien_phoi_hop_id[{{ $congViecDonVi->id }}][]"
+                                                            id="chuyen-vien-phoi-hop{{ $congViecDonVi->id }}"
+                                                            class="form-control chuyen-vien-phoi-hop select2"
+                                                            data-id="{{ $congViecDonVi->id }}"
+                                                            data-placeholder="Chọn chuyên viên phối hợp"
+                                                            form="form-tham-muu" multiple>
+                                                            @forelse($danhSachChuyenVien as $chuyenVien)
+                                                                <option
+                                                                    value="{{ $chuyenVien->id }}" {{ in_array($chuyenVien->id, $congViecDonVi->checkChuyenVienPhoiHop()->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
+                                                            @empty
+                                                            @endforelse
+                                                        </select>
                                                     </p>
-                                                </td>
-                                                <td>
+                                                    <p>
+                                                        <select
+                                                            name="lanh_dao_xem_de_biet[{{ $congViecDonVi->id }}][]"
+                                                            class="form-control select2 lanh-dao-xem-de-biet"
+                                                            multiple
+                                                            form="form-tham-muu"
+                                                            data-placeholder="Chọn phó phòng xem để biết"
+                                                            style="width: 95% !important;">
+                                                            @forelse($danhSachPhoPhong as $phoPhongPhoiHop)
+                                                                <option
+                                                                    value="{{ $phoPhongPhoiHop->id }}" {{ in_array($chuyenVien->id, $congViecDonVi->checklanhdaoXemDeBiet()->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : '' }}>{{ $phoPhongPhoiHop->ho_ten }}</option>
+                                                            @empty
+                                                            @endforelse
+                                                        </select>
+                                                    </p>
+                                                @endif
 
-                                                    <div class="dau-viec-chi-tiet">
-                                                        @if (Auth::user()->vai_tro == CAP_TRUONG)
-                                                            <p>
-                                                                <select name="pho_phong_id[{{ $congViecDonVi->id }}]"
-                                                                        id="pho-phong-chu-tri-{{ $congViecDonVi->id }}"
-                                                                        data-id="{{ $congViecDonVi->id }}"
-                                                                        class="form-control select2-search pho-phong"
-                                                                        placeholder="Chọn phó phòng chủ trì"
-                                                                        data-id="{{ $congViecDonVi->id }}"
-                                                                        form="form-tham-muu">
-                                                                    <option value="">Chọn phó phòng chủ trì</option>
-                                                                    @forelse($danhSachPhoPhong as $phoPhong)
-                                                                        <option
-                                                                            value="{{ $phoPhong->id }}" {{ !empty($congViecDonVi->checkCanBoNhan([$phoPhong->id])) && $congViecDonVi->checkCanBoNhan([$phoPhong->id])->can_bo_nhan_id == $phoPhong->id ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
-                                                                    @empty
-                                                                    @endforelse
-                                                                </select>
-                                                            </p>
-                                                        @endif
-                                                        <p>
-                                                            <select name="chuyen_vien_id[{{ $congViecDonVi->id }}]"
-                                                                    id="chuyen-vien-{{ $congViecDonVi->id }}"
-                                                                    class="form-control select2-search chuyen-vien"
-                                                                    data-id="{{ $congViecDonVi->id }}"
-                                                                    data-placeholder="Chọn chuyên viên thực hiện"
-                                                                    form="form-tham-muu">
-                                                                <option value="">Chọn chuyên viên thực hiện</option>
-                                                                @forelse($danhSachChuyenVien as $chuyenVien)
-                                                                    <option
-                                                                        value="{{ $chuyenVien->id }}" {{ !empty($congViecDonVi->checkCanBoNhan([$chuyenVien->id])) && $congViecDonVi->checkCanBoNhan([$chuyenVien->id])->can_bo_nhan_id == $chuyenVien->id ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
-                                                                @empty
-                                                                @endforelse
-                                                            </select>
-                                                        </p>
-                                                        @if (!isset($typeDonViPhoiHop))
-                                                            <p>
-                                                                <select
-                                                                    name="chuyen_vien_phoi_hop_id[{{ $congViecDonVi->id }}][]"
-                                                                    id="chuyen-vien-phoi-hop{{ $congViecDonVi->id }}"
-                                                                    class="form-control chuyen-vien-phoi-hop select2-search"
-                                                                    data-id="{{ $congViecDonVi->id }}"
-                                                                    data-placeholder="Chọn chuyên viên phối hợp"
-                                                                    form="form-tham-muu" multiple>
-                                                                    @forelse($danhSachChuyenVien as $chuyenVien)
-                                                                        <option
-                                                                            value="{{ $chuyenVien->id }}" {{ in_array($chuyenVien->id, $congViecDonVi->checkChuyenVienPhoiHop()->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
-                                                                    @empty
-                                                                    @endforelse
-                                                                </select>
-                                                            </p>
-                                                            <p>
-                                                                <select
-                                                                    name="lanh_dao_xem_de_biet[{{ $congViecDonVi->id }}][]"
-                                                                    class="form-control select2-search lanh-dao-xem-de-biet"
-                                                                    multiple
-                                                                    form="form-tham-muu"
-                                                                    data-placeholder="Chọn phó phòng xem để biết"
-                                                                    style="width: 95% !important;">
-                                                                    @forelse($danhSachPhoPhong as $phoPhongPhoiHop)
-                                                                        <option
-                                                                            value="{{ $phoPhongPhoiHop->id }}" {{ in_array($chuyenVien->id, $congViecDonVi->checklanhdaoXemDeBiet()->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : '' }}>{{ $phoPhongPhoiHop->ho_ten }}</option>
-                                                                    @empty
-                                                                    @endforelse
-                                                                </select>
-                                                            </p>
-                                                        @endif
+                                            </div>
 
-                                                    </div>
-
-                                                </td>
-                                                <td>
-                                                    @if (Auth::user()->vai_tro == CAP_TRUONG)
-                                                        <p>
+                                        </td>
+                                        <td>
+                                            @if (Auth::user()->hasRole(TRUONG_PHONG))
+                                                <p>
                                                             <textarea
                                                                 name="noi_dung_pho_phong[{{ $congViecDonVi->id }}]"
                                                                 form="form-tham-muu"
                                                                 class="form-control {{ !empty($congViecDonVi->checkCanBoNhan($danhSachPhoPhong->pluck('id')->toArray())) ? 'show' : 'hide' }}"
                                                                 rows="3">{{ !empty($congViecDonVi->checkCanBoNhan($danhSachPhoPhong->pluck('id')->toArray())) ? $congViecDonVi->checkCanBoNhan($danhSachPhoPhong->pluck('id')->toArray())->noi_dung_chuyen : '' }}</textarea>
-                                                        </p>
-                                                    @endif
+                                                </p>
+                                            @endif
 
-                                                    <p>
+                                            <p>
                                                         <textarea
                                                             name="noi_dung_chuyen_vien[{{ $congViecDonVi->id }}]"
                                                             form="form-tham-muu"
                                                             class="form-control noi-dung-chuyen-vien {{ !empty($congViecDonVi->checkCanBoNhan($danhSachChuyenVien->pluck('id')->toArray())) ? 'show' : 'hide' }}"
                                                             rows="4">{{ !empty($congViecDonVi->checkCanBoNhan($danhSachChuyenVien->pluck('id')->toArray())) ? $congViecDonVi->checkCanBoNhan($danhSachChuyenVien->pluck('id')->toArray())->noi_dung_chuyen : '' }}</textarea>
-                                                    </p>
-                                                </td>
-                                                @if (Auth::user()->vai_tro == CAP_PHO)
-                                                    <td class="text-center">
-                                                        <div class="checkbox checkbox-primary">
-                                                            <span style="color: red;"> Chọn duyệt:</span><br>
-                                                            <input id="checkbox{{ $congViecDonVi->id }}"
+                                            </p>
+                                        </td>
+                                        @if (Auth::user()->hasRole(PHO_PHONG))
+                                            <td class="text-center" >
+                                                <div class="checkbox checkbox-primary text-center" style="vertical-align: middle">
+                                                    <span style="color: red;"> Chọn duyệt:</span><br>
+{{--                                                    &emsp;<input id="checkbox{{ $congViecDonVi->id }}"--}}
+{{--                                                           type="checkbox"--}}
+{{--                                                           name="duyet[{{ $congViecDonVi->id }}]"--}}
+{{--                                                           value="{{ $congViecDonVi->id }}"--}}
+{{--                                                           class="duyet sub-check text-center">--}}
+{{--                                                    <label for="checkbox{{ $congViecDonVi->id }}"></label>--}}
+
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input  id="checkbox{{ $congViecDonVi->id }}"
                                                                    type="checkbox"
                                                                    name="duyet[{{ $congViecDonVi->id }}]"
                                                                    value="{{ $congViecDonVi->id }}"
                                                                    class="duyet sub-check">
-                                                            <label for="checkbox{{ $congViecDonVi->id }}"></label>
-                                                        </div>
-                                                    </td>
-                                                @endif
-
-                                            </tr>
-                                        @empty
-                                            <td colspan="{{ Auth::user()->vai_tro == CAP_PHO ? 6 : 5 }}" class="text-center">Không tìm
-                                                thấy dữ liệu.
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </td>
-                                        @endforelse
-                                        </tbody>
-                                    </table>
-                                    <div class="row mb-1">
-                                        <div class="col-md-6 col-12">
-                                            Tổng số công việc: <b>{{ $chuyenNhanCongViecDonVi->total() }}</b>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            @if (Auth::user()->vai_tro != CHUYEN_VIEN)
-                                                <button type="button"
-                                                        class="btn btn-sm btn-primary btn-submit waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
-                                                        form="form-tham-muu"
-                                                        title=""><i class="fa fa-check"></i> Duyệt
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </div>
+                                        @endif
 
-                                    <div>
-                                        {{ $chuyenNhanCongViecDonVi->appends(['ngay_tao'  => Request::get('ngay_tao'), 'type' => Request::get('type')])->render() }}
-                                    </div>
+                                    </tr>
+                                @empty
+                                    <td colspan="{{ Auth::user()->hasRole(PHO_PHONG) ? 6 : 5 }}" class="text-center">Không tìm
+                                        thấy dữ liệu.
+                                    </td>
+                                @endforelse
+                                </tbody>
+                            </table>
+                            <div class="row mb-1 mt-2">
+                                <div class="col-md-6 col-12">
+                                    Tổng số công việc: <b>{{ $chuyenNhanCongViecDonVi->total() }}</b>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    @if (Auth::user()->hasRole(CHUYEN_VIEN) == false)
+                                        <button type="button"
+                                                class="btn btn-sm btn-primary btn-submit waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
+                                                form="form-tham-muu"
+                                                title=""><i class="fa fa-check"></i> Duyệt
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    </section>
 @endsection
 @section('script')
     <script type="text/javascript">

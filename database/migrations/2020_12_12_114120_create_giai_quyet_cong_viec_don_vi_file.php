@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCongViecDonVi extends Migration
+class CreateGiaiQuyetCongViecDonViFile extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateCongViecDonVi extends Migration
      */
     public function up()
     {
-        Schema::create('cong_viec_don_vi', function (Blueprint $table) {
+        Schema::create('giai_quyet_cong_viec_don_vi_file', function (Blueprint $table) {
             $table->id();
-            $table->string('noi_dung_cuoc_hop')->nullable();
-            $table->string('noi_dung_dau_viec')->nullable();
-            $table->integer('lich_cong_tac_id')->nullable();
-            $table->integer('user_id')->nullable();
+            $table->integer('giai_quyet_cong_viec_don_vi_id')->nullable();
+            $table->string('ten_file')->nullable();
+            $table->string('url_file')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateCongViecDonVi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cong_viec_don_vi');
+        Schema::dropIfExists('giai_quyet_cong_viec_don_vi_file');
     }
 }
