@@ -44,7 +44,45 @@ class CongViecDonViController extends Controller
         return view('congviecdonvi::cong-viec-don-vi.index', compact('chuyenNhanCongViecDonVi',
             'danhSachPhoPhong', 'danhSachChuyenVien', 'order'));
     }
+    public function chuyenVienPhoiHop(Request $request)
+    {
+        $currentUser = auth::user();
+        $congViecDonViPhoiHop = CongViecDonViPhoiHop::where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('status')
+            ->whereNull('type')->get();
 
+        $arrChuyenNhanCongViecDonViId = $congViecDonViPhoiHop->pluck('chuyen_nhan_cong_viec_don_vi_id');
+
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')
+            ->whereIn('id', $arrChuyenNhanCongViecDonViId)
+            ->whereNull('hoan_thanh')
+            ->paginate(PER_PAGE);
+
+        $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+
+        return view('congviecdonvi::cong-viec-don-vi.chuyen-vien-phoi-hop', compact('chuyenNhanCongViecDonVi', 'order'));
+    }
+
+    public function chuyenVienDaPhoiHop()
+    {
+        $currentUser = auth::user();
+        $congViecDonViPhoiHop = CongViecDonViPhoiHop::where('can_bo_nhan_id', $currentUser->id)
+            ->where('status', CongViecDonViPhoiHop::STATUS_GIAI_QUYET)
+            ->whereNull('type')->get();
+
+        $arrChuyenNhanCongViecDonViId = $congViecDonViPhoiHop->pluck('chuyen_nhan_cong_viec_don_vi_id');
+
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')
+            ->whereIn('id', $arrChuyenNhanCongViecDonViId)
+            ->paginate(PER_PAGE);
+
+        $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+
+        $type = 'daXuLy';
+
+        return view('congviecdonvi::cong-viec-don-vi.chuyen-vien-phoi-hop',
+            compact('chuyenNhanCongViecDonVi', 'order', 'type'));
+    }
     /**
      * Show the form for creating a new resource.
      * @return Renderable
@@ -357,5 +395,40 @@ class CongViecDonViController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function CongViecXemDeBiet(Request $request)
+    {
+        $currentUser = auth::user();
+        $congViecDonViPhoiHop = CongViecDonViPhoiHop::where('can_bo_nhan_id', $currentUser->id)
+            ->where('type', CongViecDonViPhoiHop::TYPE_XEM_DE_BIET)->get();
+
+        $arrChuyenNhanCongViecDonViId = $congViecDonViPhoiHop->pluck('chuyen_nhan_cong_viec_don_vi_id');
+
+        $danhSachChuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')
+            ->whereIn('id', $arrChuyenNhanCongViecDonViId)
+            ->paginate(PER_PAGE);
+
+        $order = ($danhSachChuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
+
+        return view('congviecdonvi::cong-viec-don-vi.hoan-thanh.cong-viec-xem-de-biet', compact('danhSachChuyenNhanCongViecDonVi', 'order'));
+    }
+
+    public function getCanBoPhoiHop($id, Request $request)
+    {
+        if ($request->ajax()) {
+
+            $currentUser = auth::user();
+
+            $donVi = $currentUser->donVi;
+
+            $danhSachNguoiDung = User::role(CHUYEN_VIEN)->where('don_vi_id', $donVi->id)
+                ->whereNotIn('id', json_decode($id))->whereNull('deleted_at')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $danhSachNguoiDung
+            ]);
+        }
     }
 }

@@ -8,6 +8,7 @@ define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den');
 define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
 define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet');
 define('THU_MUC_CONG_VIEC_DON_VI', 'uploads/cong_viec_don_vi'.'_'.date('Y'));
+define('THU_MUC_FILE_PHOI_HOP', 'uploads/phoi-hop-cong-viec'.'_'.date('Y'));
 define('ACTIVE', 1);
 define('INACTIVE', 2);
 define('HUYEN', 'ĐỨC HÒA');

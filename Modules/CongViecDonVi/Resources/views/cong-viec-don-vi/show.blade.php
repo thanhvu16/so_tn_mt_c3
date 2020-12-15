@@ -70,29 +70,32 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <div class="increment">
-                                                            <div class="row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="ten_file">Tên tệp</label>
-                                                                    <input type="text" class="form-control pho-phong-file"
-                                                                           name="txt_file[]" value=""
-                                                                           placeholder="Nhập tên file...">
-                                                                </div>
-                                                                <div class="form-group col-md-8">
-                                                                    <label for="url-file">Chọn tệp tin</label>
-                                                                    <div class="form-line input-group control-group">
-                                                                        <input type="file" id="url-file" name="ten_file[]"
-                                                                               class="form-control">
-                                                                        <div class="input-group-btn">
+                                                        <div class="row">
+                                                            <div class="increment">
+                                                                <div class="row">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="ten_file">Tên tệp</label>
+                                                                        <input type="text" class="form-control pho-phong-file"
+                                                                               name="txt_file[]" value=""
+                                                                               placeholder="Nhập tên file...">
+                                                                    </div>
+                                                                    <div class="form-group col-md-8">
+                                                                        <label for="url-file">Chọn tệp tin</label>
+                                                                        <div class="form-line input-group control-group">
+                                                                            <input type="file" id="url-file" name="ten_file[]"
+                                                                                   class="form-control">
+                                                                            <div class="input-group-btn">
                                         <span class="btn btn-info"
                                               onclick="multiUploadFile('ten_file[]')"
                                               type="button">
                                             <i class="fa fa-plus"></i> thêm</span>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         <button type="submit"
@@ -122,29 +125,32 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <div class="increment">
-                                                            <div class="row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="ten_file">Tên tệp</label>
-                                                                    <input type="text" class="form-control pho-phong-file"
-                                                                           name="txt_file[]" value=""
-                                                                           placeholder="Nhập tên file...">
-                                                                </div>
-                                                                <div class="form-group col-md-8">
-                                                                    <label for="url-file">Chọn tệp tin</label>
-                                                                    <div class="form-line input-group control-group">
-                                                                        <input type="file" id="url-file" name="ten_file[]"
-                                                                               class="form-control">
-                                                                        <div class="input-group-btn">
+                                                        <div class="row">
+                                                            <div class="increment">
+                                                                <div class="row">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="ten_file">Tên tệp</label>
+                                                                        <input type="text" class="form-control pho-phong-file"
+                                                                               name="txt_file[]" value=""
+                                                                               placeholder="Nhập tên file...">
+                                                                    </div>
+                                                                    <div class="form-group col-md-8">
+                                                                        <label for="url-file">Chọn tệp tin</label>
+                                                                        <div class="form-line input-group control-group">
+                                                                            <input type="file" id="url-file" name="ten_file[]"
+                                                                                   class="form-control">
+                                                                            <div class="input-group-btn">
                                         <span class="btn btn-info"
                                               onclick="multiUploadFile('ten_file[]')"
                                               type="button">
                                             <i class="fa fa-plus"></i> thêm</span>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         <button type="submit"

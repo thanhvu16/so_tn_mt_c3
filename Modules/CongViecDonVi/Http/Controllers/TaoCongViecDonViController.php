@@ -77,14 +77,11 @@ class TaoCongViecDonViController extends Controller
                     $hanXuLy = null;
 
                     $donVi = Donvi::where('id', $request->get('don_vi_chu_tri'))
-//                        ->where('trang_thai', DonVi::TRANG_THAI_HOAT_DONG)
                         ->whereNull('deleted_at')
                         ->first();
                     if ($donVi) {
                         $donViId = $donVi->id;
-                        $nguoiDung = User::where('don_vi_id', $donVi->id)
-//                            ->where('trang_thai', User::TRANG_THAI_HOAT_DONG)
-//                            ->where('vai_tro', CAP_TRUONG)
+                        $nguoiDung = User::role(TRUONG_PHONG)->where('don_vi_id', $donVi->id)
                             ->first();
 
                         $canBoNhanId = $nguoiDung->id;
@@ -114,7 +111,6 @@ class TaoCongViecDonViController extends Controller
                     if (!empty($donViPhoiHopId)) {
                         ChuyenNhanCongViecDonVi::saveDonViPhoiHop($donViPhoiHopId, $congViecDonVi->id, $dauViec);
                     }
-
                     //luu pho phong
                     if (!empty($request->get('pho_phong_id'))) {
 

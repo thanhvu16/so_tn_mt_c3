@@ -55,7 +55,7 @@
                                         <td class="text-center">{{ $order++ }}</td>
                                         <td>
                                             <p>
-                                                <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id.'?xuly=true') }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
+                                                <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id.'?xuly=true') }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop ?? '' }}</a>
                                             </p>
                                             @if (!empty($congViecDonVi->han_xu_ly))
                                                 <p>
@@ -273,7 +273,7 @@
             if (arrId) {
                 //lấy danh sach cán bộ phối hơp
                 $.ajax({
-                    url: '../list-can-bo-phoi-hop/' + JSON.stringify(arrId),
+                    url: APP_URL + '/list-can-bo-phoi-hop/' + JSON.stringify(arrId),
                     type: 'GET',
                 })
                     .done(function (response) {

@@ -18,7 +18,6 @@
                                            value="{{ $typeDonViPhoiHop ?? null }}">
                                 </form>
                             </div>
-                            <div class="col-md-12">
                                 <table class="table table-striped table-bordered dataTable table-hover data-row">
                                     <thead>
                                     <tr role="row" class="text-center">
@@ -192,7 +191,6 @@
                                         {{ $chuyenNhanCongViecDonVi->appends(['ngay_tao'  => Request::get('ngay_tao'), 'type' => Request::get('type')])->render() }}
                                     </div>
                                 </div>
-                            </div>
                         </div>
                 </div>
             </div>
@@ -247,7 +245,7 @@
             if (arrId) {
                 //lấy danh sach cán bộ phối hơp
                 $.ajax({
-                    url: '../list-can-bo-phoi-hop/' + JSON.stringify(arrId),
+                    url: APP_URL + '/list-can-bo-phoi-hop/' + JSON.stringify(arrId),
                     type: 'GET',
                 })
                     .done(function (response) {

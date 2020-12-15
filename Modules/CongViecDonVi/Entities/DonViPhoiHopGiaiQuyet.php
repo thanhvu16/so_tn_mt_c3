@@ -2,6 +2,7 @@
 
 namespace Modules\CongViecDonVi\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class DonViPhoiHopGiaiQuyet extends Model
@@ -22,7 +23,7 @@ class DonViPhoiHopGiaiQuyet extends Model
 
     public function user()
     {
-        return $this->belongsTo(NguoiDung::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function phoiHopGiaiQuyetFile()
