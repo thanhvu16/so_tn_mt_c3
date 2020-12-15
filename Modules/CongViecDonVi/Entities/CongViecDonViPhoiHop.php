@@ -26,12 +26,12 @@ class CongViecDonViPhoiHop extends Model
 
     public function canBoChuyen()
     {
-        return $this->belongsTo(NguoiDung::class, 'can_bo_chuyen_id', 'id');
+        return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id');
     }
 
     public function canBoNhan()
     {
-        return $this->belongsTo(NguoiDung::class, 'can_bo_nhan_id', 'id');
+        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id');
     }
 
     public function congViecDonVi()

@@ -266,6 +266,7 @@ class GiayMoiDenController extends Controller
                             $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
                         } else {
                             $gio_hop_phu = date('H:i', strtotime($giohopcon[$key]));
+
                             $vanbandv->gio_hop_phu = $gio_hop_phu;
                         }
                         if ($request->dia_diem_con[$key] == null) {

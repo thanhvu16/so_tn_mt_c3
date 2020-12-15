@@ -271,9 +271,9 @@ class GiayMoiDiController extends Controller
             if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
                 $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 //đây là huyện soạn thảo và huyện ký
-                $vanbandi->don_vi_soan_thao = '';
+//                $vanbandi->don_vi_soan_thao = '';
             } else {//đây là đơn vị soạn thảo do huyện ký
-                $vanbandi->don_vi_soan_thao = '';
+//                $vanbandi->don_vi_soan_thao = '';
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
             }
         } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {

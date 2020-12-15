@@ -49,7 +49,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy()))
+                                        @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi ))
                                             @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->getTrinhTuXuLy() as $key => $trinhTuXuLy)
                                                 <p>
                                                     {{ $key+1 }}
@@ -60,9 +60,10 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>
+{{--                                        <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>--}}
+{{--                                        {{$giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh}}--}}
 
-                                        @if (isset($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile))
+                                        @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi && isset($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile)))
                                             @foreach($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile as $key => $file)
                                                 <a href="{{ $file->getUrlFile() }}"
                                                    target="popup"

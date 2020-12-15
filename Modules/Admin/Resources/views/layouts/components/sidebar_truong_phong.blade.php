@@ -44,8 +44,8 @@
     </a>
 </li>
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.create')|| Route::is('cong-viec-hoan-thanh.cho-duyet')
-|| Route::is('cong-viec-don-vi.hoan-thanh')||
-Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
+|| Route::is('cong-viec-don-vi.hoan-thanh')||Route::is('cong-viec-don-vi-phoi-hop.index')||Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly')||Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')||
+Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
         <span class="pull-right-container">
@@ -56,17 +56,23 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('cong-viec-don-vi.edit') ?
         <li class="{{ Route::is('cong-viec-don-vi.create') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.create') }}"><i class="fa fa-circle-o"></i>Nhập công việc</a>
         </li>
-        <li class="{{ Route::is('cong-viec-don-vi.dang-xu-ly') ? 'active' : '' }}"><a
-                href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a></li>
         <li class="{{ Route::is('cong-viec-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.index') }}"><i class="fa fa-circle-o"></i>Công việc chờ xử lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi.dang-xu-ly') ? 'active' : '' }}"><a
+                href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a></li>
+
         <li class="{{ Route::is('gia-han-cong-viec.index') ? 'active' : '' }}"><a
                 href="{{ route('gia-han-cong-viec.index') }}"><i class="fa fa-circle-o"></i>Công việc xin gia hạn</a></li>
         <li class="{{ Route::is('cong-viec-hoan-thanh.cho-duyet') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-hoan-thanh.cho-duyet') }}"><i class="fa fa-circle-o"></i>CV hoàn thành chờ duyệt</a></li>
         <li class="{{ Route::is('cong-viec-don-vi.hoan-thanh') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.hoan-thanh') }}"><i class="fa fa-circle-o"></i>CV hoàn thành </a></li>
-{{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
+        <hr style="border: 1px dashed #fda709;margin-top: 8px;margin-bottom: 8px;">
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.index') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.index') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH chờ xử lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.dang-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đang xử lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đã xử lý</a></li>
+
+        {{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
     </ul>
 </li>
 <li class="treeview {{ Route::is('danh-gia-can-bo-c2.index') || Route::is('captrendanhgiac2') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">

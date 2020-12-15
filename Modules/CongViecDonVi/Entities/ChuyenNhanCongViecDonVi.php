@@ -61,15 +61,11 @@ class ChuyenNhanCongViecDonVi extends Model
             foreach ($donViPhoiHopId as $donViId) {
                 $canBoNhanId = null;
                 $donVi = Donvi::where('id', $donViId)
-//                    ->where('trang_thai', Donvi::TRANG_THAI_HOAT_DONG)
                     ->whereNull('deleted_at')
                     ->first();
                 if ($donVi) {
-                    $nguoiDung = User::where('don_vi_id', $donVi->id)
-//                        ->where('trang_thai', User::TRANG_THAI_HOAT_DONG)
-//                        ->where('vai_tro', CAP_TRUONG)
+                    $nguoiDung = User::role(TRUONG_PHONG)->where('don_vi_id', $donVi->id)->whereNull('deleted_at')
                         ->first();
-
                     $canBoNhanId = $nguoiDung->id ?? null;
                 }
 
