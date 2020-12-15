@@ -1,52 +1,43 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Quản lý văn bản | Reset mật khẩu</title>
+    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Đăng nhập cổng thông tin nội bộ</title>
-    <!-- Favicon-->
-    <link rel="icon" href="{{ asset('image/ha_noi.png') }}" type="image/x-icon">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ url('theme/dist/css/AdminLTE.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/square/blue.css') }}">
+    <link rel="stylesheet" href="{{ url('css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
-          type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-    {{--    font awesome--}}
-    {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">--}}
-    <script src="https://kit.fontawesome.com/23dfbd8739.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap Core Css -->
-    <link href="{{url('/assets/template/plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet">
-
-    <!-- Waves Effect Css -->
-    <link href="{{url('/assets/template/plugins/node-waves/waves.css')}}" rel="stylesheet"/>
-
-    <!-- Animation Css -->
-    <link href="{{url('/assets/template/plugins/animate-css/animate.css')}}" rel="stylesheet"/>
-
-    <link href="{{url('/assets/template/plugins/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
-
-    <!-- Custom Css -->
-    <link href="{{url('/assets/template/css/style.css')}}" rel="stylesheet">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <style>
         .login-page {
             background-color: #b1d5f4;;
-            /*background: url("image/img-login.png");*/
+            /*background: url('hanoi-3609871.jpg');*/
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: 100% 100%;
-            max-width: 432px !important;
-        }
-        .card{
-            border-radius: 7px !important;
+            /*max-width: 432px !important;*/
         }
 
-        .card-header {
-            padding: 0.75rem 1.25rem;
-            margin-bottom: 0;
-            background-color: rgba(0, 0, 0, 0.03);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-        }
 
         .body input:focus {
             outline: 0;
@@ -61,115 +52,92 @@
         .input-group {
             border-bottom: 1px solid #ccc;
         }
-        h4, b{
+
+        h4, h5 {
             color: #0065B3;
         }
-        .bg-light-blue{
-            background-color: #158af1 !important;
-        }
 
-        .card-header .title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-left: 10px;
+        .bg-light-blue {
+            background-color: #158af1 !important;
         }
 
     </style>
 </head>
-<body class="login-page">
+<body class="hold-transition login-page" style="margin-top: -40px">
 <div class="login-box">
-    <div class="logo" style="margin-bottom: 11px">
-        <a href="/" style="font-size: 16px;text-transform: uppercase">
-            <img src="{{ asset('administrator/assets/images/logo-login-hanoi.svg') }}" alt="" height="108">
-            <h4>VĂN PHÒNG UBND HUYỆN</h4>
-            <b>HỆ THỐNG VĂN PHÒNG ĐIỆN TỬ</b>
+
+    <div class="logo">
+        <a href="/" class="text-center" style="margin-bottom: 11px">
+            <div class="text-center">
+                <img src="{{ asset('theme/image/logo-login-hanoi.svg') }}" style="vertical-align: middle" alt=""
+                     height="90">
+            </div>
+            <h4 style="font-weight: bold;font-family: Arial;" class="text-center">VĂN PHÒNG UBND HUYỆN</h4>
+            <h5 style="font-weight: bold ;font-family: Arial; ">HỆ THỐNG VĂN PHÒNG ĐIỆN TỬ</h5>
         </a>
     </div>
-    <div class="card">
-        <div class="card-header"><span class="title">{{ __('Reset Password') }}</span></div>
-        <div class="body">
-            <form method="POST" action="{{ route('password.update') }}">
-                @csrf
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg" style="padding-bottom: 3px !important;">Đặt lại mật khẩu?</p>
+        <form method="POST" action="{{ route('password.update') }}">
+            @csrf
 
-                <input type="hidden" name="token" value="{{ $token }}">
+            <input type="hidden" name="token" value="{{ $token }}">
 
-                <div style="margin-bottom: 15px" class="input-group">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="color: #ccc;"></span>
-{{--                        <i class="fa fa-user-o" aria-hidden="true" style="color: #ccc"></i>--}}
-                    </span>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email">
-
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
+            <div class="form-group has-feedback">
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                       value="{{ $email ?? old('email') }}" required autocomplete="email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                @error('email')
+                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                    @enderror
+                @enderror
 
-                </div>
-                <div style="margin-bottom: 15px" class="input-group">
-                    <span class="input-group-addon"><i class="fas fa-unlock-alt" style="font-size: 15px; color: #ccc; "></i></span>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required
-                           autocomplete="new-password" placeholder="Nhập mật khẩu mới" autofocus>
+            </div>
 
-                    @error('password')
-                    <span class="invalid-feedback" role="alert">
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                       required autocomplete="new-password" placeholder="Nhập mật khẩu mới" autofocus>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @error('username')
+                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                    @enderror
-
+                @enderror
+            </div>
+            <div class="form-group has-feedback">
+                <input id="password-confirm" type="password"
+                       class="form-control @error('password') is-invalid @enderror" placeholder="Nhập lại mật khẩu"
+                       name="password_confirmation" required autocomplete="new-password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-6" style="float:none;margin: auto">
+                    <button class="btn btn-block bg-light-blue waves-effect" type="submit">
+                        {{--                            <i class="fa fa-arrow-circle-right"></i>--}}
+                        Xác nhận
+                    </button>
                 </div>
-                <div style="margin-bottom: 15px" class="input-group">
-                    <span class="input-group-addon"><i class="fas fa-unlock-alt" style="font-size: 15px; color: #ccc; "></i></span>
-                    <input id="password-confirm" type="password" class="form-control" placeholder="Nhập lại mật khẩu" name="password_confirmation" required autocomplete="new-password">
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-6" style="float:none;margin: auto">
-                        <button class="btn btn-block bg-light-blue waves-effect" type="submit">
-                            {{--                            <i class="fa fa-arrow-circle-right"></i>--}}
-                            Xác nhận
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
-{{--    <div class="card">--}}
-{{--        <div class="body">--}}
-{{--            <form id="mainLogin">--}}
-{{--                <div class="form-group">--}}
-{{--                    <i class="glyphicon glyphicon-user"></i>--}}
-{{--                    <input id="login-username" type="text" class="" name="username" value=""--}}
-{{--                                               placeholder="Tên đăng nhập">--}}
-{{--                </div>--}}
-{{--                <div class="form-group">--}}
-{{--                    <i class="material-icons">lock_outline</i>--}}
-{{--                    <input type="password" class="matkhau" name="password"--}}
-{{--                                                   placeholder="Mật khẩu" aria-required="true" required>--}}
-{{--                </div>--}}
-{{--            </form>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
 
-</body>
-<!-- Jquery Core Js -->
-<script src="{{url('/assets/template/plugins/jquery/jquery.min.js')}}"></script>
-
-<!-- Bootstrap Core Js -->
-<script src="{{url('/assets/template/plugins/bootstrap/js/bootstrap.js')}}"></script>
-
-<!-- Waves Effect Plugin Js -->
-<script src="{{url('/assets/template/plugins/node-waves/waves.js')}}"></script>
-
-<!-- Validation Plugin Js -->
-<script src="{{url('/assets/template/plugins/jquery-validation/jquery.validate.js')}}"></script>
-
-<script src="{{url('/assets/template/plugins/toastr/toastr.min.js') }}"></script>
-
-<!-- Custom Js -->
-<script src="{{url('/assets/template/js/admin.js')}}"></script>
-<script src="{{url('/assets/template/js/pages/examples/sign-in.js')}}"></script>
+<!-- jQuery 3 -->
+<script src="{{ url('theme/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ url('theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- iCheck -->
+<script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
+<script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
 <script type="text/javascript">
     window.flashMessages = [];
 
@@ -196,7 +164,7 @@
         "onclick": null,
         "showDuration": "1000",
         "hideDuration": "1000",
-        "timeOut": "9000",
+        "timeOut": "5000",
         "extendedTimeOut": "1000",
         "showEasing": "swing",
         "hideEasing": "linear",
@@ -204,4 +172,5 @@
         "hideMethod": "fadeOut"
     }
 </script>
+</body>
 </html>

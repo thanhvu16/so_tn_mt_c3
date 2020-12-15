@@ -17,6 +17,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/square/blue.css') }}">
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
+    <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -64,7 +65,7 @@
 <div class="login-box">
 
     <div class="logo">
-        <a href="javascript:void(0);" class="text-center" style="margin-bottom: 11px">
+        <a href="/" class="text-center" style="margin-bottom: 11px">
             <div class="text-center">
                 <img src="{{ asset('theme/image/logo-login-hanoi.svg') }}" style="vertical-align: middle" alt="" height="90">
             </div>
@@ -119,14 +120,40 @@
 <script src="{{ url('theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
-<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' /* optional */
-        });
-    });
+<script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
+<script type="text/javascript">
+    window.flashMessages = [];
+
+    @if ($message = session('success'))
+    toastr.success("{{ $message }}");
+
+    @elseif ($message = session('warning'))
+    toastr.warning("{{ $message }}");
+
+    @elseif ($message = session('error'))
+    toastr.error("{{ $message }}");
+
+    @elseif ($message = session('info'))
+    toastr.info("{{ $message }}");
+    @endif
+
+        toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 </script>
 </body>
 </html>

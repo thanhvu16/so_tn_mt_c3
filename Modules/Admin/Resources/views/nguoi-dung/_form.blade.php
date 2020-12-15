@@ -110,7 +110,7 @@
                     <input type="text" name="email" id="email" placeholder="Nhập địa chỉ email..."
                            value="{{ old('email', isset($user) ? $user->email : null) }}"
                            class="form-control @error('email') is-invalid @enderror"
-                           required {{ isset($user) ? 'disabled' : '' }}>
+                           required>
                     @error('email')
                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                     @enderror
