@@ -2,6 +2,7 @@
 
 namespace Modules\CongViecDonVi\Entities;
 
+use App\Models\LichCongTac;
 use Illuminate\Database\Eloquent\Model;
 use auth;
 
@@ -35,7 +36,7 @@ class CongViecDonVi extends Model
 
     public function lichCongTac()
     {
-        return $this->belongsTo(DieuHanhVanBanDenLichCongTac::class, 'lich_cong_tac_id', 'id');
+        return $this->belongsTo(LichCongTac::class, 'lich_cong_tac_id', 'id');
     }
 
     public function ChuyenNhanCongViecDonViDangXuLy()

@@ -77,7 +77,7 @@ class LichCongTacController extends Controller
         }
 
 
-        $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi')
+        $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi', 'congViecDonVi')
             ->where('ngay', '>=', $ngaybd)
             ->where('ngay', '<=', $ngaykt)
             ->where(function ($query) use ($lanhDaoId) {

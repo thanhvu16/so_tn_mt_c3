@@ -34,3 +34,5 @@ Route::get('cong-viec-don-vi-phoi-hop-da-xu-ly', 'CongViecDonViPhoiHopController
 Route::get('cong-viec-don-vi-phoi-hop-dang-xu-ly', 'CongViecDonViPhoiHopController@dangXuLy')->name('cong-viec-don-vi-phoi-hop.dang-xu-ly');
 Route::get('list-can-bo-phoi-hop/{id}', 'CongViecDonViController@getCanBoPhoiHop');
 Route::get('cong-viec-xem-de-biet', 'CongViecDonViController@CongViecXemDeBiet')->name('cong-viec-don-vi.can-bo-xem-de-biet');
+
+Route::get('cong-viec-hoan-thanh/{id}', 'CongViecHoanThanhController@show')->name('cong-viec-hoan-thanh.show');

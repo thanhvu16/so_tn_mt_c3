@@ -31,9 +31,9 @@
         </div>
         @if (isset($congViecDonVi->lichCongTac->vanBanDenDonVi->vanBanDen->vanBanDenFile))
             <div class="col-md-4">
-                <p>
+                    <p>
                     <b>File:</b>
-                @foreach($congViecDonVi->lichCongTac->vanBanDenDonVi->vanBanDen->vanBanDenFile as  $file)
+                    @foreach($congViecDonVi->lichCongTac->vanBanDenDonVi->vanBanDen->vanBanDenFile as  $file)
                     <div class="detail-file-name giai-quyet-file">
                         <a href="{{ $file->getUrlFile() }}"
                            target="popup"

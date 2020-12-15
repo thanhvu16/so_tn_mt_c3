@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonVi;
 use auth;
 
@@ -161,7 +162,9 @@ class CongViecHoanThanhController extends Controller
      */
     public function show($id)
     {
-        return view('congviecdonvi::show');
+        $congViecDonVi = CongViecDonVi::with('chuyenNhanCongViecDonVi')->findOrFail($id);
+
+        return view('congviecdonvi::cong-viec-don-vi.hoan-thanh.show', compact('congViecDonVi'));
     }
 
     /**

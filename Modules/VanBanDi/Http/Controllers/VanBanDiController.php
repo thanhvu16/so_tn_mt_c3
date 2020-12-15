@@ -701,7 +701,7 @@ class VanBanDiController extends Controller
 
                 $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
 //                //update lich cong tac
-                if ($vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
+                if (!empty($giayMoi) && $vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
                     LichCongTac::taoLichCongTac($vanbandi);
                 }
 //                    $tuan = date('W', strtotime($vanbandi->ngay_hop));

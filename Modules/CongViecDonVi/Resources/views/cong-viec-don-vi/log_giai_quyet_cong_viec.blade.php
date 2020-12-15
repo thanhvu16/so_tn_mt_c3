@@ -1,5 +1,5 @@
 @if (count($chuyenNhanCongViecDonVi->giaiQuyetCongViec) > 0)
-    <div class="col-md-12 mt-2">
+    <div class="col-md-12 mt-3 mb-2">
         <div class="table-responsive box-panel">
             <h3>
                 <a data-toggle="collapse" href="#van-ban-hoan-thanh" class="color-black font-weight-bold">
@@ -12,7 +12,7 @@
                     <thead>
                     <tr role="row">
                         <th>STT</th>
-                        <th >Thời gian hoàn thành</th>
+                        <th>Thời gian hoàn thành</th>
                         <th>Cán bộ hoàn thành</th>
                         <th>Nội dung</th>
                         <th>Cán bộ duyệt</th>
