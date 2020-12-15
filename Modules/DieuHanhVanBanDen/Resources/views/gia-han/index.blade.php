@@ -23,7 +23,7 @@
                                 <th width="7%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($giaHanVanBanDonVi as $giaHanVanBan)
                                 <tr class="duyet-gia-han">
                                     <td class="text-center">{{ $order++ }}</td>

@@ -265,11 +265,6 @@ class VanBanLanhDaoXuLyController extends Controller
                         }
 
                         // luu don vi chu tri
-                        $nguoiDung = User::role(TRUONG_PHONG)
-                            ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                            ->where('trang_thai', ACTIVE)
-                            ->whereNull('deleted_at')->first();
-
                         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
 
                         $nguoiDung = User::where('trang_thai', ACTIVE)

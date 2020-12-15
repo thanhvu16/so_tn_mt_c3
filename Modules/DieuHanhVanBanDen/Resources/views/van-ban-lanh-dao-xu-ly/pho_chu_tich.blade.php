@@ -35,14 +35,14 @@
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="22%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center">Ý kiến</th>
+                                <th class="text-center" width="15%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th class="text-center" width="7%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">
                                 </th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-data">
                                     <td class="text-center">{{ $order++ }}</td>
@@ -85,7 +85,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             <p>
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"

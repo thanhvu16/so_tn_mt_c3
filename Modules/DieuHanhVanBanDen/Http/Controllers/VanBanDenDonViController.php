@@ -131,6 +131,9 @@ class VanBanDenDonViController extends Controller
 
         $trinhTuNhanVanBan = null;
 
+        $quaHan = !empty($request->get('qua_han')) ? date('Y-m-d') : null;
+
+
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
             ->whereNull('status')
             ->whereNull('hoan_thanh')
@@ -171,6 +174,11 @@ class VanBanDenDonViController extends Controller
 
         $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
             ->whereIn('id', $arrVanBanDenId)
+            ->where(function($query) use ($quaHan) {
+                if (!empty ($quaHan)) {
+                    return $query->where('han_xu_ly', '<', $quaHan);
+                }
+            })
             ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
             ->paginate(PER_PAGE);

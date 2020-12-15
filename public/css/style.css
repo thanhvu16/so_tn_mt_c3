@@ -1,3 +1,20 @@
+
+@font-face {
+    font-family: Roboto-medium;
+    font-display: auto;
+    src: url(../fonts/Roboto/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Roboto-regular;
+    font-display: auto;
+    src: url(../fonts/Roboto/Roboto-Regular.ttf);
+}
+
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
     border: 1px solid #b4b7b9 !important;
 }
@@ -240,4 +257,30 @@ hr.border-dashed {
     color: #fff;
     background-color: #8552f5;
     border-color: #8552f5;
+}
+
+.datepicker-days {
+    font-size: 1.2rem !important;
+}
+
+.panel-body a.text-title-item {
+        color: #0c0c0c;
+}
+
+.panel-body a.text-title-item:hover {
+    cursor: pointer;
+    color: #000ed4;
+}
+
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
+    font-size: 14px !important;
+    margin-top: 5px !important;
+}
+
+.panel-body a.text-title-item p {
+    margin: 0 0 10px !important;
+}
+
+p {
+    margin: 0 0 6px !important;
 }

@@ -23,7 +23,7 @@
                                 <th width="14%" class="text-center">Kết quả</th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>

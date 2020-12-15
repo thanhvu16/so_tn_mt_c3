@@ -64,7 +64,14 @@ class ChuyenNhanCongViecDonVi extends Model
                     ->whereNull('deleted_at')
                     ->first();
                 if ($donVi) {
-                    $nguoiDung = User::role(TRUONG_PHONG)->where('don_vi_id', $donVi->id)->whereNull('deleted_at')
+
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+                    $nguoiDung = User::where('don_vi_id', $donVi->id)
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
+                        })
+                        ->whereNull('deleted_at')
                         ->first();
                     $canBoNhanId = $nguoiDung->id ?? null;
                 }

@@ -71,4 +71,9 @@ class DonViChuTri extends Model
         $donViChuTri->fill($dataLuuDonViChuTri);
         $donViChuTri->save();
     }
+
+    public function donVi()
+    {
+        return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
+    }
 }

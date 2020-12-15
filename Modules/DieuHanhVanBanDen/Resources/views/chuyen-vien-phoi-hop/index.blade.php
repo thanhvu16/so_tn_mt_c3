@@ -29,7 +29,7 @@
                                     @endif
                                 </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>

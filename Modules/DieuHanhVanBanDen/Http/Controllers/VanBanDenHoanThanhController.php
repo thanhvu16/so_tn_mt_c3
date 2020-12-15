@@ -23,8 +23,9 @@ class VanBanDenHoanThanhController extends Controller
     {
         $currentUser = auth::user();
 
-        $date = !empty($request->get('date')) ? $request->get('date') : null;
-
+        $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
 
         if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG])) {
 
@@ -45,6 +46,21 @@ class VanBanDenHoanThanhController extends Controller
 
         $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
             ->whereIn('id', $arrVanBanDenId)
+            ->where(function ($query) use ($hanXuLy) {
+                if (!empty($hanXuLy)) {
+                    return $query->where('han_xu_ly', $hanXuLy);
+                }
+            })
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
             ->paginate(PER_PAGE);
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;

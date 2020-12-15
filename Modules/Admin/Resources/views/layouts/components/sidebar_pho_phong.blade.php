@@ -14,14 +14,6 @@
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
-<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
-    <a href="{{route('ho-so-cong-viec.index')}}">
-        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
-        <span class="pull-right-container">
-
-            </span>
-    </a>
-</li>
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.dang-xu-ly')
 || Route::is('cong-viec-don-vi.can-bo-xem-de-biet')|| Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')
 || Route::is('cong-viec-don-vi.hoan-thanh')|| Route::is('cong-viec-hoan-thanh.cho-duyet')|| Route::is('gia-han-cong-viec.index')
@@ -51,6 +43,14 @@
         <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đã xử lý</a></li>
         {{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
     </ul>
+</li>
+<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
+    <a href="{{route('ho-so-cong-viec.index')}}">
+        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
+        <span class="pull-right-container">
+
+            </span>
+    </a>
 </li>
 <li class="treeview {{ Route::is('danh-gia-can-bo.index') || Route::is('captrendanhgia') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">
     <a href="#">

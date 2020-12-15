@@ -139,3 +139,8 @@ if (!function_exists('cutStr')) {
         return $newStr;
     }
 }
+
+function formatYMD($date)
+{
+    return \DateTime::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+}

@@ -28,7 +28,13 @@ class CongViecDonViController extends Controller
             ->whereNull('hoan_thanh')
             ->paginate(PER_PAGE);
 
-        $danhSachPhoPhong = User::role(PHO_PHONG)->where('don_vi_id', $currentUser->don_vi_id)->wherenull('deleted_at')
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+
+        $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
+            ->whereHas('roles', function ($query) use ($roles) {
+                return $query->whereIn('name', $roles);
+            })
+            ->wherenull('deleted_at')
             ->orderBy('id', 'DESC')->get();
 
         $danhSachChuyenVien =User::role(CHUYEN_VIEN)->where('don_vi_id', $currentUser->don_vi_id)->wherenull('deleted_at')
@@ -91,23 +97,20 @@ class CongViecDonViController extends Controller
     {
         $currentUser = auth::user();
         $danhSachDonViChutri = Donvi::
-//        where('cap_don_vi', Donvi::CAP_3)->
-//        where('trang_thai',
-//            DonVi::TRANG_THAI_HOAT_DONG)
-//            ->
         where('id', '!=', auth::user()->don_vi_id)
             ->whereNull('deleted_at')
             ->get();
 
         $donViChuTri = Donvi::where('id',auth::user()->don_vi_id)
-//            ->where('trang_thai',
-//            Donvi::TRANG_THAI_HOAT_DONG)
             ->whereNull('deleted_at')
             ->get();
 
-        $danhSachPhoPhong = User::Role('phó phòng')->where('don_vi_id', $currentUser->don_vi_id)
-//            ->whereNull('quyen_tham_muu')
-//            ->where('trang_thai', User::TRANG_THAI_HOAT_DONG)
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+        $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
+            ->whereHas('roles', function ($query) use ($roles) {
+                return $query->whereIn('name', $roles);
+            })
+            ->wherenull('deleted_at')
             ->orderBy('id', 'DESC')->get();
 
         $danhSachChuyenVien = User::Role('chuyên viên')->where('don_vi_id', $currentUser->don_vi_id)
@@ -285,7 +288,12 @@ class CongViecDonViController extends Controller
                 ->whereNull('hoan_thanh')
                 ->paginate(PER_PAGE);
 
-            $danhSachPhoPhong = User::role([ PHO_PHONG])->where('don_vi_id', $currentUser->don_vi_id)->whereNull('deleted_at')
+            $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+            $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->wherenull('deleted_at')
                 ->orderBy('id', 'DESC')->get();
 
             $danhSachChuyenVien = User::role(CHUYEN_VIEN)->where('don_vi_id', $currentUser->don_vi_id)->whereNull('deleted_at')

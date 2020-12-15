@@ -29,6 +29,9 @@
     <link rel="icon" href="{{ asset('images/ha_noi.png') }}" type="image/x-icon">
     <link href="{{ url('theme/plugins/loadingModal/css/jquery.loadingModal.css')}}" rel="stylesheet" />
     <link href="{{ url('theme/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
+    <link href="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -91,7 +94,11 @@
 <script src="{{url('theme/plugins/loadingModal/js/jquery.loadingModal.js')}}"></script>
 <script src="{{url('theme/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
 <!---moment js-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<script src="{{ url('theme/bower_components/moment/min/moment.min.js') }}"></script>
+
+<script src="{{ url('theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
 
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}

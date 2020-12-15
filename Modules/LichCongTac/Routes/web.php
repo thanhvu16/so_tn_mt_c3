@@ -19,3 +19,4 @@ Route::prefix('lich-cong-tac')->group(function() {
 });
 
 Route::get('soan-bao-cao', 'SoanBaoCaoController@create')->name('soan_bao_cao.create');
+Route::post('soan-bao-cao/store', 'SoanBaoCaoController@store')->name('soan-bao-cao.store');

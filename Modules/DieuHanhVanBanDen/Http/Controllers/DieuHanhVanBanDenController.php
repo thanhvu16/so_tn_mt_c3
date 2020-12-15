@@ -133,12 +133,31 @@ class DieuHanhVanBanDenController extends Controller
 
     public function vanBanXemDeBiet(Request $request)
     {
+        $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
+
         $lanhDaoXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', auth::user()->id)->orderBy('id', 'DESC')->get();
 
         $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
 
         $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
             ->whereIn('id', $arrVanBanDenId)
+            ->where(function ($query) use ($hanXuLy) {
+                if (!empty($hanXuLy)) {
+                    return $query->where('han_xu_ly', $hanXuLy);
+                }
+            })
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
             ->paginate(PER_PAGE);
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
@@ -148,14 +167,33 @@ class DieuHanhVanBanDenController extends Controller
         return view('dieuhanhvanbanden::van-ban-hoan-thanh.xem_de_biet', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }
 
-    public function vanBanQuanTrong()
+    public function vanBanQuanTrong(Request $request)
     {
+        $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
+
         $vanBanQuanTrong = VanBanQuanTrong::where('user_id', auth::user()->id)->orderBy('id', 'DESC')->get();
 
         $arrVanBanDenId = $vanBanQuanTrong->pluck('van_ban_den_id')->toArray();
 
         $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
             ->whereIn('id', $arrVanBanDenId)
+            ->where(function ($query) use ($hanXuLy) {
+                if (!empty($hanXuLy)) {
+                    return $query->where('han_xu_ly', $hanXuLy);
+                }
+            })
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
             ->paginate(PER_PAGE);
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;

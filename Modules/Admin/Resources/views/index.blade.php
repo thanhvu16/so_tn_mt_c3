@@ -7,11 +7,19 @@
                 @unlessrole('văn thư huyện|văn thư đơn vị')
                     @include('admin::dashboard.ho_so_cong_viec')
                 @endunlessrole
+
                 @hasanyrole('văn thư huyện|văn thư đơn vị')
                     @include('admin::dashboard.nhap_van_ban_den')
                     @include('admin::dashboard.nhap_van_ban_di')
                 @endrole
-                @include('admin::dashboard.du_thao_van_ban')
+
+                @unlessrole('văn thư huyện|văn thư đơn vị')
+                    @include('admin::dashboard.du_thao_van_ban')
+                @endunlessrole
+
+                @unlessrole('chủ tịch|phó chủ tịch|văn thư huyện|văn thư đơn vị')
+                    @include('admin::dashboard.cong_viec_phong_ban')
+                @endunlessrole
             </div>
         </div>
     </section>
@@ -23,6 +31,7 @@
         google.charts.setOnLoadCallback(drawChartDuThaoVanBan);
         google.charts.setOnLoadCallback(drawChartNhapVanBanDen);
         google.charts.setOnLoadCallback(drawChartNhapVanBanDi);
+        google.charts.setOnLoadCallback(drawChartCongViecPhongBan);
 
 
         function drawChartHoSoCoViec() {
@@ -42,6 +51,27 @@
 
             if (document.getElementById('pie-chart-ho-so-cong-viec') != undefined) {
                 let chart = new google.visualization.PieChart(document.getElementById('pie-chart-ho-so-cong-viec'));
+                chart.draw(data, options);
+            }
+        };
+
+        function drawChartCongViecPhongBan() {
+            let data = google.visualization.arrayToDataTable(<?php echo json_encode($congViecPhongBanPiceCharts,
+                JSON_NUMERIC_CHECK); ?>);
+
+            // Optional; add a title and set the width and height of the chart
+            let options = {
+                'title': '',
+                titleTextStyle: {
+                    bold: true,
+                    fontSize: 14,
+                },
+                legend: {position: 'none'},
+                colors: <?php echo json_encode($congViecPhongBanCoLors); ?>
+            };
+
+            if (document.getElementById('pie-chart-cong-viec-phong-ban') != undefined) {
+                let chart = new google.visualization.PieChart(document.getElementById('pie-chart-cong-viec-phong-ban'));
                 chart.draw(data, options);
             }
         };

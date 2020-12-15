@@ -34,7 +34,7 @@
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="22%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center">Ý kiến</th>
+                                <th width="15%" class="text-center">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
                                 @if ($trinhTuNhanVanBan == 4)
                                     <th class="text-center" width="7%">
@@ -43,7 +43,7 @@
                                 @endif
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
@@ -101,7 +101,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             @if ($trinhTuNhanVanBan == 3)
                                                 <p>
                                                     <select name="pho_phong_id[{{ $vanBanDen->id }}]"

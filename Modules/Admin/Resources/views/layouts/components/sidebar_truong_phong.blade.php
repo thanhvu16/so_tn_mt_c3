@@ -35,14 +35,6 @@
                     class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
-<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
-    <a href="{{route('ho-so-cong-viec.index')}}">
-        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
-        <span class="pull-right-container">
-
-            </span>
-    </a>
-</li>
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.create')|| Route::is('cong-viec-hoan-thanh.cho-duyet')
 || Route::is('cong-viec-don-vi.hoan-thanh')||Route::is('cong-viec-don-vi-phoi-hop.index')||Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly')||Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')||
 Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
@@ -74,6 +66,14 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
 
         {{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
     </ul>
+</li>
+<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
+    <a href="{{route('ho-so-cong-viec.index')}}">
+        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
+        <span class="pull-right-container">
+
+            </span>
+    </a>
 </li>
 <li class="treeview {{ Route::is('danh-gia-can-bo-c2.index') || Route::is('captrendanhgiac2') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">
     <a href="#">

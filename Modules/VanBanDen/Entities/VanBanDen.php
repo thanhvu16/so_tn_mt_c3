@@ -358,9 +358,16 @@ class VanBanDen extends Model
             ->first();
     }
 
+    // lay van ban den don vi
     public function hasChild()
     {
         return VanBanDen::where('parent_id', $this->id)->orderBy('id', 'DESC')->first();
 
+    }
+
+    // lay van ban goc
+    public function getParent()
+    {
+        return VanBanDen::where('id', $this->parent_id)->orderBy('id', 'DESC')->first();
     }
 }

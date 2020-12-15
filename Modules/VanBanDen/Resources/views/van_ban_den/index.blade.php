@@ -129,7 +129,7 @@
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                        <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
                                         @if($vbDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
@@ -158,9 +158,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if($vbDen->chuyenNhanVanBanDonViChuTri)
-                                            @foreach($vbDen->chuyenNhanVanBanDonViChuTri as $key => $chuyenNhanVanBanDonVi)
-                                                @if (count($vbDen->chuyenNhanVanBanDonViChuTri)-1 == $key)
+                                        <!--vb den don vi-->
+                                        @if ($vbDen->parent_id)
+                                            @foreach($vbDen->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                @if (count($vbDen->getParent()->donViChuTri)-1 == $key)
                                                     <p>
                                                         {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
                                                         <br>
@@ -169,6 +170,20 @@
                                                     </p>
                                                 @endif
                                             @endforeach
+                                        @else
+                                        <!--vb den huyen-->
+                                            @if($vbDen->donViChuTri)
+                                                @foreach($vbDen->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                    @if (count($vbDen->donViChuTri)-1 == $key)
+                                                        <p>
+                                                            {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                            <br>
+                                                            <i>(Cán bộ xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                                )</i>
+                                                        </p>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         @endif
                                     </td>
 

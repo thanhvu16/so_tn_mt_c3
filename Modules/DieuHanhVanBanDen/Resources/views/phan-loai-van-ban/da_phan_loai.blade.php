@@ -42,7 +42,7 @@
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
@@ -80,7 +80,7 @@
                                         {{--                                        @endif--}}
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             @if (empty($active))
                                                 <p>
                                                     <select name="chu_tich_id[{{ $vanBanDen->id }}]"

@@ -108,10 +108,13 @@
                     </div>
                 </div>
                 <!-- /.col -->
-                <div class="col-xs-5 mt-2 text-right">
-                    <a href="#">Quên mật khẩu</a><br>
+                @if (Route::has('password.request'))
+                    <div class="col-xs-5 mt-2 text-right">
+                        <a href="{{ route('password.request') }}">Quên mật khẩu</a><br>
 
-                </div>
+                    </div>
+                @endif
+
 {{--                <div class="col-xs-offset-3">--}}
 
 {{--                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>--}}

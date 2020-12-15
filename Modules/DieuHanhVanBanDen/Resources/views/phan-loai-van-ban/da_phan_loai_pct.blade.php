@@ -30,12 +30,12 @@
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="22%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="19%" class="text-center">Tóm tắt văn bản</th>
-                                <th class="text-center">Ý kiến</th>
+                                <th width="15%" class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-data">
                                     <td class="text-center">{{ $order++ }}</td>
@@ -70,7 +70,7 @@
                                         {{--                                        @endif--}}
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             <p>
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"

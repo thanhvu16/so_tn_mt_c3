@@ -2,11 +2,16 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Models\LichCongTac;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use Modules\Admin\Entities\LoaiVanBan;
+use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDonViGiaHan;
+use Modules\CongViecDonVi\Entities\CongViecDonViPhoiHop;
+use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonVi;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
@@ -50,7 +55,7 @@ class AdminController extends Controller
         $key2 = count($canbogopy);
         $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
         $key1 = count($canbogopyngoai);
-        $gopy = $key2+$key1;
+        $gopy = $key2 + $key1;
 
         //văn bản đến
         array_push($vanThuVanBanDenPiceCharts, array('Task', 'Danh sách'));
@@ -93,21 +98,21 @@ class AdminController extends Controller
             $giayMoiDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 2,
                 'loai_van_ban_id' => $giayMoi->id ?? null
-                ])
+            ])
                 ->whereNotNull('so_di')
                 ->whereNull('deleted_at')->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách giấy mời đi', $giayMoiDi));
             array_push($vanThuVanBanDiCoLors, COLOR_RED);
 
-            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi'=> 1, 'don_vi_soan_thao'=> null])
+            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => null])
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,'don_vi_soan_thao'=> null])
+            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => null])
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
@@ -155,14 +160,14 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách giấy mời đi', $giayMoiDi));
             array_push($vanThuVanBanDiCoLors, COLOR_RED);
 
-            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi'=> 1, 'don_vi_soan_thao'=> $user->don_vi_id])
+            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => $user->don_vi_id])
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,'don_vi_soan_thao'=> $user->don_vi_id])
+            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => $user->don_vi_id])
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
@@ -177,8 +182,8 @@ class AdminController extends Controller
         array_push($duThaoCoLors, COLOR_PINTEREST);
         //màu
         array_push($duThaoPiceCharts, array('Task', 'Danh sách'));
-        array_push($duThaoPiceCharts, array('Danh sách cá nhân dự thảo',$danhSachDuThao));
-        array_push($duThaoPiceCharts, array('dự thảo chờ góp ý',$gopy));
+        array_push($duThaoPiceCharts, array('Danh sách cá nhân dự thảo', $danhSachDuThao));
+        array_push($duThaoPiceCharts, array('dự thảo chờ góp ý', $gopy));
         array_push($duThaoPiceCharts, array('Danh sách văn bản đi chờ duyệt', $vanbandichoduyet));
         array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
 
@@ -189,6 +194,7 @@ class AdminController extends Controller
 //        array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
 
         // ho so cong viec
+        $currentDate = date('Y-m-d');
         $hoSoCongViecPiceCharts = [];
         $hoSoCongViecCoLors = [];
         $active = 0;
@@ -199,7 +205,20 @@ class AdminController extends Controller
         $donViPhoiHop = 0;
         $chuyenVienPhoiHop = 0;
         $vanBanChoPhanLoai = 0;
+        $vanBanQuaHanDangXuLy = 0;
+        $lichCongTac = 0;
         array_push($hoSoCongViecPiceCharts, array('Task', 'Danh sách'));
+
+        $congViecPhongBanPiceCharts = [];
+        $congViecPhongBanCoLors = [];
+        $congViecDonViChoXuLy = 0;
+        $giaHanCongViecDonVi = 0;
+        $congViecDonViHoanThanhChoDuyet = 0;
+        $congViecDonViPhoiHopChoXuLy = 0;
+        $congViecChuyenVienPhoiHopChoXuLy = 0;
+        $congViecChuyenVienDaXuLy = 0;
+        array_push($congViecPhongBanPiceCharts, array('Task', 'Danh sách'));
+
 
 
         if ($user->hasRole(CHU_TICH)) {
@@ -301,6 +320,61 @@ class AdminController extends Controller
                 array_push($hoSoCongViecCoLors, COLOR_GREEN);
             }
 
+            // CONG VIEC DON VI
+            $congViecDonViChoXuLy = ChuyenNhanCongViecDonVi::where('can_bo_nhan_id', $user->id)
+                ->whereNull('type')
+                ->whereNull('chuyen_tiep')
+                ->orWhere('chuyen_tiep', 0)
+                ->whereNull('hoan_thanh')
+                ->count();
+
+            array_push($congViecPhongBanPiceCharts, array('CV chờ xử lý', $congViecDonViChoXuLy));
+            array_push($congViecPhongBanCoLors, COLOR_ORANGE);
+
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+                $giaHanCongViecDonVi = CongViecDonViGiaHan::where('can_bo_nhan_id', $user->id)
+                    ->where('status', CongViecDonViGiaHan::STATUS_CHO_DUYET)
+                    ->count();
+                array_push($congViecPhongBanPiceCharts, array('CV xin gia hạn', $giaHanCongViecDonVi));
+                array_push($congViecPhongBanCoLors, COLOR_PINTEREST);
+
+                $congViecDonViHoanThanhChoDuyet = GiaiQuyetCongViecDonVi::where('lanh_dao_duyet_id', $user->id)
+                    ->whereNull('status')
+                    ->count();
+
+                array_push($congViecPhongBanPiceCharts, array('CV hoàn thành chờ duyệt', $congViecDonViHoanThanhChoDuyet));
+                array_push($congViecPhongBanCoLors, COLOR_PURPLE);
+
+                //cv don vi phoi hop
+                $congViecDonViPhoiHopChoXuLy = ChuyenNhanCongViecDonVi::where('can_bo_nhan_id', $user->id)
+                    ->where('type', ChuyenNhanCongViecDonVi::TYPE_DV_PHOI_HOP)
+                    ->whereNull('chuyen_tiep')
+                    ->whereNull('hoan_thanh')
+                    ->count();
+
+                array_push($congViecPhongBanPiceCharts, array('CV đơn vị phối hợp chờ xử lý', $congViecDonViPhoiHopChoXuLy));
+                array_push($congViecPhongBanCoLors, COLOR_PRIMARY);
+
+                // cv phoi hop
+                if ($user->hasRole(CHUYEN_VIEN)) {
+
+                    $congViecChuyenVienPhoiHopChoXuLy = CongViecDonViPhoiHop::where('can_bo_nhan_id', $user->id)
+                        ->whereNull('status')
+                        ->whereNull('type')->count();
+
+                    array_push($congViecPhongBanPiceCharts, array('CV chuyên viên phối hợp chờ xử lý', $congViecChuyenVienPhoiHopChoXuLy));
+                    array_push($congViecPhongBanCoLors, COLOR_RED);
+
+                    $congViecChuyenVienDaXuLy = ChuyenNhanCongViecDonVi::where('can_bo_nhan_id', $user->id)
+                        ->whereNull('type')
+                        ->where('chuyen_tiep', ChuyenNhanCongViecDonVi::GIAI_QUYET)
+                        ->whereNull('hoan_thanh')
+                        ->count();
+
+                    array_push($congViecPhongBanPiceCharts, array('CV chuyên viên đã xử lý', $congViecChuyenVienDaXuLy));
+                    array_push($congViecPhongBanCoLors, COLOR_PURPLE);
+                }
+            }
         }
 
         $vanBanXinGiaHan = GiaHanVanBan::with('vanBanDen',
@@ -316,9 +390,26 @@ class AdminController extends Controller
 
             array_push($hoSoCongViecPiceCharts, array('VB quan trọng', $vanBanQuanTrong));
             array_push($hoSoCongViecCoLors, COLOR_PRIMARY);
+
+            //LICH CONG TAC
+            $year = date('Y');
+            $week = date('W');
+
+            $start_date = strtotime($year . "W" . $week . 1);
+            $end_date = strtotime($year . "W" . $week . 7);
+
+            $ngaybd = date('Y-m-d', $start_date);
+            $ngaykt = date('Y-m-d', $end_date);
+
+            $lichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi')
+                ->where('ngay', '>=', $ngaybd)
+                ->where('ngay', '<=', $ngaykt)
+                ->where('lanh_dao_id', $user->id)
+                ->count();
+
+            array_push($hoSoCongViecPiceCharts, array('Lịch công tác', $lichCongTac));
+            array_push($hoSoCongViecCoLors, COLOR_GREEN);
         }
-
-
 
         //$vanThuVanBanDenPiceCharts
         array_push($hoSoCongViecPiceCharts, array('VB chờ xử lý', $vanBanChoXuLy));
@@ -328,6 +419,61 @@ class AdminController extends Controller
         array_push($hoSoCongViecCoLors, COLOR_ORANGE);
         array_push($hoSoCongViecCoLors, COLOR_PINTEREST);
 
+        //VB DANG XU LY QUA HAN
+        $trinhTuNhanVanBan = null;
+
+        if ($user->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+            $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
+                ->whereNull('status')
+                ->whereNull('hoan_thanh')
+                ->get();
+
+        $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        if ($user->hasRole(CHU_TICH)) {
+            $trinhTuNhanVanBan = 1;
+        }
+
+        if ($user->hasRole(PHO_CHUC_TICH)) {
+            $trinhTuNhanVanBan = 2;
+        }
+
+        if ($user->hasRole(TRUONG_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+            $trinhTuNhanVanBan = 3;
+        }
+
+        if ($user->hasRole(PHO_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
+            $trinhTuNhanVanBan = 4;
+        }
+
+        if ($user->hasRole(CHUYEN_VIEN)) {
+            $trinhTuNhanVanBan = 5;
+        }
+
+        if ($user->hasRole(TRUONG_PHONG) || $user->hasRole(CHANH_VAN_PHONG) || $user->hasRole(CHUYEN_VIEN) ||
+            $user->hasRole(PHO_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
+
+            $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+                ->where('can_bo_nhan_id', $user->id)
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->get();
+
+            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+        }
+
+        $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
+            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where(function ($query) use ($currentDate) {
+                return $query->where('han_xu_ly', '<', $currentDate);
+            })
+            ->count();
+
+
+        array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));
+        array_push($hoSoCongViecCoLors, COLOR_YELLOW);
+    }
 
 
         return view('admin::index',compact(
@@ -357,7 +503,17 @@ class AdminController extends Controller
             'vanBanHoanThanhChoDuyet',
             'donViPhoiHop',
             'chuyenVienPhoiHop',
-            'vanBanChoPhanLoai'
+            'vanBanChoPhanLoai',
+            'vanBanQuaHanDangXuLy',
+            'lichCongTac',
+            'congViecPhongBanPiceCharts',
+            'congViecPhongBanCoLors',
+            'congViecDonViChoXuLy',
+            'giaHanCongViecDonVi',
+            'congViecDonViHoanThanhChoDuyet',
+            'congViecDonViPhoiHopChoXuLy',
+            'congViecChuyenVienPhoiHopChoXuLy',
+            'congViecChuyenVienDaXuLy'
         ));
     }
 

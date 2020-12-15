@@ -19,7 +19,7 @@ class CongViecHoanThanhController extends Controller
     {
         $currentUser = auth::user();
 
-        if ($currentUser->hasRole(TRUONG_PHONG)||  $currentUser->hasRole(PHO_PHONG) ||$currentUser->hasRole(CHANH_VAN_PHONG)||$currentUser->hasRole(CHU_TICH)  ) {
+        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG) ||  $currentUser->hasRole(PHO_PHONG) ||$currentUser->hasRole(CHANH_VAN_PHONG)||$currentUser->hasRole(CHU_TICH)  ) {
 
             $danhSachChuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('congViecDonVi')
                 ->where('can_bo_nhan_id', $currentUser->id)

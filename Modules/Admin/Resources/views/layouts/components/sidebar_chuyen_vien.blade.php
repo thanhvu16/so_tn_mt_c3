@@ -64,14 +64,6 @@
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
-<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
-    <a href="{{route('ho-so-cong-viec.index')}}">
-        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
-        <span class="pull-right-container">
-
-            </span>
-    </a>
-</li>
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.chuyen-vien-phoi-hop')||
  Route::is('cong-viec-don-vi.dang-xu-ly')|| Route::is('cong-viec-don-vi.da-xu-ly')|| Route::is('cong-viec-don-vi.chuyen-vien-da-phoi-hop') ||
  Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ||
@@ -96,7 +88,14 @@
 
     </ul>
 </li>
+<li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
+    <a href="{{route('ho-so-cong-viec.index')}}">
+        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
+        <span class="pull-right-container">
 
+            </span>
+    </a>
+</li>
 <li class="treeview {{ Route::is('danh-gia-can-bo.index') || Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-users"></i> <span>Đánh giá cán bộ</span>

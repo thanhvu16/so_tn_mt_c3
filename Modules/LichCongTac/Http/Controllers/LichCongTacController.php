@@ -26,7 +26,7 @@ class LichCongTacController extends Controller
         $year = date('Y');
         $week = $tuan ? $tuan : date('W');
 
-        $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
+        $lanhDaoId = $request->get('lanh_dao_id') ?? null;
 
         $donViId = null;
 
@@ -66,8 +66,15 @@ class LichCongTacController extends Controller
                     return $query->where('id', $id);
                 }
             })
+            ->where('trang_thai', ACTIVE)
             ->orderBy('id', 'ASC')
             ->get();
+
+
+
+        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+            $donViId = $currentUser->don_vi_id;
+        }
 
 
         $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi')
@@ -98,7 +105,16 @@ class LichCongTacController extends Controller
             }
         }
 
+        // don vi nhan vb xem lich ct cua ld
+        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
 
+            $arrLanhDaoId = $danhSachLichCongTac->pluck('lanh_dao_id')->toArray();
+
+            $danhSachLanhDao = User::whereIn('id', $arrLanhDaoId)
+                ->orderBy('id', 'ASC')
+                ->where('trang_thai', ACTIVE)
+                ->get();
+        }
 
         return view('lichcongtac::index', compact('danhSachLichCongTac',
             'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));

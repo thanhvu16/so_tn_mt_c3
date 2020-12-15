@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
@@ -68,7 +69,7 @@ class LichCongTac extends Model
 
     public function congViecDonVi()
     {
-        return $this->hasOne(DonViChuTri::class, 'don_vi_id', 'id');
+        return $this->hasOne(CongViecDonVi::class, 'lich_cong_tac_id', 'id');
     }
 
     public function taoLichCongTac($vanBanDi)

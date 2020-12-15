@@ -112,3 +112,26 @@ function multiUploadFile(fileName) {
 
     $('.increment').append(htmlForm);
 }
+
+$("body").on("click", ".btn-remove-file", function () {
+
+    $(this).parents(".remove-multi-file").remove();
+});
+
+$('.datepicker').datepicker({
+    autoclose: true,
+    format: "d/m/yyyy",
+});
+
+$('.date-ranger-picker').daterangepicker({
+    "autoApply": true,
+    locale: {
+        format: "DD/MM/YYYY",
+        cancelLabel: 'Clear'
+    }
+});
+
+$("form").on('submit', function(){
+    showLoading();
+    // $('.loading-modal-before-submit').removeClass('hide');
+});

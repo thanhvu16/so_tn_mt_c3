@@ -79,6 +79,21 @@
                         </p>
                     </a>
                 @endrole
+
+                <a class="text-title-item" href="{{ route('van-ban-den-don-vi.dang_xu_ly', 'qua_han=1') }}">
+                    <p>VB quá hạn đang xử lý
+                        <button
+                            class="btn br-10 btn-yellow btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanQuaHanDangXuLy }}</button>
+                    </p>
+                </a>
+                @hasanyrole('chủ tịch|phó chủ tịch')
+                <a class="text-title-item" href="{{ route('lich-cong-tac.index') }}">
+                    <p>Lịch công tác
+                        <button
+                            class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
+                    </p>
+                </a>
+                @endrole
             </div>
             <div class="col-md-5 ">
                 <div id="pie-chart-ho-so-cong-viec">

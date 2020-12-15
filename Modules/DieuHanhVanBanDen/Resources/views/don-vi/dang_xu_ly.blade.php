@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản đang xử lý</h4>
+                                <h4 class="header-title pt-2">Văn bản {{ Request::get('qua_han') ? 'quá hạn' : '' }} đang xử lý</h4>
                             </div>
                         </div>
                     </div>
@@ -22,11 +22,11 @@
                                 <th width="15%" class="text-center">Trình tự xử lý</th>
                             </tr>
                             </thead>
-                            <tbody class="text-justify">
+                            <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
-                                    <td>
+                                    <td class="{{ Request::get('qua_han') ? 'color-red' : null }}">
                                         @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>
