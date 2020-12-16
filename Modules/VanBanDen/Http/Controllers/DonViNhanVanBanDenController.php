@@ -225,8 +225,9 @@ class DonViNhanVanBanDenController extends Controller
                         $vanbandv->han_xu_ly = $request->han_xu_ly;
                         $vanbandv->han_giai_quyet = $han_gq[$key];
                     }
-
+                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     $vanbandv->save();
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -246,10 +247,12 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->type = 2;
                 $vanbandv->nguoi_tao = auth::user()->id;
+                $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 $vanbandv->save();
+                DonViChuTri::saveDonViChuTri($vanbandv->id);
             }
         }
-        $layvanbandi = DonViChuTri::where('id',$request->id_van_ban_di)->first();
+        $layvanbandi = NoiNhanVanBanDi::where('id',$request->id_van_ban_di)->first();
         $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id',$layvanbandi->van_ban_di_id)->get();
         if($updatenoinhan){
             //update

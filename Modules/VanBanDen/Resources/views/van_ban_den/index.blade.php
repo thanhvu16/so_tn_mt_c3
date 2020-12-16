@@ -134,7 +134,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
-                                                    (Số trang: {{$vbDen->so_trang}}) | (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
+                                                    ( (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <div class="text-right " style="pointer-events: auto">

@@ -230,7 +230,7 @@ class VanBanDenController extends Controller
     {
         $user = auth::user();
         $han_gq = $request->han_giai_quyet;
-        $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
+        $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         try {
             DB::beginTransaction();
 

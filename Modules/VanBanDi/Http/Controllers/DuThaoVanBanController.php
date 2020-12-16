@@ -40,20 +40,42 @@ class DuThaoVanBanController extends Controller
      */
     public function index()
     {
+        $vanThuVanBanDiPiceCharts = [];
         $date = Carbon::now()->format('Y-m-d');
         $donvikhongdieuhanh= DonVi::where('dieu_hanh', '!=',1)->whereNull('deleted_at')->get();
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::role([ TRUONG_PHONG,PHO_PHONG,TRUONG_PHONG,PHO_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([ TRUONG_PHONG,PHO_PHONG,TRUONG_PHONG,PHO_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaotrongphong = User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([ TRUONG_PHONG,PHO_PHONG,TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
         //$ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+
                 break;
             case PHO_PHONG:
-                $ds_nguoiKy = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
                 break;
             case TRUONG_PHONG:
                 $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
@@ -78,6 +100,7 @@ class DuThaoVanBanController extends Controller
                 break;
 
         }
+
         return view('vanbandi::Du_thao_van_ban_di.index', compact('ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac','date'));
     }
 
@@ -259,7 +282,58 @@ class DuThaoVanBanController extends Controller
     public function thongtinvanban($id)
     {
         $file = Fileduthao::where(['vb_du_thao_id' => $id])->where('stt', '!=', 0)->get();
-        $ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHANH_VAN_PHONG,PHO_CHANH_VAN_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+        $vanThuVanBanDiPiceCharts=[];
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+
+                break;
+            case PHO_PHONG:
+                $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+                break;
+            case TRUONG_PHONG:
+                $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+            case PHO_CHUC_TICH:
+                $ds_nguoiKy = User::role([CHU_TICH])->get();
+                break;
+            case CHU_TICH:
+                $ds_nguoiKy = null;
+                break;
+            case CHANH_VAN_PHONG:
+                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
+                break;
+            case VAN_THU_DON_VI:
+                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case VAN_THU_HUYEN:
+                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+
+        }
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')

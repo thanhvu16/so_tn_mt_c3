@@ -60,7 +60,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">(*)</span></label>
-                                    <input type="text" class="form-control" value="{{$van_ban_den->vanbandi->dvSoanThao->ten_don_vi}}" name="co_quan_ban_hanh" id="exampleInputEmail6"
+                                    <input type="text" class="form-control" value="{{$van_ban_den->vanbandi->dvSoanThao->ten_don_vi  ?? ''}}" name="co_quan_ban_hanh" id="exampleInputEmail6"
                                            placeholder="Cơ quan ban hành" required >
                                 </div>
                             </div>
@@ -71,17 +71,17 @@
                                            placeholder="Người ký" required>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">(*)</span></label>
-                                    <select class="form-control select2"  name="lanh_dao_tham_muu" required>
-                                        <option value="">-- Chọn lãnh đạo tham mưu --</option>
-                                        @foreach($users as $nguoidung)
-                                            <option value="{{ $nguoidung->id }}" >{{ $nguoidung->ho_ten }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-3">--}}
+{{--                                <div class="form-group hidden">--}}
+{{--                                    <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">(*)</span></label>--}}
+{{--                                    <select class="form-control select2"  name="lanh_dao_tham_muu" required>--}}
+{{--                                        <option value="">-- Chọn lãnh đạo tham mưu --</option>--}}
+{{--                                        @foreach($users as $nguoidung)--}}
+{{--                                            <option value="{{ $nguoidung->id }}" >{{ $nguoidung->ho_ten }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">(*)</span></label>
@@ -159,7 +159,7 @@
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button
-                                        class="btn btn-primary" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
+                                        class="btn btn-primary" form="myform" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
                                         <span>Thêm mới</span></button>
                                 </div>
                             </div>
