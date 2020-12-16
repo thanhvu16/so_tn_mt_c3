@@ -284,3 +284,82 @@ hr.border-dashed {
 p {
     margin: 0 0 6px !important;
 }
+
+.sidebar-customize {
+    background-color: #3c8dbc !important;
+    color: #fff !important;
+    width: 60px;
+    text-align: center;
+    padding: 20px 15px !important;
+}
+
+img.brand-logo {
+    float: left;
+    margin-top: 10px;
+    width: 40px;
+}
+.main-header .navbar .logo-text {
+    float: left;
+    width: 273px;
+    margin-top: 12px;
+    margin-left: 15px;
+    color: #fff;
+}
+
+.main-header .navbar .logo-text span {
+    float: left;
+    line-height: 18px;
+    color: #fff;
+}
+
+.logo-text .lg-text {
+    font-weight: bold;
+}
+
+.main-sidebar {
+    padding-top: 60px !important;
+}
+
+.navbar-custom-menu .navbar-nav>li>a {
+    padding-top: 24px !important;
+}
+
+.main-header .sidebar-toggle {
+    padding: 20px 15px !important;
+}
+
+@media (min-width: 768px){
+    .navbar-nav>li>a {
+        padding-top: 20px !important;
+        padding-bottom: 15px;
+    }
+
+    .sidebar-toggle.sidebar-mobile {
+        display: none;
+    }
+
+    .main-header .navbar {
+        margin-left: 60px !important;
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 767px) {
+    .main-header .navbar {
+        margin: 0 !important;
+    }
+
+    .main-header .sidebar-toggle.sidebar-customize{
+        display: none;
+    }
+}
+
+.treeview-menu>li>a {
+    font-size: 13px !important;
+}
+
+@media (max-width: 425px) {
+    .logo-customize {
+        display: none;
+    }
+}

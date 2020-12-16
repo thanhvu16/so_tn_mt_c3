@@ -48,8 +48,11 @@ class DonViChuTri extends Model
     public static function saveDonViChuTri($vanBanDenId)
     {
         // luu don vi chu tri
-        $nguoiDung = User::role(TRUONG_PHONG)
-            ->where('don_vi_id', auth::user()->don_vi_id)
+        $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $nguoiDung = User::where('don_vi_id', auth::user()->don_vi_id)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')->first();
 

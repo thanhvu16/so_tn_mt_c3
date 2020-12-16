@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Models\LichCongTac;
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,7 +50,6 @@ class AdminController extends Controller
         }
         $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => auth::user()->id, 'stt' => 1])->count();
         $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 1])->count();
-        $ds_giaymoiden = VanBanDen::where(['don_vi_id' => auth::user()->don_vi_id, 'so_van_ban_id' => 100])->count();
         $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 0, 'tra_lai' => 1])->count();
         $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
         $key2 = count($canbogopy);
@@ -177,7 +177,7 @@ class AdminController extends Controller
 
         //dự thảo văn bản đi
         array_push($duThaoCoLors, COLOR_WARNING);
-        array_push($duThaoCoLors, COLOR_INFO);
+        array_push($duThaoCoLors, COLOR_PRIMARY);
         array_push($duThaoCoLors, COLOR_GREEN);
         array_push($duThaoCoLors, COLOR_PINTEREST);
         //màu
@@ -422,7 +422,7 @@ class AdminController extends Controller
         //VB DANG XU LY QUA HAN
         $trinhTuNhanVanBan = null;
 
-        if ($user->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
             $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
                 ->whereNull('status')
                 ->whereNull('hoan_thanh')
@@ -469,7 +469,6 @@ class AdminController extends Controller
                 return $query->where('han_xu_ly', '<', $currentDate);
             })
             ->count();
-
 
         array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));
         array_push($hoSoCongViecCoLors, COLOR_YELLOW);

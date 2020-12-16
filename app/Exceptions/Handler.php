@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof TokenMismatchException) {
 
-            return redirect(route('login'))->with('warning', 'Thời gian đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
+            return redirect()->guest(route('login'))->with('warning', 'Thời gian đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
         }
         return parent::render($request, $exception);
     }

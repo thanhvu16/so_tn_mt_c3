@@ -47,7 +47,7 @@
                                     <tr>
                                         <td> {{$key+1}}</td>
                                         <td>
-                                            {{ !empty($data->thongtinduthao) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
+                                            {{ !empty($data->thongtinduthao) && !empty($data->thongtinduthao->ngay_thang) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
                                         </td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td style="text-align: justify"><a href=""
@@ -180,28 +180,30 @@
                                     @csrf
                                     <tr>
                                         <td>{{$key+1+$key2}}</td>
-                                        <td>{{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang) ) ?? '' }}</td>
+                                        <td>{{ !empty($data->thongtinduthao) ?  date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang) ) : '' }}</td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td><a href=""
-                                               title="{{$data->thongtinduthao->vb_trich_yeu}}">{{$data->thongtinduthao->vb_trich_yeu ?? ''}}</a><br>
+                                               title="{{$data->thongtinduthao->vb_trich_yeu ?? null }}">{{$data->thongtinduthao->vb_trich_yeu ?? ''}}</a><br>
                                             <span
                                                 style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
 
                                         </td>
                                         <td>
-                                            @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
-                                                <a href="{{$item->getUrlFile()}}" target="_blank">
-                                                    @if($item->stt == 1)
-                                                        [file phiếu trình]
-                                                    @elseif($item->stt == 2)
-                                                        [file trình ký]
-                                                    @elseif($item->stt == 3)
-                                                        [file hồ sơ]
-                                                    @endif
-                                                </a>
+                                            @if ($data->thongtinduthao)
+                                                @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
+                                                    <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                        @if($item->stt == 1)
+                                                            [file phiếu trình]
+                                                        @elseif($item->stt == 2)
+                                                            [file trình ký]
+                                                        @elseif($item->stt == 3)
+                                                            [file hồ sơ]
+                                                        @endif
+                                                    </a>
 
-                                            @empty
-                                            @endforelse
+                                                @empty
+                                                @endforelse
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="col-md-12">

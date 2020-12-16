@@ -2,9 +2,9 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Auth;
 
 class VanBanHoanThanhController extends Controller

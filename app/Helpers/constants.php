@@ -43,7 +43,7 @@ CONST PHO_PHONGO_DON_VI = 'phó phòng đơn vị';
 CONST VAN_THU_DON_VI = 'văn thư đơn vị';
 CONST VAN_THU_HUYEN = 'văn thư huyện';
 CONST CHANH_VAN_PHONG = 'chánh văn phòng';
-CONST PHO_CHANH_VAN_PHONG = 'phó tránh văn phòng';
+CONST PHO_CHANH_VAN_PHONG = 'phó chánh văn phòng';
 
 
 define('COLOR_INFO', '#4fbde9');

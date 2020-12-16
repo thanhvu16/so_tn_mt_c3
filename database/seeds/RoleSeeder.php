@@ -22,6 +22,6 @@ class RoleSeeder extends Seeder
         Role::findOrCreate('chuyên viên');
         Role::findOrCreate('tham mưu');
         Role::findOrCreate('chánh văn phong');
-        Role::findOrCreate('phó tránh văn phòng');
+        Role::findOrCreate('phó chánh văn phòng');
     }
 }

@@ -42,7 +42,8 @@
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_phong')
             @endrole
-            @role('phó tránh văn phòng')
+            @role('phó chánh văn phòng')
+                @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_chanh_van_phong')
                 @include('admin::layouts.components.sidebar_chanh_van_phong')
             @endrole
