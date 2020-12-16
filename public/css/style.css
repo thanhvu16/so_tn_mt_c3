@@ -352,6 +352,9 @@ img.brand-logo {
     .main-header .sidebar-toggle.sidebar-customize{
         display: none;
     }
+    .panel-info .panel-bieu-do {
+      display: none;
+    }
 }
 
 .treeview-menu>li>a {
