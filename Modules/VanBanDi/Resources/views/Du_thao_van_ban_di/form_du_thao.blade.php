@@ -26,11 +26,11 @@
     </div>
 
     <div class=" col-md-3 form-group">
-        <label for="exampleInputEmail2">Cán bộ Ủy ban góp ý <span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Cán bộ phòng khác góp ý <span class="color-red">*</span></label>
         <select name="lanh_dao_phong_khac[]" id="lanh_dao_phong_khac"
                 class="form-control select2"
                 multiple="multiple"
-                required data-placeholder="Lãnh đạo phòng khác  ...">
+                 data-placeholder="Lãnh đạo phòng khác  ...">
             @foreach ($lanhdaokhac as $trongphong)
                 <option value="{{ $trongphong->id }}"
                     {{ isset($vanbandi) && $vanbandi->donvisoanthao_id == $donVi->ma_id ? 'selected' : '' }}>{{ $trongphong->ho_ten }}</option>

@@ -61,7 +61,7 @@
                                     <td class="text-center" style="vertical-align: middle">
                                         {{$vbDen->donvigui->ten_don_vi ?? ''}}
                                     </td>
-                                    <td>@if($vbDen->trang_thai ==1)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
+                                    <td>@if($vbDen->trang_thai == 1 || $vbDen->trang_thai == 2)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
 
 
 
