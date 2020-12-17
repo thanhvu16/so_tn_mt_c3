@@ -28,8 +28,11 @@
                             <td>
                                 Đ/c {{ $giaHan->canBoChuyen->ho_ten ?? '' }}</td>
                             <td>Đ/c {{ $giaHan->CanBoNhan->ho_ten ?? '' }}</td>
-                            <td>{{ $giaHan->noi_dung }}</td>
-                            <td class="text-center">
+                            <td>
+                                <p>{{ $giaHan->noi_dung }}</p>
+                                <p>{!! $giaHan->getStatus() !!}</p>
+                            </td>
+                            <td>
                                 {{ !empty($giaHan->han_cu) ? date('d/m/Y', strtotime($giaHan->han_cu)) : null }}
                             </td>
                             <td>

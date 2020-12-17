@@ -151,6 +151,7 @@ class GiaHanCongViecDonViController extends Controller
                     $data['noi_dung'] = $noiDung;
                     $data['can_bo_nhan_id'] = $canBoNhan->can_bo_chuyen_id;
                     $data['han_cu'] = $giaHanCongViecDonVi->han_cu;
+                    $data['don_vi_id'] = $currentUser->don_vi_id;
                     $data['thoi_han_de_xuat'] = $thoiHan;
                     $data['status'] = $status;
 
@@ -183,6 +184,7 @@ class GiaHanCongViecDonViController extends Controller
                     $data['can_bo_chuyen_id'] = $currentUser->id;
                     $data['noi_dung'] = $noiDung;
                     $data['can_bo_nhan_id'] = $canBoNhanTruongPhong->id;
+                    $data['don_vi_id'] = $currentUser->don_vi_id;
                     $data['han_cu'] = $giaHanCongViecDonVi->han_cu;
                     $data['thoi_han_de_xuat'] = $thoiHan;
 

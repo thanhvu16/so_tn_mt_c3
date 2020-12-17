@@ -153,7 +153,7 @@ class ChuyenNhanCongViecDonVi extends Model
     public function giaHanCongViec()
     {
         return $this->hasMany(CongViecDonViGiaHan::class, 'cong_viec_don_vi_id', 'cong_viec_don_vi_id')
-            ->where('don_vi_id', auth::user()->donvi_id);
+            ->where('don_vi_id', auth::user()->don_vi_id);
     }
 
     public function giaHanCongViecByDonVi($donViId)
@@ -189,7 +189,7 @@ class ChuyenNhanCongViecDonVi extends Model
         return  CongViecDonViPhoiHop::where([
             'cong_viec_don_vi_id' => $this->cong_viec_don_vi_id,
             'can_bo_nhan_id' => auth::user()->id,
-            'don_vi_id' => auth::user()->donvi_id,
+            'don_vi_id' => auth::user()->don_vi_id,
             'status' => CongViecDonViPhoiHop::STATUS_GIAI_QUYET
         ])->first();
     }
@@ -223,7 +223,7 @@ class ChuyenNhanCongViecDonVi extends Model
     public function donViPhoiHopDaGiaiQuyet() {
 
         return DonViPhoiHopGiaiQuyet::where('cong_viec_don_vi_id', $this->cong_viec_don_vi_id)
-            ->where('don_vi_id', auth::user()->donvi_id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
             ->where('status', DonViPhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
             ->first();
     }

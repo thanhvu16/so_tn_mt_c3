@@ -43,8 +43,7 @@
                             </td>
                             <td>
                                 @if ($giaiQuyetCongViecDonVi->noi_dung_nhan_xet)
-                                    <p><b>Nội dung trả
-                                            lại: {{ $giaiQuyetCongViecDonVi->noi_dung_nhan_xet }}</b>
+                                    <p><b>Nội dung: {{ $giaiQuyetCongViecDonVi->noi_dung_nhan_xet }}</b>
                                     </p>
                                 @endif
                                 <p>{!!  $giaiQuyetCongViecDonVi->getStatus()  !!}</p>

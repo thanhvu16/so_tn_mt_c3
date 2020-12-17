@@ -50,6 +50,7 @@ class CongViecDonViController extends Controller
         return view('congviecdonvi::cong-viec-don-vi.index', compact('chuyenNhanCongViecDonVi',
             'danhSachPhoPhong', 'danhSachChuyenVien', 'order'));
     }
+
     public function chuyenVienPhoiHop(Request $request)
     {
         $currentUser = auth::user();

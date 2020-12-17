@@ -17,6 +17,43 @@
                         </div>
                     </div>
                     <div class="box-body">
+                        <form action="{{ route('van-ban-den-hoan-thanh.index') }}" method="get">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="so-den" class="col-form-label">Tìm theo số đến</label>
+                                    <input type="text" class="form-control" placeholder="Nhập số đến"
+                                           name="so_den" value="{{ Request::get('so_den') ?? null }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="han-xu-ly" class="col-form-label">Tìm theo hạn xử lý</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right datepicker" placeholder="DD/MM/YYYY"
+                                               name="han_xu_ly" value="{{ Request::get('han_xu_ly') ?? null }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="trich-yeu">Tìm theo trích yếu</label>
+                                    <input type="text" name="trich_yeu" class="form-control" value="{{ Request::get('trich_yeu') ?? null }}" placeholder="nhập nội dung...">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="search" class="col-form-label">&nbsp;</label><br>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-search"></i> Tìm kiếm
+                                    </button>
+                                    @if(request('han_xu_ly') || request('trich_yeu') || request('so_den'))
+                                        <a href="{{ route('van-ban-den-hoan-thanh.index') }}">
+                                            <button type="button" class="btn btn-success">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
+                        <br>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                                 <tr role="row" class="text-center">

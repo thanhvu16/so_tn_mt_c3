@@ -1,4 +1,5 @@
-<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') ? 'active menu-open' : '' }} }} ">
+@unlessrole(CHANH_VAN_PHONG)
+<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -13,7 +14,8 @@
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
-<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') ? 'active menu-open' : '' }} }} ">
+@endunless
+<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') || Route::is('danhsachgopy') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-balance-scale"></i> <span>Dự thảo văn bản đi</span>
         <span class="pull-right-container">

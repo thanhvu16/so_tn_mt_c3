@@ -1,3 +1,4 @@
+@unlessrole(TRUONG_PHONG)
 <li class="treeview {{ Route::is('van-ban-den.index') || Route::is('van-ban-den.create') || Route::is('van-ban-den.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đến</span>
@@ -6,13 +7,20 @@
             </span>
     </a>
     <ul class="treeview-menu">
-        <li class="{{ Route::is('van-ban-den.index') ? 'active' : '' }}"><a href="{{ route('van-ban-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
-        <li class="{{ Route::is('van-ban-den.create') ? 'active' : '' }}"><a href="{{ route('van-ban-den.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
-        <li class="{{ Route::is('don-vi-nhan-van-ban-den.index') ? 'active' : '' }}"><a href="{{ route('don-vi-nhan-van-ban-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách chờ vào sổ</a></li>
+        <li class="{{ Route::is('van-ban-den.index') ? 'active' : '' }}"><a href="{{ route('van-ban-den.index') }}"><i
+                    class="fa fa-circle-o"></i>Danh sách</a></li>
+        <li class="{{ Route::is('van-ban-den.create') ? 'active' : '' }}"><a href="{{ route('van-ban-den.create') }}"><i
+                    class="fa fa-circle-o"></i>Thêm mới</a></li>
+        <li class="{{ Route::is('don-vi-nhan-van-ban-den.index') ? 'active' : '' }}"><a
+                href="{{ route('don-vi-nhan-van-ban-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách chờ vào
+                sổ</a></li>
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
 </li>
-<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') ? 'active menu-open' : '' }} }} ">
+@endunless
+
+<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ||
+Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_da_duyet') || Route::is('vb_di_tra_lai') || Route::is('danhsachgopy') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -35,6 +43,7 @@
                     class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
+
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.create')|| Route::is('cong-viec-hoan-thanh.cho-duyet')
 || Route::is('cong-viec-don-vi.hoan-thanh')||Route::is('cong-viec-don-vi-phoi-hop.index')||Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly')||Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')||
 Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
@@ -51,25 +60,34 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
         <li class="{{ Route::is('cong-viec-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.index') }}"><i class="fa fa-circle-o"></i>Công việc chờ xử lý</a></li>
         <li class="{{ Route::is('cong-viec-don-vi.dang-xu-ly') ? 'active' : '' }}"><a
-                href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a></li>
+                href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a>
+        </li>
 
         <li class="{{ Route::is('gia-han-cong-viec.index') ? 'active' : '' }}"><a
-                href="{{ route('gia-han-cong-viec.index') }}"><i class="fa fa-circle-o"></i>Công việc xin gia hạn</a></li>
+                href="{{ route('gia-han-cong-viec.index') }}"><i class="fa fa-circle-o"></i>Công việc xin gia hạn</a>
+        </li>
         <li class="{{ Route::is('cong-viec-hoan-thanh.cho-duyet') ? 'active' : '' }}"><a
-                href="{{ route('cong-viec-hoan-thanh.cho-duyet') }}"><i class="fa fa-circle-o"></i>CV hoàn thành chờ duyệt</a></li>
+                href="{{ route('cong-viec-hoan-thanh.cho-duyet') }}"><i class="fa fa-circle-o"></i>CV hoàn thành chờ
+                duyệt</a></li>
         <li class="{{ Route::is('cong-viec-don-vi.hoan-thanh') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.hoan-thanh') }}"><i class="fa fa-circle-o"></i>CV hoàn thành </a></li>
         <hr style="border: 1px dashed #fda709;margin-top: 8px;margin-bottom: 8px;">
-        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.index') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.index') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH chờ xử lý</a></li>
-        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.dang-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đang xử lý</a></li>
-        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a href="{{ route('cong-viec-don-vi-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đã xử lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.index') ? 'active' : '' }}"><a
+                href="{{ route('cong-viec-don-vi-phoi-hop.index') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH chờ xử
+                lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly') ? 'active' : '' }}"><a
+                href="{{ route('cong-viec-don-vi-phoi-hop.dang-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH
+                đang xử lý</a></li>
+        <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a
+                href="{{ route('cong-viec-don-vi-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đã
+                xử lý</a></li>
 
         {{--        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>--}}
     </ul>
 </li>
 <li class="{{ Route::is('ho-so-cong-viec.create') || Route::is('ho-so-cong-viec.index') ? 'active' : '' }} ">
     <a href="{{route('ho-so-cong-viec.index')}}">
-        <i class="fa fa-folder" ></i> <span>File hồ sơ công việc</span>
+        <i class="fa fa-folder"></i> <span>File hồ sơ công việc</span>
         <span class="pull-right-container">
 
             </span>
@@ -88,6 +106,7 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
         </li>
         <li class="{{ Route::is('captrendanhgiac2') ? 'active' : '' }}"><a
                 href="{{ route('captrendanhgiac2') }}"><i class="fa fa-circle-o"></i>Cấp trên đánh giá</a></li>
-        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>
+        <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i
+                    class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>
     </ul>
 </li>

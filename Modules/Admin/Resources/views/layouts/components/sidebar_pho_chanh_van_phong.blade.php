@@ -14,7 +14,7 @@
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
 </li>
-<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') ? 'active menu-open' : '' }} }} ">
+<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') || Route::is('danhsachgopy') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-balance-scale"></i> <span>Dự thảo văn bản đi</span>
         <span class="pull-right-container">
