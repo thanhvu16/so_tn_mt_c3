@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FileVanBanDi extends Model
 {
     protected $table = 'file_van_ban_di';
-
+    const LOAI_FILE_DA_KY = 1;
+    const DUOI_FILE = 'pdf';
+    const TRANG_THAI_DA_GUI = 1;
+    const TRANG_THAI_FILE_PHIEU_TRINH = 1;
+    const TRANG_THAI_FILE_TRINH_KY = 2;
+    const TRANG_THAI_FILE_HO_SO = 3;
 
     protected $fillable = [
         'ten_file',

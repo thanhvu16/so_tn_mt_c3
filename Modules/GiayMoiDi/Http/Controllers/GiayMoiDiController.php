@@ -331,9 +331,11 @@ class GiayMoiDiController extends Controller
 //                $vanbandi->don_vi_soan_thao = '';
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
             }
+            $vanbandi->type = 1;
         } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
             //đây là đơn vị ký
             $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+            $vanbandi->type = 2;
         }
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->nguoi_ky = $request->nguoiky_id;
@@ -357,6 +359,14 @@ class GiayMoiDiController extends Controller
                 $donvinhan->van_ban_di_id = $vanbandi->id;
                 $donvinhan->don_vi_id_nhan = $donvi;
                 $donvinhan->save();
+            }
+        }
+        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+            foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                $mailngoai = new NoiNhanMailNgoai();
+                $mailngoai->van_ban_di_id = $vanbandi->id;
+                $mailngoai->email = $ngoai;
+                $mailngoai->save();
             }
         }
         return redirect()->route('giay-moi-di.index')->with('success', 'Thêm giấy mời thành công ! ');

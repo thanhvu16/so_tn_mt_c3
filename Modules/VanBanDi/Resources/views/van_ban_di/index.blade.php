@@ -190,6 +190,12 @@
                                             </p>
                                         @empty
                                         @endforelse
+                                        @forelse($vbDi->mailngoaitp as $key=>$item)
+                                            <p>
+                                                - {{$item->laytendonvingoai->ten_don_vi ?? ''}}
+                                            </p>
+                                        @empty
+                                        @endforelse
                                     </td>
                                     <td class="text-center" style="vertical-align: middle">
                                             @hasanyrole('văn thư đơn vị|văn thư huyện')

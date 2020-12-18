@@ -119,8 +119,8 @@
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-12 hidden">
-                                <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
+                            <div class="form-group col-md-12 ">
+                                <label for="" class="col-form-label">Đơn vị nhận bên ngoài</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
                                         multiple
