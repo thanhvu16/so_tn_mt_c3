@@ -372,26 +372,31 @@ class VanBanDenController extends Controller
             $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = (int)$tachchuoi[1];
             $yearsfile = (int)$tachchuoi[2];
-            $sovanban = SoVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
+            $sovanban = SoVanBan::where('ten_viet_tat' ,'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($user->hasRole(VAN_THU_HUYEN))
             {
-                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
             }elseif ($user->hasRole(VAN_THU_DON_VI))
             {
-                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
             }
             if ($vanban) {
-                $vbDenFile = new FileVanBanDen();
                 $getFile->move($uploadPath, $fileName);
-                $vbDenFile->ten_file = $tenchinhfile;
-                $vbDenFile->duong_dan = $urlFile;
-                $vbDenFile->duoi_file = $extFile;
-                $vbDenFile->vb_den_id = $vanban->id;
-                $vbDenFile->nguoi_dung_id = auth::user()->id;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
+
+                foreach ($vanban as $data3)
+                {
+                    $vbDenFile = new FileVanBanDen();
+                    $vbDenFile->ten_file = $tenchinhfile;
+                    $vbDenFile->duong_dan = $urlFile;
+                    $vbDenFile->duoi_file = $extFile;
+                    $vbDenFile->vb_den_id = $data3->id;
+                    $vbDenFile->nguoi_dung_id = auth::user()->id;
+                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                    $vbDenFile->save();
+                }
+
             }
 
         }
