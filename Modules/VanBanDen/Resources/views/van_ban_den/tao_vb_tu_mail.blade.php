@@ -35,7 +35,7 @@
                                         <option value="">-- Chọn loại văn bản --</option>
                                         @foreach ($ds_loaiVanBan as $loaiVanBan)
                                             <option value="{{ $loaiVanBan->id }}"
-                                                {{ isset($loaivb_email) && $loaivb_email == $loaiVanBan->id ? 'selected="selected"' : '' }}>{{ $loaiVanBan->ten_loai_van_ban }}</option>
+                                                {{ isset($loaivb_email) && $loaivb_email->id == $loaiVanBan->id ? 'selected="selected"' : '' }}>{{ $loaiVanBan->ten_loai_van_ban }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -78,7 +78,7 @@
                                     <input type="text" required value="{{empty($data_xml) ? '': $data_xml->STRNGUOIKY}}" name="nguoi_ky"
                                            class="form-control">
                                 </div>
-
+                                @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
                                 <div class="form-group col-md-3">
                                     <label for="cap_ban_hanh_id" class="col-form-label">Lãnh đạo tham mưu văn bản <span style="color: red">*</span></label>
                                     <select class="form-control dropdown-search" id="lanh_dao_tham_muu" name="lanh_dao_tham_muu" required>
@@ -87,6 +87,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @endif
 
                                 <div class="form-group col-md-12">
                                     <label for="sokyhieu" class="col-form-label ">Trích yếu <span style="color: red">*</span></label>

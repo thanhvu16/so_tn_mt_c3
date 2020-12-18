@@ -146,7 +146,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung_hop ?? ''}}</span>@if($vbDen->noi_dung_hop != null)
                                             <br>@endif
-                                                       (Vào hồi {{$vbDen->gio_hop_phu}} ngày {{ date('d-m-Y', strtotime($vbDen->ngay_hop_phu)) }} ,tại {{$vbDen->dia_diem_phu}})
+                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  ngày {{ date('d-m-Y', strtotime($vbDen->ngay_hop_phu)) }} ,tại {{$vbDen->dia_diem_phu}})
                                         | (Hạn xử
                                         lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})<br>
                                         <span

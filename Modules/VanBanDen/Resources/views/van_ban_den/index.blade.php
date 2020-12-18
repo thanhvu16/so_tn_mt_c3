@@ -134,7 +134,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
-                                                    ( (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
+                                                     (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <div class="text-right " style="pointer-events: auto">
@@ -217,7 +217,7 @@
                         <div class="row">
                             <div class="col-md-12" >
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số giấy mời: <b>{{ $ds_vanBanDen->total() }}</b>
+                                    Tổng số văn bản: <b>{{ $ds_vanBanDen->total() }}</b>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')

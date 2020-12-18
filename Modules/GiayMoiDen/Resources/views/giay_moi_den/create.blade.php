@@ -201,7 +201,7 @@
 
                             <div class=" col-md-3 " >
                                 <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>
-                                <input class="form-control" value="{{$hangiaiquyet}}"
+                                <input class="form-control" value=""
                                        name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">
                                 <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id"
                                        value="{{auth::user()->don_vi_id}}">
@@ -255,4 +255,27 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+    <script>
+        $('.ngaybanhanh2').on('blur', function (e) {
+            var ngay_ban_hanh = $('[name=ngay_hop_chinh]').val();
+            console.log(ngay_ban_hanh);
+            e.preventDefault();
+            $.ajax({
+                url: APP_URL + '/layhantruyensangview',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    ngay_ban_hanh: ngay_ban_hanh,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+            }).done(function (res) {
+                console.log(res);
+                if (res.html) {
+                    $('input[name="vb_han_xu_ly"]').val(res.html);
+                } else {
+                }
+
+            });
+        })
+    </script>
 @endsection

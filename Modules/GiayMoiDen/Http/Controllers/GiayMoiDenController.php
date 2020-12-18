@@ -147,6 +147,30 @@ class GiayMoiDenController extends Controller
 
         return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen'));
     }
+    public function layhantruyensangview(Request $request)
+    {
+        //lấy hạn
+        $ngaynhan = $request->get('ngay_ban_hanh');
+        $songay = 2;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        return response()->json(
+            [
+                'html' => $hangiaiquyet
+            ]
+        );
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -221,6 +245,7 @@ class GiayMoiDenController extends Controller
         $giaymoicom = !empty($requestData['noi_dung_hop_con']) ? $requestData['noi_dung_hop_con'] : null;
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
         $txtFiles = !empty($requestData['txt_file']) ? $requestData['txt_file'] : null;
+        $idvanbanden = [];
 
         try {
             DB::beginTransaction();
@@ -285,6 +310,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv->chuc_vu = $chucvu;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                         $vanbandv->save();
+                        array_push($idvanbanden, $vanbandv->id);
                     }
                 } else {
                     $vanbandv = new VanBanDen();
@@ -311,6 +337,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
+                    array_push($idvanbanden, $vanbandv->id);
                 }
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 if ($giaymoicom && $giaymoicom[0] != null) {
@@ -356,6 +383,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv->chuc_vu = $chucvu;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                         $vanbandv->save();
+                        array_push($idvanbanden, $vanbandv->id);
                     }
                 } else {
                     $vanbandv = new VanBanDenDonVi();
@@ -382,6 +410,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
+                    array_push($idvanbanden, $vanbandv->id);
                 }
             }
 
@@ -390,20 +419,39 @@ class GiayMoiDenController extends Controller
                 foreach ($multiFiles as $key => $getFile) {
                     $extFile = $getFile->extension();
                     $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
-                    $vbDenFile = new FileVanBanDen();
+
                     $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                     $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
                         File::makeDirectory($uploadPath, 0775, true, true);
                     }
-                    $getFile->move($uploadPath, $fileName);
-                    $vbDenFile->ten_file = $ten;
-                    $vbDenFile->duong_dan = $urlFile;
-                    $vbDenFile->duoi_file = $extFile;
-                    $vbDenFile->vb_den_id = $vanbandv->id;
-                    $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                    $vbDenFile->save();
+                    if(count($idvanbanden) > 1)
+                    {
+                        $getFile->move($uploadPath, $fileName);
+                        foreach ($idvanbanden as $data)
+                        {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $ten;
+                            $vbDenFile->duong_dan = $urlFile;
+                            $vbDenFile->duoi_file = $extFile;
+                            $vbDenFile->vb_den_id = $data;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                        }
+
+                    }else{
+                        $vbDenFile = new FileVanBanDen();
+                        $getFile->move($uploadPath, $fileName);
+                        $vbDenFile->ten_file = $ten;
+                        $vbDenFile->duong_dan = $urlFile;
+                        $vbDenFile->duoi_file = $extFile;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
                 }
             }
 
