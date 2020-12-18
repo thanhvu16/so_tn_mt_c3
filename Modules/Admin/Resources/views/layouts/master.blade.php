@@ -30,6 +30,8 @@
     <link href="{{ url('theme/plugins/loadingModal/css/jquery.loadingModal.css')}}" rel="stylesheet" />
     <link href="{{ url('theme/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
     <link href="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
+    <!-- Morris Chart Css-->
+{{--    <link href="{{ url('theme/bower_components/morris.js/morris.css') }}" rel="stylesheet" />--}}
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -40,10 +42,6 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -95,6 +93,12 @@
 <script src="{{url('theme/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
 <!---moment js-->
 <script src="{{ url('theme/bower_components/moment/min/moment.min.js') }}"></script>
+<!-- Morris Chart js-->
+<script src="{{ url('theme/bower_components/raphael/raphael.min.js') }}"></script>
+<script src="{{ url('theme/bower_components/morris.js/morris.min.js') }}"></script>
+<!--chart js-->
+<script src="{{ url('theme/plugins/chartjs/Chart.bundle.js') }}"></script>
+<script src="{{ url('theme/plugins/chartjs//chartsjs/Chart.min.js') }}"></script>
 
 <script src="{{ url('theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

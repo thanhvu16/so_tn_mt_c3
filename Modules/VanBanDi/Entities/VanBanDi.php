@@ -151,6 +151,4 @@ class VanBanDi extends Model
             ->where('trang_thai', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
             ->where('loai_file', FileVanBanDi::LOAI_FILE_DA_KY);
     }
-
-
 }

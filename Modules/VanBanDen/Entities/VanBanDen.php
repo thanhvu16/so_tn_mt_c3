@@ -370,4 +370,27 @@ class VanBanDen extends Model
     {
         return VanBanDen::where('id', $this->parent_id)->orderBy('id', 'DESC')->first();
     }
+
+    // lay ds vb den , giay moi den
+    public static function getListVanBanDen($giayMoi=null, $type, $condition=null, $month, $year)
+    {
+        return VanBanDen::where(function ($query) use ($giayMoi, $condition) {
+            if (!empty($giayMoi)) {
+
+                return $query ->where('loai_van_ban_id', $condition, $giayMoi->id);
+                }
+            })
+            ->where(function($query) use ($month) {
+                if (!empty($month)) {
+                    return $query->whereMonth('created_at', $month);
+                }
+            })
+            ->where(function($query) use ($year) {
+                if (!empty($year)) {
+                    return $query->whereYear('created_at', $year);
+                }
+            })
+            ->where('type', $type)
+            ->get();
+    }
 }

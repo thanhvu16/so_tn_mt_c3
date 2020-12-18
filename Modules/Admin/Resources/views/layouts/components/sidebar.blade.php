@@ -61,6 +61,13 @@
             </li>
             @endcan
 
+            @unlessrole(ADMIN)
+                <li class="{{ Route::is('bao_cao_thong_ke.index') }}">
+                    <a href="{{ route('bao_cao_thong_ke.index') }}">
+                        <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
+                  </a>
+                </li>
+            @endunlessrole
 {{--            <li class="{{ Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.index') ? 'active' : '' }} ">--}}
 {{--                <a href="{{route('danh-gia-can-bo.index')}}">--}}
 {{--                    <i class="fa fa-users" ></i> <span>Đánh giá cán bộ</span>--}}
