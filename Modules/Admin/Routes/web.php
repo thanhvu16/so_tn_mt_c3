@@ -43,3 +43,5 @@ Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'Do
 //
 Route::resource('vai-tro', 'VaiTroController');
 Route::resource('chuc-nang', 'ChucNangController');
+
+Route::resource('ngay-nghi', 'NgayNghiController');

@@ -296,6 +296,11 @@ class VanBanLanhDaoXuLyController extends Controller
                         $donViChuTri->fill($dataLuuDonViChuTri);
                         $donViChuTri->save();
 
+                        if (empty($arrPhoChuTich[$vanBanDenId]) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                            $vanBanDen->save();
+                        }
+
                         // luu vet van ban den
                         $luuVetVanBanDen = new LogXuLyVanBanDen();
                         $luuVetVanBanDen->fill($dataLuuDonViChuTri);

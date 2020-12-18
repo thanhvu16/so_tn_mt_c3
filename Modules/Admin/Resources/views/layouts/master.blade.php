@@ -98,7 +98,6 @@
 <script src="{{ url('theme/bower_components/morris.js/morris.min.js') }}"></script>
 <!--chart js-->
 <script src="{{ url('theme/plugins/chartjs/Chart.bundle.js') }}"></script>
-<script src="{{ url('theme/plugins/chartjs//chartsjs/Chart.min.js') }}"></script>
 
 <script src="{{ url('theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

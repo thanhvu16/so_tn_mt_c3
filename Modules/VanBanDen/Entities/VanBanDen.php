@@ -41,6 +41,7 @@ class VanBanDen extends Model
     const HOAN_THANH_CHO_DUYET = 6;
     const HOAN_THANH_VAN_BAN = 7;
     const VB_TRA_LOI = 1;
+    const DON_VI_DU_HOP = 1;
 
     const TYPE_VB_HUYEN = 1;
     const TYPE_VB_DON_VI = 2;
@@ -91,10 +92,21 @@ class VanBanDen extends Model
     {
         $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
             ->whereIn('can_bo_nhan_id', $arrUserId)
+            ->select('id', 'noi_dung')
             ->whereNull('status')
             ->first();
 
         return $xuLyVanBanDen;
+    }
+
+    public function getXuLyVanBanDen()
+    {
+        $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
+            ->select('id', 'noi_dung', 'can_bo_nhan_id')
+            ->whereNull('status')
+            ->get();
+
+        return $xuLyVanBanDen->pluck('can_bo_nhan_id')->toArray();
     }
 
     public function lanhDaoXemDeBiet()
@@ -392,5 +404,15 @@ class VanBanDen extends Model
             })
             ->where('type', $type)
             ->get();
+    }
+
+    public function checkVanBanQuaChuTich()
+    {
+        $user = User::role(CHU_TICH)->where('trang_thai', ACTIVE)->first();
+
+        return LogXuLyVanBanDen::where('van_ban_den_id', $this->id)
+            ->where('can_bo_nhan_id', $user->id)
+            ->orderBy('id', 'DESC')
+            ->first();
     }
 }

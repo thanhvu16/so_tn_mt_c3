@@ -36,12 +36,14 @@
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 <th width="15%" class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                <th width="8%" class="text-center">Dự họp</th>
+                                <th width="15%" class="text-center">Dự họp</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
+                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]" value=""
+                                           class="check-don-vi-du-hop" form="form-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
@@ -167,7 +169,6 @@
                                         </div>
                                     </td>
                                     <td>
-
                                         <p>
                                             <textarea name="noi_dung_chu_tich[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
@@ -200,20 +201,28 @@
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                        class="radio-col-cyan chu-tich-du-hop" value=""
-                                                       form="form-tham-muu">
+                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"><i>CT</i></label>
                                             </div>
-
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                        class="radio-col-cyan pho-ct-du-hop" value=""
-                                                       form="form-tham-muu">
+                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"><i>PCT</i></label>
                                             </div>
+{{--                                            <div class=" radio-info form-check-inline">--}}
+{{--                                                <input type="radio"--}}
+{{--                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"--}}
+{{--                                                       class="radio-col-cyan don-vi-du-hop" value=""--}}
+{{--                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">--}}
+{{--                                                <label--}}
+{{--                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>--}}
+{{--                                            </div>--}}
                                         @endif
                                     </td>
                                 </tr>
@@ -335,9 +344,11 @@
             if (donViChuTri.length > 0 && id.length > 0) {
                 checkVanBanDenId(vanBanDenDonViId);
                 $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
+                $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).addClass('hide');
+                $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
             }
 
             if (statusTraLai) {
@@ -424,6 +435,18 @@
             } else {
                 $('#form-tham-muu').submit();
             }
+        });
+
+        $('.don-vi-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
+        });
+
+        $('.pho-ct-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+        });
+
+        $('.chu-tich-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
         });
 
     </script>

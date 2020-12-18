@@ -84,7 +84,7 @@ class PhanLoaiVanBanController extends Controller
         $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
         $textDonViChuTri = $data['don_vi_chu_tri'] ?? null;
         $textDonViPhoiHop = $data['don_vi_phoi_hop'] ?? null;
-
+        $donViDuHop = $data['don_vi_du_hop'] ?? null;
         $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
 
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
@@ -143,10 +143,22 @@ class PhanLoaiVanBanController extends Controller
                     // check quyen gia han van ban
                     $quyenGiaHan = null;
 
+                    // luu don vi chu tri
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
+                        })
+                        ->whereNull('deleted_at')->first();
+
+                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
 
                     // check lanh dao du hop
                     if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
                         if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
+                            $lanhDaoId = $lanhDaoDuHopId[$vanBanDenId];
                             $tuan = date('W',strtotime($vanBanDen->ngay_hop_chinh));
 
                             $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId[$vanBanDenId]);
@@ -157,9 +169,14 @@ class PhanLoaiVanBanController extends Controller
                                 $noiDungMoiHop = 'Kính mời '.$lanhDaoDuHop->chucVu->ten_chuc_vu. ' '. $lanhDaoDuHop->ho_ten .' dự họp';
                             }
 
+                            // don vi du hop
+                            if ($donViDuHop[$vanBanDenId] == VanBanDen::DON_VI_DU_HOP) {
+                                $lanhDaoId = $nguoiDung->id ?? null;
+                            }
+
                             $dataLichCongTac = array(
                                 'object_id' => $vanBanDen->id,
-                                'lanh_dao_id' => $lanhDaoDuHopId[$vanBanDenId],
+                                'lanh_dao_id' => $lanhDaoId,
                                 'ngay' => $vanBanDen->ngay_hop,
                                 'gio' => $vanBanDen->gio_hop,
                                 'tuan' => $tuan,
@@ -167,6 +184,7 @@ class PhanLoaiVanBanController extends Controller
                                 'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $noiDungMoiHop,
                                 'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
                                 'user_id' => $currentUser->id,
+                                'don_vi_du_hop' => !empty($donViDuHop[$vanBanDenId]) ? LichCongTac::DON_VI_DU_HOP : null
                             );
                             //check lich cong tac
                             $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
@@ -261,18 +279,6 @@ class PhanLoaiVanBanController extends Controller
                             $vanBanDenId);
                     }
 
-                    // luu don vi chu tri
-                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
-
-                    $nguoiDung = User::where('trang_thai', ACTIVE)
-                        ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                        ->whereHas('roles', function ($query) use ($roles) {
-                            return $query->whereIn('name', $roles);
-                        })
-                        ->whereNull('deleted_at')->first();
-
-                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
-
                     $dataLuuDonViChuTri = [
                         'van_ban_den_id' => $vanBanDenId,
                         'can_bo_chuyen_id' => $currentUser->id,
@@ -351,11 +357,11 @@ class PhanLoaiVanBanController extends Controller
             ->where('id', '!=', $user->don_vi_id)->get();
 
         if ($user->hasRole(AllPermission::chuTich())) {
-            $active = 1;
+            $active = VanBanDen::CHU_TICH_NHAN_VB;
         }
 
         if ($user->hasRole(AllPermission::phoChuTich())) {
-            $active = 2;
+            $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
             $donViChuTri = DonViChuTri::where('can_bo_chuyen_id', $user->id)
                 ->whereNull('hoan_thanh')
@@ -363,10 +369,26 @@ class PhanLoaiVanBanController extends Controller
 
             $arrIdVanBanDenDonVi = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-            $danhSachVanBanDen = VanBanDen::with('lanhDaoXemDeBiet', 'checkLuuVetVanBanDen',
-                'checkDonViChuTri', 'checkDonViPhoiHop')
+            $danhSachVanBanDen = VanBanDen::with([
+                'lanhDaoXemDeBiet' => function ($query) {
+                    $query->select(['van_ban_den_id', 'lanh_dao_id']);
+                },
+                'checkLuuVetVanBanDen' => function ($query) {
+                    $query->select(['can_bo_chuyen_id']);
+                },
+                'checkDonViChuTri' => function ($query) {
+                    $query->select('don_vi_id');
+                },
+                'checkDonViPhoiHop' => function ($query) {
+                    $query->select(['id', 'don_vi_id']);
+                }
+                ])
                 ->whereIn('id', $arrIdVanBanDenDonVi)
                 ->paginate(PER_PAGE);
+
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen();
+            }
 
             $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
@@ -380,12 +402,29 @@ class PhanLoaiVanBanController extends Controller
             ->whereNull('hoan_thanh')
             ->get();
 
-        $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+        $donViChuTri = DonViChuTri::where('can_bo_chuyen_id', $user->id)
+            ->whereNull('hoan_thanh')
+            ->get();
 
-        $danhSachVanBanDen = VanBanDen::with('lanhDaoXemDeBiet', 'checkLuuVetVanBanDen')
+        $idVanBanDonViChuTri = $donViChuTri->pluck('van_ban_den_id')->toArray();
+
+        $idVanBanLanhDaoId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
+
+        $danhSachVanBanDen = VanBanDen::with([
+            'lanhDaoXemDeBiet' => function ($query) {
+                $query->select(['van_ban_den_id', 'lanh_dao_id']);
+            },
+            'checkLuuVetVanBanDen' => function ($query) {
+                $query->select(['can_bo_chuyen_id']);
+            }])
             ->whereIn('id', $arrIdVanBanDenDonVi)
             ->paginate(PER_PAGE);
 
+        foreach ($danhSachVanBanDen as $vanBanDen) {
+            $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen();
+        }
 
         $chuTich = User::role('chủ tịch')->first();
 

@@ -173,7 +173,7 @@
                                                 VB Quan trọng
                                             </label>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                                                <p>LD dự họp:</p>
+                                                <p>Lãnh đạo dự họp:</p>
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"

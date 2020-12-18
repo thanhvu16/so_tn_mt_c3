@@ -92,7 +92,7 @@
                                                             form="form-tham-muu">
                                                         <option value="">Chọn Chủ tịch chủ trì</option>
                                                         <option
-                                                            value="{{ $chuTich->id ?? null }}" {{ !empty($vanBanDen->checkCanBoNhan([$chuTich->id])) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
+                                                            value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
                                                     </select>
                                                 </p>
                                             @endif
@@ -109,7 +109,7 @@
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
-                                                            value="{{ $phoChuTich->id }}" {{ !empty($vanBanDen->checkCanBoNhan([$phoChuTich->id])) ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
+                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -200,7 +200,7 @@
                                             <textarea
                                                 name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
                                                 form="form-tham-muu"
-                                                class="form-control {{ !empty($danhSachPhoChuTich->pluck('id')->toArray()) ? 'show' : 'hide' }}"
+                                                class="form-control {{ !empty($vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung) ? 'show' : 'hide' }}"
                                                 rows="3">{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}</textarea>
                                         </p>
                                         <p>

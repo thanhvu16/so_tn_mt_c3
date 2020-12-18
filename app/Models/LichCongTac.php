@@ -28,11 +28,13 @@ class LichCongTac extends Model
         'dia_diem',
         'trang_thai_lich',
         'ghi chu',
-        'user_id'
+        'user_id',
+        'don_vi_du_hop'
     ];
 
     const TYPE_VB_DI = 1;
     const TYPE_NHAP_TRUC_TIEP = 2;
+    const DON_VI_DU_HOP = 1;
 
     public function vanBanDen()
     {
