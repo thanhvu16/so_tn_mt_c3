@@ -372,26 +372,31 @@ class VanBanDenController extends Controller
             $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = (int)$tachchuoi[1];
             $yearsfile = (int)$tachchuoi[2];
-            $sovanban = SoVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
+            $sovanban = SoVanBan::where('ten_viet_tat' ,'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($user->hasRole(VAN_THU_HUYEN))
             {
-                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
             }elseif ($user->hasRole(VAN_THU_DON_VI))
             {
-                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->first();
+                $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
             }
             if ($vanban) {
-                $vbDenFile = new FileVanBanDen();
                 $getFile->move($uploadPath, $fileName);
-                $vbDenFile->ten_file = $tenchinhfile;
-                $vbDenFile->duong_dan = $urlFile;
-                $vbDenFile->duoi_file = $extFile;
-                $vbDenFile->vb_den_id = $vanban->id;
-                $vbDenFile->nguoi_dung_id = auth::user()->id;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
+
+                foreach ($vanban as $data3)
+                {
+                    $vbDenFile = new FileVanBanDen();
+                    $vbDenFile->ten_file = $tenchinhfile;
+                    $vbDenFile->duong_dan = $urlFile;
+                    $vbDenFile->duoi_file = $extFile;
+                    $vbDenFile->vb_den_id = $data3->id;
+                    $vbDenFile->nguoi_dung_id = auth::user()->id;
+                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                    $vbDenFile->save();
+                }
+
             }
 
         }
@@ -662,6 +667,51 @@ class VanBanDenController extends Controller
         }
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
+//        if ($noi_dung && $noi_dung[0] != null) {
+//            foreach ($noi_dung as $key => $data) {
+//                $vanbandv = new VanBanDen();
+//                $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+//                $vanbandv->so_van_ban_id = $request->so_van_ban;
+//                $vanbandv->so_den = $request->so_den;
+//                $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+//                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+//                $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+//                $vanbandv->trich_yeu = $request->trich_yeu;
+//                $vanbandv->nguoi_ky = $request->nguoi_ky;
+//                $vanbandv->do_khan_cap_id = $request->do_khan;
+//                $vanbandv->do_bao_mat_id = $request->do_mat;
+//                $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+//                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+//                $vanbandv->nguoi_tao = auth::user()->id;
+//                $vanbandv->noi_dung = $data;
+//                if ($request->han_giai_quyet[$key] == null) {
+//                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+//                } else {
+//                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+//                    $vanbandv->han_giai_quyet = $han_gq[$key];
+//                }
+//
+//                $vanbandv->save();
+//            }
+//        } else {
+//            $vanbandv = new VanBanDen();
+//            $vanbandv->loai_van_ban_id = $request->loai_van_ban;
+//            $vanbandv->so_van_ban_id = $request->so_van_ban;
+//            $vanbandv->so_den = $request->so_den;
+//            $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+//            $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+//            $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+//            $vanbandv->trich_yeu = $request->trich_yeu;
+//            $vanbandv->nguoi_ky = $request->nguoi_ky;
+//            $vanbandv->do_khan_cap_id = $request->do_khan;
+//            $vanbandv->do_bao_mat_id = $request->do_mat;
+//            $vanbandv->han_xu_ly = $request->han_xu_ly;
+//            $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+//            $vanbandv->don_vi_id = auth::user()->don_vi_id;
+//            $vanbandv->nguoi_tao = auth::user()->id;
+//            $vanbandv->save();
+//        }
+
         if ($noi_dung && $noi_dung[0] != null) {
             foreach ($noi_dung as $key => $data) {
                 $vanbandv = new VanBanDen();
@@ -678,9 +728,18 @@ class VanBanDenController extends Controller
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
+                if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                    $vanbandv->type = 1;
+                }elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                    $vanbandv->type = 2;
+                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
+                }
+                $vanbandv->type = 1;
                 $vanbandv->noi_dung = $data;
                 if ($request->han_giai_quyet[$key] == null) {
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 } else {
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
                     $vanbandv->han_giai_quyet = $han_gq[$key];
@@ -701,13 +760,20 @@ class VanBanDenController extends Controller
             $vanbandv->do_khan_cap_id = $request->do_khan;
             $vanbandv->do_bao_mat_id = $request->do_mat;
             $vanbandv->han_xu_ly = $request->han_xu_ly;
+            $vanbandv->han_giai_quyet = $request->han_xu_ly;
             $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
             $vanbandv->don_vi_id = auth::user()->don_vi_id;
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                $vanbandv->type = 1;
+            }elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $vanbandv->type = 2;
+                $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                DonViChuTri::saveDonViChuTri($vanbandv->id);
+            }
+            $vanbandv->type = 1;
             $vanbandv->nguoi_tao = auth::user()->id;
             $vanbandv->save();
         }
-
-
         //upload file
         if (!empty($request->get('file_pdf'))) {
             foreach ($requestData['file_pdf'] as $file) {
