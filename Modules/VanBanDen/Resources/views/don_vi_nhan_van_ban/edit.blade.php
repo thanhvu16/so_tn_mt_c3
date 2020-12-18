@@ -156,8 +156,23 @@
                                     <input type="date" class="form-control" value="{{$hangiaiquyet}}" name="han_xu_ly" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-right">
-                                <div class="form-group">
+
+                            <div class="col-md-12 ">
+                                <div class="col-md-6" >
+                                    <div class="row">
+                                        <span style="font-weight: bold">File văn bản :</span>
+                                        <span>
+                                    @if($van_ban_den->vanbandi->filechinh)
+                                                @forelse($van_ban_den->vanbandi->filechinh as $key=>$item)
+                                                    <a href="{{$item->getUrlFile()}}" target="_blank">[file văn bản]</a>
+                                                    <input type="text" value="{{$item->id}}" class="hidden" name="id_file">
+                                                @empty
+                                                @endforelse
+                                            @endif
+                                </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6 text-right">
                                     <button
                                         class="btn btn-primary" form="myform" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
                                         <span>Thêm mới</span></button>

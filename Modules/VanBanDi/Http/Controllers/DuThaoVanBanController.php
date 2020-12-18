@@ -56,7 +56,7 @@ class DuThaoVanBanController extends Controller
                 {
                     array_push($vanThuVanBanDiPiceCharts, $data2);
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG,CHU_TICH, PHO_CHUC_TICH])->get();
                 foreach ($chanvanphong as $data)
                 {
                     array_push($vanThuVanBanDiPiceCharts, $data);
@@ -281,6 +281,7 @@ class DuThaoVanBanController extends Controller
     }
     public function thongtinvanban($id)
     {
+
         $file = Fileduthao::where(['vb_du_thao_id' => $id])->where('stt', '!=', 0)->get();
         $vanThuVanBanDiPiceCharts=[];
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -290,7 +291,7 @@ class DuThaoVanBanController extends Controller
                 {
                     array_push($vanThuVanBanDiPiceCharts, $data2);
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG ,CHU_TICH, PHO_CHUC_TICH])->get();
                 foreach ($chanvanphong as $data)
                 {
                     array_push($vanThuVanBanDiPiceCharts, $data);
@@ -797,6 +798,7 @@ class DuThaoVanBanController extends Controller
     {
         $user = auth::user();
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
+        $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
         $canbothuocduthaocu = CanBoPhongDuThao::where('du_thao_vb_id', $request->id_duthao)->get();
         foreach ($canbothuocduthaocu as $canbo) {
             $canbothuocduthaophongcu = CanBoPhongDuThao::where('id', $canbo->id)->first();
@@ -1045,12 +1047,21 @@ class DuThaoVanBanController extends Controller
         $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
         $canbonhan->id_du_thao = $duthaochot->id;
         $canbonhan->save();
+
         if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
             foreach ($donvinhanvanbandi as $key => $donvi) {
                 $donvinhan = new NoiNhanVanBanDi();
                 $donvinhan->van_ban_di_id = $vanbandi->id;
                 $donvinhan->don_vi_id_nhan = $donvi;
                 $donvinhan->save();
+            }
+        }
+        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+            foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                $mailngoai = new NoiNhanMailNgoai();
+                $mailngoai->van_ban_di_id = $vanbandi->id;
+                $mailngoai->email = $ngoai;
+                $mailngoai->save();
             }
         }
 

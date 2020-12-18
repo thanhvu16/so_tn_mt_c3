@@ -152,14 +152,38 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mt-4">
+
+                            <div class="col-md-6 mt-4">
                                 <div class="form-group">
                                     <button
                                         class="btn btn-primary" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
                                         <span>Thêm mới</span></button>
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-3 " >
+                                <span style="font-weight: bold">File văn bản :</span>
+                                <span>
+                                    @if($van_ban_den->vanBanDen->vanBanDenFile)
+                                        @forelse($van_ban_den->vanBanDen->vanBanDenFile as $key=>$item)
+                                            <a href="{{$item->getUrlFile()}}" target="_blank">[file văn bản]</a>
+                                            {{--                                                    @if($item->duoi_file == 'pdf')<i--}}
+                                            {{--                                                class="fa fa-file-pdf-o"--}}
+                                            {{--                                                style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')--}}
+                                            {{--                                                <i class="fa fa-file-word-o"--}}
+                                            {{--                                                   style="font-size:20px;color:blue"></i> @elseif($item->duoi_file == 'xlsx' || $item->duoi_file == 'xls')--}}
+                                            {{--                                                <i class="fa fa-file-excel-o"--}}
+                                            {{--                                                   style="font-size:20px;color:green"></i> @endif--}}
+                                            {{--                                                </a>@if(count($van_ban_den->vanBanDen->vanBanDenFile) == $key+1) @else &nbsp;|&nbsp; @endif--}}
+                                            <input type="text" value="{{$item->id}}" class="hidden" name="id_file">
+                                        @empty
+                                        @endforelse
+                                    @endif
+                                </span>
+                            </div>
+
                         </div>
+
                     </form>
                 </div>
             </div>
