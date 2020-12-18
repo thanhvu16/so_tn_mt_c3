@@ -12,10 +12,12 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
+use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
+use Modules\VanBanDi\Entities\FileVanBanDi;
 use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
-use auth ;
+use auth;
 
 class DonViNhanVanBanDenController extends Controller
 {
@@ -23,10 +25,10 @@ class DonViNhanVanBanDenController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index(Request $request )
+    public function index(Request $request)
     {
         $hienthi = $request->get('don_vi_van_ban');
-        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan'=>auth::user()->don_vi_id])->whereIn('trang_thai',[2,3])
+        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])->whereIn('trang_thai', [2, 3])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     return $query->where('trang_thai', "$hienthi");
@@ -34,12 +36,12 @@ class DonViNhanVanBanDenController extends Controller
             })
             ->paginate(PER_PAGE);
         $donvinhancount = count($donvinhan);
-        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id'=>auth::user()->don_vi_id])
+        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->don_vi_id])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
-                    if($hienthi == 2)
-                    return $query->whereNull('vao_so_van_ban');
-                    elseif($hienthi == 3){
+                    if ($hienthi == 2)
+                        return $query->whereNull('vao_so_van_ban');
+                    elseif ($hienthi == 3) {
                         return $query->where('vao_so_van_ban', 1);
                     }
                 }
@@ -49,23 +51,23 @@ class DonViNhanVanBanDenController extends Controller
             ->get();
         $donvinhancount2 = count($vanbanhuyenxuongdonvi);
         $tong = $donvinhancount + $donvinhancount2;
-        return view('vanbanden::don_vi_nhan_van_ban.index',compact('donvinhan','vanbanhuyenxuongdonvi','donvinhancount','tong'));
+        return view('vanbanden::don_vi_nhan_van_ban.index', compact('donvinhan', 'vanbanhuyenxuongdonvi', 'donvinhancount', 'tong'));
     }
 
-    public function chi_tiet_van_ban_den_don_vi(Request $request,$id)
+    public function chi_tiet_van_ban_den_don_vi(Request $request, $id)
     {
         $user = auth::user();
         $domat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $users = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ngaynhan = date('Y-m-d');
         $songay = 10;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
         $i = 0;
 
-        $van_ban_den = DonViChuTri::where('id',$id)->first();
+        $van_ban_den = DonViChuTri::where('id', $id)->first();
 
         foreach ($ngaynghi as $key => $value) {
             if ($value['ngay_nghi'] != $ngaynhan) {
@@ -77,8 +79,8 @@ class DonViNhanVanBanDenController extends Controller
         }
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
-        return view('vanbanden::don_vi_nhan_van_ban.van_ban_den_don_vi',compact('dokhan','domat',
-            'loaivanban','sovanban','users','id','hangiaiquyet','van_ban_den'));
+        return view('vanbanden::don_vi_nhan_van_ban.van_ban_den_don_vi', compact('dokhan', 'domat',
+            'loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
 
     }
 
@@ -123,13 +125,13 @@ class DonViNhanVanBanDenController extends Controller
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $users = User::permission('tham mưu')->where(['trang_thai'=> ACTIVE,'don_vi_id'=>$user->don_vi_id])->get();
+        $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ngaynhan = date('Y-m-d');
         $songay = 10;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
         $i = 0;
 
-        $van_ban_den = NoiNhanVanBanDi::where('id',$id)->first();
+        $van_ban_den = NoiNhanVanBanDi::where('id', $id)->first();
 
         foreach ($ngaynghi as $key => $value) {
             if ($value['ngay_nghi'] != $ngaynhan) {
@@ -141,15 +143,15 @@ class DonViNhanVanBanDenController extends Controller
         }
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
-        return view('vanbanden::don_vi_nhan_van_ban.edit',compact('dokhan','domat','loaivanban','sovanban','users','id','hangiaiquyet','van_ban_den'));
+        return view('vanbanden::don_vi_nhan_van_ban.edit', compact('dokhan', 'domat', 'loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
     }
+
     public function vaosovanbandvnhan(Request $request)
     {
         $user = auth::user();
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
-        if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
-        {
+        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
                     $vanbandv = new VanBanDen();
@@ -198,8 +200,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
             }
-        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-        {
+        } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
                     $vanbandv = new VanBanDen();
@@ -252,21 +253,35 @@ class DonViNhanVanBanDenController extends Controller
                 DonViChuTri::saveDonViChuTri($vanbandv->id);
             }
         }
-        $layvanbandi = NoiNhanVanBanDi::where('id',$request->id_van_ban_di)->first();
-        $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id',$layvanbandi->van_ban_di_id)->get();
-        if($updatenoinhan){
+        $layvanbandi = NoiNhanVanBanDi::where('id', $request->id_van_ban_di)->first();
+        $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id', $layvanbandi->van_ban_di_id)->get();
+        if ($updatenoinhan) {
             //update
-            foreach ($updatenoinhan as $data)
-            {
-                $trangthai = NoiNhanVanBanDi::where('id',$data->id)->first();
+            foreach ($updatenoinhan as $data) {
+                $trangthai = NoiNhanVanBanDi::where('id', $data->id)->first();
                 $trangthai->trang_thai = 3;
                 $trangthai->save();
             }
         }
 
+        if ($request->id_file) {
+            $file = FileVanBanDi::where('id', $request->id_file)->first();
+            if ($file) {
+                $vbDenFile = new FileVanBanDen();
+                $vbDenFile->ten_file = $file->ten_file;
+                $vbDenFile->duong_dan = $file->duong_dan;
+                $vbDenFile->duoi_file = $file->duoi_file;
+                $vbDenFile->vb_den_id = $vanbandv->id;
+                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                $vbDenFile->save();
+
+            }
+
+        }
 
 
-        return redirect()->route('van-ban-den.index')->with('success','Thêm văn bản thành công !!');
+        return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
 
 
@@ -274,8 +289,7 @@ class DonViNhanVanBanDenController extends Controller
     {
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
-        if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
-        {
+        if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
                     $vanbandv = new VanBanDen();
@@ -324,8 +338,8 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
             }
-        }elseif(auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
-            $layvanbandi = DonViChuTri::where('id',$request->id_don_vi_chu_tri)->first();
+        } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
+            $layvanbandi = DonViChuTri::where('id', $request->id_don_vi_chu_tri)->first();
         {
 
             if ($noi_dung && $noi_dung[0] != null) {
@@ -380,16 +394,30 @@ class DonViNhanVanBanDenController extends Controller
             }
         }
 
-        if($layvanbandi){
+        if ($layvanbandi) {
             //update
             $layvanbandi->vao_so_van_ban = 1;
             $layvanbandi->save();
         }
+        if ($request->id_file) {
+            $file = FileVanBanDen::where('id', $request->id_file)->first();
+            if ($file) {
+                $vbDenFile = new FileVanBanDen();
+                $vbDenFile->ten_file = $file->ten_file;
+                $vbDenFile->duong_dan = $file->duong_dan;
+                $vbDenFile->duoi_file = $file->duoi_file;
+                $vbDenFile->vb_den_id = $vanbandv->id;
+                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                $vbDenFile->save();
+            }
+
+        }
 
 
-
-        return redirect()->route('van-ban-den.index')->with('success','Thêm văn bản thành công !!');
+        return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
+
     /**
      * Update the specified resource in storage.
      * @param Request $request

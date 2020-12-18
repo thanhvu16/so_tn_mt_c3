@@ -71,6 +71,7 @@
                                            placeholder="Người ký" required>
                                 </div>
                             </div>
+                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">(*)</span></label>
@@ -82,6 +83,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">(*)</span></label>
