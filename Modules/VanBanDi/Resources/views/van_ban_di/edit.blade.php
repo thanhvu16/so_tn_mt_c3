@@ -104,7 +104,7 @@
 
                                 </select>
                             </div>
-                            <div class="form-group col-md-12 hidden">
+                            <div class="form-group col-md-12 ">
                                 <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"

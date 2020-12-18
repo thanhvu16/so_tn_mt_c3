@@ -3,6 +3,7 @@
 namespace Modules\VanBanDi\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Jobs\SendEmailFileVanBanDi;
 use App\Models\LichCongTac;
 use App\User;
 use Carbon\Carbon;
@@ -35,6 +36,7 @@ class VanBanDiController extends Controller
      */
     public function index(Request $request)
     {
+
         $user = auth::user();
 
 
@@ -209,7 +211,7 @@ class VanBanDiController extends Controller
         canPermission(AllPermission::themVanBanDi());
         $user = auth::user();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $emailngoaithanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
+        $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -264,7 +266,7 @@ class VanBanDiController extends Controller
                 $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG,PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
@@ -276,7 +278,7 @@ class VanBanDiController extends Controller
                 $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case TRUONG_PHONG:
-                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG, QUYEN_PHO_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case PHO_CHUC_TICH:
                 $nguoinhan = User::role([CHU_TICH])->get();
@@ -288,13 +290,14 @@ class VanBanDiController extends Controller
                 $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
                 $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, QUYEN_CHANH_VAN_PHONG, QUYEN_PHO_CHANH_VAN_PHONG])->get();
+
+                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG ,PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
@@ -336,14 +339,16 @@ class VanBanDiController extends Controller
                 if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
                     $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                     //đây là huyện soạn thảo và huyện ký
-                    $vanbandi->don_vi_soan_thao = '';
+//                    $vanbandi->don_vi_soan_thao = '';
                 } else {//đây là đơn vị soạn thảo do huyện ký
-                    $vanbandi->don_vi_soan_thao = '';
+//                    $vanbandi->don_vi_soan_thao = '';
                     $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
                 }
+                $vanbandi->type = 1;
             } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
                 //đây là đơn vị ký
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+                $vanbandi->type = 2;
             }
 
             $vanbandi->so_van_ban_id = $request->sovanban_id;
@@ -440,6 +445,14 @@ class VanBanDiController extends Controller
 
                 }
             }
+            if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+                foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                    $mailngoai = new NoiNhanMailNgoai();
+                    $mailngoai->van_ban_di_id = $vanbandi->id;
+                    $mailngoai->email = $ngoai;
+                    $mailngoai->save();
+                }
+            }
 
 
             $isSuccess = true;
@@ -485,7 +498,7 @@ class VanBanDiController extends Controller
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $emailngoaithanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
+        $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
 
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
@@ -519,9 +532,9 @@ class VanBanDiController extends Controller
                 if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
                     $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                     //đây là huyện soạn thảo và huyện ký
-                    $vanbandi->don_vi_soan_thao = '';
+//                    $vanbandi->don_vi_soan_thao = '';
                 } else {//đây là đơn vị soạn thảo do huyện ký
-                    $vanbandi->don_vi_soan_thao = '';
+//                    $vanbandi->don_vi_soan_thao = '';
                     $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
                 }
             } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
@@ -557,6 +570,30 @@ class VanBanDiController extends Controller
                     }
                 }
             }
+            $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
+            $mailngoaitp = NoiNhanMailNgoai::where(['van_ban_di_id' => $id, 'status' => 1])->get();
+            $iddoviphongkhac = $mailngoaitp->pluck('email')->toArray();
+            if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+                if (array_diff($donvinhanmailngoaitp, $iddoviphongkhac) == null && count($iddoviphongkhac) == count($donvinhanmailngoaitp)) {
+                    //đây là trường hợp không thay đổi
+                } else {
+                    $mailngoai = NoiNhanMailNgoai::where('van_ban_di_id', $id)->get();
+                    if (count($mailngoai) > 0) {
+                        foreach ($mailngoai as $key => $xoahetngoai) {
+                            $mailngoaixoa = NoiNhanMailNgoai::where('id', $xoahetngoai->id)->first();
+                            $mailngoaixoa->status = 0;
+                            $mailngoaixoa->save();
+                        }
+                    }
+                    foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                        $mailngoaimoi = new NoiNhanMailNgoai();
+                        $mailngoaimoi->van_ban_di_id = $vanbandi->id;
+                        $mailngoaimoi->email = $ngoai;
+                        $mailngoaimoi->save();
+                    }
+                }
+
+            }
 
 
             $isSuccess = true;
@@ -577,6 +614,7 @@ class VanBanDiController extends Controller
 
     public function multiple_file_di(Request $request)
     {
+        $user = auth::user();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
         if (!File::exists($uploadPath)) {
             File::makeDirectory($uploadPath, 0775, true, true);
@@ -597,9 +635,24 @@ class VanBanDiController extends Controller
             $loaivanban = LoaiVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
             $vanban = null;
             if (!empty($loaivanban)) {
-                $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi])->first();
+                if ($user->hasRole(VAN_THU_HUYEN))
+                {
+                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi,'type' => 1])->first();
+
+
+                }elseif ($user->hasRole(VAN_THU_DON_VI))
+                {
+                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi,'don_vi_id' => auth::user()->don_vi_id])->first();
+
+
+                }
             }
             if ($vanban) {
+
+                $xoafiletrinhky = FileVanBanDi::where(['trang_thai' => 2, 'file_chinh_gui_di' => 2])->first();
+                if ($xoafiletrinhky) {
+                    $xoafiletrinhky->delete();
+                }
                 $vanBanDiFile = new FileVanBanDi();
                 $getFile->move($uploadPath, $fileName);
                 $vanBanDiFile->ten_file = $tenchinhfile;
@@ -609,14 +662,11 @@ class VanBanDiController extends Controller
                 $vanBanDiFile->file_chinh_gui_di = 2;
                 $vanBanDiFile->trang_thai = 2;
                 $vanBanDiFile->nguoi_dung_id = auth::user()->id;
-                $vanBanDiFile->don_vi_id = auth::user()->donvi_id;
-//                $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
+                $vanBanDiFile->don_vi_id = auth::user()->don_vi_id;
+                $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
                 $vanBanDiFile->save();
                 //xóa file trình ký khi đã ký số lỗi
-                $xoafiletrinhky = FileVanBanDi::where(['trang_thai' => 2, 'file_chinh_gui_di' => 2])->first();
-                if ($xoafiletrinhky) {
-                    $xoafiletrinhky->delete();
-                }
+
                 //gửi văn bản đi đến các đơn vị
                 $noinhan = NoiNhanVanBanDi::where('van_ban_di_id', $vanban->id)->get();
                 foreach ($noinhan as $key => $noi_nhan) {
@@ -624,7 +674,8 @@ class VanBanDiController extends Controller
                     $guidennoinhan->trang_thai = 2;
                     $guidennoinhan->save();
                 }
-
+//                gửi mail đến các đơn vị ngoài
+                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null)->delay(now()->addMinutes(5));
             }
         }
 

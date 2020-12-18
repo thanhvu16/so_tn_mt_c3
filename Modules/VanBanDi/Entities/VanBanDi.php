@@ -9,6 +9,7 @@ use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
+use Modules\Admin\Entities\MailNgoaiThanhPho;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 
@@ -17,6 +18,7 @@ class VanBanDi extends Model
 
     use SoftDeletes;
     protected $table = 'van_ban_di';
+    const LOAI_VAN_BAN_GIAY_MOI = 2;
 
     protected $fillable = [
 
@@ -24,7 +26,7 @@ class VanBanDi extends Model
 
     const VAN_BAN_DU_THAO = 1;
     const DUYET_DU_THAO = 1;
-
+    const LOAI_VAN_BAN_DI = 1;
 
     public function nguoidung2()
     {
@@ -73,6 +75,9 @@ class VanBanDi extends Model
     public function mailtrongtp(){
         return $this->hasMany(NoiNhanMail::class,'van_ban_di_id')->where('status',1);
     }
+
+
+
     public function mailngoaitp(){
         return $this->hasMany(NoiNhanMailNgoai::class,'van_ban_di_id')->where('status',1);
     }
@@ -83,6 +88,8 @@ class VanBanDi extends Model
     {
         return $this->belongsTo(LoaiVanBan::class, 'loai_van_ban_id', 'id');
     }
+
+
 
 
     public function coutLoaiVanBan( $loaiVanBanId) {
@@ -121,8 +128,8 @@ class VanBanDi extends Model
 
     public function vanBanDiFileDaKy()
     {
-        return $this->hasMany(FileVanBanDi::class, 'vanbandi_id', 'id')
-            ->where('trangthai', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
+        return $this->hasMany(FileVanBanDi::class, 'van_ban_di_id', 'id')
+            ->where('file_chinh_gui_di', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
             ->where('loai_file', FileVanBanDi::LOAI_FILE_DA_KY)
             ->whereNull('trang_thai_gui');
     }
@@ -140,8 +147,8 @@ class VanBanDi extends Model
 
     public function vanBanDiFilePdfDaKy()
     {
-        return $this->hasMany(FileVanBanDi::class, 'vanbandi_id', 'id')
-            ->where('trangthai', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
+        return $this->hasMany(FileVanBanDi::class, 'van_ban_di_id', 'id')
+            ->where('trang_thai', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
             ->where('loai_file', FileVanBanDi::LOAI_FILE_DA_KY);
     }
 
