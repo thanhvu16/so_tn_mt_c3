@@ -46,6 +46,8 @@ class VanBanDen extends Model
     const TYPE_VB_HUYEN = 1;
     const TYPE_VB_DON_VI = 2;
 
+    const LOAI_VAN_BAN_DON_VI_PHOI_HOP = 1;
+
     protected $fillable = [];
 
     public function nguoiDung()
@@ -85,28 +87,36 @@ class VanBanDen extends Model
 
     public function checkLuuVetVanBanDen()
     {
-        return $this->hasOne(LogXuLyVanBanDen::class, 'van_ban_den_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasOne(LogXuLyVanBanDen::class, 'van_ban_den_id', 'id')
+            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
+            ->orderBy('id', 'DESC');
     }
 
     public function checkCanBoNhan($arrUserId)
     {
         $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
             ->whereIn('can_bo_nhan_id', $arrUserId)
-            ->select('id', 'noi_dung')
+            ->select('id', 'noi_dung', 'can_bo_nhan_id')
             ->whereNull('status')
             ->first();
 
         return $xuLyVanBanDen;
     }
 
-    public function getXuLyVanBanDen()
+    public function getXuLyVanBanDen($type = null)
     {
         $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
             ->select('id', 'noi_dung', 'can_bo_nhan_id')
             ->whereNull('status')
             ->get();
 
-        return $xuLyVanBanDen->pluck('can_bo_nhan_id')->toArray();
+        if (!empty($type)) {
+
+            return $xuLyVanBanDen->pluck('can_bo_nhan_id')->toArray();
+        } else {
+
+            return $xuLyVanBanDen;
+        }
     }
 
     public function lanhDaoXemDeBiet()
@@ -142,6 +152,7 @@ class VanBanDen extends Model
     {
         return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
             ->where('can_bo_nhan_id', auth::user()->id)
+            ->select('id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
             ->whereNull('status')
             ->orderBy('id','DESC');
     }
@@ -172,6 +183,7 @@ class VanBanDen extends Model
         return DonViChuTri::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
             ->where('can_bo_nhan_id', $canBoNhanId)
+            ->select(['id', 'van_ban_den_id', 'noi_dung'])
             ->first();
     }
 
@@ -188,6 +200,7 @@ class VanBanDen extends Model
     {
         $danhSachChuyenVien = ChuyenVienPhoiHop::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
+            ->select('id', 'can_bo_nhan_id')
             ->get();
 
         $arrId = null;
@@ -204,6 +217,7 @@ class VanBanDen extends Model
 
         return DonViChuTri::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
+            ->select('id', 'van_ban_den_id', 'can_bo_nhan_id', 'noi_dung')
             ->whereIn('can_bo_nhan_id', $canBoNhanId)
             ->first();
     }
@@ -255,7 +269,17 @@ class VanBanDen extends Model
     {
         return GiaiQuyetVanBan::where('van_ban_den_id', $this->id)
             ->whereNull('status')
+            ->select('id', 'van_ban_den_id', 'noi_dung')
             ->orderBy('id', 'DESC')
+            ->first();
+    }
+
+    public function getGiaiQuyetParent()
+    {
+
+        return GiaiQuyetVanBan::where('van_ban_den_id', $this->id)
+            ->whereNull('parent_id')
+            ->select('id', 'van_ban_den_id', 'noi_dung')
             ->first();
     }
 
@@ -299,7 +323,8 @@ class VanBanDen extends Model
     {
         return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
             ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
-            ->where('user_id', auth::user()->id);
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->select('id', 'van_ban_den_id', 'noi_dung');
     }
 
     public function chuyenVienPhoiHop()
@@ -367,13 +392,20 @@ class VanBanDen extends Model
         return LichCongTac::whereIn('lanh_dao_id', $arrLanhDaoId)
             ->where('object_id', $this->id)
             ->whereNull('type')
+            ->select('id', 'lanh_dao_id')
             ->first();
     }
 
     // lay van ban den don vi
-    public function hasChild()
+    public function hasChild($type = null)
     {
-        return VanBanDen::where('parent_id', $this->id)->orderBy('id', 'DESC')->first();
+        return VanBanDen::where('parent_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('type', VanBanDen::TYPE_VB_DON_VI)
+            ->where(function ($query) use ($type) {
+                return $query->where('loai_van_ban_don_vi', $type);
+            })
+            ->orderBy('id', 'DESC')->first();
 
     }
 

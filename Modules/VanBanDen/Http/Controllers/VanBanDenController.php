@@ -158,7 +158,8 @@ class VanBanDenController extends Controller
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
 
-        return view('vanbanden::van_ban_den.index', compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_loaiVanBan'));
+        return view('vanbanden::van_ban_den.index',
+            compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_loaiVanBan'));
     }
 
     /**

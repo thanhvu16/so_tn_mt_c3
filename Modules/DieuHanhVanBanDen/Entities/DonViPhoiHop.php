@@ -21,6 +21,8 @@ class DonViPhoiHop extends Model
         'parent_id',
         'noi_dung',
         'chuyen_tiep',
+        'don_vi_co_dieu_hanh',
+        'vao_so_van_ban',
         'hoan_thanh'
     ];
 
@@ -30,8 +32,6 @@ class DonViPhoiHop extends Model
 
     public static function luuDonViPhoiHop($arrDonViId, $vanBanDenId)
     {
-
-        $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
 
         if (!empty($arrDonViId) && count($arrDonViId) > 0) {
                 DonViPhoiHop::where([
@@ -55,9 +55,11 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop  = new DonViPhoiHop();
                 $donViPhoiHop->van_ban_den_id = $vanBanDenId;
                 $donViPhoiHop->can_bo_chuyen_id = auth::user()->id;
-                $donViPhoiHop->don_vi_id = $donViId;
-                $donViPhoiHop->noi_dung = $noiDung;
                 $donViPhoiHop->can_bo_nhan_id = $nguoiDung->id ?? null;
+                $donViPhoiHop->noi_dung = $noiDung;
+                $donViPhoiHop->don_vi_id = $donViId;
+                $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
+                $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
                 $donViPhoiHop->save();
             }
         }

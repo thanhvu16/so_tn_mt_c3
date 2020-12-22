@@ -27,16 +27,16 @@
                             <td>
                                 <p>{{ $giaiQuyetVanBan->noi_dung }}</p>
                                 <p>
-                                    @if (isset($giaiQuyetVanBan->giaiQuyetVanBanFile))
-                                        @foreach($giaiQuyetVanBan->giaiQuyetVanBanFile as $key => $file)
-                                            <a href="{{ $file->getUrlFile() }}"
-                                               target="popup"
-                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                            @if (count($giaiQuyetVanBan->giaiQuyetVanBanFile)-1 != $key)
-                                                &nbsp;|&nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                @if (isset($giaiQuyetVanBan->giaiQuyetVanBanFile))
+                                    @foreach($giaiQuyetVanBan->giaiQuyetVanBanFile as $key => $file)
+                                        <a href="{{ $file->getUrlFile() }}"
+                                           target="popup"
+                                           class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                                        @if (count($giaiQuyetVanBan->giaiQuyetVanBanFile)-1 != $key)
+                                            &nbsp;|&nbsp;
+                                        @endif
+                                    @endforeach
+                                @endif
                                 </p>
                             </td>
                             <td>

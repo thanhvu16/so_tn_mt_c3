@@ -179,7 +179,7 @@
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
-                                                       {{ $vanBanDen->checkVanBanQuanTrong() ? 'checked' : null }} class="check-van-ban-quan-trong">
+                                                           {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">
                                                 <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
                                                        class="color-red font-weight-normal">
                                                     VB Quan trọng
@@ -192,16 +192,16 @@
                                             <p>
                                             <textarea name="noi_dung_chu_tich[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
-                                                      class="form-control noi-dung-chu-tich {{ !empty($vanBanDen->checkCanBoNhan([$chuTich->id])) ? 'show' : 'hide' }}"
-                                                      rows="5">{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->noi_dung ?? '' }}</textarea>
+                                                      class="form-control noi-dung-chu-tich {{ !empty($vanBanDen->chuTich) ? 'show' : 'hide' }}"
+                                                      rows="5">{{ $vanBanDen->chuTich->noi_dung ?? '' }}</textarea>
                                             </p>
                                         @endif
                                         <p>
                                             <textarea
                                                 name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
                                                 form="form-tham-muu"
-                                                class="form-control {{ !empty($vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung) ? 'show' : 'hide' }}"
-                                                rows="3">{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}</textarea>
+                                                class="form-control {{ !empty($vanBanDen->PhoChuTich->noi_dung) ? 'show' : 'hide' }}"
+                                                rows="3">{{ $vanBanDen->PhoChuTich->noi_dung ?? '' }}</textarea>
                                         </p>
                                         <p>
                                             <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"
@@ -227,8 +227,8 @@
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                        class="radio-col-cyan chu-tich-du-hop"
-                                                       value="{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->can_bo_nhan_id ?? null }}"
-                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac([$chuTich->id]) ? 'checked' : null  }}>
+                                                       value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacChuTich ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                 ><i>CT</i></label>
@@ -238,8 +238,8 @@
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                        class="radio-col-cyan pho-ct-du-hop"
-                                                       value="{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->can_bo_nhan_id ?? null }}"
-                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                       value="{{ $vanBanDen->PhoChuTich->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                 ><i>PCT</i></label>

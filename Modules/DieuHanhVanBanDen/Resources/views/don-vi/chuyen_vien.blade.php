@@ -30,7 +30,7 @@
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="20%" class="text-center">Tóm tắt VB</th>
-                                <th width="8%" class="text-center">Trình tự xử lý</th>
+                                <th width="12%" class="text-center">Trình tự xử lý</th>
                             </tr>
                             </thead>
                             <tbody>

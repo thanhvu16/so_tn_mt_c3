@@ -22,6 +22,7 @@ use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDi\Entities\CanBoPhongDuThao;
 use Modules\VanBanDi\Entities\CanBoPhongDuThaoKhac;
 use Modules\VanBanDi\Entities\Duthaovanbandi;
+use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 use Modules\VanBanDi\Entities\VanBanDi;
 use Modules\VanBanDi\Entities\VanBanDiChoDuyet;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
@@ -130,11 +131,24 @@ class AdminController extends Controller
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách văn bản đến', $danhSachVanBanDen));
             array_push($vanThuVanBanDenCoLors, COLOR_PINTEREST);
 
-            $vanBanDenDonViChoVaoSo = DonViChuTri::where(['don_vi_id' => $user->don_vi_id])
+            $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->don_vi_id])
                 ->whereNull('vao_so_van_ban')
                 ->whereNull('parent_id')
                 ->whereNull('type')
                 ->count();
+
+            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])
+                ->whereIn('trang_thai', [2])
+                ->count();
+
+            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->don_vi_id)
+                ->whereNull('vao_so_van_ban')
+                ->whereNull('parent_id')
+                ->whereNull('type')
+                ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
+                ->count();
+
+            $vanBanDenDonViChoVaoSo = $vanBanDonViChuTri + $noiNhanVanBanDi + $vanBanDonViPhoiHop;
 
             array_push($vanThuVanBanDenPiceCharts, array('Văn bản đến chờ vào sổ', $vanBanDenDonViChoVaoSo));
             array_push($vanThuVanBanDenCoLors, COLOR_WARNING);
@@ -267,7 +281,7 @@ class AdminController extends Controller
                 ->count();
 
             // VAN BAN HOAN THANH CHO DUYET
-            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG])) {
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
                 $vanBanHoanThanhChoDuyet = GiaiQuyetVanBan::where('can_bo_duyet_id', $user->id)
                     ->whereNull('status')->count();
 

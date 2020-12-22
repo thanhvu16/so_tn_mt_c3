@@ -31,7 +31,7 @@
                                 <th width="22%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="19%" class="text-center">Tóm tắt văn bản</th>
                                 <th width="15%" class="text-center">Ý kiến</th>
-                                <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th width="21%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
@@ -115,7 +115,7 @@
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
-                                                       {{ $vanBanDen->checkVanBanQuanTrong() ? 'checked' : null }} class="check-van-ban-quan-trong">
+                                                       {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">
                                                 <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
                                                        class="color-red font-weight-normal">
                                                     VB Quan trọng
@@ -128,14 +128,13 @@
                                             <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ !empty($vanBanDen->checkDonViChuTri) ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="3">{{ $vanBanDen->checkDonViChuTri->noi_dung ?? null }}</textarea>
+                                                      rows="4">{{ $vanBanDen->checkDonViChuTri->noi_dung ?? null }}</textarea>
                                         </p>
                                         <p>
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị
-                                                phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>

@@ -48,21 +48,34 @@ class DieuHanhVanBanDenController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $vanBanDen = VanBanDen::with('loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
+        $vanBanDen = VanBanDen::with(['loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
             'xuLyVanBanDen', 'XuLyVanBanDenTraLai', 'donViChuTri', 'donViPhoiHop',
-            'giaHanVanBan', 'chuyenVienPhoiHopGiaiQuyet', 'duThaoVanBan')
+            'giaHanVanBan', 'chuyenVienPhoiHopGiaiQuyet', 'duThaoVanBan',
+            'giaiQuyetVanBan' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'noi_dung', 'noi_dung_nhan_xet',
+                    'user_id', 'can_bo_duyet_id', 'status', 'created_at', 'parent_id');
+            }
+            ])
             ->findOrFail($id);
 
-        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+        //phoi hop
+        $type = $request->get('status') ?? null;
+
+        if ($vanBanDen) {
+            $vanBanDen->hasChild = $vanBanDen->hasChild($type) ?? null;
+        }
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')->first();
 
         // data cua du thao
         $date = Carbon::now()->format('Y-m-d');
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG , CHUYEN_VIEN])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
 
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -97,7 +110,7 @@ class DieuHanhVanBanDenController extends Controller
         }
 
         return view('dieuhanhvanbanden::van-ban-den.show',
-            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac','date'));
+            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date'));
     }
 
     /**

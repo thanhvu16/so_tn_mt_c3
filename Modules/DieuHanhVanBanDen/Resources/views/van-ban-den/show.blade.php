@@ -9,59 +9,59 @@
     <section class="content">
         <div class="box box-detail box-primary">
             <div class="row box-body">
-                @if($vanBanDen->hasChild())
+                @if($vanBanDen->hasChild)
                     <div class="col-md-12 row-bd-bt">
                         <div class="col-md-4">
                             <p>
-                                <b>Số Ký hiệu: </b>{{ $vanBanDen->hasChild()->so_ky_hieu ?? null }}
+                                <b>Số Ký hiệu: </b>{{ $vanBanDen->hasChild->so_ky_hieu ?? null }}
                             </p>
                             <p>
                                 <b>Loại văn
-                                    bản:</b> {{ isset($vanBanDen->hasChild()->loaiVanBan) ? $vanBanDen->hasChild()->loaiVanBan->ten_loai_van_ban : null }}
+                                    bản:</b> {{ isset($vanBanDen->hasChild->loaiVanBan) ? $vanBanDen->hasChild->loaiVanBan->ten_loai_van_ban : null }}
                             </p>
                             <p>
                                 <b>Số đến:</b>
-                                <b class="color-red"> {{ $vanBanDen->hasChild()->so_den ?? null }}</b>
+                                <b class="color-red"> {{ $vanBanDen->hasChild->so_den ?? null }}</b>
                             </p>
                         </div>
                         <div class="col-md-4">
                             <p>
                                 <b>Ngày
                                     ban
-                                    hành:</b> {{ !empty($vanBanDen->hasChild()->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_ban_hanh)) : null }}
+                                    hành:</b> {{ !empty($vanBanDen->hasChild->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_ban_hanh)) : null }}
                             </p>
                             <p>
-                                <b>Cơ quan ban hành: </b> {{ $vanBanDen->hasChild()->co_quan_ban_hanh ?? null }}
+                                <b>Cơ quan ban hành: </b> {{ $vanBanDen->hasChild->co_quan_ban_hanh ?? null }}
                             </p>
                             <p>
-                                <b>Người ký:</b> {{ $vanBanDen->hasChild()->nguoi_ky ?? null }}
+                                <b>Người ký:</b> {{ $vanBanDen->hasChild->nguoi_ky ?? null }}
                             </p>
                         </div>
                         <div class="col-md-4">
                             <p>
                                 <b>Cán bộ
-                                    nhập: </b> {{ $vanBanDen->hasChild()->nguoiDung->ho_ten ?? 'N/A' }}
+                                    nhập: </b> {{ $vanBanDen->hasChild->nguoiDung->ho_ten ?? 'N/A' }}
                             </p>
                             <p>
                                 <b>Hạn xử
-                                    lý: </b> {{ !empty($vanBanDen->hasChild()->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild()->han_xu_ly)) : null }}
+                                    lý: </b> {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : null }}
                             </p>
                         </div>
                         <div class="col-md-12">
                             <p>
-                                <b>Trích yếu: </b> {{ $vanBanDen->hasChild()->trich_yeu ?? null }}
+                                <b>Trích yếu: </b> {{ $vanBanDen->hasChild->trich_yeu ?? null }}
                             </p>
                         </div>
                         <div class="col-md-4">
                             <p>
                                 <b>File:</b>
 
-                                @if (isset($vanBanDen->hasChild()->vanBanDenFile))
-                                    @foreach($vanBanDen->hasChild()->vanBanDenFile as $key => $file)
+                                @if (isset($vanBanDen->hasChild->vanBanDenFile))
+                                    @foreach($vanBanDen->hasChild->vanBanDenFile as $key => $file)
                                         <a href="{{ $file->getUrlFile() }}"
                                            target="popup"
                                            class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                        @if (count($vanBanDen->hasChild()->vanBanDenFile)-1 != $key)
+                                        @if (count($vanBanDen->hasChild->vanBanDenFile)-1 != $key)
                                             &nbsp;|&nbsp;
                                         @endif
                                     @endforeach
@@ -71,27 +71,27 @@
                         </div>
                         <div class="col-md-4">
                             <p>
-                                <b>Độ mật:</b> {{ isset($vanBanDen->hasChild()->doBaoMat) ? $vanBanDen->hasChild()->doBaoMat->ten_muc_do : null }}
+                                <b>Độ mật:</b> {{ isset($vanBanDen->hasChild->doBaoMat) ? $vanBanDen->hasChild->doBaoMat->ten_muc_do : null }}
                             </p>
                             <p>
-                                <b>Độ khẩn:</b> {{ isset($vanBanDen->hasChild()->doKhan) ? $vanBanDen->hasChild()->doKhan->ten_muc_do : null }}
+                                <b>Độ khẩn:</b> {{ isset($vanBanDen->hasChild->doKhan) ? $vanBanDen->hasChild->doKhan->ten_muc_do : null }}
                             </p>
                         </div>
-                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->so_van_ban_id == $loaiVanBanGiayMoi->id)
+                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->so_van_ban_id == $loaiVanBanGiayMoi->id)
                             <div class="col-md-12">
                                 <label class="col-form-label">Nội dung
-                                    họp:</label> {{ $vanBanDen->hasChild()->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
+                                    họp:</label> {{ $vanBanDen->hasChild->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
                                 <br>
                                 <i>
-                                    (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
-                                    ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
-                                    , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                    (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                    ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
+                                    , tại {{ $vanBanDen->hasChild->dia_diem }})
                                 </i>
                             </div>
                         @endif
-                        @if (isset($vanBanDen->hasChild()->noi_dung))
+                        @if (isset($vanBanDen->hasChild->noi_dung))
                             <div class="col-md-12 mt-2">
-                                <label class="col-form-label">Nội dung :</label> {{ $vanBanDen->hasChild()->noi_dung ?? null }}
+                                <label class="col-form-label">Nội dung :</label> {{ $vanBanDen->hasChild->noi_dung ?? null }}
                             </div>
                         @endif
                     </div>

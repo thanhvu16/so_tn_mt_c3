@@ -13,6 +13,7 @@ class PhoiHopGiaiQuyet extends Model
         'van_ban_den_id',
         'noi_dung',
         'status',
+        'don_vi_id',
         'user_id'
     ];
 

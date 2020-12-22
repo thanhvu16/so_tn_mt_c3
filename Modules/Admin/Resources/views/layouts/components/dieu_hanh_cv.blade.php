@@ -2,7 +2,7 @@
  || Route::is('gia-han-van-ban.index') || route::is('van-ban-den-hoan-thanh.cho-duyet') || Route::is('van_ban_den_chuyen_vien.index')
  || Route::is('van-ban-den-hoan-thanh.index') || Route::is('van_ban_den_chuyen_vien.da_xu_ly') || Route::is('van-ban-den-phoi-hop.index')
   || Route::is('van-ban-den-phoi-hop.dang-xu-ly') || Route::is('van-ban-den-phoi-hop.da-xu-ly') || Route::is('van-ban-den-don-vi.dang_xu_ly')
-   ? 'active menu-open' : '' }}">
+   || Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-th" aria-hidden="true"></i> <span>Hồ sơ công việc</span>
         <span class="pull-right-container">
@@ -19,6 +19,11 @@
         </li>
         <li class="{{ Route::is('gia-han-van-ban.index') ? 'active' : '' }}"><a
                 href="{{ route('gia-han-van-ban.index') }}"><i class="fa fa-circle-o"></i>VB xin gia hạn</a>
+        </li>
+        @endrole
+        @hasanyrole('phó phòng')
+        <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
+                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB xem để biết</a>
         </li>
         @endrole
         <li class="{{ Route::is('van-ban-den-don-vi.dang_xu_ly') ? 'active' : '' }}"><a

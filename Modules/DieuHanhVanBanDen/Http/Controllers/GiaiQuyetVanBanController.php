@@ -44,6 +44,8 @@ class GiaiQuyetVanBanController extends Controller
         $currentUser = auth::user();
 
         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $rolePhoPhong = [PHO_CHANH_VAN_PHONG, PHO_PHONG];
+
         $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($roles) {
                 return $query->whereIn('name', $roles);
@@ -51,7 +53,18 @@ class GiaiQuyetVanBanController extends Controller
             ->where('trang_thai',ACTIVE)
             ->whereNull('deleted_at')->first();
 
+        $phoPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+            ->whereHas('roles', function ($query) use ($rolePhoPhong) {
+                return $query->whereIn('name', $rolePhoPhong);
+            })
+            ->where('trang_thai',ACTIVE)
+            ->whereNull('deleted_at')->get();
+
         $vanBanDenDonVi = VanBanDen::where('id', $data['van_ban_den_id'])->first();
+
+        $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+            ->where('can_bo_nhan_id', auth::user()->id)
+            ->whereNull('hoan_thanh')->first();
 
         if ($truongPhongDonVi && $truongPhongDonVi->id == $currentUser->id) {
             if ($vanBanDenDonVi) {
@@ -77,10 +90,6 @@ class GiaiQuyetVanBanController extends Controller
                 }
 
                 //xoa chuyen nhan vb
-                $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
-                    ->where('can_bo_nhan_id', auth::user()->id)
-                    ->whereNull('hoan_thanh')->first();
-
                 if ($chuyenNhanVanBanDonVi) {
                     DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
                         ->where('id', '>', $chuyenNhanVanBanDonVi->id)
@@ -102,11 +111,18 @@ class GiaiQuyetVanBanController extends Controller
         } else {
 
             // luu giai quyet vb
+            $canBoDuyetId = $chuyenNhanVanBanDonVi->can_bo_chuyen_id;
+
+            if (in_array($currentUser->id , $phoPhongDonVi->pluck('id')->toArray())) {
+                $canBoDuyetId = $truongPhongDonVi->id;
+            }
+
+
             $giaiQuyetVanBan = new GiaiQuyetVanBan();
             $giaiQuyetVanBan->van_ban_den_id = $vanBanDenDonVi->id;
             $giaiQuyetVanBan->noi_dung = $data['noi_dung'] ?? null;
             $giaiQuyetVanBan->user_id = auth::user()->id;
-            $giaiQuyetVanBan->can_bo_duyet_id = $truongPhongDonVi->id;
+            $giaiQuyetVanBan->can_bo_duyet_id = $canBoDuyetId;
             $giaiQuyetVanBan->save();
 
             //upload file

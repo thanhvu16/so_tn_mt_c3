@@ -47,7 +47,6 @@
                                     </td>
                                     <td style="text-align: justify">
                                         <a href="{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}}" title="{{$vbDen->vanbandi->trich_yeu}}">{{$vbDen->vanbandi->trich_yeu}}</a><br>
-
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
@@ -66,9 +65,6 @@
 
 
                                 </tr>
-
-
-
                             @empty
                             @endforelse
                             @forelse ($vanbanhuyenxuongdonvi as $key=>$vbDen2)
@@ -80,7 +76,14 @@
                                     </td>
                                     <td style="text-align: justify">
                                         <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id)}}" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a><br>
-
+                                        <p class="mt-2">
+                                            <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
+                                                   name="van_ban-don_vi" value="1" checked>
+                                            <label for="van-ban-don-vi-{{ $vbDen2->id }}"
+                                                   class="color-red font-weight-normal">
+                                                Văn bản đơn vị chủ trì
+                                            </label>
+                                        </p>
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
@@ -91,19 +94,51 @@
                                         </div>
                                     </td>
 
-                                    <td class="text-center" style="vertical-align: middle">
+                                    <td>
 {{--                                        {{$vbDen2->donvigui->ten_don_vi ?? ''}}--}} <span>Văn phòng UBND </span>
                                     </td>
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
-
-
-
                                 </tr>
-
-
-
                             @empty
                             @endforelse
+
+                            <!--Don vi phoi hop-->
+                            @forelse ($vanBanHuyenChuyenDonViPhoiHop as $key=>$vbDen2)
+                                <tr>
+                                    <td class="text-center">{{$donvinhancount+1}}</td>
+                                    <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
+                                    <td>
+                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu}}</p>
+                                    </td>
+                                    <td style="text-align: justify">
+                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id.'?type=phoi_hop')}}" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a>
+                                        <br>
+                                        <p class="mt-2">
+                                            <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
+                                                   name="van_ban-don_vi" value="1" checked>
+                                            <label for="van-ban-don-vi-{{ $vbDen2->id }}"
+                                                   class="color-red font-weight-normal">
+                                                văn bản đơn vị phối hợp
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <div class="text-center " style="pointer-events: auto">
+                                            @forelse($vbDen2->vanBanDen->vanBanDenFilehs as $filedata)
+                                                <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File]</a><br>
+                                            @empty
+                                            @endforelse
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        {{--                                        {{$vbDen2->donvigui->ten_don_vi ?? ''}}--}} <span>Văn phòng UBND </span>
+                                    </td>
+                                    <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
+                                </tr>
+                            @empty
+                            @endforelse
+
                             @if($tong < 0) <tr><td colspan="7">Không có dữ liệu</td></tr>@endif
                             </tbody>
                         </table>

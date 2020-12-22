@@ -39,26 +39,46 @@ class VanBanLanhDaoXuLyController extends Controller
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
             ->whereNull('status')
             ->whereNull('hoan_thanh')
+            ->select('id', 'van_ban_den_id')
             ->get();
 
         $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('lanhDaoXemDeBiet', 'checkLuuVetVanBanDen', 'nguoiDung', 'vanBanTraLai')
+        $danhSachVanBanDen = VanBanDen::with([
+            'lanhDaoXemDeBiet' => function ($query) {
+                $query->select(['van_ban_den_id', 'lanh_dao_id']);
+            },
+            'checkLuuVetVanBanDen',
+            'vanBanTraLai'
+            ])
             ->whereIn('id', $arrIdVanBanDenDonVi)
             ->where('trinh_tu_nhan_van_ban', $active)
             ->paginate(PER_PAGE);
 
-        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)->first();
+        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
+                    ->select('id', 'ho_ten')
+                    ->first();
+
         $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
             ->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
             ->get();
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
-        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')->first();
 
         $danhSachDonVi = DonVi::whereNull('deleted_at')
-            ->where('id', '!=', $user->don_vi_id)->get();
+            ->where('id', '!=', $user->don_vi_id)
+            ->select('id', 'ten_don_vi')
+            ->get();
+
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
 
         if ($active == 2) {
 

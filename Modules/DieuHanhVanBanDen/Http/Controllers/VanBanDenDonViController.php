@@ -40,13 +40,14 @@ class VanBanDenDonViController extends Controller
 
         $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
             ->where('can_bo_nhan_id', $currentUser->id)
+            ->select('id', 'van_ban_den_id')
             ->whereNotNull('vao_so_van_ban')
             ->whereNull('hoan_thanh')
             ->get();
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('donViChuTri', 'xuLyVanBanDen')->whereIn('id', $arrVanBanDenId)
+        $danhSachVanBanDen = VanBanDen::whereIn('id', $arrVanBanDenId)
             ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->paginate(PER_PAGE);
 
@@ -56,6 +57,7 @@ class VanBanDenDonViController extends Controller
             ->whereHas('roles', function ($query) use ($roles) {
                 return $query->whereIn('name', $roles);
             })
+            ->select('id', 'ho_ten')
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
@@ -65,8 +67,17 @@ class VanBanDenDonViController extends Controller
         $danhSachChuyenVien = User::role(CHUYEN_VIEN)
             ->where('don_vi_id', $currentUser->don_vi_id)
             ->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
+
+        if (!empty($danhSachVanBanDen)) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
+            }
+        }
+
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
@@ -104,7 +115,8 @@ class VanBanDenDonViController extends Controller
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')->whereIn('id', $arrVanBanDenId)
+        $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
+            ->whereIn('id', $arrVanBanDenId)
             ->paginate(PER_PAGE);
 
         $danhSachPhoPhong = User::role(PHO_PHONG)
@@ -118,6 +130,12 @@ class VanBanDenDonViController extends Controller
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
+
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
@@ -182,6 +200,12 @@ class VanBanDenDonViController extends Controller
             ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
             ->paginate(PER_PAGE);
+
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
 
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
@@ -407,6 +431,7 @@ class VanBanDenDonViController extends Controller
                 ->whereNotIn('id', json_decode($id))
                 ->where('trang_thai', ACTIVE)
                 ->whereNull('deleted_at')
+                ->select(['id', 'ho_ten'])
                 ->get();
 
             return response()->json([

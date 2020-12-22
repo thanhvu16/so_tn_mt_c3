@@ -75,32 +75,35 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->noi_dung ?? null }}</p>
-
-                                        @if (isset($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile))
-                                            @foreach($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile as $key => $file)
+                                        <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->noi_dung ?? null }}</p>
+                                        @if (isset($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile))
+                                            @foreach($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile as $key => $file)
                                                 <a href="{{ $file->getUrlFile() }}"
                                                    target="popup"
                                                    class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                @if (count($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile)-1 != $key)
+                                                @if (count($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile)-1 != $key)
                                                     &nbsp;|&nbsp;
                                                 @endif
                                             @endforeach
                                         @endif
                                     </td>
                                     <td>
-                                        <input type="hidden" name="giai_quyet_van_ban_id" value="{{  $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->id }}">
+                                        <input type="hidden" name="giai_quyet_van_ban_id"
+                                               value="{{  $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->id }}">
                                         <div class="col-md-12 form-group">
                                                         <textarea class="form-control noi-dung" name="noi_dung"
                                                                   rows="3"
-                                                                  required placeholder="nhập nội dung ...."></textarea><br>
+                                                                  required
+                                                                  placeholder="nhập nội dung ...."></textarea><br>
                                             <button
                                                 class="btn btn-sm waves-effect btn-primary btn-choose-status"
-                                                data-id="{{ $vanBanDen->id }}" data-type="1"><i class="fa fa-check"></i> Duyệt
+                                                data-id="{{ $vanBanDen->id }}" data-type="1"><i class="fa fa-check"></i>
+                                                Duyệt
                                             </button>
                                             <button
                                                 class="btn btn-sm waves-effect btn-danger btn-choose-status"
-                                                data-id="{{ $vanBanDen->id }}" data-type="2"><i class="fa fa-undo"></i> Trả lại
+                                                data-id="{{ $vanBanDen->id }}" data-type="2"><i class="fa fa-undo"></i>
+                                                Trả lại
                                             </button>
                                         </div>
                                     </td>

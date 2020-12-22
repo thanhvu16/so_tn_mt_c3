@@ -47,4 +47,18 @@ class GiaiQuyetVanBanFile extends Model
         return asset($this->url_file);
 
     }
+
+    public static function saveGiaiQuyetVanBanFile($giaiQuyetVanBanId, $giaiQuyetFile)
+    {
+        if ($giaiQuyetFile) {
+            foreach ($giaiQuyetFile as $file) {
+
+                $giaiQuyetFile = new GiaiQuyetVanBanFile();
+                $giaiQuyetFile->ten_file = $file->ten_file;
+                $giaiQuyetFile->url_file = $file->url_file;
+                $giaiQuyetFile->giai_quyet_van_ban_id = $giaiQuyetVanBanId;
+                $giaiQuyetFile->save();
+            }
+        }
+    }
 }

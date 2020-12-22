@@ -11,6 +11,7 @@
                     <form role="form" action="{{route('vaosovanbanhuyen')}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
+                        <input type="hidden" value="{{ $type }}" name="type">
                         <div class="box-body">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -166,7 +167,7 @@
                                 <span>
                                     @if($van_ban_den->vanBanDen->vanBanDenFile)
                                         @forelse($van_ban_den->vanBanDen->vanBanDenFile as $key=>$item)
-                                            <a href="{{$item->getUrlFile()}}" target="_blank">[file văn bản]</a>
+                                            <a href="{{$item->getUrlFile()}}" target="popup" class="seen-new-window">[file văn bản]</a>
                                             {{--                                                    @if($item->duoi_file == 'pdf')<i--}}
                                             {{--                                                class="fa fa-file-pdf-o"--}}
                                             {{--                                                style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')--}}

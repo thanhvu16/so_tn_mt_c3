@@ -137,7 +137,12 @@
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                        @if ($vbDen->loai_van_ban_don_vi == 1)
+                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                        @else
+                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                        @endif
+
                                         @if($vbDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
@@ -164,6 +169,15 @@
                                             @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
                                                 <a title="Cập nhật file" href="{{route('ds_file',$vbDen->vb_den_id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif
                                         </div>
+
+                                        <p>
+                                            <input id="van-ban-don-vi-{{ $vbDen->id }}" type="checkbox"
+                                                   name="van_ban-don_vi" value="1" checked>
+                                            <label for="van-ban-don-vi-{{ $vbDen->id }}"
+                                                   class="color-red font-weight-normal">
+                                                {{ $vbDen->loai_van_ban_don_vi == 1 ? 'văn bản đơn vị phối hợp' : 'Văn bản đơn vị chủ trì' }}
+                                            </label>
+                                        </p>
                                     </td>
                                     <td>
                                         <!--vb den don vi-->
