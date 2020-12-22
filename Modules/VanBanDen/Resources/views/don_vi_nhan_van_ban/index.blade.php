@@ -7,8 +7,8 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách văn bản chờ vào sổ</h3>
-
                     </div>
+                    @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => 3])
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 mb-1" >
                         <form action="{{route('don-vi-nhan-van-ban-den.index')}}" method="get">
@@ -84,6 +84,10 @@
                                                 Văn bản đơn vị chủ trì
                                             </label>
                                         </p>
+                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
+                                               data-id="{{ $vbDen2->van_ban_den_id }}">
+                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
+                                            </a>
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
@@ -170,6 +174,16 @@
         function showModal() {
             $("#myModal").modal('show');
         }
+
+        // tra lai van ban
+        $('.tra-lai-van-ban').on('click', function () {
+            let id = $(this).data('id');
+            let traLai = $(this).data('tra-lai');
+
+            $('#modal-tra-lai').find('input[name="van_ban_den_id"]').val(id);
+            $('#modal-tra-lai').find('input[name="type"]').val(traLai);
+        });
+
     </script>
 @endsection
 

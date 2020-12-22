@@ -152,7 +152,7 @@ class VanBanDen extends Model
     {
         return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
             ->where('can_bo_nhan_id', auth::user()->id)
-            ->select('id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
             ->whereNull('status')
             ->orderBy('id','DESC');
     }
