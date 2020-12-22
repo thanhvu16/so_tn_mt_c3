@@ -29,6 +29,18 @@
                                            placeholder="Mô tả" required>
                                 </div>
                             </div>
+                            <div class=" col-md-3 form-group mt-4">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="mac_dinh"  id="optionsRadios1" value="2" {{isset($mucdo->mac_dinh) && $mucdo->mac_dinh == 2 ? 'checked' : ''}} >
+                                        Mặc định
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="mac_dinh" id="optionsRadios2" value="1" {{isset($mucdo->mac_dinh) && $mucdo->mac_dinh == 1 ? 'checked' : ''}}>
+                                        Không
+                                    </label>
+                                </div>
+                            </div>
 
                             <div class="col-md-3 text-left" style="margin-top: 20px">
                                 <div class="form-group">

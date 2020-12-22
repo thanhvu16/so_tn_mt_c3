@@ -51,9 +51,24 @@ class DoKhanController extends Controller
     public function store(Request $request)
     {
         canPermission(AllPermission::themDoKhan());
+        if ($request->mac_dinh == 2)
+        {
+            $domat = DoKhan::where('mac_dinh',2)->get();
+            if (!empty($domat))
+            {
+                foreach ($domat as $data)
+                {
+                    $domat = DoKhan::where('id',$data->id)->first();
+                    $domat->mac_dinh = 1;
+                    $domat->save();
+                }
+            }
+
+        }
         $do_mat = new DoKhan();
         $do_mat->ten_muc_do = $request->ten_muc_do;
         $do_mat->mo_ta = $request->mo_ta;
+        $do_mat->mac_dinh = $request->mac_dinh;
         $do_mat->save();
         return redirect()->route('danhsachdokhancap')->with('success','Thêm mới thành công !');
     }
@@ -88,9 +103,25 @@ class DoKhanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($request->mac_dinh == 2)
+        {
+            $domat = DoKhan::where('mac_dinh',2)->get();
+            if (!empty($domat))
+            {
+                foreach ($domat as $data)
+                {
+                    $domat = DoKhan::where('id',$data->id)->first();
+                    $domat->mac_dinh = 1;
+                    $domat->save();
+                }
+            }
+
+        }
         $mucdo = DoKhan::where('id',$id)->first();
+
         $mucdo->ten_muc_do = $request->ten_muc_do;
         $mucdo->mo_ta = $request->mo_ta;
+        $mucdo->mac_dinh = $request->mac_dinh;
         $mucdo->save();
         return redirect()->route('danhsachdokhancap')->with('success','Cập nhật thành công !');
     }

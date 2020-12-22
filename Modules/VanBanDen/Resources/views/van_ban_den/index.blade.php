@@ -10,13 +10,21 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 ">
-                        <a role="button" onclick="showModal()" class="btn btn-primary ">
-                            <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
-                        <a class=" btn btn-primary" data-toggle="collapse"
-                           href="#collapseExample"
-                           aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
-                                style="font-size: 14px">Tìm kiếm văn bản</span>
-                        </a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a role="button" onclick="showModal()" class="btn btn-primary ">
+                                    <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
+                                <a class=" btn btn-primary" data-toggle="collapse"
+                                   href="#collapseExample"
+                                   aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
+                                        style="font-size: 14px">Tìm kiếm văn bản</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a role="button" href="{{route('in-so-van-ban-den.index')}}"  class="btn btn-success ">
+                                    <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 mt-3">
                         <div class="row">

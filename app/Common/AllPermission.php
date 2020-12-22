@@ -248,4 +248,22 @@ class AllPermission
     {
         return 'sửa lịch công tác';
     }
+    public static function homThuCong()
+    {
+        return 'xem hòm thư công';
+    }
+    public static function tuDanhGiaCanBo()
+    {
+        return 'tự đánh giá cán bộ';
+    }
+    public static function capTrenDanhGia()
+    {
+        return 'cấp trên đánh giá cán bộ';
+    }
+    public static function inSoVanBan()
+    {
+        return 'in sổ văn bản đơn vị';
+    }
+
+
 }

@@ -50,6 +50,7 @@
                             <tr>
                                 <th width="5%" class="text-center">STT</th>
                                 <th width="" class="text-center">Tên mức độ</th>
+                                <th width="10%" class="text-center">Mặc định</th>
                                 <th width="10%" class="text-center">Trạng thái</th>
                                 <th width="10%" class="text-center">Tác Vụ</th>
                             </tr>
@@ -59,6 +60,7 @@
                                 <tr>
                                     <td class="text-center" style="vertical-align: middle">{{$key+1}}</td>
                                     <td class="text-center" style="vertical-align: middle">{{$mucdo->ten_muc_do}}</td>
+                                    <td class="text-center" style="vertical-align: middle">@if($mucdo->mac_dinh == 2)<span>Mặc định</span>@else @endif</td>
                                     <td class="text-center"
                                         style="vertical-align: middle">@if($mucdo->deleted_at == null)<span
                                             class="label label-success">Hoạt động</span>@else @endif</td>
