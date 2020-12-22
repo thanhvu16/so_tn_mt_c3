@@ -15,6 +15,8 @@
 //    Route::get('/', 'VanBanDiController@index');
 //});
 Route::resource('du-thao-van-ban', 'DuThaoVanBanController');
+Route::resource('in-so-van-ban-di', 'ThongkeVanBanDiController');
+
 Route::resource('van-ban-di', 'VanBanDiController');
 Route::get('danh-sach-du-thao', array('as' => 'Danhsachduthao', 'uses' => 'DuThaoVanBanController@Danhsachduthao'));
 Route::get('thong-tin-du-thao-cu/{id}', array('as' => 'laythongtinduthaocu', 'uses' => 'DuThaoVanBanController@laythongtinduthaocu'));
@@ -45,3 +47,4 @@ Route::match(['get', 'post','put'], 'cap-so-van-ban/{id}', ['as' =>'Capsovanband
 //Route::match(['get', 'post','put'], 'Xoa-van-ban-di-cho-so/{id}', ['as' =>'xoavanbandichocapso' , 'uses' => 'DuThaoVanBanController@xoavanbandichocapso']);
 
 Route::post('ky-dien-tu-qua-sim', 'DuThaoVanBanController@kydientu')->name('van_ban.ky_dt_qua_sim');
+

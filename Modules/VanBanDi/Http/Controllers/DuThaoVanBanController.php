@@ -340,8 +340,8 @@ class DuThaoVanBanController extends Controller
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
         $ds_soVanBan  = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')->get();
-        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('ten_muc_do','asc')->get();
-        $ds_mucBaoMat =DoMat::wherenull('deleted_at')->orderBy('ten_muc_do','asc')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_mucBaoMat =DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $date = Carbon::now()->format('Y-m-d');

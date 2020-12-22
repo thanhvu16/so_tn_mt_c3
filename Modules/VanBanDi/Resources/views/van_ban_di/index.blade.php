@@ -26,16 +26,21 @@
 
                         </div>
                        @role('văn thư đơn vị')
-                        <div class="col-md-6">
+                        <div class="col-md-6 text-right">
                             <div class="row">
-                                <div class="col-md-offset-8">
-                                    <select class="form-control show-tick select2-search"
+                                <div class="col-md-10 text-right">
+                                    <select class="form-control  show-tick select2-search"
                                             name="don_vi_van_ban" form="search_vb" onchange="this.form.submit()" id="">
                                         <option value="2" {{Request::get('don_vi_van_ban') == 2 ? 'selected' : ''}}>Văn bản huyện</option>
                                         <option value="1" {{Request::get('don_vi_van_ban') == 1 ? 'selected' : ''}}>Văn bản đơn vị</option>
-                                        <option  value="" {{Request::get('don_vi_van_ban') == '' ? 'selected' : ''}}>Tất cả văn bản</option>
+                                        <option  value="" {{Request::get('don_vi_van_ban') == '' ? 'selected' : ''}}>-----------Tất cả văn bản------------</option>
                                     </select>
                                 </div>
+                                <div class="col-md-2 text-right">
+                                    <a role="button" href="{{route('in-so-van-ban-den.index')}}"  class="btn btn-success ">
+                                        <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>
+                                </div>
+
                             </div>
                         </div>
                         @endrole

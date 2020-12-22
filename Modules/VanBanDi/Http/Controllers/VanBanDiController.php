@@ -212,8 +212,8 @@ class VanBanDiController extends Controller
         $user = auth::user();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
@@ -491,8 +491,8 @@ class VanBanDiController extends Controller
         canPermission(AllPermission::suaVanBanDi());
         $vanbandi = VanBanDi::where('id', $id)->first();
         $user = auth::user();
-        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();

@@ -1,3 +1,4 @@
+@can('xem hòm thư công')
 <li class="{{ Route::is('dsvanbandentumail') || Route::is('vanbandentumail') ? 'active' : '' }} ">
     <a href="{{route('dsvanbandentumail')}}">
         <i class="fa fa-university" ></i> <span>Hòm thư công</span>
@@ -5,6 +6,7 @@
             </span>
     </a>
 </li>
+@endcan
 <li class="treeview {{ Route::is('van-ban-den.index') || Route::is('van-ban-den.create') || Route::is('van-ban-den.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đến</span>

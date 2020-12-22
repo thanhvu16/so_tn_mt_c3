@@ -28,7 +28,7 @@ class DonViNhanVanBanDenController extends Controller
     public function index(Request $request)
     {
         $hienthi = $request->get('don_vi_van_ban');
-        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])->whereIn('trang_thai', [2, 3])
+        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])->whereIn('trang_thai', [2])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     return $query->where('trang_thai', "$hienthi");
@@ -36,7 +36,7 @@ class DonViNhanVanBanDenController extends Controller
             })
             ->paginate(PER_PAGE);
         $donvinhancount = count($donvinhan);
-        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->don_vi_id])
+        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->don_vi_id,])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -57,8 +57,8 @@ class DonViNhanVanBanDenController extends Controller
     public function chi_tiet_van_ban_den_don_vi(Request $request, $id)
     {
         $user = auth::user();
-        $domat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
@@ -121,8 +121,8 @@ class DonViNhanVanBanDenController extends Controller
     public function edit($id)
     {
         $user = auth::user();
-        $domat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
