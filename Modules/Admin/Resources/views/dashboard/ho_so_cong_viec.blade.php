@@ -46,6 +46,15 @@
                 </a>
                 @endrole
 
+                @hasanyrole('phó phòng|phó chánh văn phòng')
+                    <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
+                        <p>VB xem để biết
+                            <button
+                                class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
+                        </p>
+                </a>
+                @endrole
+
                 @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên')
                     <a class="text-title-item" href="{{ route('van-ban-den-hoan-thanh.cho-duyet') }}">
                         <p>VB hoàn thành chờ duyệt
@@ -91,6 +100,12 @@
                     <p>Lịch công tác
                         <button
                             class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
+                    </p>
+                </a>
+                <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
+                    <p>VB xem để biết
+                        <button
+                            class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                     </p>
                 </a>
                 @endrole

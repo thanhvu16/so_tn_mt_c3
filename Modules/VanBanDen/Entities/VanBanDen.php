@@ -420,12 +420,12 @@ class VanBanDen extends Model
     }
 
     // lay ds vb den , giay moi den
-    public static function getListVanBanDen($giayMoi=null, $type, $condition=null, $month, $year)
+    public static function getListVanBanDen($giayMoi=null, $type, $condition=null, $month, $year, $donViId = null)
     {
         return VanBanDen::where(function ($query) use ($giayMoi, $condition) {
             if (!empty($giayMoi)) {
 
-                return $query ->where('loai_van_ban_id', $condition, $giayMoi->id);
+                return $query ->where('so_van_ban_id', $condition, $giayMoi->id);
                 }
             })
             ->where(function($query) use ($month) {
@@ -438,7 +438,13 @@ class VanBanDen extends Model
                     return $query->whereYear('created_at', $year);
                 }
             })
+            ->where(function($query) use ($donViId) {
+                if (!empty($donViId)) {
+                    return $query->where('don_vi_id', $donViId);
+                }
+            })
             ->where('type', $type)
+            ->whereNull('deleted_at')
             ->get();
     }
 

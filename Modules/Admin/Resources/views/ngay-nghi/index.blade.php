@@ -34,18 +34,12 @@
 
                                 <div class="col-md-3 form-group">
                                     <label for="exampleInputEmail1">Tìm theo tên</label>
-                                    <input type="text" class="form-control" value="{{Request::get('ten_chuc_vu')}}"
-                                           name="ten_chuc_vu"
-                                           placeholder="Tên chức vụ">
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label for="exampleInputEmail1">Tìm theo tên viết tắt</label>
-                                    <input type="text" class="form-control" value="{{Request::get('ten_viet_tat')}}"
-                                           name="ten_viet_tat"
-                                           placeholder="Tên viết tắt">
+                                    <input type="text" class="form-control" value="{{Request::get('ten_ngay_nghi')}}"
+                                           name="ten_ngay_nghi"
+                                           placeholder="Tên ngày nghỉ">
                                 </div>
                                 <div class="col-md-3" style="margin-top: 20px">
-                                    <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                    <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
                                 </div>
                             </form>
 

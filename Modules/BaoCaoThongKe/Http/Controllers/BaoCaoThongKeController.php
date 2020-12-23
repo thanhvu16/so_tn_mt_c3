@@ -5,7 +5,7 @@ namespace Modules\BaoCaoThongKe\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Admin\Entities\LoaiVanBan;
+use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDi\Entities\VanBanDi;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Auth;
@@ -22,9 +22,10 @@ class BaoCaoThongKeController extends Controller
         $user = auth::user();
         $year = $request->get('year') ?? date('Y');
         $month = null;
-        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', 'like', 'giấy mời')->first();
+        $donViId = null;
+        $giayMoi = SoVanBan::where('ten_so_van_ban', 'like', 'giấy mời')->select('id')->first();
 
-        if ($user->hasrole([CHU_TICH, PHO_CHUC_TICH])) {
+        if ($user->hasrole([CHU_TICH, PHO_CHUC_TICH, VAN_THU_HUYEN])) {
 
             $type = VanBanDen::TYPE_VB_HUYEN;
 
@@ -47,6 +48,7 @@ class BaoCaoThongKeController extends Controller
 
         } else {
             $type = VanBanDen::TYPE_VB_DON_VI;
+            $donViId = $user->don_vi_id;
 
             $totalVanBanDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 1,
@@ -65,9 +67,9 @@ class BaoCaoThongKeController extends Controller
                 ->count();
         }
 
-        $totalVanBanDen = VanBanDen::getListVanBanDen($giayMoi, $type, '!=', $month, $year)->count();
+        $totalVanBanDen = VanBanDen::getListVanBanDen($giayMoi, $type, '!=', $month=null, $year, $donViId)->count();
 
-        $totalGiayMoiDen = VanBanDen::getListVanBanDen($giayMoi, $type, '=', $month, $year)->count();;
+        $totalGiayMoiDen = VanBanDen::getListVanBanDen($giayMoi, $type, '=', $month=null, $year, $donViId)->count();;
 
         // bao cao thong ke
 
@@ -79,7 +81,7 @@ class BaoCaoThongKeController extends Controller
 //
             array_push($dataLabel, 'Tháng '. $month);
 
-            $danhSachVanBanDen = VanBanDen::getListVanBanDen(null, $type, null, $month, $year)
+            $danhSachVanBanDen = VanBanDen::getListVanBanDen(null, $type, null, $month, $year, $donViId)
                 ->count();
 
             $danhSachVanBanDi = VanBanDi::where('so_di', '!=', null)
@@ -91,6 +93,11 @@ class BaoCaoThongKeController extends Controller
                 ->where(function($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
+                    }
+                })
+                ->where(function($query) use ($donViId) {
+                    if (!empty($donViId)) {
+                        return $query->where('van_ban_huyen_ky', $donViId);
                     }
                 })
                 ->whereNull('deleted_at')

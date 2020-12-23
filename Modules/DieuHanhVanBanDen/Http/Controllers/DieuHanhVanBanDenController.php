@@ -173,9 +173,17 @@ class DieuHanhVanBanDenController extends Controller
             })
             ->paginate(PER_PAGE);
 
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
+
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
-        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')
+            ->first();
 
         return view('dieuhanhvanbanden::van-ban-hoan-thanh.xem_de_biet', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }
@@ -209,9 +217,15 @@ class DieuHanhVanBanDenController extends Controller
             })
             ->paginate(PER_PAGE);
 
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
+
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
-        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
         return view('dieuhanhvanbanden::van-ban-hoan-thanh.van_ban_quan_trong', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }

@@ -54,8 +54,6 @@
         </div>
     </div>
 </div>
-<style>
-    a{
-        color: black;
-    }
-</style>
+@hasanyrole('phó phòng|phó chánh văn phòng')
+    <div class="clearfix"></div>
+@endrole
