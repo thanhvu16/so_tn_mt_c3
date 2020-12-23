@@ -2,7 +2,7 @@
 <EXPORTMAIL>
   <NOIGUI>
     <STRMADONVI></STRMADONVI>
-    <STRTENDONVI>Phòng Tài nguyên - Môi trường</STRTENDONVI>
+    <STRTENDONVI>UBND xã Đức Hòa</STRTENDONVI>
   </NOIGUI>
   <NOINHANVANBAN>
     <NOINHAN ID="1">
@@ -13,13 +13,21 @@
       <STRWEBSITE></STRWEBSITE>
       <STREMAIL>vuhaithanhcx1@gmail.com</STREMAIL>
     </NOINHAN>
+    <NOINHAN ID="2">
+      <STRMADONVI>000.00.03.G12</STRMADONVI>
+      <STRTENDONVI>Cục Quản lý nợ và Tài chính đối ngoại</STRTENDONVI>
+      <STRDIACHI></STRDIACHI>
+      <STRDIENTHOAI></STRDIENTHOAI>
+      <STRWEBSITE></STRWEBSITE>
+      <STREMAIL></STREMAIL>
+    </NOINHAN>
   </NOINHANVANBAN>
   <NOIDUNGVANBAN>
     <STRLOAIVANBAN>Quyết định</STRLOAIVANBAN>
-    <STRKYHIEU>1/vb</STRKYHIEU>
-    <STRTRICHYEU>văn bản đi gửi các phòng</STRTRICHYEU>
-    <STRNGAYKY>18/12/2020</STRNGAYKY>
-    <STRNGUOIKY>Nguyễn văn tiến</STRNGUOIKY>
+    <STRKYHIEU>2/aa</STRKYHIEU>
+    <STRTRICHYEU>​V/v kiểm tra, xử lý tình hình vi phạm trong hoạt đông quảng cáo trên địa bàn Thành phố</STRTRICHYEU>
+    <STRNGAYKY>17/12/2020</STRNGAYKY>
+    <STRNGUOIKY>Ngô Thị Tiên Sinh(P.chủ tịch)</STRNGUOIKY>
     <STRNOIGUI>Quyết định</STRNOIGUI>
     <STRHANXULY></STRHANXULY>
     <STRTHUOCLOAIVANBAN>Quyết định</STRTHUOCLOAIVANBAN>

@@ -169,12 +169,24 @@ class VanBanDenController extends Controller
     public function create()
     {
         canPermission(AllPermission::themVanBanDen());
+
         $user = auth::user();
         $user->can('văn thư đơn vị');
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sovanban = $laysovanban;
+
         $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ngaynhan = date('Y-m-d');
         $songay = 10;
@@ -373,21 +385,18 @@ class VanBanDenController extends Controller
             $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = (int)$tachchuoi[1];
             $yearsfile = (int)$tachchuoi[2];
-            $sovanban = SoVanBan::where('ten_viet_tat' ,'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
-            if ($user->hasRole(VAN_THU_HUYEN))
-            {
+            $sovanban = SoVanBan::where('ten_viet_tat', 'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
+            if ($user->hasRole(VAN_THU_HUYEN)) {
                 $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
-            }elseif ($user->hasRole(VAN_THU_DON_VI))
-            {
+            } elseif ($user->hasRole(VAN_THU_DON_VI)) {
                 $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
             }
             if ($vanban) {
                 $getFile->move($uploadPath, $fileName);
 
-                foreach ($vanban as $data3)
-                {
+                foreach ($vanban as $data3) {
                     $vbDenFile = new FileVanBanDen();
                     $vbDenFile->ten_file = $tenchinhfile;
                     $vbDenFile->duong_dan = $urlFile;
@@ -429,7 +438,17 @@ class VanBanDenController extends Controller
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sovanban = $laysovanban;
+
         $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         return view('vanbanden::van_ban_den.edit', compact('van_ban_den', 'domat', 'dokhan', 'loaivanban', 'sovanban', 'users'));
     }
@@ -592,7 +611,17 @@ class VanBanDenController extends Controller
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
-        $ds_soVanBan = $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')->get();
+        $user=auth::user();
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $ds_soVanBan = $laysovanban;
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $user = auth::user();
@@ -732,7 +761,7 @@ class VanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                     $vanbandv->type = 1;
-                }elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                     $vanbandv->type = 2;
                     $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
@@ -748,6 +777,19 @@ class VanBanDenController extends Controller
                 }
 
                 $vanbandv->save();
+
+                if (!empty($request->get('file_pdf'))) {
+                    foreach ($requestData['file_pdf'] as $file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
+                        $vbDenFile->duong_dan = $file;
+                        $vbDenFile->duoi_file = $this->filename_extension($file);
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+                }
             }
         } else {
             $vanbandv = new VanBanDen();
@@ -767,7 +809,7 @@ class VanBanDenController extends Controller
             $vanbandv->don_vi_id = auth::user()->don_vi_id;
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 $vanbandv->type = 1;
-            }elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $vanbandv->type = 2;
                 $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 DonViChuTri::saveDonViChuTri($vanbandv->id);
@@ -775,20 +817,22 @@ class VanBanDenController extends Controller
             $vanbandv->type = 1;
             $vanbandv->nguoi_tao = auth::user()->id;
             $vanbandv->save();
-        }
-        //upload file
-        if (!empty($request->get('file_pdf'))) {
-            foreach ($requestData['file_pdf'] as $file) {
-                $vbDenFile = new FileVanBanDen();
-                $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                $vbDenFile->duong_dan = $file;
-                $vbDenFile->duoi_file = $this->filename_extension($file);
-                $vbDenFile->vb_den_id = $vanbandv->id;
-                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
+            //upload file
+            if (!empty($request->get('file_pdf'))) {
+                foreach ($requestData['file_pdf'] as $file) {
+                    $vbDenFile = new FileVanBanDen();
+                    $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
+                    $vbDenFile->duong_dan = $file;
+                    $vbDenFile->duoi_file = $this->filename_extension($file);
+                    $vbDenFile->vb_den_id = $vanbandv->id;
+                    $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                    $vbDenFile->save();
+                }
             }
+
         }
+
         return redirect()->route('dsvanbandentumail')->with('success', 'Thêm văn bản thành công !');
 
     }
