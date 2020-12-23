@@ -36,7 +36,7 @@ class ThongkeVanBanDiController extends Controller
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) ||
             $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI) ||
             $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
-            $ds_vanBanDen = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($timloaiso) {
                     if (!empty($timloaiso)) {
                         return $query->where('so_van_ban_id', $timloaiso);
@@ -44,7 +44,7 @@ class ThongkeVanBanDiController extends Controller
                 })->orderBy('created_at', 'desc')->paginate(PER_PAGE);
         }
 
-        $totalRecord = $ds_vanBanDen->count();
+        $totalRecord = $ds_vanBanDi->count();
 
         if ($request->get('type') == 'pdf') {
             $fileName = 'in_so_van_ban_di' . date('d_m_Y') . '.pdf';

@@ -203,7 +203,17 @@ class GiayMoiDenController extends Controller
 
         $user = auth::user();
         $ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->get();
-        $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
@@ -497,7 +507,17 @@ class GiayMoiDenController extends Controller
         $sodengiaymoi = $soDen + 1;
         $user = auth::user();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
-        $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
