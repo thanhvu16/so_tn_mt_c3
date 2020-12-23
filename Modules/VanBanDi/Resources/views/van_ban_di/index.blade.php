@@ -44,6 +44,12 @@
                             </div>
                         </div>
                         @endrole
+                        @role('văn thư huyện')
+                        <div class="col-md-6 text-right">
+                            <a role="button" href="{{route('in-so-van-ban-den.index')}}"  class="btn btn-success ">
+                                <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>
+                        </div>
+                        @endrole
 
                     </div>
                     <div class="col-md-12 mt-3">

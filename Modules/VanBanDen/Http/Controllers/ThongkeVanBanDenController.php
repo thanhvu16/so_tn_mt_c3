@@ -22,19 +22,33 @@ class ThongkeVanBanDenController extends Controller
         $sovanban = SoVanBan::whereNull('deleted_at')->whereIn('loai_so',[1,3])->get();
         $timloaiso = $request->get('so_van_ban');
         $vanbanden=null;
+        $user = auth::user();
         if ($id) {
             $vanbanden = VanBanDen::where('id', $id)->first();
         }
-        $ds_vanBanDen =  VanBanDen::
-        where([
-            'don_vi_id' => auth::user()->don_vi_id,
-            'type' => 2])
-            ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
-            ->where(function ($query) use ($timloaiso) {
-                if (!empty($timloaiso)) {
-                    return $query->where('so_van_ban_id',$timloaiso);
-                }
-            })->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+            $ds_vanBanDen =  VanBanDen::where([
+                'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
+                ->where(function ($query) use ($timloaiso) {
+                    if (!empty($timloaiso)) {
+                        return $query->where('so_van_ban_id',$timloaiso);
+                    }
+                })->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
+            $user->hasRole(VAN_THU_DON_VI) ||
+            $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+            $ds_vanBanDen =  where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'type' => 2])
+                ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
+                ->where(function ($query) use ($timloaiso) {
+                    if (!empty($timloaiso)) {
+                        return $query->where('so_van_ban_id',$timloaiso);
+                    }
+                })->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+
+        }
+
         $totalRecord = $ds_vanBanDen->count();
 
         if ($request->get('type') == 'pdf') {
