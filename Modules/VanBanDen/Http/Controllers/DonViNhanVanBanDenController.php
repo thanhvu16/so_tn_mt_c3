@@ -49,6 +49,8 @@ class DonViNhanVanBanDenController extends Controller
             })
             ->whereNull('parent_id')
             ->whereNull('type')
+            ->whereNull('tra_lai')
+            ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
             ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
             ->get();
 

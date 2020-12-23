@@ -130,6 +130,7 @@ class PhanLoaiVanBanController extends Controller
                     }
 
                     // active van ban den
+                    $chuyenVanBanXuongDonVi = null;
                     $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
                     if ($vanBanDen) {
 
@@ -145,6 +146,12 @@ class PhanLoaiVanBanController extends Controller
                             $vanBanDen->trinh_tu_nhan_van_ban = 2;
                             $vanBanDen->save();
                         }
+
+                        if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrPhoChuTich[$vanBanDenId])) {
+                            $vanBanDen->trinh_tu_nhan_van_ban = 3;
+                            $vanBanDen->save();
+                            $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
+                        }
                     }
 
                     // check quyen gia han van ban
@@ -158,6 +165,7 @@ class PhanLoaiVanBanController extends Controller
                         ->whereHas('roles', function ($query) use ($roles) {
                             return $query->whereIn('name', $roles);
                         })
+                        ->orderBy('id', 'DESC')
                         ->whereNull('deleted_at')->first();
 
                     $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
@@ -294,7 +302,8 @@ class PhanLoaiVanBanController extends Controller
                         'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                         'user_id' => $currentUser->id,
                         'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
-                        'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null
+                        'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
+                        'da_chuyen_xuong_don_vi' => $chuyenVanBanXuongDonVi
                     ];
 
                     DonViChuTri::where([

@@ -31,7 +31,7 @@
                                         <p>
                                             <a href="{{ route('van_ban_den_chi_tiet.show', $giaHanVanBan->vanBanDen->id) }}">{{ $giaHanVanBan->vanBanDen->trich_yeu ?? null }}</a>
                                         </p>
-                                        @include('dieuhanhvanbanden::van-ban-den.info', ['vanBanDen' => $giaHanVanBan->vanBanDen])
+                                        @include('dieuhanhvanbanden::van-ban-den.info', ['vanBanDen' => $giaHanVanBan->vanBanDen, 'type'=>'gia_han'])
                                     </td>
                                     <td>
                                         <p><i><b>Lý do:</b> {{ $giaHanVanBan->noi_dung }}</i></p>

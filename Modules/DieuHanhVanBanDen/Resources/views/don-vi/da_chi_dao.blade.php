@@ -99,7 +99,7 @@
                                                         <option value="">Chọn phó phòng chủ trì</option>
                                                         @forelse($danhSachPhoPhong as $phoPhong)
                                                             <option
-                                                                value="{{ $phoPhong->id }}" {{ !empty($vanBanDen->getChuyenVienThucHien($phoPhong->id)) ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
+                                                                value="{{ $phoPhong->id }}" {{ in_array($phoPhong->id, $vanBanDen->getChuyenVienThucHien->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
                                                         @empty
                                                         @endforelse
                                                     </select>
@@ -115,7 +115,7 @@
                                                         <option value="">Chọn chuyên viên thực hiện</option>
                                                         @forelse($danhSachChuyenVien as $chuyenVien)
                                                             <option
-                                                                value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->getChuyenVienThucHien($chuyenVien->id)) ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
+                                                                value="{{ $chuyenVien->id }}" {{ in_array($chuyenVien->id, $vanBanDen->getChuyenVienThucHien->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
                                                         @empty
                                                         @endforelse
                                                     </select>
@@ -131,7 +131,7 @@
                                                     form="form-tham-muu" multiple="multiple">
                                                     @forelse($danhSachChuyenVien as $chuyenVien)
                                                         <option
-                                                            value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->getChuyenVienPhoiHop()) && in_array($chuyenVien->id, $vanBanDen->getChuyenVienPhoiHop()) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
+                                                            value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->getChuyenVienPhoiHop) && in_array($chuyenVien->id, $vanBanDen->getChuyenVienPhoiHop) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>

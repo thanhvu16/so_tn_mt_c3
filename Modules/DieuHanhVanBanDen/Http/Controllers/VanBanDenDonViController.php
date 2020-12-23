@@ -43,6 +43,7 @@ class VanBanDenDonViController extends Controller
             ->select('id', 'van_ban_den_id')
             ->whereNotNull('vao_so_van_ban')
             ->whereNull('hoan_thanh')
+            ->select('id', 'van_ban_den_id')
             ->get();
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
@@ -61,7 +62,6 @@ class VanBanDenDonViController extends Controller
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
-
 
 
         $danhSachChuyenVien = User::role(CHUYEN_VIEN)
@@ -134,6 +134,8 @@ class VanBanDenDonViController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
+                $vanBanDen->getChuyenVienThucHien = $vanBanDen->getDonViChuTriThucHien() ?? null;
             }
         }
 
@@ -192,7 +194,7 @@ class VanBanDenDonViController extends Controller
 
         $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
             ->whereIn('id', $arrVanBanDenId)
-            ->where(function($query) use ($quaHan) {
+            ->where(function ($query) use ($quaHan) {
                 if (!empty ($quaHan)) {
                     return $query->where('han_xu_ly', '<', $quaHan);
                 }
@@ -301,9 +303,9 @@ class VanBanDenDonViController extends Controller
                         'noi_dung' => $textnoidungPhoPhong[$vanBanDenDonViId],
                         'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                         'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+                        'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                         'user_id' => $currentUser->id
                     ];
-
 
 
                     //chuyen nhan van ban don vi
@@ -328,6 +330,7 @@ class VanBanDenDonViController extends Controller
                         'noi_dung' => $textNoiDungChuyenVien[$vanBanDenDonViId],
                         'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                         'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+                        'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                         'user_id' => $currentUser->id
 
                     ];

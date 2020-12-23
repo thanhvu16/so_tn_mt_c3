@@ -17,6 +17,7 @@ use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
+use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDi\Entities\CanBoPhongDuThao;
@@ -65,6 +66,7 @@ class AdminController extends Controller
         $homThuCong = 0;
         $danhSachVanBanDen = 0;
         $vanBanDenDonViChoVaoSo = 0;
+        $vanBanDenTraLai = 0;
         $giayMoiDen = 0;
         $giayMoiDi = 0;
         $vanBanDi = 0;
@@ -134,6 +136,8 @@ class AdminController extends Controller
             $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->don_vi_id])
                 ->whereNull('vao_so_van_ban')
                 ->whereNull('parent_id')
+                ->whereNull('tra_lai')
+                ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
                 ->whereNull('type')
                 ->count();
 
@@ -161,6 +165,12 @@ class AdminController extends Controller
 
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách giấy mời đến', $giayMoiDen));
             array_push($vanThuVanBanDenCoLors, COLOR_GREEN);
+
+            $vanBanDenTraLai = VanBanTraLai::where('can_bo_nhan_id', $user->id)
+                ->whereNull('status')->count();
+
+            array_push($vanThuVanBanDenPiceCharts, array('Văn bản đến trả lại', $vanBanDenTraLai));
+            array_push($vanThuVanBanDenCoLors, COLOR_PRIMARY);
 
             //van ban di
             $giayMoiDi = VanBanDi::where([
@@ -494,6 +504,7 @@ class AdminController extends Controller
             'danhSachDuThao' ,
             'danhSachVanBanDen',
             'vanBanDenDonViChoVaoSo',
+            'vanBanDenTraLai',
             'homThuCong' ,
             'giayMoiDen',
             'giayMoiDi',

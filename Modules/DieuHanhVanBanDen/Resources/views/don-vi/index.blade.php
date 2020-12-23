@@ -173,7 +173,7 @@
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"
                                                         type="checkbox"
                                                         name="van_ban_tra_loi[{{ $vanBanDen->id }}]"
-                                                        value="1" form="form-tham-muu">
+                                                        value="1" form="form-tham-muu" {{ $vanBanDen->van_ban_can_tra_loi == 1 ? 'checked' : null }}>
                                                     <label
                                                         for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
                                                         VB cần trả lời

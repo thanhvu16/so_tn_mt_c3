@@ -19,6 +19,7 @@ class DonViChuTri extends Model
         'don_vi_id',
         'parent_id',
         'noi_dung',
+        'da_chuyen_xuong_don_vi',
         'don_vi_co_dieu_hanh',
         'vao_so_van_ban',
         'chuyen_tiep',
@@ -29,6 +30,9 @@ class DonViChuTri extends Model
     const CHUYEN_TIEP = 1;
     const GIAI_QUYET = 2;
     const TYPE_NHAP_TU_VAN_THU_DON_VI = 1;
+    const VB_DA_CHUYEN_XUONG_DON_VI = 1;
+    const DON_VI_CO_DIEU_HANH = 1;
+    const TRA_LAI = 1;
 
     public function canBoChuyen()
     {

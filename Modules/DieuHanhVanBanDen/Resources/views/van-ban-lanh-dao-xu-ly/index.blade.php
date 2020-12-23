@@ -216,8 +216,7 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="3">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị
-                                                phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
@@ -274,7 +273,7 @@
         $('.pho-chu-tich').on('change', function () {
             let $this = $(this);
             let id = $this.val();
-            let statusTraLai = $this.data('tra-lai');
+            let statusTraLai = $(this).data('tra-lai');
 
             let textPhoChuTich = $this.find("option:selected").text() + ' chỉ đạo';
             vanBanDenDonViId = $this.data('id');
@@ -321,7 +320,7 @@
                 return this.text;
             }).get();
 
-            let statusTraLai = $this.data('tra-lai');
+            let statusTraLai = $(this).data('tra-lai');
             if (statusTraLai) {
                 $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
             }
@@ -369,7 +368,7 @@
 
             vanBanDenDonViId = $(this).data('id');
 
-            let statusTraLai = $this.data('tra-lai');
+            let statusTraLai = $(this).data('tra-lai');
             if (statusTraLai) {
                 $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
             }

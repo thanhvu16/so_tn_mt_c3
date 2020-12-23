@@ -106,7 +106,7 @@ class VanBanDen extends Model
     public function getXuLyVanBanDen($type = null)
     {
         $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
-            ->select('id', 'noi_dung', 'can_bo_nhan_id')
+            ->select('id', 'noi_dung', 'can_bo_nhan_id', 'van_ban_den_id')
             ->whereNull('status')
             ->get();
 
@@ -177,12 +177,16 @@ class VanBanDen extends Model
         return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id');
     }
 
-    public function getChuyenVienThucHien($canBoNhanId)
+    public function getChuyenVienThucHien($canBoNhanId = null)
     {
 
         return DonViChuTri::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
-            ->where('can_bo_nhan_id', $canBoNhanId)
+            ->where(function ($query) use ($canBoNhanId) {
+                if (!empty($canBoNhanId)) {
+                    return $query->where('can_bo_nhan_id', $canBoNhanId);
+                }
+            })
             ->select(['id', 'van_ban_den_id', 'noi_dung'])
             ->first();
     }
@@ -446,5 +450,14 @@ class VanBanDen extends Model
             ->where('can_bo_nhan_id', $user->id)
             ->orderBy('id', 'DESC')
             ->first();
+    }
+
+    public function getDonViChuTriThucHien()
+    {
+
+        return DonViChuTri::where('van_ban_den_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'can_bo_chuyen_id'])
+            ->get();
     }
 }

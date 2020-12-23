@@ -34,6 +34,13 @@
                                 class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanDenDonViChoVaoSo }}</button>
                         </p>
                     </a>
+
+                    <a class="text-title-item" href="{{ route('van-ban-tra-lai.index') }}">
+                        <p>Văn bản trả lại
+                            <button
+                                class="btn br-10 btn-primary btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanDenTraLai }}</button>
+                        </p>
+                    </a>
                     @endrole
 
                     <a class="text-title-item" href="{{ route('van-ban-den.index') }}">

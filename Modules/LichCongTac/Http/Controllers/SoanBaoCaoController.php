@@ -83,6 +83,7 @@ class SoanBaoCaoController extends Controller
                                 ->whereHas('roles', function ($query) use ($roles) {
                                     return $query->whereIn('name', $roles);
                                 })
+                                ->orderBy('id', 'DESC')
                                 ->whereNull('deleted_at')->first();
 
                             $canBoNhanId = $nguoiDung->id;
@@ -103,6 +104,7 @@ class SoanBaoCaoController extends Controller
                                 ->whereHas('roles', function ($query) use ($roles) {
                                     return $query->whereIn('name', $roles);
                                 })
+                                ->orderBy('id', 'DESC')
                                 ->whereNull('deleted_at')->first();
 
                             $canBoNhanId = $nguoiDung->id;

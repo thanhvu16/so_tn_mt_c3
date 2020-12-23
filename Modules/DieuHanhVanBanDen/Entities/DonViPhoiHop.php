@@ -49,6 +49,7 @@ class DonViPhoiHop extends Model
                     ->whereHas('roles', function ($query) use ($roles) {
                         return $query->whereIn('name', $roles);
                     })
+                    ->orderBy('id', 'DESC')
                     ->whereNull('deleted_at')->first();
 
                 $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;

@@ -2,10 +2,13 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Auth, DB;
+use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
@@ -21,7 +24,24 @@ class VanBanTraLaiController extends Controller
      */
     public function index()
     {
-        return view('dieuhanhvanbanden::index');
+        $currentUser = Auth::user();
+
+        $vanBanTraLai = VanBanTraLai::where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('status')->select('van_ban_den_id', 'id')->get();
+
+        $arrVanBanDenId = $vanBanTraLai->pluck('van_ban_den_id')->toArray();
+
+        $danhSachVanBanDen = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(PER_PAGE);
+
+        if ($danhSachVanBanDen) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+            }
+        }
+
+        return view('dieuhanhvanbanden::van-ban-tra-lai.index', compact('danhSachVanBanDen'));
     }
 
     /**
@@ -46,6 +66,17 @@ class VanBanTraLaiController extends Controller
         $noiDung = $request->get('noi_dung');
         $type = $request->get('type') ?? null;
         $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
+        $vanBanDenDonVi = $vanBanDen->hasChild();
+
+        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
+            ->first();
+
+        $vanThuDonVi = User::role(VAN_THU_DON_VI)
+            ->where('don_vi_id', $currentUser->don_vi_id)
+            ->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
+            ->first();
 
         try {
             DB::beginTransaction();
@@ -129,12 +160,59 @@ class VanBanTraLaiController extends Controller
                         break;
 
                     case 3:
+                        if ($currentUser->hasRole(TRUONG_PHONG)) {
 
-                        $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
-                        $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+                            // chuyen tra lai van thu neu don vi co dieu hanh
+                            if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
 
-                        $vanBanDen->trinh_tu_nhan_van_ban = 2;
-                        $vanBanDen->save();
+                                $canBoNhan = $vanThuDonVi->id ?? null;
+                                $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                                $chuyenNhanDonViChuTri->vao_so_van_ban = null;
+                                $chuyenNhanDonViChuTri->tra_lai = DonViChuTri::TRA_LAI;
+                                $chuyenNhanDonViChuTri->save();
+
+                            } else {
+                                // chuyen len PCT hoac CT
+                                $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
+                                $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+                                $vanBanDen->trinh_tu_nhan_van_ban = 2;
+
+                                if ($canBoNhan == $chuTich->id) {
+                                    $vanBanDen->trinh_tu_nhan_van_ban = 1;
+                                }
+                                $vanBanDen->save();
+                            }
+
+                        } else {
+                            // van thu tra lai
+                            $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
+                            $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+                            $vanBanDen->trinh_tu_nhan_van_ban = 2;
+
+                            if ($canBoNhan == $chuTich->id) {
+                                $vanBanDen->trinh_tu_nhan_van_ban = 1;
+                            }
+                            $vanBanDen->save();
+
+                            // xoa van ban den don vi
+                            if (!empty($vanBanDenDonVi)) {
+                                $vanBanDenDonVi->delete();
+
+                                // xoa chuyen vien phoi hop
+                                ChuyenVienPhoiHop::where([
+                                    'van_ban_den_id' => $vanBanDen->id,
+                                    'don_vi_id' => $currentUser->don_vi_id
+                                ])->whereNull('status')->delete();
+
+                                // xoa pho phong xem de biet
+                                LanhDaoXemDeBiet::where([
+                                    'van_ban_den_id' => $vanBanDen->id,
+                                    'don_vi_id' => $currentUser->don_vi_id
+                                ])->delete();
+
+                            }
+                        }
 
                         break;
 
@@ -173,7 +251,8 @@ class VanBanTraLaiController extends Controller
 
                 //xoa van ban don vi chu tri tu van thu cho vao so gui tra lai
                 if ($currentUser->hasRole(VAN_THU_DON_VI)) {
-                    $chuyenNhanDonViChuTri->delete();
+                    $chuyenNhanDonViChuTri->tra_lai = DonViChuTri::TRA_LAI;
+                    $chuyenNhanDonViChuTri->save();
                 }
                 DB::commit();
 
