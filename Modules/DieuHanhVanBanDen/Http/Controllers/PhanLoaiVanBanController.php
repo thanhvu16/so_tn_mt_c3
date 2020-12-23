@@ -147,7 +147,7 @@ class PhanLoaiVanBanController extends Controller
                             $vanBanDen->save();
                         }
 
-                        if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrPhoChuTich[$vanBanDenId])) {
+                        if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
                             $vanBanDen->trinh_tu_nhan_van_ban = 3;
                             $vanBanDen->save();
                             $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
