@@ -81,14 +81,10 @@
                             @endforelse
                             </tbody>
                         </table>
-                        <div class="clearfix">
-                            <div class="row">
-                                <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số loại văn bản: <b>{{ $giaHanVanBanDonVi->total() }}</b>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
+                            <div class="col-md-6" style="margin-top: 5px">
+                                Tổng số loại văn bản: <b>{{ $giaHanVanBanDonVi->total() }}</b>
+                            </div>
                             <div class="col-md-6 text-right">
                                 {!! $giaHanVanBanDonVi->render() !!}
                             </div>

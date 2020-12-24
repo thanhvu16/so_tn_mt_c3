@@ -264,7 +264,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-12 text-right">
                                 {!! $danhSachVanBanDen->render() !!}
                             </div>
                         </div>

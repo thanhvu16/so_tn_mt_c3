@@ -155,14 +155,10 @@
                             @endforelse
                             </tbody>
                         </table>
-                        <div class="clearfix">
-                            <div class="row">
-                                <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
+                            <div class="col-md-6" style="margin-top: 5px">
+                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                            </div>
                             <div class="col-md-6 text-right">
                                 {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
                             </div>

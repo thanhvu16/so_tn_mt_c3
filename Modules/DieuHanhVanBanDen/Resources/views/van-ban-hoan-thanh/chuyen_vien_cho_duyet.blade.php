@@ -101,16 +101,13 @@
                             @endforelse
                             </tbody>
                         </table>
-                        <div class="clearfix">
                             <div class="row">
                                 <div class="col-md-6" style="margin-top: 5px">
                                     Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 text-right">
-                                {!! $danhSachVanBanDen->render() !!}
+                                <div class="col-md-6 text-right">
+                                    {!! $danhSachVanBanDen->render() !!}
+                                </div>
                             </div>
                         </div>
                     </div>
