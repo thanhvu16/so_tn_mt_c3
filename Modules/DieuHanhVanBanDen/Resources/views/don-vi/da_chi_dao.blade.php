@@ -163,6 +163,28 @@
                                                     </label>
                                                 </p>
                                             @endif
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
+                                                    <p>Lãnh đạo dự họp:</p>
+                                                    @if ($trinhTuNhanVanBan == 3)
+                                                    <input type="radio"
+                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                           class="radio-col-cyan tp-du-hop"
+                                                           value="{{ $vanBanDen->lichCongTacDonVi->lanh_dao_id == auth::user()->id ? $vanBanDen->lichCongTacDonVi->lanh_dao_id : auth::user()->id }}"
+                                                           form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi->lanh_dao_id == auth::user()->id ? 'checked' : null  }}>
+                                                    <label
+                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                    ><i>Trưởng phòng dự họp</i></label><br>
+                                                    @endif
+                                                    <input type="radio"
+                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"
+                                                           class="radio-col-cyan pho-phong-du-hop"
+                                                           value="{{ in_array($vanBanDen->lichCongTacDonVi->lanh_dao_id, $danhSachPhoPhong->pluck('id')->toArray()) ? $vanBanDen->lichCongTacDonVi->lanh_dao_id : null }}"
+                                                           form="form-tham-muu" {{ in_array($vanBanDen->lichCongTacDonVi->lanh_dao_id, $danhSachPhoPhong->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                    <label
+                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phó phòng dự họp</i></label>
+                                                @endif
                                         </div>
                                     </td>
                                     <td>
@@ -246,6 +268,7 @@
             console.log(vanBanDenDonViId);
 
             let textPhoPhong = $this.find("option:selected").text() + ' chỉ đạo';
+            $this.parents('.tr-tham-muu').find('.pho-phong-du-hop').val(id);
 
             if (id) {
                 checkVanBanDenId(vanBanDenDonViId);
@@ -433,6 +456,12 @@
             if (confirm('Xác nhận gửi?')) {
                 $('#form-tham-muu').submit();
             }
+        });
+
+        $('body').on('click', '.pho-phong-du-hop', function () {
+            let idPhoPhong = $(this).parents('.tr-tham-muu').find(".pho-phong option:selected").val();
+            $(this).val(idPhoPhong);
+
         });
 
     </script>

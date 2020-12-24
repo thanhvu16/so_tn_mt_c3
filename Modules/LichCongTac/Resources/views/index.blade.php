@@ -30,7 +30,7 @@
                                             <option value="">Chọn lãnh đạo</option>
                                             @forelse($danhSachLanhDao as $lanhdao)
                                                 <option
-                                                    value="{{ $lanhdao->id }}" {{ Request::get('lanh_dao_id') == $lanhdao->id ? 'selected' : auth::user()->id == $lanhdao->id ? 'selected' : null }}>{{ $lanhdao->ho_ten }}</option>
+                                                    value="{{ $lanhdao->id }}" {{ !empty(Request::get('lanh_dao_id')) && Request::get('lanh_dao_id') == $lanhdao->id ? 'selected' :  null }}>{{ $lanhdao->ho_ten }}</option>
                                             @empty
                                             @endforelse
                                         </select>

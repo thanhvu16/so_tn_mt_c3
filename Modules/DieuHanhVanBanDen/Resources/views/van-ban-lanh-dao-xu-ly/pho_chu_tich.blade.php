@@ -37,7 +37,7 @@
                                 <th width="22%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center" width="15%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                <th class="text-center" width="7%">
+                                <th class="text-center" width="15%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">
                                 </th>
                             </tr>
@@ -45,6 +45,8 @@
                             <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-data">
+                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
+                                           class="check-don-vi-du-hop" form="form-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
@@ -120,7 +122,7 @@
                                                 </select>
                                             </p>
 
-                                            @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
+                                            @if($vanBanDen->checkQuyenGiaHan)
                                                 <p>
                                                     <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
                                                            value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
@@ -135,6 +137,28 @@
                                                    class="color-red font-weight-normal">
                                                 VB Quan trọng
                                             </label>
+
+                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacPhoChuTich))
+                                                <p>Lãnh đạo dự họp:</p>
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       class="radio-col-cyan pho-ct-du-hop"
+                                                       value="{{ $vanBanDen->PhoChuTich->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                ><i>PCT</i></label>
+                                                &nbsp;
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"
+                                                       class="radio-col-cyan don-vi-du-hop"
+                                                       value="{{ $vanBanDen->lichCongTacDonVi->don_vi_du_hop ?? $vanBanDen->checkDonViChuTri->don_vi_id }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
@@ -214,6 +238,7 @@
 
             if (donViChuTri.length > 0 && id.length > 0) {
                 checkVanBanDenId(vanBanDenDonViId);
+                $this.parents('.tr-data').find('.don-vi-du-hop').val(id);
                 $(this).parents('.tr-data').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
@@ -362,7 +387,19 @@
             } else {
                 $('#form-tham-muu').submit();
             }
-        })
+        });
+
+        $('.don-vi-du-hop').on('click', function () {
+            $(this).parents('.tr-data').find('.check-don-vi-du-hop').val(1);
+        });
+
+        $('.pho-ct-du-hop').on('click', function () {
+            $(this).parents('.tr-data').find('.check-don-vi-du-hop').val("");
+        });
+
+        $('.chu-tich-du-hop').on('click', function () {
+            $(this).parents('.tr-data').find('.check-don-vi-du-hop').val("");
+        });
 
     </script>
 @endsection

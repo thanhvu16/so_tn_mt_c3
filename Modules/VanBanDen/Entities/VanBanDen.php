@@ -124,10 +124,10 @@ class VanBanDen extends Model
         return $this->hasMany(LanhDaoXemDeBiet::class, 'van_ban_den_id', 'id');
     }
 
-    public function checkQuyenGiaHan($userId)
+    public function checkQuyenGiaHan($userId = null)
     {
         return XuLyVanBanDen::where('van_ban_den_id', $this->id)
-            ->where('can_bo_nhan_id', $userId)
+            ->where('can_bo_nhan_id', auth::user()->id)
             ->whereNull('status')
             ->where('quyen_gia_han', XuLyVanBanDen::QUYEN_GIA_HAN)
             ->first();
@@ -396,6 +396,15 @@ class VanBanDen extends Model
         return LichCongTac::whereIn('lanh_dao_id', $arrLanhDaoId)
             ->where('object_id', $this->id)
             ->whereNull('type')
+            ->select('id', 'lanh_dao_id')
+            ->first();
+    }
+
+    public function checkLichCongTacDonVi()
+    {
+        return LichCongTac::where('object_id', $this->id)
+            ->whereNull('type')
+            ->whereNotNull('don_vi_du_hop')
             ->select('id', 'lanh_dao_id')
             ->first();
     }

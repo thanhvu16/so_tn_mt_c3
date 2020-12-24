@@ -44,6 +44,8 @@
                             <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
+                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
+                                           class="check-don-vi-du-hop" form="form-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
@@ -157,7 +159,7 @@
                                                 </select>
                                             </p>
 
-                                            @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
+                                            @if($vanBanDen->checkQuyenGiaHan)
                                                 <p>
                                                     <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
                                                            value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
@@ -184,7 +186,6 @@
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                     ><i>CT</i></label>
                                                     &nbsp;
-                                                    &nbsp;
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
@@ -194,6 +195,15 @@
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                     ><i>PCT</i></label>
+                                                &nbsp;
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"
+                                                       class="radio-col-cyan don-vi-du-hop"
+                                                       value="{{ $vanBanDen->lichCongTacDonVi->don_vi_du_hop ?? $vanBanDen->checkDonViChuTri->don_vi_id }}"
+                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>
                                             @endif
 
                                         </div>
@@ -326,6 +336,7 @@
             }
 
             if (donViChuTri.length > 0 && id.length > 0) {
+                $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
                 checkVanBanDenId(vanBanDenDonViId);
                 $(this).parents('.data-row').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
             } else {
@@ -479,6 +490,18 @@
                 $('#form-tham-muu').submit();
             }
         })
+
+        $('.don-vi-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
+        });
+
+        $('.pho-ct-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+        });
+
+        $('.chu-tich-du-hop').on('click', function () {
+            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+        });
 
     </script>
 @endsection

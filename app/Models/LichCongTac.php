@@ -108,4 +108,59 @@ class LichCongTac extends Model
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
     }
+
+    public static function taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $lanhDaoId = $lanhDaoDuHopId;
+
+        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $nguoiDung = null;
+
+        if (!empty($donViChuTriId)) {
+            $nguoiDung = User::where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $donViChuTriId)
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->orderBy('id', 'DESC')
+                ->whereNull('deleted_at')->first();
+        }
+
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId);
+        $noiDungMoiHop = null;
+
+        if (!empty($lanhDaoDuHop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        // don vi du hop
+        if (empty($chuyenTuDonVi) && !empty($donViDuHop) && $donViDuHop == VanBanDen::DON_VI_DU_HOP) {
+            $lanhDaoId = $nguoiDung->id ?? null;
+        }
+
+        $dataLichCongTac = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $noiDungMoiHop,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' =>  !empty($donViDuHop) ? $donViChuTriId : null
+        );
+        //check lich cong tac
+        $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
+        if (empty($lichCongTac)) {
+            $lichCongTac = new LichCongTac();
+        }
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+    }
 }

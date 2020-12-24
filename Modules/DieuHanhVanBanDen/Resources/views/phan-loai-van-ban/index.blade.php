@@ -214,15 +214,15 @@
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"><i>PCT</i></label>
                                             </div>
-{{--                                            <div class=" radio-info form-check-inline">--}}
-{{--                                                <input type="radio"--}}
-{{--                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"--}}
-{{--                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"--}}
-{{--                                                       class="radio-col-cyan don-vi-du-hop" value=""--}}
-{{--                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">--}}
-{{--                                                <label--}}
-{{--                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>--}}
-{{--                                            </div>--}}
+                                            <div class=" radio-info form-check-inline">
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"
+                                                       class="radio-col-cyan don-vi-du-hop" value=""
+                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>
+                                            </div>
                                         @endif
                                     </td>
                                 </tr>

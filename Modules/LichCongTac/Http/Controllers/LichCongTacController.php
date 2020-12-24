@@ -29,6 +29,7 @@ class LichCongTacController extends Controller
         $lanhDaoId = $request->get('lanh_dao_id') ?? null;
 
         $donViId = null;
+        $donViDuHop = null;
 
         $ngayTuan = [
             array('Thứ Hai', date('d/m/Y', strtotime($year . "W" . $week . 1))),
@@ -51,9 +52,9 @@ class LichCongTacController extends Controller
         $tuanTruoc = $week != 1 ? $week - 1 : 1;
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
-        $roles = [CHU_TICH, PHO_CHUC_TICH];
+        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
         $id = null;
-        if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+        if ($currentUser->hasRole([PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG])) {
             $id = $currentUser->id;
         }
 
@@ -71,11 +72,11 @@ class LichCongTacController extends Controller
             ->get();
 
 
-
         if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
             $donViId = $currentUser->don_vi_id;
+            $lanhDaoId = $currentUser->id;
+            $donViDuHop = $currentUser->don_vi_id;
         }
-
 
         $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi', 'congViecDonVi')
             ->where('ngay', '>=', $ngaybd)
@@ -85,9 +86,9 @@ class LichCongTacController extends Controller
                     return $query->where('lanh_dao_id', $lanhDaoId);
                 }
             })
-            ->where(function ($query) use ($donViId) {
-                if (!empty($donViId)) {
-                    return $query->where('don_vi_id', $donViId);
+            ->where(function ($query) use ($donViDuHop) {
+                if (!empty($donViDuHop)) {
+                    return $query->where('don_vi_du_hop', $donViDuHop);
                 }
             })
             ->orderBy('buoi', 'ASC')->get();

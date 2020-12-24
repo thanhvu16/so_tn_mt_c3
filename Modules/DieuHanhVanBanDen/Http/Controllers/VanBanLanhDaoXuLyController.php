@@ -48,6 +48,9 @@ class VanBanLanhDaoXuLyController extends Controller
             'lanhDaoXemDeBiet' => function ($query) {
                 $query->select(['van_ban_den_id', 'lanh_dao_id']);
             },
+            'checkDonViPhoiHop' => function ($query) {
+                $query->select(['id', 'van_ban_den_id', 'don_vi_id']);
+            },
             'checkLuuVetVanBanDen',
             'vanBanTraLai'
             ])
@@ -77,13 +80,17 @@ class VanBanLanhDaoXuLyController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
+                $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
+                $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
+                $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
             }
         }
 
         if ($active == 2) {
 
             return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.pho_chu_tich',
-                compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active'));
+                compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
         }
 
         return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.index',
@@ -124,6 +131,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
         $textDonViChuTri = $data['don_vi_chu_tri'] ?? null;
         $textDonViPhoiHop = $data['don_vi_phoi_hop'] ?? null;
+        $donViDuHop = $data['don_vi_du_hop'] ?? null;
 
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
@@ -202,35 +210,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     // check lanh dao du hop
                     if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
                         if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
-                            $tuan = date('W',strtotime($vanBanDen->ngay_hop_chinh));
-
-                            $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId[$vanBanDenId]);
-                            $noiDungMoiHop = null;
-
-                            if (!empty($lanhDaoDuHop)) {
-
-                                $noiDungMoiHop = 'Kính mời '.$lanhDaoDuHop->chucVu->ten_chuc_vu. ' '. $lanhDaoDuHop->ho_ten .' dự họp';
-                            }
-
-                            $dataLichCongTac = array(
-                                'object_id' => $vanBanDen->id,
-                                'lanh_dao_id' => $lanhDaoDuHopId[$vanBanDenId],
-                                'ngay' => $vanBanDen->ngay_hop,
-                                'gio' => $vanBanDen->gio_hop,
-                                'tuan' => $tuan,
-                                'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
-                                'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $noiDungMoiHop,
-                                'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
-                                'user_id' => $currentUser->id,
-                            );
-                            //check lich cong tac
-                            $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
-
-                            if (empty($lichCongTac)) {
-                                $lichCongTac = new LichCongTac();
-                            }
-                            $lichCongTac->fill($dataLichCongTac);
-                            $lichCongTac->save();
+                            LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
                         }
                     }
 
@@ -438,6 +418,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $data = $request->all();
         $currentUser = auth::user();
 
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
         $vanBanDenDonViIds = json_decode($data['van_ban_den_id']);
         $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
@@ -447,8 +428,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $dataVanBanQuanTrong = $data['van_ban_quan_trong'] ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $dataHanXuLy = $data['han_xu_ly'] ?? null;
-
-        $chucVuTP = ChucVu::where('ten_chuc_vu', 'like', 'trưởng phòng')->first();
+        $donViDuHop = $data['don_vi_du_hop'] ?? null;
 
         if (count($vanBanDenDonViIds) > 0) {
             try {
@@ -498,6 +478,12 @@ class VanBanLanhDaoXuLyController extends Controller
                             $vanBanQuanTrong = new VanBanQuanTrong();
                             $vanBanQuanTrong->fill($dataVanBanQuanTrong);
                             $vanBanQuanTrong->save();
+                        }
+                    }
+                    // check lanh dao du hop
+                    if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
+                        if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
+                            LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $danhSachDonViChuTriIds);
                         }
                     }
 
