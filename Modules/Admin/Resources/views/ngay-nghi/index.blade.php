@@ -38,6 +38,12 @@
                                            name="ten_ngay_nghi"
                                            placeholder="Tên ngày nghỉ">
                                 </div>
+{{--                                <div class="col-md-3 form-group">--}}
+{{--                                    <label for="exampleInputEmail1">Tìm theo tên viết tắt</label>--}}
+{{--                                    <input type="text" class="form-control" value="{{Request::get('ten_viet_tat')}}"--}}
+{{--                                           name="ten_viet_tat"--}}
+{{--                                           placeholder="Tên viết tắt">--}}
+{{--                                </div>--}}
                                 <div class="col-md-3" style="margin-top: 20px">
                                     <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
                                 </div>

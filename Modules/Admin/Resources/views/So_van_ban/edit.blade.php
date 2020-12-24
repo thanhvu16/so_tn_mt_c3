@@ -58,6 +58,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group @if($sovanban->so_don_vi == null) hidden @endif don-vi">
+                                    <label>Sổ áp dụng</label>
+                                    <select name="ap_dung" class="form-control ">
+                                        <option value="2" {{ $sovanban->type == 2 && $sovanban->type != null ? 'selected' : '' }}>Áp dụng cho sổ đi</option>
+                                        <option value="1" {{ $sovanban->type == 1 && $sovanban->type != null ? 'selected' : '' }}>Áp dụng cho sổ đến</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>

@@ -11,17 +11,17 @@
                     @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => 3])
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 mb-1" >
-                        <form action="{{route('don-vi-nhan-van-ban-den.index')}}" method="get">
-                                <div class="col-md-offset-9">
+{{--                        <form action="{{route('don-vi-nhan-van-ban-den.index')}}" method="get">--}}
+{{--                                <div class="col-md-offset-9">--}}
 
-                                    <select class="form-control show-tick select2-search"
-                                            name="don_vi_van_ban"  onchange="this.form.submit()" id="">
-                                        <option value="3" {{Request::get('don_vi_van_ban') == 3 ? 'selected' : ''}}>Văn bản đã vào sổ</option>
-                                        <option value="2" {{Request::get('don_vi_van_ban') == 2 ? 'selected' : ''}}>Văn bản chưa vào sổ</option>
-                                        <option  value="" {{Request::get('don_vi_van_ban') == '' ? 'selected' : ''}}>Tất cả văn bản</option>
-                                    </select>
-                                </div>
-                        </form>
+{{--                                    <select class="form-control show-tick select2-search"--}}
+{{--                                            name="don_vi_van_ban"  onchange="this.form.submit()" id="">--}}
+{{--                                        <option value="3" {{Request::get('don_vi_van_ban') == 3 ? 'selected' : ''}}>Văn bản đã vào sổ</option>--}}
+{{--                                        <option value="2" {{Request::get('don_vi_van_ban') == 2 ? 'selected' : ''}}>Văn bản chưa vào sổ</option>--}}
+{{--                                        <option  value="" {{Request::get('don_vi_van_ban') == '' ? 'selected' : ''}}>Tất cả văn bản</option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                        </form>--}}
                     </div>
                     <div class="box-body" >
 
@@ -112,10 +112,10 @@
                                     <td class="text-center">{{$donvinhancount+1}}</td>
                                     <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
                                     <td>
-                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu}}</p>
+                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu ?? ''}}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id.'?type=phoi_hop')}}" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a>
+                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id.'?type=phoi_hop')}}" title="{{$vbDen2->vanBanDen->trich_yeu ?? ''}}">{{$vbDen2->vanBanDen->trich_yeu ?? ''}}</a>
                                         <br>
                                         <p class="mt-2">
                                             <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
@@ -128,10 +128,12 @@
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
+                                            @if($vbDen2->vanBanDen)
                                             @forelse($vbDen2->vanBanDen->vanBanDenFilehs as $filedata)
                                                 <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File]</a><br>
                                             @empty
                                             @endforelse
+                                            @endif
                                         </div>
                                     </td>
 

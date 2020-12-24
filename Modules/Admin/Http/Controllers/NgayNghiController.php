@@ -18,17 +18,18 @@ class NgayNghiController extends Controller
         $id = (int)$request->get('id');
         $tenNgayNghi = $request->get('ten_ngay_nghi') ?? null;
         $ngayNghi = null;
-
+        $timloaiso = $request->get('ten_ngay_nghi');
         if ($id) {
             $ngayNghi = NgayNghi::findOrFail($id);
         }
 
-        $listNgayNghi = NgayNghi::where(function ($query) use ($tenNgayNghi) {
-                if (!empty($tenNgayNghi)) {
-                    return $query->where('ten_ngay_nghi', 'LIKE', "%$tenNgayNghi");
+
+        $listNgayNghi = NgayNghi::orderBy('id', 'DESC')
+            ->where(function ($query) use ($timloaiso) {
+                if (!empty($timloaiso)) {
+                    return $query->where('ten_ngay_nghi','Like',"%$timloaiso%");
                 }
-            })
-            ->orderBy('id', 'DESC')->paginate(PER_PAGE);
+            })->paginate(PER_PAGE);
 
         return view('admin::ngay-nghi.index', compact('listNgayNghi', 'ngayNghi'));
     }

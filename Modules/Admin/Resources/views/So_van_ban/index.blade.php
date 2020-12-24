@@ -56,6 +56,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group hidden don-vi">
+                                    <label>Sổ áp dụng</label>
+                                    <select name="ap_dung" class="form-control ">
+                                            <option value="2">Áp dụng cho sổ đi</option>
+                                            <option value="1">Áp dụng cho sổ đến</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>

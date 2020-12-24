@@ -154,7 +154,7 @@
                                         class="form-control select2"
                                         multiple
                                         data-placeholder=" Chọn đơn vị nhận ...">
-                                    @foreach ($ds_DonVi as $donVi)
+                                    @foreach ($ds_DonVi_nhan as $donVi)
                                         <option value="{{ $donVi->id }}"
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach

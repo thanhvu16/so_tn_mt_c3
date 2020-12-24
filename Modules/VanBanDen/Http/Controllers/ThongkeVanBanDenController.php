@@ -37,7 +37,7 @@ class ThongkeVanBanDenController extends Controller
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
             $user->hasRole(VAN_THU_DON_VI) ||
             $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
-            $ds_vanBanDen =  where([
+            $ds_vanBanDen =  VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 2])
                 ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')

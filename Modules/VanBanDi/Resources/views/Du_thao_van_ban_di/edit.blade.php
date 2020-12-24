@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 ">
-                            <label for="loai_van_ban_id" class="col-form-label">Phó giám đốc</label>
+                            <label for="loai_van_ban_id" class="col-form-label">Lãnh đạo phòng khác</label>
                             <select name="lanh_dao_phong_khac[]" id="lanh_dao_phong_khac"
                                     class="form-control select2"
                                     multiple="multiple"

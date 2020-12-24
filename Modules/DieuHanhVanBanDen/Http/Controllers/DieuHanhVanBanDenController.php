@@ -74,37 +74,58 @@ class DieuHanhVanBanDenController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaotrongphong =  User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
 
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG,])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG,CHU_TICH, PHO_CHUC_TICH])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+
                 break;
             case PHO_PHONG:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                }
+                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data)
+                {
+                    array_push($vanThuVanBanDiPiceCharts, $data);
+                }
+                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
                 break;
             case TRUONG_PHONG:
-                $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case PHO_CHUC_TICH:
-                $ds_nguoiKy = User::role([CHU_TICH])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
-                break;
-            case CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
-                break;
-            case PHO_CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = User::role([CHU_TICH])->get();
                 break;
             case CHU_TICH:
-                $ds_nguoiKy = User::role([CHU_TICH])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = null;
+                break;
+            case CHANH_VAN_PHONG:
+                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
+                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
