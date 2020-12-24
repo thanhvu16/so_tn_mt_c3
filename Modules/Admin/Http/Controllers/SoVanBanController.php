@@ -71,6 +71,7 @@ class SoVanBanController extends Controller
         if($request->loai_so == 4)
         {
             $sovanban->so_don_vi = $request->don_vi;
+            $sovanban->type = $request->ap_dung;
         }
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();
@@ -116,6 +117,7 @@ class SoVanBanController extends Controller
         if($request->loai_so == 4)
         {
             $sovanban->so_don_vi = $request->don_vi;
+            $sovanban->type = $request->ap_dung;
         }
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();

@@ -46,7 +46,7 @@ class DuThaoVanBanController extends Controller
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $lanhdaotrongphong = User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([ TRUONG_PHONG,PHO_PHONG,TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
         //$ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -269,8 +269,8 @@ class DuThaoVanBanController extends Controller
     {
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
+        $lanhdaotrongphong = User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
         $lay_can_bo_phong = CanBoPhongDuThao::where(['du_thao_vb_id' => $id])->whereIn('trang_thai', [1, 2])->get();
 
@@ -339,6 +339,8 @@ class DuThaoVanBanController extends Controller
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
+        $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('dieu_hanh',1)
+            ->orderBy('ten_don_vi', 'asc')->get();
         $user = auth::user();
 
         $laysovanban = [];
@@ -346,7 +348,7 @@ class DuThaoVanBanController extends Controller
         foreach ($sovanbanchung as $data2) {
             array_push($laysovanban, $data2);
         }
-        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id,'type'=>2])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sorieng as $data2) {
             array_push($laysovanban, $data2);
         }
@@ -392,7 +394,7 @@ class DuThaoVanBanController extends Controller
 
         }
 
-        return view('vanbandi::Du_thao_van_ban_di.tao_van_ban_di', compact('ds_nguoiKy', 'ds_loaiVanBan', 'ds_DonVi', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'vanbanduthao', 'date', 'id_duthao', 'nguoinhan', 'file','emailngoaithanhpho','emailtrongthanhpho'));
+        return view('vanbandi::Du_thao_van_ban_di.tao_van_ban_di', compact('ds_nguoiKy','ds_DonVi_nhan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'vanbanduthao', 'date', 'id_duthao', 'nguoinhan', 'file','emailngoaithanhpho','emailtrongthanhpho'));
     }
 
     /**
@@ -415,8 +417,8 @@ class DuThaoVanBanController extends Controller
         canPermission(AllPermission::suaDuThao());
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::where(['don_vi_id' => auth::user()->don_vi_id])->whereNull('deleted_at')->get();
+        $lanhdaotrongphong = User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = User::orderBy('username', 'desc')->whereNull('deleted_at')->get();
         $lay_can_bo_phong = CanBoPhongDuThao::where(['du_thao_vb_id' => $id])->whereIn('trang_thai', [1, 2])->get();
         $lay_can_bo_khac = CanBoPhongDuThaoKhac::where(['du_thao_vb_id' => $id])->whereIn('trang_thai', [1, 2])->get();

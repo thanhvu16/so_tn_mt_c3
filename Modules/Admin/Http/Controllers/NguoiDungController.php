@@ -57,8 +57,8 @@ class NguoiDungController extends Controller
 
         $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
-        $danhSachChucVu = ChucVu::all();
-        $danhSachDonVi = DonVi::all();
+        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu','asc')->get();
+        $danhSachDonVi = DonVi::orderBy('ten_don_vi','asc')->get();
 //        $danhSachDonVi = DonVi::where('id',3)->first();
 //        dd($danhSachDonVi);
 
@@ -75,8 +75,8 @@ class NguoiDungController extends Controller
         canPermission(AllPermission::themNguoiDung());
 
         $roles = Role::all();
-        $danhSachChucVu = ChucVu::all();
-        $danhSachDonVi = DonVi::all();
+        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu','asc')->get();
+        $danhSachDonVi = DonVi::orderBy('ten_don_vi','asc')->get();
 
         return view('admin::nguoi-dung.create', compact('roles', 'danhSachDonVi', 'danhSachChucVu'));
     }

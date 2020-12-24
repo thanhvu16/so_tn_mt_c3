@@ -123,7 +123,7 @@
                                         class="form-control select2"
                                         multiple
                                         data-placeholder=" Chọn đơn vị nhận ...">$lay_noi_nhan_van_ban_di
-                                    @foreach ($ds_DonVi as $donVi)
+                                    @foreach ($ds_DonVi_nhan as $donVi)
                                         <option value="{{ $donVi->id }}"{{  in_array($donVi->id, $lay_noi_nhan_van_ban_di->pluck('don_vi_id_nhan')->toArray()) ? 'selected' : '' }}
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach

@@ -181,7 +181,7 @@ class DonViNhanVanBanDenController extends Controller
     {
         $user = auth::user();
         $han_gq = $request->han_giai_quyet;
-        $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
+        $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
@@ -210,6 +210,21 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+                    if ($request->id_file) {
+                        $file = FileVanBanDi::where('id', $request->id_file)->first();
+                        if ($file) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $file->ten_file;
+                            $vbDenFile->duong_dan = $file->duong_dan;
+                            $vbDenFile->duoi_file = $file->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+
+                        }
+
+                    }
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -230,6 +245,22 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
+
+                if ($request->id_file) {
+                    $file = FileVanBanDi::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+
+                    }
+
+                }
             }
         } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
             if ($noi_dung && $noi_dung[0] != null) {
@@ -259,6 +290,22 @@ class DonViNhanVanBanDenController extends Controller
                     }
                     $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     $vanbandv->save();
+
+                    if ($request->id_file) {
+                        $file = FileVanBanDi::where('id', $request->id_file)->first();
+                        if ($file) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $file->ten_file;
+                            $vbDenFile->duong_dan = $file->duong_dan;
+                            $vbDenFile->duoi_file = $file->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+
+                        }
+
+                    }
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             } else {
@@ -281,6 +328,21 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 $vanbandv->save();
+                if ($request->id_file) {
+                    $file = FileVanBanDi::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+
+                    }
+
+                }
                 DonViChuTri::saveDonViChuTri($vanbandv->id);
             }
         }
@@ -295,31 +357,17 @@ class DonViNhanVanBanDenController extends Controller
             }
         }
 
-        if ($request->id_file) {
-            $file = FileVanBanDi::where('id', $request->id_file)->first();
-            if ($file) {
-                $vbDenFile = new FileVanBanDen();
-                $vbDenFile->ten_file = $file->ten_file;
-                $vbDenFile->duong_dan = $file->duong_dan;
-                $vbDenFile->duoi_file = $file->duoi_file;
-                $vbDenFile->vb_den_id = $vanbandv->id;
-                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
-
-            }
-
-        }
 
 
-        return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+
+        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
 
 
     public function vaosovanbanhuyen(Request $request)
     {
         $han_gq = $request->han_giai_quyet;
-        $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
+        $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
             if ($noi_dung && $noi_dung[0] != null) {
                 foreach ($noi_dung as $key => $data) {
@@ -348,6 +396,21 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+
+                    if ($request->id_file) {
+                        $file = FileVanBanDen::where('id', $request->id_file)->first();
+                        if ($file) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $file->ten_file;
+                            $vbDenFile->duong_dan = $file->duong_dan;
+                            $vbDenFile->duoi_file = $file->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                        }
+
+                    }
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -368,6 +431,20 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
+                if ($request->id_file) {
+                    $file = FileVanBanDen::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
+                }
             }
         } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI)
 
@@ -409,6 +486,21 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+
+                    if ($request->id_file) {
+                        $file = FileVanBanDen::where('id', $request->id_file)->first();
+                        if ($file) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $file->ten_file;
+                            $vbDenFile->duong_dan = $file->duong_dan;
+                            $vbDenFile->duoi_file = $file->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                        }
+
+                    }
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -431,6 +523,21 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
+
+                if ($request->id_file) {
+                    $file = FileVanBanDen::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
+                }
             }
         }
 
@@ -439,23 +546,10 @@ class DonViNhanVanBanDenController extends Controller
             $layvanbandi->vao_so_van_ban = 1;
             $layvanbandi->save();
         }
-        if ($request->id_file) {
-            $file = FileVanBanDen::where('id', $request->id_file)->first();
-            if ($file) {
-                $vbDenFile = new FileVanBanDen();
-                $vbDenFile->ten_file = $file->ten_file;
-                $vbDenFile->duong_dan = $file->duong_dan;
-                $vbDenFile->duoi_file = $file->duoi_file;
-                $vbDenFile->vb_den_id = $vanbandv->id;
-                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
-            }
-
-        }
 
 
-        return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+
+        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
 
     /**

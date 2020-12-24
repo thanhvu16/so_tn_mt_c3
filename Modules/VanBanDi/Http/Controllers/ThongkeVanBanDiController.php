@@ -70,7 +70,7 @@ class ThongkeVanBanDiController extends Controller
         }
         if ($request->get('type') == 'excel') {
             $fileName = 'in_so_van_ban_di' . date('d_m_Y') . '.xlsx';
-            return Excel::download(new VanbandiExport($ds_vanBanDen, $totalRecord),
+            return Excel::download(new VanbandiExport($ds_vanBanDi, $totalRecord),
                 $fileName);
         }
 

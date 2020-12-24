@@ -219,13 +219,14 @@ class VanBanDiController extends Controller
         foreach ($sovanbanchung as $data2) {
             array_push($laysovanban, $data2);
         }
-        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id,'type'=>2])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sorieng as $data2) {
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh',1)->get();
         $nguoinhan = null;
         $vanThuVanBanDiPiceCharts=[];
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -311,7 +312,7 @@ class VanBanDiController extends Controller
 
         }
         return view('vanbandi::van_ban_di.create', compact('ds_nguoiKy',
-            'ds_soVanBan', 'ds_loaiVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_DonVi', 'nguoinhan', 'emailtrongthanhpho', 'emailngoaithanhpho'));
+            'ds_soVanBan', 'ds_loaiVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_DonVi', 'nguoinhan','ds_DonVi_nhan', 'emailtrongthanhpho', 'emailngoaithanhpho'));
     }
 
     /**
@@ -507,13 +508,14 @@ class VanBanDiController extends Controller
         foreach ($sovanbanchung as $data2) {
             array_push($laysovanban, $data2);
         }
-        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id ,'type'=>2])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sorieng as $data2) {
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh',1)->get();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
@@ -522,7 +524,7 @@ class VanBanDiController extends Controller
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
         return view('vanbandi::van_ban_di.edit', compact('vanbandi', 'ds_soVanBan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_doKhanCap',
-            'ds_mucBaoMat', 'ds_nguoiKy', 'emailtrongthanhpho', 'emailngoaithanhpho', 'lay_emailtrongthanhpho', 'lay_emailngoaithanhpho', 'lay_noi_nhan_van_ban_di'));
+            'ds_mucBaoMat', 'ds_nguoiKy', 'emailtrongthanhpho', 'emailngoaithanhpho','ds_DonVi_nhan', 'lay_emailtrongthanhpho', 'lay_emailngoaithanhpho', 'lay_noi_nhan_van_ban_di'));
     }
 
     /**
