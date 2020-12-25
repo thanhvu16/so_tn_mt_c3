@@ -322,6 +322,7 @@ class AdminController extends Controller
                         return $query->whereNull('chuyen_tiep');
                     }
                 })
+                ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
                 ->count();
 
