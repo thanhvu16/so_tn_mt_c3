@@ -77,7 +77,7 @@ class DieuHanhVanBanDenController extends Controller
         $lanhdaotrongphong =  User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
-
+        $vanThuVanBanDiPiceCharts = [];
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
