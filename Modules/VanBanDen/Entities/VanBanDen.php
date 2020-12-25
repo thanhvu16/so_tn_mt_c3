@@ -140,7 +140,8 @@ class VanBanDen extends Model
 
     public function checkDonViChuTri()
     {
-        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id');
+        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')
+            ->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung');
     }
 
     public function checkDonViPhoiHop()
@@ -184,10 +185,10 @@ class VanBanDen extends Model
             ->where('don_vi_id', auth::user()->don_vi_id)
             ->where(function ($query) use ($canBoNhanId) {
                 if (!empty($canBoNhanId)) {
-                    return $query->where('can_bo_nhan_id', $canBoNhanId);
+                    return $query->whereIn('can_bo_nhan_id', $canBoNhanId);
                 }
             })
-            ->select(['id', 'van_ban_den_id', 'noi_dung'])
+            ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id'])
             ->first();
     }
 
@@ -196,7 +197,8 @@ class VanBanDen extends Model
 
         return DonViPhoiHop::where('van_ban_den_id', $this->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
-            ->where('can_bo_nhan_id', $canBoNhanId)
+            ->whereIn('can_bo_nhan_id', $canBoNhanId)
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id')
             ->first();
     }
 
@@ -405,7 +407,7 @@ class VanBanDen extends Model
         return LichCongTac::where('object_id', $this->id)
             ->whereNull('type')
             ->whereNotNull('don_vi_du_hop')
-            ->select('id', 'lanh_dao_id')
+            ->select('id', 'lanh_dao_id', 'object_id')
             ->first();
     }
 

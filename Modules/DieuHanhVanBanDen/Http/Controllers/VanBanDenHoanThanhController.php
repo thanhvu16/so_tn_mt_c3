@@ -35,18 +35,26 @@ class VanBanDenHoanThanhController extends Controller
                 'don_vi_id' => $currentUser->don_vi_id,
                 'can_bo_nhan_id' => $currentUser->id,
                 'hoan_thanh' => DonViChuTri::HOAN_THANH_VB
-            ])->get();
+            ])->select('van_ban_den_id')->get();
 
         } else {
             $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
                 ->where('hoan_thanh', XuLyVanBanDen::HOAN_THANH_VB)
+                ->select('van_ban_den_id')
                 ->get();
         }
 
 
         $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+            },
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+            }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($hanXuLy) {
                 if (!empty($hanXuLy)) {

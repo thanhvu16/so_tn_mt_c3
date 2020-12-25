@@ -114,7 +114,7 @@
                                                     <option value="">Chọn phó phòng chủ trì</option>
                                                     @forelse($danhSachPhoPhong as $phoPhong)
                                                         <option
-                                                            value="{{ $phoPhong->id }}" {{ !empty($vanBanDen->donViPhoiHopVanBan($phoPhong->id)) ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
+                                                            value="{{ $phoPhong->id }}" {{ !empty($vanBanDen->phoPhong) && $vanBanDen->phoPhong->can_bo_nhan_id == $phoPhong->id ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -131,7 +131,7 @@
                                                     <option value="">Chọn chuyên viên thực hiện</option>
                                                     @forelse($danhSachChuyenVien as $chuyenVien)
                                                         <option
-                                                            value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->donViPhoiHopVanBan($chuyenVien->id)) ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
+                                                            value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->chuyenVien) && $vanBanDen->chuyenVien->can_bo_nhan_id == $chuyenVien->id ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -142,7 +142,7 @@
                                     <td>
                                         @role ('trưởng phòng')
                                         <p>
-                                            {{ !empty($vanBanDen->donViPhoiHopVanBan(Auth::user()->id, auth::user()->donvi_id)) ? $vanBanDen->donViPhoiHopVanBan(auth::user()->id, auth::user()->donvi_id)->noi_dung : null }}
+                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}
                                         </p>
                                         @endrole
 
@@ -150,8 +150,8 @@
                                         <p>
                                             <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
-                                                      class="form-control {{ !empty($vanBanDen->checkChuyenVienPhoiHopThucHien($danhSachPhoPhong->pluck('id')->toArray(), null))  ? 'show' : 'hide' }}"
-                                                      rows="3">{{ $vanBanDen->checkChuyenVienPhoiHopThucHien($danhSachPhoPhong->pluck('id')->toArray(), null)->noi_dung ?? null  }}</textarea>
+                                                      class="form-control {{ !empty($vanBanDen->phoPhong)  ? 'show' : 'hide' }}"
+                                                      rows="3">{{ $vanBanDen->phoPhong->noi_dung ?? null  }}</textarea>
                                         </p>
                                         @endrole
 
@@ -159,8 +159,8 @@
                                             <textarea
                                                 name="noi_dung_chuyen_vien[{{ $vanBanDen->id }}]"
                                                 form="form-tham-muu"
-                                                class="form-control noi-dung-chuyen-vien {{ !empty($vanBanDen->checkChuyenVienPhoiHopThucHien($danhSachChuyenVien->pluck('id')->toArray(), Auth::user()->donvi_id)) ? 'show' : 'hide' }}"
-                                                rows="3">{{ !empty($vanBanDen->checkChuyenVienPhoiHopThucHien($danhSachChuyenVien->pluck('id')->toArray(), Auth::user()->donvi_id)) ? $vanBanDen->checkChuyenVienPhoiHopThucHien($danhSachChuyenVien->pluck('id')->toArray(), auth::user()->donvi_id)->noi_dung : null }}</textarea>
+                                                class="form-control noi-dung-chuyen-vien {{ !empty($vanBanDen->chuyenVien) ? 'show' : 'hide' }}"
+                                                rows="3">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
                                     @role ('phó phòng')

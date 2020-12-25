@@ -69,17 +69,6 @@
                                                       placeholder="nhập tóm tắt văn bản..."
                                                       rows="9">{{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}</textarea>
                                         </p>
-                                        {{--                                        @if ($vanBanDen->vanBanTraLai)--}}
-                                        {{--                                            <p class="color-red"><b>Lý--}}
-                                        {{--                                                    do trả--}}
-                                        {{--                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>--}}
-                                        {{--                                            </p>--}}
-                                        {{--                                            <p>--}}
-                                        {{--                                                ({{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}--}}
-                                        {{--                                                - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}--}}
-                                        {{--                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}--}}
-                                        {{--                                                )</p>--}}
-                                        {{--                                        @endif--}}
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">

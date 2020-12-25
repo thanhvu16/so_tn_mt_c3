@@ -453,14 +453,16 @@ class AdminController extends Controller
             array_push($hoSoCongViecPiceCharts, array('Lịch công tác', $lichCongTac));
             array_push($hoSoCongViecCoLors, COLOR_GREEN);
 
-            $vanBanXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', $user->id)
-                ->whereMonth('created_at', $month)
-                ->whereYear('created_at', $year)
-                ->orderBy('id', 'DESC')
-                ->count();
+            if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+                $vanBanXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', $user->id)
+                    ->whereMonth('created_at', $month)
+                    ->whereYear('created_at', $year)
+                    ->orderBy('id', 'DESC')
+                    ->count();
 
-            array_push($hoSoCongViecPiceCharts, array('VB xem để biết', $vanBanXemDeBiet));
-            array_push($hoSoCongViecCoLors, COLOR_INFO);
+                array_push($hoSoCongViecPiceCharts, array('VB xem để biết', $vanBanXemDeBiet));
+                array_push($hoSoCongViecCoLors, COLOR_INFO);
+            }
         }
 
         //$vanThuVanBanDenPiceCharts

@@ -100,7 +100,7 @@
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
-                                                            value="{{ $phoChuTich->id }}" {{ !empty($vanBanDen->checkCanBoNhan([$phoChuTich->id])) ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
+                                                            value="{{ $phoChuTich->id }}" {{ !empty($vanBanDen->PhoChuTich) && $vanBanDen->PhoChuTich->can_bo_nhan_id == $phoChuTich->id ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -180,8 +180,8 @@
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                            class="radio-col-cyan chu-tich-du-hop"
-                                                           value="{{ $vanBanDen->checkCanBoNhan([$chuTich->id])->can_bo_nhan_id ?? null }}"
-                                                           form="form-tham-muu" {{ $vanBanDen->checkLichCongTac([$chuTich->id]) ? 'checked' : null  }}>
+                                                           value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
+                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
                                                     ><i>CT</i></label>
@@ -190,8 +190,8 @@
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                            class="radio-col-cyan pho-ct-du-hop"
-                                                           value="{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->can_bo_nhan_id ?? null }}"
-                                                           form="form-tham-muu" {{ $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                           value="{{ $vanBanDen->phoChuTich->can_bo_nhan_id ?? null }}"
+                                                           form="form-tham-muu" {{ !empty($vanBanDen->checkLichCongTac) ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                     ><i>PCT</i></label>
@@ -213,8 +213,8 @@
                                             <textarea
                                                 name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
                                                 form="form-tham-muu"
-                                                class="form-control {{ !empty($danhSachPhoChuTich->pluck('id')->toArray()) ? 'show' : 'hide' }}"
-                                                rows="3">{{ $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray())->noi_dung ?? '' }}</textarea>
+                                                class="form-control {{ !empty($vanBanDen->PhoChuTich) ? 'show' : 'hide' }}"
+                                                rows="3">{{ $vanBanDen->PhoChuTich->noi_dung ?? '' }}</textarea>
                                         </p>
                                         <p>
                                             <textarea name="don_vi_chu_tri[{{ $vanBanDen->id }}]"

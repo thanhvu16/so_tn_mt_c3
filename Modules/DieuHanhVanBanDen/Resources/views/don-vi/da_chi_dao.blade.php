@@ -39,15 +39,15 @@
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
-                                        @if($vanBanDen->hasChild())
+                                        @if($vanBanDen->hasChild)
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
                                                 <br>
-                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
-                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
-                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                        (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
                                                 @endif
                                             </p>
@@ -98,8 +98,9 @@
                                                             form="form-tham-muu">
                                                         <option value="">Chọn phó phòng chủ trì</option>
                                                         @forelse($danhSachPhoPhong as $phoPhong)
-                                                            <option
-                                                                value="{{ $phoPhong->id }}" {{ in_array($phoPhong->id, $vanBanDen->getChuyenVienThucHien->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
+                                                            <option value="{{ $phoPhong->id }}"
+                                                                {{ !empty($vanBanDen->phoPhong) && $vanBanDen->phoPhong->can_bo_nhan_id == $phoPhong->id ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
+
                                                         @empty
                                                         @endforelse
                                                     </select>
@@ -115,7 +116,7 @@
                                                         <option value="">Chọn chuyên viên thực hiện</option>
                                                         @forelse($danhSachChuyenVien as $chuyenVien)
                                                             <option
-                                                                value="{{ $chuyenVien->id }}" {{ in_array($chuyenVien->id, $vanBanDen->getChuyenVienThucHien->pluck('can_bo_nhan_id')->toArray()) ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
+                                                                value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->chuyenVien) && $vanBanDen->chuyenVien->can_bo_nhan_id == $chuyenVien->id ? 'selected' : null }}>{{ $chuyenVien->ho_ten }}</option>
                                                         @empty
                                                         @endforelse
                                                     </select>
@@ -190,7 +191,7 @@
                                     <td>
                                         @if ($trinhTuNhanVanBan == 3)
                                             <p>
-                                                {{ !empty($vanBanDen->getChuyenVienThucHien(Auth::user()->id, auth::user()->donvi_id)) ? $vanBanDen->getChuyenVienThucHien(auth::user()->id, auth::user()->donvi_id)->noi_dung : null }}
+                                                {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}
                                             </p>
                                         @endif
 
@@ -198,8 +199,8 @@
                                             <p>
                                                 <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                           form="form-tham-muu"
-                                                          class="form-control {{ !empty($vanBanDen->checkChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray())) && $trinhTuNhanVanBan == 3 ? 'show' : 'hide' }}"
-                                                          rows="5">{{ $vanBanDen->checkChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray(), null)->noi_dung ?? null  }}</textarea>
+                                                          class="form-control {{ !empty($vanBanDen->phoPhong) && $trinhTuNhanVanBan == 3 ? 'show' : 'hide' }}"
+                                                          rows="5">{{ $vanBanDen->phoPhong->noi_dung ?? null  }}</textarea>
                                             </p>
                                         @endif
 
@@ -207,8 +208,8 @@
                                             <textarea
                                                 name="noi_dung_chuyen_vien[{{ $vanBanDen->id }}]"
                                                 form="form-tham-muu"
-                                                class="form-control noi-dung-chuyen-vien {{ !empty($vanBanDen->checkChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray())) ? 'show' : 'hide' }}"
-                                                rows="5">{{ !empty($vanBanDen->checkChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray())) ? $vanBanDen->checkChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray())->noi_dung : null }}</textarea>
+                                                class="form-control noi-dung-chuyen-vien {{ !empty($vanBanDen->chuyenVien) ? 'show' : 'hide' }}"
+                                                rows="5">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
                                     <td>

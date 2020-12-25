@@ -80,10 +80,15 @@ class VanBanLanhDaoXuLyController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->vanBanTraLai = $vanBanDen->vanBanTraLai ?? null;
+                $vanBanDen->checkDonViChuTri = $vanBanDen->checkDonViChuTri ?? null;
                 $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                 $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
+                $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
+                $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]) ?? null;
                 $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
                 $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
+                $vanBanDen->checkVanBanQuaChuTich = $vanBanDen->checkVanBanQuaChuTich();
             }
         }
 

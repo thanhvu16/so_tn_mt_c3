@@ -75,13 +75,25 @@ class VanBanDenPhoiHopController extends Controller
             ->select('id', 'ho_ten')
             ->orderBy('id', 'DESC')->get();
 
-        $danhSachVanBanDen = VanBanDen::with('donViChuTri', 'xuLyVanBanDen')
+        $danhSachVanBanDen = VanBanDen::with([
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+                }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->paginate(PER_PAGE);
 
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild(VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP) ?? null;
+                if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
+                   $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
+                   $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
+                   $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$currentUser->id]);
+                }
             }
         }
 
@@ -248,7 +260,14 @@ class VanBanDenPhoiHopController extends Controller
 
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('donViChuTri', 'xuLyVanBanDen')
+        $danhSachVanBanDen = VanBanDen::with([
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+                }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->paginate(PER_PAGE);
 
@@ -277,7 +296,14 @@ class VanBanDenPhoiHopController extends Controller
 
         $arrIdVanBanDen = $chuyenVienPhoiHop->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('xuLyVanBanDen', 'donViChuTri')
+        $danhSachVanBanDen = VanBanDen::with([
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+                }
+            ])
             ->whereIn('id', $arrIdVanBanDen)
             ->orderBy('updated_at', 'DESC')
             ->paginate(PER_PAGE);

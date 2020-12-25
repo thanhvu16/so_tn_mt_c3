@@ -175,7 +175,14 @@ class DieuHanhVanBanDenController extends Controller
 
         $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+                }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($hanXuLy) {
                 if (!empty($hanXuLy)) {
@@ -219,7 +226,14 @@ class DieuHanhVanBanDenController extends Controller
 
         $arrVanBanDenId = $vanBanQuanTrong->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'xuLyVanBanDen', 'donViChuTri')
+        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+            },
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+            }
+        ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($hanXuLy) {
                 if (!empty($hanXuLy)) {

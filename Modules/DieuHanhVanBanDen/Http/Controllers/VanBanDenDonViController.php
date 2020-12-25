@@ -81,6 +81,10 @@ class VanBanDenDonViController extends Controller
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
                 $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
                 $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
+                $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
+                $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
             }
         }
 
@@ -147,6 +151,11 @@ class VanBanDenDonViController extends Controller
                 $vanBanDen->getChuyenVienThucHien = $vanBanDen->getDonViChuTriThucHien() ?? null;
                 $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
 
+                $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
+                $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
+
             }
         }
 
@@ -168,6 +177,7 @@ class VanBanDenDonViController extends Controller
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
             ->whereNull('status')
             ->whereNull('hoan_thanh')
+            ->select('van_ban_den_id')
             ->get();
 
         $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
@@ -203,7 +213,14 @@ class VanBanDenDonViController extends Controller
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
 
-        $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
+        $danhSachVanBanDen = VanBanDen::with([
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+                }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($quaHan) {
                 if (!empty ($quaHan)) {

@@ -68,15 +68,15 @@
                                         @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>
-                                        @if($vanBanDen->hasChild())
+                                        @if($vanBanDen->hasChild)
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
                                                 <br>
-                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
-                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
-                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                        (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
                                                 @endif
                                             </p>

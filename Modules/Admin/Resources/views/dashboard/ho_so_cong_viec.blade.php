@@ -102,12 +102,14 @@
                             class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
                     </p>
                 </a>
-                <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
-                    <p>VB xem để biết
-                        <button
-                            class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
-                    </p>
-                </a>
+                @endrole
+                @hasanyrole('chủ tịch|phó chủ tịch')
+                    <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
+                        <p>VB xem để biết
+                            <button
+                                class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
+                        </p>
+                    </a>
                 @endrole
             </div>
             <div class="col-md-5 ">

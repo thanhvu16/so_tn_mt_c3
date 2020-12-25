@@ -239,7 +239,6 @@ class LichCongTacController extends Controller
             'buoi' => ($request->get('gio') <= '12:00') ? 1 : 2,
             'noi_dung' => $request->get('noi_dung'),
             'dia_diem' => $request->get('dia_diem'),
-            'type' => LichCongTac::TYPE_NHAP_TRUC_TIEP,
             'trang_thai_lich' => $request->get('trang_thai_lich'),
             'ghi_chu' => $request->get('ghi_chu'),
             'user_id' => $currentUser->id,
