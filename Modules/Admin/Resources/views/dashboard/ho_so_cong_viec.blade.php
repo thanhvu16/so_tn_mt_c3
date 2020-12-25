@@ -95,7 +95,7 @@
                             class="btn br-10 btn-yellow btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanQuaHanDangXuLy }}</button>
                     </p>
                 </a>
-                @hasanyrole('chủ tịch|phó chủ tịch')
+                @hasanyrole('chủ tịch|phó chủ tịch|trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng')
                 <a class="text-title-item" href="{{ route('lich-cong-tac.index') }}">
                     <p>Lịch công tác
                         <button

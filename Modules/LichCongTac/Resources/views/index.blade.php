@@ -120,6 +120,32 @@
                                                         <p class="text-bold">Địa điểm:
                                                             <b>{{ $lichCongTac->vanBanDi->dia_diem ?? null }}</b>
                                                         </p>
+                                                        <p>
+                                                            @if ($lichCongTac->trang_thai_lich == 2)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch hoãn)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 3)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch điều chỉnh)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 4)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch phát sinh)</i>
+                                                            @endif
+                                                        </p>
+                                                        @can(\App\Common\AllPermission::suaLichCongTac())
+                                                            <a class="btn-edit-calendar" title="Sửa lịch"
+                                                               data-id="{{ $lichCongTac->id }}">
+                                                                <span> <i class="fa fa-edit"></i> Sửa lịch</span>
+                                                            </a>
+                                                        @endcan
                                                     </td>
                                                     <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}</td>
                                                     <td>
@@ -162,15 +188,36 @@
                                                         <p class="text-bold">Địa điểm:
                                                             <b>{{ $lichCongTac->dia_diem ?? null }}</b>
                                                         </p>
+                                                        <p>
+                                                            @if ($lichCongTac->trang_thai_lich == 2)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch hoãn)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 3)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch điều chỉnh)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 4)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch phát sinh)</i>
+                                                            @endif
+                                                        </p>
                                                         @can(\App\Common\AllPermission::suaLichCongTac())
-                                                            <span
-                                                                class="btn-action btn btn-color-blue btn-sm btn-edit-calendar"
-                                                                title="Sửa lịch" data-id="{{ $lichCongTac->id }}">
-                                                                <i class="fa fa-edit"></i>
-                                                            </span>
+                                                            <a class="btn-edit-calendar" title="Sửa lịch"
+                                                               data-id="{{ $lichCongTac->id }}">
+                                                                <span> <i class="fa fa-edit"></i> Sửa lịch</span>
+                                                            </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}</td>
+                                                    <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}
+                                                        <br> <i>({{ $lichCongTac->lanhDao->donVi->ten_don_vi ?? null }})</i>
+                                                    </td>
                                                     <td>
                                                     </td>
                                                     <td>
@@ -216,6 +263,32 @@
                                                                 @endforeach
                                                             @endif
                                                         </p>
+                                                        <p>
+                                                            @if ($lichCongTac->trang_thai_lich == 2)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch hoãn)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 3)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                        <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch điều chỉnh)</i>
+                                                            @endif
+                                                            @if ($lichCongTac->trang_thai_lich == 4)
+                                                                @if (!empty($lichCongTac->ghi_chu))
+                                                                    <b>Ghi chú:</b> <i>{{ $lichCongTac->ghi_chu }}</i><br>
+                                                                @endif
+                                                                <i class="text-red">(Lịch phát sinh)</i>
+                                                            @endif
+                                                        </p>
+                                                        @can(\App\Common\AllPermission::suaLichCongTac())
+                                                            <a class="btn-edit-calendar" title="Sửa lịch"
+                                                               data-id="{{ $lichCongTac->id }}">
+                                                                <span> <i class="fa fa-edit"></i> Sửa lịch</span>
+                                                            </a>
+                                                        @endcan
                                                     </td>
                                                     <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}</td>
                                                     <td>

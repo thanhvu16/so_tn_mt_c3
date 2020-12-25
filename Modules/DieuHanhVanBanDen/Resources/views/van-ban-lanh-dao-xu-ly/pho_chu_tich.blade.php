@@ -37,7 +37,7 @@
                                 <th width="22%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center" width="15%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                <th class="text-center" width="15%">
+                                <th class="text-center" width="7%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">
                                 </th>
                             </tr>

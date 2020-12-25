@@ -425,7 +425,7 @@ class AdminController extends Controller
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
 
             $vanBanQuanTrong = VanBanQuanTrong::where('user_id', $user->id)
                 ->count();

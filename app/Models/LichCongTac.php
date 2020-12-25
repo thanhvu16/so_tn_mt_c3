@@ -27,7 +27,7 @@ class LichCongTac extends Model
         'buoi',
         'dia_diem',
         'trang_thai_lich',
-        'ghi chu',
+        'ghi_chu',
         'user_id',
         'don_vi_du_hop'
     ];
@@ -150,7 +150,7 @@ class LichCongTac extends Model
             'gio' => $vanBanDen->gio_hop,
             'tuan' => $tuan,
             'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
-            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $noiDungMoiHop,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
             'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
             'user_id' => $currentUser->id,
             'don_vi_du_hop' =>  !empty($donViDuHop) ? $donViChuTriId : null

@@ -26,7 +26,7 @@ class CreateDhvbdLichCongTacTable extends Migration
             $table->tinyInteger('buoi')->default(1)->comment('1: buoi sang, 2: buoi chieu');
             $table->string('dia_diem')->nullable();
             $table->tinyInteger('trang_thai_lich')->default(1)->comment('1: lịch chính thức, 2: lịch hoãn, 3: lịch điều chỉnh, 4: lịch phát sinh');
-            $table->string('ghi chu')->nullable();
+            $table->string('ghi_chu')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

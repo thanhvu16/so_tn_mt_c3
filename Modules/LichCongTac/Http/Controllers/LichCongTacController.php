@@ -26,7 +26,7 @@ class LichCongTacController extends Controller
         $year = date('Y');
         $week = $tuan ? $tuan : date('W');
 
-        $lanhDaoId = $request->get('lanh_dao_id') ?? null;
+        $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
 
         $donViId = null;
         $donViDuHop = null;
@@ -53,18 +53,32 @@ class LichCongTacController extends Controller
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
         $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
-        $id = null;
-        if ($currentUser->hasRole([PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG])) {
-            $id = $currentUser->id;
+
+        $id = [];
+
+        //
+        if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+
+            $id = [$currentUser->id];
+//            array_push( $id, $currentUser->id);
+
+            $roleDonVi  = [CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
+
+            $danhSachTruongPhongDonVi = User::whereHas('roles', function ($query) use ($roleDonVi) {
+                return $query->whereIn('name', $roleDonVi);
+            })->select('id')->get();
+
+            $arrLanhDaoDonViID = $danhSachTruongPhongDonVi->pluck('id')->toArray();
+            $id = array_merge($id, $arrLanhDaoDonViID);
+
         }
 
-
         $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
-                return $query->whereIn('name', $roles);
-            })
+            return $query->whereIn('name', $roles);
+        })
             ->where(function ($query) use ($id) {
                 if (!empty($id)) {
-                    return $query->where('id', $id);
+                    return $query->whereIn('id', $id);
                 }
             })
             ->where('trang_thai', ACTIVE)
@@ -86,9 +100,11 @@ class LichCongTacController extends Controller
                     return $query->where('lanh_dao_id', $lanhDaoId);
                 }
             })
-            ->where(function ($query) use ($donViDuHop) {
-                if (!empty($donViDuHop)) {
-                    return $query->where('don_vi_du_hop', $donViDuHop);
+            ->where(function ($query) use ($donViDuHop, $currentUser, $donViId) {
+
+                if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+                    return $query->where('don_vi_du_hop', $donViDuHop)
+                                ->orWhere('don_vi_id', $donViId);
                 }
             })
             ->orderBy('buoi', 'ASC')->get();
@@ -149,7 +165,7 @@ class LichCongTacController extends Controller
             'buoi' => ($request->get('gio') <= '12:00') ? 1 : 2,
             'noi_dung' => $request->get('noi_dung'),
             'dia_diem' => $request->get('dia_diem'),
-            'type'  => LichCongTac::TYPE_NHAP_TRUC_TIEP,
+            'type' => LichCongTac::TYPE_NHAP_TRUC_TIEP,
             'trang_thai_lich' => $request->get('trang_thai_lich'),
             'ghi_chu' => $request->get('ghi_chu'),
             'user_id' => $currentUser->id,
@@ -191,7 +207,7 @@ class LichCongTacController extends Controller
 
         $lichCongTac = LichCongTac::find($id);
 
-        $roles = [CHU_TICH, PHO_CHUC_TICH];
+        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
         $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
             return $query->whereIn('name', $roles);
         })
@@ -201,7 +217,7 @@ class LichCongTacController extends Controller
         $returnHTML = view('lichcongtac::them_lich._edit',
             compact('lichCongTac', 'danhSachLanhDao'))->render();
 
-        return response()->json(array('success' => true, 'html'=>$returnHTML));
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
     /**
@@ -223,7 +239,7 @@ class LichCongTacController extends Controller
             'buoi' => ($request->get('gio') <= '12:00') ? 1 : 2,
             'noi_dung' => $request->get('noi_dung'),
             'dia_diem' => $request->get('dia_diem'),
-            'type'  => LichCongTac::TYPE_NHAP_TRUC_TIEP,
+            'type' => LichCongTac::TYPE_NHAP_TRUC_TIEP,
             'trang_thai_lich' => $request->get('trang_thai_lich'),
             'ghi_chu' => $request->get('ghi_chu'),
             'user_id' => $currentUser->id,

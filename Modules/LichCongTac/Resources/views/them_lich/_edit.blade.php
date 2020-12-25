@@ -12,11 +12,11 @@
                     <label class="control-label">Nội dung <label class="required">*</label></label>
                     @if (isset($lichCongTac))
                         @if ($lichCongTac->type == 1)
-                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDi->noi_dung_hop) ? $lichCongTac->vanBanDi->noi_dung_hop : !empty($lichCongTac->vanBanDi->vb_trichyeu) ? $lichCongTac->vanBanDi->vb_trichyeu : null  }}</textarea>
+                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDi->noi_dung_hop) ? $lichCongTac->vanBanDi->noi_dung_hop : !empty($lichCongTac->vanBanDi->trich_yeu) ? $lichCongTac->vanBanDi->trich_yeu : null  }}</textarea>
                         @elseif($lichCongTac->type == 2)
                             <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{  $lichCongTac->noi_dung }}</textarea>
                         @else
-                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDenDonVi->noi_dung_hop) ? $lichCongTac->vanBanDenDonVi->noi_dung_hop :  !empty($lichCongTac->vanBanDenDonVi->vb_trich_yeu) ? $lichCongTac->vanBanDenDonVi->vb_trich_yeu : null  }}</textarea>
+                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDen->noi_dung_hop) ? $lichCongTac->vanBanDen->noi_dung_hop :  !empty($lichCongTac->vanBanDen->trich_yeu) ? $lichCongTac->vanBanDen->trich_yeu : null  }}</textarea>
                         @endif
                     @else
                         <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ isset($lichCongTac) ? $lichCongTac->noi_dung : '' }}</textarea>
@@ -51,7 +51,7 @@
                         @elseif($lichCongTac->type == 2)
                             <input type="text" name="dia_diem" placeholder="Nhập địa điểm" class="form-control" value="{{ $lichCongTac->dia_diem ?? null }}" required>
                         @else
-                            <input type="text" name="dia_diem" placeholder="Nhập địa điểm" class="form-control" value=" {{ $lichCongTac->vanBanDenDonVi->dia_diem_chinh ?? null }}" required>
+                            <input type="text" name="dia_diem" placeholder="Nhập địa điểm" class="form-control" value=" {{ $lichCongTac->vanBanDen->dia_diem ?? null }}" required>
                         @endif
                     @else
                         <input type="text" name="dia_diem" placeholder="Nhập địa điểm" class="form-control" value="{{ isset($lichCongTac) ? $lichCongTac->dia_diem : null }}" required>
