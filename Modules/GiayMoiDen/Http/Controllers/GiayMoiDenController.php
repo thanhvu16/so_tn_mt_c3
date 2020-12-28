@@ -179,15 +179,31 @@ class GiayMoiDenController extends Controller
     public function create()
     {
         canPermission(AllPermission::themGiayMoiDen());
+        $user = auth::user();
 
-        $soDen = VanBanDen::where([
-            'don_vi_id' => auth::user()->don_vi_id,
-            'so_van_ban_id' => 100
-        ])->max('so_den');
+//        $soDen = VanBanDen::where([
+//            'don_vi_id' => auth::user()->don_vi_id,
+//            'so_van_ban_id' => 100
+//        ])->max('so_den');
+        $nam = date("Y");
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+        $sodengiaymoi = $soDenvb + 1;
         $date = Carbon::now()->format('Y-m-d');
 //        dd($date);
 //        dd($soDen);
-        $sodengiaymoi = $soDen + 1;
+//        $sodengiaymoi = $soDen + 1;
         $gioHop = [];
 
         for ($i = 6; $i <= 20; $i++) {
@@ -248,7 +264,21 @@ class GiayMoiDenController extends Controller
      */
     public function store(Request $request)
     {
-
+        $nam = date("Y");
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+        $sodengiaymoi = $soDenvb + 1;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
         $requestData = $request->all();
         $multiFiles = !empty($requestData['ten_file']) ? $requestData['ten_file'] : null;
@@ -281,7 +311,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv = new VanBanDen();
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
-                        $vanbandv->so_den = $request->vb_so_den;
+                        $vanbandv->so_den = $sodengiaymoi;
                         $vanbandv->don_vi_id = auth::user()->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
@@ -325,7 +355,7 @@ class GiayMoiDenController extends Controller
                 } else {
                     $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
-                    $vanbandv->so_den = $request->vb_so_den;
+                    $vanbandv->so_den = $sodengiaymoi;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
@@ -355,7 +385,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv = new VanBanDenDonVi();
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
-                        $vanbandv->so_den = $request->vb_so_den;
+                        $vanbandv->so_den = $sodengiaymoi;
                         $vanbandv->don_vi_id = auth::user()->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
@@ -398,7 +428,7 @@ class GiayMoiDenController extends Controller
                 } else {
                     $vanbandv = new VanBanDenDonVi();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
-                    $vanbandv->so_den = $request->vb_so_den;
+                    $vanbandv->so_den = $sodengiaymoi;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
@@ -544,9 +574,24 @@ class GiayMoiDenController extends Controller
         $gio_hop = date('H:i', strtotime($request->gio_hop_chinh));
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
 
-
+        $nam = date("Y");
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+        $soDenvb = $soDenvb + 1;
+//        $vanbandv->so_den = $soDenvb;
         $vanbandv = VanBanDen::where('id', $id)->first();
-        $vanbandv->so_den = $request->vb_so_den;
+        $vanbandv->so_den = $soDenvb;
         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
 
 

@@ -17,6 +17,7 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\MailNgoaiThanhPho;
 use Modules\Admin\Entities\MailTrongThanhPho;
 use Modules\Admin\Entities\SoVanBan;
+use Modules\LayVanBanTuEmail\Entities\EmailDonVi;
 use Modules\VanBanDi\Entities\Duthaovanbandi;
 use Modules\VanBanDi\Entities\Fileduthao;
 use Modules\VanBanDi\Entities\FileVanBanDi;
