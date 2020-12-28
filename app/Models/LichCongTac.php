@@ -138,9 +138,14 @@ class LichCongTac extends Model
             $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
         }
 
-        // don vi du hop
-        if (empty($chuyenTuDonVi) && !empty($donViDuHop) && $donViDuHop == VanBanDen::DON_VI_DU_HOP) {
+        // don vi du hop tu ld
+        if (!empty($donViDuHop) && $donViDuHop == VanBanDen::DON_VI_DU_HOP) {
             $lanhDaoId = $nguoiDung->id ?? null;
+        }
+
+        // chuyen tu truong phong don vi
+        if (!empty($chuyenTuDonVi) && !empty($donViDuHop) && $donViDuHop == VanBanDen::DON_VI_DU_HOP) {
+            $lanhDaoId = $lanhDaoDuHopId;
         }
 
         $dataLichCongTac = array(

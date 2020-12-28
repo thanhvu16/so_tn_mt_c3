@@ -41,7 +41,7 @@ class PhanLoaiVanBanController extends Controller
             }
         }
 
-        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+        $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();

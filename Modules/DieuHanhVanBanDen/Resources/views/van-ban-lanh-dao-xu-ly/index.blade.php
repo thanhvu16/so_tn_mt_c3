@@ -191,7 +191,7 @@
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                            class="radio-col-cyan pho-ct-du-hop"
                                                            value="{{ $vanBanDen->phoChuTich->can_bo_nhan_id ?? null }}"
-                                                           form="form-tham-muu" {{ !empty($vanBanDen->checkLichCongTac) ? 'checked' : null  }}>
+                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacPhoChuTich) ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
                                                     ><i>PCT</i></label>

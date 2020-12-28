@@ -487,8 +487,9 @@ class VanBanLanhDaoXuLyController extends Controller
                     }
                     // check lanh dao du hop
                     if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
+
                         if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
-                            LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $danhSachDonViChuTriIds);
+                            LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
                         }
                     }
 
