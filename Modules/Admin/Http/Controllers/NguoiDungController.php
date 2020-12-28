@@ -59,11 +59,11 @@ class NguoiDungController extends Controller
 
         $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu','asc')->get();
         $danhSachDonVi = DonVi::orderBy('ten_don_vi','asc')->get();
-//        $danhSachDonVi = DonVi::where('id',3)->first();
-//        dd($danhSachDonVi);
+
+        $viTriUuTien = User::max('uu_tien');
 
         return view('admin::nguoi-dung.index', compact('users', 'order',
-            'danhSachDonVi', 'danhSachChucVu'));
+            'danhSachDonVi', 'danhSachChucVu', 'viTriUuTien'));
     }
 
     /**
@@ -179,9 +179,10 @@ class NguoiDungController extends Controller
         $roles = Role::all();
         $danhSachChucVu = ChucVu::all();
         $danhSachDonVi = DonVi::all();
+        $viTriUuTien = User::max('uu_tien');
 
         return view('admin::nguoi-dung.edit', compact('user',
-            'roles', 'danhSachChucVu', 'danhSachDonVi'));
+            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien'));
     }
 
     /**

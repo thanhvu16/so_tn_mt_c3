@@ -37,7 +37,7 @@
                     </a>
                 @endrole
 
-                @hasanyrole('trưởng phòng|phó phòng|chủ tịch|phó chủ tịch')
+                @hasanyrole('trưởng phòng|phó phòng|chủ tịch|phó chủ tịch|phó chánh văn phòng|chánh văn phòng')
                 <a class="text-title-item" href="{{ route('gia-han-van-ban.index') }}">
                     <p>VB xin gia hạn
                         <button

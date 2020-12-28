@@ -170,6 +170,13 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-4">
+                    <label class="col-form-label" for="uu-tien">Vị trí sắp xếp</label>
+                    <i class="color-red">(Số hiện tại {{ $viTriUuTien ?? 0 }})</i>
+                    <input type="number" name="uu_tien" id="uu-tien" placeholder="Nhập vị trí sắp xếp..."
+                           value="{{ old('uu_tien', isset($user) ? $user->uu_tien : '') }}"
+                           class="form-control">
+                </div>
+                <div class="col-md-4">
                     <label class="col-form-label" for="trang_thai">Trạng thái</label>
                     <br>
                     <label>

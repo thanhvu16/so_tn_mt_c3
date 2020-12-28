@@ -52,7 +52,7 @@ class LichCongTacController extends Controller
         $tuanTruoc = $week != 1 ? $week - 1 : 1;
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
-        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
+        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
 
         $id = [];
 
@@ -62,7 +62,7 @@ class LichCongTacController extends Controller
             $id = [$currentUser->id];
 //            array_push( $id, $currentUser->id);
 
-            $roleDonVi  = [CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
+            $roleDonVi  = [CHANH_VAN_PHONG, TRUONG_PHONG];
 
             $danhSachTruongPhongDonVi = User::whereHas('roles', function ($query) use ($roleDonVi) {
                 return $query->whereIn('name', $roleDonVi);
@@ -82,7 +82,7 @@ class LichCongTacController extends Controller
                 }
             })
             ->where('trang_thai', ACTIVE)
-            ->orderBy('id', 'ASC')
+            ->orderBy('uu_tien', 'ASC')
             ->get();
 
 
@@ -119,6 +119,7 @@ class LichCongTacController extends Controller
                 }
 
                 $lichCongTac->truyenNhanVanBanDonVi = $lichCongTac->donViChuTri();
+                $lichCongTac->giaiQuyetVanBanHoanThanh = $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh();
             }
         }
 

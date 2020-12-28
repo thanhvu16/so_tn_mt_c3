@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div
-                class="row trang-thai-lich {{ isset($lichCongTac) && ($lichCongTac->trang_thai_lich == 2 || $lichCongTac->trang_thai_lich == 3) ? 'show' : 'hide' }}">
+                class="row trang-thai-lich">
                 <div class="col-sm-12">
                     <label class="control-label">Ghi chú <span class="color-red">*</span></label>
                     <textarea name="ghi_chu" rows="4" class="form-control noi-dung-ghi-chu"

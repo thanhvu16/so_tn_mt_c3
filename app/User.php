@@ -38,7 +38,8 @@ class User extends Authenticatable
         'role_id',
         'chu_ky_chinh',
         'chu_ky_nhay',
-        'trang_thai'
+        'trang_thai',
+        'uu_tien'
     ];
 
     /**
