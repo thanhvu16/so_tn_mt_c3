@@ -55,6 +55,7 @@ class AdminController extends Controller
             return redirect()->route('nguoi-dung.index');
         }
         $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => auth::user()->id, 'stt' => 1])->count();
+
         $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 1])->count();
         $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 0, 'tra_lai' => 1])->count();
         $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();

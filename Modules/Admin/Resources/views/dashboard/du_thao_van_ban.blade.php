@@ -18,7 +18,7 @@
                     <a class="text-title-item" href="{{ route('Danhsachduthao') }}">
                         <p>D/s cá nhân dự thảo
                             <button
-                                class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">0</button>
+                                class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $danhSachDuThao }}</button>
                         </p>
                     </a>
                     <a class="text-title-item" href="{{ route('danhsachgopy') }}">

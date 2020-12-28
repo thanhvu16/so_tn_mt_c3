@@ -114,11 +114,11 @@
                                                             <b class="color-red">{{ $lichCongTac->vanBanDi->so_di ?? null }}</b>
                                                         </p>
                                                         <p><b>Nội
-                                                                dung: </b>{{ !empty($lichCongTac->vanBanDi->noi_dung_hop) ? $lichCongTac->vanBanDi->noi_dung_hop : !empty($lichCongTac->vanBanDi->trich_yeu) ? $lichCongTac->vanBanDi->trich_yeu : null  }}
+                                                                dung: </b>{{ $lichCongTac->noi_dung ??  null  }}
                                                         </p>
                                                         <p></p>
                                                         <p class="text-bold">Địa điểm:
-                                                            <b>{{ $lichCongTac->vanBanDi->dia_diem ?? null }}</b>
+                                                            <b>{{ $lichCongTac->dia_diem ?? null }}</b>
                                                         </p>
                                                         <p>
                                                             @if ($lichCongTac->trang_thai_lich == 2)
@@ -244,11 +244,11 @@
                                                             <b class="color-red">{{ $lichCongTac->vanBanDen->so_den ?? null }}</b>
                                                         </p>
                                                         <p><b>Nội
-                                                                dung: </b>{{ !empty($lichCongTac->vanBanDen->noi_dung_hop) ? $lichCongTac->vanBanDen->noi_dung_hop :  !empty($lichCongTac->vanBanDen->trich_yeu) ? $lichCongTac->vanBanDen->trich_yeu : null  }}
+                                                                dung: </b>{{ $lichCongTac->noi_dung ?? null  }}
                                                         </p>
                                                         <p></p>
                                                         <p class="text-bold">Địa điểm:
-                                                            <b>{{ $lichCongTac->vanBanDen->dia_diem ?? null }}</b>
+                                                            <b>{{ $lichCongTac->dia_diem ?? null }}</b>
                                                         </p>
                                                         <p>
                                                             @if (isset($lichCongTac->vanBanDen->vanBanDenFile))
