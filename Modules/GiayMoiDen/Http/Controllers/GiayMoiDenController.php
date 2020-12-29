@@ -13,6 +13,7 @@ use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use File, auth, DB;
@@ -147,6 +148,7 @@ class GiayMoiDenController extends Controller
 
         return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen'));
     }
+
     public function layhantruyensangview(Request $request)
     {
         //lấy hạn
@@ -218,14 +220,14 @@ class GiayMoiDenController extends Controller
 
 
         $user = auth::user();
-        $ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHUC_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->get();
+        $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG])->orderBy('username', 'desc')->get();
 
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sovanbanchung as $data2) {
             array_push($laysovanban, $data2);
         }
-        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id,'type'=>1])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id, 'type' => 1])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sorieng as $data2) {
             array_push($laysovanban, $data2);
         }
@@ -382,7 +384,7 @@ class GiayMoiDenController extends Controller
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 if ($giaymoicom && $giaymoicom[0] != null) {
                     foreach ($giaymoicom as $key => $data) {
-                        $vanbandv = new VanBanDenDonVi();
+                        $vanbandv = new VanBanDen();
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
@@ -424,9 +426,14 @@ class GiayMoiDenController extends Controller
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                         $vanbandv->save();
                         array_push($idvanbanden, $vanbandv->id);
+                        if($request->don_vi_phoi_hop)
+                        {
+
+                        }
+                        DonViChuTri::saveDonViChuTri($vanbandv->id);
                     }
                 } else {
-                    $vanbandv = new VanBanDenDonVi();
+                    $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
@@ -451,6 +458,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             }
 
@@ -465,11 +473,9 @@ class GiayMoiDenController extends Controller
                     if (!File::exists($uploadPath)) {
                         File::makeDirectory($uploadPath, 0775, true, true);
                     }
-                    if(count($idvanbanden) > 1)
-                    {
+                    if (count($idvanbanden) > 1) {
                         $getFile->move($uploadPath, $fileName);
-                        foreach ($idvanbanden as $data)
-                        {
+                        foreach ($idvanbanden as $data) {
                             $vbDenFile = new FileVanBanDen();
                             $vbDenFile->ten_file = $ten;
                             $vbDenFile->duong_dan = $urlFile;
@@ -480,7 +486,7 @@ class GiayMoiDenController extends Controller
                             $vbDenFile->save();
                         }
 
-                    }else{
+                    } else {
                         $vbDenFile = new FileVanBanDen();
                         $getFile->move($uploadPath, $fileName);
                         $vbDenFile->ten_file = $ten;
@@ -543,7 +549,7 @@ class GiayMoiDenController extends Controller
         foreach ($sovanbanchung as $data2) {
             array_push($laysovanban, $data2);
         }
-        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id,'type'=>1])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id, 'type' => 1])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
         foreach ($sorieng as $data2) {
             array_push($laysovanban, $data2);
         }
@@ -588,10 +594,28 @@ class GiayMoiDenController extends Controller
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
-        $soDenvb = $soDenvb + 1;
-//        $vanbandv->so_den = $soDenvb;
         $vanbandv = VanBanDen::where('id', $id)->first();
-        $vanbandv->so_den = $soDenvb;
+        $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $request->so_van_ban, 'id' => $vanbandv->id])->first();
+        if ($checktrungsoden == null) {
+            $user = auth::user();
+            $nam = date("Y");
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                $soDenvb = VanBanDen::where([
+                    'don_vi_id' => $user->don_vi_id,
+                    'so_van_ban_id' => $request->so_van_ban,
+                    'type' => 1
+                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $soDenvb = VanBanDen::where([
+                    'don_vi_id' => $user->don_vi_id,
+                    'so_van_ban_id' => $request->so_van_ban,
+                    'type' => 2
+                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            }
+            $soDenvb = $soDenvb + 1;
+            $vanbandv->so_den = $soDenvb;
+        }
+
         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
 
 

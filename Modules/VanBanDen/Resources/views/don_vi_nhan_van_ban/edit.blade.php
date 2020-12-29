@@ -88,7 +88,7 @@
                                     <textarea class="form-control" name="trich_yeu" rows="3" required>{{$van_ban_den->vanbandi->trich_yeu}}</textarea>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-right {{isset($van_ban_den->vanbandi) ? 'hidden': ''}}">
+                            <div class="col-md-12 text-right ">
                                 <a class="btn btn-primary " role="button" data-toggle="collapse"
                                    href="#collapseExample"
                                    aria-expanded="false" aria-controls="collapseExample"><i

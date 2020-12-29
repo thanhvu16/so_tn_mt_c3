@@ -13,24 +13,16 @@
       <STRWEBSITE></STRWEBSITE>
       <STREMAIL>vuhaithanhcx1@gmail.com</STREMAIL>
     </NOINHAN>
-    <NOINHAN ID="2">
-      <STRMADONVI>000.00.03.G12</STRMADONVI>
-      <STRTENDONVI>Cục Quản lý nợ và Tài chính đối ngoại</STRTENDONVI>
-      <STRDIACHI></STRDIACHI>
-      <STRDIENTHOAI></STRDIENTHOAI>
-      <STRWEBSITE></STRWEBSITE>
-      <STREMAIL></STREMAIL>
-    </NOINHAN>
   </NOINHANVANBAN>
   <NOIDUNGVANBAN>
-    <STRLOAIVANBAN>Quyết định</STRLOAIVANBAN>
-    <STRKYHIEU>2/aa</STRKYHIEU>
-    <STRTRICHYEU>​V/v kiểm tra, xử lý tình hình vi phạm trong hoạt đông quảng cáo trên địa bàn Thành phố</STRTRICHYEU>
-    <STRNGAYKY>17/12/2020</STRNGAYKY>
-    <STRNGUOIKY>Ngô Thị Tiên Sinh(P.chủ tịch)</STRNGUOIKY>
-    <STRNOIGUI>Quyết định</STRNOIGUI>
+    <STRLOAIVANBAN>Giấy mời</STRLOAIVANBAN>
+    <STRKYHIEU>3/aa</STRKYHIEU>
+    <STRTRICHYEU>Giấy mời  Về việc công bố Danh mục thủ tục hành chính sửa đổi lĩnh vực Điện thuộc thẩm quyền giải quyết của Sở Công thương thành phố Hà Nội</STRTRICHYEU>
+    <STRNGAYKY>28/12/2020</STRNGAYKY>
+    <STRNGUOIKY>Vũ Hải Thanh(Chủ tịch)</STRNGUOIKY>
+    <STRNOIGUI>chung</STRNOIGUI>
     <STRHANXULY></STRHANXULY>
-    <STRTHUOCLOAIVANBAN>Quyết định</STRTHUOCLOAIVANBAN>
+    <STRTHUOCLOAIVANBAN>Giấy mời</STRTHUOCLOAIVANBAN>
   </NOIDUNGVANBAN>
   <NGHIEPVUVANBAN>
     <STRMANGHIEPVU>0</STRMANGHIEPVU>
