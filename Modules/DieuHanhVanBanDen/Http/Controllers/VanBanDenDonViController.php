@@ -6,11 +6,12 @@ use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Auth, DB;
+use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
@@ -79,12 +80,21 @@ class VanBanDenDonViController extends Controller
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
-                $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
-                $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
-                $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
-                $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
-                $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
+                if ($trinhTuNhanVanBan != 5) {
+                    $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
+                    $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
+                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                    $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
+                    $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
+                }
+
+                if ($trinhTuNhanVanBan == 5) {
+                    $vanBanDen->giaHanVanBanTraLai = $vanBanDen->giaHanVanBanTraLai();
+                    $vanBanDen->giaiQuyetVanBanTraLai = $vanBanDen->giaiQuyetVanBanTraLai();
+                    $vanBanDen->giaHanVanBanLanhDaoChoDuyet = $vanBanDen->giaHanVanBanLanhDaoDuyet(GiaHanVanBan::STATUS_CHO_DUYET);
+                    $vanBanDen->giaHanVanBanLanhDaoDaDuyet = $vanBanDen->giaHanVanBanLanhDaoDuyet(GiaHanVanBan::STATUS_DA_DUYET);
+                }
             }
         }
 
@@ -94,7 +104,7 @@ class VanBanDenDonViController extends Controller
         if ($trinhTuNhanVanBan == 5) {
 
             return view('dieuhanhvanbanden::don-vi.chuyen_vien', compact('danhSachVanBanDen', 'danhSachPhoPhong',
-                'danhSachChuyenVien', 'trinhTuNhanVanBan', 'order'));
+                'danhSachChuyenVien', 'trinhTuNhanVanBan', 'order', 'loaiVanBanGiayMoi'));
         }
 
         return view('dieuhanhvanbanden::don-vi.index', compact('danhSachVanBanDen', 'danhSachPhoPhong',

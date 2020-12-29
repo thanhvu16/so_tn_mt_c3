@@ -2,10 +2,10 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Auth, DB;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;

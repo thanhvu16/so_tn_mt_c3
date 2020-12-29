@@ -4,11 +4,11 @@ namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
+use App\Http\Controllers\Controller;
 
 class GiaHanVanBanController extends Controller
 {
@@ -189,6 +189,12 @@ class GiaHanVanBanController extends Controller
                     if ($vanBanDenDonVi) {
                         $vanBanDenDonVi->han_xu_ly = $thoiHan;
                         $vanBanDenDonVi->save();
+
+                        if ($vanBanDenDonVi->hasChild()) {
+                            $vanBanDenChild = $vanBanDenDonVi->hasChild();
+                            $vanBanDenChild->han_xu_ly = $thoiHan;
+                            $vanBanDenChild->save();
+                        }
                     }
 
                     // update gia han ban ghi null parent
@@ -229,6 +235,12 @@ class GiaHanVanBanController extends Controller
                         if ($vanBanDenDonVi) {
                             $vanBanDenDonVi->han_xu_ly = $thoiHan;
                             $vanBanDenDonVi->save();
+
+                            if ($vanBanDenDonVi->hasChild()) {
+                                $vanBanDenChild = $vanBanDenDonVi->hasChild();
+                                $vanBanDenChild->han_xu_ly = $thoiHan;
+                                $vanBanDenChild->save();
+                            }
                         }
 
                         // update gia han ban ghi null parent

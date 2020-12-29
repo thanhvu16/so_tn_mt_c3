@@ -7,7 +7,7 @@ use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
 

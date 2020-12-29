@@ -6,11 +6,11 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\VanBanDen\Entities\VanBanDen;
+use App\Http\Controllers\Controller;
 use Auth;
 
 class DieuHanhVanBanDenController extends Controller

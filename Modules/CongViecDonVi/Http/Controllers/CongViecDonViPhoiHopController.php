@@ -5,7 +5,7 @@ namespace Modules\CongViecDonVi\Http\Controllers;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 Use auth;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonViPhoiHop;

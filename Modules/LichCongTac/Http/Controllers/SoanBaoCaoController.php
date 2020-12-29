@@ -6,7 +6,7 @@ use App\Models\NguoiDung;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;

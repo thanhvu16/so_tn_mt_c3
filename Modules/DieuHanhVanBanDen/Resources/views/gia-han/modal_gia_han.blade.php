@@ -15,7 +15,7 @@
                         <div class="col-md-12 form-group">
                             <label for="han-xu-ly-cu" class="col-form-label">Hạn văn bản</label>
                             <div>
-                                <input type="text" name="thoi_han_cu" id="han-xu-ly-cu"
+                                <input type="date" name="thoi_han_cu" id="han-xu-ly-cu"
                                        value="" class="form-control">
                             </div>
                         </div>

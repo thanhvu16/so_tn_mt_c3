@@ -4,7 +4,7 @@ namespace Modules\CongViecDonVi\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
 use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonVi;
 use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonViFile;

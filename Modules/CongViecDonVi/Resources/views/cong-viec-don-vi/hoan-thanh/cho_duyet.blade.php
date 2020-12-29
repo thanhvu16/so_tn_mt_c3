@@ -60,7 +60,7 @@
                                         @endif
                                     </td>
                                     <td>
-{{--                                        <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>--}}
+                                        <p>{{ $giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>
 {{--                                        {{$giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh}}--}}
 
                                         @if (!empty($giaiQuyetCongViec->chuyenNhanCongViecDonVi && isset($giaiQuyetCongViec->chuyenNhanCongViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile)))

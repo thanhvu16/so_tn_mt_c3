@@ -241,7 +241,7 @@
                                                                 hành:</b> {{ $lichCongTac->vanBanDen->co_quan_ban_hanh ?? null }}
                                                         </p>
                                                         <p class="text-bold">GM đến số:
-                                                            <b class="color-red">{{ $lichCongTac->vanBanDen->so_den ?? null }}</b>
+                                                            <b class="color-red">{{ !empty($lichCongTac->vanBanDen->hasChild()) ? $lichCongTac->vanBanDen->hasChild()->so_den : $lichCongTac->vanBanDen->so_den }}</b>
                                                         </p>
                                                         <p><b>Nội
                                                                 dung: </b>{{ $lichCongTac->noi_dung ?? null  }}

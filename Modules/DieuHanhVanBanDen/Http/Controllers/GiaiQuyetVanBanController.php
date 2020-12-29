@@ -5,7 +5,7 @@ namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBanFile;
 use Modules\VanBanDen\Entities\VanBanDen;

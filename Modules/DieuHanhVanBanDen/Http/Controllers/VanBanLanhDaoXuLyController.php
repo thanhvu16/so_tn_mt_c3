@@ -2,13 +2,11 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
-use App\Common\AllPermission;
+use App\Http\Controllers\Controller;
 use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;

@@ -38,15 +38,15 @@
                                 <tr class="tr-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
-                                        @if($vanBanDen->hasChild())
+                                        @if($vanBanDen->hasChild)
                                             <p>
                                                 <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
                                                 <br>
-                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->hasChild()->gio_hop }}
-                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
-                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                        (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
                                                 @endif
                                             </p>
@@ -81,22 +81,22 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        @if (!empty($vanBanDen->giaHanVanBanTraLai()))
+                                        @if (!empty($vanBanDen->giaHanVanBanTraLai))
                                             <p>
-                                                <i><b>Trả lại gia hạn:</b> {{ $vanBanDen->giaHanVanBanTraLai()->noi_dung }}</i>
+                                                <i><b>Trả lại gia hạn:</b> {{ $vanBanDen->giaHanVanBanTraLai->noi_dung }}</i>
                                             </p>
                                             <p>
-                                                ({{ $vanBanDen->giaHanVanBanTraLai()->canBoChuyen->ho_ten .' - '. date('d/m/Y', strtotime($vanBanDen->giaHanVanBanTraLai()->created_at))}})
+                                                ({{ $vanBanDen->giaHanVanBanTraLai->canBoChuyen->ho_ten .' - '. date('d/m/Y', strtotime($vanBanDen->giaHanVanBanTraLai->created_at))}})
                                             </p>
                                         @endif
 
-                                        @if ($vanBanDen->giaiQuyetVanBanTraLai())
+                                        @if ($vanBanDen->giaiQuyetVanBanTraLai)
                                             <p class="color-red"><b>Lý
-                                                    do trả lại: </b><i>{{ $vanBanDen->giaiQuyetVanBanTraLai()->noi_dung_nhan_xet ?? '' }}</i>
+                                                    do trả lại: </b><i>{{ $vanBanDen->giaiQuyetVanBanTraLai->noi_dung_nhan_xet ?? '' }}</i>
                                             </p>
                                             <p>
-                                                ({{ $vanBanDen->giaiQuyetVanBanTraLai()->canBoDuyet->ho_ten  ?? '' }}
-                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->giaiQuyetVanBanTraLai()->updated_at)) }}
+                                                ({{ $vanBanDen->giaiQuyetVanBanTraLai->canBoDuyet->ho_ten  ?? '' }}
+                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->giaiQuyetVanBanTraLai->updated_at)) }}
                                                 )</p>
                                         @endif
 
@@ -106,15 +106,15 @@
                                                 <span><i class="fa fa-reply"></i>Trả lại VB</span>
                                             </a>
                                         </p>
-                                        @if (empty($vanBanDen->giaHanVanBanLanhDaoDuyet(1)) || !empty($vanBanDen->giaHanVanBanTraLai()))
-                                            @if (empty($vanBanDen->giaHanVanBanLanhDaoDuyet(3)))
+                                        @if (empty($vanBanDen->giaHanVanBanLanhDaoChoDuyet) || !empty($vanBanDen->giaHanVanBanTraLai))
+                                            @if (empty($vanBanDen->giaHanVanBanLanhDaoDaDuyet))
                                             <div class="form-group mt-1">
                                                 <button type="button"
                                                         class="btn btn-danger btn-gia-han waves-effect btn-sm"
                                                         data-toggle="modal"
                                                         data-target="#modal-de_xuat_gia_han"
                                                         data-id="{{ $vanBanDen->id }}"
-                                                        data-han="{{ isset($vanBanDen) && !empty($vanBanDen->han_xu_ly) ?  $vanBanDen->han_xu_ly : null }}"
+                                                        data-han="{{ isset($vanBanDen->hasChild) && !empty($vanBanDen->hasChild) ?  $vanBanDen->hasChild->han_xu_ly : $vanBanDen->han_xu_ly }}"
                                                         data-whatever="@mdo">
                                                     <i class="fa fa-clock-o"></i> Gia hạn
                                                 </button>
@@ -141,18 +141,18 @@
                                             @endforeach
                                         @endif
 
-                                        @if (!empty($vanBanDen->giaHanVanBanLanhDaoDuyet(1)))
+                                        @if (!empty($vanBanDen->giaHanVanBanLanhDaoChoDuyet))
                                             <p>
                                                 <i>(<b>Gia hạn thêm chờ
-                                                        duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoDuyet(1)->thoi_han_de_xuat)) }}
+                                                        duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoChoDuyet->thoi_han_de_xuat)) }}
                                                     )</i>
                                             </p>
                                         @endif
 
-                                        @if (!empty($vanBanDen->giaHanVanBanLanhDaoDuyet(3)))
+                                        @if (!empty($vanBanDen->giaHanVanBanLanhDaoDaDuyet))
                                             <p>
                                                 <i>(<b>Gia hạn đã
-                                                        duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoDuyet(3)->thoi_han_de_xuat)) }}
+                                                        duyệt:</b> {{ date('d/m/Y', strtotime($vanBanDen->giaHanVanBanLanhDaoDaDuyet->thoi_han_de_xuat)) }}
                                                     )</i>
                                             </p>
                                         @endif
@@ -192,10 +192,10 @@
         $('.btn-gia-han').on('click', function () {
             let id = $(this).data('id');
             let hanCu = $(this).data('han');
-            let hanFormat = moment(hanCu, "YYYY-MM-DD").format("DD/MM/YYYY");
+            // let hanFormat = moment(hanCu, "YYYY-MM-DD").format("DD/MM/YYYY");
 
             $('#modal-de_xuat_gia_han').find('input[name="van_ban_den_id"]').val(id);
-            $('#modal-de_xuat_gia_han').find('input[name="thoi_han_cu"]').val(hanFormat);
+            $('#modal-de_xuat_gia_han').find('input[name="thoi_han_cu"]').val(hanCu);
         });
 
     </script>
