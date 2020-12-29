@@ -185,6 +185,7 @@
                                        name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">
                                 <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id" value="{{auth::user()->don_vi_id}}">
                             </div>
+                            @hasanyrole('văn thư huyện')
                             <div class="col-md-3" >
                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Lãnh đạo tham mưu</label>
                                 <select name="lanh_dao_tham_muu" class="form-control " id="">
@@ -193,6 +194,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endrole
 
                             <div class="col-md-12" style="margin-top: 10px">
                                 <div class="row increment ">

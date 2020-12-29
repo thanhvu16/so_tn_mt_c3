@@ -156,6 +156,17 @@
                                     <input type="date" class="form-control" name="han_xu_ly" value="{{$hangiaiquyet}}" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
+                            <div class="col-md-3 mt-4">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="1" name="don_vi_phoi_hop">
+                                            Là văn bản phối hợp
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square-o mr-1"></i> Thêm mới</button>

@@ -46,7 +46,7 @@
                                         <p> {{$vbDen->vanbandi->so_ky_hieu}}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}}" title="{{$vbDen->vanbandi->trich_yeu}}">{{$vbDen->vanbandi->trich_yeu}}</a><br>
+                                        <a href="@if($vbDen->vanbandi->loai_van_ban_id == 1000){{route('thongtinvb',$vbDen->id)}}@else{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}} @endif" title="{{$vbDen->vanbandi->trich_yeu}}">{{$vbDen->vanbandi->trich_yeu}}</a><br>
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
@@ -69,13 +69,13 @@
                             @endforelse
                             @forelse ($vanbanhuyenxuongdonvi as $key=>$vbDen2)
                                 <tr>
-                                    <td class="text-center">{{$donvinhancount+1}}</td>
+                                    <td class="text-center">{{$donvinhancount+1}} </td>
                                     <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
                                     <td>
-                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu}}</p>
+                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu ?? ''}}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id)}}" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a><br>
+                                        <a href="@if($vbDen2->vanBanDen->so_van_ban_id == 100){{route('thongtinvbhuyen',$vbDen2->id)}}@else{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id)}}@endif" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a><br>
                                         <p class="mt-2">
                                             <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
                                                    name="van_ban-don_vi" value="1" checked>
