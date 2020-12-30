@@ -14,6 +14,7 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
+use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use File, auth, DB;
@@ -385,7 +386,6 @@ class GiayMoiDenController extends Controller
                 if ($giaymoicom && $giaymoicom[0] != null) {
                     foreach ($giaymoicom as $key => $data) {
                         $vanbandv = new VanBanDen();
-
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
                         $vanbandv->don_vi_id = auth::user()->don_vi_id;
@@ -420,6 +420,10 @@ class GiayMoiDenController extends Controller
                             $vanbandv->ngay_hop_phu = $ngay_hop_con[$key];
                         }
 
+                        if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                        {
+                            $vanbandv->loai_van_ban_don_vi = 1;
+                        }
                         $vanbandv->noi_dung = $data;
                         $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                         $vanbandv->chuc_vu = $chucvu;
@@ -428,12 +432,17 @@ class GiayMoiDenController extends Controller
                         array_push($idvanbanden, $vanbandv->id);
                         if($request->don_vi_phoi_hop)
                         {
-
+                            DonViChuTri::saveDonViPhoiHop($vanbandv->id);
+                            $vanbandv->loai_van_ban_don_vi = 1;
                         }
-                        DonViChuTri::saveDonViChuTri($vanbandv->id);
+                        DonViPhoiHop::saveDonViChuTri($vanbandv->id);
                     }
                 } else {
                     $vanbandv = new VanBanDen();
+                    if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                    {
+                        $vanbandv->loai_van_ban_don_vi = 1;
+                    }
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
@@ -457,6 +466,10 @@ class GiayMoiDenController extends Controller
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
+                    if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                    {
+                        DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
+                    }
                     array_push($idvanbanden, $vanbandv->id);
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
