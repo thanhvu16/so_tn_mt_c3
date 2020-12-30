@@ -216,6 +216,19 @@
                                 </select>
                             </div>
                             @endrole
+                            @hasanyrole('văn thư đơn vị')
+                            <div class="col-md-3 mt-4">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="1" name="don_vi_phoi_hop">
+                                            Là văn bản phối hợp
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @endrole
 
                             <div class="col-md-12 form-group" style="margin-top: 10px">
                                 <div class="row increment ">

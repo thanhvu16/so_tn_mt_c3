@@ -20,9 +20,10 @@ class DonViPhoiHop extends Model
         'don_vi_id',
         'parent_id',
         'noi_dung',
-        'chuyen_tiep',
         'don_vi_co_dieu_hanh',
         'vao_so_van_ban',
+        'type',
+        'chuyen_tiep',
         'hoan_thanh'
     ];
 
@@ -64,6 +65,34 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop->save();
             }
         }
+    }
+
+    public static function saveDonViPhoiHop($vanBanDenId)
+    {
+        $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $nguoiDung = User::where('don_vi_id', auth::user()->don_vi_id)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+        $donVi = auth::user()->donVi;
+
+        $dataLuuDonViPhoiHop = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id'=> auth::user()->id,
+            'can_bo_nhan_id'=> $nguoiDung->id ?? null,
+            'don_vi_id'=> $donVi->id,
+            'noi_dung'=> 'Chuyển đơn vị chủ trì: '. $donVi->ten_don_vi,
+            'don_vi_co_dieu_hanh'=> $donVi->dieu_hanh ?? null,
+            'vao_so_van_ban' =>  1,
+            'type' => 1,
+        ];
+
+        $donViPhoiHop = new DonViPhoiHop();
+        $donViPhoiHop->fill($dataLuuDonViPhoiHop);
+        $donViPhoiHop->save();
     }
 
     public function donVi()

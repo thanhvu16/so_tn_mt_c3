@@ -156,6 +156,7 @@
                                     <input type="date" class="form-control" name="han_xu_ly" value="{{$hangiaiquyet}}" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
+                            @hasanyrole('văn thư đơn vị')
                             <div class="col-md-3 mt-4">
                                 <div class="form-group">
                                     <div class="checkbox">
@@ -167,6 +168,7 @@
 
                                 </div>
                             </div>
+                            @endrole
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square-o mr-1"></i> Thêm mới</button>

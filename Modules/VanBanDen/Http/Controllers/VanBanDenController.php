@@ -15,6 +15,7 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use File, auth, DB;
+use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -339,10 +340,18 @@ class VanBanDenController extends Controller
                             $vanbandv->han_giai_quyet = $han_gq[$key];
                         }
                         $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                        if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                        {
+                            $vanbandv->loai_van_ban_don_vi = 1;
+                        }
                         $vanbandv->save();
 
                         //save chuyen don vi chu tri
                         DonViChuTri::saveDonViChuTri($vanbandv->id);
+                        if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                        {
+                            DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
+                        }
                     }
                 } else {
                     $vanbandv = new VanBanDen();
@@ -363,10 +372,18 @@ class VanBanDenController extends Controller
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 2;
                     $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                    if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                    {
+                        $vanbandv->loai_van_ban_don_vi = 1;
+                    }
                     $vanbandv->save();
 
                     //save chuyen don vi chu tri
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
+                    if($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1)
+                    {
+                        DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
+                    }
                 }
             }
             DB::commit();
