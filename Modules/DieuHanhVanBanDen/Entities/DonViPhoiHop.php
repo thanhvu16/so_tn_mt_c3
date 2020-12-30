@@ -84,7 +84,7 @@ class DonViPhoiHop extends Model
             'can_bo_chuyen_id'=> auth::user()->id,
             'can_bo_nhan_id'=> $nguoiDung->id ?? null,
             'don_vi_id'=> $donVi->id,
-            'noi_dung'=> 'Chuyển đơn vị chủ trì: '. $donVi->ten_don_vi,
+            'noi_dung'=> 'Chuyển đơn vị phối hợp: '. $donVi->ten_don_vi,
             'don_vi_co_dieu_hanh'=> $donVi->dieu_hanh ?? null,
             'vao_so_van_ban' =>  1,
             'type' => 1,

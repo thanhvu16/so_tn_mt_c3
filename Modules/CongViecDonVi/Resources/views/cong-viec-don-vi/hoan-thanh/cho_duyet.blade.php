@@ -12,11 +12,11 @@
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
-                                <th width="2%">STT</th>
-                                <th width="30%">Nội dung - Thông tin</th>
-                                <th width="20%">Trình tự xử lý</th>
-                                <th width="20%">Kết quả</th>
-                                <th width="25%">Tác vụ</th>
+                                <th width="2%" class="text-center">STT</th>
+                                <th width="30%" class="text-center">Nội dung - Thông tin</th>
+                                <th width="20%" class="text-center">Trình tự xử lý</th>
+                                <th width="20%" class="text-center">Kết quả</th>
+                                <th width="25%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -80,12 +80,12 @@
                                                                   rows="3"
                                                                   required placeholder="nhập nội dung ...."></textarea><br>
                                             <button
-                                                class="btn waves-effect btn-primary btn-choose-status"
-                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="1">Duyệt
+                                                class="btn waves-effect btn-primary btn-sm btn-choose-status"
+                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="1"> <i class="fa fa-check"></i> Duyệt
                                             </button>
                                             <button
-                                                class="btn waves-effect btn-danger btn-choose-status"
-                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="2">Trả lại
+                                                class="btn waves-effect btn-danger btn-sm btn-choose-status"
+                                                data-id="{{ $giaiQuyetCongViec->id }}" data-type="2"><i class="fa fa-refresh"></i> Trả lại
                                             </button>
                                         </div>
                                     </td>

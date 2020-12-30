@@ -124,7 +124,7 @@
 <script type="text/javascript">
     window.flashMessages = [];
 
-    @if ($message = session('success'))
+    @if ($message = session('status'))
     toastr.success("{{ $message }}");
 
     @elseif ($message = session('warning'))

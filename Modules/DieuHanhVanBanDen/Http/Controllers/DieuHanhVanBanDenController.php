@@ -51,8 +51,19 @@ class DieuHanhVanBanDenController extends Controller
     public function show($id, Request $request)
     {
         $vanBanDen = VanBanDen::with(['loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
-            'xuLyVanBanDen', 'XuLyVanBanDenTraLai', 'donViChuTri', 'donViPhoiHop',
-            'giaHanVanBan', 'chuyenVienPhoiHopGiaiQuyet', 'duThaoVanBan',
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'status', 'created_at');
+            },
+            'XuLyVanBanDenTraLai',
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at');
+            },
+            'donViPhoiHop' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at');
+            },
+            'giaHanVanBan',
+            'chuyenVienPhoiHopGiaiQuyet',
+            'duThaoVanBan',
             'giaiQuyetVanBan' => function ($query) {
                 return $query->select('id', 'van_ban_den_id', 'noi_dung', 'noi_dung_nhan_xet',
                     'user_id', 'can_bo_duyet_id', 'status', 'created_at', 'parent_id');

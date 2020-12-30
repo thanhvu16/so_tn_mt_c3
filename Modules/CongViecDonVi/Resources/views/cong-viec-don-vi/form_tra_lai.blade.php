@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title" id="exampleModalLabel">#Trả lại công việc</h4>
             </div>
-            <form action="{{ route('tra-lai-van-van.store') }}" method="POST">
+            <form action="#" method="POST">
                 @csrf
                 <input type="hidden" name="van_ban_den_don_vi_id" value="">
                 <input type="hidden" name="type" value="">

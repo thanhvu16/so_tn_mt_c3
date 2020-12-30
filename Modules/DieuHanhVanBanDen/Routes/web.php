@@ -23,7 +23,7 @@ Route::get('van-ban-da-phan-loai', 'PhanLoaiVanBanController@daPhanLoai')->name(
 
 Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 
-Route::resource('tra-lai-van-van', 'TraLaiVanBanController');
+//Route::resource('tra-lai-van-van', 'TraLaiVanBanController');
 
 Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonVi');
 

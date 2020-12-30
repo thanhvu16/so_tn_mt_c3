@@ -16,11 +16,11 @@
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
-                                <th width="2%">STT</th>
-                                <th width="30%">Trích yếu - Thông tin</th>
-                                <th width="20%">Trình tự xử lý</th>
-                                <th width="20%">Kết quả</th>
-                                <th width="25%">Tác vụ</th>
+                                <th width="2%" class="text-center">STT</th>
+                                <th width="30%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="20%" class="text-center">Trình tự xử lý</th>
+                                <th width="20%" class="text-center">Kết quả</th>
+                                <th width="25%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
                             <tbody>

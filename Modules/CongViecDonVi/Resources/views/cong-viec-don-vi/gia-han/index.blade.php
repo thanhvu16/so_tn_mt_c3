@@ -13,11 +13,11 @@
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
-                                <th>STT</th>
-                                <th>Nội dung công việc</th>
-                                <th>Lý do xin gia hạn</th>
-                                <th>Nội dung giải trình</th>
-                                <th>Tác vụ</th>
+                                <th class="text-center">STT</th>
+                                <th class="text-center">Nội dung công việc</th>
+                                <th class="text-center">Lý do xin gia hạn</th>
+                                <th class="text-center">Nội dung giải trình</th>
+                                <th class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
                             <tbody>

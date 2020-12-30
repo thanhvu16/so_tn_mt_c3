@@ -21,12 +21,12 @@
                                 <table class="table table-striped table-bordered dataTable table-hover data-row">
                                     <thead>
                                     <tr role="row" class="text-center">
-                                        <th width="2%">STT</th>
-                                        <th width="30%">Nội dung công việc</th>
-                                        <th width="20%">ý kiến</th>
-                                        <th width="22%">Chỉ đạo</th>
-                                        <th width="21%">Trình tự xử lý</th>
-                                        <th width="9%">Tác vụ</th>
+                                        <th width="2%" class="text-center">STT</th>
+                                        <th width="28%" class="text-center">Nội dung công việc</th>
+                                        <th width="20%" class="text-center">ý kiến</th>
+                                        <th width="22%" class="text-center">Chỉ đạo</th>
+                                        <th width="21%" class="text-center">Trình tự xử lý</th>
+                                        <th width="9%" class="text-center">Tác vụ</th>
                                     </tr>
                                     </thead>
                                     <tbody>
