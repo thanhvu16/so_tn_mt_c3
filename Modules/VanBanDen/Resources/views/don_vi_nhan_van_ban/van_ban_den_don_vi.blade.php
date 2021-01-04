@@ -111,13 +111,13 @@
                                         <div class="col-md-8">
                                             <label for="noi_dung" class="col-form-label">Nội dung</label>
                                             <textarea rows="3" class="form-control"
-                                                      name="noi_dung[]">  </textarea>
+                                                      name="noi_dung[]">{{$van_ban_den->vanBanDen->noi_dung ?? ''}}</textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="han_giai_quyet" class="col-form-label">Hạn giải quyết</label>
                                             <div id="">
                                                 <input type="date" class="form-control"
-                                                       name="han_giai_quyet[]" value="">
+                                                       name="han_giai_quyet[]" value="{{$van_ban_den->vanBanDen->han_giai_quyet ?? ''}}">
                                             </div>
 
                                         </div>
