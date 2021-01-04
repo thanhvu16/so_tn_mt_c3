@@ -36,7 +36,9 @@ class DonViNhanVanBanDenController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
-        $donvinhancount = count($donvinhan);
+
+
+
         $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->don_vi_id,])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
@@ -54,7 +56,7 @@ class DonViNhanVanBanDenController extends Controller
             ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
             ->get();
 
-
+        $donvinhancount = count($donvinhan) ;
         // don vi phoi hop
         $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->don_vi_id)
             ->where(function ($query) use ($hienthi) {
@@ -72,12 +74,11 @@ class DonViNhanVanBanDenController extends Controller
             ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
             ->get();
 //        dd($vanbanhuyenxuongdonvi  , $vanBanHuyenChuyenDonViPhoiHop);
-
-        $donvinhancount2 = count($vanbanhuyenxuongdonvi);
-        $tong = $donvinhancount + $donvinhancount2 + $vanBanHuyenChuyenDonViPhoiHop->count();
-
+        $countphoihop = count($donvinhan) + count($vanbanhuyenxuongdonvi);
+        $tong = count($donvinhan) + count($vanbanhuyenxuongdonvi) + count($vanBanHuyenChuyenDonViPhoiHop);
+//        dd( count($donvinhan) , count($vanbanhuyenxuongdonvi) , count($vanBanHuyenChuyenDonViPhoiHop));
         return view('vanbanden::don_vi_nhan_van_ban.index', compact('donvinhan',
-            'vanbanhuyenxuongdonvi', 'donvinhancount', 'tong', 'vanBanHuyenChuyenDonViPhoiHop'));
+            'vanbanhuyenxuongdonvi', 'donvinhancount', 'tong', 'vanBanHuyenChuyenDonViPhoiHop','countphoihop'));
     }
 
     public function chi_tiet_van_ban_den_don_vi(Request $request, $id)

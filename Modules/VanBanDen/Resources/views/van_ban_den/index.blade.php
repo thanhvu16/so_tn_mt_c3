@@ -137,6 +137,7 @@
                                         <p>- Cơ quan ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
+                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>
                                     </td>
                                     <td style="text-align: justify">
                                         @if ($vbDen->loai_van_ban_don_vi == 1)
