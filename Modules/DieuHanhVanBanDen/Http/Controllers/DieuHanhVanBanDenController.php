@@ -68,9 +68,54 @@ class DieuHanhVanBanDenController extends Controller
                 return $query->select('id', 'van_ban_den_id', 'noi_dung', 'noi_dung_nhan_xet',
                     'user_id', 'can_bo_duyet_id', 'status', 'created_at', 'parent_id');
             }
-            ])
+        ])
             ->findOrFail($id);
 
+        $donViChuTri = $vanBanDen->checkDonViChuTri;
+
+        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
+            ->first();
+
+        $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            ->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
+            ->get();
+
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+
+        $danhSachPhoPhong = User::where('don_vi_id', $donViChuTri->don_vi_id ?? null)
+            ->whereHas('roles', function ($query) use ($roles) {
+                return $query->whereIn('name', $roles);
+            })
+            ->select('id', 'ho_ten')
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC')->get();
+
+
+        $danhSachChuyenVien = User::role(CHUYEN_VIEN)
+            ->where('don_vi_id', $donViChuTri->don_vi_id ?? null)
+            ->where('trang_thai', ACTIVE)
+            ->select('id', 'ho_ten')
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC')->get();
+
+        $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $truongPhong = User::where('don_vi_id', $donViChuTri->don_vi_id ?? null)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+        $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
+        $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
+        if (!empty($donViChuTri)) {
+            $vanBanDen->truongPhong = $vanBanDen->getCanBoDonVi([$truongPhong->id], $donViChuTri->don_vi_id);
+            $vanBanDen->phoPhong = $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id);
+            $vanBanDen->chuyenVien = $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id);
+        }
         //phoi hop
         $type = $request->get('status') ?? null;
 
@@ -85,20 +130,18 @@ class DieuHanhVanBanDenController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong =  User::role([ TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id','!=',auth::user()->id)->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([ TRUONG_PHONG])->where('don_vi_id' ,'!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([TRUONG_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
         $vanThuVanBanDiPiceCharts = [];
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($truongpho as $data2)
-                {
+                foreach ($truongpho as $data2) {
                     array_push($vanThuVanBanDiPiceCharts, $data2);
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG,CHU_TICH, PHO_CHUC_TICH])->get();
-                foreach ($chanvanphong as $data)
-                {
+                $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHU_TICH, PHO_CHUC_TICH])->get();
+                foreach ($chanvanphong as $data) {
                     array_push($vanThuVanBanDiPiceCharts, $data);
                 }
                 $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
@@ -106,13 +149,11 @@ class DieuHanhVanBanDenController extends Controller
                 break;
             case PHO_PHONG:
                 $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($truongpho as $data2)
-                {
+                foreach ($truongpho as $data2) {
                     array_push($vanThuVanBanDiPiceCharts, $data2);
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                foreach ($chanvanphong as $data)
-                {
+                $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data) {
                     array_push($vanThuVanBanDiPiceCharts, $data);
                 }
                 $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
@@ -187,13 +228,13 @@ class DieuHanhVanBanDenController extends Controller
         $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
 
         $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
-                'xuLyVanBanDen' => function ($query) {
-                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
-                },
-                'donViChuTri' => function ($query) {
-                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
-                }
-            ])
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+            },
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+            }
+        ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($hanXuLy) {
                 if (!empty($hanXuLy)) {

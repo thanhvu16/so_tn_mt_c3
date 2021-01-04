@@ -366,3 +366,80 @@ img.brand-logo {
         display: none;
     }
 }
+
+
+.progressbar {
+    counter-reset: step;
+    padding: 0;
+
+    /* New */
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.progressbar li {
+    list-style: none;
+    position: relative;
+    text-align: center;
+
+    /* New */
+    display: table-cell;
+}
+
+.progressbar li:before {
+    background: #fff;
+    border: 2px solid #bebebe;
+    border-radius: 50%;
+    color: #bebebe;
+    content: '\2714';
+    animation: changeBackground .5s linear;
+    animation-fill-mode: forwards;
+    /*content: counter(step);*/
+    /*counter-increment: step;*/
+    display: block;
+    font-weight: 700;
+    height: 30px;
+    line-height: 27px;
+    margin: 0 auto 10px;
+    text-align: center;
+    width: 30px;
+}
+
+.progressbar li:after {
+    background: #979797;
+    content: '';
+    height: 3px;
+    left: calc(50% - -15px);
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    z-index: 0;
+}
+
+.progressbar li:last-child:after {
+    content: none;
+}
+
+.progressbar li.complete:after {
+    background: #3aac5d;
+}
+
+.progressbar li.active:before,
+.progressbar li.complete:before {
+    background: #3aac5d;
+    border-color: #3aac5d;
+    color: #fff;
+    box-shadow: 0 0 0 2px #5fd895;
+}
+
+.progressbar li.active {
+    color: #3aac5d;
+    font-weight: 700;
+}
+
+.progressbar li.complete {
+    color: #333;
+    font-weight: 700;
+    font-size: 12px;
+}
