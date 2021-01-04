@@ -27,23 +27,23 @@
                             <table class="table table-striped table-bordered dataTable table-hover data-row">
                                 <thead>
                                 <tr role="row" class="text-center">
-                                    <th width="4%" style="vertical-align: middle" class="text-center">STT</th>
-                                    <th width=""  class="text-center" style="vertical-align: middle">Nội dung công việc</th>
-                                    <th width="20%" class="text-center" style="vertical-align: middle">Nội dung đầu việc đơn vị</th>
-                                    <th width="15%" class="text-center" style="vertical-align: middle">ý kiến</th>
-                                    <th width="24%" class="text-center" style="vertical-align: middle">Chỉ đạo</th>
+                                    <th width="4%"  class="text-center">STT</th>
+                                    <th width="20%"  class="text-center" >Nội dung công việc</th>
+                                    <th width="20%" class="text-center" >Nội dung đầu việc đơn vị</th>
+                                    <th width="15%" class="text-center" >ý kiến</th>
+                                    <th width="24%" class="text-center" >Chỉ đạo</th>
                                     @if (Auth::user()->hasRole(PHO_PHONG) )
-                                        <th class="text-center" width="3%" style="vertical-align: middle">
-                                            Duyệt
+                                        <th class="text-center" width="3%">
+{{--                                            Duyệt--}}
 {{--                                            <div class="checkbox">--}}
 {{--                                                <input id="check-all" type="checkbox" name="check_all" value="">--}}
 {{--                                                <label for="check-all"></label>--}}
 {{--                                            </div>--}}
-                                            <div class="checkbox">
+{{--                                            <div class="checkbox">--}}
                                                 <label>
                                                     <input  id="check-all" type="checkbox" name="check_all">
                                                 </label>
-                                            </div>
+{{--                                            </div>--}}
                                         </th>
                                     @endif
                                 </tr>

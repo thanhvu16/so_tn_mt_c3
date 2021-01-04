@@ -194,29 +194,29 @@
                     </div>
                     <ul class="progressbar">
                         @if ($vanBanDen->chuTich)
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{{ $vanBanDen->chuTich->canBoNhan->ho_ten ." (Chủ tịch)" }}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{!! $vanBanDen->chuTich->canBoNhan->ho_ten ."<br/> (Chủ tịch)" !!}
                                 <br>
                                 <i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuTich->created_at)) }}</i>
                             </li>
                         @endif
                         @if ($vanBanDen->PhoChuTich)
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{{ $vanBanDen->PhoChuTich->canBoNhan->ho_ten ." (Phó chủ tịch)" }}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->PhoChuTich->canBoNhan->ho_ten ."<br/> (Phó chủ tịch)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->PhoChuTich->created_at)) }}</i>
                             </li>
 
                             @endif
                         @if (!empty($vanBanDen->truongPhong))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=3 ? 'complete active' : null }}">{{ $vanBanDen->truongPhong->canBoNhan->ho_ten ." (Trưởng phòng)" }}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=3 ? 'complete active' : null }}">{!! $vanBanDen->truongPhong->canBoNhan->ho_ten ."<br/> (Trưởng phòng)" !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->truongPhong->created_at)) }}</i>
                             </li>
                         @endif
                         @if ($vanBanDen->phoPhong)
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=4 ? 'complete active' : null }}">{{ $vanBanDen->phoPhong->canBoNhan->ho_ten ." (Phó phòng)" }}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=4 ? 'complete active' : null }}">{!! $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó phòng)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->phoPhong->created_at)) }}</i>
                             </li>
                         @endif
                         @if ($vanBanDen->chuyenVien)
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=5 ? 'complete active' : null }}">{{ $vanBanDen->chuyenVien->canBoNhan->ho_ten ." (Chuyên viên)" }}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=5 ? 'complete active' : null }}">{!! $vanBanDen->chuyenVien->canBoNhan->ho_ten ."<br/> (Chuyên viên)" !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuyenVien->created_at)) }}</i>
                             </li>
                         @endif

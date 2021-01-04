@@ -6,7 +6,7 @@ use App\Common\AllPermission;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use File , auth;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;

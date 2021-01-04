@@ -174,9 +174,7 @@
                                     </td>
 
                                     <td style="text-align: justify"><a
-                                            href="" class="tin"
-                                            data-original-title=""
-                                            title="">{{$vbDi->trich_yeu}}</a><br>
+                                            href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}">{{$vbDi->trich_yeu}}</a><br>
                                         (Vào hồi {{date('H:i', strtotime($vbDi->gio_hop))}}
                                         ngày {{ date('d-m-Y', strtotime($vbDi->ngay_hop)) }},
                                         tại {{$vbDi->dia_diem}})

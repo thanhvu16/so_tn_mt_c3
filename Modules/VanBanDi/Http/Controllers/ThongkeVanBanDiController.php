@@ -5,7 +5,7 @@ namespace Modules\VanBanDi\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Auth, Excel, PDF, DB;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDi\Entities\VanBanDi;
 use App\Exports\VanbandiExport;

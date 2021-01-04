@@ -122,7 +122,7 @@
                                 <th class="text-center" style="vertical-align: middle" width="20%">Đơn vị
                                     xử lý
                                 </th>
-                                <th class="text-center" style="vertical-align: middle" width="5%">Tác vụ
+                                <th class="text-center" style="vertical-align: middle" width="7%">Tác vụ
                                 </th>
                             </tr>
                             </thead>
@@ -155,7 +155,7 @@
 
                                         <div class="text-right">
                                             @forelse($vbDen->vanBanDenFile as $key=>$item)
-                                                <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                <a href="{{$item->getUrlFile()}}" target="popup" class="seen-new-window">
                                                     @if($item->duoi_file == 'pdf')<i
                                                         class="fa fa-file-pdf-o"
                                                         style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')

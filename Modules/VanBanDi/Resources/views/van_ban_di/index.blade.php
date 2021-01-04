@@ -172,7 +172,7 @@
                                                 class="font-bold color-red">{{$vbDi->so_di}}</span></p>
                                     </td>
                                     <td style="text-align: justify"><a
-                                            href="{{route('Quytrinhxulyvanbandi',$vbDi->id)}}"
+                                            href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}"
                                             title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
                                             @forelse($vbDi->filetrinhky as $filedata)

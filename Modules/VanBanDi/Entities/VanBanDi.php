@@ -123,7 +123,7 @@ class VanBanDi extends Model
     }
 
     public function vanBanDenDonVi() {
-        return $this->belongsTo(VanBanDen::class, 'van_ban_den_don_vi_id', 'id');
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
     }
 
     public function vanBanDiFileDaKy()

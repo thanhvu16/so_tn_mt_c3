@@ -4,7 +4,7 @@ namespace Modules\VanBanDen\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Auth, Excel, PDF, DB;
 use App\Exports\VanbandenExport;
 use Modules\Admin\Entities\SoVanBan;

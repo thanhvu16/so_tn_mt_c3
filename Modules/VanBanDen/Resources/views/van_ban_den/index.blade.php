@@ -150,13 +150,13 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
-                                                     (Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen->han_giai_quyet)) }})<br>
+                                                     (Hạn giải quyết: {{ date('d/m/Y', strtotime($vbDen->han_xu_ly)) }})<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <div class="text-right " style="pointer-events: auto">
                                             @if($vbDen->vanBanDenFile)
                                             @forelse($vbDen->vanBanDenFile as $key=>$item)
-                                                <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                <a href="{{$item->getUrlFile()}}" target="popup" class="seen-new-window">
                                                     @if($item->duoi_file == 'pdf')<i
                                                         class="fa fa-file-pdf-o"
                                                         style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')

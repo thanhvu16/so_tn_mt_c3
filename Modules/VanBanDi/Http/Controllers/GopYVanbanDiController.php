@@ -5,7 +5,7 @@ namespace Modules\VanBanDi\Http\Controllers;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\VanBanDi\Entities\CanBoPhongDuThao;
 use Modules\VanBanDi\Entities\CanBoPhongDuThaoKhac;
 use File,auth;
