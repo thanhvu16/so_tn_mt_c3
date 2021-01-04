@@ -69,13 +69,23 @@
                             @endforelse
                             @forelse ($vanbanhuyenxuongdonvi as $key=>$vbDen2)
                                 <tr>
-                                    <td class="text-center">{{$donvinhancount+1}} </td>
+                                    <td class="text-center">{{$donvinhancount + $key +1}} </td>
                                     <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
                                     <td>
                                         <p> {{$vbDen2->vanBanDen->so_ky_hieu ?? ''}}</p>
                                     </td>
                                     <td style="text-align: justify">
                                         <a href="@if($vbDen2->vanBanDen->so_van_ban_id == 100){{route('thongtinvbhuyen',$vbDen2->id)}}@else{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id)}}@endif" title="{{$vbDen2->vanBanDen->trich_yeu}}">{{$vbDen2->vanBanDen->trich_yeu}}</a><br>
+
+                                        @if($vbDen2->vanBanDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
+                                        <span
+                                            style="font-style: italic">{{$vbDen2->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen2->vanBanDen->noi_dung != null)
+                                            <br>@endif
+                                                     Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) ?? '' }} -
+                                        <span
+                                            style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
+
+
                                         <p class="mt-2">
                                             <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
                                                    name="van_ban-don_vi" value="1" checked>
@@ -109,7 +119,7 @@
                             <!--Don vi phoi hop-->
                             @forelse ($vanBanHuyenChuyenDonViPhoiHop as $key=>$vbDen2)
                                 <tr>
-                                    <td class="text-center">{{$donvinhancount+1}}</td>
+                                    <td class="text-center">{{$countphoihop +  $key + 1 }}</td>
                                     <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
                                     <td>
                                         <p> {{$vbDen2->vanBanDen->so_ky_hieu ?? ''}}</p>
@@ -117,6 +127,13 @@
                                     <td style="text-align: justify">
                                         <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id.'?type=phoi_hop')}}" title="{{$vbDen2->vanBanDen->trich_yeu ?? ''}}">{{$vbDen2->vanBanDen->trich_yeu ?? ''}}</a>
                                         <br>
+                                        @if($vbDen2->vanBanDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
+                                        <span
+                                            style="font-style: italic">{{$vbDen2->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen2->vanBanDen->noi_dung != null)
+                                            <br>@endif
+                                        Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) ?? '' }} -
+                                        <span
+                                            style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <p class="mt-2">
                                             <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
                                                    name="van_ban-don_vi" value="1" checked>
