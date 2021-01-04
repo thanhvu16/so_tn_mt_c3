@@ -189,7 +189,9 @@
                 @if ($vanBanDen->chuTich || $vanBanDen->PhoChuTich || $vanBanDen->truongPhong ||
                 $vanBanDen->phoPhong || $vanBanDen->chuyenVien)
                 <div class="col-md-12 row-bd-bt">
-                    <h5 class="text-bold">Sơ đồ chỉ đạo bản</h5>
+                    <div class="col-md-12">
+                        <h5 class="text-bold">Sơ đồ chỉ đạo bản: </h5>
+                    </div>
                     <ul class="progressbar">
                         @if ($vanBanDen->chuTich)
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{{ $vanBanDen->chuTich->canBoNhan->ho_ten ." (Chủ tịch)" }}
