@@ -193,29 +193,29 @@
                         <h5 class="text-bold">Sơ đồ chỉ đạo bản: </h5>
                     </div>
                     <ul class="progressbar">
-                        @if ($vanBanDen->chuTich)
+                        @if (!empty($vanBanDen->chuTich->can_bo_nhan_id))
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{!! $vanBanDen->chuTich->canBoNhan->ho_ten ."<br/> (Chủ tịch)" !!}
                                 <br>
                                 <i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuTich->created_at)) }}</i>
                             </li>
                         @endif
-                        @if ($vanBanDen->PhoChuTich)
+                        @if (!empty($vanBanDen->PhoChuTich->can_bo_nhan_id))
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->PhoChuTich->canBoNhan->ho_ten ."<br/> (Phó chủ tịch)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->PhoChuTich->created_at)) }}</i>
                             </li>
 
                             @endif
-                        @if (!empty($vanBanDen->truongPhong))
+                        @if (!empty($vanBanDen->truongPhong->can_bo_nhan_id))
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=3 ? 'complete active' : null }}">{!! $vanBanDen->truongPhong->canBoNhan->ho_ten ."<br/> (Trưởng phòng)" !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->truongPhong->created_at)) }}</i>
                             </li>
                         @endif
-                        @if ($vanBanDen->phoPhong)
+                        @if (!empty($vanBanDen->phoPhong->can_bo_nhan_id))
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=4 ? 'complete active' : null }}">{!! $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó phòng)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->phoPhong->created_at)) }}</i>
                             </li>
                         @endif
-                        @if ($vanBanDen->chuyenVien)
+                        @if (!empty($vanBanDen->chuyenVien->can_bo_nhan_id))
                             <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=5 ? 'complete active' : null }}">{!! $vanBanDen->chuyenVien->canBoNhan->ho_ten ."<br/> (Chuyên viên)" !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuyenVien->created_at)) }}</i>
                             </li>

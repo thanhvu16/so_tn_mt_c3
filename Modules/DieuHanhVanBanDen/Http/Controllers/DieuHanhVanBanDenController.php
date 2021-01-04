@@ -112,9 +112,9 @@ class DieuHanhVanBanDenController extends Controller
         $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
         $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
         if (!empty($donViChuTri)) {
-            $vanBanDen->truongPhong = $vanBanDen->getCanBoDonVi([$truongPhong->id], $donViChuTri->don_vi_id);
-            $vanBanDen->phoPhong = $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id);
-            $vanBanDen->chuyenVien = $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id);
+            $vanBanDen->truongPhong = !empty($truongPhong) ? $vanBanDen->getCanBoDonVi([$truongPhong->id], $donViChuTri->don_vi_id) : null;
+            $vanBanDen->phoPhong = !empty($danhSachPhoPhong) ? $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            $vanBanDen->chuyenVien = !empty($danhSachChuyenVien) ? $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
         }
         //phoi hop
         $type = $request->get('status') ?? null;
