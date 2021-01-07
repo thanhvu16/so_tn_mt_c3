@@ -21,6 +21,17 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1">Nhóm đơn vi</label>
+                                    <select class="form-control select2" name="nhom_don_vi">
+                                        @foreach($nhom_don_vi as $data)
+                                        <option value="{{$data->id}}">{{$data->ten_nhom_don_vi}}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="exampleInputEmail2">Tên viết tắt</label>
                                     <input type="text" class="form-control" name="ten_viet_tat" id="exampleInputEmail2"
                                            placeholder="Tên viết tắt" >

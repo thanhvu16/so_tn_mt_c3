@@ -6,6 +6,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\ChucVu;
+use Modules\Admin\Entities\NhomDonVi;
+use Modules\Admin\Entities\NhomDonVi_chucVu;
 
 class ChucVuController extends Controller
 {
@@ -33,17 +35,10 @@ class ChucVuController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
-//        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-get-list?page=2&numberrow=10";
-//        $ds_chucvu1 = api_list($url);
-//        $ds_chucvu= json_decode($ds_chucvu1);
-//        dd($ds_chucvu);
-//        $count = count($ds_chucvu);
-//        dd($ds_chucvu1);
-//        echo '<pre>';
-//        print_r($ds_chucvu2);
-//        echo '</pre>';
+        $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
 
-        return view('admin::chuc_vu.danh_sach', compact('ds_chucvu'));
+
+        return view('admin::chuc_vu.danh_sach', compact('nhom_don_vi', 'ds_chucvu'));
     }
 
     /**
@@ -62,19 +57,22 @@ class ChucVuController extends Controller
      */
     public function store(Request $request)
     {
-//        $araytable = array();
-//        $araytable= array(
-//            'ten_chuc_vu'=>$request->ten_chuc_vu,
-//            'ten_viet_tat'=>$request->ten_viet_tat
-//        );
-//
-//        $url = "http://localhost/Xu_ly_data_quan_huyen/public/api-chuc-vu-save";
-//        $a = api_add($araytable,$url);
-
+        $nhomDonVi = $request->nhom_don_vi;
+        $nhom_don_vi = json_encode($request->nhom_don_vi);
         $chucvu = new ChucVu();
         $chucvu->ten_chuc_vu = $request->ten_chuc_vu;
         $chucvu->ten_viet_tat = $request->ten_viet_tat;
+        $chucvu->nhom_don_vi = $nhom_don_vi;
         $chucvu->save();
+        if ($nhomDonVi && count($nhomDonVi) > 0) {
+            foreach ($nhomDonVi as $item) {
+                $nhom_don_vi_chuc_vu = new NhomDonVi_chucVu();
+                $nhom_don_vi_chuc_vu->id_chuc_vu = $chucvu->id;
+                $nhom_don_vi_chuc_vu->id_nhom_don_vi = $item;
+                $nhom_don_vi_chuc_vu->save();
+            }
+
+        }
 
 
         return redirect()->route('danhsachchucvu')->with('success', 'Thêm mới thành công !');
@@ -97,8 +95,10 @@ class ChucVuController extends Controller
      */
     public function edit($id)
     {
+        $lay_nhom_don_vi =NhomDonVi_chucVu::where('id_chuc_vu',$id)->get();
         $chucvu = ChucVu::where('id', $id)->first();
-        return view('admin::Chuc_vu.edit', compact('chucvu'));
+        $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
+        return view('admin::Chuc_vu.edit', compact('chucvu', 'nhom_don_vi','lay_nhom_don_vi'));
     }
 
     /**
@@ -109,10 +109,31 @@ class ChucVuController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $nhom_don_vi = json_encode($request->nhom_don_vi);
         $chucvu = ChucVu::where('id', $id)->first();
         $chucvu->ten_chuc_vu = $request->ten_chuc_vu;
         $chucvu->ten_viet_tat = $request->ten_viet_tat;
+        $chucvu->nhom_don_vi = $nhom_don_vi;
         $chucvu->save();
+        $xoanhomcu = NhomDonVi_chucVu::where('id_chuc_vu', $chucvu->id)->get();
+        if(count($xoanhomcu) > 0)
+        {
+            foreach ($xoanhomcu as $item) {
+                $xoanhomcu = NhomDonVi_chucVu::where('id', $item->id)->first();
+                $xoanhomcu->delete();
+            }
+        }
+
+        $nhomDonVi = $request->nhom_don_vi;
+        if ($nhomDonVi && count($nhomDonVi) > 0) {
+            foreach ($nhomDonVi as $item) {
+                $nhom_don_vi_chuc_vu = new NhomDonVi_chucVu();
+                $nhom_don_vi_chuc_vu->id_chuc_vu = $chucvu->id;
+                $nhom_don_vi_chuc_vu->id_nhom_don_vi = $item;
+                $nhom_don_vi_chuc_vu->save();
+            }
+
+        }
         return redirect()->route('danhsachchucvu')->with('success', 'Cập nhật thành công !');
     }
 
@@ -124,7 +145,13 @@ class ChucVuController extends Controller
     public function destroy($id)
     {
         $chucvu = ChucVu::where('id', $id)->first();
+        $xoanhomcu = NhomDonVi_chucVu::where('id_chuc_vu', $chucvu->id)->get();
+        foreach ($xoanhomcu as $item) {
+            $xoanhomcu = NhomDonVi_chucVu::where('id', $item->id)->first();
+            $xoanhomcu->delete();
+        }
         $chucvu->delete();
+
         return redirect()->route('danhsachchucvu')->with('success', 'Xóa thành công !');
     }
 }

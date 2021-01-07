@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,6 +24,10 @@ class DonVi extends Model
 
     const DIEU_HANH = 1;
     const TRANG_THAI_HOAT_DONG = 1;
+    public function nhomDonVi()
+    {
+        return $this->belongsTo(NhomDonVi::class, 'nhom_don_vi', 'id');
+    }
 
 }
 
