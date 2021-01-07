@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Admin\Entities\NhomDonVi;
+
 if (!function_exists('uploadFile')) {
     function uploadFile($inputFile, $uploadPath, $folderUploads, $urlFileInDB = null)
     {
@@ -54,6 +56,16 @@ if (!function_exists('canPermission')) {
             return abort(403);
         }
     }
+}
+
+function tenNhom($idnhom)
+{
+    $chucvu = NhomDonVi::where('id',$idnhom)->first();
+    if($chucvu)
+    {
+        $lay_nhom_don_vi =$chucvu->ten_nhom_don_vi;
+    }
+    return $lay_nhom_don_vi;
 }
 
 function api_add($arr ,$url)

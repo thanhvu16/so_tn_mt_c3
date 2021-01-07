@@ -14,6 +14,8 @@
 Route::get('/', 'AdminController@index')->name('home');
 
 Route::resource('nguoi-dung', 'NguoiDungController');
+Route::resource('Nhom-don-vi', 'NhomDonViController');
+Route::post('Nhom-don-vi/delete/{id}', array('as' => 'xoanhomdonvi', 'uses' => 'NhomDonViController@destroy'));
 //đơn vị
 Route::get('danh-sach-don-vi', 'DonViController@danhsach')->name('danhsachdonvi');
 Route::resource('don-vi', 'DonViController')->except('show');
@@ -40,7 +42,9 @@ Route::get('danh-sach-do-bao-mat', 'DoMatController@danhsach')->name('danhsachdo
 Route::resource('do-bao-mat', 'DoMatController')->except('show');
 Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'DoMatController@destroy'));
 
+
 //
+Route::get('get-chuc-vu/{id}', 'NguoiDungController@getChucVu');
 Route::resource('vai-tro', 'VaiTroController');
 Route::resource('chuc-nang', 'ChucNangController');
 

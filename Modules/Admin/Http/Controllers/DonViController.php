@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\NhomDonVi;
 
 class DonViController extends Controller
 {
@@ -39,7 +40,8 @@ class DonViController extends Controller
                     return $query->where('ma_hanh_chinh', 'LIKE', "%$mahanhchinh%");
                 }
             })->paginate(PER_PAGE);
-        return view('admin::Don_vi.danh_sach', compact('ds_donvi'));
+        $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
+        return view('admin::Don_vi.danh_sach', compact('ds_donvi','nhom_don_vi'));
     }
 
     /**
@@ -86,7 +88,8 @@ class DonViController extends Controller
     public function edit($id)
     {
         $donvi = DonVi::where('id', $id)->first();
-        return view('admin::Don_vi.edit', compact('donvi'));
+        $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
+        return view('admin::Don_vi.edit', compact('donvi','nhom_don_vi'));
     }
 
     /**
@@ -105,8 +108,9 @@ class DonViController extends Controller
         $donvi->so_dien_thoai = $request->dien_thoai;
         $donvi->email = $request->email;
         $donvi->dieu_hanh = $request->dieu_hanh;
+        $donvi->nhom_don_vi = $request->nhom_don_vi;
         $donvi->save();
-        return redirect()->route('danhsachdonvi')->with('success', 'Thêm mới thành công !');
+        return redirect()->route('danhsachdonvi')->with('success', 'Cập nhật thành công !');
     }
 
     /**

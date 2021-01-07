@@ -59,6 +59,7 @@
                             <tr>
                                 <th width="5%" class="text-center">STT</th>
                                 <th width="" class="text-center">Tên chức vụ</th>
+                                <th width="15%" class="text-center">Nhóm đơn vị</th>
                                 <th width="20%" class="text-center">Tên viết tắt</th>
                                 <th width="10%" class="text-center">Trạng thái</th>
                                 <th width="10%" class="text-center">Tác Vụ</th>
@@ -69,6 +70,14 @@
                                 <tr>
                                     <td class="text-center" style="vertical-align: middle">{{$key+1}}</td>
                                     <td class="text-left" style="vertical-align: middle">{{$chucvu->ten_chuc_vu}}</td>
+                                    <td class="text-left" style="vertical-align: middle">
+                                        @if($chucvu->tenNhomDonvi($chucvu->id))
+                                            @foreach($chucvu->tenNhomDonvi($chucvu->id) as $key=>$data)
+                                                - {{tenNhom($data) ?? ''}} <br>
+                                            @endforeach
+                                        @endif
+{{--                                        {{$chucvu->tenNhomDonvi($chucvu->id)}}--}}
+                                    </td>
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$chucvu->ten_viet_tat}}</td>
                                     <td class="text-center"

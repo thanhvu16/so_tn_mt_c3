@@ -6,6 +6,14 @@
             </span>
     </a>
 </li>
+<li class="{{ Route::is('Nhom-don-vi.index')  ? 'active' : '' }} ">
+    <a href="{{route('Nhom-don-vi.index')}}">
+        <i class="fa fa-user-plus"></i> <span>Nhóm đơn Vị</span>
+        <span class="pull-right-container">
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
+            </span>
+    </a>
+</li>
 
 <li class="{{ Route::is('chuc-vu.index') || Route::is('danhsachchucvu') ? 'active' : '' }}  ">
     <a href="{{route('danhsachchucvu')}}">

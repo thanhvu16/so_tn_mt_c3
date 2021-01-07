@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ChucVu extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     protected $table = 'chuc_vu';
     protected $fillable = [
@@ -16,5 +16,20 @@ class ChucVu extends Model
 
 
     ];
+    public function nhomDonVi()
+    {
+        return $this->belongsTo(NhomDonVi::class, 'nhom_don_vi', 'id');
+    }
+
+    public function tenNhomDonvi($idchucvu)
+    {
+        $chucvu = ChucVu::where('id',$idchucvu)->first();
+        if($chucvu)
+        {
+            $lay_nhom_don_vi = json_decode($chucvu->nhom_don_vi);
+        }
+        return $lay_nhom_don_vi;
+    }
+
 }
 

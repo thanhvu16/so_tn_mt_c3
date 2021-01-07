@@ -25,8 +25,8 @@
                                 <form action="{{route('nguoi-dung.index')}}" method="get">
                                     <div class="col-md-3 form-group">
                                         <label for="exampleInputEmail1">Tìm theo đơn vị</label>
-                                        <select name="don_vi_id" class="form-control select2">
-                                            <option value="">-- tất cả --</option>
+                                        <select name="don_vi_id" id="don-vi" onchange="selectDonViAppend()" class="form-control select2">
+                                            <option value="">-- Tất cả --</option>
                                             @if (count($danhSachDonVi) > 0)
                                                 @foreach($danhSachDonVi as $donVi)
                                                     <option value="{{ $donVi->id }}" {{ Request::get('don_vi_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
@@ -37,8 +37,8 @@
 
                                     <div class="col-md-3 form-group">
                                         <label for="exampleInputEmail1">Tìm theo chức vụ</label>
-                                        <select name="chuc_vu_id" class="form-control select2">
-                                            <option value="">-- tất cả --</option>
+                                        <select name="chuc_vu_id" class="form-control chuc-vu select2">
+                                            <option value="">-- Tất cả --</option>
                                             @if (count($danhSachChucVu) > 0)
                                                 @foreach($danhSachChucVu as $chucVu)
                                                     <option value="{{ $chucVu->id }}" {{ Request::get('chuc_vu_id') == $chucVu->id ? 'selected' : '' }}>{{ $chucVu->ten_chuc_vu }}</option>
@@ -140,4 +140,35 @@
                 <!-- /.tab-content -->
             </div>
     </section>
+@endsection
+@section('script')
+    <script>
+        donVi='#don-vi';
+        function selectDonViAppend() {
+            let $this = $(donVi);
+            var don_vi = $('[name=don_vi_id]').val();
+            let arrId = $this.val;
+            if (arrId) {
+                //lấy danh sach cán bộ phối hơp
+                $.ajax({
+                    url: APP_URL + '/get-chuc-vu/' + don_vi,
+                    type: 'GET',
+                })
+                    .done(function (response) {
+
+                        var html = '<option value="">--Tất cả--</option>';
+                        if (response.success) {
+                            let selectAttributes = response.data.map((function (attribute) {
+                                return `<option value="${attribute.id}" >${attribute.ten_chuc_vu}</option>`;
+                            }));
+                            $('.chuc-vu').html(html+ selectAttributes);
+                        }
+                    })
+                    .fail(function (error) {
+                        toastr['error'](error.message, 'Thông báo hệ thống');
+                    });
+            }
+
+        }
+    </script>
 @endsection

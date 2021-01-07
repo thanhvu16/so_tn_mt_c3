@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Hash, DB, Auth;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\NhomDonVi_chucVu;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use Spatie\Permission\Models\Role;
 
@@ -45,7 +46,6 @@ class NguoiDungController extends Controller
                     return $query->where('ho_ten', $hoTen);
                 }
             })
-
             ->where(function ($query) use ($username) {
                 if (!empty($username)) {
                     return $query->where('username', $username);
@@ -57,8 +57,8 @@ class NguoiDungController extends Controller
 
         $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
-        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu','asc')->get();
-        $danhSachDonVi = DonVi::orderBy('ten_don_vi','asc')->get();
+        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
+        $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
         $viTriUuTien = User::max('uu_tien');
 
@@ -75,8 +75,8 @@ class NguoiDungController extends Controller
         canPermission(AllPermission::themNguoiDung());
 
         $roles = Role::all();
-        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu','asc')->get();
-        $danhSachDonVi = DonVi::orderBy('ten_don_vi','asc')->get();
+        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
+        $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
         return view('admin::nguoi-dung.create', compact('roles', 'danhSachDonVi', 'danhSachChucVu'));
     }
@@ -270,5 +270,23 @@ class NguoiDungController extends Controller
         $user->delete();
 
         return redirect()->back()->with('success', 'Xoá thành công.');
+    }
+
+    public function getChucVu(Request $request, $id)
+    {
+        $ds_chucvu = [];
+        $don_vi = DonVi::where('id', $id)->first();
+        $nhom_don_vi = $don_vi->nhom_don_vi;
+        $lay_chuc_vu = NhomDonVi_chucVu::where('id_nhom_don_vi', $nhom_don_vi)->get();
+        foreach ($lay_chuc_vu as $data) {
+            $chucvu = ChucVu::where('id', $data->id_chuc_vu)->first();
+            array_push($ds_chucvu, $chucvu);
+        }
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $ds_chucvu
+            ]);
+        }
     }
 }
