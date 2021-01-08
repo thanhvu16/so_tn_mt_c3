@@ -92,7 +92,7 @@ span.required {
 
 .btn-action.btn:hover {
     background: #348cd4 !important;
-    color: white;
+    color: white !important;
 }
 
 .user-panel>.image>img {

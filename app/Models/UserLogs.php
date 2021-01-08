@@ -32,7 +32,8 @@ class UserLogs extends Model
 
     public function TenNguoiDung()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id')
+            ->select('id', 'ho_ten');
     }
 
     public function chuyenDoiData($data)

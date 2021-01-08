@@ -330,7 +330,9 @@ class PhanLoaiVanBanController extends Controller
         $user = auth::user();
 
         $active = null;
-
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
+        $date = $request->get('date') ?? null;
         $chuTich = User::role('chủ tịch')->select('id', 'ho_ten')->first();
         $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)->select(['id', 'ho_ten'])->get();
 
@@ -366,8 +368,23 @@ class PhanLoaiVanBanController extends Controller
                 'checkDonViPhoiHop' => function ($query) {
                     $query->select(['id', 'van_ban_den_id', 'don_vi_id', 'noi_dung']);
                 }
-            ])
+                ])
                 ->whereIn('id', $arrIdVanBanDenDonVi)
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where('trich_yeu', "LIKE", $trichYeu);
+                    }
+                })
+                ->where(function ($query) use ($soDen) {
+                    if (!empty($soDen)) {
+                        return $query->where('so_den', $soDen);
+                    }
+                })
+                ->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+                        return $query->where('created_at', "LIKE", $date);
+                    }
+                })
                 ->paginate(PER_PAGE);
 
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -412,6 +429,21 @@ class PhanLoaiVanBanController extends Controller
                 $query->select(['van_ban_den_id', 'lanh_dao_id']);
             }])
             ->whereIn('id', $arrIdVanBanDenDonVi)
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', "LIKE", $trichYeu);
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
+            ->where(function ($query) use ($date) {
+                if (!empty($date)) {
+                    return $query->where('created_at', "LIKE", "%$date%");
+                }
+            })
             ->paginate(PER_PAGE);
 
 

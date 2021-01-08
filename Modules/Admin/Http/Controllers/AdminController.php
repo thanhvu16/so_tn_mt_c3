@@ -640,7 +640,7 @@ class AdminController extends Controller
     {
         try {
             // start the backup process
-            Artisan::call('backup:run');
+            Artisan::call('backup:run --only-db');
             $output = Artisan::output();
             // log the results
             Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);

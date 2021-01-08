@@ -203,7 +203,7 @@ class VanBanTraLaiController extends Controller
                                 ChuyenVienPhoiHop::where([
                                     'van_ban_den_id' => $vanBanDen->id,
                                     'don_vi_id' => $currentUser->don_vi_id
-                                ])->whereNull('status')->delete();
+                                ])->delete();
 
                                 // xoa pho phong xem de biet
                                 LanhDaoXemDeBiet::where([

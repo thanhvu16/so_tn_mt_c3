@@ -70,8 +70,8 @@
     <ul class="treeview-menu">
         <li class="{{ Route::is('nguoi-dung.index') ? 'active' : '' }}"><a href="{{ route('nguoi-dung.index') }}"><i class="fa fa-circle-o"></i> Người dùng</a></li>
         <li class="{{ Route::is('vai-tro.index') ? 'active' : '' }}"><a href="{{ route('vai-tro.index') }}"><i class="fa fa-circle-o"></i>Quyền hạn</a></li>
-        <li class="{{ Route::is('nhat-ky-truy-cap.index') ? 'active' : '' }}"><a href="{{ route('nhat-ky-truy-cap.index') }}"><i class="fa fa-circle-o"></i>Nhật ký hoạt động</a></li>
         <li class="{{ Route::is('ngay-nghi.index') ? 'active' : '' }}"><a href="{{ route('ngay-nghi.index') }}"><i class="fa fa-circle-o"></i>Ngày nghỉ</a></li>
+        <li class="{{ Route::is('nhat-ky-truy-cap.index') ? 'active' : '' }}"><a href="{{ route('nhat-ky-truy-cap.index') }}"><i class="fa fa-circle-o"></i>Nhật ký hoạt động</a></li>
         <li class="{{ Route::is('sao-luu-du-lieu.index') ? 'active' : '' }}"><a href="{{ route('sao-luu-du-lieu.index') }}"><i class="fa fa-circle-o"></i>Sao lưu dữ liệu</a></li>
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
