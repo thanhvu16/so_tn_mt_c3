@@ -49,3 +49,8 @@ Route::resource('vai-tro', 'VaiTroController');
 Route::resource('chuc-nang', 'ChucNangController');
 
 Route::resource('ngay-nghi', 'NgayNghiController');
+
+Route::get('sao-luu-du-lieu', 'AdminController@exportDatabase')->name('sao-luu-du-lieu.index');
+Route::post('create-backup', 'AdminController@createBackup')->name('backup.create');
+Route::get('download-backup/{fileName}', 'AdminController@downloadBackup')->name('backup.download');
+Route::post('delete-backup/{fileName}', 'AdminController@deleteBackup')->name('backup.destroy');
