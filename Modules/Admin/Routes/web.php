@@ -14,6 +14,7 @@
 Route::get('/', 'AdminController@index')->name('home');
 
 Route::resource('nguoi-dung', 'NguoiDungController');
+Route::resource('nhat-ky-truy-cap', 'UserLogsController');
 Route::resource('Nhom-don-vi', 'NhomDonViController');
 Route::post('Nhom-don-vi/delete/{id}', array('as' => 'xoanhomdonvi', 'uses' => 'NhomDonViController@destroy'));
 //đơn vị
