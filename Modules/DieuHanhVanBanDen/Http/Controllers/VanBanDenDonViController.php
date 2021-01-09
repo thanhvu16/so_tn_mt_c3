@@ -359,12 +359,12 @@ class VanBanDenDonViController extends Controller
                         $chuyenNhanVanBanPhoPhong = new DonViChuTri();
                         $chuyenNhanVanBanPhoPhong->fill($dataChuyenNhanVanBanDonVi);
                         $chuyenNhanVanBanPhoPhong->save();
-                    }
 
-                    // luu log dh van ban den pho phong
-                    $luuVetVanBanDen = new LogXuLyVanBanDen();
-                    $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
-                    $luuVetVanBanDen->save();
+                        // luu log dh van ban den pho phong
+                        $luuVetVanBanDen = new LogXuLyVanBanDen();
+                        $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
+                        $luuVetVanBanDen->save();
+                    }
 
                     //save chuyen vien thuc hien
                     $dataChuyenNhanVanBanChuyenVien = [
@@ -381,14 +381,16 @@ class VanBanDenDonViController extends Controller
 
                     ];
 
-                    $chuyenNhanVanBanChuyenVienDonVi = new DonViChuTri();
-                    $chuyenNhanVanBanChuyenVienDonVi->fill($dataChuyenNhanVanBanChuyenVien);
-                    $chuyenNhanVanBanChuyenVienDonVi->save();
+                    if (isset($danhSachChuyenVienIds[$vanBanDenId])) {
+                        $chuyenNhanVanBanChuyenVienDonVi = new DonViChuTri();
+                        $chuyenNhanVanBanChuyenVienDonVi->fill($dataChuyenNhanVanBanChuyenVien);
+                        $chuyenNhanVanBanChuyenVienDonVi->save();
 
-                    // luu log dh van ban den chuyen vien
-                    $logChuyenVien = new LogXuLyVanBanDen();
-                    $logChuyenVien->fill($dataChuyenNhanVanBanChuyenVien);
-                    $logChuyenVien->save();
+                        // luu log dh van ban den chuyen vien
+                        $logChuyenVien = new LogXuLyVanBanDen();
+                        $logChuyenVien->fill($dataChuyenNhanVanBanChuyenVien);
+                        $logChuyenVien->save();
+                    }
 
                     //delete chuyen vien phoi hop
                     ChuyenVienPhoiHop::where('van_ban_den_id', $vanBanDenId)

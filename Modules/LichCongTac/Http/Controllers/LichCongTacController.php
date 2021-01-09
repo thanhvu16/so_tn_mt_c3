@@ -4,6 +4,7 @@ namespace Modules\LichCongTac\Http\Controllers;
 
 use App\Common\AllPermission;
 use App\Models\LichCongTac;
+use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -183,6 +184,8 @@ class LichCongTacController extends Controller
         $lichCongTac = new LichCongTac();
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+        //log
+        UserLogs::saveUserLogs('Thêm mới lịch công tác', $lichCongTac);
 
         return redirect()->back()->with('success', 'Đã thêm lịch công tác thành công.');
     }
@@ -249,6 +252,8 @@ class LichCongTacController extends Controller
         $lichCongTac = LichCongTac::findOrFail($id);
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+
+        UserLogs::saveUserLogs('Cập nhật lịch công tác', $lichCongTac);
 
         return redirect()->back()->with('success', 'Cập nhật lịch công tác thành công.');
     }

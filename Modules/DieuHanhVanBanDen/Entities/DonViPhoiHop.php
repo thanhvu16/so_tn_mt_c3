@@ -93,6 +93,11 @@ class DonViPhoiHop extends Model
         $donViPhoiHop = new DonViPhoiHop();
         $donViPhoiHop->fill($dataLuuDonViPhoiHop);
         $donViPhoiHop->save();
+
+        // luu vet van ban den
+        $luuVetVanBanDen = new LogXuLyVanBanDen();
+        $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
+        $luuVetVanBanDen->save();
     }
 
     public function donVi()

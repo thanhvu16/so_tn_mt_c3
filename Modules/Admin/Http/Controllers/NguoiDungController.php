@@ -4,6 +4,7 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
+use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -146,6 +147,7 @@ class NguoiDungController extends Controller
             $user->password = Hash::make($data['password']);
         }
         $user->save();
+        UserLogs::saveUserLogs('Tạo mới người dùng', $user);
 
         if (!empty($request->get('role_id'))) {
             $role = Role::findById($request->get('role_id'));
@@ -235,6 +237,7 @@ class NguoiDungController extends Controller
 
         $user->fill($data);
         $user->save();
+        UserLogs::saveUserLogs('Cập nhật người dùng', $user);
 
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
@@ -251,7 +254,6 @@ class NguoiDungController extends Controller
             $user->syncPermissions($permissions);
         }
 
-
         return redirect()->back()->with('success', 'Cập nhật thành công.');
 
     }
@@ -266,7 +268,7 @@ class NguoiDungController extends Controller
         canPermission(AllPermission::xoaNguoiDung());
 
         $user = User::findOrFail($id);
-
+        UserLogs::saveUserLogs('Xoá người dùng', $user);
         $user->delete();
 
         return redirect()->back()->with('success', 'Xoá thành công.');

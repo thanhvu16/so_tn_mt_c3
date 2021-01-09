@@ -57,7 +57,7 @@
                                             </select>
                                         </div>
                                         <div class="clearfix"></div>
-                                            <div class="col-md-3 mt-1">
+                                            <div class="col-md-3 mt-2">
                                                 <label for="pho-phong-chu-tri" class="col-form-label">Chọn phó phòng chủ trì</label>
                                                 <select name="pho_phong_id"
                                                         id="pho-phong-chu-tri"
@@ -72,7 +72,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3 mt-1">
+                                            <div class="col-md-3 mt-2">
                                                 <label for="pho-phong-chu-tri" class="col-form-label">Chọn chuyên viên thực hiện</label>
                                                 <select name="chuyen_vien_id"
                                                         id="chuyen-vien"
@@ -88,7 +88,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3 mt-1">
+                                            <div class="col-md-3 mt-2">
                                                 <label for="pho-phong-chu-tri" class="col-form-label">Chọn chuyên viên phối hợp</label>
                                                 <select
                                                     name="chuyen_vien_phoi_hop_id[]"
@@ -104,7 +104,7 @@
                                                 </select>
                                             </div>
 
-                                        <div class="col-md-3 mt-1">
+                                        <div class="col-md-3 mt-2">
                                             <label for="han_xu_ly" class="col-form-label">Hạn xử lý <span class="color-red">*</span></label>
                                             <div id="">
                                                 <input class="form-control" required="" id="han_xu_ly" value="" type="date" name="han_xu_ly">

@@ -306,30 +306,16 @@ class VanBanLanhDaoXuLyController extends Controller
                             'hoan_thanh'  => null
                         ])->delete();
 
-                        $donViChuTri = new DonViChuTri();
-                        $donViChuTri->fill($dataLuuDonViChuTri);
-                        $donViChuTri->save();
+                        if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
+                            $donViChuTri = new DonViChuTri();
+                            $donViChuTri->fill($dataLuuDonViChuTri);
+                            $donViChuTri->save();
 
-                        // luu vet van ban den
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataLuuDonViChuTri);
-                        $luuVetVanBanDen->save();
-
-                        //data don vi phoi hop
-                        $dataLuuDonViPhoiHop = [
-                            'van_ban_den_id' => $vanBanDenId,
-                            'can_bo_chuyen_id' => $currentUser->id,
-                            'can_bo_nhan_id' => $nguoiDung->id ?? null,
-                            'noi_dung' => $textDonViPhoiHop[$vanBanDenId],
-                            'don_vi_phoi_hop_id' => isset($danhSachDonViPhoiHopIds[$vanBanDenId]) ? \GuzzleHttp\json_encode($danhSachDonViPhoiHopIds[$vanBanDenId]) : null,
-                            'user_id' => $currentUser->id
-                        ];
-
-                        // luu vet van ban den
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
-                        $luuVetVanBanDen->save();
-
+                            // luu vet van ban den
+                            $luuVetVanBanDen = new LogXuLyVanBanDen();
+                            $luuVetVanBanDen->fill($dataLuuDonViChuTri);
+                            $luuVetVanBanDen->save();
+                        }
                         // luu don vi phoi hop
                         DonViPhoiHop::where([
                             'van_ban_den_id' => $vanBanDenId,
