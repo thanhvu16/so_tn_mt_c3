@@ -17,6 +17,7 @@ use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
+use Modules\VanBanDen\Entities\VanBanDenDonVi;
 
 class VanBanDenDonViController extends Controller
 {
@@ -111,10 +112,14 @@ class VanBanDenDonViController extends Controller
             'danhSachChuyenVien', 'trinhTuNhanVanBan', 'order', 'loaiVanBanGiayMoi'));
     }
 
-    public function vanBanDaChiDao()
+    public function vanBanDaChiDao(Request $request)
     {
         $currentUser = auth::user();
         $trinhTuNhanVanBan = null;
+
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = (int)$request->get('so_den') ?? null;
+        $date = $request->get('date') ?? null;
 
         if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
             $trinhTuNhanVanBan = 3;
@@ -140,6 +145,21 @@ class VanBanDenDonViController extends Controller
 
         $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
             ->whereIn('id', $arrVanBanDenId)
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', "LIKE", $trichYeu);
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
+            ->where(function ($query) use ($date) {
+                if (!empty($date)) {
+                    return $query->where('updated_at', "LIKE", $date);
+                }
+            })
             ->paginate(PER_PAGE);
 
         $danhSachPhoPhong = User::role(PHO_PHONG)
@@ -183,6 +203,9 @@ class VanBanDenDonViController extends Controller
 
         $quaHan = !empty($request->get('qua_han')) ? date('Y-m-d') : null;
 
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
+        $date = $request->get('date') ?? null;
 
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
             ->whereNull('status')
@@ -193,23 +216,23 @@ class VanBanDenDonViController extends Controller
         $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
         if ($currentUser->hasRole(CHU_TICH)) {
-            $trinhTuNhanVanBan = 1;
+            $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
         }
 
         if ($currentUser->hasRole(PHO_CHUC_TICH)) {
-            $trinhTuNhanVanBan = 2;
+            $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
         }
 
         if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
-            $trinhTuNhanVanBan = 3;
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
-            $trinhTuNhanVanBan = 4;
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = 5;
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
 
         if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG) || $currentUser->hasRole(CHUYEN_VIEN) ||
@@ -235,6 +258,21 @@ class VanBanDenDonViController extends Controller
             ->where(function ($query) use ($quaHan) {
                 if (!empty ($quaHan)) {
                     return $query->where('han_xu_ly', '<', $quaHan);
+                }
+            })
+            ->where(function ($query) use ($trichYeu) {
+                if (!empty($trichYeu)) {
+                    return $query->where('trich_yeu', "LIKE", $trichYeu);
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
+            ->where(function ($query) use ($date) {
+                if (!empty($date)) {
+                    return $query->where('created_at', "LIKE", $date);
                 }
             })
             ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)

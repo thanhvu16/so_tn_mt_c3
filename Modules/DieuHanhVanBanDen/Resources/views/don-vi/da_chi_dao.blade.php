@@ -21,6 +21,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12" style="margin-top: 20px">
+                        <div class="row">
+                            <form action="{{route('van_ban_don_vi.da_chi_dao')}}" method="get">
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo trích yếu</label>
+                                    <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
+                                           name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo số đến</label>
+                                    <input type="text" class="form-control" value="{{Request::get('so_den')}}"
+                                           name="so_den"
+                                           placeholder="Nhập số đến">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo ngày</label>
+                                    <input type="date" class="form-control" value="{{Request::get('date')}}"
+                                           name="date">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>&nbsp;</label><br>
+                                    <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                    @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
+                                                !empty(Request::get('date')))
+                                        <a href="{{ route('van_ban_don_vi.da_chi_dao') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="box-body">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai')
                         <table class="table table-striped table-bordered table-hover data-row">
@@ -244,7 +275,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->render() !!}
+                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}
                             </div>
                         </div>
                     </div>
