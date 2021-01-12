@@ -4,9 +4,10 @@ namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
-use Auth;
+use Auth, DB;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use App\Http\Controllers\Controller;
 
@@ -212,6 +213,31 @@ class GiaHanVanBanController extends Controller
                     'van_ban_den_id' => $giaHanVanBanDonVi->van_ban_den_id,
                     'can_bo_nhan_id' => $currentUser->id
                 ])->first();
+
+                // chu tich cap xa duyet gia han
+                if ($currentUser->hasRole(CHU_TICH) && $currentUser->donVi->cap_xa == DonVi::CAP_XA) {
+                    $vanBanDenDonVi = $giaHanVanBanDonVi->vanBanDen;
+                    if ($vanBanDenDonVi) {
+                        $vanBanDenDonVi->han_xu_ly = $thoiHan;
+                        $vanBanDenDonVi->save();
+
+                        if ($vanBanDenDonVi->hasChild()) {
+                            $vanBanDenChild = $vanBanDenDonVi->hasChild();
+                            $vanBanDenChild->han_xu_ly = $thoiHan;
+                            $vanBanDenChild->save();
+                        }
+                    }
+
+                    // update gia han ban ghi null parent
+                    GiaHanVanBan::where('id', $giaHanVanBanDonVi->parent_id)
+                        ->update(['lanh_dao_duyet' => $status]);
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => $message,
+                        200
+                    ]);
+                }
 
 
                 if ($chuyenNhanVanBanDonVi && $chuyenNhanVanBanDonVi->parent_id) {

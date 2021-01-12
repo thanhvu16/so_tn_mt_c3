@@ -34,11 +34,11 @@
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_chuyen_vien')
             @endrole
-            @role(TRUONG_PHONG)
+            @hasanyrole('trưởng phòng|trưởng ban')
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_truong_phong')
             @endrole
-            @role(PHO_PHONG)
+            @hasanyrole('phó phòng|phó trưởng ban')
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_phong')
             @endrole

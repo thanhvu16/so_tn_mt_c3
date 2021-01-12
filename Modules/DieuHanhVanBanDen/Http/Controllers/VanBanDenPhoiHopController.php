@@ -28,11 +28,11 @@ class VanBanDenPhoiHopController extends Controller
 
         $chuyenTiep = $request->get('chuyen_tiep') ?? null;
 
-        if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG)) {
+        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
             $trinhTuNhanVanBan = 3;
         }
 
-        if ($currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
+        if ($currentUser->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
             $trinhTuNhanVanBan = 4;
         }
 
@@ -58,7 +58,7 @@ class VanBanDenPhoiHopController extends Controller
 
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
 
-        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
         $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($roles) {
                 return $query->whereIn('name', $roles);

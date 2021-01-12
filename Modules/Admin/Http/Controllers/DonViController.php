@@ -69,6 +69,8 @@ class DonViController extends Controller
         $donvi->so_dien_thoai = $request->dien_thoai;
         $donvi->email = $request->email;
         $donvi->dieu_hanh = $request->dieu_hanh;
+        $donvi->nhom_don_vi = $request->nhom_don_vi;
+        $donvi->cap_xa = $request->cap_xa ?? null;
         $donvi->save();
         return redirect()->route('danhsachdonvi')->with('success', 'Thêm mới thành công !');
     }
@@ -109,6 +111,7 @@ class DonViController extends Controller
         $donvi->email = $request->email;
         $donvi->dieu_hanh = $request->dieu_hanh;
         $donvi->nhom_don_vi = $request->nhom_don_vi;
+        $donvi->cap_xa = $request->cap_xa ?? null;
         $donvi->save();
         return redirect()->route('danhsachdonvi')->with('success', 'Cập nhật thành công !');
     }

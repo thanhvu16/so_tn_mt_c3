@@ -11,6 +11,7 @@ use Auth, DB;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonViGiaHan;
@@ -51,6 +52,7 @@ class AdminController extends Controller
         $duThaoCoLors = [];
         $duThaoPiceCharts = [];
         $user = auth::user();
+        $donVi = $user->donVi;
         $month = date('m');
         $year = date('Y');
 
@@ -256,13 +258,31 @@ class AdminController extends Controller
 
         if ($user->hasRole(CHU_TICH)) {
             $active = VanBanDen::CHU_TICH_NHAN_VB;
+            if ($donVi->cap_xa == DonVi::CAP_XA) {
+                $active = VanBanDen::CHU_TICH_XA_NHAN_VB;
+            }
         } else {
             $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+            if ($donVi->cap_xa == DonVi::CAP_XA) {
+                $active = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
+            }
         }
+
         $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
             ->whereNull('status')
             ->whereNull('hoan_thanh')
             ->get();
+
+        if ($donVi->cap_xa == DonVi::CAP_XA) {
+
+            $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+                ->where('can_bo_nhan_id', $user->id)
+                ->select('id', 'van_ban_den_id')
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->select('id', 'van_ban_den_id')
+                ->get();
+        }
 
         $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
@@ -271,15 +291,15 @@ class AdminController extends Controller
             ->where('trinh_tu_nhan_van_ban', $active)
             ->count();
 
-        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN])) {
+        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $trinhTuNhanVanBan = null;
 
-            if ($user->hasRole(TRUONG_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+            if ($user->hasRole([TRUONG_PHONG,CHANH_VAN_PHONG, TRUONG_BAN])) {
                 $trinhTuNhanVanBan = 3;
             }
 
-            if ($user->hasRole(PHO_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
+            if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
                 $trinhTuNhanVanBan = 4;
             }
 
@@ -295,12 +315,12 @@ class AdminController extends Controller
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-            $vanBanChoXuLy = VanBanDen::with('donViChuTri', 'xuLyVanBanDen')->whereIn('id', $arrVanBanDenId)
+            $vanBanChoXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
                 ->count();
 
             // VAN BAN HOAN THANH CHO DUYET
-            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
                 $vanBanHoanThanhChoDuyet = GiaiQuyetVanBan::where('can_bo_duyet_id', $user->id)
                     ->whereNull('status')->count();
 
@@ -365,7 +385,7 @@ class AdminController extends Controller
             array_push($congViecPhongBanPiceCharts, array('CV chờ xử lý', $congViecDonViChoXuLy));
             array_push($congViecPhongBanCoLors, COLOR_ORANGE);
 
-            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
                 $giaHanCongViecDonVi = CongViecDonViGiaHan::where('can_bo_nhan_id', $user->id)
                     ->where('status', CongViecDonViGiaHan::STATUS_CHO_DUYET)
                     ->count();
@@ -430,7 +450,7 @@ class AdminController extends Controller
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $vanBanQuanTrong = VanBanQuanTrong::where('user_id', $user->id)
                 ->count();
@@ -480,7 +500,7 @@ class AdminController extends Controller
         //VB DANG XU LY QUA HAN
         $trinhTuNhanVanBan = null;
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
             $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
                 ->whereNull('status')
                 ->whereNull('hoan_thanh')
@@ -496,11 +516,11 @@ class AdminController extends Controller
             $trinhTuNhanVanBan = 2;
         }
 
-        if ($user->hasRole(TRUONG_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
             $trinhTuNhanVanBan = 3;
         }
 
-        if ($user->hasRole(PHO_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
+        if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
             $trinhTuNhanVanBan = 4;
         }
 
@@ -508,8 +528,7 @@ class AdminController extends Controller
             $trinhTuNhanVanBan = 5;
         }
 
-        if ($user->hasRole(TRUONG_PHONG) || $user->hasRole(CHANH_VAN_PHONG) || $user->hasRole(CHUYEN_VIEN) ||
-            $user->hasRole(PHO_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
+        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, CHUYEN_VIEN, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)

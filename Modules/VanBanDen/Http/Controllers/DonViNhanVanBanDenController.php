@@ -852,7 +852,7 @@ class DonViNhanVanBanDenController extends Controller
                         }
 
                     }
-                    DonViChuTri::saveDonViChuTri($vanbandv->id);
+                    //DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -875,7 +875,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
-                DonViChuTri::saveDonViChuTri($vanbandv->id);
+                //DonViChuTri::saveDonViChuTri($vanbandv->id);
 
                 if ($request->id_file) {
                     $file = FileVanBanDen::where('id', $request->id_file)->first();

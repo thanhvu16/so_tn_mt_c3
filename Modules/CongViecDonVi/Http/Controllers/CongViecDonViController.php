@@ -28,7 +28,7 @@ class CongViecDonViController extends Controller
             ->whereNull('hoan_thanh')
             ->paginate(PER_PAGE);
 
-        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
 
         $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($roles) {
@@ -106,7 +106,7 @@ class CongViecDonViController extends Controller
             ->whereNull('deleted_at')
             ->get();
 
-        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+        $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
         $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($roles) {
                 return $query->whereIn('name', $roles);
@@ -289,7 +289,7 @@ class CongViecDonViController extends Controller
                 ->whereNull('hoan_thanh')
                 ->paginate(PER_PAGE);
 
-            $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG];
+            $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
             $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)
                 ->whereHas('roles', function ($query) use ($roles) {
                     return $query->whereIn('name', $roles);

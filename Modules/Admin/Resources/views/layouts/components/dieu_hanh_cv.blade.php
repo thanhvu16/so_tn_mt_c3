@@ -13,7 +13,7 @@
         <li class="{{ Route::is('van-ban-den-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.index') }}"><i class="fa fa-circle-o"></i>VB chờ xử lý</a>
         </li>
-        @hasanyrole('trưởng phòng|phó phòng')
+        @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban')
         <li class="{{ Route::is('van_ban_don_vi.da_chi_dao') ? 'active' : '' }}"><a
                 href="{{ route('van_ban_don_vi.da_chi_dao') }}"><i class="fa fa-circle-o"></i>VB đã chỉ đạo</a>
         </li>
@@ -21,7 +21,7 @@
                 href="{{ route('gia-han-van-ban.index') }}"><i class="fa fa-circle-o"></i>VB xin gia hạn</a>
         </li>
         @endrole
-        @hasanyrole('phó phòng')
+        @hasanyrole('phó phòng|phó trưởng ban')
         <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB xem để biết</a>
         </li>

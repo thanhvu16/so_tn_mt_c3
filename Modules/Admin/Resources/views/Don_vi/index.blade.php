@@ -84,7 +84,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-right">
+                            <div class="clearfix"></div>
+                            <div class="col-md-3">
+                                    <label>
+                                        <input type="checkbox" name="cap_xa" value="1">
+                                        Đơn vị cấp xã/phường
+                                    </label> &emsp;
+                            </div>
+                            <div class="col-md-12 mt-2">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>
                                 </div>

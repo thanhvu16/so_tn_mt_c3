@@ -28,7 +28,7 @@
                         </p>
                     </a>
                 @endrole
-                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên')
+                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên|trưởng ban|phó trưởng ban')
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.index') }}">
                         <p>VB chờ xử lý
                             <button
@@ -37,7 +37,7 @@
                     </a>
                 @endrole
 
-                @hasanyrole('trưởng phòng|phó phòng|chủ tịch|phó chủ tịch|phó chánh văn phòng|chánh văn phòng')
+                @hasanyrole('trưởng phòng|phó phòng|chủ tịch|phó chủ tịch|phó chánh văn phòng|chánh văn phòng|trưởng ban|phó trưởng ban')
                 <a class="text-title-item" href="{{ route('gia-han-van-ban.index') }}">
                     <p>VB xin gia hạn
                         <button
@@ -46,7 +46,7 @@
                 </a>
                 @endrole
 
-                @hasanyrole('phó phòng|phó chánh văn phòng')
+                @hasanyrole('phó phòng|phó chánh văn phòng|phó trưởng ban')
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
                         <p>VB xem để biết
                             <button
@@ -55,7 +55,7 @@
                 </a>
                 @endrole
 
-                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên')
+                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên|trưởng ban|phó trưởng ban')
                     <a class="text-title-item" href="{{ route('van-ban-den-hoan-thanh.cho-duyet') }}">
                         <p>VB hoàn thành chờ duyệt
                             <button
@@ -95,7 +95,7 @@
                             class="btn br-10 btn-yellow btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanQuaHanDangXuLy }}</button>
                     </p>
                 </a>
-                @hasanyrole('chủ tịch|phó chủ tịch|trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng')
+                @hasanyrole('chủ tịch|phó chủ tịch|trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|trưởng ban|phó trưởng ban')
                 <a class="text-title-item" href="{{ route('lich-cong-tac.index') }}">
                     <p>Lịch công tác
                         <button

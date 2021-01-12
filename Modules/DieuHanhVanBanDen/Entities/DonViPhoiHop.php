@@ -42,16 +42,30 @@ class DonViPhoiHop extends Model
                 ])->delete();
 
             foreach ($arrDonViId as $donViId) {
+
                 $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
 
-                $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
-                $nguoiDung = User::where('trang_thai', ACTIVE)
-                    ->where('don_vi_id', $donViId)
-                    ->whereHas('roles', function ($query) use ($roles) {
-                        return $query->whereIn('name', $roles);
-                    })
-                    ->orderBy('id', 'DESC')
-                    ->whereNull('deleted_at')->first();
+                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                    // chu tich cap xa nhan van ban
+                    $role = [CHU_TICH];
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $donViId)
+                        ->whereHas('roles', function ($query) use ($role) {
+                            return $query->whereIn('name', $role);
+                        })
+                        ->orderBy('id', 'DESC')
+                        ->whereNull('deleted_at')->first();
+
+                } else {
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $donViId)
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
+                        })
+                        ->orderBy('id', 'DESC')
+                        ->whereNull('deleted_at')->first();
+                }
 
                 $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;
                 $donViPhoiHop  = new DonViPhoiHop();

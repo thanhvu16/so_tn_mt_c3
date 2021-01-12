@@ -54,6 +54,6 @@
         </div>
     </div>
 </div>
-@hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng')
+@hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|trưởng ban|phó trưởng ban')
     <div class="clearfix"></div>
 @endrole

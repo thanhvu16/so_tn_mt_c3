@@ -14,10 +14,9 @@ class UserSeeder extends Seeder
 
         $checkUser = DB::table('users')->where([
             'username' => 'admin',
-            'email' => 'admin@gmail.com'
         ])->first();
 
-        if (!$checkUser) {
+        if (empty($checkUser)) {
             DB::table('users')->insert([
                 'username' => 'admin',
                 'email' => 'admin@gmail.com',

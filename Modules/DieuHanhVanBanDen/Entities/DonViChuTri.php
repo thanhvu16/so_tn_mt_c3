@@ -83,4 +83,63 @@ class DonViChuTri extends Model
     {
         return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
     }
+
+    public static function luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi)
+    {
+        $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+
+        if ($donVi->cap_xa == DonVi::CAP_XA) {
+            // chu tich cap xa nhan van ban
+            $role = [CHU_TICH];
+
+            $nguoiDung = User::where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                ->whereHas('roles', function ($query) use ($role) {
+                    return $query->whereIn('name', $role);
+                })
+                ->select('id')
+                ->orderBy('id', 'DESC')
+                ->whereNull('deleted_at')->first();
+
+//            if (auth::user()->hasRole(PHO_CHUC_TICH)) {
+//                $vanBanDen = VanBanDen::find($vanBanDenId);
+//                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+//                $vanBanDen->save();
+//            }
+
+        } else {
+            // luu don vi chu tri
+            $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+            $nguoiDung = User::where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->select('id')
+                ->orderBy('id', 'DESC')
+                ->whereNull('deleted_at')->first();
+        }
+
+        $dataLuuDonViChuTri = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'noi_dung' => $textDonViChuTri[$vanBanDenId],
+            'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
+            'user_id' => auth::user()->id,
+            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+            'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
+            'da_chuyen_xuong_don_vi' => $chuyenVanBanXuongDonVi
+        ];
+
+        $donViChuTri = new DonViChuTri();
+        $donViChuTri->fill($dataLuuDonViChuTri);
+        $donViChuTri->save();
+
+        // luu vet van ban den
+        $luuVetVanBanDen = new LogXuLyVanBanDen();
+        $luuVetVanBanDen->fill($dataLuuDonViChuTri);
+        $luuVetVanBanDen->save();
+    }
 }
