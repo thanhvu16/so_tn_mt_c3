@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDi\Http\Controllers;
 
+use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -77,6 +78,7 @@ class GopYVanbanDiController extends Controller
                 $fileduthao->Du_thao_id = $request->id_van_ban;
                 $fileduthao->can_bo_gop_y = $request->id_can_bo;
                 $fileduthao->save();
+                UserLogs::saveUserLogs('góp ý dự thảo văn bản', $fileduthao);
             }
 
         }
@@ -198,6 +200,7 @@ class GopYVanbanDiController extends Controller
                     $fileduthao->can_bo_gop_y = $request->id_can_bo;
                     $fileduthao->save();
                 }
+                UserLogs::saveUserLogs(' sửa góp ý dự thảo văn bản', $gopy);
 
             }
         } else {
@@ -228,6 +231,7 @@ class GopYVanbanDiController extends Controller
                     $fileduthao->can_bo_gop_y = $request->id_can_bo;
                     $fileduthao->save();
                 }
+                UserLogs::saveUserLogs(' sửa góp ý dự thảo văn bản', $gopy);
 
             }
         }

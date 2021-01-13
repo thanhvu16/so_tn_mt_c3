@@ -81,4 +81,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
     }
+    public function donViKhacXa()
+    {
+        return $this->belongsTo(DonVi::class, 'don_vi_id', 'id')->whereNull('cap_xa');
+    }
 }

@@ -3,6 +3,7 @@
 namespace Modules\GiayMoiDen\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Models\UserLogs;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
@@ -474,7 +475,7 @@ class GiayMoiDenController extends Controller
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             }
-
+            UserLogs::saveUserLogs('Tạo giấy mời đến ', $vanbandv);
 
             if ($multiFiles && count($multiFiles) > 0) {
                 foreach ($multiFiles as $key => $getFile) {
@@ -660,6 +661,7 @@ class GiayMoiDenController extends Controller
         $vanbandv->chuc_vu = $request->chuc_vu;
 
         $vanbandv->save();
+        UserLogs::saveUserLogs('Sửa giấy mời đến ', $vanbandv);
 
         if ($multiFiles && count($multiFiles) > 0) {
             $vanbandenfile = FileVanBanDen::where('vb_den_id', $vanbandv->id)->get();
@@ -705,6 +707,7 @@ class GiayMoiDenController extends Controller
         canPermission(AllPermission::xoaGiayMoiDen());
         $giaymoi = VanBanDen::where('id', $id)->first();
         $giaymoi->delete();
+        UserLogs::saveUserLogs('Xóa giấy mời đến ', $giaymoi);
         return redirect()->back()
             ->with('success', 'Xóa giấy mời thành công !');
     }

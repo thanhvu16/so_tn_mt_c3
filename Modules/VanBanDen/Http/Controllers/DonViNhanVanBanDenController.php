@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDen\Http\Controllers;
 
+use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -247,6 +248,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->save();
+                    UserLogs::saveUserLogs('vào sổ văn bản đến', $vanbandv);
                     array_push($idvanbanden, $vanbandv->id);
                 }
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
@@ -361,6 +363,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
                     }
+                    UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
                 }
             }
@@ -561,6 +564,7 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+                    UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                     if ($request->id_file) {
                         $file = FileVanBanDi::where('id', $request->id_file)->first();
                         if ($file) {
@@ -572,6 +576,7 @@ class DonViNhanVanBanDenController extends Controller
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
                         }
 
@@ -596,6 +601,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
+                UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
 
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();
@@ -608,6 +614,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
+                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
                     }
 
@@ -641,6 +648,7 @@ class DonViNhanVanBanDenController extends Controller
                     }
                     $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     $vanbandv->save();
+                    UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
 
                     if ($request->id_file) {
                         $file = FileVanBanDi::where('id', $request->id_file)->first();
@@ -653,6 +661,7 @@ class DonViNhanVanBanDenController extends Controller
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
                         }
 
@@ -679,6 +688,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 $vanbandv->save();
+                UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();
                     if ($file) {
@@ -690,6 +700,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
+                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
                     }
 
@@ -747,6 +758,7 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+                    UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
 
                     if ($request->id_file) {
                         $file = FileVanBanDen::where('id', $request->id_file)->first();
@@ -759,6 +771,7 @@ class DonViNhanVanBanDenController extends Controller
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
                         }
 
                     }
@@ -782,6 +795,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->don_vi_id = auth::user()->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
+                UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                 if ($request->id_file) {
                     $file = FileVanBanDen::where('id', $request->id_file)->first();
                     if ($file) {
@@ -793,6 +807,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
+                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
                     }
 
                 }
@@ -837,6 +852,7 @@ class DonViNhanVanBanDenController extends Controller
                     }
 
                     $vanbandv->save();
+                    UserLogs::saveUserLogs('Vào sổ văn bản đến', $vbDenFile);
 
                     if ($request->id_file) {
                         $file = FileVanBanDen::where('id', $request->id_file)->first();
@@ -849,10 +865,11 @@ class DonViNhanVanBanDenController extends Controller
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
                         }
 
                     }
-                    //DonViChuTri::saveDonViChuTri($vanbandv->id);
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
                 }
             } else {
                 $vanbandv = new VanBanDen();
@@ -875,7 +892,8 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
-                //DonViChuTri::saveDonViChuTri($vanbandv->id);
+                UserLogs::saveUserLogs('Vào sổ văn bản đến', $vbDenFile);
+                DonViChuTri::saveDonViChuTri($vanbandv->id);
 
                 if ($request->id_file) {
                     $file = FileVanBanDen::where('id', $request->id_file)->first();
@@ -888,6 +906,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
+                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
                     }
 
                 }
