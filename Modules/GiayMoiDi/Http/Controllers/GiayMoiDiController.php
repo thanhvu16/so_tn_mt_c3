@@ -3,6 +3,7 @@
 namespace Modules\GiayMoiDi\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\MailNgoaiThanhPho;
 use Modules\Admin\Entities\MailTrongThanhPho;
+use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDi\Entities\NoiNhanMail;
 use Modules\VanBanDi\Entities\NoiNhanMailNgoai;
@@ -358,7 +360,7 @@ class GiayMoiDiController extends Controller
         $vanbandi->loai_van_ban_giay_moi = 2;
         $vanbandi->nguoi_tao = auth::user()->id;
         $vanbandi->save();
-
+        UserLogs::saveUserLogs('Tạo giấy mời đi ', $vanbandi);
         $canbonhan = new VanBanDiChoDuyet();
         $canbonhan->van_ban_di_id = $vanbandi->id;
         $canbonhan->can_bo_chuyen_id = $vanbandi->nguoi_tao;
@@ -409,30 +411,34 @@ class GiayMoiDiController extends Controller
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
 
         $vanThuVanBanDiPiceCharts=[];
+        $user = auth::user();
+        $donVi = $user->donVi;
+        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($truongpho as $data2)
-                {
-                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                if (empty($donVi->cap_xa)) {
+                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    foreach ($truongpho as $data2) {
+                        array_push($vanThuVanBanDiPiceCharts, $data2);
+                    }
+                    $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                    foreach ($chanvanphong as $data) {
+                        array_push($vanThuVanBanDiPiceCharts, $data);
+                    }
+                    $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+                } else {
+                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                foreach ($chanvanphong as $data)
-                {
-                    array_push($vanThuVanBanDiPiceCharts, $data);
-                }
-                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
-
                 break;
             case PHO_PHONG:
                 $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($truongpho as $data2)
-                {
+                foreach ($truongpho as $data2) {
                     array_push($vanThuVanBanDiPiceCharts, $data2);
                 }
-                $chanvanphong =  User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                foreach ($chanvanphong as $data)
-                {
+                $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                foreach ($chanvanphong as $data) {
                     array_push($vanThuVanBanDiPiceCharts, $data);
                 }
                 $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
@@ -441,13 +447,21 @@ class GiayMoiDiController extends Controller
                 $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case PHO_CHUC_TICH:
-                $ds_nguoiKy = User::role([CHU_TICH])->get();
+                if (empty($donVi->cap_xa)) {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                }
                 break;
             case CHU_TICH:
-                $ds_nguoiKy = null;
+                if (empty($donVi->cap_xa)) {
+                    $ds_nguoiKy = null;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                }
                 break;
             case CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
                 $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
@@ -457,6 +471,12 @@ class GiayMoiDiController extends Controller
                 break;
             case VAN_THU_HUYEN:
                 $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+            case TRUONG_BAN:
+                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                break;
+            case PHO_TRUONG_BAN:
+                $ds_nguoiKy = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
 
         }
@@ -473,9 +493,14 @@ class GiayMoiDiController extends Controller
         $ds_loaiVanBan =LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                if (empty($donVi->cap_xa)) {
+                    $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                }
                 break;
             case PHO_PHONG:
                 $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -484,13 +509,23 @@ class GiayMoiDiController extends Controller
                 $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case PHO_CHUC_TICH:
-                $nguoinhan = User::role([CHU_TICH])->get();
+                if (empty($donVi->cap_xa)) {
+                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                }
                 break;
             case CHU_TICH:
-                $nguoinhan = null;
+                if (empty($donVi->cap_xa)) {
+                    $nguoinhan = null;
+                } else {
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                }
                 break;
             case CHANH_VAN_PHONG:
-                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                if (empty($donVi->cap_xa)) {
+                    $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                }
                 break;
             case PHO_CHANH_VAN_PHONG:
                 $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
@@ -499,7 +534,14 @@ class GiayMoiDiController extends Controller
                 $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
+
                 $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                break;
+            case TRUONG_BAN:
+                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                break;
+            case PHO_TRUONG_BAN:
+                $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
 
         }
@@ -553,6 +595,7 @@ class GiayMoiDiController extends Controller
         $vanbandi->dia_diem = $request->dia_diem;
         $vanbandi->user_id = $request->nguoi_nhan;
         $vanbandi->save();
+        UserLogs::saveUserLogs('Sửa giấy mời đi ', $vanbandi);
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $noinhanvb = NoiNhanVanBanDi::where(['van_ban_di_id' => $id, 'trang_thai' => 1])->get();
         $idnoinhanvb = $noinhanvb->pluck('don_vi_id_nhan')->toArray();
@@ -590,6 +633,7 @@ class GiayMoiDiController extends Controller
         canPermission(AllPermission::xoaGiayMoiDi());
         $giaymoidi = VanBanDi::where('id',$id)->first();
         $giaymoidi ->delete();
+        UserLogs::saveUserLogs('Xóa giấy mời đi ', $giaymoidi);
         return redirect()->back()->with('xóa giấy mời thành công!');
     }
 }

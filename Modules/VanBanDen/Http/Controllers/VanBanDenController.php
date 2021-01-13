@@ -293,6 +293,7 @@ class VanBanDenController extends Controller
                         }
 
                         $vanbandv->save();
+                        UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                     }
                 } else {
                     $vanbandv = new VanBanDen();
@@ -350,6 +351,7 @@ class VanBanDenController extends Controller
 
                         //save chuyen don vi chu tri
                         DonViChuTri::saveDonViChuTri($vanbandv->id);
+                        UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                         if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                             DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
                         }
@@ -380,6 +382,7 @@ class VanBanDenController extends Controller
 
                     //save chuyen don vi chu tri
                     DonViChuTri::saveDonViChuTri($vanbandv->id);
+                    UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                     if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                         DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
                     }
@@ -438,6 +441,7 @@ class VanBanDenController extends Controller
                         $vbDenFile->nguoi_dung_id = auth::user()->id;
                         $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                         $vbDenFile->save();
+                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
                     }
 
                 }
@@ -550,6 +554,8 @@ class VanBanDenController extends Controller
         }
 //        $vanbandv->han_giai_quyet = $han_giai_quyet[0];
         $vanbandv->save();
+        UserLogs::saveUserLogs('Cập nhật văn bản đến', $vanbandv);
+
 
 
         return redirect()->back()->with('success', 'Cập nhật dữ liệu thành công !');
@@ -566,6 +572,7 @@ class VanBanDenController extends Controller
         canPermission(AllPermission::xoaVanBanDen());
         $vanbanden = VanBanDen::where('id', $request->id_vb)->first();
         $vanbanden->delete();
+        UserLogs::saveUserLogs('Xóa văn bản đến', $vanbanden);
         return redirect()->route('van-ban-den.index')->with('success', 'Xóa thành công !');
     }
 

@@ -2,6 +2,7 @@
 
 namespace Modules\HoSoCongViec\Http\Controllers;
 
+use App\Models\UserLogs;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -51,6 +52,7 @@ class HoSoCongViecController extends Controller
         $hoso->mo_ta = $request->mo_ta;
         $hoso->nguoi_tao = auth::user()->id;
         $hoso->save();
+        UserLogs::saveUserLogs(' Tạo hồ sơ ', $hoso);
         return redirect()->back()->with('success', 'Tạo hồ sơ thành công !!');
     }
 
@@ -186,6 +188,8 @@ class HoSoCongViecController extends Controller
                 $vanbandi->trang_thai = 1;
                 $vanbandi->save();
             }
+
+            UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbandi);
             return redirect()->route('ds_van_ban_hs', $request->id_ho_so)->with('success', 'Lưu thành công văn bản !');
         } else {
             return redirect()->back()->with('error', 'Đã tồn tại văn bản !');
@@ -199,6 +203,7 @@ class HoSoCongViecController extends Controller
         $tailieuhoso = DetailHoSoCV::where('id', $id)->first();
         $tailieuhoso->trang_thai = 0;
         $tailieuhoso->save();
+        UserLogs::saveUserLogs('Xóa văn bản khỏi hồ sơ ', $tailieuhoso);
         return redirect()->back()->with('Xóa tài liệu thành công !');
     }
 
@@ -237,6 +242,7 @@ class HoSoCongViecController extends Controller
         $hoso->nguoi_tao = auth::user()->id;
         $hoso->trang_thai = $request->trang_thai;
         $hoso->save();
+        UserLogs::saveUserLogs('Cập nhật hồ sơ  ', $hoso);
         return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công !!');
     }
 
