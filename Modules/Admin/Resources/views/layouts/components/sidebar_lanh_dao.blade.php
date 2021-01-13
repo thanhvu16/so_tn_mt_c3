@@ -1,7 +1,9 @@
 <li class="treeview {{ Route::is('van-ban-lanh-dao-xu-ly.index') || Route::is('phan-loai-van-ban.da_phan_loai')
  || Route::is('gia-han-van-ban.index') || Route::is('van-ban-den-don-vi.dang_xu_ly') ||
   Route::is('van-ban-den-hoan-thanh.index') || Route::is('van-ban-den-don-vi.xem_de_biet') ||
-   Route::is('van-ban-den-don-vi.quan_trong') ? 'active menu-open' : '' }}">
+   Route::is('van-ban-den-don-vi.quan_trong') || Route::is('van-ban-den-phoi-hop.index')||
+   Route::is('van-ban-den-phoi-hop.da-xu-ly')||
+   Route::is('van-ban-den-phoi-hop.dang-xu-ly') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-th" aria-hidden="true"></i> <span>Hồ sơ công việc</span>
         <span class="pull-right-container">
@@ -33,6 +35,17 @@
         <li class="{{ Route::is('van-ban-den-hoan-thanh.index') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-hoan-thanh.index') }}"><i class="fa fa-circle-o"></i>VB hoàn thành</a>
         </li>
+        @if (!empty(auth::user()->donVi->cap_xa))
+            <li class="{{ Route::is('van-ban-den-phoi-hop.index') ? 'active' : '' }}"><a
+                    href="{{ route('van-ban-den-phoi-hop.index') }}"><i class="fa fa-circle-o"></i>VB đơn vị phối hợp chờ xử lý</a>
+            </li>
+            <li class="{{ Route::is('van-ban-den-phoi-hop.dang-xu-ly') ? 'active' : '' }}"><a
+                    href="{{ route('van-ban-den-phoi-hop.dang-xu-ly', 'chuyen_tiep=1') }}"><i class="fa fa-circle-o"></i>VB đơn vị phối hợp đang xử lý</a>
+            </li>
+            <li class="{{ Route::is('van-ban-den-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a
+                    href="{{ route('van-ban-den-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i>VB đơn vị phối hợp đã xử lý</a>
+            </li>
+        @endif
     </ul>
 </li>
 <li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') ? 'active menu-open' : '' }} }} ">

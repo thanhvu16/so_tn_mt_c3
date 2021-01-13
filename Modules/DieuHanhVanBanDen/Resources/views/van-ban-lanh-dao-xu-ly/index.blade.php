@@ -152,8 +152,10 @@
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                     form="form-tham-muu">
                                                     @forelse($danhSachDonVi as $donVi)
+                                                        @if (!empty($vanBanDen->checkDonViChuTri) && $vanBanDen->checkDonViChuTri->don_vi_id != $donVi->id)
                                                         <option
                                                             value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                    @endif
                                                     @empty
                                                     @endforelse
                                                 </select>

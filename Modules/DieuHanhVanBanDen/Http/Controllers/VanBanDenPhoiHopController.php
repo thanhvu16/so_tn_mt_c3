@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyet;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyetFile;
@@ -23,6 +24,7 @@ class VanBanDenPhoiHopController extends Controller
     public function index(Request $request)
     {
         $currentUser = auth::user();
+        $donVi = $currentUser->donVi;
 
         $trinhTuNhanVanBan = null;
 
@@ -75,6 +77,19 @@ class VanBanDenPhoiHopController extends Controller
             ->select('id', 'ho_ten')
             ->orderBy('id', 'DESC')->get();
 
+        $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            ->where('trang_thai', ACTIVE)
+            ->where('don_vi_id', $currentUser->don_vi_id)
+            ->select('id', 'ho_ten')
+            ->get();
+
+        $truongPhong = User::role(TRUONG_BAN)
+            ->where('don_vi_id', $currentUser->don_vi_id)
+            ->select('id', 'ho_ten')
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC')->first();
+
         $danhSachVanBanDen = VanBanDen::with([
                 'xuLyVanBanDen' => function ($query) {
                     return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
@@ -89,10 +104,18 @@ class VanBanDenPhoiHopController extends Controller
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild(VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP) ?? null;
-                if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
-                   $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
-                   $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
-                   $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$currentUser->id]);
+                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                    $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
+                    $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
+                    $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$truongPhong->id]);
+                    $vanBanDen->phoChuTich = $vanBanDen->donViPhoiHopVanBan($danhSachPhoChuTich->pluck('id')->toArray());
+
+                } else {
+                    if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
+                        $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
+                        $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
+                        $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$currentUser->id]);
+                    }
                 }
             }
         }
@@ -106,7 +129,14 @@ class VanBanDenPhoiHopController extends Controller
 
         }
 
-        return view('dieuhanhvanbanden::don-vi-phoi-hop.index', compact('danhSachVanBanDen', 'danhSachPhoPhong',
+        if ($donVi->cap_xa == DonVi::CAP_XA) {
+            return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.index', compact('danhSachVanBanDen',
+                'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
+                'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan'));
+        }
+
+        return view('dieuhanhvanbanden::don-vi-phoi-hop.index', compact('danhSachVanBanDen',
+            'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong',
             'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan'));
     }
 
@@ -130,10 +160,15 @@ class VanBanDenPhoiHopController extends Controller
         $currentUser = auth::user();
 
         $vanBanDenDonViIds = json_decode($data['van_ban_den_id']);
+        $danhSachPhoChuTichIds = $data['pho_chu_tich_id'] ?? null;
+        $danhSachTruongPhongIds = $data['truong_phong_id'] ?? null;
         $danhSachPhoPhongIds = $data['pho_phong_id'] ?? null;
         $danhSachChuyenVienIds = $data['chuyen_vien_id'] ?? null;
+        $textnoidungPhoChuTich = $data['noi_dung_pho_chu_tich'] ?? null;
+        $textnoidungTruongPhong = $data['noi_dung_truong_phong'] ?? null;
         $textnoidungPhoPhong = $data['noi_dung_pho_phong'] ?? null;
         $textNoiDungChuyenVien = $data['noi_dung_chuyen_vien'] ?? null;
+
 
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
@@ -155,43 +190,80 @@ class VanBanDenPhoiHopController extends Controller
                             ->delete();
                     }
 
-                    $dataChuyenNhanVanBanDonVi = [
-                        'van_ban_den_id' => $vanBanDenDonViId,
-                        'can_bo_chuyen_id' => $currentUser->id,
-                        'can_bo_nhan_id' => $danhSachPhoPhongIds[$vanBanDenDonViId],
-                        'don_vi_id' => $currentUser->don_vi_id,
-                        'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
-                        'noi_dung' => $textnoidungPhoPhong[$vanBanDenDonViId],
-                        'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
-                        'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                        'user_id' => $currentUser->id
-                    ];
+                    if (isset($danhSachPhoChuTichIds) && !empty($danhSachPhoChuTichIds[$vanBanDenDonViId])) {
+                        $dataChuyenNhanVanBanDonVi = [
+                            'van_ban_den_id' => $vanBanDenDonViId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $danhSachPhoChuTichIds[$vanBanDenDonViId],
+                            'don_vi_id' => $currentUser->don_vi_id,
+                            'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
+                            'noi_dung' => $textnoidungPhoChuTich[$vanBanDenDonViId],
+                            'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
+                            'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
+                            'user_id' => $currentUser->id
+                        ];
 
+                        $chuyenNhanVanBanPhoChuTich = new DonViPhoiHop();
+                        $chuyenNhanVanBanPhoChuTich->fill($dataChuyenNhanVanBanDonVi);
+                        $chuyenNhanVanBanPhoChuTich->save();
+                    }
 
+                    if (isset($danhSachTruongPhongIds) && !empty($danhSachTruongPhongIds[$vanBanDenDonViId])) {
+                        $dataChuyenNhanVanBanDonVi = [
+                            'van_ban_den_id' => $vanBanDenDonViId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $danhSachTruongPhongIds[$vanBanDenDonViId],
+                            'don_vi_id' => $currentUser->don_vi_id,
+                            'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
+                            'noi_dung' => $textnoidungTruongPhong[$vanBanDenDonViId],
+                            'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
+                            'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
+                            'user_id' => $currentUser->id
+                        ];
+
+                        $chuyenNhanVanBanTruongPhong = new DonViPhoiHop();
+                        $chuyenNhanVanBanTruongPhong->fill($dataChuyenNhanVanBanDonVi);
+                        $chuyenNhanVanBanTruongPhong->save();
+                    }
 
                     //chuyen nhan van ban don vi
-                    if (!empty($danhSachPhoPhongIds[$vanBanDenDonViId])) {
+                    if (isset($danhSachPhoPhongIds) && !empty($danhSachPhoPhongIds[$vanBanDenDonViId])) {
+                        $dataChuyenNhanVanBanDonVi = [
+                            'van_ban_den_id' => $vanBanDenDonViId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $danhSachPhoPhongIds[$vanBanDenDonViId],
+                            'don_vi_id' => $currentUser->don_vi_id,
+                            'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
+                            'noi_dung' => $textnoidungPhoPhong[$vanBanDenDonViId],
+                            'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
+                            'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
+                            'user_id' => $currentUser->id
+                        ];
+
                         $chuyenNhanVanBanPhoPhong = new DonViPhoiHop();
                         $chuyenNhanVanBanPhoPhong->fill($dataChuyenNhanVanBanDonVi);
                         $chuyenNhanVanBanPhoPhong->save();
                     }
 
-                    //save chuyen vien thuc hien
-                    $dataChuyenNhanVanBanChuyenVien = [
-                        'van_ban_den_id' => $vanBanDenDonViId,
-                        'can_bo_chuyen_id' => $currentUser->id,
-                        'can_bo_nhan_id' => $danhSachChuyenVienIds[$vanBanDenDonViId],
-                        'don_vi_id' => $currentUser->don_vi_id,
-                        'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
-                        'noi_dung' => $textNoiDungChuyenVien[$vanBanDenDonViId],
-                        'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
-                        'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                        'user_id' => $currentUser->id
-                    ];
+                    if (isset($danhSachChuyenVienIds) && !empty($danhSachChuyenVienIds[$vanBanDenDonViId])) {
+                        //save chuyen vien thuc hien
+                        $dataChuyenNhanVanBanChuyenVien = [
+                            'van_ban_den_id' => $vanBanDenDonViId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $danhSachChuyenVienIds[$vanBanDenDonViId],
+                            'don_vi_id' => $currentUser->don_vi_id,
+                            'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
+                            'noi_dung' => $textNoiDungChuyenVien[$vanBanDenDonViId],
+                            'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
+                            'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
+                            'user_id' => $currentUser->id
+                        ];
 
-                    $chuyenNhanVanBanChuyenVienDonVi = new DonViPhoiHop();
-                    $chuyenNhanVanBanChuyenVienDonVi->fill($dataChuyenNhanVanBanChuyenVien);
-                    $chuyenNhanVanBanChuyenVienDonVi->save();
+                        $chuyenNhanVanBanChuyenVienDonVi = new DonViPhoiHop();
+                        $chuyenNhanVanBanChuyenVienDonVi->fill($dataChuyenNhanVanBanChuyenVien);
+                        $chuyenNhanVanBanChuyenVienDonVi->save();
+                    }
+
                 }
 
                 DB::commit();

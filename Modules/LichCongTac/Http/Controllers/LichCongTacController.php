@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
 
@@ -55,6 +56,13 @@ class LichCongTacController extends Controller
 
         $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
 
+        $donVi = $currentUser->donVi;
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->whereNull('deleted_at')->first();
+
+        if ($donVi->cap_xa == DonVi::CAP_XA) {
+            $roles = [CHU_TICH, PHO_CHUC_TICH, TRUONG_BAN];
+        }
+
         $id = [];
 
         //
@@ -80,6 +88,14 @@ class LichCongTacController extends Controller
             ->where(function ($query) use ($id) {
                 if (!empty($id)) {
                     return $query->whereIn('id', $id);
+                }
+            })
+            ->where(function ($query) use ($donVi, $donViCapXa) {
+                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                    return $query->where('don_vi_id', $donVi->id);
+                } else {
+                    return $query->whereNotIn('don_vi_id', [$donViCapXa->id]);
+
                 }
             })
             ->where('trang_thai', ACTIVE)
@@ -125,7 +141,7 @@ class LichCongTacController extends Controller
         }
 
         // don vi nhan vb xem lich ct cua ld
-        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $arrLanhDaoId = $danhSachLichCongTac->pluck('lanh_dao_id')->toArray();
 

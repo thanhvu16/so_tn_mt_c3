@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
@@ -117,8 +118,12 @@ class LichCongTac extends Model
 
         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
         $nguoiDung = null;
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
 
         if (!empty($donViChuTriId)) {
+            if ($donVi->cap_xa == DonVi::CAP_XA) {
+                $roles = [CHU_TICH];
+            }
             $nguoiDung = User::where('trang_thai', ACTIVE)
                 ->where('don_vi_id', $donViChuTriId)
                 ->whereHas('roles', function ($query) use ($roles) {

@@ -43,8 +43,8 @@ class GiaiQuyetVanBanController extends Controller
         $data = $request->all();
         $currentUser = auth::user();
 
-        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
-        $rolePhoPhong = [PHO_CHANH_VAN_PHONG, PHO_PHONG];
+        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN];
+        $rolePhoPhong = [PHO_CHANH_VAN_PHONG, PHO_PHONG, PHO_TRUONG_BAN];
 
         $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($roles) {

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
@@ -54,7 +55,7 @@ class VanBanDenHoanThanhController extends Controller
             'donViChuTri' => function ($query) {
                 return $query->select('van_ban_den_id', 'can_bo_nhan_id');
             }
-            ])
+        ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($hanXuLy) {
                 if (!empty($hanXuLy)) {
@@ -151,7 +152,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $currentUser = auth::user();
 
-        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, PHO_PHONG])) {
+        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, PHO_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
             $giaiQuyetVanBan = GiaiQuyetVanBan::where('can_bo_duyet_id', $currentUser->id)
                 ->whereNull('status')->select('id', 'van_ban_den_id')->get();
 
@@ -190,7 +191,7 @@ class VanBanDenHoanThanhController extends Controller
     {
         if ($request->ajax()) {
             $currentUser = auth::user();
-
+            $donVi = $currentUser->donVi;
             $id = (int)$request->get('id');
             $status = (int)$request->get('status');
             $noiDung = $request->get('noiDung');
@@ -210,56 +211,61 @@ class VanBanDenHoanThanhController extends Controller
 
             if ($status == GiaiQuyetVanBan::STATUS_DA_DUYET) {
                 if ($vanBanDen) {
+                    if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, CHU_TICH, PHO_CHUC_TICH])) {
 
-                    if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG])) {
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
-                        $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
-                        $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
-                        $vanBanDen->save();
-
-                        // update van ban co parent_id
-                        if ($vanBanDen->hasChild()) {
-                            $vanBanDenDonVi = $vanBanDen->hasChild();
-                            $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
-                            $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
-                            $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
-                            $vanBanDenDonVi->save();
-                        }
-
-                        //xoa chuyen nhan vb
-    //                    $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
-    //                        ->where('can_bo_nhan_id', auth::user()->id)
-    //                        ->whereNull('hoan_thanh')->first();
-
-    //                    if ($chuyenNhanVanBanDonVi) {
-    //                        DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
-    //                            ->where('id', '>', $chuyenNhanVanBanDonVi->id)
-    //                            ->where('don_vi_id', auth::user()->don_vi_id)
-    //                            ->whereNull('hoan_thanh')->delete();
-    //                    }
-
-
-                        //update luu vet van ban
-                        XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
-                            ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
-
-                        //update chuyen nhan vb don vi
-                        DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
-                            ->where('don_vi_id', auth::user()->don_vi_id)
-                            ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
+//                        if ($donVi->cap_xa == DonVi::CAP_XA) {
+//                            // chu tich xa duyet van ban
+//                            if ($currentUser->hasRole(CHU_TICH)) {
+//                                $this->updateVanBanDen($vanBanDen);
+//
+//                                return response()->json([
+//                                    'success' => true,
+//                                    'message' => 'Duyệt thành công, hoàn thành văn bản',
+//                                    200
+//                                ]);
+//
+//                            } else {
+//                                $chuyenNhanVanBanDonVi = DonViChuTri::where('van_ban_den_id', $id)
+//                                    ->where('can_bo_nhan_id', auth::user()->id)
+//                                    ->whereNull('hoan_thanh')->first();
+//
+//                                $canBoDuyetId = $chuyenNhanVanBanDonVi->can_bo_chuyen_id;
+//
+//                                // gửi duyệt trưởng phòng
+//                                $giaiQuyet = new GiaiQuyetVanBan();
+//                                $giaiQuyet->van_ban_den_id = $giaiQuyetVanBan->van_ban_den_id;
+//                                $giaiQuyet->noi_dung = $giaiQuyetVanBan->noi_dung;
+//                                $giaiQuyet->user_id = auth::user()->id;
+//                                $giaiQuyet->parent_id = $giaiQuyetVanBan->id;
+//                                $giaiQuyet->can_bo_duyet_id = $canBoDuyetId;
+//                                $giaiQuyet->save();
+//
+//                                //save file giai quyet
+//                                $giaiQuyetVanBanFiles = $giaiQuyetVanBan->giaiQuyetVanBanFile;
+//                                GiaiQuyetVanBanFile::saveGiaiQuyetVanBanFile($giaiQuyet->id, $giaiQuyetVanBanFiles);
+//
+//                                return response()->json([
+//                                    'success' => true,
+//                                    'message' => 'Thành công, đã gửi trưởng phòng duyệt',
+//                                    200
+//                                ]);
+//                            }
+//                        } else {
+                        $this->updateVanBanDen($vanBanDen);
 
                         return response()->json([
                             'success' => true,
                             'message' => 'Duyệt thành công, hoàn thành văn bản',
                             200
                         ]);
+//                        }
                     } else {
-                        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN];
                         $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
                             ->whereHas('roles', function ($query) use ($roles) {
                                 return $query->whereIn('name', $roles);
                             })
-                            ->where('trang_thai',ACTIVE)
+                            ->where('trang_thai', ACTIVE)
                             ->whereNull('deleted_at')->first();
 
                         // gửi duyệt trưởng phòng
@@ -301,5 +307,31 @@ class VanBanDenHoanThanhController extends Controller
                 ]);
             }
         }
+    }
+
+    public function updateVanBanDen($vanBanDen)
+    {
+        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+        $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
+        $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
+        $vanBanDen->save();
+
+        // update van ban co parent_id
+        if ($vanBanDen->hasChild()) {
+            $vanBanDenDonVi = $vanBanDen->hasChild();
+            $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+            $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
+            $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
+            $vanBanDenDonVi->save();
+        }
+
+        //update luu vet van ban
+        XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
+            ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
+
+        //update chuyen nhan vb don vi
+        DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
     }
 }

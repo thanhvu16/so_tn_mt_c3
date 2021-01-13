@@ -316,7 +316,9 @@ class PhanLoaiVanBanController extends Controller
         $chuTich = User::role('chủ tịch')->select('id', 'ho_ten')->first();
         $donVi = $user->donVi;
         $trinhTuNhanVanBan = null;
-
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')
+            ->first();
 
         if ($donVi->cap_xa == DonVi::CAP_XA) {
 
@@ -400,6 +402,8 @@ class PhanLoaiVanBanController extends Controller
             if (!empty($danhSachVanBanDen)) {
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                    $vanBanDen->phoChuTich = $vanBanDen->getChuyenVienThucHien($danhSachPhoChuTich->pluck('id')->toArray());
+                    $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$truongBan->id]);
                     $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
                     $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
@@ -410,15 +414,11 @@ class PhanLoaiVanBanController extends Controller
 
             return view('dieuhanhvanbanden::don-vi-cap-xa.da_chi_dao',
                 compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'truongBan',
-                    'danhSachPhoPhong', 'danhSachChuyenVien', 'trinhTuNhanVanBan'));
+                    'danhSachPhoPhong', 'danhSachChuyenVien', 'trinhTuNhanVanBan', 'loaiVanBanGiayMoi'));
 
         } else {
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)->select(['id', 'ho_ten'])->get();
-
-            $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
-                ->select('id')
-                ->first();
 
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->select(['id', 'ten_don_vi'])

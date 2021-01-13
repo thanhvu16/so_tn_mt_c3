@@ -330,7 +330,6 @@ class AdminController extends Controller
                     ->whereNull('status')->count();
 
             }
-
             array_push($hoSoCongViecPiceCharts, array('VB hoàn thành chờ duyệt', $vanBanHoanThanhChoDuyet));
             array_push($hoSoCongViecCoLors, COLOR_PURPLE);
 
@@ -486,6 +485,28 @@ class AdminController extends Controller
 
                 array_push($hoSoCongViecPiceCharts, array('VB xem để biết', $vanBanXemDeBiet));
                 array_push($hoSoCongViecCoLors, COLOR_INFO);
+
+                if ($user->donVi->cap_xa == DonVi::CAP_XA) {
+                    //VB DON VI PHOI HOP
+                    $chuyenTiep = null;
+
+                    $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
+                        ->where('can_bo_nhan_id', $user->id)
+                        ->where(function ($query) use ($chuyenTiep) {
+                            if (!empty($chuyenTiep)) {
+                                return $query->where('chuyen_tiep', $chuyenTiep);
+                            } else {
+                                return $query->whereNull('chuyen_tiep');
+                            }
+                        })
+                        ->whereNotNull('vao_so_van_ban')
+                        ->whereNull('hoan_thanh')
+                        ->count();
+
+                    array_push($hoSoCongViecPiceCharts, array('VB đơn vị phối hợp chờ xử lý', $donViPhoiHop));
+                    array_push($hoSoCongViecCoLors, COLOR_PURPLE);
+                }
+
             }
         }
 

@@ -34,7 +34,7 @@
                             <td>Đ/c {{ $logChuyenVanBanDen->canBoNhan->ho_ten ?? null }}</td>
                             <td>
                                 <p>Hạn văn
-                                    bản: {{ !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}</p>
+                                    bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
                             </td>
                         </tr>
                     @endforeach

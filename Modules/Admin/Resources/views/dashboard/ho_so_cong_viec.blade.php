@@ -110,6 +110,14 @@
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
                     </a>
+                    @if (auth::user()->donVi->cap_xa == 1)
+                    <a class="text-title-item" href="{{ route('van-ban-den-phoi-hop.index') }}">
+                        <p>VB đơn vị phối hợp chờ xử lý
+                            <button
+                                class="btn br-10 btn-purple btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $donViPhoiHop }}</button>
+                        </p>
+                    </a>
+                    @endif
                 @endrole
             </div>
             <div class="col-md-5 ">
