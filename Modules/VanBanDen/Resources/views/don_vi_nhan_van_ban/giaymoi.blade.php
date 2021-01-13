@@ -10,7 +10,7 @@
                     </div>
                         <div class="box-body">
                             @if($phanbiet && $phanbiet == 1)
-                                123
+
                             <form class="form-row"
                                   action="{{route('don-vi-nhan-van-ban-den.store')}}"
                                   method="post" enctype="multipart/form-data" id="formCreateDoc">
