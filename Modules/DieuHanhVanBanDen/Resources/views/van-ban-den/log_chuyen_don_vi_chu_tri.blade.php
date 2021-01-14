@@ -16,7 +16,7 @@
                         <th>Chuyển từ</th>
                         <th>Nội dung chuyển</th>
                         <th>Chuyển đến</th>
-                        <th>Hạn xủ lý</th>
+                        <th>Hạn xử lý</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,8 +28,12 @@
                             <td>{{ $ChuyenNhanCongViec->noi_dung ?? null }}</td>
                             <td>Đ/c {{ $ChuyenNhanCongViec->CanBoNhan->ho_ten ?? '' }}</td>
                             <td>
-                                <p>Hạn văn
-                                    bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
+                                @if ($ChuyenNhanCongViec->han_xu_ly_moi)
+                                    <p>Hạn lãnh đạo: {{ date('d/m/Y', strtotime($ChuyenNhanCongViec->han_xu_ly_moi)) }}</p>
+                                @else
+                                    <p>Hạn văn
+                                        bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
+                                @endif
                             </td>
                         </tr>
                     @empty

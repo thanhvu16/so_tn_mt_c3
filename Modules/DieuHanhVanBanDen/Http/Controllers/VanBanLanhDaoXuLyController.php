@@ -172,7 +172,6 @@ class VanBanLanhDaoXuLyController extends Controller
             }
 
             if ($active == 2) {
-
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.pho_chu_tich',
                     compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
             }
@@ -261,12 +260,12 @@ class VanBanLanhDaoXuLyController extends Controller
                     }
 
                     //han xu ly
-                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->hhan_xu_ly != $dataHanXuLy[$vanBanDenId]) {
-                        $checkXuLyVanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-                        $checkXuLyVanBanDen->save();
-                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-                        $vanBanDen->save();
-                    }
+//                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->han_xu_ly != $dataHanXuLy[$vanBanDenId]) {
+//                        $checkXuLyVanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
+//                        $checkXuLyVanBanDen->save();
+//                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
+//                        $vanBanDen->save();
+//                    }
 
                     // van ban quan trong
                     VanBanQuanTrong::where([
@@ -310,7 +309,8 @@ class VanBanLanhDaoXuLyController extends Controller
                                 'can_bo_nhan_id' => $arrPhoChuTich[$vanBanDenId],
                                 'noi_dung' => $noiDungPhoChuTich[$vanBanDenId],
                                 'tom_tat' => $checkXuLyVanBanDen->tom_tat ?? null,
-                                'user_id' => $currentUser->id
+                                'user_id' => $currentUser->id,
+                                'han_xu_ly' => $dataHanXuLy[$vanBanDenId] ?? null
                             ];
 
                             $checkTonTaiData = XuLyVanBanDen::where([
@@ -571,10 +571,10 @@ class VanBanLanhDaoXuLyController extends Controller
                     }
 
                     //han xu ly
-                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->hhan_xu_ly != $dataHanXuLy[$vanBanDenId]) {
-                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-                        $vanBanDen->save();
-                    }
+//                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->han_xu_ly != $dataHanXuLy[$vanBanDenId]) {
+//                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
+//                        $vanBanDen->save();
+//                    }
 
                     $dataLuuDonViChuTri = [
                         'van_ban_den_id' => $vanBanDenId,
@@ -583,6 +583,8 @@ class VanBanLanhDaoXuLyController extends Controller
                         'noi_dung' => $textDonViChuTri[$vanBanDenId],
                         'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                         'user_id' => $currentUser->id,
+                        'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                        'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                         'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
                         'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null,
                         'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == 3 || $vanBanDen->trinh_tu_nhan_van_ban == 8 ? 1 : null
@@ -618,7 +620,6 @@ class VanBanLanhDaoXuLyController extends Controller
 
                     DonViPhoiHop::where([
                         'van_ban_den_id' => $vanBanDenId,
-                        'chuyen_tiep' => null,
                         'hoan_thanh' => null
                     ])->delete();
 

@@ -121,15 +121,13 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-
-                                            @if($vanBanDen->checkQuyenGiaHan)
-                                                <p>
-                                                    <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                           value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
-                                                           class="form-control" form="form-tham-muu">
-                                                </p>
-                                            @endif
-
+{{--                                            @if($vanBanDen->checkQuyenGiaHan)--}}
+                                            <p>
+                                                <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                       value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
+                                                       class="form-control" form="form-tham-muu">
+                                            </p>
+{{--                                            @endif--}}
                                             <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                    name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                    form="form-tham-muu">

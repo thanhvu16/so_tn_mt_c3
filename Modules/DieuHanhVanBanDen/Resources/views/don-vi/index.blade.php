@@ -172,6 +172,12 @@
                                             </p>
                                             @if ($trinhTuNhanVanBan == 3 || $trinhTuNhanVanBan == 4)
                                                 <p>
+                                                    <span>Gia hạn xử lý</span>
+                                                    <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                           value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
+                                                           class="form-control" form="form-tham-muu">
+                                                </p>
+                                                <p>
                                                     <input
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"
                                                         type="checkbox"

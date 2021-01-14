@@ -443,7 +443,7 @@ class PhanLoaiVanBanController extends Controller
                     },
                     'checkLuuVetVanBanDen',
                     'checkDonViChuTri' => function ($query) {
-                        $query->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung');
+                        $query->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung', 'han_xu_ly_moi');
                     },
                     'checkDonViPhoiHop' => function ($query) {
                         $query->select(['id', 'van_ban_den_id', 'don_vi_id', 'noi_dung']);
@@ -477,7 +477,6 @@ class PhanLoaiVanBanController extends Controller
                     $vanBanDen->vanBanQuanTrong = $vanBanDen->checkVanBanQuanTrong();
                     $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-
                 }
 
                 $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
@@ -524,7 +523,7 @@ class PhanLoaiVanBanController extends Controller
                         return $query->where('created_at', "LIKE", "%$date%");
                     }
                 })
-                ->paginate(PER_PAGE);
+                ->paginate(10);
 
 
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -540,7 +539,7 @@ class PhanLoaiVanBanController extends Controller
                 $vanBanDen->checkLuuVetVanBanDen = $vanBanDen->checkLuuVetVanBanDen ?? null;
             }
 
-            $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+            $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai',
                 compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',

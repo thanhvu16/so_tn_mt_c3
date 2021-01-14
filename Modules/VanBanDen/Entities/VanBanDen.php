@@ -99,7 +99,7 @@ class VanBanDen extends Model
     {
         $xuLyVanBanDen = XuLyVanBanDen::where(['van_ban_den_id' => $this->id])
             ->whereIn('can_bo_nhan_id', $arrUserId)
-            ->select('id', 'noi_dung', 'can_bo_nhan_id', 'created_at')
+            ->select('id', 'noi_dung', 'can_bo_nhan_id', 'created_at', 'han_xu_ly')
             ->whereNull('status')
             ->first();
 
@@ -191,7 +191,7 @@ class VanBanDen extends Model
                     return $query->whereIn('can_bo_nhan_id', $canBoNhanId);
                 }
             })
-            ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id'])
+            ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'han_xu_ly_moi'])
             ->first();
     }
 

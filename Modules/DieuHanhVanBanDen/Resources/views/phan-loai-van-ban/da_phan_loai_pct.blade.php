@@ -125,14 +125,15 @@
                                                 </select>
                                             </p>
                                             @if ($active)
-                                                @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))
+{{--                                                @if($vanBanDen->checkQuyenGiaHan(auth::user()->id))--}}
                                                     <p>
+                                                        <span>Gia hạn xử lý</span>
                                                         <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                               value="{{ $vanBanDen->han_xu_ly ?? null }}"
+                                                               value="{{ $vanBanDen->checkDonViChuTri->han_xu_ly_moi ?? null }}"
                                                                class="form-control change-han-xu-ly"
                                                                form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                     </p>
-                                                @endif
+{{--                                                @endif--}}
 
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
@@ -177,7 +178,7 @@
                                         </p>
                                         <p>
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
-                                                      class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
+                                                      class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
                                                       rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach

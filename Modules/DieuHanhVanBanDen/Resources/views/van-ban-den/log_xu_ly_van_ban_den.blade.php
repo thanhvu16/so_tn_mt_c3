@@ -33,8 +33,12 @@
                             </td>
                             <td>Đ/c {{ $logChuyenVanBanDen->canBoNhan->ho_ten ?? null }}</td>
                             <td>
-                                <p>Hạn văn
-                                    bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
+                                @if ($logChuyenVanBanDen->han_xu_ly)
+                                    <p>Hạn lãnh đạo: {{ date('d/m/Y', strtotime($logChuyenVanBanDen->han_xu_ly)) }}</p>
+                                @else
+                                    <p>Hạn văn
+                                        bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

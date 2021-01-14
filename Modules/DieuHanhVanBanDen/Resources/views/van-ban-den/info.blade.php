@@ -1,5 +1,4 @@
 @if (!empty($type) && $type == 'gia_han')
-
     @if($vanBanDen->hasChild())
         @if (!empty($vanBanDen->hasChild()->noi_dung))
             <p>
@@ -103,10 +102,55 @@
             <p class="text-initial">- Cán bộ nhập: {{ $vanBanDen->hasChild->nguoiDung->ho_ten  }}</p>
         @endif
         @if(!empty($vanBanDen->hasChild->han_xu_ly))
-            <p class="text-initial">
-                - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) }}
-                </b>
-            </p>
+            <!--gia han cua lanh dao-->
+            @switch(auth::user()->roles->pluck('name')[0])
+                @case(TRUONG_PHONG)
+                @if (!empty($vanBanDen->truongPhong->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->truongPhong->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+
+                @case(PHO_PHONG)
+                @if (!empty($vanBanDen->phoPhong->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->phoPhong->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+                @case(CHUYEN_VIEN)
+                @if (!empty($vanBanDen->chuyenVien->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->chuyenVien->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+                @default
+                <p class="text-initial">
+                    - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) }}
+                    </b>
+                </p>
+                @break
+            @endswitch
         @endif
 
         @if (isset($vanBanDen->hasChild->vanBanDenFile))
@@ -141,10 +185,69 @@
             <p class="text-initial">- Cán bộ nhập: {{ $vanBanDen->nguoiDung->ho_ten  }}</p>
         @endif
         @if(!empty($vanBanDen->han_xu_ly))
-            <p class="text-initial">
-                - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
-                </b>
-            </p>
+
+            @switch(auth::user()->roles->pluck('name')[0])
+                @case(PHO_CHUC_TICH)
+                @if (!empty($vanBanDen->PhoChuTich->han_xu_ly))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->PhoChuTich->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+                @case(CHANH_VAN_PHONG)
+                @if (!empty($vanBanDen->truongPhong->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->truongPhong->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+                @case(PHO_CHANH_VAN_PHONG)
+                @if (!empty($vanBanDen->phoPhong->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->phoPhong->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+                @case(CHUYEN_VIEN)
+                @if (!empty($vanBanDen->chuyenVien->han_xu_ly_moi))
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->chuyenVien->han_xu_ly_moi)) }}
+                        </b>
+                    </p>
+                @else
+                    <p class="text-initial">
+                        - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
+                        </b>
+                    </p>
+                @endif
+                @break
+
+                @default
+                <p class="text-initial">
+                    - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}
+                    </b>
+                </p>
+                @break
+            @endswitch
+
         @endif
 
         @if (isset($vanBanDen->vanBanDenFile))

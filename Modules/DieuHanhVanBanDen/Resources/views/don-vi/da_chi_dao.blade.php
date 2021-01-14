@@ -183,6 +183,13 @@
                                                 </select>
                                             </p>
                                             @if ($trinhTuNhanVanBan == 3 || $trinhTuNhanVanBan == 4)
+                                                    <p>
+                                                        <span>Gia hạn xử lý</span>
+                                                        <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{ $trinhTuNhanVanBan == 4 ? $vanBanDen->chuyenVien->han_xu_ly_moi : $vanBanDen->phoPhong->han_xu_ly_moi ?? null }}"
+                                                               class="form-control change-han-xu-ly"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
+                                                    </p>
                                                 <p>
                                                     <input
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"

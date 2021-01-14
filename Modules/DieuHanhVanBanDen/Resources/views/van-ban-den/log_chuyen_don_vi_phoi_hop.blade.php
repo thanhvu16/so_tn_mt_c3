@@ -16,7 +16,7 @@
                         <th>Chuyển từ</th>
                         <th>Nội dung chuyển</th>
                         <th>Chuyển đến</th>
-                        <th>Hạn xủ lý</th>
+                        <th>Hạn xử lý</th>
                     </tr>
                     </thead>
                     <tbody>

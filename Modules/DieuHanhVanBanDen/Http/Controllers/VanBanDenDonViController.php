@@ -93,6 +93,7 @@ class VanBanDenDonViController extends Controller
                 }
 
                 if ($trinhTuNhanVanBan == 5) {
+                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
                     $vanBanDen->giaHanVanBanTraLai = $vanBanDen->giaHanVanBanTraLai();
                     $vanBanDen->giaiQuyetVanBanTraLai = $vanBanDen->giaiQuyetVanBanTraLai();
                     $vanBanDen->giaHanVanBanLanhDaoChoDuyet = $vanBanDen->giaHanVanBanLanhDaoDuyet(GiaHanVanBan::STATUS_CHO_DUYET);
@@ -361,6 +362,7 @@ class VanBanDenDonViController extends Controller
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
+        $dataHanXuLy = $data['han_xu_ly'] ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
 
@@ -453,6 +455,8 @@ class VanBanDenDonViController extends Controller
                             'noi_dung' => $textnoidungPhoChuTich[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+                            'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                             'user_id' => $currentUser->id
                         ];
@@ -477,6 +481,8 @@ class VanBanDenDonViController extends Controller
                             'noi_dung' => $textnoidungTruongPhong[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+                            'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                             'user_id' => $currentUser->id
                         ];
@@ -500,6 +506,8 @@ class VanBanDenDonViController extends Controller
                             'don_vi_id' => $currentUser->don_vi_id,
                             'parent_id' => $donViChuTri ? $donViChuTri->id : null,
                             'noi_dung' => $textnoidungPhoPhong[$vanBanDenId],
+                            'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
@@ -527,6 +535,8 @@ class VanBanDenDonViController extends Controller
                             'noi_dung' => $textNoiDungChuyenVien[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+                            'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                             'user_id' => $currentUser->id
 

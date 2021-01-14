@@ -132,8 +132,7 @@
                                     nhập: </b> {{ $vanBanDen->nguoiDung->ho_ten ?? 'N/A' }}
                             </p>
                             <p>
-                                <b>Hạn xử
-                                    lý: </b> {{ !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}
+                                <b>Hạn văn bản: </b> {{ !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}
                             </p>
                         </div>
                         <div class="col-md-12">

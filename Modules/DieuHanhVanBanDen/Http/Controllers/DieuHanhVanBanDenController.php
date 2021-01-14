@@ -54,11 +54,11 @@ class DieuHanhVanBanDenController extends Controller
     {
         $vanBanDen = VanBanDen::with(['loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
             'xuLyVanBanDen' => function ($query) {
-                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'status', 'created_at');
+                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'status', 'created_at', 'han_xu_ly');
             },
             'XuLyVanBanDenTraLai',
             'donViChuTri' => function ($query) {
-                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at');
+                return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at', 'han_xu_ly_moi');
             },
             'donViPhoiHop' => function ($query) {
                 return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at');
@@ -128,12 +128,11 @@ class DieuHanhVanBanDenController extends Controller
         $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
         if (!empty($donViChuTri)) {
             $vanBanDen->chuTichXa = !empty($chuTichXa) ? $vanBanDen->getCanBoDonVi([$chuTichXa->id], $donViChuTri->don_vi_id) : null;
-            $vanBanDen->phoChuTichXa = !empty($danhSachPhoChuTichXa) ? $vanBanDen->getCanBoDonVi($danhSachPhoChuTichXa->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            $vanBanDen->phoChuTichXa = count($danhSachPhoChuTichXa) > 0 ? $vanBanDen->getCanBoDonVi($danhSachPhoChuTichXa->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
             $vanBanDen->truongPhong = !empty($truongPhong) ? $vanBanDen->getCanBoDonVi([$truongPhong->id], $donViChuTri->don_vi_id) : null;
-            $vanBanDen->phoPhong = !empty($danhSachPhoPhong) ? $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
-            $vanBanDen->chuyenVien = !empty($danhSachChuyenVien) ? $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            $vanBanDen->phoPhong = count($danhSachPhoPhong) > 0 ? $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            $vanBanDen->chuyenVien = count($danhSachChuyenVien) > 0 ? $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
         }
-
         //phoi hop
         $type = $request->get('status') ?? null;
 
@@ -202,7 +201,7 @@ class DieuHanhVanBanDenController extends Controller
                 }
                 break;
             case CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
                 $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
