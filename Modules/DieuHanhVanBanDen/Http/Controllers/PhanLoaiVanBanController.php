@@ -369,7 +369,7 @@ class PhanLoaiVanBanController extends Controller
                         return $query->where('updated_at', "LIKE", $date);
                     }
                 })
-                ->paginate(PER_PAGE);
+                ->paginate(10);
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
                 ->where('trang_thai', ACTIVE)
@@ -465,7 +465,7 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
-                    ->paginate(PER_PAGE);
+                    ->paginate(10);
 
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen($type = 'get_id');
@@ -480,7 +480,7 @@ class PhanLoaiVanBanController extends Controller
 
                 }
 
-                $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+                $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
 
                 return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai_pct',
                     compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
