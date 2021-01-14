@@ -61,7 +61,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
             $danhSachVanBanDen = VanBanDen::whereIn('id', $arrVanBanDenId)
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-                ->paginate(PER_PAGE);
+                ->paginate(10);
 
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
@@ -69,6 +69,12 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->where('don_vi_id', $user->don_vi_id)
                 ->select('id', 'ho_ten')
                 ->get();
+
+            $chuTich = User::role(CHU_TICH)
+                ->where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $user->don_vi_id)
+                ->select('id', 'ho_ten')
+                ->first();
 
             $truongBan = User::role(TRUONG_BAN)
                 ->where('don_vi_id', $user->don_vi_id)
@@ -95,15 +101,16 @@ class VanBanLanhDaoXuLyController extends Controller
             if (!empty($danhSachVanBanDen)) {
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
-
+                    $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
+                    $vanBanDen->chuTich = $vanBanDen->getChuyenVienThucHien([$chuTich->id]);
                     $vanBanDen->phoChuTich = $vanBanDen->getChuyenVienThucHien($danhSachPhoChuTich->pluck('id')->toArray());
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$truongBan->id]);
-                        $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
-                        $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
-                        $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
-                        $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
-//                    }
+                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                    $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
+                    $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
+//
                 }
             }
 
@@ -159,6 +166,7 @@ class VanBanLanhDaoXuLyController extends Controller
             if (count($danhSachVanBanDen) > 0) {
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                    $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
                     $vanBanDen->vanBanTraLai = $vanBanDen->vanBanTraLai ?? null;
                     $vanBanDen->checkDonViChuTri = $vanBanDen->checkDonViChuTri ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();

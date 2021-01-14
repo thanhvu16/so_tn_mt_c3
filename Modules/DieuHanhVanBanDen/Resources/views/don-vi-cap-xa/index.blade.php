@@ -189,13 +189,19 @@
                                                     class="form-control select2 lanh-dao-xem-de-biet"
                                                     multiple="multiple"
                                                     form="form-tham-muu"
-                                                    data-placeholder="Chọn phó phòng xem để biết">
+                                                    data-placeholder="Chọn phó trưởng ban xem để biết">
                                                     @forelse($danhSachPhoPhong as $phoPhongPhoiHop)
                                                         <option
                                                             value="{{ $phoPhongPhoiHop->id }}" {{ in_array($phoPhongPhoiHop->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : null }}>{{ $phoPhongPhoiHop->ho_ten }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
+                                            </p>
+                                            <p>
+                                                <span>Gia hạn xử lý</span>
+                                                <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                       value=""
+                                                       class="form-control" form="form-tham-muu">
                                             </p>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
                                                 <p>Lãnh đạo dự họp:</p>

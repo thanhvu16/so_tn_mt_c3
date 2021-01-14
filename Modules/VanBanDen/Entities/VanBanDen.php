@@ -195,6 +195,36 @@ class VanBanDen extends Model
             ->first();
     }
 
+    public function getGiaHanLanhDao()
+    {
+        return DonViChuTri::where('van_ban_den_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('can_bo_chuyen_id', auth::user()->id)
+            ->select(['han_xu_ly_moi'])
+            ->first();
+    }
+
+    public function getGiaHanXuLy()
+    {
+        if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && empty(auth::user()->donVi->cap_xa)) {
+            return XuLyVanBanDen::where('van_ban_den_id', $this->id)
+                ->where('can_bo_nhan_id', auth::user()->id)
+                ->whereNull('status')
+                ->select(['han_xu_ly'])
+                ->orderBy('id', 'DESC')
+                ->first();
+        } else {
+            return DonViChuTri::where('van_ban_den_id', $this->id)
+                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->where('can_bo_nhan_id', auth::user()->id)
+                ->whereNull('tra_lai')
+                ->select(['han_xu_ly_moi'])
+                ->orderBy('id', 'DESC')
+                ->first();
+        }
+
+    }
+
     public function getCanBoDonVi($canBoNhanId = null, $donViId)
     {
 

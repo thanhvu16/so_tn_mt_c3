@@ -210,6 +210,12 @@
                                                     @endforelse
                                                 </select>
                                             </p>
+                                            <p>
+                                                <span>Gia hạn xử lý</span>
+                                                <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                       value="{{ $vanBanDen->giaHanLanhDao->han_xu_ly_moi ?? null }}"
+                                                       class="form-control" form="form-tham-muu">
+                                            </p>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
                                                     <p>Lãnh đạo dự họp:</p>
                                                     <div class="row ml-1">

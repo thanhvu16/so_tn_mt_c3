@@ -377,6 +377,12 @@ class PhanLoaiVanBanController extends Controller
                 ->select('id', 'ho_ten')
                 ->get();
 
+            $chuTich = User::role(CHU_TICH)
+                ->where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $user->don_vi_id)
+                ->select('id', 'ho_ten')
+                ->first();
+
             $truongBan = User::role(TRUONG_BAN)
                 ->where('don_vi_id', $user->don_vi_id)
                 ->select('id', 'ho_ten')
@@ -401,7 +407,10 @@ class PhanLoaiVanBanController extends Controller
 
             if (!empty($danhSachVanBanDen)) {
                 foreach ($danhSachVanBanDen as $vanBanDen) {
+                    $vanBanDen->giaHanLanhDao = $vanBanDen->getGiaHanLanhDao();
                     $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                    $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
+                    $vanBanDen->chuTich = $vanBanDen->getChuyenVienThucHien([$chuTich->id]);
                     $vanBanDen->phoChuTich = $vanBanDen->getChuyenVienThucHien($danhSachPhoChuTich->pluck('id')->toArray());
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$truongBan->id]);
@@ -470,6 +479,7 @@ class PhanLoaiVanBanController extends Controller
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen($type = 'get_id');
                     $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                    $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
                     $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]);
                     $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]);
                     $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
@@ -537,6 +547,7 @@ class PhanLoaiVanBanController extends Controller
                 $vanBanDen->vanBanQuanTrong = $vanBanDen->checkVanBanQuanTrong();
                 $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
                 $vanBanDen->checkLuuVetVanBanDen = $vanBanDen->checkLuuVetVanBanDen ?? null;
+                $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
             }
 
             $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;

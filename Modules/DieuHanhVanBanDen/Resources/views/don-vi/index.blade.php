@@ -174,7 +174,7 @@
                                                 <p>
                                                     <span>Gia hạn xử lý</span>
                                                     <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                           value="{{ $vanBanDen->vb_han_xu_ly ?? null }}"
+                                                           value=""
                                                            class="form-control" form="form-tham-muu">
                                                 </p>
                                                 <p>
