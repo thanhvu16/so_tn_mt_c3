@@ -113,13 +113,13 @@ class DieuHanhVanBanDenController extends Controller
 
         $danhSachPhoChuTichXa = User::role(PHO_CHUC_TICH)
             ->where('trang_thai', ACTIVE)
-            ->where('don_vi_id', $donViChuTri->don_vi_id)
+            ->where('don_vi_id', $donViChuTri->don_vi_id ?? null)
             ->select('id', 'ho_ten')
             ->get();
 
         $chuTichXa = User::role(CHU_TICH)
                     ->where('trang_thai', ACTIVE)
-                    ->where('don_vi_id', $donViChuTri->don_vi_id)
+                    ->where('don_vi_id', $donViChuTri->don_vi_id ?? null)
                     ->select('id', 'ho_ten')
                     ->first();
 

@@ -44,7 +44,8 @@
                             <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
-                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
+                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]"
+                                           value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
                                            class="check-don-vi-du-hop" form="form-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
@@ -153,22 +154,20 @@
                                                     form="form-tham-muu">
                                                     @forelse($danhSachDonVi as $donVi)
                                                         @if (!empty($vanBanDen->checkDonViChuTri) && $vanBanDen->checkDonViChuTri->don_vi_id != $donVi->id)
-                                                        <option
-                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
-                                                    @endif
+                                                            <option
+                                                                value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                        @endif
                                                     @empty
                                                     @endforelse
                                                 </select>
                                             </p>
-
-                                            @if($vanBanDen->checkQuyenGiaHan)
-                                                <p>
-                                                    <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                           value="{{ $vanBanDen->han_xu_ly ?? null }}"
-                                                           class="form-control" form="form-tham-muu">
-                                                </p>
-                                            @endif
-
+                                            {{--@if($vanBanDen->checkQuyenGiaHan)--}}
+                                            <p>
+                                                <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                       value=""
+                                                       class="form-control" form="form-tham-muu">
+                                            </p>
+                                            {{--@endif--}}
                                             <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                    name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                    form="form-tham-muu">
@@ -178,25 +177,25 @@
                                             </label>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <p>Lãnh đạo dự họp:</p>
-                                                    <input type="radio"
-                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
-                                                           class="radio-col-cyan chu-tich-du-hop"
-                                                           value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
-                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
-                                                    <label
-                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
-                                                    ><i>CT</i></label>
-                                                    &nbsp;
-                                                    <input type="radio"
-                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
-                                                           class="radio-col-cyan pho-ct-du-hop"
-                                                           value="{{ $vanBanDen->phoChuTich->can_bo_nhan_id ?? null }}"
-                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacPhoChuTich) ? 'checked' : null  }}>
-                                                    <label
-                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
-                                                    ><i>PCT</i></label>
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                       class="radio-col-cyan chu-tich-du-hop"
+                                                       value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                ><i>CT</i></label>
+                                                &nbsp;
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       class="radio-col-cyan pho-ct-du-hop"
+                                                       value="{{ $vanBanDen->phoChuTich->can_bo_nhan_id ?? null }}"
+                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacPhoChuTich) ? 'checked' : null  }}>
+                                                <label
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                ><i>PCT</i></label>
                                                 &nbsp;
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
@@ -205,7 +204,8 @@
                                                        value="{{ $vanBanDen->lichCongTacDonVi->don_vi_du_hop ?? $vanBanDen->checkDonViChuTri->don_vi_id }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự
+                                                        họp</i></label>
                                             @endif
 
                                         </div>
@@ -228,7 +228,8 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị
+                                                phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>

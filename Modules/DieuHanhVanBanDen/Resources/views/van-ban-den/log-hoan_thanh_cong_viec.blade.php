@@ -42,8 +42,8 @@
                             <td>
                                 @if ($giaiQuyetVanBan->noi_dung_nhan_xet)
                                     <p><b>Nội dung: {{ $giaiQuyetVanBan->noi_dung_nhan_xet }}</b></p>
-                                    (<i>Đ/c {{ $giaiQuyetVanBan->canBoDuyet->ho_ten ?? '' }}</i>)
                                 @endif
+                                (<i>Đ/c {{ $giaiQuyetVanBan->canBoDuyet->ho_ten ?? '' }}</i>)
                                 <p>{!!  $giaiQuyetVanBan->getStatus()  !!}</p>
                             </td>
                         </tr>

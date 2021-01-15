@@ -31,7 +31,7 @@
                     <div class="col-md-12 mt-3">
                         <div class="row">
 
-                            <div class="col-md-12 collapse {{ Request::get('search') == 1 ? 'in' : '' }} " id="collapseExample">
+                            <div class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }} " id="collapseExample">
                                 <form action="{{route('van-ban-den.index')}}" method="get">
                                         <div class="row">
 
@@ -99,6 +99,16 @@
                                                        name="nguoi_ky_id"
                                                        class="form-control">
                                             </div>
+                                            <div class="form-group col-md-4" >
+                                                <label class="col-form-label">Năm</label>
+                                                <select name="year" class="form-control select2">
+                                                    <option value="">-- Tất cả --</option>
+                                                    @for($i = 2020; $i <= date('Y'); $i++)
+                                                        <option value="{{ $i }}" {{ $i == Request::get('year') ? 'selected' : '' }}>
+                                                            {{ $i }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
 
                                             <div class="form-group col-md-12" >
                                                 <label for="sokyhieu" class="col-form-label ">Trích yếu</label>
@@ -109,6 +119,13 @@
                                             <div class="form-group col-md-3" >
                                                 <button type="submit" value="1" class="btn btn-primary" name="search">Tìm kiếm
                                                 </button>
+                                                @if(request('search') || request('year'))
+                                                    <a href="{{ route('van-ban-den.index') }}">
+                                                        <button type="button" class="btn btn-success">
+                                                            <i class="fa fa-refresh"></i>
+                                                        </button>
+                                                    </a>
+                                                @endif
                                             </div>
                                         </div>
                                 </form>
@@ -240,17 +257,15 @@
                             </tbody>
                         </table>
                         <div class="row">
-                            <div class="col-md-12" >
-                                <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số văn bản: <b>{{ $ds_vanBanDen->total() }}</b>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')
-                           ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
-                           'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
-                           'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
-                           'vb_trich_yeu' => Request::get('vb_trich_yeu'),'search' =>Request::get('search') ])->render() !!}
-                                </div>
+                            <div class="col-md-6" style="margin-top: 5px">
+                                Tổng số văn bản: <b>{{ $ds_vanBanDen->total() }}</b>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')
+                       ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
+                       'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
+                       'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
+                       'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' =>Request::get('year')])->render() !!}
                             </div>
                         </div>
                     </div>

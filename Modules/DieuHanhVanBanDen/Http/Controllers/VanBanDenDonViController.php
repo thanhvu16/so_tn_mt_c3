@@ -374,7 +374,6 @@ class VanBanDenDonViController extends Controller
                 DB::beginTransaction();
 
                 foreach ($vanBanDenIds as $vanBanDenId) {
-
                     $donViChuTri = DonViChuTri::where('van_ban_den_id', $vanBanDenId)
                         ->where('can_bo_nhan_id', $currentUser->id)
                         ->whereNull('hoan_thanh')->first();
@@ -411,7 +410,7 @@ class VanBanDenDonViController extends Controller
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_PHONG_NHAN_VB;
                                 $vanBanDen->save();
                             }
-                            if (!empty($danhSachChuyenVienIds) && empty($danhSachPhoPhongIds[$vanBanDenId]) && empty($danhSachTruongPhongIds[$vanBanDenId]) && empty($danhSachPhoChuTichIds[$vanBanDenId]))
+                            if (!empty($danhSachChuyenVienIds[$vanBanDenId]) && empty($danhSachPhoPhongIds[$vanBanDenId]) && empty($danhSachTruongPhongIds[$vanBanDenId]) && empty($danhSachPhoChuTichIds[$vanBanDenId]))
                             {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHUYEN_VIEN_NHAN_VB;
                                 $vanBanDen->save();

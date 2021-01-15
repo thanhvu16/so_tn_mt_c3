@@ -1,4 +1,3 @@
-
 @extends('admin::layouts.master')
 @section('page_title', 'Danh sách giấy mời đi')
 @section('content')
@@ -22,24 +21,26 @@
                     <div class="col-md-12 mt-3">
                         <div class="row">
                             <form action="{{route('giay-moi-di.index')}}" method="get">
-                                <div class="col-md-12 collapse {{ Request::get('search') == 1 ? 'in' : '' }}" id="collapseExample">
+                                <div
+                                    class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }}"
+                                    id="collapseExample">
                                     <div class="row">
-{{--                                        <div class="form-group col-md-3">--}}
-{{--                                            <label for="cap_ban_hanh_id" autofocus class="col-form-label">Sổ văn bản đi--}}
-{{--                                            </label>--}}
+                                        {{--                                        <div class="form-group col-md-3">--}}
+                                        {{--                                            <label for="cap_ban_hanh_id" autofocus class="col-form-label">Sổ văn bản đi--}}
+                                        {{--                                            </label>--}}
 
-{{--                                            <select class="form-control show-tick" name="sovanban_id">--}}
-{{--                                                <option value="">--Chọn sổ văn bản--</option>--}}
-{{--                                                @foreach ($ds_soVanBan as $data)--}}
-{{--                                                    <option value="{{ $data->id }}" {{ Request::get('sovanban_id') == $data->id ? 'selected' : ''}}--}}
-{{--                                                    >{{ $data->ten_so_van_ban}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-{{--                                        </div>--}}
+                                        {{--                                            <select class="form-control show-tick" name="sovanban_id">--}}
+                                        {{--                                                <option value="">--Chọn sổ văn bản--</option>--}}
+                                        {{--                                                @foreach ($ds_soVanBan as $data)--}}
+                                        {{--                                                    <option value="{{ $data->id }}" {{ Request::get('sovanban_id') == $data->id ? 'selected' : ''}}--}}
+                                        {{--                                                    >{{ $data->ten_so_van_ban}}</option>--}}
+                                        {{--                                                @endforeach--}}
+                                        {{--                                            </select>--}}
+                                        {{--                                        </div>--}}
                                         <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Ký hiệu </label>
                                             <input type="text" value="{{Request::get('vb_sokyhieu')}}"
-                                                   id="vb_sokyhieu" name="vb_sokyhieu"  class="form-control"
+                                                   id="vb_sokyhieu" name="vb_sokyhieu" class="form-control"
                                                    placeholder="Nhập số ký hiệu văn bản đi...">
                                         </div>
 
@@ -59,13 +60,15 @@
                                         </div>
 
 
-                                        <div class="col-md-3" >
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label>Giờ họp </label>
 
                                                 <div class="input-group">
-                                                    <input type="text" name="gio_hop" value="{{Request::get('gio_hop')}}" class="form-control " placeholder="ví dụ: 22:30">
+                                                    <input type="text" name="gio_hop"
+                                                           value="{{Request::get('gio_hop')}}" class="form-control "
+                                                           placeholder="ví dụ: 22:30">
 
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-clock-o"></i>
@@ -75,60 +78,83 @@
                                             </div>
                                         </div>
                                         <div class="row clearfix"></div>
-                                        <div class="col-md-3" >
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">Ngày họp từ</label>
-                                                <input type="date" class="form-control ngaybanhanh2" value="{{Request::get('start_date')}}"
+                                                <input type="date" class="form-control ngaybanhanh2"
+                                                       value="{{Request::get('start_date')}}"
                                                        name="start_date" placeholder="">
                                             </div>
                                         </div>
-                                        <div class="col-md-3" >
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">Họp đến ngày</label>
-                                                <input type="date" class="form-control ngaybanhanh2" value="{{Request::get('end_date')}}"
+                                                <input type="date" class="form-control ngaybanhanh2"
+                                                       value="{{Request::get('end_date')}}"
                                                        name="end_date" placeholder="">
                                             </div>
                                         </div>
-                                        <div class="col-md-3" >
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">Địa điểm </label>
-                                                <input type="text" class="form-control" value="{{Request::get('dia_diem')}}"
+                                                <input type="text" class="form-control"
+                                                       value="{{Request::get('dia_diem')}}"
                                                        name="dia_diem" placeholder="Địa điểm">
                                             </div>
                                         </div>
 
-                                        <div class="form-group col-md-3" >
+                                        <div class="form-group col-md-3">
                                             <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký </label>
                                             <select class="form-control show-tick  layidnguoiky" name="nguoiky_id"
                                             >
                                                 <option value="">-- Chọn Người Ký --</option>
                                                 @foreach ($ds_nguoiKy as $nguoiKy)
                                                     <option
-                                                            value="{{ $nguoiKy->id }}" {{Request::get('nguoiky_id') == $nguoiKy->id ? 'selected' : ''}}
+                                                        value="{{ $nguoiKy->id }}" {{Request::get('nguoiky_id') == $nguoiKy->id ? 'selected' : ''}}
                                                     >{{$nguoiKy->ho_ten}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-3" >
+                                        <div class="form-group col-md-3">
                                             <label for="co_quan_ban_hanh_id" class="col-form-label">Chức vụ </label>
                                             <input type="text" class="form-control" placeholder="chức vụ" name="chuc_vu"
                                                    value="{{Request::get('chuc_vu')}}">
                                         </div>
-                                        <div class="form-group col-md-3" >
+                                        <div class="form-group col-md-3">
                                             <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo </label>
                                             <select class="form-control show-tick select2-search"
                                                     name="donvisoanthao_id">
                                                 <option value="">--Chọn đơn vị soạn thảo--</option>
                                                 @foreach ($ds_DonVi as $donVi)
-                                                    <option value="{{ $donVi->id }}"  {{Request::get('donvisoanthao_id') == $donVi->id ? 'selected' : ''}}
+                                                    <option
+                                                        value="{{ $donVi->id }}" {{Request::get('donvisoanthao_id') == $donVi->id ? 'selected' : ''}}
                                                     >{{ $donVi->ten_don_vi }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-3" style="margin-top: 25px">
-                                            <button name="search" value="1" class="btn btn-primary"><i class="fa  fa-search"></i> Tìm kiếm</button>
+                                        <div class="form-group col-md-3">
+                                            <label class="col-form-label">Năm</label>
+                                            <select name="year" class="form-control select2">
+                                                <option value="">-- Tất cả --</option>
+                                                @for($i = 2020; $i <= date('Y'); $i++)
+                                                    <option
+                                                        value="{{ $i }}" {{ $i == Request::get('year') ? 'selected' : '' }}>
+                                                        {{ $i }}</option>
+                                                @endfor
+                                            </select>
                                         </div>
-
+                                        <div class="form-group col-md-3" style="margin-top: 25px">
+                                            <button name="search" value="1" class="btn btn-primary"><i
+                                                    class="fa  fa-search"></i> Tìm kiếm
+                                            </button>
+                                            @if(request('search') || request('year'))
+                                                <a href="{{ route('giay-moi-di.index') }}">
+                                                    <button type="button" class="btn btn-success">
+                                                        <i class="fa fa-refresh"></i>
+                                                    </button>
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -212,7 +238,7 @@
                                         <br>
                                     </td>
                                     <td class="text-center" style="color: red; vertical-align: middle;">-
-                                    </td >
+                                    </td>
                                     <td class="text-center" style="vertical-align: middle">
                                         @hasanyrole('văn thư đơn vị|văn thư huyện')
                                         @if(auth::user()->id == $vbDi->nguoi_tao)
@@ -244,19 +270,18 @@
 
                         </table>
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số giấy mời: <b>{{ $ds_vanBanDi->total() }}</b>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    {!! $ds_vanBanDi->appends(['sovanban_id' => Request::get('sovanban_id'), 'chuc_vu' => Request::get('chuc_vu')
-                            ,'vb_sokyhieu' => Request::get('vb_sokyhieu'),
-                            'donvisoanthao_id' => Request::get('donvisoanthao_id'),'nguoiky_id' => Request::get('nguoiky_id'),
-                            'dia_diem' => Request::get('dia_diem'),'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
-                            'gio_hop' => Request::get('gio_hop'),'vb_ngaybanhanh_start' => Request::get('vb_ngaybanhanh_start'),
-                            'vb_ngaybanhanh_end' => Request::get('vb_ngaybanhanh_end'),'search' =>Request::get('search') ])->render() !!}
-                                </div>
+                            <div class="col-md-6" style="margin-top: 5px">
+                                Tổng số giấy mời: <b>{{ $ds_vanBanDi->total() }}</b>
                             </div>
+                            <div class="col-md-6 text-right">
+                                {!! $ds_vanBanDi->appends(['sovanban_id' => Request::get('sovanban_id'), 'chuc_vu' => Request::get('chuc_vu')
+                        ,'vb_sokyhieu' => Request::get('vb_sokyhieu'),
+                        'donvisoanthao_id' => Request::get('donvisoanthao_id'),'nguoiky_id' => Request::get('nguoiky_id'),
+                        'dia_diem' => Request::get('dia_diem'),'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
+                        'gio_hop' => Request::get('gio_hop'),'vb_ngaybanhanh_start' => Request::get('vb_ngaybanhanh_start'),
+                        'vb_ngaybanhanh_end' => Request::get('vb_ngaybanhanh_end'),'search' =>Request::get('search'), 'year' =>Request::get('year')])->render() !!}
+                            </div>
+
                         </div>
                     </div>
                     <!-- /.box-body -->

@@ -43,9 +43,11 @@ class VanBanDenController extends Controller
         $nguoi_ky = $request->get('nguoi_ky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
+        $year = $request->get('year') ?? null;
 
 
         if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
@@ -95,7 +97,13 @@ class VanBanDenController extends Controller
 
                     }
                 })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
             $user->hasRole(VAN_THU_DON_VI) ||
             $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
@@ -150,6 +158,11 @@ class VanBanDenController extends Controller
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
                         return $query->where('ngay_ban_hanh', $ngayketthuc);
 
+                    }
+                })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
@@ -318,6 +331,10 @@ class VanBanDenController extends Controller
                     UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                 }
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                if (auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
+                    $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                }
                 if ($noi_dung && $noi_dung[0] != null) {
                     foreach ($noi_dung as $key => $data) {
                         $vanbandv = new VanBanDen();
@@ -343,17 +360,19 @@ class VanBanDenController extends Controller
                             $vanbandv->han_xu_ly = $request->han_xu_ly;
                             $vanbandv->han_giai_quyet = $han_gq[$key];
                         }
-                        $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                        $vanbandv->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
                         if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                             $vanbandv->loai_van_ban_don_vi = 1;
                         }
                         $vanbandv->save();
 
-                        //save chuyen don vi chu tri
-                        DonViChuTri::saveDonViChuTri($vanbandv->id);
                         UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
+
                         if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                             DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
+                        } else {
+                            //save chuyen don vi chu tri
+                            DonViChuTri::saveDonViChuTri($vanbandv->id);
                         }
                     }
                 } else {
@@ -374,17 +393,19 @@ class VanBanDenController extends Controller
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 2;
-                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                    $vanbandv->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
                     if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                         $vanbandv->loai_van_ban_don_vi = 1;
                     }
                     $vanbandv->save();
 
-                    //save chuyen don vi chu tri
-                    DonViChuTri::saveDonViChuTri($vanbandv->id);
                     UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
+
                     if ($request->don_vi_phoi_hop && $request->don_vi_phoi_hop == 1) {
                         DonViPhoiHop::saveDonViPhoiHop($vanbandv->id);
+                    } else {
+                        //save chuyen don vi chu tri
+                        DonViChuTri::saveDonViChuTri($vanbandv->id);
                     }
                 }
             }

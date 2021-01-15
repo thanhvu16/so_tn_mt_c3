@@ -47,6 +47,8 @@ class GiayMoiDiController extends Controller
         $ngaybanhanhend = $request->get('vb_ngaybanhanh_end');
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $year = $request->get('year') ?? null;
+
         if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) || $user->hasRole(CHANH_VAN_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
             $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHU_TICH, PHO_CHUC_TICH ])->orderBy('username', 'desc')->get();
         } else {
@@ -120,6 +122,11 @@ class GiayMoiDiController extends Controller
                             ->where('ngay_ban_hanh', '<=', $ngaybanhanhend);
                     }
                 })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
@@ -189,6 +196,11 @@ class GiayMoiDiController extends Controller
                         $ngaybanhanhend = $ngaybanhanhstart;
                         return $query->where('ngay_ban_hanh', '>=', $ngaybanhanhstart)
                             ->where('ngay_ban_hanh', '<=', $ngaybanhanhend);
+                    }
+                })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);

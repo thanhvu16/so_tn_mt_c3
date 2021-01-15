@@ -124,7 +124,7 @@
 {{--                                            @if($vanBanDen->checkQuyenGiaHan)--}}
                                             <p>
                                                 <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                       value="{{ $vanBanDen->han_xu_ly ?? null }}"
+                                                       value=""
                                                        class="form-control" form="form-tham-muu">
                                             </p>
 {{--                                            @endif--}}

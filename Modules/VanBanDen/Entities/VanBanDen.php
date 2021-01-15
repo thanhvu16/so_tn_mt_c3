@@ -507,6 +507,7 @@ class VanBanDen extends Model
             })
             ->where('type', $type)
             ->whereNull('deleted_at')
+            ->select('id', 'so_den', 'trich_yeu')
             ->get();
     }
 

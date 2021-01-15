@@ -159,6 +159,7 @@
                                                         id="chuyen-vien-{{ $vanBanDen->id }}"
                                                         class="form-control select2 chuyen-vien"
                                                         data-id="{{ $vanBanDen->id }}"
+                                                        data-placeholder="Chọn chuyên viên thực hiện"
                                                         form="form-tham-muu">
                                                     <option value="">Chọn chuyên viên thực hiện</option>
                                                     @forelse($danhSachChuyenVien as $chuyenVien)

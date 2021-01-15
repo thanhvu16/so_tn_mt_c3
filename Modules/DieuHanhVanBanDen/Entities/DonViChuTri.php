@@ -64,6 +64,13 @@ class DonViChuTri extends Model
 
         $donVi = auth::user()->donVi;
 
+        if ($donVi->cap_xa == DonVi::CAP_XA) {
+            $nguoiDung = User::role(CHU_TICH)
+                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->where('trang_thai', ACTIVE)
+                ->whereNull('deleted_at')->first();
+        }
+
         $dataLuuDonViChuTri = [
             'van_ban_den_id' => $vanBanDenId,
             'can_bo_chuyen_id' => auth::user()->id,

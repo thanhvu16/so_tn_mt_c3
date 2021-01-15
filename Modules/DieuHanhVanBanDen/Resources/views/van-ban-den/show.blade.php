@@ -244,7 +244,7 @@
 
             <!--giai quyet van ban-->
                 @if ($vanBanDen->active != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                    @hasanyrole('trưởng phòng|phó phòng|chuyên viên')
+                    @hasanyrole('trưởng phòng|phó phòng|chuyên viên|chánh văn phòng|phó chánh văn phòng|trưởng ban|phó trưởng ban')
                     @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
                 @endif
                 @endrole

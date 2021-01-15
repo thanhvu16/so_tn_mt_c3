@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
-                    <a href="{{ route('van-ban-den.index') }}">
+                    <a href="{{ route('van-ban-den.index', 'year='.$year) }}">
                         <span class="info-box-icon bg-aqua">
                             <i class="fa fa-file-pdf-o"></i>
                         </span>
@@ -21,7 +21,7 @@
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
-                    <a href="{{ route('giay-moi-den.index') }}">
+                    <a href="{{ route('giay-moi-den.index', 'year='.$year) }}">
                         <span class="info-box-icon bg-red"><i class="fa fa-send"></i></span>
 
                         <div class="info-box-content color-black">
@@ -40,7 +40,7 @@
 
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
-                    <a href="{{ route('van-ban-di.index') }}">
+                    <a href="{{ route('van-ban-di.index', 'year='.$year) }}">
                         <span class="info-box-icon bg-green"><i class="fa fa-file-text"></i></span>
 
                         <div class="info-box-content color-black">
@@ -55,7 +55,7 @@
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
-                    <a href="{{ route('giay-moi-di.index') }}">
+                    <a href="{{ route('giay-moi-di.index', 'year='.$year) }}">
                         <span class="info-box-icon bg-yellow"><i class="fa fa-send-o"></i></span>
 
                         <div class="info-box-content color-black">
@@ -80,6 +80,23 @@
                             đến - đi của {{ auth::user()->donVi->ten_don_vi }} năm {{ $year }}</h4>
                     @endif
                 </div>
+                <form action="{{ route('bao_cao_thong_ke.index') }}" method="get" class="form-row">
+
+                    <div class="col-md-12">
+                        <div class="col-sm-6 form-inline dt-bootstrap">
+                            <div class="dataTables_length" id="example1_length">
+                                <label>Năm
+                                    <select name="year" class="form-control form-inline" onchange="this.form.submit()">
+                                        @for($i = 2020; $i <= date('Y'); $i++)
+                                            <option value="{{ $i }}" {{ $i == $year ? 'selected' : '' }}>
+                                                {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div style="width: 95%; margin: 15px auto;" class="chart-responsive">
                     <canvas id="barChart"></canvas>
                 </div>

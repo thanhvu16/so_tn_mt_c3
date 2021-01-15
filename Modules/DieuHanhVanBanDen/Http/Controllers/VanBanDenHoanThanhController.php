@@ -30,7 +30,7 @@ class VanBanDenHoanThanhController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soDen = $request->get('so_den') ?? null;
 
-        if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG])) {
+        if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $xuLyVanBanDen = DonViChuTri::where([
                 'don_vi_id' => $currentUser->don_vi_id,
@@ -39,10 +39,18 @@ class VanBanDenHoanThanhController extends Controller
             ])->select('van_ban_den_id')->get();
 
         } else {
-            $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
-                ->where('hoan_thanh', XuLyVanBanDen::HOAN_THANH_VB)
-                ->select('van_ban_den_id')
-                ->get();
+            if ($currentUser->donVi->cap_xa == DonVi::CAP_XA) {
+                $xuLyVanBanDen = DonViChuTri::where([
+                    'don_vi_id' => $currentUser->don_vi_id,
+                    'can_bo_nhan_id' => $currentUser->id,
+                    'hoan_thanh' => DonViChuTri::HOAN_THANH_VB
+                ])->select('van_ban_den_id')->get();
+            } else {
+                $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
+                    ->where('hoan_thanh', XuLyVanBanDen::HOAN_THANH_VB)
+                    ->select('van_ban_den_id')
+                    ->get();
+            }
         }
 
 

@@ -54,6 +54,7 @@ class VanBanDiController extends Controller
         $nguoi_ky = $request->get('nguoiky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
+        $year = $request->get('year') ?? null;
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
@@ -127,6 +128,11 @@ class VanBanDiController extends Controller
 
                     }
                 })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) ||
             $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI) ||
@@ -195,6 +201,11 @@ class VanBanDiController extends Controller
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
                         return $query->where('ngay_ban_hanh', $ngayketthuc);
 
+                    }
+                })
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);

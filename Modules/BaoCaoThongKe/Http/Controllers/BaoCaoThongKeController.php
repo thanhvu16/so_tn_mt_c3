@@ -25,7 +25,7 @@ class BaoCaoThongKeController extends Controller
         $donViId = null;
         $giayMoi = SoVanBan::where('ten_so_van_ban', 'like', 'giấy mời')->select('id')->first();
 
-        if ($user->hasrole([CHU_TICH, PHO_CHUC_TICH, VAN_THU_HUYEN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, VAN_THU_HUYEN])) {
 
             $type = VanBanDen::TYPE_VB_HUYEN;
 
@@ -35,6 +35,11 @@ class BaoCaoThongKeController extends Controller
                 ])
                 ->where('so_di', '!=', null)
                 ->whereNull('deleted_at')
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->count();
 
             $totalGiayMoiDi = VanBanDi::where([
@@ -44,6 +49,11 @@ class BaoCaoThongKeController extends Controller
                 ])
                 ->where('so_di', '!=', '')
                 ->whereNull('deleted_at')
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->count();
 
         } else {
@@ -55,6 +65,11 @@ class BaoCaoThongKeController extends Controller
                 'van_ban_huyen_ky' => $user->don_vi_id])
                 ->where('so_di', '!=', null)
                 ->whereNull('deleted_at')
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->count();
 
             $totalGiayMoiDi = VanBanDi::where([
@@ -63,6 +78,11 @@ class BaoCaoThongKeController extends Controller
                 'van_ban_huyen_ky' => auth::user()->don_vi_id
             ])
                 ->where('so_di', '!=', '')
+                ->where(function($query) use ($year) {
+                    if (!empty($year)) {
+                        return $query->whereYear('created_at', $year);
+                    }
+                })
                 ->whereNull('deleted_at')
                 ->count();
         }
