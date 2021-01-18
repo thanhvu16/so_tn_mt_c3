@@ -54,7 +54,8 @@
                                     <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                     @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
                                                 !empty(Request::get('date')))
-                                        <a href="{{ route('phan-loai-van-ban.da_phan_loai') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
+                                        <a href="{{ route('phan-loai-van-ban.da_phan_loai') }}" class="btn btn-success"><i
+                                                class="fa fa-refresh"></i></a>
                                     @endif
                                 </div>
                             </form>
@@ -76,7 +77,8 @@
                             <tbody>
                             @forelse($danhSachVanBanDen as $key => $vanBanDen)
                                 <tr class="tr-tham-muu">
-                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
+                                    <input type="hidden" name="don_vi_du_hop[{{ $vanBanDen->id }}]"
+                                           value="{{ $vanBanDen->lichCongTacDonVi ? 1 : null }}"
                                            class="check-don-vi-du-hop" form="form-tham-muu">
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
@@ -201,7 +203,7 @@
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
-                                                           {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">
+                                                       {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">
                                                 <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
                                                        class="color-red font-weight-normal">
                                                     VB Quan trọng
@@ -233,9 +235,9 @@
                                         </p>
                                         <p>
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
-                                                      class="form-control {{ !empty($vanBanDen->checkDonViPhoiHop) ? 'show' : 'hide' }}"
+                                                      class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="5">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="5">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị     phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
@@ -274,7 +276,8 @@
                                                        value="{{ $vanBanDen->lichCongTacDonVi->don_vi_du_hop ?? $vanBanDen->checkDonViChuTri->don_vi_id }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự họp</i></label>
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự
+                                                        họp</i></label>
                                             </div>
                                         @endif
                                         @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)

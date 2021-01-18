@@ -287,12 +287,12 @@ class VanBanDenDonViController extends Controller
         }
 
         $danhSachVanBanDen = VanBanDen::with([
-                'xuLyVanBanDen' => function ($query) {
-                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
-                },
-                'donViChuTri' => function ($query) {
-                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
-                }
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+            },
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+            }
             ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($quaHan) {
@@ -317,7 +317,7 @@ class VanBanDenDonViController extends Controller
             })
             ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-            ->paginate(PER_PAGE);
+            ->paginate(10);
 
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -326,7 +326,7 @@ class VanBanDenDonViController extends Controller
         }
 
 
-        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+        $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
 
         return view('dieuhanhvanbanden::don-vi.dang_xu_ly', compact('danhSachVanBanDen', 'order'));
 

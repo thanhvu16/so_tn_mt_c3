@@ -33,7 +33,7 @@ $('.go-back').on('click', function () {
 $('.seen-new-window').on('click', function () {
     let url = $(this).attr('href');
 
-    return window.open(url,'popup','width=600,height=600, margin:0 auto');
+    return window.open(url,'popup','width=683,height=672, margin:0 auto');
 });
 
 $('.btn-remove-item').on('click', function () {

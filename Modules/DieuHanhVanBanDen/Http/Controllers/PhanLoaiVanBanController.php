@@ -456,6 +456,9 @@ class PhanLoaiVanBanController extends Controller
                     },
                     'checkDonViPhoiHop' => function ($query) {
                         $query->select(['id', 'van_ban_den_id', 'don_vi_id', 'noi_dung']);
+                    },
+                    'vanBanDenFile' => function ($query) {
+                        return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
                     }
                     ])
                     ->whereIn('id', $arrIdVanBanDenDonVi)

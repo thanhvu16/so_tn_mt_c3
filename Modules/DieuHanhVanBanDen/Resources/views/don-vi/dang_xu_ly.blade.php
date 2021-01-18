@@ -123,7 +123,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date'), 'qua_han' => Request::get('qua_han')])->render() !!}
                             </div>
                         </div>
                     </div>

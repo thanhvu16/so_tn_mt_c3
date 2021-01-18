@@ -52,7 +52,19 @@ class DieuHanhVanBanDenController extends Controller
      */
     public function show($id, Request $request)
     {
-        $vanBanDen = VanBanDen::with(['loaiVanBan', 'soVanBan', 'doKhan', 'doBaoMat',
+        $vanBanDen = VanBanDen::with([
+            'loaiVanBan' => function ($query) {
+                return $query->select('id', 'ten_loai_van_ban');
+            },
+            'soVanBan' => function ($query) {
+                return $query->select('id', 'ten_so_van_ban');
+            },
+            'doKhan' => function ($query) {
+                return $query->select('id', 'ten_muc_do');
+            },
+            'doBaoMat' => function ($query) {
+                return $query->select('id', 'ten_muc_do');
+            },
             'xuLyVanBanDen' => function ($query) {
                 return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'status', 'created_at', 'han_xu_ly');
             },
@@ -69,9 +81,11 @@ class DieuHanhVanBanDenController extends Controller
             'giaiQuyetVanBan' => function ($query) {
                 return $query->select('id', 'van_ban_den_id', 'noi_dung', 'noi_dung_nhan_xet',
                     'user_id', 'can_bo_duyet_id', 'status', 'created_at', 'parent_id');
+            },
+            'vanBanDenFile' => function ($query) {
+                return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
             }
-        ])
-            ->findOrFail($id);
+        ])->findOrFail($id);
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 

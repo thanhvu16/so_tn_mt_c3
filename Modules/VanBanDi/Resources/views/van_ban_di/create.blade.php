@@ -77,10 +77,12 @@
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký <span class="color-red">*</span></label>
                                 <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" required>
                                     <option value="">-- Chọn Người Ký --</option>
-                                    @foreach ($ds_nguoiKy as $nguoiKy)
-                                        <option data-chuc-vu ="{{ $nguoiKy->chucvu->ten_chuc_vu ?? null }}" value="{{ $nguoiKy->id }}"
-                                        >{{$nguoiKy->ho_ten}}</option>
-                                    @endforeach
+                                    @if (!empty($ds_nguoiKy))
+                                        @foreach ($ds_nguoiKy as $nguoiKy)
+                                            <option data-chuc-vu ="{{ $nguoiKy->chucvu->ten_chuc_vu ?? null }}" value="{{ $nguoiKy->id }}"
+                                            >{{$nguoiKy->ho_ten}}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="form-group col-md-3" >

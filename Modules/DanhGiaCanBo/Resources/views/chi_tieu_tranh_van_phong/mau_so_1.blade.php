@@ -1055,10 +1055,12 @@
                                                     <select name="lanhdao"
                                                             class="form-control  select2-search" required>
                                                         <option value="">-- Chọn lãnh đạo phụ trách --</option>
-                                                        @foreach($nguoinhan as $nguoi_nhan)
-                                                            <option
-                                                                value="{{$nguoi_nhan->id}}">{{$nguoi_nhan->ho_ten}}</option>
-                                                        @endforeach
+                                                        @if (!empty($nguoinhan))
+                                                            @foreach($nguoinhan as $nguoi_nhan)
+                                                                <option
+                                                                    value="{{$nguoi_nhan->id}}">{{$nguoi_nhan->ho_ten}}</option>
+                                                            @endforeach
+                                                        @endif
                                                     </select>
 
                                             </div>

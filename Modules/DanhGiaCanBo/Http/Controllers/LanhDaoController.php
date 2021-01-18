@@ -22,6 +22,7 @@ class LanhDaoController extends Controller
         $thang = $request->get('thang_danh_gia');
         $nguoinhan = null;
         $month = Carbon::now()->format('m');
+        $nguoinhan = null;
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
