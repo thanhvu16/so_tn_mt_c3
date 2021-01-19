@@ -141,11 +141,14 @@ class VanBanLanhDaoXuLyController extends Controller
                     $query->select(['id', 'van_ban_den_id', 'don_vi_id']);
                 },
                 'checkLuuVetVanBanDen',
-                'vanBanTraLai'
-            ])
+                'vanBanTraLai',
+                'vanBanDenFile' => function ($query) {
+                    return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
+                }
+                ])
                 ->whereIn('id', $arrIdVanBanDenDonVi)
                 ->where('trinh_tu_nhan_van_ban', $active)
-                ->paginate(PER_PAGE);
+                ->paginate(PER_PAGE_10);
 
             $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
                 ->select('id', 'ho_ten')
@@ -156,7 +159,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->select('id', 'ho_ten')
                 ->get();
 
-            $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+            $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('id', '!=', $user->don_vi_id)
@@ -170,12 +173,14 @@ class VanBanLanhDaoXuLyController extends Controller
                     $vanBanDen->vanBanTraLai = $vanBanDen->vanBanTraLai ?? null;
                     $vanBanDen->checkDonViChuTri = $vanBanDen->checkDonViChuTri ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                    $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
-                    $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
+//                    $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
+//                    $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
                     $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]) ?? null;
                     $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
                     $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
-                    $vanBanDen->checkVanBanQuaChuTich = $vanBanDen->checkVanBanQuaChuTich();
+                    if ($user->hasRole(PHO_CHUC_TICH)) {
+                        $vanBanDen->checkVanBanQuaChuTich = $vanBanDen->checkVanBanQuaChuTich();
+                    }
                 }
             }
 

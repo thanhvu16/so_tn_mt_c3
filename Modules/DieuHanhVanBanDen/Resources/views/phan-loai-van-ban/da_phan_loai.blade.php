@@ -191,14 +191,14 @@
                                             </p>
                                             <!-- chu tich -->
                                             @if ($active)
-                                                @if($vanBanDen->checkQuyenGiaHan)
+{{--                                                @if($vanBanDen->checkQuyenGiaHan)--}}
                                                     <p>
                                                         <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                               value="{{ $vanBanDen->han_xu_ly ?? null }}"
+                                                               value="{{ $vanBanDen->PhoChuTich->han_xu_ly ?? null }}"
                                                                class="form-control change-han-xu-ly"
                                                                form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                     </p>
-                                                @endif
+{{--                                                @endif--}}
 
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
@@ -249,34 +249,34 @@
                                             <div class="radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                        class="radio-col-cyan chu-tich-du-hop"
                                                        value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacChuTich ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+1 }}"
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                 ><i>CT</i></label>
                                             </div>
                                             <div class="radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
                                                        class="radio-col-cyan pho-ct-du-hop"
                                                        value="{{ $vanBanDen->PhoChuTich->can_bo_nhan_id ?? null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+2 }}"
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
                                                 ><i>PCT</i></label>
                                             </div>
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
                                                        class="radio-col-cyan don-vi-du-hop"
-                                                       value="{{ $vanBanDen->lichCongTacDonVi->don_vi_du_hop ?? $vanBanDen->checkDonViChuTri->don_vi_id }}"
+                                                       value="{{ !empty($vanBanDen->lichCongTacDonVi->don_vi_du_hop) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id + $key+3 }}"><i>Phòng dự
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự
                                                         họp</i></label>
                                             </div>
                                         @endif

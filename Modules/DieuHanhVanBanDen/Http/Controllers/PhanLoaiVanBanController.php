@@ -33,6 +33,11 @@ class PhanLoaiVanBanController extends Controller
         $user = auth::user();
 
         $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
+            ->with([
+                'vanBanDenFile' => function ($query) {
+                    return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
+                }
+            ])
             ->whereNull('trinh_tu_nhan_van_ban')
             ->paginate(10);
 
@@ -47,9 +52,10 @@ class PhanLoaiVanBanController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
-        $chuTich = User::role('chủ tịch')->first();
-        $danhSachPhoChuTich = User::role('phó chủ tịch')->get();
+        $chuTich = User::role('chủ tịch')->select('id', 'ho_ten')->first();
+        $danhSachPhoChuTich = User::role('phó chủ tịch')->select('id', 'ho_ten')->get();
         $danhSachDonVi = DonVi::whereNull('deleted_at')
+            ->select('id', 'ten_don_vi')
             ->where('id', '!=', $user->don_vi_id)->get();
 
 
@@ -477,7 +483,7 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
-                    ->paginate(10);
+                    ->paginate(PER_PAGE_10);
 
                 foreach ($danhSachVanBanDen as $vanBanDen) {
                     $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen($type = 'get_id');
@@ -492,7 +498,7 @@ class PhanLoaiVanBanController extends Controller
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                 }
 
-                $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
+                $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
                 return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai_pct',
                     compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
@@ -536,24 +542,27 @@ class PhanLoaiVanBanController extends Controller
                         return $query->where('created_at', "LIKE", "%$date%");
                     }
                 })
-                ->paginate(10);
-
+                ->paginate(PER_PAGE_10);
 
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->arr_can_bo_nhan = $vanBanDen->getXuLyVanBanDen($type = 'get_id');
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
-                $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]);
+                if (empty($active)) {
+                    $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]);
+                }
                 $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]);
                 $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
                 $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
                 $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                $vanBanDen->vanBanQuanTrong = $vanBanDen->checkVanBanQuanTrong();
-                $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
+                if ($active == VanBanDen::CHU_TICH_NHAN_VB) {
+                    $vanBanDen->vanBanQuanTrong = $vanBanDen->checkVanBanQuanTrong();
+                }
+//                $vanBanDen->checkQuyenGiaHan = $vanBanDen->checkQuyenGiaHan();
                 $vanBanDen->checkLuuVetVanBanDen = $vanBanDen->checkLuuVetVanBanDen ?? null;
                 $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
             }
 
-            $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
+            $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.da_phan_loai',
                 compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',

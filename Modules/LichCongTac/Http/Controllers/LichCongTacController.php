@@ -25,7 +25,7 @@ class LichCongTacController extends Controller
         $currentUser = Auth::user();
 
         $tuan = $request->get('tuan');
-        $year = date('Y');
+        $year = !empty($request->get('year')) ? $request->get('year') : date('Y');
         $week = $tuan ? $tuan : date('W');
 
         $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
@@ -51,9 +51,11 @@ class LichCongTacController extends Controller
         $totalWeekOfYear = max(date("W", strtotime($year . "-12-27")), date("W", strtotime($year . "-12-29")),
             date("W", strtotime($year . "-12-31")));
 
-        $tuanTruoc = $week != 1 ? $week - 1 : 1;
+        $tuanTruoc = $week != 1 ? $week - 1 : 01;
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
+        $tuanTruoc = $tuanTruoc < 10 ? '0'.$tuanTruoc : $tuanTruoc;
+        $tuanSau = $tuanSau < 10 ? '0'.$tuanSau : $tuanSau;
         $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
 
         $donVi = $currentUser->donVi;
@@ -151,7 +153,7 @@ class LichCongTacController extends Controller
                 ->get();
         }
 
-        return view('lichcongtac::index', compact('danhSachLichCongTac',
+        return view('lichcongtac::index', compact('danhSachLichCongTac', 'year',
             'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));
     }
 

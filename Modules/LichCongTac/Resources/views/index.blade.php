@@ -23,11 +23,11 @@
                                 </div>
                             @endcan
                             <form action="{{ route('lich-cong-tac.index') }}" method="get" class="form-row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <select name="lanh_dao_id" class="form-control select2"
                                                 onchange="this.form.submit()">
-                                            <option value="">Chọn lãnh đạo</option>
+                                            <option value="">-- Lãnh đạo --</option>
                                             @forelse($danhSachLanhDao as $lanhdao)
                                                 <option
                                                     value="{{ $lanhdao->id }}" {{ !empty(Request::get('lanh_dao_id')) && Request::get('lanh_dao_id') == $lanhdao->id ? 'selected' :  null }}>{{ $lanhdao->ho_ten }}</option>
@@ -36,7 +36,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3 text-center">
+                                <div class="col-md-2 text-center">
                                     <div class="form-group">
                                         <a href="{{ route('lich-cong-tac.index','tuan='. date('W') ) }}"
                                            class="btn btn-primary" data-original-title="" title=""><i
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-md-1 text-center hidden-xs">
                                     <div class="form-group">
-                                        <a href="{{ route('lich-cong-tac.index','tuan='.$tuanTruoc ) }}"
+                                        <a href="{{ route('lich-cong-tac.index','tuan='.$tuanTruoc. '&year='.Request::get('year')) }}"
                                            class="btn btn-primary"
                                            data-original-title="" title=""><i
                                                 class="fa fa-backward"></i></a>
@@ -56,7 +56,7 @@
                                         <select name="tuan" class="form-control select2"
                                                 onchange="this.form.submit()">
                                             @for($i = 1; $i <= $totalWeekOfYear; $i++)
-                                                <option value="{{ $i }}" {{ $i == $week ? 'selected' : '' }}>
+                                                <option value="{{ $i < 10 ? '0'.$i : $i }}" {{ $i == $week ? 'selected' : '' }}>
                                                     Tuần {{ $i }}</option>
                                             @endfor
                                         </select>
@@ -64,10 +64,18 @@
                                 </div>
                                 <div class="col-md-1 text-center">
                                     <div class="form-group">
-                                        <a href="{{ route('lich-cong-tac.index','tuan='.$tuanSau ) }}"
+                                        <a href="{{ route('lich-cong-tac.index','tuan='.$tuanSau .'&year='.Request::get('year')) }}"
                                            class="btn btn-primary" data-original-title="" title=""><i
                                                 class="fa fa-forward"></i></a>
                                     </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="year" class="form-control form-inline select2" onchange="this.form.submit()">
+                                        @for($i = 2020; $i <= date('Y'); $i++)
+                                            <option value="{{ $i }}" {{ $i == $year ? 'selected' : '' }}>
+                                                Năm {{ $i }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                             </form>
                         </div>

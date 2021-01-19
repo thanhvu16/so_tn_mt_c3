@@ -1,6 +1,7 @@
 <?php
 
 define('PER_PAGE', 20);
+define('PER_PAGE_10', 10);
 define('UPLOAD_USER', 'uploads/nguoi-dung');
 define('UPLOAD_FILE_VAN_BAN_DEN', 'uploads/van-ban-den');
 define('UPLOAD_FILE_VAN_BAN_DI', 'uploads/van-ban-di');
