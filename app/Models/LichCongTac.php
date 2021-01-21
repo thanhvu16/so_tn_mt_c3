@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
@@ -18,6 +19,7 @@ class LichCongTac extends Model
 
     protected $fillable = [
         'object_id',
+        'parent_id',
         'type',
         'lanh_dao_id',
         'ngay',
@@ -172,5 +174,29 @@ class LichCongTac extends Model
         }
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+    }
+
+    public function listThanhPhanDuHop()
+    {
+        return ThanhPhanDuHop::where(['lich_cong_tac_id' => $this->id,
+            'don_vi_id' => auth::user()->don_vi_id,
+            ])
+            ->get();
+    }
+
+    public function lichCaNhanDuHop()
+    {
+        return ThanhPhanDuHop::where('user_id', auth::user()->id)
+            ->where('lich_cong_tac_id', $this->id)
+            ->select('id', 'trang_thai', 'trang_thai_lich')
+            ->first();
+    }
+
+    public function checkDaChuyenLichCaNhan()
+    {
+        return ThanhPhanDuHop::where('lich_cong_tac_id', $this->id)
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->select('id', 'trang_thai', 'trang_thai_lich')
+            ->first();
     }
 }

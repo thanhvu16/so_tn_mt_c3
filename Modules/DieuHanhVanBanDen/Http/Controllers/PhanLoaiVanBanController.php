@@ -19,6 +19,7 @@ use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 
 class PhanLoaiVanBanController extends Controller
@@ -161,19 +162,6 @@ class PhanLoaiVanBanController extends Controller
 
                     // check quyen gia han van ban
                     $quyenGiaHan = null;
-
-//                    // luu don vi chu tri
-//                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
-//
-//                    $nguoiDung = User::where('trang_thai', ACTIVE)
-//                        ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-//                        ->whereHas('roles', function ($query) use ($roles) {
-//                            return $query->whereIn('name', $roles);
-//                        })
-//                        ->orderBy('id', 'DESC')
-//                        ->whereNull('deleted_at')->first();
-//
-//                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
                     // check lanh dao du hop
                     if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
 
@@ -263,18 +251,6 @@ class PhanLoaiVanBanController extends Controller
                         LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
                             $vanBanDenId);
                     }
-
-//                    $dataLuuDonViChuTri = [
-//                        'van_ban_den_id' => $vanBanDenId,
-//                        'can_bo_chuyen_id' => $currentUser->id,
-//                        'can_bo_nhan_id' => $nguoiDung->id ?? null,
-//                        'noi_dung' => $textDonViChuTri[$vanBanDenId],
-//                        'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
-//                        'user_id' => $currentUser->id,
-//                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
-//                        'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
-//                        'da_chuyen_xuong_don_vi' => $chuyenVanBanXuongDonVi
-//                    ];
 
                     DonViChuTri::where([
                         'van_ban_den_id' => $vanBanDenId,

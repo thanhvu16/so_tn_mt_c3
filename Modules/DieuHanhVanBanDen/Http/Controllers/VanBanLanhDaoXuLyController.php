@@ -17,6 +17,7 @@ use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Auth, DB;
 
@@ -516,7 +517,7 @@ class VanBanLanhDaoXuLyController extends Controller
                             ->whereHas('roles', function ($query) use ($role) {
                                 return $query->whereIn('name', $role);
                             })
-                            ->select('id')
+                            ->select('id', 'don_vi_id')
                             ->orderBy('id', 'DESC')
                             ->whereNull('deleted_at')->first();
 
@@ -533,7 +534,7 @@ class VanBanLanhDaoXuLyController extends Controller
                             ->whereHas('roles', function ($query) use ($roles) {
                                 return $query->whereIn('name', $roles);
                             })
-                            ->select('id')
+                            ->select('id', 'don_vi_id')
                             ->orderBy('id', 'DESC')
                             ->whereNull('deleted_at')->first();
 

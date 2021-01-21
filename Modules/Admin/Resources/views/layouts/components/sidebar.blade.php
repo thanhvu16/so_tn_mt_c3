@@ -53,33 +53,34 @@
             @endrole
 
 
-            @can(\App\Common\AllPermission::xemLichCongTac())
-            <li class="{{ Route::is('lich-cong-tac.index') }}">
-                <a href="{{ route('lich-cong-tac.index') }}">
-                    <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
-                </a>
-            </li>
-            @endcan
+{{--            @can(\App\Common\AllPermission::xemLichCongTac())--}}
+{{--            <li class="{{ Route::is('lich-cong-tac.index') }}">--}}
+{{--                <a href="{{ route('lich-cong-tac.index') }}">--}}
+{{--                    <i class="fa fa-calendar"></i> <span>Lịch công tác</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+{{--            @endcan--}}
 
             @unlessrole(ADMIN)
+                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index') ? 'active menu-open' : '' }} }} ">
+                    <a href="#">
+                        <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
+                        <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{ Route::is('lich-cong-tac.index') ? 'active' : '' }}"><a href="{{ route('lich-cong-tac.index') }}"><i class="fa fa-circle-o"></i>Lịch công tác cá nhân</a></li>
+                        <li class="{{ Route::is('tham-du-cuoc-hop.index') ? 'active' : '' }}"><a href="{{ route('tham-du-cuoc-hop.index') }}"><i class="fa fa-circle-o"></i>Cuộc họp được mời tham dự</a></li>
+                    </ul>
+                </li>
+
                 <li class="{{ Route::is('bao_cao_thong_ke.index') }}">
                     <a href="{{ route('bao_cao_thong_ke.index') }}">
                         <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
                   </a>
                 </li>
             @endunlessrole
-{{--            <li class="{{ Route::is('danh-gia-can-bo.create') || Route::is('danh-gia-can-bo.index') ? 'active' : '' }} ">--}}
-{{--                <a href="{{route('danh-gia-can-bo.index')}}">--}}
-{{--                    <i class="fa fa-users" ></i> <span>Đánh giá cán bộ</span>--}}
-{{--                    <span class="pull-right-container">--}}
-
-{{--            </span>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-
-
-            {{--            @can('thêm dự thảo văn bản')--}}
-            {{--            @endcan--}}
         </ul>
     </section>
     <!-- /.sidebar -->

@@ -7,9 +7,11 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\LoaiVanBan;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyet;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyetFile;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Auth, DB;
@@ -168,7 +170,7 @@ class VanBanDenPhoiHopController extends Controller
         $textnoidungTruongPhong = $data['noi_dung_truong_phong'] ?? null;
         $textnoidungPhoPhong = $data['noi_dung_pho_phong'] ?? null;
         $textNoiDungChuyenVien = $data['noi_dung_chuyen_vien'] ?? null;
-
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
@@ -179,6 +181,8 @@ class VanBanDenPhoiHopController extends Controller
                     $donViPhoiHop = DonViPhoiHop::where('van_ban_den_id', $vanBanDenDonViId)
                         ->where('can_bo_nhan_id', $currentUser->id)
                         ->whereNull('hoan_thanh')->first();
+
+                    $vanBanDen = VanBanDen::where('id', $vanBanDenDonViId)->first();
 
                     if ($donViPhoiHop) {
                         $donViPhoiHop->chuyen_tiep = DonViPhoiHop::CHUYEN_TIEP;
@@ -263,6 +267,9 @@ class VanBanDenPhoiHopController extends Controller
                         $chuyenNhanVanBanChuyenVienDonVi->fill($dataChuyenNhanVanBanChuyenVien);
                         $chuyenNhanVanBanChuyenVienDonVi->save();
                     }
+                    // save thanh phan du hop
+                    ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenDonViId], $danhSachTruongPhongIds[$vanBanDenDonViId],
+                        $danhSachPhoPhongIds[$vanBanDenDonViId], $danhSachChuyenVienIds[$vanBanDenDonViId]], null, auth::user()->don_vi_id);
 
                 }
 

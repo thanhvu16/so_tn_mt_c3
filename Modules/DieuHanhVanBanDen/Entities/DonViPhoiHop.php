@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Auth;
+use Modules\Admin\Entities\LoaiVanBan;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 
 class DonViPhoiHop extends Model
@@ -77,6 +79,11 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
                 $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
                 $donViPhoiHop->save();
+
+                // save thành phần dự họp
+                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+                $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+                ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id], null, $nguoiDung->don_vi_id ?? null);
             }
         }
     }

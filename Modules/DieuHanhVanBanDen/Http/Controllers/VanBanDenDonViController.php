@@ -16,6 +16,7 @@ use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
@@ -441,7 +442,7 @@ class VanBanDenDonViController extends Controller
 
                     if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
 
-                        if (count($lanhDaoDuHopId) > 0 && !empty($lanhDaoDuHopId[$vanBanDenId])) {
+                        if (!empty($lanhDaoDuHopId) > 0 && !empty($lanhDaoDuHopId[$vanBanDenId])) {
                             LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
                         }
                     }
@@ -564,6 +565,9 @@ class VanBanDenDonViController extends Controller
                         ChuyenVienPhoiHop::savechuyenVienPhoiHop($arrChuyenVienPhoiHopIds[$vanBanDenId],
                             $vanBanDenId, $currentUser->don_vi_id);
                     }
+                    // save thanh phan du hop
+                    ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenId], $danhSachTruongPhongIds[$vanBanDenId],
+                        $danhSachPhoPhongIds[$vanBanDenId], $danhSachChuyenVienIds[$vanBanDenId]], null, $donVi->id);
 
                     //luu can bo xem de biet
                     LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)

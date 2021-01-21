@@ -5,6 +5,8 @@ namespace Modules\DieuHanhVanBanDen\Entities;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\LoaiVanBan;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Auth;
 
@@ -106,7 +108,7 @@ class DonViChuTri extends Model
                 ->whereHas('roles', function ($query) use ($role) {
                     return $query->whereIn('name', $role);
                 })
-                ->select('id')
+                ->select('id', 'don_vi_id')
                 ->orderBy('id', 'DESC')
                 ->whereNull('deleted_at')->first();
 
@@ -125,7 +127,7 @@ class DonViChuTri extends Model
                 ->whereHas('roles', function ($query) use ($roles) {
                     return $query->whereIn('name', $roles);
                 })
-                ->select('id')
+                ->select('id', 'don_vi_id')
                 ->orderBy('id', 'DESC')
                 ->whereNull('deleted_at')->first();
         }
@@ -150,5 +152,10 @@ class DonViChuTri extends Model
         $luuVetVanBanDen = new LogXuLyVanBanDen();
         $luuVetVanBanDen->fill($dataLuuDonViChuTri);
         $luuVetVanBanDen->save();
+
+        // save thành phần dự họp
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id], null, $nguoiDung->don_vi_id ?? null);
     }
 }

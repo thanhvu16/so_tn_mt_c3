@@ -136,7 +136,7 @@
                                                 VB Quan trọng
                                             </label>
 
-                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacPhoChuTich))
+                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && empty($vanBanDen->lichCongTacChuTich))
                                                 <p>Lãnh đạo dự họp:</p>
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"

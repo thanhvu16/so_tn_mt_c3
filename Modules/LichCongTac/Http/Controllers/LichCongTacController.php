@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 
 class LichCongTacController extends Controller
 {
@@ -54,8 +55,8 @@ class LichCongTacController extends Controller
         $tuanTruoc = $week != 1 ? $week - 1 : 01;
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
 
-        $tuanTruoc = $tuanTruoc < 10 ? '0'.$tuanTruoc : $tuanTruoc;
-        $tuanSau = $tuanSau < 10 ? '0'.$tuanSau : $tuanSau;
+        $tuanTruoc = $tuanTruoc < 10 ? '0' . $tuanTruoc : $tuanTruoc;
+        $tuanSau = $tuanSau < 10 ? '0' . $tuanSau : $tuanSau;
         $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
 
         $donVi = $currentUser->donVi;
@@ -73,7 +74,7 @@ class LichCongTacController extends Controller
             $id = [$currentUser->id];
 //            array_push( $id, $currentUser->id);
 
-            $roleDonVi  = [CHANH_VAN_PHONG, TRUONG_PHONG];
+            $roleDonVi = [CHANH_VAN_PHONG, TRUONG_PHONG];
 
             $danhSachTruongPhongDonVi = User::whereHas('roles', function ($query) use ($roleDonVi) {
                 return $query->whereIn('name', $roleDonVi);
@@ -119,14 +120,16 @@ class LichCongTacController extends Controller
                     return $query->where('lanh_dao_id', $lanhDaoId);
                 }
             })
-            ->where(function ($query) use ($donViDuHop, $currentUser, $donViId) {
-
-                if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
-                    return $query->where('don_vi_du_hop', $donViDuHop)
-                                ->orWhere('don_vi_id', $donViId);
-                }
-            })
+//            ->where(function ($query) use ($donViDuHop, $currentUser, $donViId) {
+//
+//                if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+//                    return $query->where('don_vi_du_hop', $donViDuHop)
+//                        ->orWhere('don_vi_id', $donViId);
+//                }
+//            })
             ->orderBy('buoi', 'ASC')->get();
+
+
 
         if ($danhSachLichCongTac) {
             foreach ($danhSachLichCongTac as $lichCongTac) {
@@ -173,8 +176,54 @@ class LichCongTacController extends Controller
      */
     public function store(Request $request)
     {
-        canPermission(AllPermission::themLichCongTac());
+        //canPermission(AllPermission::themLichCongTac());
         $currentUser = auth::user();
+        $lichCongTacId = $request->get('lich_cong_tac_id') ?? null;
+        $thanhPhanDuHopId = $request->get('thanh_phan_du_hop_id') ?? null;
+
+        //tạo lịch công tác cá nhân từ lịch được mời tham dự
+        if (!empty($lichCongTacId)) {
+            $lichCongTac = LichCongTac::find($lichCongTacId);
+            //
+            if ($lichCongTac) {
+                $dataTaoMoiLichCongTac = array(
+                    'object_id' => $lichCongTac->object_id,
+                    'parent_id' => $lichCongTac->id,
+                    'type' => $lichCongTac->type,
+                    'lanh_dao_id' => $currentUser->id,
+                    'ngay' => $lichCongTac->ngay,
+                    'gio' => $lichCongTac->gio,
+                    'tuan' => $lichCongTac->tuan,
+                    'noi_dung' => $lichCongTac->noi_dung,
+                    'don_vi_id' => $lichCongTac->don_vi_id,
+                    'buoi' => $lichCongTac->buoi,
+                    'dia_diem' => $lichCongTac->dia_diem,
+                    'trang_thai_lich' => $lichCongTac->trang_thai_lich,
+                    'ghi_chu' => $lichCongTac->ghi_chu,
+                    'user_id' => $currentUser->id,
+                    'don_vi_du_hop' => $lichCongTac->don_vi_du_hop,
+                );
+
+                $newLichCongTac = new LichCongTac();
+                $newLichCongTac->fill($dataTaoMoiLichCongTac);
+                $newLichCongTac->save();
+
+                // update
+                $thanhPhanDuHop = ThanhPhanDuHop::where('id', $thanhPhanDuHopId)->first();
+                if ($thanhPhanDuHop) {
+                    $thanhPhanDuHop->trang_thai_lich = ThanhPhanDuHop::TRANG_THAI_LICH_DA_CHUYEN;
+                    $thanhPhanDuHop->save();
+                }
+
+                return redirect()->route('lich-cong-tac.index')->with('success', 'Đã chuyển lịch công tác thành công.');
+            }
+
+            return redirect()->back()->with('warning', 'Không tìm thấy lịch này vui lòng thử lại.');
+        }
+
+
+        dd($lichCongTacId);
+
         $tuan = date('W', strtotime($request->get('ngay')));
 
         $dataLichCongTac = array(
