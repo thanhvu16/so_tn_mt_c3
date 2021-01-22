@@ -46,6 +46,7 @@ Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'Do
 
 //
 Route::get('get-chuc-vu/{id}', 'NguoiDungController@getChucVu');
+Route::get('get-don-vi/{id}', 'NguoiDungController@getDonVi');
 Route::resource('vai-tro', 'VaiTroController');
 Route::resource('chuc-nang', 'ChucNangController');
 

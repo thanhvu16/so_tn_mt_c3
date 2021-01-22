@@ -17,6 +17,7 @@ use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
+use Modules\LichCongTac\Entities\NguoiThamDu;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
@@ -472,6 +473,8 @@ class VanBanDenDonViController extends Controller
                         $luuVetVanBanDen = new LogXuLyVanBanDen();
                         $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
                         $luuVetVanBanDen->save();
+
+                        NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
                     }
 
                     if (isset($danhSachTruongPhongIds) && !empty($danhSachTruongPhongIds[$vanBanDenId])) {
@@ -498,6 +501,8 @@ class VanBanDenDonViController extends Controller
                         $luuVetVanBanDen = new LogXuLyVanBanDen();
                         $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
                         $luuVetVanBanDen->save();
+
+                        NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachTruongPhongIds[$vanBanDenId]);
                     }
 
                     //chuyen nhan van ban don vi
@@ -525,6 +530,8 @@ class VanBanDenDonViController extends Controller
                         $luuVetVanBanDen = new LogXuLyVanBanDen();
                         $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
                         $luuVetVanBanDen->save();
+
+                        NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId]);
                     }
 
                     if (isset($danhSachChuyenVienIds[$vanBanDenId])) {
@@ -553,6 +560,8 @@ class VanBanDenDonViController extends Controller
                         $logChuyenVien = new LogXuLyVanBanDen();
                         $logChuyenVien->fill($dataChuyenNhanVanBanChuyenVien);
                         $logChuyenVien->save();
+
+                        NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId]);
                     }
 
                     //delete chuyen vien phoi hop

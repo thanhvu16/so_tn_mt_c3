@@ -221,9 +221,6 @@ class LichCongTacController extends Controller
             return redirect()->back()->with('warning', 'Không tìm thấy lịch này vui lòng thử lại.');
         }
 
-
-        dd($lichCongTacId);
-
         $tuan = date('W', strtotime($request->get('ngay')));
 
         $dataLichCongTac = array(
@@ -334,4 +331,6 @@ class LichCongTacController extends Controller
     {
         //
     }
+
+
 }

@@ -34,7 +34,7 @@
                                         <td class="text-center">{{ $order++ }}</td>
                                         <td class="text-center">{{ date('d/m/Y', strtotime($lichCongTac->ngay)) .' - '. $lichCongTac->gio }}</td>
                                         <td>
-                                            <a href="#">{{ $lichCongTac->noi_dung }}</a>
+                                            <a href="{{route('chitiethop',$lichCongTac->id)}}">{{ $lichCongTac->noi_dung }}</a>
                                         </td>
                                         <td>{{ $lichCongTac->lanhDao->ho_ten }}</td>
                                         <td>{{ $lichCongTac->dia_diem ?? '' }}</td>
