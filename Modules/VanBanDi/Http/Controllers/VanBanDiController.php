@@ -716,7 +716,7 @@ class VanBanDiController extends Controller
 
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'don_vi_soan_thao' => auth::user()->don_vi_id])->first();
+                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi])->first();
 
 
                 }
@@ -854,7 +854,7 @@ class VanBanDiController extends Controller
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => null])->orderBy('created_at', 'desc')->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id, 'don_vi_soan_thao' => auth::user()->don_vi_id])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->orderBy('created_at', 'desc')->get();
         }
 //        $vanbandichoso = Vanbandichoduyet::where(['cho_cap_so' => 1])->orderBy('created_at', 'desc')->get();
         $emailTrongThanhPho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
@@ -908,7 +908,7 @@ class VanBanDiController extends Controller
                 // update van ban den
                 VanBanDen::updateHoanThanhVanBanDen($vanbandi->van_ban_den_id);
 
-                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 //                //update lich cong tac
                 if (!empty($giayMoi) && $vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
                     LichCongTac::taoLichCongTac($vanbandi);

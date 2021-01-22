@@ -141,7 +141,7 @@ class LichCongTacController extends Controller
                 }
 
                 $lichCongTac->truyenNhanVanBanDonVi = $lichCongTac->donViChuTri();
-                $lichCongTac->giaiQuyetVanBanHoanThanh = $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh();
+                $lichCongTac->giaiQuyetVanBanHoanThanh = isset($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh() : null;
             }
         }
 

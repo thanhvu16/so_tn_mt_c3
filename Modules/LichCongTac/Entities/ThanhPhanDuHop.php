@@ -51,6 +51,7 @@ class ThanhPhanDuHop extends Model
 
     public static function store($giayMoi, $vanBanden, $arrayLanhDaoId, $type = null, $donViId = null)
     {
+        $donVi = auth::user()->donVi;
         if (!empty($giayMoi) && $giayMoi->id == $vanBanden->so_van_ban_id) {
 
             $lichCongTac = LichCongTac::where('object_id', $vanBanden->id)
@@ -79,7 +80,7 @@ class ThanhPhanDuHop extends Model
                     ->orderBy('created_at', 'DESC')
                     ->first();
 
-                if (auth::user()->can(AllPermission::thamMuu())) {
+                if (empty($donVi->cap_xa) && auth::user()->can(AllPermission::thamMuu()) || auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
                     ThanhPhanDuHop::where('lich_cong_tac_id', $lichCongTac->id)
                         ->where('object_id', $vanBanden->id)
                         ->where('nguoi_tao_id', auth::user()->id)

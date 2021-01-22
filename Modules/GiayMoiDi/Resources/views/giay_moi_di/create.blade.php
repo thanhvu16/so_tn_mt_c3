@@ -17,7 +17,7 @@
                             <div class="form-group col-md-3 hidden">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản </label>
                                 <select class="form-control show-tick "  name="loaivanban_id" id="loaivanban_id" required>
-                                    <option value="1000">-- Chọn Loại Văn Bản --</option>
+                                    <option value="{{ $giayMoi->id }}">{{ $giayMoi->ten_loai_van_ban }}</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
@@ -48,7 +48,7 @@
                                 <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo <span style="color: red">*</span></label>
                                 <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
                                     @foreach ($ds_DonVi as $donVi)
-                                        <option value="{{ $donVi->id }}"
+                                        <option value="{{ $donVi->id }}" class="select2" {{ auth::user()->don_vi_id == $donVi->id ? 'selected' : null     }}
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach
                                 </select>

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
+use Modules\Admin\Entities\SoVanBan;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonViGiaHan;
 use Modules\CongViecDonVi\Entities\CongViecDonViPhoiHop;
@@ -194,14 +195,14 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách giấy mời đi', $giayMoiDi));
             array_push($vanThuVanBanDiCoLors, COLOR_RED);
 
-            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => $user->don_vi_id])
+            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => $user->don_vi_id])
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => $user->don_vi_id])
+            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id])
                 ->count();
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));

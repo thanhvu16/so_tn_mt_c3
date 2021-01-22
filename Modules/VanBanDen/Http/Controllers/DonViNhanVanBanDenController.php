@@ -450,7 +450,7 @@ class DonViNhanVanBanDenController extends Controller
 //            'so_van_ban_id' => 100,
 //
 //        ])->max('so_den');
-
+        $phanbiet = null;
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
@@ -485,7 +485,9 @@ class DonViNhanVanBanDenController extends Controller
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
-        return view('vanbanden::don_vi_nhan_van_ban.giaymoi', compact('vanban', 'sodengiaymoi', 'ds_loaiVanBan', 'id', 'ds_nguoiKy', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung'));
+        return view('vanbanden::don_vi_nhan_van_ban.giaymoi',
+            compact('vanban', 'sodengiaymoi', 'ds_loaiVanBan', 'id', 'ds_nguoiKy',
+                'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung', 'phanbiet'));
 
     }
 
@@ -543,6 +545,7 @@ class DonViNhanVanBanDenController extends Controller
     public function vaosovanbandvnhan(Request $request)
     {
         $user = auth::user();
+
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         if (auth::user()->role_id == QUYEN_VAN_THU_HUYEN) {
@@ -658,6 +661,8 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                     $vanbandv->save();
                     UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
+                    //save chuyen don vi chu tri
+                    DonViChuTri::saveDonViChuTri($vanbandv->id);
 
                     if ($request->id_file) {
                         $file = FileVanBanDi::where('id', $request->id_file)->first();
@@ -698,6 +703,8 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
+                //save chuyen don vi chu tri
+                DonViChuTri::saveDonViChuTri($vanbandv->id);
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();
                     if ($file) {

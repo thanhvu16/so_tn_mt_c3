@@ -77,11 +77,11 @@ class LichCongTac extends Model
         return $this->hasOne(CongViecDonVi::class, 'lich_cong_tac_id', 'id');
     }
 
-    public function taoLichCongTac($vanBanDi)
+    public static function taoLichCongTac($vanBanDi)
     {
         $tuan = date('W', strtotime($vanBanDi->ngay_hop));
 
-        $lanhDaoDuHop = $this->checkLanhDaoDuHop($vanBanDi->nguoi_ky);
+        $lanhDaoDuHop = self::checkLanhDaoDuHop($vanBanDi->nguoi_ky);
         $noiDungMoiHop = $vanBanDi->noi_dung_hop ?? null;
 
         if (!empty($lanhDaoDuHop) && empty($vanBanDi->noi_dung_hop)) {

@@ -31,8 +31,6 @@ class GiayMoiDiController extends Controller
      */
     public function index(Request $request)
     {
-
-
         $user= auth::user();
         $trichyeu = $request->get('vb_trichyeu');
         $so_ky_hieu = $request->get('vb_sokyhieu');
@@ -48,6 +46,7 @@ class GiayMoiDiController extends Controller
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $year = $request->get('year') ?? null;
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
 
         if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) || $user->hasRole(CHANH_VAN_PHONG) || $user->hasRole(PHO_CHANH_VAN_PHONG)) {
             $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHU_TICH, PHO_CHUC_TICH ])->orderBy('username', 'desc')->get();
@@ -56,7 +55,7 @@ class GiayMoiDiController extends Controller
         }
         if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             //đây là văn bản của huyện
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => 1000 , 'don_vi_soan_thao' => null])->where('so_di', '!=', '')->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null , 'don_vi_soan_thao' => null])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
@@ -132,7 +131,7 @@ class GiayMoiDiController extends Controller
         } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
             $user->hasRole(VAN_THU_DON_VI) || $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             //đây là văn bản của đơn vị
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => 1000 , 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', '')->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
@@ -253,6 +252,8 @@ class GiayMoiDiController extends Controller
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh',1)->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
+
 
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
@@ -321,7 +322,7 @@ class GiayMoiDiController extends Controller
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         return view('giaymoidi::giay_moi_di.create',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_DonVi_nhan','ds_loaiVanBan','ds_soVanBan',
-            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi'));
+            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi', 'giayMoi'));
     }
 
     /**
@@ -337,6 +338,7 @@ class GiayMoiDiController extends Controller
         $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $gio_hop= date ('H:i',strtotime($request->gio_hop));
+
         $vanbandi = new VanBanDi();
         $vanbandi->trich_yeu = $request->vb_trichyeu;
         $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
