@@ -6,6 +6,7 @@ define('LOAI_VAN_BAN_DI', 1000);
 define('UPLOAD_USER', 'uploads/nguoi-dung');
 define('UPLOAD_FILE_VAN_BAN_DEN', 'uploads/van-ban-den');
 define('UPLOAD_FILE_VAN_BAN_DI', 'uploads/van-ban-di');
+define('UPLOAD_FILE_CUOC_HOP', 'uploads/cuoc-hop');
 define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den');
 define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
 define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet');

@@ -274,7 +274,7 @@ class LanhDaoController extends Controller
         $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 1,'can_bo_goc'=>$id])->first();
         $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 3,'can_bo_goc'=>$id])->first();
         $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 2,'can_bo_goc'=>$id])->first();
-        return view('danhgiacanbo::chi_tiet_ca_nhan.chi_tiet', compact( 'laydanhgiatruongphong',  'laydanhgiacanhan', 'laydanhgiaphophong'));
+        return view('danhgiacanbo::chi_tiet_ca_nhan.chi-tiet', compact( 'laydanhgiatruongphong',  'laydanhgiacanhan', 'laydanhgiaphophong'));
     }
     /**
      * Show the specified resource.

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Hash, DB, Auth;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\NhomDonVi_chucVu;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use Spatie\Permission\Models\Role;
@@ -288,6 +289,18 @@ class NguoiDungController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $ds_chucvu
+            ]);
+        }
+    }
+    public function getDonVi(Request $request, $id)
+    {
+        $nhom_don_vi = NhomDonVi::where('id', $id)->first();
+        $lay_don_vi = DonVi::where('nhom_don_vi', $nhom_don_vi->id)->get();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $lay_don_vi
             ]);
         }
     }

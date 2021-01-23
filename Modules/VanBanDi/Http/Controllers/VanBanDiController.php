@@ -709,6 +709,7 @@ class VanBanDiController extends Controller
             $tenviettatso = strtoupper($tachchuoi[0]);
             $sodi = (int)$tachchuoi[1];
             $loaivanban = LoaiVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
+
             $vanban = null;
             if (!empty($loaivanban)) {
                 if ($user->hasRole(VAN_THU_HUYEN)) {
@@ -717,10 +718,9 @@ class VanBanDiController extends Controller
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
                     $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi])->first();
-
-
                 }
             }
+
             if ($vanban) {
 
                 $xoafiletrinhky = FileVanBanDi::where(['trang_thai' => 2, 'file_chinh_gui_di' => 2])->first();

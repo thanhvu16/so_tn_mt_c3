@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
+use Modules\LichCongTac\Entities\FileCuocHop;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
@@ -180,7 +181,7 @@ class LichCongTac extends Model
     {
         return ThanhPhanDuHop::where(['lich_cong_tac_id' => $this->id,
             'don_vi_id' => auth::user()->don_vi_id,
-            ])
+        ])
             ->get();
     }
 
@@ -198,5 +199,23 @@ class LichCongTac extends Model
             ->where('don_vi_id', auth::user()->don_vi_id)
             ->select('id', 'trang_thai', 'trang_thai_lich')
             ->first();
+    }
+
+    public function fileKetLuan()
+    {
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',3);
+    }
+
+    public function fileCuocHop()
+    {
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',1);
+    }
+    public function fileThamKhao()
+    {
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
+    }
+    public function Danh()
+    {
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
     }
 }

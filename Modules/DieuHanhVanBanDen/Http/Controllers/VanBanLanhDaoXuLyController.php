@@ -380,6 +380,7 @@ class VanBanLanhDaoXuLyController extends Controller
                         if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
 
                             DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $vanBanChuyenXuongDonVi);
+                            // lưu phòng chuẩn bị
                         }
 
                         // luu don vi phoi hop

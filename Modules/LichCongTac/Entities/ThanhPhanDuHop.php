@@ -27,6 +27,10 @@ class ThanhPhanDuHop extends Model
         'nhan_xet',
         'trang_thai_lich'
     ];
+    public function nguoiDung()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     const TRANG_THAI_LICH_DA_CHUYEN = 2;
     const THANH_PHAN_MOI_CUA_DON_VI = 2;
@@ -139,4 +143,6 @@ class ThanhPhanDuHop extends Model
         }
 
     }
+
+
 }
