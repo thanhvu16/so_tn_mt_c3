@@ -13,9 +13,11 @@ use Modules\Admin\Entities\NhomDonVi;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\LichCongTac\Entities\CuocHopChiTiet;
 use Modules\LichCongTac\Entities\CuocHopLienQuan;
+use Modules\LichCongTac\Entities\DanhGiaGopY;
+use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 use Modules\LichCongTac\Entities\FileCuocHop;
 use Modules\LichCongTac\Entities\NguoiThamDu;
-use File, auth;
+use File, auth, DB;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 
 class QuanLyCuocHopController extends Controller
@@ -49,18 +51,22 @@ class QuanLyCuocHopController extends Controller
         $donvi = DonVi::orderBy('ten_don_vi', 'asc')->whereNull('deleted_at')->get();
         $cuocHopLienQuan = CuocHopLienQuan::where('id_lich_hop', $id)->whereNull('deleted_at')->get();
         $nguoi_chu_tri = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH])->get();
-        $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id'=>$id,'trang_thai'=>1])->get();
+        $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->get();
+        $phong_up_tai_lieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->distinct()->pluck('don_vi_id');
+
+        $canBoGopY = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->get();
+        $GopY = DanhGiaGopY::where(['user_id' => auth::user()->id, 'id_lich_hop' => $id])->first();
 //        dd($cuocHopLienQuan);
 
 
-        return view('lichcongtac::chi-tiet.index', compact('lich_cong_tac', 'danhSachLanhDao','nguoi_upTaiLieu' ,'nguoi_tham_du', 'id', 'cuochop', 'nhom_don_vi',
-            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri'));
+        return view('lichcongtac::chi-tiet.index', compact('lich_cong_tac', 'danhSachLanhDao', 'nguoi_upTaiLieu', 'nguoi_tham_du', 'id', 'cuochop', 'nhom_don_vi',
+            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri', 'phong_up_tai_lieu', 'canBoGopY', 'GopY'));
     }
 
 
     public function deleteNguoiDuHop($id)
     {
-        $xoa = ThanhPhanDuHop::where(['id' => $id])->where('thanh_phan_moi',2)->delete();
+        $xoa = ThanhPhanDuHop::where(['id' => $id])->where('thanh_phan_moi', 2)->delete();
         return response()->json(
             [
                 'id' => $id,
@@ -272,7 +278,7 @@ class QuanLyCuocHopController extends Controller
 
     public function themCuocHop(Request $request)
     {
-        $cuocHopTrung = CuocHopLienQuan::where(['id_cuoc_hop_lien_quan'=> $request->id,'id_lich_hop'=>$request->lich_hop_id])->first();
+        $cuocHopTrung = CuocHopLienQuan::where(['id_cuoc_hop_lien_quan' => $request->id, 'id_lich_hop' => $request->lich_hop_id])->first();
 
 
         if ($cuocHopTrung == null) {
@@ -300,37 +306,132 @@ class QuanLyCuocHopController extends Controller
 
     public function XoaCuocHop($id)
     {
-        $xoaCuocHopLienQuan = CuocHopLienQuan::where('id',$id)->delete();
+        $xoaCuocHopLienQuan = CuocHopLienQuan::where('id', $id)->delete();
         return response()->json(
             [
                 'is_relate' => false
             ]
         );
     }
+
     public function xoaTaiLieu($id)
     {
-        $xoaCuocHopLienQuan = FileCuocHop::where('id',$id)->delete();
+        $xoaCuocHopLienQuan = FileCuocHop::where('id', $id)->delete();
         return response()->json(
             [
                 'is_relate' => false
             ]
         );
     }
-    public function luu_danhgiatonghop(Request $request,$id)
+
+    public function luu_danhgiatonghop(Request $request, $id)
     {
-        $lich_cong_tac = LichCongTac::where('id',$id)->first();
-        if($request->danh_gia == 1)
-        {
+        $lich_cong_tac = LichCongTac::where('id', $id)->first();
+        if ($request->danh_gia == 1) {
             $lich_cong_tac->danh_gia = 1;
             $lich_cong_tac->save();
-        }else{
+        } else {
             $lich_cong_tac->danh_gia = 0;
             $lich_cong_tac->save();
         }
         return response()->json(
             [
                 'is_relate' => false,
-                'message' => 'Thành công!'
+                'message' => 'Đánh giá thành công!'
+            ]
+        );
+    }
+
+    public function luu_noidungchat(Request $request, $id)
+    {
+        $GopY = DanhGiaGopY::where(['user_id' => auth::user()->id, 'id_lich_hop' => $id])->first();
+        if ($GopY == null) {
+            $gopY = new DanhGiaGopY();
+            $gopY->user_id = auth::user()->id;
+            $gopY->id_lich_hop = $id;
+            $gopY->trao_doi_thao_luan = $request->noidungchat;
+            $gopY->save();
+        } else {
+            $GopY->trao_doi_thao_luan = $request->noidungchat;
+            $GopY->save();
+        }
+        return response()->json(
+            [
+                'is_relate' => false,
+                'message' => 'Đánh giá thành công!'
+            ]
+        );
+    }
+
+    public function nhanxetTaiLieu(Request $request, $id)
+    {
+
+        $taiLieu = new DanhGiaTaiLieu();
+        $taiLieu->id_phong = $request->id_donVi;
+        $taiLieu->id_lich_ct = $request->lich_cong_tac;
+        $taiLieu->danh_gia_chat_luong_chuan_bi_tai_lieu = $request->danh_gia;
+        $taiLieu->nhan_xet = $request->nhan_xet;
+        $taiLieu->trang_thai = 1;
+        $taiLieu->save();
+        return response()->json(
+            [
+                'is_relate' => true,
+                'message' => 'Đánh giá thành công!'
+            ]
+        );
+    }
+
+    public function hoten_capnhatthamdu(Request $request)
+    {
+        $donViId= $request->don_vi;
+        $nhom_don_vi= $request->nhom_don_vi;
+        $chuc_vu= $request->chuc_vu;
+        $hoTen= $request->ho_ten;
+        $nhom = NhomDonVi::where('id',$nhom_don_vi)->first();
+//        $donvi = DonVi::where('')
+        $users = User::with('chucVu', 'donVi')
+            ->where('trang_thai', ACTIVE)
+            ->where(function ($query) use ($donViId) {
+                if (!empty($donViId)) {
+                    return $query->where('don_vi_id', $donViId);
+                }
+            })
+            ->where(function ($query) use ($chuc_vu) {
+                if (!empty($chuc_vu)) {
+                    return $query->where('chuc_vu_id', $chuc_vu);
+                }
+            })
+            ->where(function ($query) use ($hoTen) {
+                if (!empty($hoTen)) {
+                    return $query->where('ho_ten', $hoTen);
+                }
+            })
+
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'DESC')
+            ->get();
+        return response()->json(
+            [
+                'is_relate' => true,
+                'users' => $users
+            ]
+        );
+
+    }
+
+    public function LuuCanBoDuHop(Request $request)
+    {
+        $user = User::where('id',$request->id)->first();
+        $nguoiThamDu = new ThanhPhanDuHop();
+        $nguoiThamDu->lich_cong_tac_id = $request->lich_hop_id;
+        $nguoiThamDu->user_id = $request->id;
+        $nguoiThamDu->don_vi_id = $user->don_vi_id;
+        $nguoiThamDu->nguoi_tao_id = auth::user()->id;
+        $nguoiThamDu->save();
+        return response()->json(
+            [
+                'is_relate' => true,
+                'message' => 'Thêm cán bộ thành công!'
             ]
         );
     }

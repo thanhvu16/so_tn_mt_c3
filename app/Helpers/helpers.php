@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
 use app\Models\UserLogs;
 
@@ -123,6 +124,15 @@ function api_add($arr ,$url)
 
 
 
+}
+
+ function DonViUpTaiLieu($id)
+{
+    $donvi = DonVi::where(['id' => $id])
+        ->whereNull('deleted_at')
+        ->first();
+
+    return $donvi;
 }
 function dateFromBusinessDays($days, $dateTime=null) {
     $dateTime = is_null($dateTime) ? time() : strtotime(str_replace('/', '-', $dateTime));

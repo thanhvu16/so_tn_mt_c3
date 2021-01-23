@@ -214,4 +214,8 @@ class LichCongTac extends Model
     {
         return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
     }
+    public function Danh()
+    {
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
+    }
 }

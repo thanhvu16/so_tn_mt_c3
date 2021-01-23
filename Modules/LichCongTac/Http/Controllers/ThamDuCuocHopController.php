@@ -30,11 +30,11 @@ class ThamDuCuocHopController extends Controller
 
         $danhSachLichCongTac = LichCongTac::with('lanhDao')
             ->whereIn('id', $lichConTacId)
-            ->where('ngay', '>=', $date)
+//            ->where('ngay', '>=', $date)
             ->select('id', 'ngay', 'gio', 'noi_dung', 'dia_diem', 'lanh_dao_id', 'trang_thai_lich', 'ghi_chu')
             ->orderBy('ngay', 'ASC')
             ->paginate(PER_PAGE);
-
+//        dd($danhSachLichCongTac);
         foreach ($danhSachLichCongTac as $lichCongTac) {
             $lichCongTac->listThanhPhanDuHop = $lichCongTac->listThanhPhanDuHop();
             $lichCongTac->checkDaChuyenLichCaNhan = $lichCongTac->checkDaChuyenLichCaNhan();

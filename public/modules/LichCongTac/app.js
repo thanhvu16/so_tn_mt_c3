@@ -216,6 +216,33 @@ $('.Xoatailieu').on('click', function (e) {
     }
 
 })
+$('.luu_noidungchat').on('click', function (e) {
+    var id = $(this).data('id');
+    var noidungchat = $('[name=noidungchat]').val();
+        e.preventDefault();
+        $.ajax({
+            url: APP_URL + '/luu_noidungchat/'+ id,
+            type: 'POST',
+            beforeSend: showLoading(),
+            dataType: 'json',
+            data: {
+                id:id,
+                noidungchat:noidungchat,
+            },
+        }).done(function (res) {
+            hideLoading();
+            toastr['success'](res.message);
+            location.reload();
+            // $('.tai-lieu-' + id).remove();
+        })
+            .fail(function (error) {
+                toastr['error'](error.message, 'Thông báo hệ thống');
+            });
+
+})
+
+
+
 $('.reset-cuoc-hop').on('click', function (e) {
     location.reload();
 })
@@ -277,8 +304,7 @@ $("body").on("click",'.luu_danhgiatonghop', function () {
             hideLoading();
             if (res.is_relate == true) {
                 $('.ket-luan3' ).remove();
-            }else {
-                toastr['success'](res.message, 'Thông báo hệ thống');
+                toastr['success'](res.message);
             }
         })
             .fail(function (error) {
@@ -288,3 +314,106 @@ $("body").on("click",'.luu_danhgiatonghop', function () {
 
 });
 
+function danhGiaTaiLieu(e,p,don_vi,g) {
+    var id_donVi = p;
+    var danh_gia = $('[name='+e+']:checked').val();
+    var nhan_xet = $('[name='+g+']').val();
+    var lich = don_vi;
+    $.ajax({
+        url: APP_URL + '/nhanxetTaiLieu/' + lich,
+        type: 'POST',
+        beforeSend: showLoading(),
+        dataType: 'json',
+        data: {
+            danh_gia: danh_gia,
+            nhan_xet: nhan_xet,
+            id_donVi: id_donVi,
+            lich_cong_tac: lich,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+    }).done(function (res) {
+        hideLoading();
+        if (res.is_relate == true) {
+            console.log(res.message);
+            toastr['success'](res.message);
+        }
+    })
+        .fail(function (error) {
+            toastr['error'](error.message, 'Thông báo hệ thống');
+        });
+
+
+}
+
+function timKiemNguoiDung(id)
+{
+    var nhom_don_vi = $('[name=capnhatnhomcaobo]').val();
+    var don_vi = $('[name=phongban_capnhatthamdu]').val();
+    var chuc_vu = $('[name=chucvu_capnhatthamdu]').val();
+    var ho_ten = $('[name=hoten_capnhatthamdu]').val();
+    $.ajax({
+        url: APP_URL + '/hoten_capnhatthamdu',
+        type: 'POST',
+        beforeSend: showLoading(),
+        dataType: 'json',
+        data: {
+            nhom_don_vi: nhom_don_vi,
+            don_vi: don_vi,
+            chuc_vu: chuc_vu,
+            ho_ten: ho_ten,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+    }).done(function (res) {
+        hideLoading();
+        if (res.is_relate == true) {
+            let data = res.users;
+            console.log(data);
+            let dataAppend2 = '';
+            hideLoading();
+            dataAppend2 = data.map((function (item) {
+                return  `<tr class="nguoi-${item.id}">
+                    <td class="text-center" style="vertical-align: middle;">
+                    <input type="text" name="lich_hop_id" class="hidden " value="${id}">
+                        <button type="button" name="chon" value="${item.id}"  data-chon-nguoi="${item.id}" id="luachon${item.id}" class="btn btn-primary btn-sm nguoi-tham-du">Chọn</button>
+                    </td>
+                    <td>${item.ho_ten}</td>
+        </tr>`;
+            }));
+            $('.dulieu_capnhatthamdu').html(dataAppend2);
+        }
+    })
+        .fail(function (error) {
+            toastr['error'](error.message, 'Thông báo hệ thống');
+        });
+
+}
+
+$("body").on("click",'.nguoi-tham-du', function () {
+    var id = $(this).data('chon-nguoi');
+    var lich_hop_id = $('[name=lich_hop_id]').val();
+
+    var result = confirm("Bạn muốn Thêm người tham dự này?");
+    if (result) {
+        $.ajax({
+            url: APP_URL + '/LuuCanBoDuHop/' + lich_hop_id,
+            type: 'POST',
+            beforeSend: showLoading(),
+            dataType: 'json',
+            data: {
+                lich_hop_id: lich_hop_id,
+                id: id,
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            },
+        }).done(function (res) {
+            hideLoading();
+            if (res.is_relate == true) {
+                $('.nguoi-' + id).remove();
+                toastr['success'](res.message);
+            }
+        })
+            .fail(function (error) {
+                toastr['error'](error.message, 'Thông báo hệ thống');
+            });
+    }
+
+});

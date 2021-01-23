@@ -409,8 +409,8 @@
                                                             <input type="text" class="hide" name="kiemtrahanlich" value="2">
                                                             <input type="text" class="hide" name="kiemtra_lanhdao" value="1">
                                                             <input type="text" class="hide" name="kiemtra_tonghop" value="2">
-                                                            <textarea name="noidungchat" id="" class="form-control" maxlength="500" rows="3" placeholder="Nhập ý kiến tại đây"></textarea>
-                                                            <button name="luu_noidungchat" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">Gửi</button>
+                                                            <textarea name="noidungchat" id="" class="form-control" maxlength="500" rows="3" placeholder="Nhập ý kiến tại đây">{{isset($GopY) ? $GopY->trao_doi_thao_luan : ''}}</textarea><br>
+                                                            <button name="luu_noidungchat" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_noidungchat" style="margin-bottom: 10px;">@if($GopY && $GopY != null) Cập nhật @else Gửi  @endif</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -511,9 +511,9 @@
                                                         </h3>
                                                         @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
                                                         <div id="ket-luan3" class="panel-collapse collapse mt-2">
-                                                            <input type="radio" name="danhgiatonghop" value="1" class="flat-red" checked> Đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="radio" name="danhgiatonghop" value="2" class="flat-red" > Không đạt
-                                                            <button type="button" name="luu_danhgiatonghop" data-lich="{{$lich_cong_tac->id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_danhgiatonghop" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            <input type="radio" name="danhgiatonghop" value="1" class="flat-red" @if($lich_cong_tac->danh_gia == 1 || $lich_cong_tac->danh_gia == null)checked @endif > Đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="radio" name="danhgiatonghop" value="2" class="flat-red" @if($lich_cong_tac->danh_gia == 0)checked @endif > Không đạt
+                                                            <button type="button" name="luu_danhgiatonghop" data-lich="{{$lich_cong_tac->id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_danhgiatonghop @if($lich_cong_tac->danh_gia != null)hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
 
                                                         </div>
                                                         @endif
@@ -538,29 +538,42 @@
                                                                 <tr>
                                                                     <th width="5%" class="text-center">STT</th>
                                                                     <th width="25%">Phòng ban</th>
-                                                                    <th width="15%">Chất lượng</th>
+                                                                    <th width="20%">Chất lượng</th>
                                                                     <th>Nhận xét</th>
                                                                     <th width="12%" class="text-center">Đánh giá</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                @forelse($phong_up_tai_lieu as $data)
                                                                 <tr>
                                                                     <td class="text-center">1</td>
-                                                                    <td>Phòng TNMT</td>
+                                                                    <td>{{DonViUpTaiLieu($data)->ten_don_vi ?? ''}}</td>
                                                                     <td>
-                                                                        <p>
-                                                                        <div class="iradio_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="trangthaidanhgia_3586" class="flat-red danhgia_3586" value="1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Đạt
-                                                                        </p>
-                                                                        <p>
-                                                                        <div class="iradio_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="trangthaidanhgia_3586" class="flat-red danhgia_3586" value="2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Không đạt
-                                                                        </p>
+                                                                        <div class="form-group">
+                                                                            <div class="radio">
+                                                                                <label>
+                                                                                    <input type="radio" name="dat_{{$data}}"  value="1" checked="">
+                                                                                    Đạt
+                                                                                </label> &emsp;
+                                                                                <label>
+                                                                                    <input type="radio" name="dat_{{$data}}"  value="2">
+                                                                                    Không đạt
+                                                                                </label>
+                                                                            </div>
+{{--                                                                            <div class="radio">--}}
+{{--                                                                                --}}
+{{--                                                                            </div>--}}
+                                                                        </div>
                                                                     </td>
-                                                                    <td><textarea name="nhanxet_3586" class="form-control nhanxet_3586" rows="2"></textarea></td>
+                                                                    <td><textarea name="nhanxet_{{$data}}" class="form-control nhanxet_3586" rows="2"></textarea></td>
                                                                     <td class="text-center vertical">
-                                                                        <button name="nhanxet" value="3586" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
+                                                                        <button name="nhanxetTaiLieu" onclick="danhGiaTaiLieu('dat_{{$data}}',{{$data}},{{$id}},'nhanxet_{{$data}}')"  value="3586" data-don-vi="{{$data}}" class="btn btn-primary btn-sm nhan-xet-danh-gia" data-original-title="" title="">Đánh giá</button>
 
                                                                     </td>
                                                                 </tr>
+                                                                @empty
+                                                                    <td colspan="5" class="text-center">Không có phòng chuẩn bị nào !</td>
+                                                                @endforelse
                                                                 </tbody>
                                                             </table> </div>
                                                     </div>
@@ -586,37 +599,29 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                @forelse($canBoGopY as $key=>$data)
                                                                 <tr>
-                                                                    <td class="text-center">1</td>
-                                                                    <td>Đ/c Vũ Xuân Trường - Lãnh đạo UBND quận</td>
+                                                                    <td class="text-center">{{$key+1}}</td>
+                                                                    <td>{{$data->user->ho_ten ?? ''}}</td>
                                                                     <td>
-                                                                        <p>
-                                                                        <div class="iradio_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="chatluong_38613" class="flat-red chatluong_38613" value="1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Đạt
-                                                                        </p>
-                                                                        <p>
-                                                                        <div class="iradio_flat-green hover" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="chatluong_38613" class="flat-red chatluong_38613" value="2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Không đạt
-                                                                        </p>
+                                                                        <label>
+                                                                            <input type="radio" name="chatluong_38613_{{$data->id}}"  value="1" checked="">
+                                                                            Đạt
+                                                                        </label> &emsp;
+                                                                        <label>
+                                                                            <input type="radio" name="chatluong_38613_{{$data->id}}"  value="2">
+                                                                            Không đạt
+                                                                        </label>
                                                                     </td>
                                                                     <td><textarea name="nhanxetchatluong_38613" class="form-control nhanxetchatluong_38613" rows="2"></textarea></td>
                                                                     <td class="text-center vertical">
-                                                                        <button name="nhanxet_chatluong" value="38613" id="1145" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
+                                                                        <button name="nhanxet_chatluong" value="38613" id="1145" onclick="danhGiaChatLuong('chatluong_38613_{{$data->id}}')" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="text-center">2</td>
-                                                                    <td>Lê Thanh Xuân - Phòng TC-KH</td>
-                                                                    <td>
-                                                                        <p> <div class="iradio_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="chatluong_38614" class="flat-red chatluong_38614" value="1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Đạt
-                                                                         </p>
-                                                                        <p>
-                                                                        <div class="iradio_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="chatluong_38614" class="flat-red chatluong_38614" value="2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Không đạt
-                                                                        </p>
-                                                                    </td>
-                                                                    <td><textarea name="nhanxetchatluong_38614" class="form-control nhanxetchatluong_38614" rows="2"></textarea></td>
-                                                                    <td class="text-center vertical">
-                                                                        <button name="nhanxet_chatluong" value="38614" id="1183" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
-                                                                    </td>
-                                                                </tr>
+
+                                                                @empty
+                                                                    <td colspan="5" class="text-center">Không có phòng chuẩn bị nào !</td>
+                                                                @endforelse
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -824,7 +829,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
                                                                                     <select name="capnhatnhomcaobo" id="nhom-don-vi"  onchange="selectNhomDonViAppend()" class="form-control select2">
-                                                                                        <option value="0">-- Chọn nhóm phòng ban--</option>
+                                                                                        <option value="">-- Chọn nhóm phòng ban--</option>
                                                                                         @foreach($nhom_don_vi as $data)
                                                                                         <option value="{{$data->id}}">{{$data->ten_nhom_don_vi}}</option>
                                                                                         @endforeach
@@ -836,7 +841,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
                                                                                     <select name="phongban_capnhatthamdu" id="don-vi" onchange="selectDonViAppend()" class="form-control select2 nhom-don-vi">
-                                                                                        <option value="0">-- Chọn phòng ban --</option>
+                                                                                        <option value="">-- Chọn phòng ban --</option>
                                                                                         @foreach($donvi as $data)
                                                                                             <option value="{{$data->id}}">{{$data->ten_don_vi}}</option>
                                                                                         @endforeach
@@ -849,7 +854,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
                                                                                     <select name="chucvu_capnhatthamdu" id="" class="form-control select2 chuc-vu">
-                                                                                        <option value="0">-- Chọn chức vụ --</option>
+                                                                                        <option value="">-- Chọn chức vụ --</option>
                                                                                         @foreach($chucVu as $data)
                                                                                             <option value="{{$data->id}}">{{$data->ten_chuc_vu}}</option>
                                                                                         @endforeach
@@ -866,19 +871,27 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-1">
-                                                                            <button type="button" name="timkiem_capnhatthamdu" value="timkiem_capnhatthamdu" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Tìm kiếm</button>
+                                                                            <button type="button" name="timkiem_capnhatthamdu" value="timkiem_capnhatthamdu" onclick="timKiemNguoiDung({{$id}})" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Tìm kiếm</button>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <table id="dulieu_capnhatthamdu" class="table table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center" width="10%">Chọn</th>
+                                                                                    <th class="text-center" width="">Tên cán bộ</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody class="dulieu_capnhatthamdu">
 
+                                                                                </tbody>
                                                                             </table>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <div class="col-md-12">
-                                                                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Đóng lại</button>
-                                                                        <button type="submit" name="luu_thanhphanduhop" value="luu_thanhphanduhop" class="btn btn-primary btn-sm luu_capnhatthanhphanduhop"> Lưu lại</button>
+                                                                        <button type="button" class="btn btn-default btn-sm reset-cuoc-hop" data-dismiss="modal"><i class="fa fa-close"></i> Đóng lại</button>
+{{--                                                                        <button type="submit" name="luu_thanhphanduhop" value="luu_thanhphanduhop" class="btn btn-primary btn-sm luu_capnhatthanhphanduhop"> Lưu lại</button>--}}
                                                                     </div>
                                                                 </div>
                                                             </form>

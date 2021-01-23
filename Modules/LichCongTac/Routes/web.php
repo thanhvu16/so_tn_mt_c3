@@ -38,7 +38,11 @@ Route::post('cuoc-hop-lien-quan/{id}', 'QuanLyCuocHopController@cuocHopLienQuan'
 Route::post('themCuocHop/{id}', 'QuanLyCuocHopController@themCuocHop')->name('themCuocHop');
 Route::post('XoaCuocHop/{id}', 'QuanLyCuocHopController@XoaCuocHop')->name('XoaCuocHop');
 Route::post('xoaTaiLieu/{id}', 'QuanLyCuocHopController@xoaTaiLieu')->name('xoaTaiLieu');
+Route::post('LuuCanBoDuHop/{id}', 'QuanLyCuocHopController@LuuCanBoDuHop')->name('LuuCanBoDuHop');
+Route::post('hoten_capnhatthamdu', 'QuanLyCuocHopController@hoten_capnhatthamdu')->name('hoten_capnhatthamdu');
 Route::post('luu_danhgiatonghop/{id}', 'QuanLyCuocHopController@luu_danhgiatonghop')->name('luu_danhgiatonghop');
+Route::post('luu_noidungchat/{id}', 'QuanLyCuocHopController@luu_noidungchat')->name('luu_noidungchat');
+Route::post('nhanxetTaiLieu/{id}', 'QuanLyCuocHopController@nhanxetTaiLieu')->name('nhanxetTaiLieu');
 
 
 Route::resource('tham-du-cuoc-hop', 'ThamDuCuocHopController');
