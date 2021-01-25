@@ -51,16 +51,17 @@ class QuanLyCuocHopController extends Controller
         $donvi = DonVi::orderBy('ten_don_vi', 'asc')->whereNull('deleted_at')->get();
         $cuocHopLienQuan = CuocHopLienQuan::where('id_lich_hop', $id)->whereNull('deleted_at')->get();
         $nguoi_chu_tri = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH])->get();
-        $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->get();
-        $phong_up_tai_lieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->distinct()->pluck('don_vi_id');
+        $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1,'thanh_phan_moi'=>1])->get();
+        $phong_up_tai_lieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1,'thanh_phan_moi'=>1])->distinct()->pluck('don_vi_id');
 
         $canBoGopY = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1])->get();
         $GopY = DanhGiaGopY::where(['user_id' => auth::user()->id, 'id_lich_hop' => $id])->first();
 //        dd($cuocHopLienQuan);
+        $donViKetLuan = DonVi::where('ten_don_vi','LIKE','Phòng Tổng Hợp')->get();
 
 
         return view('lichcongtac::chi-tiet.index', compact('lich_cong_tac', 'danhSachLanhDao', 'nguoi_upTaiLieu', 'nguoi_tham_du', 'id', 'cuochop', 'nhom_don_vi',
-            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri', 'phong_up_tai_lieu', 'canBoGopY', 'GopY'));
+            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri', 'phong_up_tai_lieu', 'canBoGopY', 'GopY','donViKetLuan'));
     }
 
 
@@ -426,6 +427,7 @@ class QuanLyCuocHopController extends Controller
         $nguoiThamDu->lich_cong_tac_id = $request->lich_hop_id;
         $nguoiThamDu->user_id = $request->id;
         $nguoiThamDu->don_vi_id = $user->don_vi_id;
+        $nguoiThamDu->thanh_phan_moi = 2;
         $nguoiThamDu->nguoi_tao_id = auth::user()->id;
         $nguoiThamDu->save();
         return response()->json(
