@@ -429,7 +429,9 @@
                                                             </div>
                                                             <textarea name="ykienchinhthuc" id=""  rows="4" class="form-control" placeholder="Nhập ý kiến chính thức">{{isset($cuochop) ? $cuochop->y_kien_chinh_thuc : ''}}</textarea>
                                                             <br>
+                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
                                                             <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc @if($cuochop && $cuochop->y_kien_chinh_thuc != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -445,7 +447,9 @@
                                                         <div id="y-kien3" class="panel-collapse collapse mt-2">
                                                                 <textarea name="noidung_ghichepcuochop_qu" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_quan_uy : ''}}</textarea>
                                                                 <br>
+                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
                                                                 <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu @if($cuochop && $cuochop->ghi_chep_quan_uy != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -461,7 +465,9 @@
                                                         <div id="y-kien2" class="panel-collapse collapse mt-2">
                                                                 <textarea name="noidung_ghichepcuochop" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_HDND : ''}}</textarea>
                                                                 <br>
+                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
                                                                 <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop @if($cuochop && $cuochop->ghi_chep_HDND != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -495,7 +501,9 @@
 
                                                                 <!-- ket thuc dau viec -->
                                                                 <br>
+                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
                                                                 <button type="submit"  name="luu_ketluan" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ketluan @if($cuochop && $cuochop->ket_luan_cuoc_hop != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            @endif
                                                         </div>
                                                         </form>
                                                     </div>
@@ -544,9 +552,9 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                @forelse($phong_up_tai_lieu as $data)
+                                                                @forelse($phong_up_tai_lieu as $key=>$data)
                                                                 <tr>
-                                                                    <td class="text-center">1</td>
+                                                                    <td class="text-center">{{$key+1}}</td>
                                                                     <td>{{DonViUpTaiLieu($data)->ten_don_vi ?? ''}}</td>
                                                                     <td>
                                                                         <div class="form-group">
@@ -567,7 +575,12 @@
                                                                     </td>
                                                                     <td><textarea name="nhanxet_{{$data}}" class="form-control nhanxet_3586" rows="2"></textarea></td>
                                                                     <td class="text-center vertical">
-                                                                        <button name="nhanxetTaiLieu" onclick="danhGiaTaiLieu('dat_{{$data}}',{{$data}},{{$id}},'nhanxet_{{$data}}')"  value="3586" data-don-vi="{{$data}}" class="btn btn-primary btn-sm nhan-xet-danh-gia" data-original-title="" title="">Đánh giá</button>
+                                                                        @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+                                                                            <button name="nhanxetTaiLieu" onclick="danhGiaTaiLieu('dat_{{$data}}',{{$data}},{{$id}},'nhanxet_{{$data}}')"  value="3586" data-don-vi="{{$data}}" class="btn btn-primary btn-sm nhan-xet-danh-gia" data-original-title="" title="">Đánh giá</button>
+
+                                                                        @else
+                                                                            -
+                                                                        @endif
 
                                                                     </td>
                                                                 </tr>
@@ -615,7 +628,12 @@
                                                                     </td>
                                                                     <td><textarea name="nhanxetchatluong_38613" class="form-control nhanxetchatluong_38613" rows="2"></textarea></td>
                                                                     <td class="text-center vertical">
+                                                                        @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
                                                                         <button name="nhanxet_chatluong" value="38613" id="1145" onclick="danhGiaChatLuong('chatluong_38613_{{$data->id}}')" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
+                                                                        @else
+                                                                            -
+                                                                        @endif
+
                                                                     </td>
                                                                 </tr>
 
@@ -675,8 +693,10 @@
                                                                 <i class="fa fa-plus pull-right"></i>
 
                                                             </a>
+                                                            @if(auth::user()->id ==  $lich_cong_tac->lanh_dao_id)
                                                             <button type="button" name="capnhatthanhphancuochop" value="3312" class="btn btn-danger pull-right" data-toggle="modal" data-target="#thanhphanthamdu"><i class="fa fa-plus-square"></i>
                                                             </button>
+                                                                @endif
                                                         </h3>
                                                         <div id="y-kien8" class="panel-collapse collapse mt-2">
 
@@ -696,7 +716,11 @@
                                                                             <td>{{$key+1}}</td>
                                                                             <td><p>{{$item->nguoiDung->ho_ten}}</p></td>
                                                                             <td class="text-center vertical">
+                                                                                @if(auth::user()->id ==  $lich_cong_tac->lanh_dao_id)
                                                                                 <a class="nguoi-du-hop xoa-du-hop-{{$item->id}} " data-id="{{$item->id}}" ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a>
+                                                                                @else
+                                                                                -
+                                                                                @endif
                                                                             </td>
                                                                         </tr>
                                                                     @endforeach
@@ -735,7 +759,7 @@
                                                             <form action="" method="post" autocomplete="off" class="form-horizontal">
                                                                 <div class="modal-header" style="padding: 12px; background: #daf7f5;">
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                    <h4 class="modal-title" id="exampleModalLabel">Cập nhật cuộc họp liên quan (Lấy tối đa 15 lịch liên quan)</h4>
+                                                                    <h4 class="modal-title" id="exampleModalLabel">Cập nhật cuộc họp liên quan </h4>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="box-body">
@@ -793,8 +817,8 @@
                                                                                     <tr>
                                                                                         <th class="text-center" width="10%">Chọn</th>
                                                                                         <th class="text-center" width="">Tên cuốc họp</th>
-                                                                                        <th class="text-center" width="15%">Chủ trì</th>
-                                                                                        <th class="text-center" width="10%">Ngày họp</th>
+{{--                                                                                        <th class="text-center" width="15%">Chủ trì</th>--}}
+{{--                                                                                        <th class="text-center" width="10%">Ngày họp</th>--}}
                                                                                     </tr>
                                                                                     </thead>
                                                                                     <tbody class="abcde">
@@ -825,18 +849,18 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="box-body">
-                                                                        <div class="col-md-3">
-                                                                            <div class="form-group">
-                                                                                <div class="col-sm-12">
-                                                                                    <select name="capnhatnhomcaobo" id="nhom-don-vi"  onchange="selectNhomDonViAppend()" class="form-control select2">
-                                                                                        <option value="">-- Chọn nhóm phòng ban--</option>
-                                                                                        @foreach($nhom_don_vi as $data)
-                                                                                        <option value="{{$data->id}}">{{$data->ten_nhom_don_vi}}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+{{--                                                                        <div class="col-md-3">--}}
+{{--                                                                            <div class="form-group">--}}
+{{--                                                                                <div class="col-sm-12">--}}
+{{--                                                                                    <select name="capnhatnhomcaobo" id="nhom-don-vi"  onchange="selectNhomDonViAppend()" class="form-control select2">--}}
+{{--                                                                                        <option value="">-- Chọn nhóm phòng ban--</option>--}}
+{{--                                                                                        @foreach($nhom_don_vi as $data)--}}
+{{--                                                                                        <option value="{{$data->id}}">{{$data->ten_nhom_don_vi}}</option>--}}
+{{--                                                                                        @endforeach--}}
+{{--                                                                                    </select>--}}
+{{--                                                                                </div>--}}
+{{--                                                                            </div>--}}
+{{--                                                                        </div>--}}
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
@@ -863,7 +887,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-2">
+                                                                        <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
                                                                                     <input type="text" class="form-control" name="hoten_capnhatthamdu" placeholder="Nhập họ tên tìm kiếm">

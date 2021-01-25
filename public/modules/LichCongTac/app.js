@@ -153,8 +153,7 @@ $('.tim-kiem-cuoc-hop').on('click', function (e) {
                         <button type="button" name="chon" value="${item.id}"  data-chon="${item.id}" id="luachon${item.id}" class="btn btn-primary btn-sm chonLichHop">Chọn</button>
                     </td>
                     <td>${item.noi_dung}</td>
-                    <td></td>
-                    <td>${item.ngay}</td>
+
         </tr>`;
             }));
             $('.abcde').html(dataAppend2);
