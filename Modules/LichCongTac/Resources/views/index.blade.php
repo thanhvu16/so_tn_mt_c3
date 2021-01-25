@@ -122,7 +122,7 @@
                                                             <b class="color-red">{{ $lichCongTac->vanBanDi->so_di ?? null }}</b>
                                                         </p>
                                                         <p><b>Nội
-                                                                dung: </b>{{ $lichCongTac->noi_dung ??  null  }}
+                                                                dung: </b><a href="{{ route('chitiethop', !empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}">{{ $lichCongTac->noi_dung ??  null  }}</a>
                                                         </p>
                                                         <p></p>
                                                         <p class="text-bold">Địa điểm:
@@ -191,7 +191,7 @@
                                                             - {{ $lichCongTac->gio }}</b>
                                                     </td>
                                                     <td style="vertical-align: middle;">
-                                                        <p><b>Nội dung:</b> {{ $lichCongTac->noi_dung ??  null  }}
+                                                        <p><b>Nội dung:</b> <a href="{{ route('chitiethop', !empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}">{{ $lichCongTac->noi_dung ??  null  }}</a>
                                                         <p></p>
                                                         <p class="text-bold">Địa điểm:
                                                             <b>{{ $lichCongTac->dia_diem ?? null }}</b>
@@ -252,7 +252,7 @@
                                                             <b class="color-red">{{ !empty($lichCongTac->vanBanDen->hasChild()) ? $lichCongTac->vanBanDen->hasChild()->so_den : $lichCongTac->vanBanDen->so_den }}</b>
                                                         </p>
                                                         <p><b>Nội
-                                                                dung: </b><a href="{{route('chitiethop',$lichCongTac->id)}}">{{ $lichCongTac->noi_dung ??  null  }}</a>
+                                                                dung: </b><a href="{{ route('chitiethop', !empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}">{{ $lichCongTac->noi_dung ??  null  }}</a>
                                                         </p>
                                                         <p></p>
                                                         <p class="text-bold">Địa điểm:

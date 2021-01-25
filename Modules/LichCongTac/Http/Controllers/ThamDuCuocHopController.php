@@ -20,7 +20,13 @@ class ThamDuCuocHopController extends Controller
     public function index()
     {
         $user = auth::user();
-        $date = date('Y-m-d');
+        $year = date('Y');
+        $week = date('W');
+        $start_date = strtotime($year . "W" . $week . 1);
+        $end_date = strtotime($year . "W" . $week . 7);
+
+        $ngaybd = date('Y-m-d', $start_date);
+        $ngaykt = date('Y-m-d', $end_date);
 
         $thamDuCuocHop = ThanhPhanDuHop::where('user_id', $user->id)
             ->whereNull('lanh_dao_id')
@@ -30,11 +36,12 @@ class ThamDuCuocHopController extends Controller
 
         $danhSachLichCongTac = LichCongTac::with('lanhDao')
             ->whereIn('id', $lichConTacId)
-//            ->where('ngay', '>=', $date)
+            ->where('ngay', '>=', $ngaybd)
+            ->where('ngay', '<=', $ngaykt)
             ->select('id', 'ngay', 'gio', 'noi_dung', 'dia_diem', 'lanh_dao_id', 'trang_thai_lich', 'ghi_chu')
             ->orderBy('ngay', 'ASC')
             ->paginate(PER_PAGE);
-//        dd($danhSachLichCongTac);
+
         foreach ($danhSachLichCongTac as $lichCongTac) {
             $lichCongTac->listThanhPhanDuHop = $lichCongTac->listThanhPhanDuHop();
             $lichCongTac->checkDaChuyenLichCaNhan = $lichCongTac->checkDaChuyenLichCaNhan();
