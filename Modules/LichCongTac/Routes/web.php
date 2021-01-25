@@ -43,6 +43,7 @@ Route::post('hoten_capnhatthamdu', 'QuanLyCuocHopController@hoten_capnhatthamdu'
 Route::post('luu_danhgiatonghop/{id}', 'QuanLyCuocHopController@luu_danhgiatonghop')->name('luu_danhgiatonghop');
 Route::post('luu_noidungchat/{id}', 'QuanLyCuocHopController@luu_noidungchat')->name('luu_noidungchat');
 Route::post('nhanxetTaiLieu/{id}', 'QuanLyCuocHopController@nhanxetTaiLieu')->name('nhanxetTaiLieu');
+Route::post('danh-gia-y-kien/{id}', 'QuanLyCuocHopController@danhgiaykien')->name('danhgiaykien');
 
 
 Route::resource('tham-du-cuoc-hop', 'ThamDuCuocHopController');
