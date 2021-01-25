@@ -259,6 +259,12 @@ hr.border-dashed {
     border-color: #8552f5;
 }
 
+.btn-light-pink {
+    color: #fff;
+    background-color: #b661bf !important;
+    border-color: #b661bf !important;
+}
+
 .datepicker-days {
     font-size: 1.2rem !important;
 }

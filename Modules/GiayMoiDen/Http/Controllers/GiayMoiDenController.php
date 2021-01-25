@@ -48,6 +48,8 @@ class GiayMoiDenController extends Controller
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
+
 
         if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
             $ds_vanBanDen = VanBanDen::where([

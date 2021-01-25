@@ -879,6 +879,8 @@ class DuThaoVanBanController extends Controller
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
         $canbothuocduthaocu = CanBoPhongDuThao::where('du_thao_vb_id', $request->id_duthao)->get();
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
+
         foreach ($canbothuocduthaocu as $canbo) {
             $canbothuocduthaophongcu = CanBoPhongDuThao::where('id', $canbo->id)->first();
             $canbothuocduthaophongcu->trang_thai = 12;
@@ -927,7 +929,7 @@ class DuThaoVanBanController extends Controller
         $vanbandi->nguoi_ky = $request->nguoiky_id;
         $vanbandi->nguoi_tao = auth::user()->id;
         $vanbandi->van_ban_den_id = $duthaochot->van_ban_den_don_vi_id ?? null;
-        if ($duthaochot->loai_van_ban_id == 1000) {
+        if ($duthaochot->loai_van_ban_id == $giayMoi->id) {
             $vanbandi->loai_van_ban_giay_moi = 2;
         } else {
             $vanbandi->loai_van_ban_giay_moi = 1;

@@ -14,7 +14,7 @@ class AddDanhGiaCuocHopToLichCongTacTable extends Migration
     public function up()
     {
         Schema::table('dhvbd_lich_cong_tac', function (Blueprint $table) {
-            $table->tinyInteger('danh_gia')->comment('1 đạt 2 không đạt')->nullable();
+            $table->tinyInteger('danh_gia')->nullable()->comment('1 đạt 2 không đạt');
         });
     }
 

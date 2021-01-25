@@ -85,7 +85,7 @@
                                     họp:</label> {{ $vanBanDen->hasChild->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
                                 <br>
                                 <i>
-                                    (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                    (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
                                     ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
                                     , tại {{ $vanBanDen->hasChild->dia_diem }})
                                 </i>
@@ -172,7 +172,7 @@
                                     họp:</label> {{ $vanBanDen->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
                                 <br>
                                 <i>
-                                    (Vào hồi {{ $vanBanDen->gio_hop }}
+                                    (Vào hồi {{ date( "H:i", strtotime($vanBanDen->gio_hop)) }}
                                     ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
                                     , tại {{ $vanBanDen->dia_diem }})
                                 </i>

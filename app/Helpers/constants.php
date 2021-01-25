@@ -60,6 +60,7 @@ define('COLOR_ORANGE', '#ff9900');
 define('COLOR_RED', '#fb483a');
 define('COLOR_PURPLE', '#8552f5');
 define('COLOR_PINK', '#e061c9');
+define('COLOR_LIGHT_PINK', '#b661bf');
 define('COLOR_BLUE_DARK', '#4937de');
 define('COLOR_PINTEREST', '#cb2027');
 define('COLOR_YELLOW', '#f1df07');

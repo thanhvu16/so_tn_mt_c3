@@ -36,8 +36,8 @@ class ThanhPhanDuHop extends Model
     const THANH_PHAN_MOI_CUA_DON_VI = 2;
     const CHAT_LUONG_KHONG_DAT = 2;
     const CHAT_LUONG_DAT = 2;
-    const TYPE_VB_DEN = 1;
-    const TYPE_VB_DI = 2;
+    const TYPE_VB_NHAP_TRUC_TIEP = 2;
+    const TYPE_VB_DI = 1;
     const TRANG_THAI_BAN = 2;
     const TRANG_THAI_DI_HOP = 1;
 
@@ -53,12 +53,12 @@ class ThanhPhanDuHop extends Model
             ->select('id', 'ten_don_vi');
     }
 
-    public static function store($giayMoi, $vanBanden, $arrayLanhDaoId, $type = null, $donViId = null)
+    public static function store($giayMoi, $vanBan, $arrayLanhDaoId, $type = null, $donViId = null)
     {
         $donVi = auth::user()->donVi;
-        if (!empty($giayMoi) && $giayMoi->id == $vanBanden->so_van_ban_id) {
+        if (!empty($giayMoi) && $giayMoi->id == $vanBan->loai_van_ban_id) {
 
-            $lichCongTac = LichCongTac::where('object_id', $vanBanden->id)
+            $lichCongTac = LichCongTac::where('object_id', $vanBan->id)
                 ->where(function ($query) use ($type) {
                     if (!empty($type)) {
                         return $query->where('type', $type);
@@ -72,7 +72,7 @@ class ThanhPhanDuHop extends Model
             if (!empty($lichCongTac)) {
 
                 $check = ThanhPhanDuHop::where('user_id', auth::user()->id)
-                    ->where('object_id', $vanBanden->id)
+                    ->where('object_id', $vanBan->id)
                     ->where('lich_cong_tac_id', $lichCongTac->id)
                     ->where(function ($query) use ($type) {
                         if (!empty($type)) {
@@ -86,7 +86,7 @@ class ThanhPhanDuHop extends Model
 
                 if (empty($donVi->cap_xa) && auth::user()->can(AllPermission::thamMuu()) || auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
                     ThanhPhanDuHop::where('lich_cong_tac_id', $lichCongTac->id)
-                        ->where('object_id', $vanBanden->id)
+                        ->where('object_id', $vanBan->id)
                         ->where('nguoi_tao_id', auth::user()->id)
                         ->where(function ($query) use ($type) {
                             if (!empty($type)) {
@@ -107,7 +107,7 @@ class ThanhPhanDuHop extends Model
 
                 if ($check) {
                     ThanhPhanDuHop::where('lich_cong_tac_id', $lichCongTac->id)
-                        ->where('object_id', $vanBanden->id)
+                        ->where('object_id', $vanBan->id)
                         ->where(function ($query) use ($type) {
                             if (!empty($type)) {
                                 return $query->where('type', $type);
@@ -132,7 +132,7 @@ class ThanhPhanDuHop extends Model
                         $thanhPhanDuHop->lich_cong_tac_id = $lichCongTac->id;
                         $thanhPhanDuHop->lanh_dao_id = $lichCongTac->lanh_dao_id == $lanhDaoId ? $lichCongTac->lanh_dao_id : null;
                         $thanhPhanDuHop->user_id = $lanhDaoId;
-                        $thanhPhanDuHop->object_id = $vanBanden->id;
+                        $thanhPhanDuHop->object_id = $vanBan->id;
                         $thanhPhanDuHop->don_vi_id = $donViId ?? null;
                         $thanhPhanDuHop->nguoi_tao_id = auth::user()->id;
                         $thanhPhanDuHop->save();

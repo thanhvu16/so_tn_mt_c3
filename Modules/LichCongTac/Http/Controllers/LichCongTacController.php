@@ -139,7 +139,7 @@ class LichCongTacController extends Controller
                     $lichCongTac->CanBoChiDao = XuLyVanBanDen::where('van_ban_den_id', $lichCongTac->object_id)
                         ->where('id', '>=', $lichCongTac->chuanBiTruocCuocHop())->get();
                 }
-
+                $lichCongTac->parent = $lichCongTac->getParent();
                 $lichCongTac->truyenNhanVanBanDonVi = $lichCongTac->donViChuTri();
                 $lichCongTac->giaiQuyetVanBanHoanThanh = isset($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh() : null;
             }

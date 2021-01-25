@@ -102,6 +102,12 @@
                             class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
                     </p>
                 </a>
+                <a class="text-title-item" href="{{ route('tham-du-cuoc-hop.index') }}">
+                    <p>Cuộc họp được mời tham dự
+                        <button
+                            class="btn br-10 btn-light-pink btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $thamDuCuocHop }}</button>
+                    </p>
+                </a>
                 @endrole
                 @hasanyrole('chủ tịch|phó chủ tịch')
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">

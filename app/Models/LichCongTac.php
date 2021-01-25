@@ -91,13 +91,14 @@ class LichCongTac extends Model
         }
 
         $dataLichCongTac = array(
-            'van_ban_den_don_vi_id' => $vanBanDi->id,
+            'object_id' => $vanBanDi->id,
             'lanh_dao_id' => $lanhDaoDuHop->id,
             'ngay' => $vanBanDi->ngay_hop,
             'gio' => $vanBanDi->gio_hop,
             'tuan' => $tuan,
             'buoi' => ($vanBanDi->gio_hop <= '12:00') ? 1 : 2,
-            'noi_dung' => $noiDungMoiHop,
+            'noi_dung' => !empty($vanBanDi->noi_dung_hop) ? $vanBanDi->noi_dung_hop : $vanBanDi->trich_yeu,
+            'dia_diem' => !empty($vanBanDi->dia_diem) ? $vanBanDi->dia_diem : null,
             'user_id' => auth::user()->id,
             'type' => LichCongTac::TYPE_VB_DI
         );
@@ -196,7 +197,8 @@ class LichCongTac extends Model
     public function checkDaChuyenLichCaNhan()
     {
         return ThanhPhanDuHop::where('lich_cong_tac_id', $this->id)
-            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('user_id', auth::user()->id)
+            ->where('trang_thai', ThanhPhanDuHop::TRANG_THAI_LICH_DA_CHUYEN)
             ->select('id', 'trang_thai', 'trang_thai_lich')
             ->first();
     }
@@ -217,5 +219,10 @@ class LichCongTac extends Model
     public function Danh()
     {
         return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
+    }
+
+    public function getParent()
+    {
+        return LichCongTac::where('id', $this->parent_id)->first();
     }
 }

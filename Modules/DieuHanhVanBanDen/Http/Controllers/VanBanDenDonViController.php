@@ -441,7 +441,7 @@ class VanBanDenDonViController extends Controller
                         $vanBanTraLai->save();
                     }
 
-                    if (!empty($giayMoi) && $vanBanDen->so_van_ban_id == $giayMoi->id) {
+                    if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
 
                         if (!empty($lanhDaoDuHopId) > 0 && !empty($lanhDaoDuHopId[$vanBanDenId])) {
                             LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);

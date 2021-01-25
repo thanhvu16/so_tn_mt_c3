@@ -25,6 +25,7 @@ use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDi\Entities\CanBoPhongDuThao;
 use Modules\VanBanDi\Entities\CanBoPhongDuThaoKhac;
@@ -243,6 +244,7 @@ class AdminController extends Controller
         $vanBanChoPhanLoai = 0;
         $vanBanQuaHanDangXuLy = 0;
         $lichCongTac = 0;
+        $thamDuCuocHop = 0;
         array_push($hoSoCongViecPiceCharts, array('Task', 'Danh sách'));
 
         $congViecPhongBanPiceCharts = [];
@@ -255,7 +257,15 @@ class AdminController extends Controller
         $congViecChuyenVienDaXuLy = 0;
         array_push($congViecPhongBanPiceCharts, array('Task', 'Danh sách'));
 
+        //LICH CONG TAC
+        $year = date('Y');
+        $week = date('W');
 
+        $start_date = strtotime($year . "W" . $week . 1);
+        $end_date = strtotime($year . "W" . $week . 7);
+
+        $ngaybd = date('Y-m-d', $start_date);
+        $ngaykt = date('Y-m-d', $end_date);
 
         if ($user->hasRole(CHU_TICH)) {
             $active = VanBanDen::CHU_TICH_NHAN_VB;
@@ -458,15 +468,6 @@ class AdminController extends Controller
             array_push($hoSoCongViecPiceCharts, array('VB quan trọng', $vanBanQuanTrong));
             array_push($hoSoCongViecCoLors, COLOR_PRIMARY);
 
-            //LICH CONG TAC
-            $year = date('Y');
-            $week = date('W');
-
-            $start_date = strtotime($year . "W" . $week . 1);
-            $end_date = strtotime($year . "W" . $week . 7);
-
-            $ngaybd = date('Y-m-d', $start_date);
-            $ngaykt = date('Y-m-d', $end_date);
 
             $lichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi')
                 ->where('ngay', '>=', $ngaybd)
@@ -573,6 +574,20 @@ class AdminController extends Controller
         array_push($hoSoCongViecCoLors, COLOR_YELLOW);
     }
 
+        // tham du cuoc hop
+        $danhSachthamDuCuocHop = ThanhPhanDuHop::where('user_id', $user->id)
+            ->whereNull('lanh_dao_id')
+            ->select('lich_cong_tac_id')
+            ->get();
+        $lichConTacId = $danhSachthamDuCuocHop->pluck('lich_cong_tac_id');
+        $thamDuCuocHop = LichCongTac::whereIn('id', $lichConTacId)
+            ->where('ngay', '>=', $ngaybd)
+            ->where('ngay', '<=', $ngaykt)
+            ->count();
+
+        array_push($hoSoCongViecPiceCharts, array('Tham dự cuộc họp', $thamDuCuocHop));
+        array_push($hoSoCongViecCoLors, COLOR_LIGHT_PINK);
+
 
         return view('admin::index',compact(
 //            'getEmail' => $getEmail,
@@ -613,7 +628,8 @@ class AdminController extends Controller
             'congViecDonViHoanThanhChoDuyet',
             'congViecDonViPhoiHopChoXuLy',
             'congViecChuyenVienPhoiHopChoXuLy',
-            'congViecChuyenVienDaXuLy'
+            'congViecChuyenVienDaXuLy',
+            'thamDuCuocHop'
         ));
     }
 

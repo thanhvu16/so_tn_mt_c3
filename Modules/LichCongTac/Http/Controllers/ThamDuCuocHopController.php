@@ -32,6 +32,7 @@ class ThamDuCuocHopController extends Controller
             ->whereNull('lanh_dao_id')
             ->select('lich_cong_tac_id')
             ->get();
+
         $lichConTacId = $thamDuCuocHop->pluck('lich_cong_tac_id');
 
         $danhSachLichCongTac = LichCongTac::with('lanhDao')
@@ -129,11 +130,11 @@ class ThamDuCuocHopController extends Controller
         $role = null;
 
         if ($user->hasRole(CHU_TICH)) {
-            $role = [PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
+            $role = [CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
         }
 
         if ($user->hasRole(PHO_CHUC_TICH)) {
-            $role = [TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
+            $role = [PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
         }
 
         if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {

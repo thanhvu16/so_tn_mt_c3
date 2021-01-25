@@ -91,7 +91,7 @@
                                         dung giấy mời
                                     </th>
                                     <th width="15%" class="text-center" style="vertical-align: middle;">Lãnh
-                                        đạo dự họp
+                                        đạo chủ trì
                                     </th>
                                     <th width="25%" class="text-center" style="vertical-align: middle;">Chỉ
                                         đạo trước cuộc họp
@@ -116,7 +116,7 @@
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
                                                     <td>
                                                         <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
-                                                            - {{ $lichCongTac->gio }}</b></td>
+                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b></td>
                                                     <td style="vertical-align: middle;">
                                                         <p class="text-bold">GM đi số:
                                                             <b class="color-red">{{ $lichCongTac->vanBanDi->so_di ?? null }}</b>
@@ -155,7 +155,7 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}</td>
+                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>
                                                     <td>
                                                         Đơn vị soạn
                                                         thảo: {{ $lichCongTac->vanBanDi->dvSoanThao->ten_don_vi ?? null }}
@@ -188,7 +188,7 @@
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
                                                     <td>
                                                         <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
-                                                            - {{ $lichCongTac->gio }}</b>
+                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b>
                                                     </td>
                                                     <td style="vertical-align: middle;">
                                                         <p><b>Nội dung:</b> <a href="{{ route('chitiethop', !empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}">{{ $lichCongTac->noi_dung ??  null  }}</a>
@@ -223,7 +223,7 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}
+                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}
                                                         <br> <i>({{ $lichCongTac->lanhDao->donVi->ten_don_vi ?? null }})</i>
                                                     </td>
                                                     <td>
@@ -242,7 +242,7 @@
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
                                                     <td>
                                                         <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
-                                                            - {{ $lichCongTac->gio }}</b></td>
+                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b></td>
                                                     <td style="vertical-align: middle;">
                                                         <p>
                                                             <b>Cơ quan ban
@@ -298,7 +298,7 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->lanhDao->ChucVu->ten_chuc_vu ?? '' }} {{  $lichCongTac->lanhDao->ho_ten ?? null }}</td>
+                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>
                                                     <td>
                                                         @if($lichCongTac->CanBoChiDao)
                                                             @foreach($lichCongTac->CanBoChiDao as $key => $chuyenVienXuLy)

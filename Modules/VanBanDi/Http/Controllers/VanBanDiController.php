@@ -20,6 +20,7 @@ use Modules\Admin\Entities\MailTrongThanhPho;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\LayVanBanTuEmail\Entities\EmailDonVi;
+use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDi\Entities\Duthaovanbandi;
 use Modules\VanBanDi\Entities\Fileduthao;
 use Modules\VanBanDi\Entities\FileVanBanDi;
@@ -748,6 +749,9 @@ class VanBanDiController extends Controller
                     $guidennoinhan = NoiNhanVanBanDi::where('id', $noi_nhan->id)->first();
                     $guidennoinhan->trang_thai = 2;
                     $guidennoinhan->save();
+
+                    // tao lanh dao du hop
+                    $this->taoLanhDaoDuHop($noi_nhan->don_vi_id_nhan, $vanban);
                 }
 //                gửi mail đến các đơn vị ngoài
                 SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null)->delay(now()->addMinutes(5));
@@ -756,6 +760,31 @@ class VanBanDiController extends Controller
 
 
         return redirect()->back()->with('success', 'Thêm file thành công !');
+    }
+
+    public function taoLanhDaoDuHop($donViId, $vanBanDi)
+    {
+        $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+
+        $nguoiDung = User::where('don_vi_id', $donViId)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+        $donVi = DonVi::where('id', $donViId)->first();
+
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+            $nguoiDung = User::role(CHU_TICH)
+                ->where('don_vi_id', $donViId)
+                ->where('trang_thai', ACTIVE)
+                ->whereNull('deleted_at')->first();
+        }
+
+        //tạo lanh dao du hop
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        ThanhPhanDuHop::store($giayMoi, $vanBanDi, [$nguoiDung->id], ThanhPhanDuHop::TYPE_VB_DI, $nguoiDung->don_vi_id ?? null);
     }
 
     /**

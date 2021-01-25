@@ -423,7 +423,7 @@ class GiayMoiDiController extends Controller
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh',1)->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
         $vanThuVanBanDiPiceCharts=[];
         $user = auth::user();
         $donVi = $user->donVi;
@@ -563,8 +563,10 @@ class GiayMoiDiController extends Controller
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
+
         return view('giaymoidi::giay_moi_di.edit',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_loaiVanBan','ds_soVanBan',
-            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi','ds_DonVi_nhan','giaymoidi','lay_emailngoaithanhpho','lay_emailtrongthanhpho','lay_noi_nhan_van_ban_di'));
+            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi','ds_DonVi_nhan','giaymoidi',
+            'lay_emailngoaithanhpho','lay_emailtrongthanhpho', 'lay_noi_nhan_van_ban_di', 'giayMoi'));
 
     }
 

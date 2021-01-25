@@ -32,22 +32,18 @@
                                 @forelse($danhSachLichCongTac as $lichCongTac)
                                     <tr>
                                         <td class="text-center">{{ $order++ }}</td>
-                                        <td class="text-center">{{ date('d/m/Y', strtotime($lichCongTac->ngay)) .' - '. $lichCongTac->gio }}</td>
+                                        <td class="text-center">{{ date('d/m/Y', strtotime($lichCongTac->ngay)) .' - '. date("H:i", strtotime($lichCongTac->gio)) }}</td>
                                         <td>
                                             <a href="{{route('chitiethop',$lichCongTac->id)}}">{{ $lichCongTac->noi_dung }}</a>
                                         </td>
                                         <td>{{ $lichCongTac->lanhDao->ho_ten }}</td>
                                         <td>{{ $lichCongTac->dia_diem ?? '' }}</td>
                                         <td>
-
-                                            {{--                                            @if ($lichCongTac->ngay >= date('Y-m-d'))--}}
                                             @if (count($lichCongTac->listThanhPhanDuHop))
                                                 @foreach($lichCongTac->listThanhPhanDuHop as $canBoDuHop)
                                                     <p style="font-size: 14px;">{{ $canBoDuHop->user->ho_ten ?? null }}</p>
                                                 @endforeach
                                             @endif
-                                            {{--                                            @endif--}}
-
                                         </td>
                                         <td>
                                             @unlessrole('chuyên viên')
@@ -63,9 +59,6 @@
                                                     @csrf
                                                     <input type="hidden" name="thanh_phan_du_hop_id" value="{{ $lichCongTac->lichCaNhanDuHop->id }}">
                                                     <p>
-                                                        {{--                                                        @if (auth::user()->quyen_han > CAP_PHO_CAP_1)--}}
-                                                        {{--                                                            ---}}
-                                                        {{--                                                        @else--}}
                                                         <button type="submit"
                                                                 onclick="return confirm('Bạn có chắc muốn chuyển sang lịch công tác ' +
                                                                         'cá nhân');"
@@ -74,7 +67,6 @@
                                                                 class="btn btn-primary btn-sm"><i
                                                                 class="fa fa-send"></i> Chuyển lịch cá nhân
                                                         </button>
-                                                        {{--                                                        @endif--}}
                                                     </p>
                                                 </form>
                                             @endif
