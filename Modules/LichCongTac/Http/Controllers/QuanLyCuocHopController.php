@@ -438,6 +438,23 @@ class QuanLyCuocHopController extends Controller
         );
     }
 
+    public function danhgiaykien(Request $request)
+    {
+        $thanhPhanThamDu =ThanhPhanDuHop::where(['lich_cong_tac_id'=>$request->lich_ct,'user_id'=>$request->ca_nhan])->first();
+        $thanhPhanThamDu->nhan_xet=$request->nhan_xet;
+        $thanhPhanThamDu->chat_luong=$request->danh_gia;
+        $thanhPhanThamDu->save();
+
+        return response()->json(
+            [
+                'is_relate' => true,
+                'message' => 'Đánh giá thành công!'
+            ]
+        );
+
+
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable

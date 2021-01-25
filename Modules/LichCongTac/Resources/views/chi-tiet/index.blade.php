@@ -508,6 +508,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
+                                                @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
                                                 <div class="box box-solid collapsed-box">
                                                     <div class="table-responsive box-panel">
                                                         <h3>
@@ -517,16 +518,17 @@
 
                                                             </a>
                                                         </h3>
-                                                        @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+
                                                         <div id="ket-luan3" class="panel-collapse collapse mt-2">
                                                             <input type="radio" name="danhgiatonghop" value="1" class="flat-red" @if($lich_cong_tac->danh_gia == 1 || $lich_cong_tac->danh_gia == null)checked @endif > Đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <input type="radio" name="danhgiatonghop" value="2" class="flat-red" @if($lich_cong_tac->danh_gia == 0)checked @endif > Không đạt
                                                             <button type="button" name="luu_danhgiatonghop" data-lich="{{$lich_cong_tac->id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_danhgiatonghop @if($lich_cong_tac->danh_gia != null)hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
 
                                                         </div>
-                                                        @endif
+
                                                     </div>
                                                 </div>
+                                                @endif
 
 
 
@@ -613,7 +615,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                 @forelse($canBoGopY as $key=>$data)
-                                                                <tr>
+                                                                <tr id="goy-{{$data->user_id}}">
                                                                     <td class="text-center">{{$key+1}}</td>
                                                                     <td>{{$data->user->ho_ten ?? ''}}</td>
                                                                     <td>
@@ -622,14 +624,14 @@
                                                                             Đạt
                                                                         </label> &emsp;
                                                                         <label>
-                                                                            <input type="radio" name="chatluong_38613_{{$data->id}}"  value="2">
+                                                                            <input type="radio" name="chatluong_38613_{{$data->id}}" @if($data->chat_luong == 2) checked @endif  value="2">
                                                                             Không đạt
                                                                         </label>
                                                                     </td>
-                                                                    <td><textarea name="nhanxetchatluong_38613" class="form-control nhanxetchatluong_38613" rows="2"></textarea></td>
+                                                                    <td><textarea name="nhanxetchatluong_{{$data->user_id}}" class="form-control nhanxetchatluong_38613" rows="2">{{$data->nhan_xet}}</textarea></td>
                                                                     <td class="text-center vertical">
                                                                         @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
-                                                                        <button name="nhanxet_chatluong" value="38613" id="1145" onclick="danhGiaChatLuong('chatluong_38613_{{$data->id}}')" class="btn btn-primary btn-sm" data-original-title="" title="">Đánh giá</button>
+                                                                        <button name="nhanxet_chatluong" value="38613" id="1145" onclick="danhGiaChatLuongGopY('chatluong_38613_{{$data->id}}',{{$data->user_id}},{{$id}},'nhanxetchatluong_{{$data->user_id}}')" class="btn btn-primary btn-sm @if($data->chat_luong != null)  hidden @else @endif" data-original-title="" title="">Đánh giá</button>
                                                                         @else
                                                                             -
                                                                         @endif

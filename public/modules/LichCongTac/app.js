@@ -343,6 +343,36 @@ function danhGiaTaiLieu(e,p,don_vi,g) {
 
 
 }
+function danhGiaChatLuongGopY(e,p,g,n) {
+    var ca_nhan = p;
+    var danh_gia = $('[name='+e+']:checked').val();
+    var nhan_xet = $('[name='+n+']').val();
+    var lich_ct = g;
+    $.ajax({
+        url: APP_URL + '/danh-gia-y-kien/' + lich_ct,
+        type: 'POST',
+        beforeSend: showLoading(),
+        dataType: 'json',
+        data: {
+            danh_gia: danh_gia,
+            nhan_xet: nhan_xet,
+            ca_nhan: ca_nhan,
+            lich_ct: lich_ct,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+    }).done(function (res) {
+        hideLoading();
+        if (res.is_relate == true) {
+            $('#goy-' + ca_nhan).remove();
+            toastr['success'](res.message);
+        }
+    })
+        .fail(function (error) {
+            toastr['error'](error.message, 'Thông báo hệ thống');
+        });
+
+
+}
 
 function timKiemNguoiDung(id)
 {
