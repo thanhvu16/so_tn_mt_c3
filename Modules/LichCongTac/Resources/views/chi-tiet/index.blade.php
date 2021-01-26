@@ -479,6 +479,10 @@
                                                                     <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop  && $cuochop->ghi_chep_HDND == null)  Lưu lại @else  Cập nhật @endif</button>
                                                                     @else
                                                                     <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;"> Lưu lại</button>
+                                                                @endif@if($cuochop)
+                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop  && $cuochop->ghi_chep_HDND == null)  Lưu lại @else  Cập nhật @endif</button>
+                                                                    @else
+                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;"> Lưu lại</button>
                                                                 @endif
                                                                 @endif
                                                         </div>
@@ -764,7 +768,13 @@
                                                             <textarea name="thanhphanthamdu" id=""  rows="4" class="form-control" placeholder="Nhập thành phần tham dự">{{isset($cuochop) ? $cuochop->thanh_phan_ben_ngoai : ''}}</textarea>
                                                             <br>
                                                             <div class="tham-du-ngoai">
-                                                                <button name="luu_thanhphanthamdu" onclick="thanhPhanThamDuNgoai('thanhphanthamdu',{{$id}})" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">@if($cuochop && $cuochop->thanh_phan_ben_ngoai == null) Lưu lại @else Cập nhật @endif</button>
+                                                                @if($cuochop)
+                                                                    <button name="luu_thanhphanthamdu" onclick="thanhPhanThamDuNgoai('thanhphanthamdu',{{$id}})" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">@if($cuochop && $cuochop->thanh_phan_ben_ngoai == null) Lưu lại @else Cập nhật @endif</button>
+
+                                                                @else
+                                                                    <button name="luu_thanhphanthamdu" onclick="thanhPhanThamDuNgoai('thanhphanthamdu',{{$id}})" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">Lưu lại </button>
+
+                                                                @endif
 
                                                             </div>
                                                         </div>
@@ -886,7 +896,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-sm-12">
                                                                                     <select name="phongban_capnhatthamdu" id="don-vi" onchange="selectDonViAppend()" class="form-control select2 nhom-don-vi">
-                                                                                        <option value="">-- Chọn phòng ban --</option>
+                                                                                        <option value="0">-- Chọn phòng ban --</option>
                                                                                         @foreach($donvi as $data)
                                                                                             <option value="{{$data->id}}">{{$data->ten_don_vi}}</option>
                                                                                         @endforeach
@@ -986,9 +996,11 @@
         function selectDonViAppend() {
             let $this = $(donVi);
             var don_vi = $('[name=phongban_capnhatthamdu]').val();
+            console.log(don_vi);
             let arrId = $this.val;
             if (arrId) {
                 //lấy danh sach cán bộ phối hơp
+
                 $.ajax({
                     url: APP_URL + '/get-chuc-vu/' + don_vi,
                     type: 'GET',

@@ -277,20 +277,32 @@ class NguoiDungController extends Controller
 
     public function getChucVu(Request $request, $id)
     {
-        $ds_chucvu = [];
-        $don_vi = DonVi::where('id', $id)->first();
-        $nhom_don_vi = $don_vi->nhom_don_vi;
-        $lay_chuc_vu = NhomDonVi_chucVu::where('id_nhom_don_vi', $nhom_don_vi)->get();
-        foreach ($lay_chuc_vu as $data) {
-            $chucvu = ChucVu::where('id', $data->id_chuc_vu)->first();
-            array_push($ds_chucvu, $chucvu);
+        if($id == 0)
+        {
+            $ds_chucvu = ChucVu::whereNull('deleted_at')->get();
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $ds_chucvu
+                ]);
+            }
+        }else{
+            $ds_chucvu = [];
+            $don_vi = DonVi::where('id', $id)->first();
+            $nhom_don_vi = $don_vi->nhom_don_vi;
+            $lay_chuc_vu = NhomDonVi_chucVu::where('id_nhom_don_vi', $nhom_don_vi)->get();
+            foreach ($lay_chuc_vu as $data) {
+                $chucvu = ChucVu::where('id', $data->id_chuc_vu)->first();
+                array_push($ds_chucvu, $chucvu);
+            }
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $ds_chucvu
+                ]);
+            }
         }
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'data' => $ds_chucvu
-            ]);
-        }
+
     }
     public function getDonVi(Request $request, $id)
     {
