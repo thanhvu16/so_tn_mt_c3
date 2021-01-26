@@ -134,7 +134,6 @@ class DonViNhanVanBanDenController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
@@ -331,7 +330,21 @@ class DonViNhanVanBanDenController extends Controller
                     $layvanbandi->vao_so_van_ban = 1;
                     $layvanbandi->save();
                 }
+                $filegiaymoi = FileVanBanDen::where('vb_den_id',$layvanbandi->van_ban_den_id)->first();
+                if ($filegiaymoi != null) {
+                    $vbDenFile = new FileVanBanDen();
+                    $vbDenFile->ten_file = $filegiaymoi->ten_file;
+                    $vbDenFile->duong_dan = $filegiaymoi->duong_dan;
+                    $vbDenFile->duoi_file = $filegiaymoi->duoi_file;
+                    $vbDenFile->vb_den_id = $vanbandv->id;
+                    $vbDenFile->nguoi_dung_id = $filegiaymoi->nguoi_dung_id;
+                    $vbDenFile->don_vi_id = $filegiaymoi->don_vi_id;
+                    $vbDenFile->save();
+                }
+
             }
+
+
 
 
             if ($multiFiles && count($multiFiles) > 0) {

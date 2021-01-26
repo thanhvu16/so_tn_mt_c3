@@ -28,7 +28,7 @@
                         <table class="table table-bordered table-striped dataTable mb-0 ">
                             <thead>
                             <tr>
-                                <th width="2%" class="text-center">STT</th>
+                                <th width="2%" class="text-center">STT1</th>
                                 <th width="10%" class="text-center">Loại văn bản</th>
                                 <th width="8%" class="text-center">số ký hiệu</th>
                                 <th width="" class="text-center">Trích yếu</th>
@@ -91,7 +91,7 @@
                                                    name="van_ban-don_vi" value="1" checked>
                                             <label for="van-ban-don-vi-{{ $vbDen2->id }}"
                                                    class="color-red font-weight-normal">
-                                                Văn bản đơn vị chủ trì
+                                                Văn bản đơn vị chủ trì1
                                             </label>
                                         </p>
                                             <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"

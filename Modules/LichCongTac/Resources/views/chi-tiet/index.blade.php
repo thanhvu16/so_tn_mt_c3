@@ -429,8 +429,12 @@
                                                             </div>
                                                             <textarea name="ykienchinhthuc" id=""  rows="4" class="form-control" placeholder="Nhập ý kiến chính thức">{{isset($cuochop) ? $cuochop->y_kien_chinh_thuc : ''}}</textarea>
                                                             <br>
-                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                            <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc @" style="margin-bottom: 10px;">@if($cuochop && $cuochop->y_kien_chinh_thuc == null) Lưu lại @else Cập nhật @endif</button>
+                                                            @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+                                                                @if($cuochop)
+                                                                    <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc " style="margin-bottom: 10px;">@if($cuochop && $cuochop->y_kien_chinh_thuc == null) Lưu lại @else Cập nhật @endif</button>
+                                                                @else
+                                                                    <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc " style="margin-bottom: 10px;">Lưu lại</button>
+                                                                @endif
                                                             @endif
                                                         </div>
                                                     </div>
@@ -447,8 +451,13 @@
                                                         <div id="y-kien3" class="panel-collapse collapse mt-2">
                                                                 <textarea name="noidung_ghichepcuochop_qu" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_quan_uy : ''}}</textarea>
                                                                 <br>
-                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                                <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu " style="margin-bottom: 10px;">@if($cuochop && $cuochop->ghi_chep_quan_uy == null) Lưu lại @else Cập nhật @endif</button>
+                                                            @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+                                                                @if($cuochop)
+                                                                    <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu " style="margin-bottom: 10px;">@if($cuochop && $cuochop->ghi_chep_quan_uy == null) Lưu lại @else Cập nhật @endif</button>
+                                                                @else
+                                                                    <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu " style="margin-bottom: 10px;">Lưu lại</button>
+                                                                @endif
+
                                                             @endif
                                                         </div>
                                                     </div>
@@ -465,9 +474,13 @@
                                                         <div id="y-kien2" class="panel-collapse collapse mt-2">
                                                                 <textarea name="noidung_ghichepcuochop" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_HDND : ''}}</textarea>
                                                                 <br>
-                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                                <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop && $cuochop->ghi_chep_HDND == null) Lưu lại @else Cập nhật @endif</button>
-                                                            @endif
+                                                            @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+                                                                @if($cuochop)
+                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop  && $cuochop->ghi_chep_HDND == null)  Lưu lại @else  Cập nhật @endif</button>
+                                                                    @else
+                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;"> Lưu lại</button>
+                                                                @endif
+                                                                @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -501,7 +514,7 @@
 
                                                                 <!-- ket thuc dau viec -->
                                                                 <br>
-                                                            @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
+                                                            @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
                                                                 <button type="submit"  name="luu_ketluan" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ketluan @if($cuochop && $cuochop->ket_luan_cuoc_hop != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
                                                             @endif
                                                         </div>
