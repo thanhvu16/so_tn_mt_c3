@@ -479,10 +479,6 @@
                                                                     <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop  && $cuochop->ghi_chep_HDND == null)  Lưu lại @else  Cập nhật @endif</button>
                                                                     @else
                                                                     <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;"> Lưu lại</button>
-                                                                @endif@if($cuochop)
-                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop  && $cuochop->ghi_chep_HDND == null)  Lưu lại @else  Cập nhật @endif</button>
-                                                                    @else
-                                                                    <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;"> Lưu lại</button>
                                                                 @endif
                                                                 @endif
                                                         </div>
