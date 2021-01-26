@@ -413,6 +413,7 @@ class VanBanDiController extends Controller
             } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
                 //đây là đơn vị ký
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+                $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
                 $vanbandi->type = 2;
             }
 
@@ -883,7 +884,7 @@ class VanBanDiController extends Controller
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => null])->orderBy('created_at', 'desc')->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id , 'don_vi_soan_thao'=>auth::user()->don_vi_id])->orderBy('created_at', 'desc')->get();
         }
 //        $vanbandichoso = Vanbandichoduyet::where(['cho_cap_so' => 1])->orderBy('created_at', 'desc')->get();
         $emailTrongThanhPho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();

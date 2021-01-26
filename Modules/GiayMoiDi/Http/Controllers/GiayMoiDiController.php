@@ -363,6 +363,7 @@ class GiayMoiDiController extends Controller
         } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
             //đây là đơn vị ký
             $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+            $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
             $vanbandi->type = 2;
         }
         $vanbandi->so_van_ban_id = $request->sovanban_id;
