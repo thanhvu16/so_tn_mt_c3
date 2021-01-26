@@ -430,7 +430,7 @@
                                                             <textarea name="ykienchinhthuc" id=""  rows="4" class="form-control" placeholder="Nhập ý kiến chính thức">{{isset($cuochop) ? $cuochop->y_kien_chinh_thuc : ''}}</textarea>
                                                             <br>
                                                             @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                            <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc @if($cuochop && $cuochop->y_kien_chinh_thuc != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            <button name="luu_ykienchinhthuc" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ykienchinhthuc @" style="margin-bottom: 10px;">@if($cuochop && $cuochop->y_kien_chinh_thuc == null) Lưu lại @else Cập nhật @endif</button>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -448,7 +448,7 @@
                                                                 <textarea name="noidung_ghichepcuochop_qu" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_quan_uy : ''}}</textarea>
                                                                 <br>
                                                             @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                                <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu @if($cuochop && $cuochop->ghi_chep_quan_uy != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                                <button type="submit" name="luu_ghichepcuochop_qu" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop_qu " style="margin-bottom: 10px;">@if($cuochop && $cuochop->ghi_chep_quan_uy == null) Lưu lại @else Cập nhật @endif</button>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -466,7 +466,7 @@
                                                                 <textarea name="noidung_ghichepcuochop" id=""  rows="20" class="form-control" placeholder="Nhập ghi chép cuộc họp">{{isset($cuochop) ? $cuochop->ghi_chep_HDND : ''}}</textarea>
                                                                 <br>
                                                             @if(auth::user()->don_vi_id == $lich_cong_tac->lanh_dao_id)
-                                                                <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop @if($cuochop && $cuochop->ghi_chep_HDND != null) hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
+                                                                <button type="submit" name="luu_ghichepcuochop" data-id="{{$id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_ghichepcuochop " style="margin-bottom: 10px;">@if($cuochop && $cuochop->ghi_chep_HDND == null) Lưu lại @else Cập nhật @endif</button>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -520,8 +520,8 @@
                                                         </h3>
 
                                                         <div id="ket-luan3" class="panel-collapse collapse mt-2">
-                                                            <input type="radio" name="danhgiatonghop" value="1" class="flat-red" @if($lich_cong_tac->danh_gia == 1 || $lich_cong_tac->danh_gia == null)checked @endif > Đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="radio" name="danhgiatonghop" value="2" class="flat-red" @if($lich_cong_tac->danh_gia == 0)checked @endif > Không đạt
+                                                            <input type="radio" name="danhgiatonghop" value="1" class="flat-red" @if($lich_cong_tac->danh_gia == 1 || $lich_cong_tac->danh_gia == null)checked @endif checked> Đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="radio" name="danhgiatonghop" value="2" class="flat-red" @if($lich_cong_tac->danh_gia == 0) @endif > Không đạt
                                                             <button type="button" name="luu_danhgiatonghop" data-lich="{{$lich_cong_tac->id}}" value="3312" class="btn btn-primary btn-sm pull-right luu_danhgiatonghop @if($lich_cong_tac->danh_gia != null)hidden @endif" style="margin-bottom: 10px;">Lưu lại</button>
 
                                                         </div>
@@ -562,27 +562,30 @@
                                                                         <div class="form-group">
                                                                             <div class="radio">
                                                                                 <label>
-                                                                                    <input type="radio" name="dat_{{$data}}"  value="1" checked="">
+                                                                                    <input type="radio" name="dat_{{$data}}" @if(layDanhGia($data,$id) != null && layDanhGia($data,$id)->danh_gia_chat_luong_chuan_bi_tai_lieu == 1)checked @else @endif checked  value="1" >
                                                                                     Đạt
                                                                                 </label> &emsp;
                                                                                 <label>
-                                                                                    <input type="radio" name="dat_{{$data}}"  value="2">
+                                                                                    <input type="radio" name="dat_{{$data}}" @if(layDanhGia($data,$id) != null && layDanhGia($data,$id)->danh_gia_chat_luong_chuan_bi_tai_lieu == 2)checked @else @endif  value="2">
                                                                                     Không đạt
                                                                                 </label>
                                                                             </div>
-{{--                                                                            <div class="radio">--}}
-{{--                                                                                --}}
-{{--                                                                            </div>--}}
+                                                                            <div class="radio">
+
+                                                                            </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td><textarea name="nhanxet_{{$data}}" class="form-control nhanxet_3586" rows="2"></textarea></td>
-                                                                    <td class="text-center vertical">
-                                                                        @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
-                                                                            <button name="nhanxetTaiLieu" onclick="danhGiaTaiLieu('dat_{{$data}}',{{$data}},{{$id}},'nhanxet_{{$data}}')"  value="3586" data-don-vi="{{$data}}" class="btn btn-primary btn-sm nhan-xet-danh-gia" data-original-title="" title="">Đánh giá</button>
+                                                                    <td><textarea name="nhanxet_{{$data}}" class="form-control nhanxet_3586" rows="2">@if(layDanhGia($data,$id) != null && layDanhGia($data,$id)->nhan_xet){{layDanhGia($data,$id)->nhan_xet}} @else @endif</textarea></td>
+                                                                    <td class="text-center vertical ">
+                                                                        <div class="button-danh-gia-{{$data}}">
+                                                                            @if(auth::user()->id == $lich_cong_tac->lanh_dao_id)
+                                                                                <button name="nhanxetTaiLieu" onclick="danhGiaTaiLieu('dat_{{$data}}',{{$data}},{{$id}},'nhanxet_{{$data}}')"  value="3586" data-don-vi="{{$data}}" class="btn btn-primary btn-sm nhan-xet-danh-gia @if(layDanhGia($data,$id) != null && layDanhGia($data,$id)->danh_gia_chat_luong_chuan_bi_tai_lieu != null) hidden @else @endif" data-original-title="" title="">Đánh giá</button>
 
-                                                                        @else
-                                                                            -
-                                                                        @endif
+                                                                            @else
+                                                                                -
+                                                                            @endif
+                                                                        </div>
+
 
                                                                     </td>
                                                                 </tr>
@@ -673,14 +676,14 @@
                                                     </div>
                                                     <div class="box-body no-padding mt-2">
                                                         <ul class="nav nav-pills nav-stacked">
-                                                            <li class=""><a href="javascript:void(0);">Bắt đầu: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{dateformat($lich_cong_tac->ngay)}} {{$lich_cong_tac->gio}}</a></li>
-                                                            <li class=""><a href="javascript:void(0);">Kết thúc: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-                                                            <li class=""><a href="javascript:void(0);">Người chủ trì: &nbsp;&nbsp;&nbsp;&nbsp;Đ/c {{$lich_cong_tac->lanhDao->ho_ten ?? ''}}</a></li>
+                                                            <li class=""><a href="javascript:void(0);">Bắt đầu: {{ date('d/m/Y', strtotime($lich_cong_tac->ngay)) }} - {{ date('H:i', strtotime($lich_cong_tac->gio)) }}</a></li>
+                                                            <li class=""><a href="javascript:void(0);">Kết thúc: </a></li>
+                                                            <li class=""><a href="javascript:void(0);">Người chủ trì: Đ/c {{$lich_cong_tac->lanhDao->ho_ten ?? ''}}</a></li>
                                                             <li class=""><a href="javascript:void(0);">Đơn vị chuẩn bị:
                                                                 {{$lich_cong_tac->lanhDao->donVi->ten_don_vi ?? ''}}
                                                                     <!-- 1 -->
                                                                 </a></li>
-                                                            <li class=""><a href="javascript:void(0);">Địa điểm: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$lich_cong_tac->dia_diem ?? ''}}</a></li>
+                                                            <li class=""><a href="javascript:void(0);">Địa điểm: {{$lich_cong_tac->dia_diem ?? ''}}</a></li>
 
                                                         </ul>
                                                     </div>
@@ -718,7 +721,7 @@
                                                                             <td>{{$key+1}}</td>
                                                                             <td><p>{{$item->nguoiDung->ho_ten}}</p></td>
                                                                             <td class="text-center vertical">
-                                                                                @if(auth::user()->id ==  $lich_cong_tac->lanh_dao_id)
+                                                                                @if(auth::user()->id ==  $lich_cong_tac->lanh_dao_id && $item->thanh_phan_moi == 2)
                                                                                 <a class="nguoi-du-hop xoa-du-hop-{{$item->id}} " data-id="{{$item->id}}" ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a>
                                                                                 @else
                                                                                 -
@@ -745,9 +748,12 @@
 
                                                         </h3>
                                                         <div id="y-kien9" class="panel-collapse collapse mt-2">
-                                                            <textarea name="thanhphanthamdu" id=""  rows="4" class="form-control" placeholder="Nhập thành phần tham dự">Thành viên Tổ thẩm định giúp việc cho Hội đồng; Chủ tịch UBND các phường có dự án (CQTT tham mưu mời các thành phần liên quan)</textarea>
+                                                            <textarea name="thanhphanthamdu" id=""  rows="4" class="form-control" placeholder="Nhập thành phần tham dự">{{isset($cuochop) ? $cuochop->thanh_phan_ben_ngoai : ''}}</textarea>
                                                             <br>
-                                                            <button name="luu_thanhphanthamdu" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">Lưu lại</button>
+                                                            <div class="tham-du-ngoai">
+                                                                <button name="luu_thanhphanthamdu" onclick="thanhPhanThamDuNgoai('thanhphanthamdu',{{$id}})" value="3312" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">@if($cuochop && $cuochop->thanh_phan_ben_ngoai == null) Lưu lại @else Cập nhật @endif</button>
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

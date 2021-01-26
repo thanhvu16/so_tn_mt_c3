@@ -53,6 +53,8 @@ class ThanhPhanDuHop extends Model
             ->select('id', 'ten_don_vi');
     }
 
+
+
     public static function store($giayMoi, $vanBan, $arrayLanhDaoId, $type = null, $donViId = null)
     {
         $donVi = auth::user()->donVi;

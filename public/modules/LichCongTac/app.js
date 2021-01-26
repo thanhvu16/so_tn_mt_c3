@@ -18,6 +18,7 @@ $('.nguoi-du-hop').on('click', function (e) {
             hideLoading();
             if (res.is_relate == true) {
                 $('.remove-'+ id).remove();
+                toastr['success'](res.message);
             }
         })
             .fail(function (error) {
@@ -45,6 +46,7 @@ $('.luu_ykienchinhthuc').on('click', function (e) {
         }).done(function (res) {
             hideLoading();
             $('.luu_ykienchinhthuc').addClass('hidden');
+            toastr['success'](res.message);
 
         })
             .fail(function (error) {
@@ -72,6 +74,7 @@ $('.luu_ghichepcuochop_qu').on('click', function (e) {
         }).done(function (res) {
             hideLoading();
             $('.luu_ghichepcuochop_qu').addClass('hidden');
+            toastr['success'](res.message);
 
         })
             .fail(function (error) {
@@ -98,7 +101,9 @@ $('.luu_ghichepcuochop').on('click', function (e) {
             },
         }).done(function (res) {
             hideLoading();
+
             $('.luu_ghichepcuochop').addClass('hidden');
+            toastr['success'](res.message);
 
         })
             .fail(function (error) {
@@ -184,6 +189,8 @@ $('.XoaCuocHop').on('click', function (e) {
         }).done(function (res) {
             hideLoading();
             $('.lien-quan-' + id).remove();
+            toastr['success'](res.message);
+
         })
             .fail(function (error) {
                 toastr['error'](error.message, 'Thông báo hệ thống');
@@ -208,6 +215,7 @@ $('.Xoatailieu').on('click', function (e) {
         }).done(function (res) {
             hideLoading();
             $('.tai-lieu-' + id).remove();
+            toastr['success'](res.message);
         })
             .fail(function (error) {
                 toastr['error'](error.message, 'Thông báo hệ thống');
@@ -271,8 +279,9 @@ $("body").on("click",'.chonLichHop', function () {
             hideLoading();
             if (res.is_relate == true) {
                 $('.id-' + id).remove();
+                toastr['success'](res.message);
             }else {
-                toastr['error'](error.message, 'Thông báo hệ thống');
+                toastr['error'](res.message);
             }
 
 
@@ -333,8 +342,9 @@ function danhGiaTaiLieu(e,p,don_vi,g) {
     }).done(function (res) {
         hideLoading();
         if (res.is_relate == true) {
-            console.log(res.message);
+            $('.button-danh-gia-'+ p ).remove();
             toastr['success'](res.message);
+
         }
     })
         .fail(function (error) {
@@ -364,6 +374,32 @@ function danhGiaChatLuongGopY(e,p,g,n) {
         hideLoading();
         if (res.is_relate == true) {
             $('#goy-' + ca_nhan).remove();
+            toastr['success'](res.message);
+        }
+    })
+        .fail(function (error) {
+            toastr['error'](error.message, 'Thông báo hệ thống');
+        });
+
+
+}
+function thanhPhanThamDuNgoai(e,p) {
+    var noidung = $('[name='+e+']').val();
+    var lich_ct = p;
+    $.ajax({
+        url: APP_URL + '/tham-du-ngoai/' + lich_ct,
+        type: 'POST',
+        beforeSend: showLoading(),
+        dataType: 'json',
+        data: {
+            noidung: noidung,
+            lich_ct: lich_ct,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+    }).done(function (res) {
+        hideLoading();
+        if (res.is_relate == true) {
+            $('.tham-du-ngoai').remove();
             toastr['success'](res.message);
         }
     })
