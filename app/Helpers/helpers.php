@@ -3,6 +3,7 @@
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
 use app\Models\UserLogs;
+use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 
 if (!function_exists('uploadFile')) {
     function uploadFile($inputFile, $uploadPath, $folderUploads, $urlFileInDB = null)
@@ -133,6 +134,11 @@ function api_add($arr ,$url)
         ->first();
 
     return $donvi;
+}
+function layDanhGia($data,$lct)
+{
+    $qlch = DanhGiaTaiLieu::where(['id_phong'=>$data,'id_lich_ct'=>$lct])->first();
+    return $qlch;
 }
 function dateFromBusinessDays($days, $dateTime=null) {
     $dateTime = is_null($dateTime) ? time() : strtotime(str_replace('/', '-', $dateTime));

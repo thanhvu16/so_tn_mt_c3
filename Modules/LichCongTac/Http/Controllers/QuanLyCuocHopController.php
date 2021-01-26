@@ -71,7 +71,28 @@ class QuanLyCuocHopController extends Controller
         return response()->json(
             [
                 'id' => $id,
-                'is_relate' => true
+                'is_relate' => true,
+                'message' => 'Xóa người tham dự thành công!'
+            ]
+        );
+    }
+    public function thamDuNgoai(Request $request)
+    {
+        $thamDuNgoai = CuocHopChiTiet::where(['lich_hop_id'=>$request->lich_ct])->first();
+        if ($thamDuNgoai == null) {
+            $taomoi = new CuocHopChiTiet();
+            $taomoi->lich_hop_id = $request->id;
+            $taomoi->thanh_phan_ben_ngoai = $request->noidung;
+            $taomoi->save();
+
+        } else {
+            $thamDuNgoai->thanh_phan_ben_ngoai = $request->noidung;
+            $thamDuNgoai->save();
+        }
+        return response()->json(
+            [
+                'is_relate' => true,
+                'message' => 'Thêm thành phần tham dự thành công!'
             ]
         );
     }
@@ -93,7 +114,8 @@ class QuanLyCuocHopController extends Controller
         return response()->json(
             [
                 'id' => $id,
-                'is_relate' => true
+                'is_relate' => true,
+                'message' => 'Đánh giá thành công!'
             ]
         );
     }
@@ -116,7 +138,8 @@ class QuanLyCuocHopController extends Controller
         return response()->json(
             [
                 'id' => $id,
-                'is_relate' => true
+                'is_relate' => true,
+                'message' => 'Đánh giá thành công!'
             ]
         );
     }
@@ -138,7 +161,8 @@ class QuanLyCuocHopController extends Controller
         return response()->json(
             [
                 'id' => $id,
-                'is_relate' => true
+                'is_relate' => true,
+                'message' => 'Đánh giá thành công!'
             ]
         );
     }
@@ -289,7 +313,8 @@ class QuanLyCuocHopController extends Controller
             $cuocHopLienQUan->save();
             return response()->json(
                 [
-                    'is_relate' => true
+                    'is_relate' => true,
+                    'message' => 'Thêm cuộc họp thành công!'
                 ]
             );
 
@@ -297,7 +322,8 @@ class QuanLyCuocHopController extends Controller
         } else {
             return response()->json(
                 [
-                    'is_relate' => false
+                    'is_relate' => false,
+                    'message' => 'Cuộc họp đã tồn tại!'
                 ]
             );
         }
@@ -310,7 +336,8 @@ class QuanLyCuocHopController extends Controller
         $xoaCuocHopLienQuan = CuocHopLienQuan::where('id', $id)->delete();
         return response()->json(
             [
-                'is_relate' => false
+                'is_relate' => true,
+                'message' => 'Xóa thành công!'
             ]
         );
     }
@@ -320,7 +347,8 @@ class QuanLyCuocHopController extends Controller
         $xoaCuocHopLienQuan = FileCuocHop::where('id', $id)->delete();
         return response()->json(
             [
-                'is_relate' => false
+                'is_relate' => true,
+                'message' => 'Xóa thành công!'
             ]
         );
     }
@@ -337,7 +365,7 @@ class QuanLyCuocHopController extends Controller
         }
         return response()->json(
             [
-                'is_relate' => false,
+                'is_relate' => true,
                 'message' => 'Đánh giá thành công!'
             ]
         );
