@@ -70,7 +70,14 @@ class QuanLyCuocHopController extends Controller
 
     public function deleteNguoiDuHop($id)
     {
-        $xoa = ThanhPhanDuHop::where(['id' => $id])->where('thanh_phan_moi', 2)->delete();
+        $xoa = ThanhPhanDuHop::where(['id' => $id])->where('thanh_phan_moi', 2)->first();
+
+        if ($xoa) {
+            //xoa lich cong tac ca nhan
+            LichCongTac::where('thanh_phan_du_hop_id', $xoa->id)->delete();
+        }
+        $xoa->delete();
+
         return response()->json(
             [
                 'id' => $id,

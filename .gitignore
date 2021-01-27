@@ -1,7 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/XMLOutput_N.sdk
+public/XMLOutput_N.sdk
 /public/uploads
 /storage/*.key
 /vendor
