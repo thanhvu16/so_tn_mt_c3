@@ -5,6 +5,9 @@ namespace App\Models;
 use App\User;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
+use Modules\LichCongTac\Entities\CuocHopChiTiet;
+use Modules\LichCongTac\Entities\DanhGiaGopY;
+use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 use Modules\LichCongTac\Entities\FileCuocHop;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -168,7 +171,7 @@ class LichCongTac extends Model
             'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
             'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
             'user_id' => $currentUser->id,
-            'don_vi_du_hop' =>  !empty($donViDuHop) ? $donViChuTriId : null
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null
         );
         //check lich cong tac
         $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
@@ -207,24 +210,131 @@ class LichCongTac extends Model
 
     public function fileKetLuan()
     {
-        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',3);
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai', 3);
     }
 
     public function fileCuocHop()
     {
-        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',1);
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai', 1);
     }
+
     public function fileThamKhao()
     {
-        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai', 2);
     }
+
     public function Danh()
     {
-        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai',2);
+        return $this->hasMany(FileCuocHop::class, 'lich_hop_id', 'id')->where('trang_thai', 2);
     }
 
     public function getParent()
     {
         return LichCongTac::where('id', $this->parent_id)->first();
+    }
+
+    public function sLcuocHopChuTri($id)
+    {
+        $soluong = LichCongTac::where('lanh_dao_id', $id)->count();
+        return $soluong;
+    }
+
+    public function sLcuocHopCoKetLuan($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where('lanh_dao_id', $id)->get();
+        foreach ($lichct as $data) {
+            $cuocHop = CuocHopChiTiet::where('lich_hop_id', $data->id)->first();
+            if ($cuocHop) {
+                if ($cuocHop != null && $cuocHop->ket_luan_cuoc_hop != null) {
+                    $soluong = $soluong + 1;
+                }
+            }
+
+        }
+        if ($soluong == 0) {
+            return 0;
+
+        } else {
+            return $soluong;
+        }
+    }
+
+    public function sLcuocHopCoTaiLieu($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where('lanh_dao_id', $id)->get();
+        foreach ($lichct as $data) {
+            $file = FileCuocHop::where('lich_hop_id', $data->id)->whereIn('trang_thai', [1, 2])->first();
+            if ($file) {
+                $soluong = $soluong + 1;
+            }
+        }
+        if ($soluong == 0) {
+            return 0;
+
+        } else {
+            return $soluong;
+        }
+    }
+
+    public function sLcuocHopCoYKien($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where('lanh_dao_id', $id)->get();
+        foreach ($lichct as $data) {
+            $gopY = DanhGiaGopY::where('id_lich_hop', $data->id)->first();
+            if ($gopY) {
+                $soluong = $soluong + 1;
+            }
+        }
+        if ($soluong == 0) {
+            return 0;
+
+        } else {
+            return $soluong;
+        }
+    }
+
+    public function sLcuocHopKhongDat($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where(['lanh_dao_id' => $id])->where('danh_gia', '!=', null)->count();
+        return $lichct;
+    }
+
+    public function sLcuocHopCoTaiLieuKhongDat($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where('lanh_dao_id', $id)->get();
+        foreach ($lichct as $data) {
+            $gopY = DanhGiaTaiLieu::where('id_lich_ct', $data->id)->first();
+            if ($gopY && ($gopY->danh_gia_chat_luong_chuan_bi_tai_lieu == 2)) {
+                $soluong = $soluong + 1;
+            }
+        }
+        if ($soluong == 0) {
+            return 0;
+
+        } else {
+            return $soluong;
+        }
+    }
+    public function sLcuocHopCoTaiLieucham($id)
+    {
+        $soluong = null;
+        $lichct = LichCongTac::where('lanh_dao_id', $id)->get();
+        foreach ($lichct as $data) {
+            $file = FileCuocHop::where('lich_hop_id', $data->id)->whereIn('trang_thai', [1, 2])->first();
+            if ($file && (date_format($data->created_at, 'Y-m-d') == $data->ngay)) {
+                $soluong = $soluong + 1;
+            }
+        }
+        if ($soluong == 0) {
+            return 0;
+
+        } else {
+            return $soluong;
+        }
     }
 }
