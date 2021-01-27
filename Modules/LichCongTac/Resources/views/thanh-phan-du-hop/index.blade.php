@@ -53,7 +53,7 @@
                                                 </button>
                                             </p>
                                             @endunlessrole
-                                            @if ($lichCongTac->lichCaNhanDuHop->trang_thai_lich == 1 && empty($lichCongTac->checkDaChuyenLichCaNhan))
+                                            @if ($lichCongTac->lichCaNhanDuHop->trang_thai == 1 && empty($lichCongTac->checkDaChuyenLichCaNhan))
                                                 <form action="{{ route('lich-cong-tac.store') }}"
                                                       method="post">
                                                     @csrf

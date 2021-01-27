@@ -61,13 +61,13 @@ class AdminController extends Controller
         if ($user->hasRole('admin')) {
             return redirect()->route('nguoi-dung.index');
         }
-        $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => auth::user()->id, 'stt' => 1])->count();
+        $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => $user->id, 'stt' => 1])->count();
 
-        $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 1])->count();
-        $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 0, 'tra_lai' => 1])->count();
-        $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
+        $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => $user->id, 'trang_thai' => 1])->count();
+        $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => $user->id, 'trang_thai' => 0, 'tra_lai' => 1])->count();
+        $canbogopy = CanBoPhongDuThao::where(['can_bo_id' => $user->id, 'trang_thai' => 1])->get();
         $key2 = count($canbogopy);
-        $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
+        $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => $user->id, 'trang_thai' => 1])->get();
         $key1 = count($canbogopyngoai);
         $gopy = $key2 + $key1;
 
@@ -153,11 +153,11 @@ class AdminController extends Controller
                 ->whereNull('type')
                 ->count();
 
-            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])
+            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->don_vi_id])
                 ->whereIn('trang_thai', [2])
                 ->count();
 
-            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->don_vi_id)
+            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
                 ->whereNull('vao_so_van_ban')
                 ->whereNull('parent_id')
                 ->whereNull('type')
@@ -203,8 +203,8 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => auth::user()->don_vi_id ,
-                'don_vi_soan_thao'=>auth::user()->don_vi_id])->count();
+            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'van_ban_huyen_ky' => $user->don_vi_id,
+                'don_vi_soan_thao' => $user->don_vi_id])->count();
 
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
@@ -298,8 +298,7 @@ class AdminController extends Controller
 
         $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        $vanBanChoXuLy = VanBanDen::with('lanhDaoXemDeBiet', 'checkLuuVetVanBanDen', 'nguoiDung', 'vanBanTraLai')
-            ->whereIn('id', $arrIdVanBanDenDonVi)
+        $vanBanChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
             ->where('trinh_tu_nhan_van_ban', $active)
             ->count();
 
@@ -307,7 +306,7 @@ class AdminController extends Controller
 
             $trinhTuNhanVanBan = null;
 
-            if ($user->hasRole([TRUONG_PHONG,CHANH_VAN_PHONG, TRUONG_BAN])) {
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
                 $trinhTuNhanVanBan = 3;
             }
 
@@ -455,9 +454,7 @@ class AdminController extends Controller
             }
         }
 
-        $vanBanXinGiaHan = GiaHanVanBan::with('vanBanDen',
-            'CanBoChuyen', 'CanBoNhan')
-            ->where('can_bo_nhan_id', $user->id)
+        $vanBanXinGiaHan = GiaHanVanBan::where('can_bo_nhan_id', $user->id)
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
 
@@ -470,8 +467,7 @@ class AdminController extends Controller
             array_push($hoSoCongViecCoLors, COLOR_PRIMARY);
 
 
-            $lichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi')
-                ->where('ngay', '>=', $ngaybd)
+            $lichCongTac = LichCongTac::where('ngay', '>=', $ngaybd)
                 ->where('ngay', '<=', $ngaykt)
                 ->where('lanh_dao_id', $user->id)
                 ->count();
@@ -530,50 +526,50 @@ class AdminController extends Controller
                 ->whereNull('hoan_thanh')
                 ->get();
 
-        $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+            $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        if ($user->hasRole(CHU_TICH)) {
-            $trinhTuNhanVanBan = 1;
+            if ($user->hasRole(CHU_TICH)) {
+                $trinhTuNhanVanBan = 1;
+            }
+
+            if ($user->hasRole(PHO_CHUC_TICH)) {
+                $trinhTuNhanVanBan = 2;
+            }
+
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
+                $trinhTuNhanVanBan = 3;
+            }
+
+            if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
+                $trinhTuNhanVanBan = 4;
+            }
+
+            if ($user->hasRole(CHUYEN_VIEN)) {
+                $trinhTuNhanVanBan = 5;
+            }
+
+            if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, CHUYEN_VIEN, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
+
+                $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+                    ->where('can_bo_nhan_id', $user->id)
+                    ->whereNotNull('vao_so_van_ban')
+                    ->whereNull('hoan_thanh')
+                    ->get();
+
+                $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+            }
+
+            $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+                ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
+                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+                ->where(function ($query) use ($currentDate) {
+                    return $query->where('han_xu_ly', '<', $currentDate);
+                })
+                ->count();
+
+            array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));
+            array_push($hoSoCongViecCoLors, COLOR_YELLOW);
         }
-
-        if ($user->hasRole(PHO_CHUC_TICH)) {
-            $trinhTuNhanVanBan = 2;
-        }
-
-        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 3;
-        }
-
-        if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 4;
-        }
-
-        if ($user->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = 5;
-        }
-
-        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, CHUYEN_VIEN, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
-
-            $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
-                ->whereNotNull('vao_so_van_ban')
-                ->whereNull('hoan_thanh')
-                ->get();
-
-            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-        }
-
-        $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
-            ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
-            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-            ->where(function ($query) use ($currentDate) {
-                return $query->where('han_xu_ly', '<', $currentDate);
-            })
-            ->count();
-
-        array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));
-        array_push($hoSoCongViecCoLors, COLOR_YELLOW);
-    }
 
         // tham du cuoc hop
         $danhSachthamDuCuocHop = ThanhPhanDuHop::where('user_id', $user->id)
@@ -590,18 +586,18 @@ class AdminController extends Controller
         array_push($hoSoCongViecCoLors, COLOR_LIGHT_PINK);
 
 
-        return view('admin::index',compact(
+        return view('admin::index', compact(
 //            'getEmail' => $getEmail,
-            'danhSachDuThao' ,
+            'danhSachDuThao',
             'danhSachVanBanDen',
             'vanBanDenDonViChoVaoSo',
             'vanBanDenTraLai',
-            'homThuCong' ,
+            'homThuCong',
             'giayMoiDen',
             'giayMoiDi',
             'vanBanDi',
             'vanBanDiChoSo',
-            'vanbandichoduyet' ,
+            'vanbandichoduyet',
             'vanThuVanBanDiPiceCharts',
             'vanThuVanBanDiCoLors',
             'van_ban_di_tra_lai',

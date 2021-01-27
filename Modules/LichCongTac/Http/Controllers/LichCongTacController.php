@@ -202,6 +202,7 @@ class LichCongTacController extends Controller
                     'ghi_chu' => $lichCongTac->ghi_chu,
                     'user_id' => $currentUser->id,
                     'don_vi_du_hop' => $lichCongTac->don_vi_du_hop,
+                    'thanh_phan_du_hop_id' => $thanhPhanDuHopId,
                 );
 
                 $newLichCongTac = new LichCongTac();

@@ -156,9 +156,10 @@
                                                         @endcan
                                                     </td>
                                                     <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>
-                                                    <td>
-                                                        Đơn vị soạn
-                                                        thảo: {{ $lichCongTac->vanBanDi->dvSoanThao->ten_don_vi ?? null }}
+                                                    <td>@if ($lichCongTac->vanBanDi->dvSoanThao)
+                                                            Đơn vị soạn
+                                                            thảo: {{ $lichCongTac->vanBanDi->dvSoanThao->ten_don_vi ?? null }}
+                                                         @endif
                                                     </td>
                                                     <td>
                                                         <p>
@@ -174,7 +175,7 @@
                                                                 @endforeach
                                                             @endif
                                                         </p>
-                                                        <hr style="border:1px dashed red">
+{{--                                                        <hr style="border:1px dashed red">--}}
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"
@@ -351,7 +352,7 @@
                                                                 @endforeach
                                                             @endif
                                                         @else
-                                                            <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"
+                                                            <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.!empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}"
                                                                target="_blank"
                                                                class="btn btn-primary btn-sm color-white">Soạn
                                                                 báo cáo kết quả

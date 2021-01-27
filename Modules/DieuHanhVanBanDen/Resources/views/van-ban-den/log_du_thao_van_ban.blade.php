@@ -33,6 +33,7 @@
                             </td>
                             <td>
                                 <p><a href="{{ route('Danhsachduthao') }}" class="color-black">{{ $duThaoVanBan->vb_trich_yeu }}</a></p>
+                                File:
                                 <p>
                                     @if (isset($duThaoVanBan->Duthaofile))
                                         @foreach($duThaoVanBan->Duthaofile as $key => $file)

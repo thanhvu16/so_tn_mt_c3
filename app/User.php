@@ -74,12 +74,13 @@ class User extends Authenticatable
 
     public function chucVu()
     {
-        return $this->belongsTo(ChucVu::class, 'chuc_vu_id', 'id');
+        return $this->belongsTo(ChucVu::class, 'chuc_vu_id', 'id')->select('id', 'ten_chuc_vu', 'ten_viet_tat');
     }
 
     public function donVi()
     {
-        return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
+        return $this->belongsTo(DonVi::class, 'don_vi_id', 'id')
+            ->select('id', 'ten_don_vi', 'ten_viet_tat', 'dieu_hanh', 'nhom_don_vi', 'cap_xa', 'ma_hanh_chinh');
     }
     public function donViKhacXa()
     {

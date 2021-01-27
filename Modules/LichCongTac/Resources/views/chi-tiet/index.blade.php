@@ -731,8 +731,12 @@
                                                                     @if($nguoi_tham_du != null)
                                                                     @foreach($nguoi_tham_du as $key=>$item)
                                                                         <tr class="remove-{{ $item->id }}">
-                                                                            <td>{{$key+1}}</td>
-                                                                            <td><p>{{$item->nguoiDung->ho_ten}}</p></td>
+                                                                            <td class="text-center">{{$key+1}}</td>
+                                                                            <td>
+                                                                                <p>{{$item->nguoiDung->ho_ten}} <br>
+                                                                                    <small>({{ $item->donVi->ten_don_vi ?? "N/A" }})</small>
+                                                                                </p>
+                                                                            </td>
                                                                             <td class="text-center vertical">
                                                                                 @if(auth::user()->id ==  $lich_cong_tac->lanh_dao_id && $item->thanh_phan_moi == 2)
                                                                                 <a class="nguoi-du-hop xoa-du-hop-{{$item->id}} " data-id="{{$item->id}}" ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a>

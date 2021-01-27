@@ -85,7 +85,10 @@ class DieuHanhVanBanDenController extends Controller
             'vanBanDenFile' => function ($query) {
                 return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
             }
-        ])->findOrFail($id);
+        ])->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
+            'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id',
+            'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban')
+            ->findOrFail($id);
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 
@@ -157,23 +160,43 @@ class DieuHanhVanBanDenController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
-        // data cua du thao
-        $date = Carbon::now()->format('Y-m-d');
-        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([TRUONG_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $ds_loaiVanBan = null;
         $ds_nguoiKy = null;
-        $vanThuVanBanDiPiceCharts = [];
-        $user = auth::user();
-        $donVi = $user->donVi;
-        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+        $lanhdaotrongphong = null;
+        $lanhdaokhac = null;
+        $date = null;
 
-        switch (auth::user()->roles->pluck('name')[0]) {
-            case CHUYEN_VIEN:
-                if (empty($donVi->cap_xa)) {
-                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+        if ($vanBanDen->trinh_tu_nhan_van_ban != VanBanDen::HOAN_THANH_VAN_BAN) {
+            // data cua du thao
+            $date = Carbon::now()->format('Y-m-d');
+            $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+                ->orderBy('ten_loai_van_ban', 'desc')->get();
+            $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
+            $lanhdaokhac = User::role([TRUONG_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+            $vanThuVanBanDiPiceCharts = [];
+            $user = auth::user();
+            $donVi = $user->donVi;
+            $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
+            $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+
+            switch (auth::user()->roles->pluck('name')[0]) {
+                case CHUYEN_VIEN:
+                    if (empty($donVi->cap_xa)) {
+                        $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                        foreach ($truongpho as $data2) {
+                            array_push($vanThuVanBanDiPiceCharts, $data2);
+                        }
+                        $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                        foreach ($chanvanphong as $data) {
+                            array_push($vanThuVanBanDiPiceCharts, $data);
+                        }
+                        $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+                    } else {
+                        $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    }
+                    break;
+                case PHO_PHONG:
+                    $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     foreach ($truongpho as $data2) {
                         array_push($vanThuVanBanDiPiceCharts, $data2);
                     }
@@ -182,59 +205,45 @@ class DieuHanhVanBanDenController extends Controller
                         array_push($vanThuVanBanDiPiceCharts, $data);
                     }
                     $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
-                } else {
-                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                }
-                break;
-            case PHO_PHONG:
-                $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($truongpho as $data2) {
-                    array_push($vanThuVanBanDiPiceCharts, $data2);
-                }
-                $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                foreach ($chanvanphong as $data) {
-                    array_push($vanThuVanBanDiPiceCharts, $data);
-                }
-                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
-                break;
-            case TRUONG_PHONG:
-                $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                break;
-            case PHO_CHUC_TICH:
-                if (empty($donVi->cap_xa)) {
-                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                } else {
-                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
-                }
-                break;
-            case CHU_TICH:
-                if (empty($donVi->cap_xa)) {
-                    $ds_nguoiKy = null;
-                } else {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
-                }
-                break;
-            case CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
-                break;
-            case PHO_CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
-                break;
-            case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                break;
-            case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                break;
-            case TRUONG_BAN:
-                $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
-                break;
-            case PHO_TRUONG_BAN:
-                $ds_nguoiKy = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                break;
+                    break;
+                case TRUONG_PHONG:
+                    $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                    break;
+                case PHO_CHUC_TICH:
+                    if (empty($donVi->cap_xa)) {
+                        $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    } else {
+                        $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                    }
+                    break;
+                case CHU_TICH:
+                    if (empty($donVi->cap_xa)) {
+                        $ds_nguoiKy = null;
+                    } else {
+                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                    }
+                    break;
+                case CHANH_VAN_PHONG:
+                    $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
+                    break;
+                case PHO_CHANH_VAN_PHONG:
+                    $ds_nguoiKy = User::role([CHANH_VAN_PHONG])->get();
+                    break;
+                case VAN_THU_DON_VI:
+                    $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    break;
+                case VAN_THU_HUYEN:
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                    break;
+                case TRUONG_BAN:
+                    $ds_nguoiKy = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                    break;
+                case PHO_TRUONG_BAN:
+                    $ds_nguoiKy = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    break;
 
+            }
         }
-
 
         return view('dieuhanhvanbanden::van-ban-den.show',
             compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date'));

@@ -79,7 +79,7 @@
                                     khẩn:</b> {{ isset($vanBanDen->hasChild->doKhan) ? $vanBanDen->hasChild->doKhan->ten_muc_do : null }}
                             </p>
                         </div>
-                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->so_van_ban_id == $loaiVanBanGiayMoi->id)
+                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                             <div class="col-md-12">
                                 <label class="col-form-label">Nội dung
                                     họp:</label> {{ $vanBanDen->hasChild->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
@@ -243,7 +243,7 @@
                 @include('dieuhanhvanbanden::van-ban-den.log_van_ban_di')
 
             <!--giai quyet van ban-->
-                @if ($vanBanDen->active != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                @if ($vanBanDen->trinh_tu_nhan_van_ban != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
                     @hasanyrole('trưởng phòng|phó phòng|chuyên viên|chánh văn phòng|phó chánh văn phòng|trưởng ban|phó trưởng ban')
                     @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
                 @endif

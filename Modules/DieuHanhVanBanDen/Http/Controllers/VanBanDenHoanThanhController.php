@@ -56,7 +56,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile', 'vanBanDi',
             'xuLyVanBanDen' => function ($query) {
                 return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
             },
@@ -80,6 +80,9 @@ class VanBanDenHoanThanhController extends Controller
                     return $query->where('so_den', $soDen);
                 }
             })
+            ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
+                'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
+                'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban', 'created_at')
             ->paginate(PER_PAGE);
 
         if (count($danhSachVanBanDen) > 0) {
@@ -90,7 +93,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
-        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->first();
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
         return view('dieuhanhvanbanden::van-ban-hoan-thanh.index', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }

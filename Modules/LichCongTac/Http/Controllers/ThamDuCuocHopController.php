@@ -51,7 +51,6 @@ class ThamDuCuocHopController extends Controller
 
         $order = ($danhSachLichCongTac->currentPage() - 1) * PER_PAGE + 1;
 
-
         return view('lichcongtac::thanh-phan-du-hop.index',
             compact('danhSachLichCongTac', 'order'));
     }
@@ -108,6 +107,10 @@ class ThamDuCuocHopController extends Controller
             //update ca nhan co di hop hay khong?
             if (empty($caNhanDuHop)) {
                 $check->trang_thai = ThanhPhanDuHop::TRANG_THAI_BAN;
+                //xoa lich cong tac ca nhan
+                LichCongTac::where('thanh_phan_du_hop_id', $check->id)->delete();
+                $check->trang_thai_lich = 1;
+
             } else {
                 $check->trang_thai = ThanhPhanDuHop::TRANG_THAI_DI_HOP;
             }

@@ -441,6 +441,7 @@ class VanBanDen extends Model
     public function vanBanDi()
     {
         return $this->hasOne(VanBanDi::class, 'van_ban_den_id', 'id')
+            ->select('id', 'so_di', 'trich_yeu', 'van_ban_den_id', 'so_ky_hieu', 'loai_van_ban_id', 'ngay_ban_hanh')
             ->orderBy('id', 'DESC');
     }
 

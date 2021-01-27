@@ -33,7 +33,8 @@ class LichCongTac extends Model
         'trang_thai_lich',
         'ghi_chu',
         'user_id',
-        'don_vi_du_hop'
+        'don_vi_du_hop',
+        'thanh_phan_du_hop_id'
     ];
 
     const TYPE_VB_DI = 1;
@@ -183,6 +184,7 @@ class LichCongTac extends Model
         return ThanhPhanDuHop::where(['lich_cong_tac_id' => $this->id,
             'don_vi_id' => auth::user()->don_vi_id,
         ])
+            ->where('trang_thai', ThanhPhanDuHop::TRANG_THAI_DI_HOP)
             ->get();
     }
 
@@ -198,7 +200,7 @@ class LichCongTac extends Model
     {
         return ThanhPhanDuHop::where('lich_cong_tac_id', $this->id)
             ->where('user_id', auth::user()->id)
-            ->where('trang_thai', ThanhPhanDuHop::TRANG_THAI_LICH_DA_CHUYEN)
+            ->where('trang_thai_lich', ThanhPhanDuHop::TRANG_THAI_LICH_DA_CHUYEN)
             ->select('id', 'trang_thai', 'trang_thai_lich')
             ->first();
     }
