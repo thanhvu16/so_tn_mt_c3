@@ -47,3 +47,4 @@ Route::post('tham-du-ngoai/{id}', 'QuanLyCuocHopController@thamDuNgoai')->name('
 
 
 Route::resource('tham-du-cuoc-hop', 'ThamDuCuocHopController');
+Route::resource('thong-ke-tieu-chi-cuoc-hop', 'ThongKeCuocHopController');

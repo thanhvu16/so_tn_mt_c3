@@ -33,6 +33,7 @@ class QuanLyCuocHopController extends Controller
 
     public function chiTietCuocHop($id)
     {
+        $ngay_hien_tai = date('Y-m-d');
         $nguoi_tham_du = null;
         $lich_cong_tac = LichCongTac::where('id', $id)->first();
         $cuochop = CuocHopChiTiet::where('lich_hop_id', $id)->first();
@@ -61,7 +62,7 @@ class QuanLyCuocHopController extends Controller
 
 
         return view('lichcongtac::chi-tiet.index', compact('lich_cong_tac', 'danhSachLanhDao', 'nguoi_upTaiLieu', 'nguoi_tham_du', 'id', 'cuochop', 'nhom_don_vi',
-            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri', 'phong_up_tai_lieu', 'canBoGopY', 'GopY','donViKetLuan'));
+            'cuocHopLienQuan', 'chucVu', 'donvi', 'nguoi_chu_tri', 'phong_up_tai_lieu', 'canBoGopY', 'GopY','donViKetLuan','ngay_hien_tai'));
     }
 
 
