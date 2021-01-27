@@ -62,7 +62,8 @@
 {{--            @endcan--}}
 
             @unlessrole(ADMIN)
-                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index') || Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} }} ">
+
+                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} }} ">
                     <a href="#">
                         <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
                         <span class="pull-right-container">

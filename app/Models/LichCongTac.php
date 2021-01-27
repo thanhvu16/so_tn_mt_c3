@@ -299,7 +299,7 @@ class LichCongTac extends Model
     public function sLcuocHopKhongDat($id)
     {
         $soluong = null;
-        $lichct = LichCongTac::where(['lanh_dao_id' => $id])->where('danh_gia', '!=', null)->count();
+        $lichct = LichCongTac::where(['lanh_dao_id' => $id])->where('danh_gia', 2)->count();
         return $lichct;
     }
 
