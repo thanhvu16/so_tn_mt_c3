@@ -57,10 +57,10 @@
         <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i
                     class="fa fa-circle-o"></i>Thêm mới</a></li>
         <li class="{{ Route::is('danh_sach_vb_di_cho_duyet') ? 'active' : '' }}"><a
-                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> văn bản đi chờ duyệt</a>
+                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> Văn bản đi chờ duyệt</a>
         </li>
         <li class="{{ Route::is('vb_di_tra_lai') ? 'active' : '' }}"><a href="{{ route('vb_di_tra_lai') }}"><i
-                    class="fa fa-circle-o"></i> văn bản đi bị trả lại</a></li>
+                    class="fa fa-circle-o"></i> Văn bản đi bị trả lại</a></li>
     </ul>
 </li>
 <li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') || Route::is('danhsachgopy') ? 'active menu-open' : '' }} }} ">

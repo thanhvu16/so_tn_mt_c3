@@ -36,9 +36,9 @@ Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_da_duyet') || Route::
                 href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> văn bản đi chờ duyệt</a>
         </li>
         <li class="{{ Route::is('vb_di_da_duyet') ? 'active' : '' }}"><a href="{{ route('vb_di_da_duyet') }}"><i
-                    class="fa fa-circle-o"></i> văn bản đi đã duyệt</a></li>
+                    class="fa fa-circle-o"></i> Văn bản đi đã duyệt</a></li>
         <li class="{{ Route::is('vb_di_tra_lai') ? 'active' : '' }}"><a href="{{ route('vb_di_tra_lai') }}"><i
-                    class="fa fa-circle-o"></i> văn bản đi bị trả lại</a></li>
+                    class="fa fa-circle-o"></i> Văn bản đi bị trả lại</a></li>
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i
                     class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
     </ul>
