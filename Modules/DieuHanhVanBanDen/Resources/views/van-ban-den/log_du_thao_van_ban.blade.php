@@ -12,10 +12,10 @@
                     <thead>
                     <tr role="row" class="text-center">
                         <th width="2%" class="text-center">Lần</th>
-                        <th width="18%">Cán bộ dự thảo</th>
-                        <th width="30%">Ý kiến</th>
-                        <th width="20%">Thông tin</th>
-                        <th width="30%">Trích yếu - Nội dung</th>
+                        <th width="18%" class="text-center">Cán bộ dự thảo</th>
+                        <th width="30%" class="text-center">Ý kiến</th>
+                        <th width="20%" class="text-center">Thông tin</th>
+                        <th width="30%" class="text-center">Trích yếu - Nội dung</th>
                     </tr>
                     </thead>
                     <tbody>

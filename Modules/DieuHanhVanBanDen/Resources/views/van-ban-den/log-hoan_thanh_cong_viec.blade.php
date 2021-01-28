@@ -12,10 +12,10 @@
                     <thead>
                     <tr role="row">
                         <th class="text-center">STT</th>
-                        <th>Thời gian hoàn thành</th>
-                        <th>Cán bộ hoàn thành</th>
-                        <th>Nội dung</th>
-                        <th>Cán bộ duyệt</th>
+                        <th class="text-center">Thời gian hoàn thành</th>
+                        <th class="text-center">Cán bộ hoàn thành</th>
+                        <th class="text-center">Nội dung</th>
+                        <th class="text-center">Cán bộ duyệt</th>
                     </tr>
                     </thead>
                     <tbody>

@@ -11,10 +11,10 @@
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row" class="text-center">
-                        <th width="4%">Số đi</th>
-                        <th width="18%">Ngày ban hành</th>
-                        <th width="20%">Thông tin</th>
-                        <th width="30%">Trích yếu</th>
+                        <th width="4%" class="text-center">Số đi</th>
+                        <th width="18%" class="text-center">Ngày ban hành</th>
+                        <th width="20%" class="text-center">Thông tin</th>
+                        <th width="30%" class="text-center">Trích yếu</th>
                     </tr>
                     </thead>
                     <tbody>

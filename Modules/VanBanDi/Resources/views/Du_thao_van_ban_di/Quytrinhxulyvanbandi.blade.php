@@ -13,47 +13,65 @@
                             <div class="row">
                                 <div class="col-md-12 mt-2"></div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Nơi nhận:</label>
-                                    <span>@if(count($vanbandi->donvinhanvbdi)>0)
+                                    <p>
+                                        <b>Nơi nhận:</b>
+                                        @if(count($vanbandi->donvinhanvbdi)>0)
                                             @forelse($vanbandi->donvinhanvbdi as $key=>$item)
 
                                                 {{$item->laytendonvinhan->ten_don_vi ?? ''}},
 
                                             @empty
                                             @endforelse
-                                        @endif</span>
+                                        @endif
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Số kí hiệu:</label>
-                                    <span>{{$vanbandi->so_ky_hieu}}</span>
+                                    <p>
+                                        <b>Số kí hiệu:</b>
+                                        {{$vanbandi->so_ky_hieu}}
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Loại văn bản:</label>
-                                    <span>{{$vanbandi->loaiVanBanid->ten_loai_van_ban ?? ''}}</span>
+                                    <p>
+                                        <b>Loại văn bản:</b>
+                                    {{$vanbandi->loaiVanBanid->ten_loai_van_ban ?? ''}}
+                                    <p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Sổ văn bản:</label>
-                                    <span>{{$vanbandi->sovanban->ten_so_van_ban ?? ''}}</span>
+                                    <p>
+                                        <b>Sổ văn bản:</b>
+                                        {{$vanbandi->sovanban->ten_so_van_ban ?? ''}}
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Ngày ký:</label>
-                                    <span>{{$vanbandi->ngay_ban_hanh}}</span>
+                                    <p>
+                                        <b>Ngày ký:</b>
+                                        {{$vanbandi->ngay_ban_hanh}}
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Người ký:</label>
-                                    <span>{{$vanbandi->nguoidung2->ho_ten ?? ''}}</span>
+                                    <p>
+                                        <b>Người ký:</b>
+                                        {{$vanbandi->nguoidung2->ho_ten ?? ''}}
+                                    </p>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="" class="col-md-4">Trích yếu:</label>
-                                    <div class="col-md-12">{{$vanbandi->trich_yeu}}</div>
+                                    <p>
+                                        <b>Trích yếu:</b>
+                                        {{$vanbandi->trich_yeu}}
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Chức vụ:</label>
-                                    <span>{{$vanbandi->chuc_vu}}</span>
+                                    <p>
+                                        <b>Chức vụ:</b>
+                                        {{$vanbandi->chuc_vu}}
+                                    </p>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="" class="col-md-4">Người nhập:</label>
-                                    <span>{{$vanbandi->nguoitao->ho_ten ?? ''}}</span>
+                                    <p>
+                                        <b>Người nhập:</b>
+                                        {{$vanbandi->nguoitao->ho_ten ?? ''}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -72,249 +90,252 @@
                             </div>
 
                             <div class="col-md-12 mt-2  collapse in" id="collapseExample">
-                                <div class="form-group" style="padding-left:15px;">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                            <th class="text-center" style="vertical-align: middle;width: 5%">Lần</th>
-                                            <th class="text-center" style="vertical-align: middle;width: 15%">Loại văn
-                                                bản
-                                            </th>
-                                            <th class="text-center" style="vertical-align: middle;width: 10%">Ký hiệu
-                                            </th>
-                                            <th class="text-center" style="vertical-align: middle;width: 15%">Nơi gửi
-                                                đến
-                                            </th>
-                                            <th class="text-center" style="vertical-align: middle;width: 30%">Trích
-                                                yếu
-                                            </th>
-                                            <th class="text-center" style="vertical-align: middle;width: 10%">File</th>
-                                            <th class="text-center" style="vertical-align: middle;width: 20%">Người ký
-                                            </th>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                        <th class="text-center" style="vertical-align: middle;width: 5%">Lần</th>
+                                        <th class="text-center" style="vertical-align: middle;width: 15%">Loại văn
+                                            bản
+                                        </th>
+                                        <th class="text-center" style="vertical-align: middle;width: 10%">Ký hiệu
+                                        </th>
+                                        <th class="text-center" style="vertical-align: middle;width: 15%">Nơi gửi
+                                            đến
+                                        </th>
+                                        <th class="text-center" style="vertical-align: middle;width: 30%">Trích
+                                            yếu
+                                        </th>
+                                        <th class="text-center" style="vertical-align: middle;width: 10%">File</th>
+                                        <th class="text-center" style="vertical-align: middle;width: 20%">Người ký
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($laytatcaduthao as $key=>$data)
+                                        <tr>
+                                            <td class="text-center">{{$data->lan_du_thao}}</td>
+                                            <td class="text-center">{{$data->loaivanban->ten_loai_van_ban}}</td>
+                                            <td class="text-center">{{$data->so_ky_hieu}}</td>
+                                            <td class="text-center">
+
+                                            </td>
+                                            <td>
+                                                <a href="{{route('quytrinhtruyennhangopy',$data->id)}}">{{$data->vb_trich_yeu}}</a>
+                                            </td>
+                                            <td>
+                                                @forelse($data->Duthaofile as $key=>$item)
+                                                    <a href="{{$item->getUrlFile()}}" class="seen-new-window"
+                                                       target="popup">
+                                                        [File dự thảo {{$key+1}}] <br>
+                                                    </a>
+
+                                                @empty
+                                                @endforelse
+                                            </td>
+                                            <td>{{$data->nguoidung2->ho_ten ?? ''}}</td>
                                         </tr>
-                                        </thead>
-                                        <tbody>
-                                        @forelse($laytatcaduthao as $key=>$data)
-                                            <tr>
-                                                <td class="text-center">{{$data->lan_du_thao}}</td>
-                                                <td class="text-center">{{$data->loaivanban->ten_loai_van_ban}}</td>
-                                                <td class="text-center">{{$data->so_ky_hieu}}</td>
-                                                <td class="text-center">
 
-                                                </td>
-                                                <td>
-                                                    <a href="{{route('quytrinhtruyennhangopy',$data->id)}}">{{$data->vb_trich_yeu}}</a>
-                                                </td>
-                                                <td>
-                                                    @forelse($data->Duthaofile as $key=>$item)
-                                                        <a href="{{$item->getUrlFile()}}" class="seen-new-window"
-                                                           target="popup">
-                                                            [File dự thảo {{$key+1}}] <br>
-                                                        </a>
-
-                                                    @empty
-                                                    @endforelse
-                                                </td>
-                                                <td>{{$data->nguoidung2->ho_ten ?? ''}}</td>
-                                            </tr>
-
-                                        @empty
-                                        @endforelse
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    @empty
+                                    @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         @endif
                         <div class="col-md-12">
-                            <div class="form-group" style="padding-left:15px;">
-                                <label for="">Quá trình xử lý văn bản chính:</label>
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Thời gian
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                        </th>
-                                        <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
-                                        </th>
+                            <label for="">Quá trình xử lý văn bản chính:</label>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                    <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Thời gian
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                    </th>
+                                    <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($quatrinhtruyennhan as $key=>$data)
+                                    <tr>
+                                        <td>{{$key+1}}</td>
+                                        <td> {{date_format($data->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
+                                        <td>{{$data->canbochuyen->ho_ten ?? ''}}</td>
+                                        <td>{{$data->y_kien_gop_y}}</td>
+                                        <td>{{$data->canbonhan->ho_ten ?? ''}} </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse($quatrinhtruyennhan as $key=>$data)
-                                        <tr>
-                                            <td>{{$key+1}}</td>
-                                            <td> {{date_format($data->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
-                                            <td>{{$data->canbochuyen->ho_ten ?? ''}}</td>
-                                            <td>{{$data->y_kien_gop_y}}</td>
-                                            <td>{{$data->canbonhan->ho_ten ?? ''}} </td>
-                                        </tr>
-                                    @empty
-                                    @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                @empty
+                                @endforelse
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-md-12 hide">
-                            <div class="form-group" style="padding-left:15px;">
-                                <label for="">Phối hợp xử lý:</label>
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
-                                        <th class="text-center" width="15%" style="vertical-align: middle;">Thời gian
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
-                                        </th>
-                                        <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung xử
-                                            lý
-                                        </th>
-                                        <th class="text-center" width="10%" style="vertical-align: middle;">File</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <label for="">Phối hợp xử lý:</label>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                    <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                    <th class="text-center" width="15%" style="vertical-align: middle;">Thời gian
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
+                                    </th>
+                                    <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung xử
+                                        lý
+                                    </th>
+                                    <th class="text-center" width="10%" style="vertical-align: middle;">File</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group" style="padding-left:15px;">
-                                <label for="">Tệp tin đính kèm:</label>
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                        <th class="text-center" width="10%" style="vertical-align: middle;">STT</th>
-                                        <th class="text-center" width="30%" style="vertical-align: middle;">Tên tệp
-                                            tin
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Tải về</th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Ngày nhập
-                                        </th>
-                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                        </th>
+                            <label for="">Tệp tin đính kèm:</label>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                    <th class="text-center" width="10%" style="vertical-align: middle;">STT</th>
+                                    <th class="text-center" width="30%" style="vertical-align: middle;">Tên tệp
+                                        tin
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Tải về</th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Ngày nhập
+                                    </th>
+                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($file as $key=>$filedata)
+                                    <tr>
+                                        <td class="text-center"> {{$key+1}}</td>
+                                        <td> {{$filedata->ten_file}}</td>
+                                        <td class="text-center"><a href="{{$filedata->getUrlFile()}}"
+                                                                   class="seen-new-window" target="popup">[Tải tài
+                                                liệu]</a></td>
+                                        <td class="text-center"> {{  date_format($filedata->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
+                                        <td class="text-center"> {{$filedata->nguoiDung->ho_ten ?? ''}}</td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse($file as $key=>$filedata)
-                                        <tr>
-                                            <td class="text-center"> {{$key+1}}</td>
-                                            <td> {{$filedata->ten_file}}</td>
-                                            <td class="text-center"><a href="{{$filedata->getUrlFile()}}"
-                                                                       class="seen-new-window" target="popup">[Tải tài
-                                                    liệu]</a></td>
-                                            <td class="text-center"> {{  date_format($filedata->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
-                                            <td class="text-center"> {{$filedata->nguoiDung->ho_ten ?? ''}}</td>
-                                        </tr>
-                                    @empty
-                                    @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                @empty
+                                @endforelse
+                                </tbody>
+                            </table>
                         </div>
                         @if (!empty($vanbandi->vanBanDenDonVi))
                             <div class="col-md-12">
-                                <div class="form-group" style="padding-left:15px;">
-                                    <label for="">Trả lời cho văn bản :</label>
-                                    <table class="table table-bordered table-striped dataTable mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th width="2%" class="text-center">STT</th>
-                                            <th width="26%" class="text-center">Thông tin</th>
-                                            <th width="44%" class="text-center">Trích yếu</th>
-                                            <th width="21%" class="text-center">Đơn vị xử lý</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                                <label for="">Trả lời cho văn bản :</label>
+                                <table class="table table-bordered table-striped dataTable mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th width="2%" class="text-center">STT</th>
+                                        <th width="26%" class="text-center">Thông tin</th>
+                                        <th width="44%" class="text-center">Trích yếu</th>
+                                        <th width="21%" class="text-center">Đơn vị xử lý</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                                            <tr>
-                                                <td class="text-center">{{$key+1}}</td>
-                                                <td>
-                                                    <p>- Số ký hiệu: {{$vanbandi->vanBanDenDonVi->so_ky_hieu}}</p>
-                                                    <p>- Ngày ban
-                                                        hành: {{ date('d-m-Y', strtotime($vanbandi->vanBanDenDonVi->ngay_ban_hanh)) }}</p>
-                                                    <p>- Cơ quan ban hành: {{$vanbandi->vanBanDenDonVi->co_quan_ban_hanh}}</p>
-                                                    <p>- Số đến: <span
-                                                            class="font-bold" style="color: red">{{$vanbandi->vanBanDenDonVi->so_den}}</span></p>
-                                                    <p>- Sổ văn bản: {{$vanbandi->vanBanDenDonVi->soVanBan->ten_so_van_ban ?? ''}}</p>
-                                                </td>
-                                                <td style="text-align: justify">
-                                                    @if ($vanbandi->vanBanDenDonVi->loai_van_ban_don_vi == 1)
-                                                        <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id.'?status=1' : $vanbandi->vanBanDenDonVi->id .'?status=1') }}" title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a><br>
-                                                    @else
-                                                        <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id : $vanbandi->vanBanDenDonVi->id) }}" title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a><br>
-                                                    @endif
+                                    <tr>
+                                        <td class="text-center">{{$key+1}}</td>
+                                        <td>
+                                            <p>- Số ký hiệu: {{$vanbandi->vanBanDenDonVi->so_ky_hieu}}</p>
+                                            <p>- Ngày ban
+                                                hành: {{ date('d-m-Y', strtotime($vanbandi->vanBanDenDonVi->ngay_ban_hanh)) }}</p>
+                                            <p>- Cơ quan ban hành: {{$vanbandi->vanBanDenDonVi->co_quan_ban_hanh}}</p>
+                                            <p>- Số đến: <span
+                                                    class="font-bold"
+                                                    style="color: red">{{$vanbandi->vanBanDenDonVi->so_den}}</span></p>
+                                            <p>- Sổ văn
+                                                bản: {{$vanbandi->vanBanDenDonVi->soVanBan->ten_so_van_ban ?? ''}}</p>
+                                        </td>
+                                        <td style="text-align: justify">
+                                            @if ($vanbandi->vanBanDenDonVi->loai_van_ban_don_vi == 1)
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id.'?status=1' : $vanbandi->vanBanDenDonVi->id .'?status=1') }}"
+                                                   title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a>
+                                                <br>
+                                            @else
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id : $vanbandi->vanBanDenDonVi->id) }}"
+                                                   title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a>
+                                                <br>
+                                            @endif
 
-                                                    @if($vanbandi->vanBanDenDonVi->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
-                                                    <span
-                                                        style="font-style: italic">{{$vanbandi->vanBanDenDonVi->noi_dung ?? ''}}</span>@if($vanbandi->vanBanDenDonVi->noi_dung != null)
-                                                        <br>@endif
-                                                     (Hạn giải quyết: {{ date('d/m/Y', strtotime($vanbandi->vanBanDenDonVi->han_xu_ly)) }})<br>
-                                                    <span
-                                                        style="font-style: italic">Người nhập : {{$vanbandi->vanBanDenDonVi->nguoiDung->ho_ten ?? ''}}</span>
-                                                    <div class="text-right " style="pointer-events: auto">
-                                                        @if($vanbandi->vanBanDenDonVi->vanBanDenFile)
-                                                            @forelse($vanbandi->vanBanDenDonVi->vanBanDenFile as $key=>$item)
-                                                                <a href="{{$item->getUrlFile()}}" target="popup" class="seen-new-window">
-                                                                    @if($item->duoi_file == 'pdf')<i
-                                                                        class="fa fa-file-pdf-o"
-                                                                        style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')
-                                                                        <i class="fa fa-file-word-o"
-                                                                           style="font-size:20px;color:blue"></i> @elseif($item->duoi_file == 'xlsx' || $item->duoi_file == 'xls')
-                                                                        <i class="fa fa-file-excel-o"
-                                                                           style="font-size:20px;color:green"></i> @endif
-                                                                </a>@if(count($vanbandi->vanBanDenDonVi->vanBanDenFile) == $key+1) @else &nbsp;
-                                                                |&nbsp; @endif
-                                                            @empty
-                                                            @endforelse
-                                                        @endif
-                                                        @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
-                                                            <a title="Cập nhật file" href="{{route('ds_file',$vanbandi->vanBanDenDonVi->vb_den_id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <!--vb den don vi-->
-                                                    @if ($vanbandi->vanBanDenDonVi->parent_id)
-                                                        @foreach($vanbandi->vanBanDenDonVi->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
-                                                            @if (count($vanbandi->vanBanDenDonVi->getParent()->donViChuTri)-1 == $key)
-                                                                <p>
-                                                                    {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
-                                                                    <br>
-                                                                    <i>(Cán bộ xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
-                                                                        )</i>
-                                                                </p>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                    <!--vb den huyen-->
-                                                        @if($vanbandi->vanBanDenDonVi->donViChuTri)
-                                                            @foreach($vanbandi->vanBanDenDonVi->donViChuTri as $key => $chuyenNhanVanBanDonVi)
-                                                                @if (count($vanbandi->vanBanDenDonVi->donViChuTri)-1 == $key)
-                                                                    <p>
-                                                                        {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
-                                                                        <br>
-                                                                        <i>(Cán bộ xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
-                                                                            )</i>
-                                                                    </p>
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
+                                            @if($vanbandi->vanBanDenDonVi->noi_dung != null)<span
+                                                style="font-weight: bold;">Nội dung:</span>@endif
+                                            <span
+                                                style="font-style: italic">{{$vanbandi->vanBanDenDonVi->noi_dung ?? ''}}</span>@if($vanbandi->vanBanDenDonVi->noi_dung != null)
+                                                <br>@endif
+                                                     (Hạn giải quyết: {{ date('d/m/Y', strtotime($vanbandi->vanBanDenDonVi->han_xu_ly)) }})
+                                            <br>
+                                            <span
+                                                style="font-style: italic">Người nhập : {{$vanbandi->vanBanDenDonVi->nguoiDung->ho_ten ?? ''}}</span>
+                                            <div class="text-right " style="pointer-events: auto">
+                                                @if($vanbandi->vanBanDenDonVi->vanBanDenFile)
+                                                    @forelse($vanbandi->vanBanDenDonVi->vanBanDenFile as $key=>$item)
+                                                        <a href="{{$item->getUrlFile()}}" target="popup"
+                                                           class="seen-new-window">
+                                                            @if($item->duoi_file == 'pdf')<i
+                                                                class="fa fa-file-pdf-o"
+                                                                style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')
+                                                                <i class="fa fa-file-word-o"
+                                                                   style="font-size:20px;color:blue"></i> @elseif($item->duoi_file == 'xlsx' || $item->duoi_file == 'xls')
+                                                                <i class="fa fa-file-excel-o"
+                                                                   style="font-size:20px;color:green"></i> @endif
+                                                        </a>@if(count($vanbandi->vanBanDenDonVi->vanBanDenFile) == $key+1) @else
+                                                            &nbsp;
+                                                            |&nbsp; @endif
+                                                    @empty
+                                                    @endforelse
+                                                @endif
+                                                @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
+                                                    <a title="Cập nhật file"
+                                                       href="{{route('ds_file',$vanbandi->vanBanDenDonVi->vb_den_id)}}"><span
+                                                            role="button">&emsp;<i
+                                                                class="fa  fa-search"></i></span></a>@endif
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!--vb den don vi-->
+                                            @if ($vanbandi->vanBanDenDonVi->parent_id)
+                                                @foreach($vanbandi->vanBanDenDonVi->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                    @if (count($vanbandi->vanBanDenDonVi->getParent()->donViChuTri)-1 == $key)
+                                                        <p>
+                                                            {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                            <br>
+                                                            <i>(Cán bộ xử
+                                                                lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                                )</i>
+                                                        </p>
                                                     @endif
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                @endforeach
+                                            @else
+                                            <!--vb den huyen-->
+                                                @if($vanbandi->vanBanDenDonVi->donViChuTri)
+                                                    @foreach($vanbandi->vanBanDenDonVi->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                        @if (count($vanbandi->vanBanDenDonVi->donViChuTri)-1 == $key)
+                                                            <p>
+                                                                {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                                <br>
+                                                                <i>(Cán bộ xử
+                                                                    lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                                    )</i>
+                                                            </p>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         @endif
-                        <div class="col-md-12">
-                            <div class="form-group" style="padding-left:15px;">
-                                <a class="btn btn-default" href="javascript: history.back(1)" id="backLink"
-                                   data-original-title="" title="">Quay lại &gt;&gt;</a>
-                            </div>
+                        <div class="col-md-12 mt-2">
+                            <a class="btn btn-default" href="javascript: history.back(1)" id="backLink"
+                               data-original-title="" title="">Quay lại &gt;&gt;</a>
                         </div>
                     </div>
                 </div>

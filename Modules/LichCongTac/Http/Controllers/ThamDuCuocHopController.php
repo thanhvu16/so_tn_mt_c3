@@ -2,12 +2,12 @@
 
 namespace Modules\LichCongTac\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\LichCongTac;
 use App\Models\NguoiDung;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Auth;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 

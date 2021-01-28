@@ -59,7 +59,10 @@ class VanBanDenDonViController extends Controller
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::whereIn('id', $arrVanBanDenId)
+        $danhSachVanBanDen = VanBanDen::with(['lanhDaoXemDeBiet' => function($query) {
+                return $query->select('id', 'van_ban_den_id', 'lanh_dao_id');
+            }])
+            ->whereIn('id', $arrVanBanDenId)
             ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->paginate(PER_PAGE);
 
@@ -92,7 +95,6 @@ class VanBanDenDonViController extends Controller
                     $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
                     $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
-                    $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
                 }
 
                 if ($trinhTuNhanVanBan == 5) {
@@ -145,11 +147,16 @@ class VanBanDenDonViController extends Controller
         $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)->where('can_bo_chuyen_id', $currentUser->id)
             ->whereNotNull('vao_so_van_ban')
             ->whereNull('hoan_thanh')
+            ->select('van_ban_den_id')
             ->get();
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with('checkLuuVetVanBanDen')
+        $danhSachVanBanDen = VanBanDen::with(['checkLuuVetVanBanDen',
+            'lanhDaoXemDeBiet' => function($query) {
+                return $query->select('id', 'van_ban_den_id', 'lanh_dao_id');
+            }
+            ])
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($trichYeu) {
                 if (!empty($trichYeu)) {
@@ -172,12 +179,14 @@ class VanBanDenDonViController extends Controller
             ->where('don_vi_id', $currentUser->don_vi_id)
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
+            ->select('id', 'ho_ten')
             ->orderBy('id', 'DESC')->get();
 
         $danhSachChuyenVien = User::role(CHUYEN_VIEN)
             ->where('don_vi_id', $currentUser->don_vi_id)
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
+            ->select('id', 'ho_ten')
             ->orderBy('id', 'DESC')->get();
 
         if (count($danhSachVanBanDen) > 0) {
@@ -192,8 +201,6 @@ class VanBanDenDonViController extends Controller
                 $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
                 $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
                 $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
-                $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
-
             }
         }
 

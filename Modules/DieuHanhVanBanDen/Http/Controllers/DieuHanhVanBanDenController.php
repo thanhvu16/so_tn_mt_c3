@@ -75,15 +75,24 @@ class DieuHanhVanBanDenController extends Controller
             'donViPhoiHop' => function ($query) {
                 return $query->select('van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung', 'created_at');
             },
-            'giaHanVanBan',
+            'giaHanVanBan' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'noi_dung',
+                    'thoi_han_de_xuat', 'thoi_han_cu', 'status', 'created_at');
+            },
             'chuyenVienPhoiHopGiaiQuyet',
-            'duThaoVanBan',
+            'duThaoVanBan' => function($query) {
+                return $query->select('id', 'van_ban_den_don_vi_id', 'lan_du_thao', 'nguoi_tao', 'created_at', 'y_kien',
+                    'so_ky_hieu', 'loai_van_ban_id', 'vb_trich_yeu');
+            },
             'giaiQuyetVanBan' => function ($query) {
                 return $query->select('id', 'van_ban_den_id', 'noi_dung', 'noi_dung_nhan_xet',
                     'user_id', 'can_bo_duyet_id', 'status', 'created_at', 'parent_id');
             },
             'vanBanDenFile' => function ($query) {
                 return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
+            },
+            'donViPhoiHopGiaiquyet' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'user_id', 'don_vi_id', 'noi_dung');
             }
         ])->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
             'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id',
@@ -282,11 +291,28 @@ class DieuHanhVanBanDenController extends Controller
 
     public function vanBanXemDeBiet(Request $request)
     {
+        $year = $request->get('year') ?? date('Y');
+        $month = $request->get('month') ?? date('m');
+        $defaultSelect = 'all';
+
         $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soDen = $request->get('so_den') ?? null;
 
-        $lanhDaoXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', auth::user()->id)->orderBy('id', 'DESC')->get();
+        $lanhDaoXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', auth::user()->id)
+            ->where(function ($query) use ($month, $defaultSelect) {
+                if ($month != $defaultSelect) {
+                    return $query->whereMonth('created_at', $month);
+                }
+            })
+            ->where(function ($query) use ($year, $defaultSelect) {
+                if ($year != $defaultSelect) {
+                    return $query->whereYear('created_at', $year);
+                }
+            })
+            ->select('van_ban_den_id')
+            ->orderBy('id', 'DESC')
+            ->get();
 
         $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
 
@@ -328,7 +354,8 @@ class DieuHanhVanBanDenController extends Controller
             ->select('id')
             ->first();
 
-        return view('dieuhanhvanbanden::van-ban-hoan-thanh.xem_de_biet', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
+        return view('dieuhanhvanbanden::van-ban-hoan-thanh.xem_de_biet',
+            compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi', 'year', 'month'));
     }
 
     public function vanBanQuanTrong(Request $request)

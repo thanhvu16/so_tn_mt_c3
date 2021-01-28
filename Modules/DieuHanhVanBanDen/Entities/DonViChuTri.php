@@ -40,12 +40,12 @@ class DonViChuTri extends Model
 
     public function canBoChuyen()
     {
-        return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id');
+        return $this->belongsTo(User::class, 'can_bo_chuyen_id', 'id')->select('id', 'ho_ten', 'chuc_vu_id', 'don_vi_id');
     }
 
     public function canBoNhan()
     {
-        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id');
+        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id')->select('id', 'ho_ten', 'chuc_vu_id', 'don_vi_id');;
     }
 
     public function vanBanDen()

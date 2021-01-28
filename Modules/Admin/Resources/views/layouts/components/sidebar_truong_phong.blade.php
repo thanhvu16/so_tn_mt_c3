@@ -33,7 +33,7 @@ Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_da_duyet') || Route::
         <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i
                     class="fa fa-circle-o"></i>Thêm mới</a></li>
         <li class="{{ Route::is('danh_sach_vb_di_cho_duyet') ? 'active' : '' }}"><a
-                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> văn bản đi chờ duyệt</a>
+                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> Văn bản đi chờ duyệt</a>
         </li>
         <li class="{{ Route::is('vb_di_da_duyet') ? 'active' : '' }}"><a href="{{ route('vb_di_da_duyet') }}"><i
                     class="fa fa-circle-o"></i> Văn bản đi đã duyệt</a></li>

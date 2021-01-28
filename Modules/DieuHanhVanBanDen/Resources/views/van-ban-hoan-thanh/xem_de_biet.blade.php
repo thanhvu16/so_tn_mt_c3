@@ -15,12 +15,12 @@
                     <div class="box-body">
                         <form action="{{ route('van-ban-den-don-vi.xem_de_biet') }}" method="get">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="so-den" class="col-form-label">Tìm theo số đến</label>
                                         <input type="text" class="form-control" placeholder="Nhập số đến"
                                                name="so_den" value="{{ Request::get('so_den') ?? null }}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="han-xu-ly" class="col-form-label">Tìm theo hạn xử lý</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
@@ -30,16 +30,34 @@
                                                name="han_xu_ly" value="{{ Request::get('han_xu_ly') ?? null }}">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="trich-yeu">Tìm theo trích yếu</label>
                                     <input type="text" name="trich_yeu" class="form-control" value="{{ Request::get('trich_yeu') ?? null }}" placeholder="nhập nội dung...">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="">&nbsp;</label>
+                                    <select name="month" class="form-control select2">
+                                        <option value="all">-- Tất cả --</option>
+                                    @for($i = 1; $i<=12 ; $i++)
+                                        <option value="{{ $i }}" {{ $month == $i ? 'selected' : null }}>Tháng {{ $i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="">&nbsp;</label>
+                                    <select name="year" class="form-control select2">
+                                        <option value="all">-- Tất cả --</option>
+                                        @for($i = 2020; $i<= date('Y') ; $i++)
+                                            <option value="{{ $i }}" {{ $year == $i ? 'selected' : null }}>Năm {{ $i}}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="search" class="col-form-label">&nbsp;</label><br>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-search"></i> Tìm kiếm
                                     </button>
-                                    @if(request('han_xu_ly') || request('trich_yeu') || request('so_den'))
+                                    @if(request('han_xu_ly') || request('trich_yeu') || request('so_den') || request('month') || request('year'))
                                         <a href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
                                             <button type="button" class="btn btn-success">
                                                 <i class="fa fa-refresh"></i>
@@ -167,7 +185,7 @@
                                 Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                             </div>
                             <div class="col-md-6 text-right">
-                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
+                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'trich_yeu' => Request::get('trich_yeu'), 'month' => Request::get('month'), 'year' => Request::get('year')])->render() }}
                             </div>
                         </div>
                     </div>

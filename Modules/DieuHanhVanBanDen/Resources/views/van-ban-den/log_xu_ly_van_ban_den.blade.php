@@ -11,12 +11,12 @@
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row">
-                        <th class="text-center">STT</th>
-                        <th>Thời gian chuyển</th>
-                        <th>Chuyển từ</th>
-                        <th>Nội dung</th>
-                        <th>Chuyển đến</th>
-                        <th>Hạn xử lý</th>
+                        <th class="text-center" width="4%">STT</th>
+                        <th class="text-center" width="15%">Thời gian chuyển</th>
+                        <th class="text-center" width="14%">Chuyển từ</th>
+                        <th class="text-center">Nội dung</th>
+                        <th class="text-center" width="14%">Chuyển đến</th>
+                        <th class="text-center"  width="14%">Hạn xử lý</th>
                     </tr>
                     </thead>
                     <tbody>
