@@ -12,15 +12,15 @@
                             <div class="row mb-2">
                                 <form action="{{route('thong-ke-tieu-chi-cuoc-hop.index')}}" method="GET">
                                 <div class="col-md-3">
-                                    <p>Từ ngày:</p>
+                                    <p style="font-weight: bold">Từ ngày:</p>
                                     <input type="date" class="form-control" value="{{Request::get('tu_ngay')}}" placeholder="Từ ngày" name="tu_ngay">
                                 </div>
                                 <div class="col-md-3">
-                                    <p>Đến ngày:</p>
+                                    <p style="font-weight: bold">Đến ngày:</p>
                                     <input type="date" class="form-control" value="{{Request::get('den_ngay')}}" placeholder="Đến ngày" name="den_ngay">
                                 </div>
                                 <div class="col-md-3 " style="margin-top: 30px">
-                                    <button class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                                    <button name="search" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
                                 </div>
                                 </form>
 
@@ -57,6 +57,8 @@
                             @endforelse
                             </tbody>
                         </table>
+                        {!! $chu_tri->appends(['tu_ngay' => Request::get('tu_ngay'),
+                                   'den_ngay' => Request::get('den_ngay'),'search' =>Request::get('search')])->render() !!}
 
                     </div>
                 </div>

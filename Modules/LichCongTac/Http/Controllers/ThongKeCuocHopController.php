@@ -34,7 +34,7 @@ class ThongKeCuocHopController extends Controller
 
                 }
             })
-            ->get();
+            ->paginate(PER_PAGE);
 
 
         return view('lichcongtac::thong-ke.index',compact('chu_tri'));
