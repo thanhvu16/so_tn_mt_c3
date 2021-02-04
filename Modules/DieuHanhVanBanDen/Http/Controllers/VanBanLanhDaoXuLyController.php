@@ -152,11 +152,12 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->paginate(PER_PAGE_10);
 
             $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
-                ->select('id', 'ho_ten')
+                ->select('id', 'ho_ten', 'don_vi_id')
                 ->first();
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
                 ->where('trang_thai', ACTIVE)
+                ->where('don_vi_id', $chuTich->don_vi_id)
                 ->select('id', 'ho_ten')
                 ->get();
 
