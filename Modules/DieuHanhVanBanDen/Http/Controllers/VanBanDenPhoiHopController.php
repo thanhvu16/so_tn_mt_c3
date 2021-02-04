@@ -106,7 +106,7 @@ class VanBanDenPhoiHopController extends Controller
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild(VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP) ?? null;
-                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                     $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
                     $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
                     $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$truongPhong->id]);
@@ -131,7 +131,7 @@ class VanBanDenPhoiHopController extends Controller
 
         }
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.index', compact('danhSachVanBanDen',
                 'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
                 'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan'));

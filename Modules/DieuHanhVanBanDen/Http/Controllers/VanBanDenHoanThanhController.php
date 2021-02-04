@@ -224,7 +224,7 @@ class VanBanDenHoanThanhController extends Controller
                 if ($vanBanDen) {
                     if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, CHU_TICH, PHO_CHUC_TICH])) {
 
-//                        if ($donVi->cap_xa == DonVi::CAP_XA) {
+//                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 //                            // chu tich xa duyet van ban
 //                            if ($currentUser->hasRole(CHU_TICH)) {
 //                                $this->updateVanBanDen($vanBanDen);

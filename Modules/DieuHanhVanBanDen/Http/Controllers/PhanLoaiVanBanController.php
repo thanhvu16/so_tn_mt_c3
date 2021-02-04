@@ -302,7 +302,7 @@ class PhanLoaiVanBanController extends Controller
             ->select('id')
             ->first();
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             if ($user->hasRole(TRUONG_BAN)) {
                 $trinhTuNhanVanBan = 3;

@@ -62,7 +62,7 @@ class LichCongTacController extends Controller
         $donVi = $currentUser->donVi;
         $donViCapXa = DonVi::whereNotNull('cap_xa')->whereNull('deleted_at')->first();
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             $roles = [CHU_TICH, PHO_CHUC_TICH, TRUONG_BAN];
         }
 
@@ -94,7 +94,7 @@ class LichCongTacController extends Controller
                 }
             })
             ->where(function ($query) use ($donVi, $donViCapXa) {
-                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                     return $query->where('don_vi_id', $donVi->id);
                 } else {
                     return $query->whereNotIn('don_vi_id', [$donViCapXa->id]);

@@ -270,12 +270,12 @@ class AdminController extends Controller
 
         if ($user->hasRole(CHU_TICH)) {
             $active = VanBanDen::CHU_TICH_NHAN_VB;
-            if ($donVi->cap_xa == DonVi::CAP_XA) {
+            if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                 $active = VanBanDen::CHU_TICH_XA_NHAN_VB;
             }
         } else {
             $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
-            if ($donVi->cap_xa == DonVi::CAP_XA) {
+            if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                 $active = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
             }
         }
@@ -285,7 +285,7 @@ class AdminController extends Controller
             ->whereNull('hoan_thanh')
             ->get();
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)

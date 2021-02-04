@@ -14,7 +14,7 @@ define('THU_MUC_CONG_VIEC_DON_VI', 'uploads/cong_viec_don_vi'.'_'.date('Y'));
 define('THU_MUC_FILE_PHOI_HOP', 'uploads/phoi-hop-cong-viec'.'_'.date('Y'));
 define('ACTIVE', 1);
 define('INACTIVE', 2);
-define('HUYEN', 'ĐỨC HÒA');
+define('TITLE_APP', 'SỞ TÀI NGUYÊN VÀ MÔI TRUÒNG HÀ NỘI');
 define('LANH_DAO_UY_BAN', '%Lãnh đạo ủy ban%');
 
 //rold_id

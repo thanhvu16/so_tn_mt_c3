@@ -223,7 +223,7 @@ class VanBanDenDonViController extends Controller
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             if ($currentUser->hasRole(CHU_TICH)) {
                 $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
@@ -409,7 +409,7 @@ class VanBanDenDonViController extends Controller
                             $vanBanDen->save();
                         }
 
-                        if ($donVi->cap_xa == DonVi::CAP_XA) {
+                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                             if (!empty($danhSachPhoChuTichIds[$vanBanDenId])) {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
                                 $vanBanDen->save();

@@ -66,7 +66,7 @@ class DonViChuTri extends Model
 
         $donVi = auth::user()->donVi;
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             $nguoiDung = User::role(CHU_TICH)
                 ->where('don_vi_id', auth::user()->don_vi_id)
                 ->where('trang_thai', ACTIVE)
@@ -99,7 +99,7 @@ class DonViChuTri extends Model
     {
         $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             // chu tich cap xa nhan van ban
             $role = [CHU_TICH];
 

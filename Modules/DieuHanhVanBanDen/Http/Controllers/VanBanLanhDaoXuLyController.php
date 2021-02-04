@@ -36,7 +36,7 @@ class VanBanLanhDaoXuLyController extends Controller
             ->select('id')->first();
         $trinhTuNhanVanBan = null;
 
-        if ($donVi->cap_xa == DonVi::CAP_XA) {
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             if ($user->hasRole(CHU_TICH)) {
                 $trinhTuNhanVanBan = 8;
@@ -509,7 +509,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
                     $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
 
-                    if ($donVi->cap_xa == DonVi::CAP_XA) {
+                    if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                         // chu tich cap xa nhan van ban
                         $role = [CHU_TICH];
 

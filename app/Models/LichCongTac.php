@@ -129,7 +129,7 @@ class LichCongTac extends Model
         $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
 
         if (!empty($donViChuTriId)) {
-            if ($donVi->cap_xa == DonVi::CAP_XA) {
+            if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                 $roles = [CHU_TICH];
             }
             $nguoiDung = User::where('trang_thai', ACTIVE)

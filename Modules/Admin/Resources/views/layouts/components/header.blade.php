@@ -12,7 +12,7 @@
         <a href="/" class="logo-customize">
             <img src="{{ asset('images/logo-hanoi.svg') }}" alt="" class="brand-logo">
             <div class="logo-text">
-                <span class="above-text lg-text text-uppercase">VĂN PHÒNG UBND HUYỆN </span>
+                <span class="above-text lg-text text-uppercase">{{ TITLE_APP }}</span>
                 <span class="text-uppercase">HỆ THỐNG VĂN PHÒNG ĐIỆN TỬ</span>
             </div>
         </a>
