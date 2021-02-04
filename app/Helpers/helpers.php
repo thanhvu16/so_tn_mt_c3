@@ -67,8 +67,10 @@ function tenNhom($idnhom)
     if($chucvu)
     {
         $lay_nhom_don_vi =$chucvu->ten_nhom_don_vi;
+        return $lay_nhom_don_vi;
     }
-    return $lay_nhom_don_vi;
+    return 0;
+
 }
 
 
