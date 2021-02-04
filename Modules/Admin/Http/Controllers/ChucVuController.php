@@ -98,7 +98,7 @@ class ChucVuController extends Controller
         $lay_nhom_don_vi =NhomDonVi_chucVu::where('id_chuc_vu',$id)->get();
         $chucvu = ChucVu::where('id', $id)->first();
         $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
-        return view('admin::Chuc_vu.edit', compact('chucvu', 'nhom_don_vi','lay_nhom_don_vi'));
+        return view('admin::chuc_vu.edit', compact('chucvu', 'nhom_don_vi','lay_nhom_don_vi'));
     }
 
     /**
