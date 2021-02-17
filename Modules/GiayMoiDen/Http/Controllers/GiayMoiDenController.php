@@ -106,8 +106,7 @@ class GiayMoiDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) ||
-            $user->hasRole(VAN_THU_DON_VI) || $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+        } else
             $ds_vanBanDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
                 'type' => 2,
@@ -162,7 +161,6 @@ class GiayMoiDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-        }
 
         return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen'));
     }

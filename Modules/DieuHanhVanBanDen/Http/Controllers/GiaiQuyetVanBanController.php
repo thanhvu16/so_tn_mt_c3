@@ -137,6 +137,13 @@ class GiaiQuyetVanBanController extends Controller
             $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_CHO_DUYET;
             $vanBanDenDonVi->save();
 
+            if ($chuyenNhanVanBanDonVi) {
+                DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+                    ->where('id', '>', $chuyenNhanVanBanDonVi->id)
+                    ->where('don_vi_id', auth::user()->don_vi_id)
+                    ->whereNull('hoan_thanh')->delete();
+            }
+
             return redirect()->route('van-ban-den-hoan-thanh.cho-duyet')->with('success', 'Hoành thành văn bản chờ duyệt.');
         }
 
