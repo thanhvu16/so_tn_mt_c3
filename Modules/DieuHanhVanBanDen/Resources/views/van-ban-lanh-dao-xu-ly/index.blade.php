@@ -304,7 +304,7 @@
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
                 let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
                 if (status == 2) {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó chủ tịch ' + textPhoChuTich);
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
 
                 } else {
                     $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
