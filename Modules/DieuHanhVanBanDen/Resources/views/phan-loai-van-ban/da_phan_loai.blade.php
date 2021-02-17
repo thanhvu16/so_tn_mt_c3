@@ -111,10 +111,10 @@
                                                             id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                             data-id="{{ $vanBanDen->id }}"
                                                             class="form-control select2 chu-tich"
-                                                            placeholder="Chọn chủ tịch chủ trì"
+                                                            placeholder="Chọn giám đốc chủ trì"
                                                             data-id="{{ $vanBanDen->id }}"
                                                             form="form-tham-muu">
-                                                        <option value="">Chọn Chủ tịch chủ trì</option>
+                                                        <option value="">Chọn giám đốc chủ trì</option>
                                                         <option
                                                             value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
                                                     </select>
@@ -126,10 +126,10 @@
                                                     id="pho-chu-tich-{{ $vanBanDen->id }}"
                                                     class="form-control pho-chu-tich select2"
                                                     data-id="{{ $vanBanDen->id }}"
-                                                    placeholder="Chọn phó chủ tịch"
+                                                    placeholder="Chọn phó giám đốc"
                                                     form="form-tham-muu"
                                                 >
-                                                    <option value="">Chọn phó chủ tịch chủ trì
+                                                    <option value="">Chọn phó giám đốc chủ trì
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
@@ -328,12 +328,12 @@
             let textPhoChuTich = $this.parents('.tr-tham-muu').find('.pho-chu-tich option:selected').text() + ' chỉ đạo';
 
             if (textPhoChuTich) {
-                txtChiDao = textChuTich + ',giao PCT ' + textPhoChuTich;
+                txtChiDao = textChuTich + ',giao PGD ' + textPhoChuTich;
             }
             if (id) {
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo Chủ tịch ' + txtChiDao);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo giám đốc ' + txtChiDao);
                 checkVanBanDenId(vanBanDenDonViId);
-                txtChuTich = 'Kính báo cáo chủ tịch ' + textChuTich;
+                txtChuTich = 'Kính báo cáo giám đốc ' + textChuTich;
                 $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val(id);
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
@@ -352,11 +352,11 @@
             let textChuTich = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text() + ' xem xét';
 
             if (id) {
-                let txtChiDao = 'Kính báo cáo Chủ tịch ' + textChuTich + ', giao PCT ' + textPhoChuTich;
+                let txtChiDao = 'Kính báo cáo giám đốc ' + textChuTich + ', giao PGD ' + textPhoChuTich;
 
                 // check empty chu tich
                 if (checkChuTich && checkChuTich.length > 0) {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó chủ tịch ' + textPhoChuTich);
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
                 } else {
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo phó chủ tịch ' + textPhoChuTich);
                 }
@@ -369,7 +369,7 @@
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
-                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo Chủ tịch ' + textChuTich);
+                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo giám đốc ' + textChuTich);
             }
         });
 

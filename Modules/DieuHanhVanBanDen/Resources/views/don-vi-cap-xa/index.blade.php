@@ -110,10 +110,10 @@
                                                         id="pho-chu-tich-{{ $vanBanDen->id }}"
                                                         class="form-control pho-chu-tich select2"
                                                         data-id="{{ $vanBanDen->id }}"
-                                                        placeholder="Chọn phó chủ tịch"
+                                                        placeholder="Chọn phó giám đốc"
                                                         form="form-tham-muu"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}">
-                                                        <option value="">Chọn phó chủ tịch chủ trì
+                                                        <option value="">Chọn phó giám đốc chủ trì
                                                         </option>
                                                         @forelse($danhSachPhoChuTich as $phoChuTich)
                                                             <option
@@ -128,11 +128,11 @@
                                                         id="truong-phong-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         class="form-control select2 truong-phong"
-                                                        placeholder="Chọn trưởng ban chủ trì"
+                                                        placeholder="Chọn trưởng phòng chủ trì"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         data-tra-lai="{{ $vanBanDen->vanBanTraLai ? 1 : null }}"
                                                         form="form-tham-muu">
-                                                    <option value="">Chọn trưởng ban chủ trì</option>
+                                                    <option value="">Chọn trưởng phòng chủ trì</option>
                                                     <option
                                                         value="{{ $truongBan->id }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongBan->id ? 'selected' : null }}>{{ $truongBan->ho_ten }}</option>
                                                 </select>
@@ -142,11 +142,11 @@
                                                         id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         class="form-control select2 pho-phong"
-                                                        placeholder="Chọn phó trưởng ban chủ trì"
+                                                        placeholder="Chọn phó trưởng phòng chủ trì"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         data-tra-lai="{{ $vanBanDen->vanBanTraLai ? 1 : null }}"
                                                         form="form-tham-muu">
-                                                    <option value="">Chọn phó trưởng ban chủ trì</option>
+                                                    <option value="">Chọn phó trưởng phòng chủ trì</option>
                                                     @forelse($danhSachPhoPhong as $phoPhong)
                                                         <option
                                                             value="{{ $phoPhong->id }}" {{ !empty($vanBanDen->phoPhong) && $vanBanDen->phoPhong->can_bo_nhan_id == $phoPhong->id ? 'selected' : null }}>{{ $phoPhong->ho_ten }}</option>
@@ -190,7 +190,7 @@
                                                     class="form-control select2 lanh-dao-xem-de-biet"
                                                     multiple="multiple"
                                                     form="form-tham-muu"
-                                                    data-placeholder="Chọn phó trưởng ban xem để biết">
+                                                    data-placeholder="Chọn phó trưởng phòng xem để biết">
                                                     @forelse($danhSachPhoPhong as $phoPhongPhoiHop)
                                                         <option
                                                             value="{{ $phoPhongPhoiHop->id }}" {{ in_array($phoPhongPhoiHop->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : null }}>{{ $phoPhongPhoiHop->ho_ten }}</option>
@@ -348,7 +348,7 @@
 
             let ct = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text();
             if (ct.length > 0) {
-                txtChuTich = 'Kính báo cáo chủ tịch ' + ct + ' xem xét';
+                txtChuTich = 'Kính báo cáo giám đốc ' + ct + ' xem xét';
             }
 
             if (statusTraLai) {
@@ -358,9 +358,9 @@
             if (id) {
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
                 checkVanBanDenId(vanBanDenDonViId);
-                let txtChiDao = txtChuTich + ', giao PCT ' + textPhoChuTich;
+                let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
                 $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó chủ tịch ' + textPhoChuTich);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
 
 
             } else {
@@ -381,7 +381,7 @@
 
             if (id) {
                 checkVanBanDenId(vanBanDenDonViId);
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_truong_phong[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển trưởng ban ' + textTruongPhong);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_truong_phong[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển trưởng phòng ' + textTruongPhong);
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_truong_phong[${vanBanDenDonViId}]"]`).addClass('hide');
@@ -401,7 +401,7 @@
 
             if (id) {
                 checkVanBanDenId(vanBanDenDonViId);
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_phong[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó trưởng ban ' + textPhoPhong);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_phong[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó trưởng phòng ' + textPhoPhong);
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_phong[${vanBanDenDonViId}]"]`).addClass('hide');

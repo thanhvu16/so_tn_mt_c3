@@ -86,10 +86,10 @@
                                                         id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         class="form-control select2 chu-tich"
-                                                        placeholder="Chọn chủ tịch chủ trì"
+                                                        placeholder="Chọn giám đốc chủ trì"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
-                                                    <option value="">Chọn Chủ tịch chủ trì</option>
+                                                    <option value="">Chọn giám đốc chủ trì</option>
                                                     <option
                                                         value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>
                                                 </select>
@@ -100,11 +100,11 @@
                                                     id="pho-chu-tich-{{ $vanBanDen->id }}"
                                                     class="form-control pho-chu-tich select2"
                                                     data-id="{{ $vanBanDen->id }}"
-                                                    placeholder="Chọn phó chủ tịch"
+                                                    placeholder="Chọn phó giám đốc"
                                                     form="form-tham-muu"
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                 >
-                                                    <option value="">Chọn phó chủ tịch chủ trì
+                                                    <option value="">Chọn phó giám đốc chủ trì
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
@@ -277,9 +277,9 @@
             let checkPhoChuTich = $this.parents('.tr-tham-muu').find('.pho-chu-tich option:selected').val();
 
             if (id) {
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo Chủ tịch ' + textChuTich);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo giám đốc ' + textChuTich);
                 checkVanBanDenId(vanBanDenDonViId);
-                txtChuTich = 'Kính báo cáo chủ tịch ' + textChuTich;
+                txtChuTich = 'Kính báo cáo giám đốc ' + textChuTich;
                 $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val(id);
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
@@ -302,11 +302,11 @@
             let checkChuTich = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').val();
 
             if (id) {
-                let txtChiDao = txtChuTich + ', giao PCT ' + textPhoChuTich;
+                let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
 
                 // check empty chu tich
                 if (checkChuTich.length > 0) {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó chủ tịch ' + textPhoChuTich);
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
                 } else {
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo phó chủ tịch ' + textPhoChuTich);
                 }

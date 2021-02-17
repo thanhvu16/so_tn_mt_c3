@@ -193,33 +193,33 @@
                     </div>
                     <ul class="progressbar">
                         @if (!empty($vanBanDen->chuTich->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{!! $vanBanDen->chuTich->canBoNhan->ho_ten ."<br/> (Chủ tịch)" !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=1 ? 'complete active' : null }}">{!! $vanBanDen->chuTich->canBoNhan->ho_ten ."<br/> (Giám đốc sở)" !!}
                                 <br>
                                 <i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuTich->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->PhoChuTich->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->PhoChuTich->canBoNhan->ho_ten ."<br/> (Phó chủ tịch)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->PhoChuTich->canBoNhan->ho_ten ."<br/> (Phó giám đốc sở)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->PhoChuTich->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->chuTichXa->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->chuTichXa->canBoNhan->ho_ten ."<br/> (Chủ tịch xã)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->chuTichXa->canBoNhan->ho_ten ."<br/> (Giám đốc phòng)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuTichXa->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->phoChuTichXa->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->phoChuTichXa->canBoNhan->ho_ten ."<br/> (Phó chủ tịch xã)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->phoChuTichXa->canBoNhan->ho_ten ."<br/> (Phó giám đốc phòng)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->phoChuTichXa->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->truongPhong->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=3 ? 'complete active' : null }}">{!! !empty($vanBanDen->chuTichXa) ?$vanBanDen->truongPhong->canBoNhan->ho_ten. "<br/> (Trưởng ban)": $vanBanDen->truongPhong->canBoNhan->ho_ten ."<br/> (Trưởng phòng)" !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=3 ? 'complete active' : null }}">{!! !empty($vanBanDen->chuTichXa) ?$vanBanDen->truongPhong->canBoNhan->ho_ten. "<br/> (Trưởng phòng)": $vanBanDen->truongPhong->canBoNhan->ho_ten ."<br/> (Trưởng phòng)" !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->truongPhong->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->phoPhong->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=4 ? 'complete active' : null }}">{!! !empty($vanBanDen->chuTichXa) ? $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó trưởng ban)" : $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó phòng)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=4 ? 'complete active' : null }}">{!! !empty($vanBanDen->chuTichXa) ? $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó trưởng phòng)" : $vanBanDen->phoPhong->canBoNhan->ho_ten ."<br/> (Phó phòng)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->phoPhong->created_at)) }}</i>
                             </li>
                         @endif

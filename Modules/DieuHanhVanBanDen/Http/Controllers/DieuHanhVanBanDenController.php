@@ -186,7 +186,7 @@ class DieuHanhVanBanDenController extends Controller
             $user = auth::user();
             $donVi = $user->donVi;
             $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-            $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+            $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id ?? null)->first();
 
             switch (auth::user()->roles->pluck('name')[0]) {
                 case CHUYEN_VIEN:

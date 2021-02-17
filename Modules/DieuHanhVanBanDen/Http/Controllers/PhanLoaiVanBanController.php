@@ -53,8 +53,12 @@ class PhanLoaiVanBanController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
-        $chuTich = User::role('chủ tịch')->select('id', 'ho_ten')->first();
-        $danhSachPhoChuTich = User::role('phó chủ tịch')->select('id', 'ho_ten')->get();
+        $chuTich = User::role('chủ tịch')->select('id', 'ho_ten', 'don_vi_id')->first();
+
+        $danhSachPhoChuTich = User::role('phó chủ tịch')
+            ->where('don_vi_id', $chuTich->don_vi_id)
+            ->select('id', 'ho_ten')->get();
+
         $danhSachDonVi = DonVi::whereNull('deleted_at')
             ->select('id', 'ten_don_vi')
             ->where('id', '!=', $user->don_vi_id)->get();
