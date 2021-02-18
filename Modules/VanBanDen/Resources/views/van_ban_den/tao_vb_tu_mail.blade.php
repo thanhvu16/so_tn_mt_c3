@@ -94,6 +94,7 @@
                                     <textarea rows="3" class="form-control" required placeholder="nội dung" name="trich_yeu"
                                               type="text">{{empty($data_xml) ? $email->mail_subject:$data_xml->STRTRICHYEU}}</textarea>
                                 </div>
+                                @if( $loaivb_email)
                                 @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')
                                     <div class="col-md-3" style="margin-top: 10px">
                                         <div class="form-group">
@@ -265,6 +266,7 @@
                                         </a>
                                         <b class="text-danger"> Hiển thị thêm nội dung</b>
                                     </div>
+                                @endif
                                 @endif
                                 <div class="col-md-12 collapse "
                                      id="collapseExample1">
