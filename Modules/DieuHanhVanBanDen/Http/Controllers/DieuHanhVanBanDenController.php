@@ -167,7 +167,7 @@ class DieuHanhVanBanDenController extends Controller
         }
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
-            ->select('id')->first();
+            ->select('id', 'ten_loai_van_ban')->first();
 
         $ds_loaiVanBan = null;
         $ds_nguoiKy = null;

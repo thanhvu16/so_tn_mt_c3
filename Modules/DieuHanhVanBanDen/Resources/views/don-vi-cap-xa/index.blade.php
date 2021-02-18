@@ -54,7 +54,7 @@
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
                                                         ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
                                                         , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
@@ -66,7 +66,7 @@
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->gio_hop)) }}
                                                         ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
                                                         , tại {{ $vanBanDen->dia_diem }})
                                                     </i>
@@ -216,7 +216,7 @@
                                                            form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi->lanh_dao_id == auth::user()->id ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                    ><i>Chủ tịch</i></label>&nbsp;&nbsp;
+                                                    ><i>GD</i></label>&nbsp;&nbsp;
                                                     @endif
                                                     @if (auth::user()->hasRole(CHU_TICH) || (auth::user()->hasRole(PHO_CHUC_TICH) && $vanBanDen->phoChuTich->can_bo_nhan_id == auth::user()->id))
                                                         <input type="radio"
@@ -227,7 +227,7 @@
                                                                form="form-tham-muu" {{ !empty($vanBanDen->phoChuTich) && $vanBanDen->phoChuTich->can_bo_nhan_id == $vanBanDen->lichCongTacDonVi->lanh_dao_id ? 'checked' : null  }}>
                                                         <label
                                                             for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
-                                                        ><i>Phó chủ tịch</i></label>
+                                                        ><i>PGD</i></label>
                                                         <br>
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
@@ -237,7 +237,7 @@
                                                                form="form-tham-muu" {{ !empty($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $vanBanDen->lichCongTacDonVi->lanh_dao_id ? 'checked' : null  }}>
                                                         <label
                                                             for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
-                                                        ><i>Trưởng ban</i></label> {!!  $trinhTuNhanVanBan == 8 ? "&nbsp;" : "<br/>"  !!}
+                                                        ><i>TP</i></label> {!!  $trinhTuNhanVanBan == 8 ? "&nbsp;" : "<br/>"  !!}
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                                id="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"
@@ -246,7 +246,7 @@
                                                                form="form-tham-muu" {{ !empty($vanBanDen->phoPhong) && $vanBanDen->phoPhong->can_bo_nhan_id == $vanBanDen->lichCongTacDonVi->lanh_dao_id ? 'checked' : null  }}>
                                                         <label
                                                             for="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"><i>Phó
-                                                                trưởng ban</i></label>
+                                                                TP</i></label>
                                                     @endif
                                                 </div>
                                             @endif

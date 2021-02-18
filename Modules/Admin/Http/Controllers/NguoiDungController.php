@@ -31,7 +31,12 @@ class NguoiDungController extends Controller
         $hoTen = $request->get('ho_ten') ?? null;
         $username = $request->get('username') ?? null;
 
-        $users = User::with('chucVu', 'donVi')
+        $users = User::with(['chucVu' => function ($query) {
+                return $query->select('id', 'ten_chuc_vu');
+            },
+            'donVi' => function ($query) {
+                return $query->select('id', 'ten_don_vi');
+            }])
             ->where('trang_thai', ACTIVE)
             ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
@@ -54,13 +59,14 @@ class NguoiDungController extends Controller
                 }
             })
             ->whereNull('deleted_at')
+            ->select('id', 'username', 'ho_ten', 'chuc_vu_id', 'don_vi_id', 'gioi_tinh', 'trang_thai')
             ->orderBy('id', 'DESC')
             ->paginate(PER_PAGE);
 
         $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
-        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
-        $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
+        $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->orderBy('ten_chuc_vu', 'asc')->get();
+        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->orderBy('ten_don_vi', 'asc')->get();
 
         $viTriUuTien = User::max('uu_tien');
 
@@ -180,8 +186,8 @@ class NguoiDungController extends Controller
 
         $user = User::findOrFail($id);
         $roles = Role::all();
-        $danhSachChucVu = ChucVu::all();
-        $danhSachDonVi = DonVi::all();
+        $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->get();
+        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->get();
         $viTriUuTien = User::max('uu_tien');
 
         return view('admin::nguoi-dung.edit', compact('user',

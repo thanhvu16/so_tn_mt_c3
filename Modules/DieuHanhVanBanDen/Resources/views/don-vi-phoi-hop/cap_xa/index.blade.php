@@ -61,7 +61,7 @@
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ $vanBanDen->hasChild->gio_hop }}
+                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
                                                         ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
                                                         , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>

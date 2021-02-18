@@ -78,7 +78,7 @@
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
-                                                    (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                    (Vào hồi {{ date( "H:i", strtotime($vanBanDen->gio_hop)) }}
                                                     ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
                                                     , tại {{ $vanBanDen->dia_diem }})
                                                 </i>
@@ -153,13 +153,13 @@
                                                            form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
-                                                    ><i>PCT</i></label>
+                                                    ><i>PGD</i></label>
                                                     &nbsp;
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
                                                            class="radio-col-cyan don-vi-du-hop"
-                                                           value="{{ !empty($vanBanDen->lichCongTacDonVi->don_vi_du_hop) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
+                                                           value="{{ !empty($vanBanDen->checkDonViChuTri) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
                                                            form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                     <label
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự

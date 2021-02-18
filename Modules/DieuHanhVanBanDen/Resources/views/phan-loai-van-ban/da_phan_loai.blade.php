@@ -87,7 +87,7 @@
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
-                                                    (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                    (Vào hồi {{ date( "H:i", strtotime($vanBanDen->gio_hop)) }}
                                                     ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
                                                     , tại {{ $vanBanDen->dia_diem }})
                                                 </i>
@@ -251,11 +251,11 @@
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                        class="radio-col-cyan chu-tich-du-hop"
-                                                       value="{{ $vanBanDen->chuTich->can_bo_nhan_id ?? null }}"
+                                                       value="{{ $chuTich->id ?? null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacChuTich ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                ><i>CT</i></label>
+                                                ><i>GD</i></label>
                                             </div>
                                             <div class="radio-info form-check-inline">
                                                 <input type="radio"
@@ -266,14 +266,14 @@
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
-                                                ><i>PCT</i></label>
+                                                ><i>PGD</i></label>
                                             </div>
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
                                                        class="radio-col-cyan don-vi-du-hop"
-                                                       value="{{ !empty($vanBanDen->lichCongTacDonVi->don_vi_du_hop) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
+                                                       value="{{ !empty($vanBanDen->checkDonViChuTri) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự

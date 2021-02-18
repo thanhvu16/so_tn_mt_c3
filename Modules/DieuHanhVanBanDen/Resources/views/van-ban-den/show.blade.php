@@ -80,7 +80,7 @@
                             </p>
                         </div>
                         @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                            <div class="col-md-12">
+                            <div class="col-md-12 mb-2">
                                 <label class="col-form-label">Nội dung
                                     họp:</label> {{ $vanBanDen->hasChild->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
                                 <br>
@@ -166,8 +166,8 @@
                                 <b>Độ khẩn:</b> {{ isset($vanBanDen->doKhan) ? $vanBanDen->doKhan->ten_muc_do : null }}
                             </p>
                         </div>
-                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->so_van_ban_id == $loaiVanBanGiayMoi->id)
-                            <div class="col-md-12">
+                        @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                            <div class="col-md-12 mb-2">
                                 <label class="col-form-label">Nội dung
                                     họp:</label> {{ $vanBanDen->noi_dung_hop ?? ' V/v Hội nghị trực tuyến của Chính phủ ' }}
                                 <br>
@@ -189,7 +189,7 @@
                 $vanBanDen->phoPhong || $vanBanDen->chuyenVien)
                 <div class="col-md-12 row-bd-bt">
                     <div class="col-md-12">
-                        <h5 class="text-bold">Sơ đồ chỉ đạo bản: </h5>
+                        <h5 class="text-bold">Sơ đồ chỉ đạo văn bản: </h5>
                     </div>
                     <ul class="progressbar">
                         @if (!empty($vanBanDen->chuTich->can_bo_nhan_id))

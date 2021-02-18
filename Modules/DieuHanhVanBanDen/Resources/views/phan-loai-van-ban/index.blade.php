@@ -51,7 +51,7 @@
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
-                                                    (Vào hồi {{ $vanBanDen->gio_hop }}
+                                                    (Vào hồi {{ date( "H:i", strtotime($vanBanDen->gio_hop)) }}
                                                     ngày {{ date('d/m/Y', strtotime($vanBanDen->ngay_hop)) }}
                                                     , tại {{ $vanBanDen->dia_diem }})
                                                 </i>
@@ -203,7 +203,7 @@
                                                        class="radio-col-cyan chu-tich-du-hop" value=""
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"><i>CT</i></label>
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"><i>GD</i></label>
                                             </div>
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
@@ -212,7 +212,7 @@
                                                        class="radio-col-cyan pho-ct-du-hop" value=""
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"><i>PCT</i></label>
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"><i>PGD</i></label>
                                             </div>
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
