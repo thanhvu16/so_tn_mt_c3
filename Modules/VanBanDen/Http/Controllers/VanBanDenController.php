@@ -882,7 +882,7 @@ class VanBanDenController extends Controller
 
         }
 
-        return redirect()->route('dsvanbandentumail')->with('success', 'Thêm văn bản thành công !');
+        return redirect()->route('dsvanbandentumail')->with('success', 'Thêm văn bản thành công ! !');
 
     }
 
