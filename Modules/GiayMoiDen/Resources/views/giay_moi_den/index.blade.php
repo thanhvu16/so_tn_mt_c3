@@ -18,6 +18,8 @@
                            aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
                                 style="font-size: 14px">Tìm kiếm văn bản</span>
                         </a>
+                        <a role="button" onclick="showModal()" class="btn btn-primary ">
+                            <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
                     </div>
                     <div class="col-md-12 mt-3">
                         <div class="row">
@@ -263,6 +265,46 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
+                    <div class="modal fade" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('multiple_file_di') }}" method="POST"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title"><i
+                                                class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label for="sokyhieu" class="col-form-label">Chọn tệp tin
+                                                    <br>
+                                                    <small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                            loại văn bản + số đi + năm (vd:
+                                                            QD-1-2020.pdf))</i></small>
+                                                </label><br>
+                                                <input type="file" multiple name="ten_file[]"
+                                                       accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
+                                                <input type="text" id="url-file" value="123" class="hidden"
+                                                       name="txt_file[]">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải
+                                                    lên
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -270,8 +312,11 @@
     </section>
 
 @endsection
-
-
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+    <script type="text/javascript">
+        function showModal() {
+            $("#myModal").modal('show');
+        }
+    </script>
 @endsection
