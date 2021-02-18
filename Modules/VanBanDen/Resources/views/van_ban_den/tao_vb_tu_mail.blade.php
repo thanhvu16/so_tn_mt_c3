@@ -25,7 +25,7 @@
                                 @endif
                             </div>
                             <form class="form-row"
-                                  action="{{route('luuvanbantumail')}}"
+                                  action="{{ isset($loaivb_email) && $loaivb_email->ten_loai_van_ban == 'Giấy mời' ? route('luuGiayMoiMail') : route('luuvanbantumail') }}"
                                   method="post" enctype="multipart/form-data" id="formCreateDoc">
                                 @csrf
 
@@ -94,11 +94,19 @@
                                     <textarea rows="3" class="form-control" required placeholder="nội dung" name="trich_yeu"
                                               type="text">{{empty($data_xml) ? $email->mail_subject:$data_xml->STRTRICHYEU}}</textarea>
                                 </div>
-                                @if(!empty($data_xml->STRNGAYHOP) >'2020-01-01' && $loaivb_email == 100)
+                                @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')
                                     <div class="col-md-3" style="margin-top: 10px">
                                         <div class="form-group">
-                                            <label for="">Giờ họp <span style="color: red">*</span></label>
-                                            <input type="time" required class="form-control" value="{{isset($data_xml->STRTHOIGIANHOP)? $data_xml->STRTHOIGIANHOP : ''}}" name="gio_hop_chinh">
+                                            <label>Giờ họp <span class="color-red">*</span></label>
+
+                                            <div class="input-group">
+                                                <input type="text" name="gio_hop_chinh" required value="{{isset($data_xml->STRTHOIGIANHOP)? $data_xml->STRTHOIGIANHOP : ''}}" class="form-control timepicker">
+
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                            </div>
+                                            <!-- /.input group -->
                                         </div>
                                     </div>
                                     <div class="col-md-3" style="margin-top: 10px">
@@ -124,7 +132,7 @@
                                         <b class="text-danger"> Hiển thị thêm nội dung</b>
                                     </div>
 
-                                    <div class="col-md-12 collapse in" id="collapseExample">
+                                    <div class="col-md-12 collapse" id="collapseExample">
                                         <div class="col-md-12  gmoi layout3 ">
                                             <div class="row" style="margin-top:-15px;margin-left: 0px;">
                                                 <hr style="border: 0.5px solid #3c8dbc">
@@ -139,7 +147,13 @@
                                                 <div class="col-md-4" style="margin-top: 10px">
                                                     <div class="form-group">
                                                         <label for="">Giờ họp</label>
-                                                        <input type="time" class="form-control"  value="{{ isset($vanban) ? $vanban->gio_hop_con : '' }}" name="gio_hop_con[]">
+                                                        <div class="input-group">
+                                                            <input type="text" name="gio_hop_con[]" required value="{{ isset($vanban) ? $vanban->gio_hop_con : '' }}" class="form-control timepicker">
+
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-clock-o"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4" style="margin-top: 10px">
@@ -282,6 +296,7 @@
                                         </a>
                                     </div>
                                 </div>
+                                <div class="row clearfix"></div>
                                 <div class="form-group col-md-3">
                                     <label for="do_khan_cap_id" class="col-form-label">Độ khẩn</label>
                                     <select class="form-control dropdown-search" id="do_khan_cap_id" name="do_khan" required>
