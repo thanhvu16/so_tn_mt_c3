@@ -31,15 +31,15 @@
                                         @include('dieuhanhvanbanden::van-ban-den.info')
                                     </td>
                                     <td>
-                                        @if($vanBanDen->hasChild())
+                                        @if($vanBanDen->hasChild)
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild()->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
                                                 <br>
-                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild()->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                                @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild()->gio_hop)) }}
-                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild()->ngay_hop)) }}
-                                                        , tại {{ $vanBanDen->hasChild()->dia_diem }})
+                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
+                                                        ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
+                                                        , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
                                                 @endif
                                             </p>
@@ -77,14 +77,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->noi_dung ?? null }}</p>
+                                        <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->noi_dung ?? null }}</p>
 
-                                        @if (isset($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile))
-                                            @foreach($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile as $key => $file)
+                                        @if (isset($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile))
+                                            @foreach($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile as $key => $file)
                                                 <a href="{{ $file->getUrlFile() }}"
                                                    target="popup"
                                                    class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                @if (count($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet()->giaiQuyetVanBanFile)-1 != $key)
+                                                @if (count($vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet->giaiQuyetVanBanFile)-1 != $key)
                                                     &nbsp;|&nbsp;
                                                 @endif
                                             @endforeach

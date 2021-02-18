@@ -88,6 +88,7 @@ class VanBanDenHoanThanhController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->giaiQuyetVanBanHoanThanh = $vanBanDen->giaiQuyetVanBanHoanThanh();
             }
         }
 

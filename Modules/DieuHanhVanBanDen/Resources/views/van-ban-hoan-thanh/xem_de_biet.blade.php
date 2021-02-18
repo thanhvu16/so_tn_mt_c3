@@ -156,15 +156,15 @@
                                                 @endif
                                             </p>
                                         @else
-                                            <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanh()->noi_dung ?? null }}</p>
+                                            <p>{{ $vanBanDen->giaiQuyetVanBanHoanThanh->noi_dung ?? null }}</p>
 
-                                            @if (isset($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile))
-                                                @foreach($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile as $key => $file)
+                                            @if (isset($vanBanDen->giaiQuyetVanBanHoanThanh->giaiQuyetVanBanFile))
+                                                @foreach($vanBanDen->giaiQuyetVanBanHoanThanh->giaiQuyetVanBanFile as $key => $file)
                                                     <a href="{{ $file->getUrlFile() }}"
                                                        target="popup"
                                                        class="detail-file-name seen-new-window">[{{ $file->ten_file }}
                                                         ]</a>
-                                                    @if (count($vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile)-1 != $key)
+                                                    @if (count($vanBanDen->giaiQuyetVanBanHoanThanh->giaiQuyetVanBanFile)-1 != $key)
                                                         &nbsp;|&nbsp;
                                                     @endif
                                                 @endforeach
