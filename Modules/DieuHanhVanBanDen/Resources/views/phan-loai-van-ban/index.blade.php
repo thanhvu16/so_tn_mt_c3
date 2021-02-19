@@ -281,11 +281,13 @@
                 checkVanBanDenId(vanBanDenDonViId);
                 txtChuTich = 'Kính báo cáo giám đốc ' + textChuTich;
                 $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val(id);
+                checkedDuHop($this, '.chu-tich-du-hop');
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val();
+                removeDuHop($this, '.chu-tich-du-hop');
             }
 
             if (statusTraLai) {
@@ -314,11 +316,13 @@
                 checkVanBanDenId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
+                checkedDuHop($this, '.pho-ct-du-hop');
             } else {
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
+                removeDuHop($this, '.pho-ct-du-hop');
             }
 
             if (statusTraLai) {
@@ -350,6 +354,7 @@
                 $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).addClass('hide');
                 $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
             }
+            checkedDuHop($this, '.don-vi-du-hop');
 
             if (statusTraLai) {
                 $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
@@ -448,6 +453,15 @@
         $('.chu-tich-du-hop').on('click', function () {
             $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
         });
+
+        // check du hop
+        function checkedDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', true);
+        }
+
+        function removeDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', false);
+        }
 
     </script>
 @endsection
