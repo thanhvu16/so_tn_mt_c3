@@ -146,7 +146,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 'vanBanDenFile' => function ($query) {
                     return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
                 }
-                ])
+            ])
                 ->whereIn('id', $arrIdVanBanDenDonVi)
                 ->where('trinh_tu_nhan_van_ban', $active)
                 ->paginate(PER_PAGE_10);
@@ -506,148 +506,147 @@ class VanBanLanhDaoXuLyController extends Controller
                 DB::beginTranSaction();
 
                 foreach ($vanBanDenDonViIds as $vanBanDenId) {
-
                     $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
                     $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
 
-                    if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
-                        // chu tich cap xa nhan van ban
-                        $role = [CHU_TICH];
+                    if (isset($donVi)) {
+                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                            // chu tich cap xa nhan van ban
+                            $role = [CHU_TICH];
 
-                        $nguoiDung = User::where('trang_thai', ACTIVE)
-                            ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                            ->whereHas('roles', function ($query) use ($role) {
-                                return $query->whereIn('name', $role);
-                            })
-                            ->select('id', 'don_vi_id')
-                            ->orderBy('id', 'DESC')
-                            ->whereNull('deleted_at')->first();
+                            $nguoiDung = User::where('trang_thai', ACTIVE)
+                                ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                                ->whereHas('roles', function ($query) use ($role) {
+                                    return $query->whereIn('name', $role);
+                                })
+                                ->select('id', 'don_vi_id')
+                                ->orderBy('id', 'DESC')
+                                ->whereNull('deleted_at')->first();
 
-                        //update trinh tu nhan van ban
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
-                        $vanBanDen->save();
+                            //update trinh tu nhan van ban
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                            $vanBanDen->save();
 
-                    } else {
-                        // luu don vi chu tri
-                        $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                        } else {
+                            // luu don vi chu tri
+                            $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
 
-                        $nguoiDung = User::where('trang_thai', ACTIVE)
-                            ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                            ->whereHas('roles', function ($query) use ($roles) {
-                                return $query->whereIn('name', $roles);
-                            })
-                            ->select('id', 'don_vi_id')
-                            ->orderBy('id', 'DESC')
-                            ->whereNull('deleted_at')->first();
+                            $nguoiDung = User::where('trang_thai', ACTIVE)
+                                ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                                ->whereHas('roles', function ($query) use ($roles) {
+                                    return $query->whereIn('name', $roles);
+                                })
+                                ->select('id', 'don_vi_id')
+                                ->orderBy('id', 'DESC')
+                                ->whereNull('deleted_at')->first();
 
-                        //update trinh tu nhan van ban
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
-                        $vanBanDen->save();
-                    }
+                            //update trinh tu nhan van ban
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                            $vanBanDen->save();
+                        }
 
-                    $checkLogXuLyVanBanDen = LogXuLyVanBanDen::where([
-                        'van_ban_den_id' => $vanBanDenId,
-                        'can_bo_chuyen_id' => $currentUser->id
-                    ])->orderBy('id', 'DESC')->first();
-
-                    if (isset($type) && $type == 'update' && empty($checkLogXuLyVanBanDen)) {
-
-                        return redirect()->back()->with('danger', 'Văn bản này đang xử lý, không thể cập nhật.');
-                    }
-
-                    // van ban quan trong
-                    VanBanQuanTrong::where([
-                        'user_id' => $currentUser->id,
-                        'van_ban_den_id' => $vanBanDenId
-                    ])->delete();
-
-                    if (isset($dataVanBanQuanTrong[$vanBanDenId]) && !empty($dataVanBanQuanTrong[$vanBanDenId])) {
-                        $dataVanBanQuanTrong = [
+                        $checkLogXuLyVanBanDen = LogXuLyVanBanDen::where([
                             'van_ban_den_id' => $vanBanDenId,
-                            'user_id' => $currentUser->id
-                        ];
+                            'can_bo_chuyen_id' => $currentUser->id
+                        ])->orderBy('id', 'DESC')->first();
 
-                        $vanBanQuanTrong = VanBanQuanTrong::where([
+                        if (isset($type) && $type == 'update' && empty($checkLogXuLyVanBanDen)) {
+
+                            return redirect()->back()->with('danger', 'Văn bản này đang xử lý, không thể cập nhật.');
+                        }
+
+                        // van ban quan trong
+                        VanBanQuanTrong::where([
                             'user_id' => $currentUser->id,
                             'van_ban_den_id' => $vanBanDenId
-                        ])->first();
+                        ])->delete();
 
-                        if (empty($vanBanQuanTrong)) {
-                            $vanBanQuanTrong = new VanBanQuanTrong();
-                            $vanBanQuanTrong->fill($dataVanBanQuanTrong);
-                            $vanBanQuanTrong->save();
+                        if (isset($dataVanBanQuanTrong[$vanBanDenId]) && !empty($dataVanBanQuanTrong[$vanBanDenId])) {
+                            $dataVanBanQuanTrong = [
+                                'van_ban_den_id' => $vanBanDenId,
+                                'user_id' => $currentUser->id
+                            ];
+
+                            $vanBanQuanTrong = VanBanQuanTrong::where([
+                                'user_id' => $currentUser->id,
+                                'van_ban_den_id' => $vanBanDenId
+                            ])->first();
+
+                            if (empty($vanBanQuanTrong)) {
+                                $vanBanQuanTrong = new VanBanQuanTrong();
+                                $vanBanQuanTrong->fill($dataVanBanQuanTrong);
+                                $vanBanQuanTrong->save();
+                            }
                         }
-                    }
-                    // check lanh dao du hop
-                    if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
+                        // check lanh dao du hop
+                        if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
 
-                        if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
-                            LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
+                            if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
+                                LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
+                            }
                         }
-                    }
 
-                    //han xu ly
+                        //han xu ly
 //                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->han_xu_ly != $dataHanXuLy[$vanBanDenId]) {
 //                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
 //                        $vanBanDen->save();
 //                    }
+                        $dataLuuDonViChuTri = [
+                            'van_ban_den_id' => $vanBanDenId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+                            'noi_dung' => $textDonViChuTri[$vanBanDenId],
+                            'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
+                            'user_id' => $currentUser->id,
+                            'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
+                            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
+                            'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
+                            'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == 3 || $vanBanDen->trinh_tu_nhan_van_ban == 8 ? 1 : null
+                        ];
 
-                    $dataLuuDonViChuTri = [
-                        'van_ban_den_id' => $vanBanDenId,
-                        'can_bo_chuyen_id' => $currentUser->id,
-                        'can_bo_nhan_id' => $nguoiDung->id ?? null,
-                        'noi_dung' => $textDonViChuTri[$vanBanDenId],
-                        'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
-                        'user_id' => $currentUser->id,
-                        'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
-                        'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
-                        'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
-                        'vao_so_van_ban' => $donVi->dieu_hanh == 0 ? 1 : null,
-                        'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == 3 || $vanBanDen->trinh_tu_nhan_van_ban == 8 ? 1 : null
-                    ];
+                        // luu don vi chu tri
+                        //chuyen nhan van ban don vi
+                        DonViChuTri::where([
+                            'van_ban_den_id' => $vanBanDenId,
+                            'hoan_thanh' => null
+                        ])->delete();
 
-                    // luu don vi chu tri
-                    //chuyen nhan van ban don vi
-                    DonViChuTri::where([
-                        'van_ban_den_id' => $vanBanDenId,
-                        'hoan_thanh' => null
-                    ])->delete();
+                        if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
+                            $donViChuTri = new DonViChuTri();
+                            $donViChuTri->fill($dataLuuDonViChuTri);
+                            $donViChuTri->save();
 
-                    if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
-                        $donViChuTri = new DonViChuTri();
-                        $donViChuTri->fill($dataLuuDonViChuTri);
-                        $donViChuTri->save();
+                            // luu vet van ban den
+                            $luuVetVanBanDen = new LogXuLyVanBanDen();
+                            $luuVetVanBanDen->fill($dataLuuDonViChuTri);
+                            $luuVetVanBanDen->save();
+                        }
 
-                        // luu vet van ban den
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataLuuDonViChuTri);
-                        $luuVetVanBanDen->save();
+                        //data don vi phoi hop
+                        $dataLuuDonViPhoiHop = [
+                            'van_ban_den_id' => $vanBanDenId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+                            'noi_dung' => $textDonViPhoiHop[$vanBanDenId],
+                            'don_vi_phoi_hop_id' => isset($danhSachDonViPhoiHopIds[$vanBanDenId]) ? \GuzzleHttp\json_encode($danhSachDonViPhoiHopIds[$vanBanDenId]) : null,
+                            'user_id' => $currentUser->id
+                        ];
+
+                        DonViPhoiHop::where([
+                            'van_ban_den_id' => $vanBanDenId,
+                            'hoan_thanh' => null
+                        ])->delete();
+
+                        if (isset($danhSachDonViPhoiHopIds[$vanBanDenId])) {
+                            DonViPhoiHop::luuDonViPhoiHop($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
+
+                            // luu vet van ban den
+                            $luuVetVanBanDen = new LogXuLyVanBanDen();
+                            $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
+                            $luuVetVanBanDen->save();
+                        }
                     }
-
-                    //data don vi phoi hop
-                    $dataLuuDonViPhoiHop = [
-                        'van_ban_den_id' => $vanBanDenId,
-                        'can_bo_chuyen_id' => $currentUser->id,
-                        'can_bo_nhan_id' => $nguoiDung->id ?? null,
-                        'noi_dung' => $textDonViPhoiHop[$vanBanDenId],
-                        'don_vi_phoi_hop_id' => isset($danhSachDonViPhoiHopIds[$vanBanDenId]) ? \GuzzleHttp\json_encode($danhSachDonViPhoiHopIds[$vanBanDenId]) : null,
-                        'user_id' => $currentUser->id
-                    ];
-
-                    DonViPhoiHop::where([
-                        'van_ban_den_id' => $vanBanDenId,
-                        'hoan_thanh' => null
-                    ])->delete();
-
-                    if (isset($danhSachDonViPhoiHopIds[$vanBanDenId])) {
-                        DonViPhoiHop::luuDonViPhoiHop($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
-
-                        // luu vet van ban den
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
-                        $luuVetVanBanDen->save();
-                    }
-
                 }
 
                 DB::commit();
