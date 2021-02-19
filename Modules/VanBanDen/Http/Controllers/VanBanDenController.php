@@ -1008,6 +1008,19 @@ class VanBanDenController extends Controller
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
                 }
+
+                if (!empty($request->get('file_pdf'))) {
+                    foreach ($requestData['file_pdf'] as $file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
+                        $vbDenFile->duong_dan = $file;
+                        $vbDenFile->duoi_file = $this->filename_extension($file);
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+                }
             }
             UserLogs::saveUserLogs('Tạo giấy mời đến ', $vanbandv);
 
