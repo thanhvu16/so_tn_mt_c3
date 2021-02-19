@@ -64,6 +64,11 @@ class DuThaoVanBanController extends Controller
                     foreach ($truongpho as $data2) {
                         array_push($vanThuVanBanDiPiceCharts, $data2);
                     }
+
+                    $giamdoc = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
+                    foreach ($giamdoc as $data2) {
+                        array_push($vanThuVanBanDiPiceCharts, $data2);
+                    }
                     $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                     foreach ($chanvanphong as $data) {
                         array_push($vanThuVanBanDiPiceCharts, $data);
@@ -927,10 +932,12 @@ class DuThaoVanBanController extends Controller
 //                $vanbandi->don_vi_soan_thao = '';
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
             }
+            $vanbandi->type = 1;
         } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG) {
             //đây là đơn vị ký
             $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
             $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
+            $vanbandi->type = 2;
         }
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->nguoi_ky = $request->nguoiky_id;
