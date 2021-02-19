@@ -196,7 +196,7 @@ class DieuHanhVanBanDenController extends Controller
                             array_push($vanThuVanBanDiPiceCharts, $data2);
                         }
                         $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-                        $giamdoc = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                        $giamdoc = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
 
                         foreach ($chanvanphong as $data) {
                             array_push($vanThuVanBanDiPiceCharts, $data);
