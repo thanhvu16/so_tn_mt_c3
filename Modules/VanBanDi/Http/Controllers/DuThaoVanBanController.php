@@ -388,7 +388,7 @@ class DuThaoVanBanController extends Controller
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('dieu_hanh', 1)
+        $ds_DonVi_nhan = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
         $user = auth::user();
 
