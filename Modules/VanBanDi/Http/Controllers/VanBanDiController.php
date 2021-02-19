@@ -19,6 +19,7 @@ use Modules\Admin\Entities\MailNgoaiThanhPho;
 use Modules\Admin\Entities\MailTrongThanhPho;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\SoVanBan;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\LayVanBanTuEmail\Entities\EmailDonVi;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDi\Entities\Duthaovanbandi;
@@ -722,7 +723,6 @@ class VanBanDiController extends Controller
                     $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'don_vi_soan_thao' => auth::user()->don_vi_id])->first();
                 }
             }
-
             if ($vanban) {
 
                 $xoafiletrinhky = FileVanBanDi::where(['trang_thai' => 2, 'file_chinh_gui_di' => 2])->first();
@@ -754,6 +754,7 @@ class VanBanDiController extends Controller
                     // tao lanh dao du hop
                     $this->taoLanhDaoDuHop($noi_nhan->don_vi_id_nhan, $vanban);
                 }
+
 //                gửi mail đến các đơn vị ngoài
                 SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null)->delay(now()->addMinutes(5));
             }
