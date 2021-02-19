@@ -41,7 +41,10 @@ class DonViController extends Controller
                 }
             })->paginate(PER_PAGE);
         $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
-        return view('admin::Don_vi.danh_sach', compact('ds_donvi','nhom_don_vi'));
+
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->select('id', 'ten_don_vi')->get();
+
+        return view('admin::Don_vi.danh_sach', compact('ds_donvi','nhom_don_vi', 'donViCapXa'));
     }
 
     /**
@@ -60,7 +63,6 @@ class DonViController extends Controller
      */
     public function store(Request $request)
     {
-
         $donvi = new DonVi();
         $donvi->ten_don_vi = $request->ten_don_vi;
         $donvi->ten_viet_tat = $request->ten_viet_tat;
@@ -71,6 +73,9 @@ class DonViController extends Controller
         $donvi->dieu_hanh = $request->dieu_hanh;
         $donvi->nhom_don_vi = $request->nhom_don_vi;
         $donvi->cap_xa = $request->cap_xa ?? null;
+        if ($request->check_parent == 1) {
+            $donvi->parent_id = $request->get('parent_id');
+        }
         $donvi->save();
         return redirect()->route('danhsachdonvi')->with('success', 'Thêm mới thành công !');
     }
@@ -91,7 +96,9 @@ class DonViController extends Controller
     {
         $donvi = DonVi::where('id', $id)->first();
         $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
-        return view('admin::Don_vi.edit', compact('donvi','nhom_don_vi'));
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->select('id', 'ten_don_vi')->get();
+
+        return view('admin::Don_vi.edit', compact('donvi','nhom_don_vi', 'donViCapXa'));
     }
 
     /**
@@ -112,6 +119,10 @@ class DonViController extends Controller
         $donvi->dieu_hanh = $request->dieu_hanh;
         $donvi->nhom_don_vi = $request->nhom_don_vi;
         $donvi->cap_xa = $request->cap_xa ?? null;
+        $donvi->parent_id = 0;
+        if ($request->check_parent == 1) {
+            $donvi->parent_id = $request->get('parent_id');
+        }
         $donvi->save();
         return redirect()->route('danhsachdonvi')->with('success', 'Cập nhật thành công !');
     }

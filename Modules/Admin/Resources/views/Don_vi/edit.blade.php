@@ -23,7 +23,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Nhóm đơn vi</label>
+                                    <label for="exampleInputEmail2">Nhóm đơn vi</label>
                                     <select class="form-control select2" name="nhom_don_vi">
                                         @foreach($nhom_don_vi as $data)
                                             <option value="{{$data->id}}"  {{$donvi && $data->id == $donvi->nhom_don_vi ? 'selected' : ''}}>{{$data->ten_nhom_don_vi}}</option>
@@ -34,9 +34,9 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail2">Tên viết tắt</label>
+                                    <label for="exampleInputEmail3">Tên viết tắt</label>
                                     <input type="text" class="form-control" value="{{$donvi->ten_viet_tat}}"
-                                           name="ten_viet_tat" id="exampleInputEmail2"
+                                           name="ten_viet_tat" id="exampleInputEmail3"
                                            placeholder="Tên viết tắt" >
                                 </div>
                             </div>
@@ -100,9 +100,41 @@
                                     Đơn vị cấp xã/phường
                                 </label> &emsp;
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >Có phòng ban trong đơn vị</label>
+                                    <div class="form-group">
+                                        <div class="radio">&emsp;
+                                            <label>
+                                                <input type="radio" name="check_parent" id="optionsRadios3"
+                                                       value="0" {{ $donvi->parent_id == 0 ? 'checked' : null }} class="check_parent">
+                                                Không
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="check_parent" id="optionsRadios4" class="check_parent" value="1" {{ $donvi->parent_id != 0 ? 'checked' : null }} >
+                                                Có
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 parent-id {{ $donvi->parent_id != 0 ? 'show' : 'hide' }}">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Chọn đơn vị</label>
+                                    <select class="form-control select2" name="parent_id">
+                                        <option value="">Chọn đơn vị</option>
+                                        @foreach($donViCapXa as $data)
+                                            <option value="{{ $data->id }}" {{ $donvi->parent_id == $data->id ? 'selected' : null }} >{{ $data->ten_don_vi }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+
                             <div class="col-md-12 mt-2">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -111,4 +143,16 @@
             </div>
         </div>
     </section>
+@endsection
+@section('script')
+    <script type="text/javascript">
+        $('.check_parent').on('click', function () {
+            let status = $(this).val();
+            if (status == 1) {
+                $('.parent-id').removeClass('hide');
+            } else {
+                $('.parent-id').addClass('hide');
+            }
+        });
+    </script>
 @endsection

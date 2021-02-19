@@ -46,28 +46,28 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Địa chỉ</label>
-                                    <input type="text" class="form-control" name="dia_chi" id="exampleInputEmail4"
+                                    <label>Địa chỉ</label>
+                                    <input type="text" class="form-control" name="dia_chi"
                                            placeholder="Địa chỉ" >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Điện thoại</label>
-                                    <input type="text" class="form-control" name="dien_thoai" id="exampleInputEmail4"
+                                    <label >Điện thoại</label>
+                                    <input type="text" class="form-control" name="dien_thoai"
                                            placeholder="Điện thoại" >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Email</label>
-                                    <input type="text" class="form-control" name="email" id="exampleInputEmail4"
+                                    <label >Email</label>
+                                    <input type="text" class="form-control" name="email"
                                            placeholder="Email" >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Điều hành</label>
+                                    <label >Điều hành</label>
                                     <div class="form-group">
                                         <div class="radio">
                                             <label>
@@ -86,11 +86,42 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-md-3">
-                                    <label>
-                                        <input type="checkbox" name="cap_xa" value="1">
+                                <label>
+                                    <input type="checkbox" name="cap_xa" value="1">
                                         Đơn vị cấp xã/phường
-                                    </label> &emsp;
+                                </label> &emsp;
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label >Có phòng ban trong đơn vị</label>
+                                    <div class="form-group">
+                                        <div class="radio">&emsp;
+                                            <label>
+                                                <input type="radio" name="check_parent" id="optionsRadios3"
+                                                       value="0" checked="" class="check_parent">
+                                                Không
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="check_parent" id="optionsRadios4" class="check_parent" value="1">
+                                                Có
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 parent-id hide">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Chọn đơn vị</label>
+                                    <select class="form-control select2" name="parent_id">
+                                        <option value="">Chọn đơn vị</option>
+                                        @foreach($donViCapXa as $donVi)
+                                            <option value="{{ $donVi->id }}">{{ $donVi->ten_don_vi }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+
                             <div class="col-md-12 mt-2">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>

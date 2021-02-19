@@ -134,7 +134,7 @@
                                                         form="form-tham-muu">
                                                     <option value="">Chọn trưởng phòng chủ trì</option>
                                                     <option
-                                                        value="{{ $truongBan->id }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongBan->id ? 'selected' : null }}>{{ $truongBan->ho_ten }}</option>
+                                                        value="{{ $truongBan->id ?? null }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongBan->id ? 'selected' : null }}>{{ $truongBan->ho_ten ?? null }}</option>
                                                 </select>
                                             </p>
                                             <p>

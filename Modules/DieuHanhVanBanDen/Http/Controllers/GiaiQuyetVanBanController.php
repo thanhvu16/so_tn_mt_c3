@@ -144,7 +144,7 @@ class GiaiQuyetVanBanController extends Controller
                     ->whereNull('hoan_thanh')->delete();
             }
 
-            return redirect()->route('van-ban-den-hoan-thanh.cho-duyet')->with('success', 'Hoành thành văn bản chờ duyệt.');
+            return redirect()->route('van-ban-den-don-vi.index')->with('success', 'Hoành thành văn bản chờ duyệt.');
         }
 
         return redirect()->back('warning', 'Không tìm thấy dữ liêu');

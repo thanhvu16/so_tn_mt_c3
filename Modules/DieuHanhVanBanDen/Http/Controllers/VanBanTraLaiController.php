@@ -79,7 +79,6 @@ class VanBanTraLaiController extends Controller
             ->where('trang_thai', ACTIVE)
             ->select('id', 'ho_ten')
             ->first();
-
         try {
             DB::beginTransaction();
             if ($vanBanDen) {
@@ -170,7 +169,7 @@ class VanBanTraLaiController extends Controller
 
                             // neu can bo chuyen la chu tich => active van ban chu tich xa nhan
                             $chuTichXa = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
-                                ->where('don_vi_id', $currentUser->don_vi_id)
+                                ->where('don_vi_id', $currentUser->donVi->parent_id)
                                 ->select('id', 'ho_ten')
                                 ->first();
                             if ($chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {

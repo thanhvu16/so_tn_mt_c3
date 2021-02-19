@@ -106,19 +106,13 @@ class VanBanDenPhoiHopController extends Controller
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild(VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP) ?? null;
-                if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+
+                if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
                     $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
                     $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
-                    $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$truongPhong->id]);
-                    $vanBanDen->phoChuTich = $vanBanDen->donViPhoiHopVanBan($danhSachPhoChuTich->pluck('id')->toArray());
-
-                } else {
-                    if ($currentUser->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])) {
-                        $vanBanDen->phoPhong = $vanBanDen->donViPhoiHopVanBan($danhSachPhoPhong->pluck('id')->toArray());
-                        $vanBanDen->chuyenVien = $vanBanDen->donViPhoiHopVanBan($danhSachChuyenVien->pluck('id')->toArray());
-                        $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$currentUser->id]);
-                    }
+                    $vanBanDen->truongPhong = $vanBanDen->donViPhoiHopVanBan([$currentUser->id]);
                 }
+
             }
         }
 
@@ -132,6 +126,7 @@ class VanBanDenPhoiHopController extends Controller
         }
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+
             return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.index', compact('danhSachVanBanDen',
                 'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
                 'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan'));

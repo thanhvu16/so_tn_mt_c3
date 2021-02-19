@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
@@ -144,12 +145,27 @@ class VanBanDen extends Model
     public function checkDonViChuTri()
     {
         return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')
+            ->whereNull('parent_don_vi_id')
+            ->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung', 'parent_don_vi_id');
+    }
+
+    public function donViCapXaChuTri()
+    {
+        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')
+            ->where('parent_don_vi_id', auth::user()->don_vi_id)
             ->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung');
     }
 
     public function checkDonViPhoiHop()
     {
-        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id');
+        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id')
+            ->whereNull('parent_don_vi_id');
+    }
+
+    public function DonViCapXaPhoiHop()
+    {
+        return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id')
+            ->where('parent_don_vi_id', auth::user()->don_vi_id);
     }
 
     public function vanBanTraLai()
@@ -197,11 +213,19 @@ class VanBanDen extends Model
 
     public function getGiaHanLanhDao()
     {
-        return DonViChuTri::where('van_ban_den_id', $this->id)
-            ->where('don_vi_id', auth::user()->don_vi_id)
-            ->where('can_bo_chuyen_id', auth::user()->id)
-            ->select(['han_xu_ly_moi'])
-            ->first();
+        if (auth::user()->donVi->cap_xa == DonVi::CAP_XA && auth::user()->hasRole(PHO_CHUC_TICH)) {
+            return DonViChuTri::where('van_ban_den_id', $this->id)
+                ->where('parent_don_vi_id', auth::user()->don_vi_id)
+                ->where('can_bo_chuyen_id', auth::user()->id)
+                ->select(['han_xu_ly_moi'])
+                ->first();
+        } else {
+            return DonViChuTri::where('van_ban_den_id', $this->id)
+                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->where('can_bo_chuyen_id', auth::user()->id)
+                ->select(['han_xu_ly_moi'])
+                ->first();
+        }
     }
 
     public function getGiaHanXuLy()
@@ -232,6 +256,24 @@ class VanBanDen extends Model
             ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
                     return $query->where('don_vi_id', $donViId);
+                }
+            })
+            ->where(function ($query) use ($canBoNhanId) {
+                if (!empty($canBoNhanId)) {
+                    return $query->whereIn('can_bo_nhan_id', $canBoNhanId);
+                }
+            })
+            ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'created_at'])
+            ->first();
+    }
+
+    public function getCanBoPhongBanXuLy($canBoNhanId = null, $donViId)
+    {
+
+        return DonViChuTri::where('van_ban_den_id', $this->id)
+            ->where(function ($query) use ($donViId) {
+                if (!empty($donViId)) {
+                    return $query->where('parent_don_vi_id', $donViId);
                 }
             })
             ->where(function ($query) use ($canBoNhanId) {
@@ -461,6 +503,27 @@ class VanBanDen extends Model
             ->whereNotNull('don_vi_du_hop')
             ->select('id', 'lanh_dao_id', 'object_id')
             ->first();
+    }
+
+    public function checkLichCongTacDonViCapXa()
+    {
+
+        $lichCongTac =  LichCongTac::where('object_id', $this->id)
+            ->whereNull('type')
+            ->whereNotNull('don_vi_du_hop')
+            ->select('id', 'lanh_dao_id', 'object_id', 'don_vi_du_hop', 'parent_don_vi_id')
+            ->first();
+
+        if ($lichCongTac) {
+            $donVi = DonVi::where('id', $lichCongTac->don_vi_du_hop)->first();
+
+            if (!empty($donVi->parent_id) && $donVi->parent_id == auth::user()->don_vi_id) {
+
+                return true;
+            }
+
+            return false;
+        }
     }
 
     // lay van ban den don vi

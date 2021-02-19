@@ -63,7 +63,7 @@
                                 <th width="5%" class="text-center">STT</th>
                                 <th width="" class="text-center">Tên đơn vị</th>
                                 <th width="18%" class="text-center">Nhóm đơn vị</th>
-                                <th width="10%" class="text-center">Tên viết tắt</th>
+                                <th width="10%" class="text-center">Đơn vị chủ quản</th>
                                 <th width="10%" class="text-center">Mã hành chính</th>
                                 <th width="10%" class="text-center">Địa chỉ</th>
                                 <th width="10%" class="text-center">Điện thoại</th>
@@ -77,7 +77,7 @@
                                     <td class="text-center" style="vertical-align: middle">{{$key+1}}</td>
                                     <td class="text-left" style="vertical-align: middle">{{$donvi->ten_don_vi}}</td>
                                     <td class="text-left" style="vertical-align: middle">{{$donvi->nhomDonVi->ten_nhom_don_vi ?? ''}}</td>
-                                    <td class="text-center" style="vertical-align: middle">{{$donvi->ten_viet_tat}}</td>
+                                    <td class="text-center" style="vertical-align: middle">{{ $donvi->getParent->ten_don_vi ?? null }}</td>
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$donvi->ma_hanh_chinh}}</td>
                                     <td class="text-center" style="vertical-align: middle">{{$donvi->dia_chi}}</td>
@@ -125,5 +125,16 @@
             </div>
         </div>
     </section>
-
+@endsection
+@section('script')
+    <script type="text/javascript">
+        $('.check_parent').on('click', function () {
+            let status = $(this).val();
+            if (status == 1) {
+                $('.parent-id').removeClass('hide');
+            } else {
+                $('.parent-id').addClass('hide');
+            }
+        });
+    </script>
 @endsection

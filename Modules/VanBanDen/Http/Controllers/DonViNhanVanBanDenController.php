@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
@@ -156,6 +157,16 @@ class DonViNhanVanBanDenController extends Controller
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
         $txtFiles = !empty($requestData['txt_file']) ? $requestData['txt_file'] : null;
         $idvanbanden = [];
+
+        $type = $request->get('type') ?? null;
+        $layvanbandi = DonViChuTri::where('id', $request->id_van_ban_di)->first();
+        // don vi phoi hop
+        if (!empty($type) && $type == 'phoi_hop') {
+            $layvanbandi = DonViChuTri::where('id', $request->id_van_ban_di)->first();
+        }
+
+        $donVi = auth::user()->donVi;
+
         try {
             DB::beginTransaction();
             $sokyhieu = $request->vb_so_ky_hieu;
@@ -292,6 +303,9 @@ class DonViNhanVanBanDenController extends Controller
                         $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                         $vanbandv->chuc_vu = $chucvu;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                        $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
+                        $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
+
                         $vanbandv->save();
                         array_push($idvanbanden, $vanbandv->id);
 
@@ -320,11 +334,18 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->dia_diem_phu = $diadiemchinh;
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
 //                    $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
+                    $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
 
                 }
-                $layvanbandi = DonViChuTri::where('id', $request->id_van_ban_di)->first();
+
+                // gui chu tich xa nhan van ban
+                if ($donVi->cap_xa == DonVi::CAP_XA) {
+                    $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id);
+                }
+
                 if ($layvanbandi != null) {
                     //update
                     $layvanbandi->vao_so_van_ban = 1;
@@ -943,6 +964,11 @@ class DonViNhanVanBanDenController extends Controller
             $layvanbandi->save();
         }
 
+        // gui chu tich xa nhan van ban
+        if (auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
+            $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id);
+        }
+
 
         return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }
@@ -966,5 +992,14 @@ class DonViNhanVanBanDenController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function updateTrinhTuNhanVanBan($vanBanDenId)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        if ($vanBanDen) {
+            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+            $vanBanDen->save();
+        }
     }
 }
