@@ -25,7 +25,7 @@
                                 <input type="text" name="so_ky_hieu"
                                        value=""
                                        required autofocus
-                                       class="form-control file_insert"
+                                       class="form-control file_insert tenfile"
                                        id="sokyhieu"
                                        placeholder="Số ký hiệu">
                             </div>
@@ -234,7 +234,7 @@
                                 <div class="row increment ">
                                     <div class="col-md-3 ">
                                         <label for="sokyhieu" class="col-form-label">Tên tệp tin</label>
-                                        <input class="form-control " value="" name="txt_file[]" type="text">
+                                        <input class="form-control ten-tep-tin" value="" name="txt_file[]" type="text">
                                     </div>
                                     <div class="col-md-3 ">
                                         <label for="url-file" class="col-form-label">Chọn tệp</label>

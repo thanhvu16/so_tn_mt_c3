@@ -640,19 +640,21 @@ class GiayMoiDenController extends Controller
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 $soDenvb = VanBanDen::where([
                     'don_vi_id' => $user->don_vi_id,
-                    'so_van_ban_id' => $request->so_van_ban,
+                    'so_van_ban_id' => $request->so_van_ban_id,
                     'type' => 1
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $soDenvb = VanBanDen::where([
                     'don_vi_id' => $user->don_vi_id,
-                    'so_van_ban_id' => $request->so_van_ban,
+                    'so_van_ban_id' => $request->so_van_ban_id,
                     'type' => 2
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
             }
             $soDenvb = $soDenvb + 1;
             $vanbandv->so_den = $soDenvb;
         }
+
+
 
         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
 

@@ -699,7 +699,7 @@
                                                         <ul class="nav nav-pills nav-stacked">
                                                             <li class=""><a href="javascript:void(0);">Bắt đầu: {{ date('d/m/Y', strtotime($lich_cong_tac->ngay)) }} - {{ date('H:i', strtotime($lich_cong_tac->gio)) }}</a></li>
                                                             <li class=""><a href="javascript:void(0);">Kết thúc: </a></li>
-                                                            <li class=""><a href="javascript:void(0);">Người chủ trì: Đ/c {{$lich_cong_tac->lanhDao->ho_ten ?? ''}}</a></li>
+                                                            <li class=""><a href="javascript:void(0);">Người chủ trì: Đ/c {{$lich_cong_tac->vanBanDen->nguoi_ky ?? ''}}</a></li>
                                                             <li class=""><a href="javascript:void(0);">Đơn vị chuẩn bị:
                                                                 {{$lich_cong_tac->lanhDao->donVi->ten_don_vi ?? ''}}
                                                                     <!-- 1 -->

@@ -19,7 +19,9 @@ use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
+use Modules\LichCongTac\Entities\FileCuocHop;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
+use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 
 class PhanLoaiVanBanController extends Controller
@@ -89,6 +91,7 @@ class PhanLoaiVanBanController extends Controller
 
         $data = $request->all();
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
+
         $arrChuTich = $data['chu_tich_id'] ?? null;
         $arrPhoChuTich = $data['pho_chu_tich_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
@@ -111,7 +114,6 @@ class PhanLoaiVanBanController extends Controller
                 DB::beginTransaction();
 
                 foreach ($vanBanDenIds as $vanBanDenId) {
-
                     $checkLogXuLyVanBanDen = LogXuLyVanBanDen::where([
                         'van_ban_den_id' => $vanBanDenId,
                         'can_bo_chuyen_id' => $currentUser->id
@@ -173,7 +175,6 @@ class PhanLoaiVanBanController extends Controller
                             LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
                         }
                     }
-
                     //chu tich
                     if (!empty($arrChuTich[$vanBanDenId])) {
                         $quyenGiaHan = 1;

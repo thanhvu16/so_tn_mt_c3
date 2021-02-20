@@ -52,7 +52,7 @@
                                                     <option value="">Chọn sổ văn bản</option>
                                                     @foreach ($ds_soVanBan as $soVanBan)
                                                         <option
-                                                            value="{{ $soVanBan->ma_id }}" {{ Request::get('so_van_ban_id') == $soVanBan->id ? 'selected' : '' }}>{{ $soVanBan->ten_so_van_ban }}</option>
+                                                            value="{{ $soVanBan->id }}" {{ Request::get('so_van_ban_id') == $soVanBan->id ? 'selected' : '' }}>{{ $soVanBan->ten_so_van_ban }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

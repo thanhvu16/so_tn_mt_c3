@@ -17,12 +17,13 @@
                             <tr>
                                 <th style="width: 2%; vertical-align: middle;" class="text-center">STT</th>
                                 <th width="25%" class="text-center">Thông tin</th>
+                                <th width="15%" class="text-center">Sổ văn bản</th>
                                 <th  class="text-center">Trích yếu</th>
                                 <th width="20%" class="text-center">Nơi nhận
                                 </th>
-                                <th width="12%" class="text-center">Tác vụ
+                                <th width="5%" class="text-center">Tác vụ
                                 </th>
-                                <th width="5%" class="text-center">Duyệt
+                                <th width="12%" class="text-center">Duyệt
                                 </th>
                             </tr>
                             </thead>
@@ -45,6 +46,16 @@
                                                        class="hidden van-ban-di-{{$data->id}}" name="van_ban_di_id">
                                             </p>
                                         </td>
+                                            <td style="">
+                                                <select class="form-control show-tick dropdown-search" name="sovanban_id"
+                                                        required>
+                                                    <option value="">-- Chọn sổ văn bản --</option>
+                                                    @foreach ($ds_soVanBan as $sovb)
+                                                        <option value="{{$sovb->id}}"
+                                                            {{ isset($vanbanduthao) && $vanbanduthao->so_van_ban_id == $sovb->id ? 'selected' : '' }}>{{$sovb->ten_so_van_ban}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
                                         <td>
                                             <a href="">{{$data->trich_yeu ?? ''}}</a><br>
                                             <span
@@ -88,29 +99,9 @@
 {{--                                            </p>--}}
                                         </td>
                                             <td class="text-center">
-                                                <button type="submit" form="choso"
-                                                        class="btn btn-primary btn-sm"><i
-                                                        class="fa  fa-check-square-o"></i></button>
-                                                @if (isset($data->filetrinhky))
 
-                                                    @foreach($data->filetrinhky as $key => $filedata)
-                                                        @if ($filedata->trang_thai ==2)
-                                                            <br>
-                                                            <button type="button"
-                                                                    onclick="exc_sign_issued('{{ $filedata->getUrlFile() }}',100,'{{ date('d-m-Y') }}',{{$data->id}});"
-                                                                    value="{{ $data->id }}"
-                                                                    type="button" class="btn btn-primary mt-2 "><i
-                                                                    class="fa fa-pencil-square-o"
-                                                                    aria-hidden="true"></i> Đóng dấu
-                                                                phát hành
-                                                            </button>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </td>
-                                        </form>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            @hasanyrole('văn thư đơn vị|văn thư huyện')
+
+                                                @hasanyrole('văn thư đơn vị|văn thư huyện')
                                                 <form method="Get" action="{{route('vanbandidelete',$data->id)}}">
                                                     @csrf
                                                     <a href="{{route('van-ban-di.edit',$data->id)}}"
@@ -127,7 +118,29 @@
                                                     <input type="text" class="hidden" value="{{$data->id}}" name="id_vb">
                                                 </form>
 
-                                            @endrole
+                                                @endrole
+                                            </td>
+                                        </form>
+                                        <td class="text-center" style="vertical-align: middle">
+                                            <button type="submit" form="choso"
+                                                    class="btn btn-primary btn-sm"><i
+                                                    class="fa  fa-check-square-o"></i></button>
+                                            @if (isset($data->filetrinhky))
+
+                                                @foreach($data->filetrinhky as $key => $filedata)
+                                                    @if ($filedata->trang_thai ==2)
+                                                        <br>
+                                                        <button type="button"
+                                                                onclick="exc_sign_issued('{{ $filedata->getUrlFile() }}',100,'{{ date('d-m-Y') }}',{{$data->id}});"
+                                                                value="{{ $data->id }}"
+                                                                type="button" class="btn btn-primary mt-2 "><i
+                                                                class="fa fa-pencil-square-o"
+                                                                aria-hidden="true"></i> Đóng dấu
+                                                            phát hành
+                                                        </button>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </td>
 
                                     </tr>

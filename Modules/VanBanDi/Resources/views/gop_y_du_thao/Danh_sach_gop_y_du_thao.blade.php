@@ -207,21 +207,21 @@
                                         </td>
                                         <td>
                                             <div class="col-md-12">
-                                                @if($nguoinhan == null)
-                                                @else
-                                                    <div style="margin: 5px 0px">
-                                                        <select name="can_bo_chuyen_xuong"
-                                                                class="form-control dropdown-search" id="">
-                                                            <option value="">--Chọn cán bộ góp ý--
-                                                            </option>
-                                                            @forelse($nguoinhan as $data2)
-                                                                <option value="{{$data2->id}}">{{$data2->ho_ten}}
-                                                                </option>
-                                                            @empty
-                                                            @endforelse
-                                                        </select>
-                                                    </div>
-                                                @endif
+{{--                                                @if($nguoinhan == null)--}}
+{{--                                                @else--}}
+{{--                                                    <div style="margin: 5px 0px">--}}
+{{--                                                        <select name="can_bo_chuyen_xuong"--}}
+{{--                                                                class="form-control dropdown-search" id="">--}}
+{{--                                                            <option value="">--Chọn cán bộ góp ý----}}
+{{--                                                            </option>--}}
+{{--                                                            @forelse($nguoinhan as $data2)--}}
+{{--                                                                <option value="{{$data2->id}}">{{$data2->ho_ten}}--}}
+{{--                                                                </option>--}}
+{{--                                                            @empty--}}
+{{--                                                            @endforelse--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                @endif--}}
                                                 <textarea rows="2"
                                                           class="form-control"
                                                           required

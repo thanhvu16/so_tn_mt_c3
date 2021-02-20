@@ -200,7 +200,7 @@
                                 <div class="row increment ">
                                     <div class="col-md-3 ">
                                         <label for="sokyhieu" class="col-form-label">Tên tệp tin</label>
-                                        <input class="form-control " value="" name="txt_file[]" type="text">
+                                        <input class="form-control " value="{{ old('vb_so_ky_hieu', isset($vanban) ? $vanban->so_ky_hieu : '') }}" name="txt_file[]" type="text">
                                     </div>
                                     <div class="col-md-3 ">
                                         <label for="url-file" class="col-form-label">Chọn tệp</label>

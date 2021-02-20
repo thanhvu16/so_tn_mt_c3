@@ -406,7 +406,7 @@ class VanBanDenController extends Controller
             }
             DB::commit();
 
-            return redirect()->route('van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+            return redirect()->back()->with('success', 'Thêm văn bản thành công !!');
 
         } catch (\Exception $e) {
             DB::rollback();

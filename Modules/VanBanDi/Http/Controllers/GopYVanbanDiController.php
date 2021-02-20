@@ -29,20 +29,20 @@ class GopYVanbanDiController extends Controller
         $key2 = count($canbogopy);
         $canbogopyngoai = CanBoPhongDuThaoKhac::where(['can_bo_id' => auth::user()->id, 'trang_thai' => 1])->get();
         $key1 = count($canbogopyngoai);
-        $nguoinhan = null;
-        switch (auth::user()->roles->pluck('name')[0]) {
-
-            case PHO_PHONG:
-                $nguoinhan = User::role([ CHUYEN_VIEN])->where('don_vi_id',auth::user()->don_vi_id)->get();
-                break;
-            case TRUONG_PHONG:
-                $nguoinhan = User::role([ PHO_PHONG])->get();
-                break;
-            case CHU_TICH:
-                $nguoinhan = User::role([PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
-                break;
-        }
-        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','nguoinhan','key2','key1'));
+//        $nguoinhan = null;
+//        switch (auth::user()->roles->pluck('name')[0]) {
+//
+//            case PHO_PHONG:
+//                $nguoinhan = User::role([ CHUYEN_VIEN])->where('don_vi_id',auth::user()->don_vi_id)->get();
+//                break;
+//            case TRUONG_PHONG:
+//                $nguoinhan = User::role([ PHO_PHONG])->get();
+//                break;
+//            case CHU_TICH:
+//                $nguoinhan = User::role([PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+//                break;
+//        }
+        return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','key2','key1'));
     }
     public function danhsachgopyxong()
     {

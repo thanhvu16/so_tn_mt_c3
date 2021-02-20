@@ -26,17 +26,9 @@
                                 </select>
                                 <input type="text" class="hidden" name="id_duthao" value="{{$id_duthao}}">
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span style="color: red">*</span></label>
-                                <select class="form-control show-tick dropdown-search" name="sovanban_id"
-                                        required>
-                                    <option value="">-- Chọn sổ văn bản --</option>
-                                    @foreach ($ds_soVanBan as $sovb)
-                                        <option value="{{$sovb->id}}"
-                                            {{ isset($vanbanduthao) && $vanbanduthao->so_van_ban_id == $sovb->id ? 'selected' : '' }}>{{$sovb->ten_so_van_ban}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+
+
+
                             @if($nguoinhan != null)
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Người nhận <span style="color: red">*</span></label>
@@ -98,6 +90,28 @@
                                        id="chuc_vu" name="chuc_vu"  class="form-control"
                                        placeholder="chức vụ..." required>
                             </div>
+
+                            <div class=" col-md-3" >
+                                <label for="loai_van_ban_id" class="col-form-label">Độ khẩn</label>
+                                <select class="form-control show-tick dropdown-search" name="dokhan_id"
+                                        required>--}}
+                                    @foreach ($ds_doKhanCap as $doKhanCap)
+                                        <option value="{{ $doKhanCap->id }}"
+                                            {{ isset($vanbanduthao) && $vanbanduthao->dokhan_id == $doKhanCap->id ? 'selected' : '' }}>{{ $doKhanCap->ten_muc_do}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3" >
+                                <label for="do_mat_id" class="col-form-label">Độ mật</label>
+                                <select class="form-control show-tick dropdown-search" name="dobaomat_id"
+                                        required>--}}
+                                    @foreach ($ds_mucBaoMat as $doBaoMat)
+                                        <option
+                                            value="{{ $doBaoMat->id }}" {{ $doBaoMat->macDinh ? 'selected' : ''  }}
+                                            {{ isset($vanbanduthao) && $vanbanduthao->dobaomat_id == $doBaoMat->id ? 'selected' : '' }}>{{ $doBaoMat->ten_muc_do}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="form-group col-md-12" >
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
                                 <textarea rows="3"  name="vb_trichyeu" class="form-control no-resize"
@@ -145,35 +159,9 @@
                             </div>
                             <div class="row clearfix"></div>
 
-                            <div class=" col-md-3" >
-                                <label for="loai_van_ban_id" class="col-form-label">Độ khẩn</label>
-                                <select class="form-control show-tick dropdown-search" name="dokhan_id"
-                                        required>--}}
-                                    @foreach ($ds_doKhanCap as $doKhanCap)
-                                        <option value="{{ $doKhanCap->id }}"
-                                            {{ isset($vanbanduthao) && $vanbanduthao->dokhan_id == $doKhanCap->id ? 'selected' : '' }}>{{ $doKhanCap->ten_muc_do}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3" >
-                                <label for="do_mat_id" class="col-form-label">Độ mật</label>
-                                <select class="form-control show-tick dropdown-search" name="dobaomat_id"
-                                        required>--}}
-                                    @foreach ($ds_mucBaoMat as $doBaoMat)
-                                        <option
-                                            value="{{ $doBaoMat->id }}" {{ $doBaoMat->macDinh ? 'selected' : ''  }}
-                                            {{ isset($vanbanduthao) && $vanbanduthao->dobaomat_id == $doBaoMat->id ? 'selected' : '' }}>{{ $doBaoMat->ten_muc_do}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Ngày ban hành</label>
-                                <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh"
-                                       class="form-control" style="font-size:16px;width: 100%"
-                                       value="{{$date}}"
-                                       autocomplete="off" required>
-                            </div>
+
+{{--                 --}}
 
                             <div class="col-md-12">
                                 <span style="color: red">*</span> <span style="color: black;font-style: italic;">Danh sách file đã upload:&ensp; </span>
@@ -187,7 +175,9 @@
                                             [file trình ký]&ensp;
                                         @elseif($data->stt == 3)
                                             [file hồ sơ]&ensp;
+
                                             @endif
+
                                             &ensp;
                                     </a>
                                     <a href="{{route('delete_file_duthao',$data->id)}}" class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" style="color: red"><i class="fa fa-trash"></i></a> &ensp; &ensp;@if(count($file) == $key+1) @else &nbsp;|&nbsp; @endif&ensp; &ensp;
@@ -195,19 +185,26 @@
                                     @endforeach<span style="font-style: italic">(Chú ý: Nếu không chọn file thì file cuối cùng sẽ là file văn bản đi)</span>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 mt-4">
                                 <div class="row duthaovb">
                                     <div class="col-md-3 form-group">
                                         <label for="sokyhieu" class="col-form-label">File trình ký</label>
-                                        <div class="form-line input-group control-group">
+                                        <div class="">
                                             <input type="file" id="url-file" name="file_trinh_ky[]" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-3 form-group">
                                         <label for="url-file" class="col-form-label">File phiếu trình</label>
-                                        <div class="form-line input-group control-group">
+                                        <div class="">
                                             <input type="file" id="url-file" name="file_phieu_trinh[]" class="form-control">
                                         </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="sokyhieu" class="col-form-label">Ngày ban hành</label>
+                                        <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh"
+                                               class="form-control" style="font-size:16px;width: 100%"
+                                               value="{{$date}}"
+                                               autocomplete="off" required>
                                     </div>
 
 
@@ -224,15 +221,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 text-left mt-4">
-                                        <button type="submit"  class="btn btn-primary"><i
-                                                class="fa fa-plus mr-1"></i>
-                                            <span>{{ isset($vanbandi) ? 'Cập nhật' : 'Thêm mới' }}</span>
-                                        </button>
-                                    </div>
+
+
                                 </div>
 
 
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <button type="submit"  class="btn btn-primary"><i
+                                        class="fa fa-plus mr-1"></i>
+                                    <span>{{ isset($vanbandi) ? 'Cập nhật' : 'Thêm mới' }}</span>
+                                </button>
                             </div>
 
                             <div

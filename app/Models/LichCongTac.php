@@ -10,6 +10,7 @@ use Modules\LichCongTac\Entities\DanhGiaGopY;
 use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 use Modules\LichCongTac\Entities\FileCuocHop;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
+use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
@@ -120,6 +121,7 @@ class LichCongTac extends Model
 
     public static function taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
     {
+//        dd(1);
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
         $currentUser = auth::user();
         $lanhDaoId = $lanhDaoDuHopId;
@@ -180,6 +182,17 @@ class LichCongTac extends Model
         }
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+
+        //thêm file giấy mời vào quản lý cuộc họp$vanBanDenId
+        $fileVanBanDen = FileVanBanDen::where('vb_den_id',$vanBanDenId)->first();
+        $filecuochop = new FileCuocHop();
+        $filecuochop->ten_file = $fileVanBanDen->ten_file;
+        $filecuochop->duong_dan = $fileVanBanDen->duong_dan;
+        $filecuochop->duoi_file = $fileVanBanDen->duoi_file;
+        $filecuochop->lich_hop_id = $lichCongTac->id;
+        $filecuochop->nguoi_tao = $fileVanBanDen->nguoi_dung_id;
+        $filecuochop->trang_thai = 1;
+        $filecuochop->save();
     }
 
     public function listThanhPhanDuHop()
