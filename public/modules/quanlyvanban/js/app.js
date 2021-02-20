@@ -142,6 +142,13 @@ $('.check-so-den-vb').on('change', function () {
         });
 
 });
+
+$('.tenfile').on('change', function () {
+   let sokyhieu = $('[name=so_ky_hieu]').val()
+    console.log(sokyhieu);
+    $('.ten-tep-tin').val(sokyhieu);
+
+});
 function duthaovanban() {
     let htmlForm = `<div class="remove-multi-file col-md-12">
                          <div class="row">

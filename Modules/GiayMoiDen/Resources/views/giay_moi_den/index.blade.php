@@ -268,12 +268,10 @@
                     <div class="modal fade" id="myModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="{{ route('multiple_file_di') }}" method="POST"
-                                      enctype="multipart/form-data">
+                                <form action="{{ route('multiple_file') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                         </button>
                                         <h4 class="modal-title"><i
                                                 class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
@@ -281,21 +279,19 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="form-group col-md-12">
-                                                <label for="sokyhieu" class="col-form-label">Chọn tệp tin
-                                                    <br>
-                                                    <small><i>(Đặt tên file theo định dạng: tên viết tắt
-                                                            loại văn bản + số đi + năm (vd:
+                                                <label for="sokyhieu" class="">Chọn tệp
+                                                    tin<br><small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                            sổ văn bản + số đến + năm (vd:
                                                             QD-1-2020.pdf))</i></small>
-                                                </label><br>
+                                                </label>
+
                                                 <input type="file" multiple name="ten_file[]"
                                                        accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
-                                                <input type="text" id="url-file" value="123" class="hidden"
-                                                       name="txt_file[]">
+                                                <input type="text" id="url-file" value="123"
+                                                       class="hidden" name="txt_file[]">
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải
-                                                    lên
-                                                </button>
+                                            <div class="form-group col-md-4" >
+                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
                                             </div>
                                         </div>
                                     </div>

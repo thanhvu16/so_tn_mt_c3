@@ -37,7 +37,7 @@
                             <tbody>
 
                             @forelse($van_ban_di_tra_lai as $key=>$vanban)
-                                <form action="{{route('duyetvbditoken')}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{route('duyetvbditoken')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <tr class="duyet-gia-han">
                                         <td
