@@ -69,6 +69,10 @@ class LoaiVanBanController extends Controller
         $loaivanban = new LoaiVanBan();
         $loaivanban->ten_loai_van_ban = $request->ten_loai_van_ban;
         $loaivanban->ten_viet_tat = $request->ten_viet_tat;
+        $loaivanban->nam_truoc_skh = $request->nam_truoc_skh;
+        $loaivanban->ma_van_ban = $request->ma_van_ban;
+        $loaivanban->ma_phong_ban = $request->ma_phong_ban;
+        $loaivanban->ma_don_vi = $request->ma_don_vi;
         $loaivanban->loai_van_ban = $request->loai_so;
         if($request->loai_so == 4)
         {
@@ -115,6 +119,10 @@ class LoaiVanBanController extends Controller
         $loaivanban->ten_loai_van_ban = $request->ten_loai_van_ban;
         $loaivanban->ten_viet_tat = $request->ten_viet_tat;
         $loaivanban->loai_van_ban = $request->loai_van_ban;
+        $loaivanban->nam_truoc_skh = $request->nam_truoc_skh;
+        $loaivanban->ma_van_ban = $request->ma_van_ban;
+        $loaivanban->ma_phong_ban = $request->ma_phong_ban;
+        $loaivanban->ma_don_vi = $request->ma_don_vi;
         if($request->loai_van_ban == 4)
         {
             $loaivanban->loai_don_vi = $request->don_vi;

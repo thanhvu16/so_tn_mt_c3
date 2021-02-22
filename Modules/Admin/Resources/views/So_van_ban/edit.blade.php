@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Cập nhật đơn vị</h3>
+                        <h3 class="box-title">Cập nhật sổ văn bản</h3>
                     </div>
                     <form action="{{route('so-van-ban.update',$sovanban->id)}}" method="post" enctype="multipart/form-data"
                           id="myform">

@@ -58,6 +58,43 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="row clearfix"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Năm trước SKH</label>
+                                    <select name="nam_truoc_skh" class="form-control" required>
+                                        <option value="1" {{ isset($loaivanban) && $loaivanban->nam_truoc_skh == 1 ? 'selected' : '' }}>Có</option>
+                                        <option value="2" {{ isset($loaivanban) && $loaivanban->nam_truoc_skh == 2 ? 'selected' : '' }}>Không</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Mã VB trong SKH</label>
+                                    <select name="ma_van_ban" class="form-control" required>
+                                        <option value="1" {{ isset($loaivanban) && $loaivanban->ma_van_ban == 1 ? 'selected' : '' }}>Có</option>
+                                        <option value="2" {{ isset($loaivanban) && $loaivanban->ma_van_ban == 2 ? 'selected' : '' }}>Không</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Mã PB trong SKH</label>
+                                    <select name="ma_phong_ban" class="form-control" required>
+                                        <option value="1" {{ isset($loaivanban) && $loaivanban->ma_phong_ban == 1 ? 'selected' : '' }}>Có</option>
+                                        <option value="2" {{ isset($loaivanban) && $loaivanban->ma_phong_ban == 2 ? 'selected' : '' }}>Không</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Mã ĐV trong SKH</label>
+                                    <select name="ma_don_vi" class="form-control" required>
+                                        <option value="1" {{ isset($loaivanban) && $loaivanban->ma_don_vi == 1 ? 'selected' : '' }}>Có</option>
+                                        <option value="2" {{ isset($loaivanban) && $loaivanban->ma_don_vi == 2 ? 'selected' : '' }}>Không</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>
