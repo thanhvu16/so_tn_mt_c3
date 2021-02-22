@@ -1120,17 +1120,41 @@ class VanBanDiController extends Controller
 
     public function Capsovanbandi(Request $request)
     {
-//        dd($request->all());
+
         $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
         $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
         $vanbandiduyet->cho_cap_so = 3;
-        $vanbandiduyet->save();
+//        $vanbandiduyet->save();
         $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
+        $loaiVanBan = LoaiVanBan::where('id',$vanbandi->loai_van_ban_id)->first();
+        $user = auth::user();
+        $ma_don_vi_ht = $user->donVi->ten_viet_tat ?? '';
+        $nam_truoc_skh = null;
+        $ma_van_ban = null;
+        $ma_phong_ban = null;
+        $ma_don_vi = null;
+        if($loaiVanBan->nam_truoc_skh == 1)
+        {
+            $nam_truoc_skh = $nam_sodi;
+            $nam_truoc_skh = "$nam_truoc_skh/";
+        }
+        if($loaiVanBan->ma_van_ban == 1)
+        {
+            $ma_van_ban = $loaiVanBan->ten_viet_tat;
+            $ma_van_ban="/$ma_van_ban";
+        }
+        if($loaiVanBan->ma_phong_ban == 1)
+        {
+            $ma_phong_ban = null;
+        }
+        if($loaiVanBan->ma_don_vi == 1)
+        {
+            $ma_don_vi = $ma_don_vi_ht;
+            $ma_don_vi = "/$ma_don_vi";
+        }
 
         $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
         $vanbandi->cho_cap_so = 3;
-
-
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDi = VanBanDi::where([
                 'loai_van_ban_id' => $vanbandi->loai_van_ban_id,
@@ -1145,11 +1169,15 @@ class VanBanDiController extends Controller
             ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
         }
-
         $soDi = $soDi + 1;
+        $soKyHieu = "$nam_truoc_skh$soDi$ma_phong_ban$ma_van_ban$ma_don_vi";
         $vanbandi->so_di = $soDi;
+        $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->save();
+
+
+
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
         return redirect()->back()->with(['capso' => "$soDi"]);
 //        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id)->delay(now()->addMinutes(5));

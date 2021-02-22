@@ -75,13 +75,17 @@
                         <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
-                                <th width="5%" class="text-center">STT</th>
-                                <th width="" class="text-center">Tên sổ đơn vị</th>
-                                <th width="10%" class="text-center">Tên viết tắt</th>
-                                <th width="10%" class="text-center">Mô tả</th>
-                                <th width="20%" class="text-center">Loại áp dụng</th>
-                                <th width="10%" class="text-center">Đơn vị riêng</th>
-                                <th width="10%" class="text-center">Tác Vụ</th>
+                                <th width="5%" style="vertical-align: middle" class="text-center">STT</th>
+                                <th width="" style="vertical-align: middle" class="text-center">Tên loại văn bản</th>
+                                <th width="10%" style="vertical-align: middle" class="text-center">Tên viết tắt</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Loại áp dụng</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Năm trước SKH</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Mã VB trong SKH</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Mã PB trong SKH</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Mã ĐV trong SKH</th>
+                                <th width="8%" style="vertical-align: middle" class="text-center">Mô tả</th>
+                                <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị riêng</th>
+                                <th width="7%" style="vertical-align: middle" class="text-center">Tác Vụ</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -92,12 +96,21 @@
                                         style="vertical-align: middle">{{$loaivanban->ten_loai_van_ban}}</td>
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$loaivanban->ten_viet_tat}}</td>
-                                    <td class="text-center" style="vertical-align: middle">{{$loaivanban->mo_ta}}</td>
                                     <td class="text-center"
                                         style="vertical-align: middle">@if($loaivanban->loai_van_ban == 3)Dùng
                                         chung @elseif($loaivanban->loai_van_ban ==2) Văn bản
                                         đi @elseif($loaivanban->loai_van_ban == 1) Văn bản đến @else Loại
                                         riêng @endif</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{ $loaivanban->nam_truoc_skh == 1 ? 'Có' : 'Không' }}</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{ $loaivanban->ma_van_ban == 1 ? 'Có' : 'Không' }}</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{ $loaivanban->ma_phong_ban == 1 ? 'Có' : 'Không' }}</td>
+                                    <td class="text-center"
+                                        style="vertical-align: middle">{{ $loaivanban->ma_don_vi == 1 ? 'Có' : 'Không' }}</td>
+                                    <td class="text-center" style="vertical-align: middle">{{$loaivanban->mo_ta}}</td>
+
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$loaivanban->donvi->ten_don_vi ?? ''}}</td>
                                     <td class="text-center">
