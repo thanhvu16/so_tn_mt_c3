@@ -37,15 +37,17 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="25%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="20%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center" width="15%">Ý kiến</th>
+                                <th width="27%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="25%" class="text-center">Tóm tắt VB</th>
+                                <th class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                @if (auth::user()->hasRole(PHO_CHUC_TICH))
+                                @hasanyrole ('phó chủ tịch|trưởng ban|phó trưởng ban')
+                                @if (empty(Request::get('chuyen_tiep')))
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
                                 @endif
+                                @endrole
                             </tr>
                             </thead>
                             <tbody>
@@ -131,7 +133,7 @@
                                                         form="form-tham-muu">
                                                     <option value="">Chọn trưởng phòng chủ trì</option>
                                                     <option
-                                                        value="{{ $truongPhong->id ?? null }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongPhong->id ? 'selected' : null }}>{{ $truongPhong->ho_ten ?? null }}</option>
+                                                        value="{{ $truongPhong->id }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongPhong->id ? 'selected' : null }}>{{ $truongPhong->ho_ten }}</option>
                                                 </select>
                                             </p>
                                             @endrole

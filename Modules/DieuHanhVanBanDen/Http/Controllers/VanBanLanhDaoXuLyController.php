@@ -462,16 +462,14 @@ class VanBanLanhDaoXuLyController extends Controller
 
             $donVi = $currentUser->donVi;
 
-            $danhSachDonViChutri = DonVi::where('id', '!=', $currentUser->don_vi_id)
-                ->whereNotIn('id', json_decode($id))
+            $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->whereNull('deleted_at')
                 ->get();
 
             if ($donVi->cap_xa == DonVi::CAP_XA) {
 
-                $danhSachDonViChutri = DonVi::where('id', '!=', $currentUser->don_vi_id)
-                    ->whereNotIn('id', json_decode($id))
+                $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
                     ->where('parent_id', $donVi->id)
                     ->whereNull('deleted_at')
                     ->get();
