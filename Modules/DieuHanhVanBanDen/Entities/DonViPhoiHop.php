@@ -40,6 +40,7 @@ class DonViPhoiHop extends Model
                 DonViPhoiHop::where([
                     'van_ban_den_id' => $vanBanDenId,
                     'chuyen_tiep'  => null,
+                    'parent_don_vi_id' => null,
                     'hoan_thanh'  => null
                 ])->delete();
 
@@ -147,5 +148,50 @@ class DonViPhoiHop extends Model
     public function vanBanDen()
     {
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+    }
+
+    public static function luuDonViPhoiHopCapXa($arrDonViId, $vanBanDenId)
+    {
+        if (!empty($arrDonViId) && count($arrDonViId) > 0) {
+            DonViPhoiHop::where([
+                'van_ban_den_id' => $vanBanDenId,
+                'chuyen_tiep'  => null,
+                'hoan_thanh'  => null,
+                'parent_don_vi_id' => auth::user()->don_vi_id
+            ])->delete();
+
+            foreach ($arrDonViId as $donViId) {
+
+                $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
+
+                // Truong ban cap xa nhan van ban
+                $role = [TRUONG_BAN];
+                $nguoiDung = User::where('trang_thai', ACTIVE)
+                    ->where('don_vi_id', $donViId)
+                    ->whereHas('roles', function ($query) use ($role) {
+                        return $query->whereIn('name', $role);
+                    })
+                    ->orderBy('id', 'DESC')
+                    ->whereNull('deleted_at')->first();
+
+
+                $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;
+                $donViPhoiHop  = new DonViPhoiHop();
+                $donViPhoiHop->van_ban_den_id = $vanBanDenId;
+                $donViPhoiHop->can_bo_chuyen_id = auth::user()->id;
+                $donViPhoiHop->can_bo_nhan_id = $nguoiDung->id ?? null;
+                $donViPhoiHop->noi_dung = $noiDung;
+                $donViPhoiHop->don_vi_id = $donViId;
+                $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
+                $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
+                $donViPhoiHop->parent_don_vi_id = auth::user()->don_vi_id;
+                $donViPhoiHop->save();
+
+                // save thành phần dự họp
+                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+                $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+                ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id ?? null], null, $nguoiDung->don_vi_id ?? null);
+            }
+        }
     }
 }

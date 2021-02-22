@@ -288,7 +288,7 @@
 
                 checkVanBanDenId(vanBanDenDonViId);
 
-                $(this).parents('.tr-data').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.toString());
+                $(this).parents('.tr-data').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.join(', '));
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $(this).parents('.tr-data').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).addClass('hide');

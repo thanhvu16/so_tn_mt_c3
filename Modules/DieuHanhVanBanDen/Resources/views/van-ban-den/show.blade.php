@@ -209,12 +209,12 @@
                             </li>
                         @endif
                         @if (!empty($vanBanDen->chuTichXa->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->chuTichXa->canBoNhan->ho_ten ."<br/> (Giám đốc phòng)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->chuTichXa->canBoNhan->ho_ten ."<br/> (GD Chi cục)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->chuTichXa->created_at)) }}</i>
                             </li>
                         @endif
                         @if (!empty($vanBanDen->phoChuTichXa->can_bo_nhan_id))
-                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->phoChuTichXa->canBoNhan->ho_ten ."<br/> (Phó giám đốc phòng)"  !!}
+                            <li class="{{ $vanBanDen->trinh_tu_nhan_van_ban >=2 ? 'complete active' : null }}">{!!  $vanBanDen->phoChuTichXa->canBoNhan->ho_ten ."<br/> (PGD Chi cục)"  !!}
                                 <br><i>{{ date('d/m/Y H:i:s', strtotime($vanBanDen->phoChuTichXa->created_at)) }}</i>
                             </li>
                         @endif

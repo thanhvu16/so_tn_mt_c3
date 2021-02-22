@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NhomDonVi;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -153,6 +154,49 @@ class DieuHanhVanBanDenController extends Controller
                     ->where('don_vi_id', $donViChuTri->don_vi_id ?? null)
                     ->select('id', 'ho_ten')
                     ->first();
+        $arrCanBoPhongBan = [];
+
+        if (!empty($chuTichXa) || count($danhSachPhoChuTichXa) > 0) {
+
+            $phongBanXuLy = DonViChuTri::where(function ($query) use ($donViChuTri) {
+                return $query->where('parent_don_vi_id', $donViChuTri->don_vi_id);
+                })
+                ->where('van_ban_den_id', $donViChuTri->van_ban_den_id)
+                ->select('id', 'can_bo_nhan_id', 'van_ban_den_id', 'don_vi_id')->get();
+
+            if ($phongBanXuLy) {
+                $arrCanBoPhongBan = $phongBanXuLy->pluck('can_bo_nhan_id')->toArray();
+            }
+
+            $role = [TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN];
+            $truongPhong = User::whereIn('id', $arrCanBoPhongBan)
+                ->whereHas('roles', function ($query) use ($role) {
+                    return $query->whereIn('name', $role);
+                })
+                ->where('trang_thai', ACTIVE)
+                ->whereNull('deleted_at')
+                ->select('id', 'ho_ten', 'don_vi_id', 'chuc_vu_id')
+                ->first();
+
+            $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
+            $danhSachPhoPhong = User::whereIn('id', $arrCanBoPhongBan)
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->select('id', 'ho_ten', 'don_vi_id', 'chuc_vu_id')
+                ->where('trang_thai', ACTIVE)
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')->get();
+
+
+            $danhSachChuyenVien = User::role(CHUYEN_VIEN)
+                ->whereIn('id', $arrCanBoPhongBan)
+                ->where('trang_thai', ACTIVE)
+                ->select('id', 'ho_ten', 'don_vi_id', 'chuc_vu_id')
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')->get();
+
+        }
 
 
         $vanBanDen->chuTich = $vanBanDen->checkCanBoNhan([$chuTich->id]) ?? null;
@@ -160,9 +204,16 @@ class DieuHanhVanBanDenController extends Controller
         if (!empty($donViChuTri)) {
             $vanBanDen->chuTichXa = !empty($chuTichXa) ? $vanBanDen->getCanBoDonVi([$chuTichXa->id], $donViChuTri->don_vi_id) : null;
             $vanBanDen->phoChuTichXa = count($danhSachPhoChuTichXa) > 0 ? $vanBanDen->getCanBoDonVi($danhSachPhoChuTichXa->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            //don vi cap xa
+            if (!empty($chuTichXa) || count($danhSachPhoChuTichXa) > 0) {
+                $vanBanDen->truongPhong = !empty($truongPhong) ? $vanBanDen->getCanBoPhongBanXuLy([$truongPhong->id], $donViChuTri->don_vi_id) : null;
+                $vanBanDen->phoPhong = count($danhSachPhoPhong) > 0 ? $vanBanDen->getCanBoPhongBanXuLy($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+                $vanBanDen->chuyenVien = count($danhSachChuyenVien) > 0 ? $vanBanDen->getCanBoPhongBanXuLy($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            } else {
             $vanBanDen->truongPhong = !empty($truongPhong) ? $vanBanDen->getCanBoDonVi([$truongPhong->id], $donViChuTri->don_vi_id) : null;
             $vanBanDen->phoPhong = count($danhSachPhoPhong) > 0 ? $vanBanDen->getCanBoDonVi($danhSachPhoPhong->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
             $vanBanDen->chuyenVien = count($danhSachChuyenVien) > 0 ? $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
+            }
         }
         //phoi hop
         $type = $request->get('status') ?? null;

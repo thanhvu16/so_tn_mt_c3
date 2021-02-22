@@ -345,5 +345,11 @@ class VanBanDenHoanThanhController extends Controller
         DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
             ->where('don_vi_id', auth::user()->don_vi_id)
             ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
+
+        //update chuyen nhan van ban don vi co don vi cha
+        $parentDonViId = auth::user()->donVi->parent_id;
+        DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+            ->where('don_vi_id', $parentDonViId)
+            ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
     }
 }

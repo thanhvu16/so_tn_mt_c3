@@ -149,6 +149,10 @@ class NguoiDungController extends Controller
 
 
         $user = new User();
+        $donVi = DonVi::where('id', $data['don_vi_id'])->whereNull('deleted_at')->first();
+        if ($donVi) {
+            $data['cap_xa'] = $donVi->cap_xa ?? null;
+        }
         $user->fill($data);
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
@@ -241,6 +245,10 @@ class NguoiDungController extends Controller
             $data['chu_ky_nhay'] = $url;
         }
 
+        $donVi = DonVi::where('id', $data['don_vi_id'])->whereNull('deleted_at')->first();
+        if ($donVi) {
+            $data['cap_xa'] = $donVi->cap_xa ?? null;
+        }
 
         $user->fill($data);
         $user->save();

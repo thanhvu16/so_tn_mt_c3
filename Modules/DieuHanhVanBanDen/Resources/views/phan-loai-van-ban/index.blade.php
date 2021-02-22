@@ -401,7 +401,7 @@
 
                 checkVanBanDenId(vanBanDenDonViId);
 
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.toString());
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.join(', '));
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).addClass('hide');
@@ -457,6 +457,11 @@
         // check du hop
         function checkedDuHop($this, $className) {
             $this.parents('.tr-tham-muu').find($className).prop('checked', true);
+            if ($className === '.don-vi-du-hop') {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
+            } else {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+            }
         }
 
         function removeDuHop($this, $className) {

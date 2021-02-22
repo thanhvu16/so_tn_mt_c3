@@ -34,20 +34,19 @@ class VanBanLanhDaoXuLyController extends Controller
         $donVi = $user->donVi;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
-        $trinhTuNhanVanBan = null;
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             if ($user->hasRole(CHU_TICH)) {
-                $trinhTuNhanVanBan = 8;
+                $active = 8;
             }
 
             if ($user->hasRole(PHO_CHUC_TICH)) {
-                $trinhTuNhanVanBan = 9;
+                $active = 9;
             }
 
             if ($user->hasRole(TRUONG_BAN)) {
-                $trinhTuNhanVanBan = 3;
+                $active = 3;
             }
             // chu tich xa nhan van ban
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
@@ -60,9 +59,15 @@ class VanBanLanhDaoXuLyController extends Controller
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-            $danhSachVanBanDen = VanBanDen::whereIn('id', $arrVanBanDenId)
-                ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-                ->paginate(10);
+            $danhSachVanBanDen = VanBanDen::with([
+                'donViCapXaChuTri',
+                'DonViCapXaPhoiHop' => function ($query) {
+                    return $query->select('id', 'don_vi_id', 'van_ban_den_id');
+                }
+                ])
+                ->whereIn('id', $arrVanBanDenId)
+                ->where('trinh_tu_nhan_van_ban', $active)
+                ->paginate(PER_PAGE_10);
 
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
@@ -77,27 +82,11 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->select('id', 'ho_ten')
                 ->first();
 
-            $truongBan = User::role(TRUONG_BAN)
-                ->where('don_vi_id', $user->don_vi_id)
-                ->select('id', 'ho_ten')
-                ->where('trang_thai', ACTIVE)
-                ->whereNull('deleted_at')
-                ->orderBy('id', 'DESC')->first();
-
-            $danhSachPhoPhong = User::role(PHO_TRUONG_BAN)
-                ->where('don_vi_id', $user->don_vi_id)
-                ->select('id', 'ho_ten')
-                ->where('trang_thai', ACTIVE)
-                ->whereNull('deleted_at')
-                ->orderBy('id', 'DESC')->get();
-
-
-            $danhSachChuyenVien = User::role(CHUYEN_VIEN)
-                ->where('don_vi_id', $user->don_vi_id)
-                ->where('trang_thai', ACTIVE)
-                ->select('id', 'ho_ten')
-                ->whereNull('deleted_at')
-                ->orderBy('id', 'DESC')->get();
+            // sua o day
+            $danhSachDonVi = DonVi::whereNull('deleted_at')
+                ->where('parent_id', $user->don_vi_id)
+                ->select('id', 'ten_don_vi')
+                ->get();
 
             if (!empty($danhSachVanBanDen)) {
                 foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -105,19 +94,18 @@ class VanBanLanhDaoXuLyController extends Controller
                     $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
                     $vanBanDen->chuTich = $vanBanDen->getChuyenVienThucHien([$chuTich->id]);
                     $vanBanDen->phoChuTich = $vanBanDen->getChuyenVienThucHien($danhSachPhoChuTich->pluck('id')->toArray());
-                    $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                    $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$truongBan->id]);
-                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
-                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
-                    $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
+                    $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]) ?? null;
+                    $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
+                    $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonViCapXa();
                     $vanBanDen->lanhDaoXemDeBiet = $vanBanDen->lanhDaoXemDeBiet ?? null;
-//
                 }
             }
 
-            return view('dieuhanhvanbanden::don-vi-cap-xa.index',
-                compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'truongBan',
-                    'danhSachPhoPhong', 'danhSachChuyenVien', 'trinhTuNhanVanBan', 'loaiVanBanGiayMoi'));
+            $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
+
+            return view('dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.index',
+                compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'danhSachDonVi',
+                    'loaiVanBanGiayMoi', 'order', 'chuTich', 'active'));
 
         } else {
             // chu tich huyen nhan van ban
@@ -153,18 +141,20 @@ class VanBanLanhDaoXuLyController extends Controller
 
             $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
                 ->select('id', 'ho_ten', 'don_vi_id')
+                ->whereNull('cap_xa')
                 ->first();
 
             $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
                 ->where('trang_thai', ACTIVE)
                 ->where('don_vi_id', $chuTich->don_vi_id)
+                ->whereNull('cap_xa')
                 ->select('id', 'ho_ten')
                 ->get();
 
             $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
             $danhSachDonVi = DonVi::whereNull('deleted_at')
-                ->where('id', '!=', $user->don_vi_id)
+                ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select('id', 'ten_don_vi')
                 ->get();
 
@@ -474,8 +464,18 @@ class VanBanLanhDaoXuLyController extends Controller
 
             $danhSachDonViChutri = DonVi::where('id', '!=', $currentUser->don_vi_id)
                 ->whereNotIn('id', json_decode($id))
+                ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->whereNull('deleted_at')
                 ->get();
+
+            if ($donVi->cap_xa == DonVi::CAP_XA) {
+
+                $danhSachDonViChutri = DonVi::where('id', '!=', $currentUser->don_vi_id)
+                    ->whereNotIn('id', json_decode($id))
+                    ->where('parent_id', $donVi->id)
+                    ->whereNull('deleted_at')
+                    ->get();
+            }
 
             return response()->json([
                 'success' => true,
@@ -609,6 +609,7 @@ class VanBanLanhDaoXuLyController extends Controller
                         //chuyen nhan van ban don vi
                         DonViChuTri::where([
                             'van_ban_den_id' => $vanBanDenId,
+                            'parent_don_vi_id' => null,
                             'hoan_thanh' => null
                         ])->delete();
 
@@ -635,6 +636,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
                         DonViPhoiHop::where([
                             'van_ban_den_id' => $vanBanDenId,
+                            'parent_don_vi_id' => null,
                             'hoan_thanh' => null
                         ])->delete();
 

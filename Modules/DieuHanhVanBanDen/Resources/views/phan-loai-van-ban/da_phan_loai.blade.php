@@ -184,7 +184,7 @@
                                                     form="form-tham-muu">
                                                     @forelse($danhSachDonVi as $donVi)
                                                         <option
-                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->DonViCapXaPhoiHop) && in_array($donVi->id, $vanBanDen->DonViCapXaPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -235,9 +235,9 @@
                                         </p>
                                         <p>
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
-                                                      class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
+                                                      class="form-control {{ count($vanBanDen->DonViCapXaPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="5">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị     phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="5">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
@@ -263,7 +263,7 @@
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
                                                        class="radio-col-cyan pho-ct-du-hop"
                                                        value="{{ $vanBanDen->PhoChuTich->can_bo_nhan_id ?? null }}"
-                                                       form="form-tham-muu" {{ $vanBanDen->lichCongTacPhoChuTich ? 'checked' : null  }}>
+                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacPhoChuTich) && !empty($vanBanDen->PhoChuTich) && $vanBanDen->lichCongTacPhoChuTich->lanh_dao_id == $vanBanDen->PhoChuTich->can_bo_nhan_id  ? 'checked' : null  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
                                                 ><i>PGD</i></label>
@@ -276,8 +276,7 @@
                                                        value="{{ !empty($vanBanDen->checkDonViChuTri) ? $vanBanDen->checkDonViChuTri->don_vi_id : null }}"
                                                        form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi ? 'checked' : null  }}>
                                                 <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự
-                                                        họp</i></label>
+                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự họp</i></label>
                                             </div>
                                         @endif
                                         @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)
@@ -451,7 +450,7 @@
 
                 checkVanBanDenId(vanBanDenDonViId);
 
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.toString());
+                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.join(', '));
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
                 $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).addClass('hide');

@@ -20,6 +20,7 @@ class DonViChuTri extends Model
         'can_bo_nhan_id',
         'don_vi_id',
         'parent_id',
+        'parent_don_vi_id',
         'noi_dung',
         'han_xu_ly_cu',
         'han_xu_ly_moi',
@@ -157,5 +158,40 @@ class DonViChuTri extends Model
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
         ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id], null, $nguoiDung->don_vi_id ?? null);
+    }
+
+    public static function luuDonViCapXa($donViId, $txtDonViChuTri,  $vanBanDenId, $donViChuTri, $hanXuLyCu, $hanXuLyMoi)
+    {
+        // luu don vi chu tri
+        $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();
+
+        $role = [TRUONG_BAN];
+        $nguoiDung = User::where('don_vi_id', $donViId)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+
+        $dataLuuDonViChuTri = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'don_vi_id' => $donViId,
+            'parent_id' => $donViChuTri ? $donViChuTri->id : null,
+            'noi_dung' => $txtDonViChuTri,
+            'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
+            'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+            'han_xu_ly_cu' => $hanXuLyCu ?? null,
+            'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi,
+            'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
+            'user_id' => auth::user()->id,
+            'parent_don_vi_id' => auth::user()->don_vi_id,
+        ];
+
+        $donViChuTri = new DonViChuTri();
+        $donViChuTri->fill($dataLuuDonViChuTri);
+        $donViChuTri->save();
     }
 }

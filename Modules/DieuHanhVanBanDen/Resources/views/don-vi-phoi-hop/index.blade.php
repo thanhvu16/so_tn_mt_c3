@@ -41,7 +41,7 @@
                                 <th width="25%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                @role ('phó phòng')
+                                @hasanyrole ('phó phòng|phó trưởng ban')
                                 @if (empty(Request::get('chuyen_tiep')))
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
@@ -101,7 +101,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">
-                                            @role ('trưởng phòng')
+                                            @hasanyrole('trưởng phòng|trưởng ban')
                                             <p>
                                                 <select name="pho_phong_id[{{ $vanBanDen->id }}]"
                                                         id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -120,7 +120,7 @@
                                                 </select>
                                             </p>
                                             @endrole
-                                            @hasanyrole('trưởng phòng|phó phòng')
+                                            @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban')
                                             <p>
                                                 <select name="chuyen_vien_id[{{ $vanBanDen->id }}]"
                                                         id="chuyen-vien-{{ $vanBanDen->id }}"
@@ -140,13 +140,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @role ('trưởng phòng')
+                                        @role ('trưởng phòng|trưởng ban')
                                         <p>
                                             {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}
                                         </p>
                                         @endrole
 
-                                        @role('trưởng phòng')
+                                        @role('trưởng phòng|trưởng ban')
                                         <p>
                                             <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
@@ -163,7 +163,7 @@
                                                 rows="3">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
-                                    @role ('phó phòng')
+                                    @role ('phó phòng|phó trưởng ban')
                                     @if (empty(Request::get('chuyen_tiep')))
                                         <td class="text-center">
                                             <p>
