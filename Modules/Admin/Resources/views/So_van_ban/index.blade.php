@@ -36,7 +36,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Loại Sổ</label>
-                                    <select name="loai_so" class="form-control lay-so">
+                                    <select name="loai_so" class="form-control lay-so" required>
                                         <option value="">Chọn loại sổ</option>
                                         <option value="1">Sổ đến</option>
                                         <option value="2">Sổ đi</option>
@@ -88,5 +88,11 @@
             }
 
         })
+        $(document).ready(function() {
+            // show the alert
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 3000);
+        });
     </script>
 @endsection

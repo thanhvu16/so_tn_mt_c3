@@ -18,6 +18,7 @@
                                 aria-expanded="false" aria-controls="collapseExample">
                             THÊM LOẠI VĂN BẢN</button>
                     </div>
+
                     <div class="col-md-12">
                         <div class="row">
                             <div class="collapse " id="collapseExample">
@@ -30,6 +31,8 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
+                            @include('vanbandi::Du_thao_van_ban_di.error')
+
                             <form action="{{route('danhsachloaivanban')}}" method="get">
                                 <div class="col-md-3 form-group">
                                     <label for="exampleInputEmail1">Tìm theo tên loại văn bản</label>

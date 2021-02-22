@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\SoVanBan;
+use App\Http\Requests\SoVanBanRequest;
 
 class SoVanBanController extends Controller
 {
@@ -61,7 +62,7 @@ class SoVanBanController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(SoVanBanRequest $request)
     {
         canPermission(AllPermission::themSoVanBan());
         $sovanban = new SoVanBan();

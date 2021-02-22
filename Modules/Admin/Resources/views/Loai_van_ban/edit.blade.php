@@ -8,6 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Cập nhật đơn vị</h3>
                     </div>
+                    @include('vanbandi::Du_thao_van_ban_di.error')
                     <form action="{{route('loai-van-ban.update',$loaivanban->id)}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @method('PUT')

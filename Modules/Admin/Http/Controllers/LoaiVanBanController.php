@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
+use App\Http\Requests\LoaiVanBanRequest;
 
 class LoaiVanBanController extends Controller
 {
@@ -61,9 +62,10 @@ class LoaiVanBanController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(LoaiVanBanRequest $request)
     {
         canPermission(AllPermission::themLoaiVanBan());
+//        dd($request->all());
         $loaivanban = new LoaiVanBan();
         $loaivanban->ten_loai_van_ban = $request->ten_loai_van_ban;
         $loaivanban->ten_viet_tat = $request->ten_viet_tat;
@@ -74,6 +76,7 @@ class LoaiVanBanController extends Controller
         }
         $loaivanban->mo_ta = $request->mo_ta;
         $loaivanban->save();
+//        return redirect()->back()->with(['capso'=>"$soDi"]);
         return redirect()->route('danhsachloaivanban')->with('success', 'Thêm mới thành công !');
     }
 
