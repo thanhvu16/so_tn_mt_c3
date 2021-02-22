@@ -148,7 +148,7 @@
                                         <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
                                         <p>- Ngày ban
                                             hành: {{ date('d-m-Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
-                                        <p>- Cơ quan ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
+                                        <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold color-red">{{$vbDen->so_den}}</span></p>
                                     </td>
@@ -183,14 +183,7 @@
                                             @empty
                                             @endforelse
                                         </div>
-                                        <p>
-                                            <input id="van-ban-don-vi-{{ $vbDen->id }}" type="checkbox"
-                                                   name="van_ban-don_vi" value="1" checked>
-                                            <label for="van-ban-don-vi-{{ $vbDen->id }}"
-                                                   class="color-red font-weight-normal">
-                                                {{ $vbDen->loai_van_ban_don_vi == 1 ? 'văn bản đơn vị phối hợp' : 'Văn bản đơn vị chủ trì' }}
-                                            </label>
-                                        </p>
+
                                     </td>
                                     <td>
                                         @if ($vbDen->parent_id)

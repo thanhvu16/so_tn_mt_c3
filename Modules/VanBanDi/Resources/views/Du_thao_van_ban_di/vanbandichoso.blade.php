@@ -305,6 +305,13 @@
             $('#modal-them-noi-nhan').find('input[name="van_ban_di_id"]').val(id);
         });
 
+        $(document).ready(function() {
+            // show the alert
+            setTimeout(function() {
+                $(".alert").alert('close');
+            }, 3000);
+        });
+
 
     </script>
 @endsection

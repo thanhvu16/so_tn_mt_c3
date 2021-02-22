@@ -56,6 +56,9 @@ class DieuHanhVanBanDenController extends Controller
             'loaiVanBan' => function ($query) {
                 return $query->select('id', 'ten_loai_van_ban');
             },
+//            'loaiVanBan' => function ($query) {
+//                return $query->select('id', 'ten_loai_van_ban');
+//            },
             'soVanBan' => function ($query) {
                 return $query->select('id', 'ten_so_van_ban');
             },
@@ -96,8 +99,10 @@ class DieuHanhVanBanDenController extends Controller
             }
         ])->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
             'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id',
-            'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban')
+            'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban','created_at')
             ->findOrFail($id);
+
+
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 

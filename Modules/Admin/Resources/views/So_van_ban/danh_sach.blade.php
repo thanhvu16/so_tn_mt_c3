@@ -30,6 +30,7 @@
                     <!-- /.box-header -->
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
+                            @include('vanbandi::Du_thao_van_ban_di.error')
                             <form action="{{route('danhsachsovanban')}}" method="get">
                                 <div class="col-md-3 form-group">
                                     <label for="exampleInputEmail1">Tìm theo tên sổ văn bản</label>

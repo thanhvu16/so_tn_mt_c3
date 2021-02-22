@@ -132,6 +132,10 @@
                                     nhập: </b> {{ $vanBanDen->nguoiDung->ho_ten ?? 'N/A' }}
                             </p>
                             <p>
+                                <b>Ngày
+                                    nhập: </b> {{ $vanBanDen->created_at  }}
+                            </p>
+                            <p>
                                 <b>Hạn văn bản: </b> {{ !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}
                             </p>
                         </div>
@@ -162,6 +166,7 @@
                                 <b>Độ
                                     mật:</b> {{ isset($vanBanDen->doBaoMat) ? $vanBanDen->doBaoMat->ten_muc_do : null }}
                             </p>
+                        </div><div class="col-md-4">
                             <p>
                                 <b>Độ khẩn:</b> {{ isset($vanBanDen->doKhan) ? $vanBanDen->doKhan->ten_muc_do : null }}
                             </p>

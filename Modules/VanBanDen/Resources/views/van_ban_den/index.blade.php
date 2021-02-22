@@ -151,7 +151,7 @@
                                         <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
                                         <p>- Ngày ban
                                             hành: {{ date('d-m-Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
-                                        <p>- Cơ quan ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
+                                        <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
                                         <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>
@@ -190,14 +190,9 @@
                                                 <a title="Cập nhật file" href="{{route('ds_file',$vbDen->vb_den_id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif
                                         </div>
 
-                                        <p>
-                                            <input id="van-ban-don-vi-{{ $vbDen->id }}" type="checkbox"
-                                                   name="van_ban-don_vi" value="1" checked>
-                                            <label for="van-ban-don-vi-{{ $vbDen->id }}"
-                                                   class="color-red font-weight-normal">
-                                                {{ $vbDen->loai_van_ban_don_vi == 1 ? 'văn bản đơn vị phối hợp' : 'Văn bản đơn vị chủ trì' }}
-                                            </label>
-                                        </p>
+                                        <i style="font-weight: initial">
+                                            (<span style="color: red">*</span> {{ $vbDen->chu_tri_phoi_hop == 1 ? 'Là văn bản đơn vị chủ trì' : 'Là văn bản đơn vị phối hợp' }})
+                                        </i>
                                     </td>
                                     <td>
                                         <!--vb den don vi-->
@@ -319,6 +314,13 @@
             console.log(1);
             $("#myModal").modal('show');
         }
+        $(document).ready(function() {
+            // show the alert
+            console.log(1);
+            // setTimeout(function() {
+            //     $(".alert").alert('close');
+            // }, 2000);
+        });
     </script>
 @endsection
 

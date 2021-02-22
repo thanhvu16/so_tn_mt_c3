@@ -287,6 +287,7 @@ class VanBanDenController extends Controller
                         $vanbandv->nguoi_ky = $request->nguoi_ky;
                         $vanbandv->do_khan_cap_id = $request->do_khan;
                         $vanbandv->do_bao_mat_id = $request->do_mat;
+                        $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                         $vanbandv->don_vi_id = auth::user()->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
@@ -313,6 +314,7 @@ class VanBanDenController extends Controller
                     $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                     $vanbandv->trich_yeu = $request->trich_yeu;
                     $vanbandv->nguoi_ky = $request->nguoi_ky;
+                    $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
@@ -341,6 +343,7 @@ class VanBanDenController extends Controller
                         $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                         $vanbandv->trich_yeu = $request->trich_yeu;
                         $vanbandv->nguoi_ky = $request->nguoi_ky;
+                        $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                         $vanbandv->do_khan_cap_id = $request->do_khan;
                         $vanbandv->do_bao_mat_id = $request->do_mat;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
@@ -383,6 +386,7 @@ class VanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                     $vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
