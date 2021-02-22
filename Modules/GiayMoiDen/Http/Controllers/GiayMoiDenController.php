@@ -253,6 +253,7 @@ class GiayMoiDenController extends Controller
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
+
         $ngaynhan = date('Y-m-d');
         $songay = 8;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
@@ -616,24 +617,27 @@ class GiayMoiDenController extends Controller
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
         $txtFiles = !empty($request['txt_file']) ? $request['txt_file'] : null;
         $gio_hop = date('H:i', strtotime($request->gio_hop_chinh));
+        $giayMoi = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
+
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
 
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
-                'so_van_ban_id' => 100,
+                'so_van_ban_id' => $giayMoi->id,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
-                'so_van_ban_id' => 100,
+                'so_van_ban_id' => $giayMoi->id,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
         $vanbandv = VanBanDen::where('id', $id)->first();
-        $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $request->so_van_ban, 'id' => $vanbandv->id])->first();
+        $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $giayMoi->id, 'id' => $vanbandv->id])->first();
+
         if ($checktrungsoden == null) {
             $user = auth::user();
             $nam = date("Y");
@@ -717,7 +721,7 @@ class GiayMoiDenController extends Controller
             }
 
         }
-        return redirect()->back()
+        return redirect()->route('giay-moi-den.index')
             ->with('success', 'Cập nhật giấy mời thành công !');
 
     }

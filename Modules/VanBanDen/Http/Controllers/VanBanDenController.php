@@ -574,7 +574,7 @@ class VanBanDenController extends Controller
 
 
 
-        return redirect()->back()->with('success', 'Cập nhật dữ liệu thành công !');
+        return redirect()->route('van-ban-den.index')->with('success', 'Cập nhật dữ liệu thành công !');
     }
 
     /**

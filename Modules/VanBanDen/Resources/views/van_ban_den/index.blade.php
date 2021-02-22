@@ -238,7 +238,7 @@
                                                title="Sửa">
                                                 <i class="fas fa-file-signature"></i>
                                             </a><br><br>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item" role="button"
+                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item" role="button"
                                                     title="Xóa">
                                                 <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
                                             </button>
