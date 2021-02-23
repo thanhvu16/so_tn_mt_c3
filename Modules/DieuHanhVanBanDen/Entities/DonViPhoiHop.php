@@ -21,6 +21,7 @@ class DonViPhoiHop extends Model
         'can_bo_nhan_id',
         'don_vi_id',
         'parent_id',
+        'parent_don_vi_id',
         'noi_dung',
         'don_vi_co_dieu_hanh',
         'vao_so_van_ban',
@@ -165,7 +166,7 @@ class DonViPhoiHop extends Model
                 $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
 
                 // Truong ban cap xa nhan van ban
-                $role = [TRUONG_BAN];
+                $role = [TRUONG_BAN, TRUONG_PHONG];
                 $nguoiDung = User::where('trang_thai', ACTIVE)
                     ->where('don_vi_id', $donViId)
                     ->whereHas('roles', function ($query) use ($role) {
@@ -193,5 +194,39 @@ class DonViPhoiHop extends Model
                 ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id ?? null], null, $nguoiDung->don_vi_id ?? null);
             }
         }
+    }
+
+    public static function luuVanBanPhoiHopCapXa($donViId, $txtDonViChuTri,  $vanBanDenId, $donViChuTri)
+    {
+        // luu don vi chu tri
+        $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();
+
+        $role = [TRUONG_BAN, TRUONG_PHONG];
+        $nguoiDung = User::where('don_vi_id', $donViId)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+
+        $dataLuuDonViChuTri = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'don_vi_id' => $donViId,
+            'parent_id' => $donViChuTri ? $donViChuTri->id : null,
+            'parent_don_vi_id' => auth::user()->don_vi_id,
+            'noi_dung' => $txtDonViChuTri,
+            'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
+            'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
+            'type' => $donViChuTri->type ?? null,
+            'user_id' => auth::user()->id,
+
+        ];
+
+        $donViChuTri = new DonViPhoiHop();
+        $donViChuTri->fill($dataLuuDonViChuTri);
+        $donViChuTri->save();
     }
 }

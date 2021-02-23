@@ -45,7 +45,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 $active = 9;
             }
 
-            if ($user->hasRole(TRUONG_BAN)) {
+            if ($user->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
                 $active = 3;
             }
             // chu tich xa nhan van ban

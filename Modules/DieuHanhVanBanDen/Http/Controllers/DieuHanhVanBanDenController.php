@@ -380,7 +380,7 @@ class DieuHanhVanBanDenController extends Controller
                     return $query->whereYear('created_at', $year);
                 }
             })
-            ->select('van_ban_den_id')
+            ->select('id', 'van_ban_den_id')
             ->orderBy('id', 'DESC')
             ->get();
 

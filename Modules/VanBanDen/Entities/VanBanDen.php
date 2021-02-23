@@ -168,6 +168,13 @@ class VanBanDen extends Model
             ->where('parent_don_vi_id', auth::user()->don_vi_id);
     }
 
+    public  function donViCapXaPhoiHopXuLyChinh()
+    {
+        return $this->hasOne(DonViPhoiHop::class, 'van_ban_den_id', 'id')
+            ->where('parent_don_vi_id', auth::user()->don_vi_id)
+            ->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung');
+    }
+
     public function vanBanTraLai()
     {
         return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
@@ -420,10 +427,20 @@ class VanBanDen extends Model
 
     public function donViPhoiHopGiaiQuyetByUserId()
     {
-        return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
-            ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
-            ->where('don_vi_id', auth::user()->don_vi_id)
-            ->select('id', 'van_ban_den_id', 'noi_dung');
+        $donVi = auth::user()->donVi;
+        if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && $donVi->cap_xa == DonVi::CAP_XA) {
+
+            return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
+                ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
+                ->where('parent_don_vi_id', auth::user()->don_vi_id)
+                ->select('id', 'van_ban_den_id', 'noi_dung');
+
+        } else {
+            return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
+                ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
+                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->select('id', 'van_ban_den_id', 'noi_dung');
+        }
     }
 
     public function chuyenVienPhoiHop()
@@ -529,8 +546,29 @@ class VanBanDen extends Model
     // lay van ban den don vi
     public function hasChild($type = null)
     {
+        $donVi = auth::user()->donVi;
+        $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+
+        if (auth::user()->hasRole(PHO_CHUC_TICH) && auth::user()->cap_xa == DonVi::CAP_XA) {
+            // lanh dao cap xa xem van ban phoi hop
+            $type = 1;
+            return VanBanDen::where('parent_id', $this->id)
+                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->where('type', VanBanDen::TYPE_VB_DON_VI)
+                ->where(function ($query) use ($type) {
+                    return $query->where('loai_van_ban_don_vi', $type);
+                })
+                ->select('id', 'noi_dung', 'co_quan_ban_hanh', 'so_den', 'created_at', 'loai_van_ban_id',
+                    'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'so_ky_hieu', 'so_van_ban_id', 'ngay_ban_hanh',
+                    'nguoi_ky', 'tom_tat', 'do_khan_cap_id', 'do_bao_mat_id', 'noi_gui_den', 'ngay_hop',
+                    'gio_hop', 'noi_dung_hop', 'dia_diem')
+                ->orderBy('id', 'DESC')->first();
+        }
+
+
+
         return VanBanDen::where('parent_id', $this->id)
-            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('don_vi_id', $donViId)
             ->where('type', VanBanDen::TYPE_VB_DON_VI)
             ->where(function ($query) use ($type) {
                 return $query->where('loai_van_ban_don_vi', $type);

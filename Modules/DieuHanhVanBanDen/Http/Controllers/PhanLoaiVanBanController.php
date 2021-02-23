@@ -42,7 +42,7 @@ class PhanLoaiVanBanController extends Controller
                 }
             ])
             ->whereNull('trinh_tu_nhan_van_ban')
-            ->paginate(10);
+            ->paginate(PER_PAGE_10);
 
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -50,7 +50,7 @@ class PhanLoaiVanBanController extends Controller
             }
         }
 
-        $order = ($danhSachVanBanDen->currentPage() - 1) * 10 + 1;
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();

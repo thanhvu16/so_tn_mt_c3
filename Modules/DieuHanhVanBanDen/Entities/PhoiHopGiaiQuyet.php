@@ -14,6 +14,7 @@ class PhoiHopGiaiQuyet extends Model
         'noi_dung',
         'status',
         'don_vi_id',
+        'parent_don_vi_id',
         'user_id'
     ];
 

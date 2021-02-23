@@ -136,15 +136,32 @@
                                                     @endforelse
                                                 </select>
                                             </p>
+                                            <p>
+                                                <select
+                                                    name="chuyen_vien_phoi_hop_id[{{ $vanBanDen->id }}][]"
+                                                    id="chuyen-vien-phoi-hop{{ $vanBanDen->id }}"
+                                                    class="form-control chuyen-vien-phoi-hop select2"
+                                                    data-id="{{ $vanBanDen->id }}"
+                                                    data-placeholder="Chọn chuyên viên phối hợp"
+                                                    form="form-tham-muu" multiple="multiple">
+                                                    @forelse($danhSachChuyenVien as $chuyenVien)
+                                                        @if (!empty($vanBanDen->chuyenVien) && $chuyenVien->id != $vanBanDen->chuyenVien->can_bo_nhan_id)
+                                                            <option
+                                                                value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->getChuyenVienPhoiHop) && in_array($chuyenVien->id, $vanBanDen->getChuyenVienPhoiHop) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
+                                                        @endif
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </p>
                                             @endrole
                                         </div>
                                     </td>
                                     <td>
-                                        @role ('trưởng phòng|trưởng ban')
-                                        <p>
-                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}
-                                        </p>
-                                        @endrole
+{{--                                        @role ('trưởng phòng|trưởng ban')--}}
+{{--                                        <p>--}}
+{{--                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}--}}
+{{--                                        </p>--}}
+{{--                                        @endrole--}}
 
                                         @role('trưởng phòng|trưởng ban')
                                         <p>
