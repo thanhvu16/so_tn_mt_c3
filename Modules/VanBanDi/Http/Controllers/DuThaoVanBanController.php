@@ -370,7 +370,7 @@ class DuThaoVanBanController extends Controller
                 break;
             case TRUONG_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
                     $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -455,7 +455,7 @@ class DuThaoVanBanController extends Controller
 //                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
                     $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                 }

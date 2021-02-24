@@ -289,7 +289,7 @@ class VanBanDiController extends Controller
                 break;
             case TRUONG_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
                     $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -346,7 +346,7 @@ class VanBanDiController extends Controller
 //                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
                     $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -856,7 +856,7 @@ class VanBanDiController extends Controller
 //                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
                     $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -1136,7 +1136,7 @@ class VanBanDiController extends Controller
         if($loaiVanBan->nam_truoc_skh == 1)
         {
             $nam_truoc_skh = $nam_sodi;
-            $nam_truoc_skh = "$nam_truoc_skh/";
+            $nam_truoc_skh = "/$nam_truoc_skh";
         }
         if($loaiVanBan->ma_van_ban == 1)
         {
@@ -1170,7 +1170,7 @@ class VanBanDiController extends Controller
 
         }
         $soDi = $soDi + 1;
-        $soKyHieu = "$nam_truoc_skh$soDi$ma_phong_ban$ma_van_ban$ma_don_vi";
+        $soKyHieu = "$soDi/$nam_truoc_skh$ma_phong_ban$ma_van_ban$ma_don_vi";
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
