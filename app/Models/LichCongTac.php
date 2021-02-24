@@ -130,7 +130,7 @@ class LichCongTac extends Model
         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
         $nguoiDung = null;
         $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
-        $parentDonVi = DonVi::where('id', $donVi->parent_id)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
 
         if (!empty($donViChuTriId)) {
             if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
@@ -176,7 +176,7 @@ class LichCongTac extends Model
             'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
             'user_id' => $currentUser->id,
             'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
-            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
         );
         //check lich cong tac
         $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();

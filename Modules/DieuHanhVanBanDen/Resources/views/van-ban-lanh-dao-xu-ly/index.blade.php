@@ -117,11 +117,11 @@
                                                     <option value="">Chọn lãnh đạo xem để
                                                         biết
                                                     </option>
-                                                    <option
-                                                        value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $chuTich->ho_ten ?? null }}</option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
+                                                        @if (isset($vanBanDen->PhoChuTich) && $vanBanDen->PhoChuTich->can_bo_nhan_id != $phoChuTich->id)
                                                         <option
                                                             value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
+                                                        @endif
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -315,6 +315,8 @@
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
             }
+
+            lanhDaoXemDeBiet($this, 'PCT');
         });
 
 

@@ -478,4 +478,55 @@ class DieuHanhVanBanDenController extends Controller
 
         return view('dieuhanhvanbanden::van-ban-hoan-thanh.van_ban_quan_trong', compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
     }
+
+    public function getListLanhDao($id, Request $request)
+    {
+        if ($request->ajax()) {
+
+            $currentUser = auth::user();
+
+            $id = json_decode($id);
+            $donVi = $currentUser->donVi;
+
+            $role = [CHU_TICH, PHO_CHUC_TICH];
+
+            if ($currentUser->hasRole(CHU_TICH)) {
+                $role = [PHO_CHUC_TICH];
+            }
+
+            if ($currentUser->hasRole(CHANH_VAN_PHONG)) {
+                $danhSachNguoiDung = User::where('trang_thai', ACTIVE)
+                    ->whereHas('roles', function ($query) use ($role) {
+                        return $query->whereIn('name', $role);
+                    })
+                    ->where(function ($query) use ($id) {
+                        if (count($id) > 0) {
+                            return $query->whereNotIn('id', $id);
+                        }
+                    })
+                    ->select('id', 'don_vi_id', 'ho_ten')
+                    ->orderBy('id', 'DESC')
+                    ->whereNull('deleted_at')
+                    ->whereNull('cap_xa')
+                    ->get();
+            } else {
+
+                $danhSachNguoiDung = User::where('trang_thai', ACTIVE)
+                    ->whereHas('roles', function ($query) use ($role) {
+                        return $query->whereIn('name', $role);
+                    })
+                    ->where('don_vi_id', $currentUser->don_vi_id)
+                    ->whereNotIn('id', $id)
+                    ->select('id', 'don_vi_id', 'ho_ten')
+                    ->orderBy('id', 'DESC')
+                    ->whereNull('deleted_at')->get();
+            }
+
+
+            return response()->json([
+                'success' => true,
+                'data' => $danhSachNguoiDung
+            ]);
+        }
+    }
 }

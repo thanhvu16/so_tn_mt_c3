@@ -26,6 +26,7 @@ Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 //Route::resource('tra-lai-van-van', 'TraLaiVanBanController');
 
 Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonVi');
+Route::get('get-list-lanh-dao-xem-de-biet/{id}', 'DieuHanhVanBanDenController@getListLanhDao');
 
 Route::post('save-don-vi-chu-tri', 'VanBanLanhDaoXuLyController@saveDonViChuTri')->name('van-ban-lanh-dao.save_don_vi_chu_tri');
 

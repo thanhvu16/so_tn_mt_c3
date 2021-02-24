@@ -135,3 +135,48 @@ $("form").on('submit', function(){
     showLoading();
     // $('.loading-modal-before-submit').removeClass('hide');
 });
+
+// get danh sach lanh dao xem de biet
+function lanhDaoXemDeBiet($this, type) {
+    let arrLanhDaoId = [];
+    let id = $this.val();
+    if (id) {
+        arrLanhDaoId.push(parseInt(id));
+    }
+
+    if (type == 'PCT') {
+        let idCT = $this.closest('.dau-viec-chi-tiet').find('.chu-tich').val();
+        if (idCT) {
+            arrLanhDaoId.push(parseInt(idCT));
+        }
+    } else {
+        let idPCT = $this.closest('.dau-viec-chi-tiet').find('.pho-chu-tich').val();
+        if (idPCT) {
+            arrLanhDaoId.push(parseInt(idPCT));
+        }
+    }
+
+    // if (arrLanhDaoId.length > 0) {
+        //lấy danh sach lanh dao xem de biet
+        $.ajax({
+            url: APP_URL + '/get-list-lanh-dao-xem-de-biet/' + JSON.stringify(arrLanhDaoId),
+            type: 'GET',
+        })
+            .done(function (response) {
+                var html = '<option value="">chọn lãnh đạo xem để biết</option>';
+                if (response.success) {
+
+                    let selectAttributes = response.data.map((function (attribute) {
+                        return `<option value="${attribute.id}" >${attribute.ho_ten}</option>`;
+                    }));
+
+                    $this.parents('.dau-viec-chi-tiet').find('.lanh-dao-xem-de-biet').html(selectAttributes);
+                } else {
+                    $this.parents('.dau-viec-chi-tiet').find('.lanh-dao-xem-de-biet').html(html);
+                }
+            })
+            .fail(function (error) {
+                toastr['error'](error.message, 'Thông báo hệ thống');
+            });
+    // }
+}

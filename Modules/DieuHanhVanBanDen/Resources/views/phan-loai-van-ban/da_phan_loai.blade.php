@@ -149,11 +149,15 @@
                                                     <option value="">Chọn lãnh đạo xem để
                                                         biết
                                                     </option>
+                                                    @if(!in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan))
                                                     <option
                                                         value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $chuTich->ho_ten ?? null }}</option>
+                                                    @endif
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
+                                                        @if (!in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan))
                                                         <option
                                                             value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
+                                                        @endif
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -243,7 +247,7 @@
                                             </textarea>
                                         </p>
                                     </td>
-                                    <td>
+                                    <td class="{{ !empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id ? '' : 'text-center' }}">
                                         @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                             <p>Lãnh đạo dự họp:</p>
                                             <div class="radio-info form-check-inline">
@@ -342,6 +346,8 @@
                 $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val();
                 removeDuHop($this, '.chu-tich-du-hop');
             }
+
+            lanhDaoXemDeBiet($this, 'CT');
         });
 
         $('.pho-chu-tich').on('change', function () {
@@ -374,6 +380,7 @@
                 $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo giám đốc ' + textChuTich);
                 removeDuHop($this, '.pho-ct-du-hop');
             }
+            lanhDaoXemDeBiet($this, 'PCT');
         });
 
         $('.check-van-ban-quan-trong').on('click', function () {

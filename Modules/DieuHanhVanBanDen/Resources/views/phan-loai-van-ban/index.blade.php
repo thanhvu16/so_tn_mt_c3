@@ -293,6 +293,8 @@
             if (statusTraLai) {
                 $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
             }
+
+            lanhDaoXemDeBiet($this, 'CT');
         });
 
         $('.pho-chu-tich').on('change', function () {
@@ -328,6 +330,8 @@
             if (statusTraLai) {
                 $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
             }
+
+            lanhDaoXemDeBiet($this, 'PCT');
         });
 
         $('body').on('change', '.don-vi-chu-tri', function () {
