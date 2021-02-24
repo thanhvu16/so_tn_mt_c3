@@ -283,7 +283,7 @@ class DieuHanhVanBanDenController extends Controller
                     break;
                 case TRUONG_PHONG:
                     if (empty($donVi->cap_xa)) {
-                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                     } else {
                         $ds_nguoiKy = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
                     }

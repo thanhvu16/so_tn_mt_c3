@@ -1390,13 +1390,18 @@
                                             <tr  style="text-align: justify">
                                                 <td colspan="9"><i>Nhận xét cá nhân  : {{$data->laydanhgia($data->id_dau_tien)->nhan_xet}}</i></td>
                                                 <td colspan="9">
-                                                    {{--                                                    {{isset($laydanhgiaphophong) ? 'Nhận xét của cấp phó : '. $laydanhgiaphophong->nhan_xet : ''}} --}}
                                                     @if( $data->canbodanhgia->hasRole(PHO_CHUC_TICH) || $data->canbodanhgia->hasRole(PHO_CHANH_VAN_PHONG)|| $data->canbodanhgia->hasRole(VAN_THU_HUYEN) )
                                                     @else
 {{--                                                        //xem lại đoạn check comment phó phòng--}}
-                                                        @if($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHU_TICH) ||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(TRUONG_PHONG) || $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHANH_VAN_PHONG)||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(VAN_THU_HUYEN) )
-                                                                <i>Nhận xét của cấp phó :{{$data->nhan_xet}}</i>  {{$data->laydanhgia($data->id_dau_tien)->nguoinhan->vai_tro}}
-                                                        @else
+{{--                                                    {{dd($data->laydanhgia($data->id_dau_tien)->nguoinhan)}}--}}
+{{--                                                        @if($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHU_TICH) ||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(TRUONG_PHONG) || $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHANH_VAN_PHONG)||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(VAN_THU_HUYEN) )--}}
+{{--                                                                <i>Nhận xét của cấp phó1 :{{$data->nhan_xet}}</i>--}}
+{{--                                                        @else--}}
+                                                            @if($data->canbodanhgia->hasRole(CHUYEN_VIEN))
+                                                            <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
+                                                        @endif
+                                                                @if($data->canbodanhgia->hasRole(TRUONG_PHONG))
+                                                            <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
                                                     @endif
                                                 </td>
