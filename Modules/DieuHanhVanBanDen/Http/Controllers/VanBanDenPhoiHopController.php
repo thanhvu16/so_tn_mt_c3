@@ -40,15 +40,15 @@ class VanBanDenPhoiHopController extends Controller
         $chuyenTiep = $request->get('chuyen_tiep') ?? null;
 
         if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 3;
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 4;
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = 5;
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
 
         $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $currentUser->don_vi_id)

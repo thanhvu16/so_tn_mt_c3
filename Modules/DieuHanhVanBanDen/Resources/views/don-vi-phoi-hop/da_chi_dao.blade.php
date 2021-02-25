@@ -129,7 +129,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">
-                                            @hasanyrole('trưởng phòng|trưởng ban')
+                                            @hasanyrole('trưởng phòng|trưởng ban|chánh văn phòng')
                                             <p>
                                                 <select name="pho_phong_id[{{ $vanBanDen->id }}]"
                                                         id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -148,7 +148,7 @@
                                                 </select>
                                             </p>
                                             @endrole
-                                            @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban')
+                                            @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban|chánh văn phòng|phó chánh văn phòng')
                                             <p>
                                                 <select name="chuyen_vien_id[{{ $vanBanDen->id }}]"
                                                         id="chuyen-vien-{{ $vanBanDen->id }}"
@@ -191,7 +191,7 @@
                                         {{--                                        </p>--}}
                                         {{--                                        @endrole--}}
 
-                                        @role('trưởng phòng|trưởng ban')
+                                        @role('trưởng phòng|trưởng ban|chánh văn phòng')
                                         <p>
                                             <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
