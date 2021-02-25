@@ -19,8 +19,8 @@
                             <div class="form-group col-md-3">
                                 <label for="vb_so_den" class="col-form-label">Số đến giấy mời</label>
                                 <input type="text" name="vb_so_den" class="form-control soden" id="vb_so_den"
-                                       value="{{isset($vanban)? $vanban->so_den : $sodengiaymoi}}" readonly
-                                       style="font-weight: 800;color: #F44336;cursor: not-allowed;"
+                                       value="{{isset($vanban)? $vanban->so_den : $sodengiaymoi}}"
+                                       style="font-weight: 800;color: #F44336;"
                                        placeholder="Số đến văn bản">
                             </div>
                             <div class="form-group col-md-3">

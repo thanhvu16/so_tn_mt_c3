@@ -983,7 +983,7 @@
                                                                   placeholder="Nhận xét của trưởng đơn vị"></textarea>
                                             </td>
                                             <td colspan="5" class="text-center" style="vertical-align: middle;">
-                                                @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
+                                                @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN))
                                                 @else
                                                     <select name="lanhdao"
                                                             class="form-control select2-search">
@@ -1397,10 +1397,20 @@
 {{--                                                        @if($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHU_TICH) ||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(TRUONG_PHONG) || $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(CHANH_VAN_PHONG)||$data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(VAN_THU_HUYEN) )--}}
 {{--                                                                <i>Nhận xét của cấp phó1 :{{$data->nhan_xet}}</i>--}}
 {{--                                                        @else--}}
-                                                            @if($data->canbodanhgia->hasRole(CHUYEN_VIEN))
+
+                                                            @if($data->canbodanhgia->hasRole(CHUYEN_VIEN) && ($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_TRUONG_BAN)|| $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_PHONG)|| $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHANH_VAN_PHONG)))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
-                                                                @if($data->canbodanhgia->hasRole(TRUONG_PHONG))
+                                                                @if($data->canbodanhgia->hasRole(TRUONG_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                            <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
+                                                        @endif
+                                                                @if($data->canbodanhgia->hasRole(CHU_TICH) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                            <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
+                                                        @endif
+                                                                @if($data->canbodanhgia->hasRole(TRUONG_BAN) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                            <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
+                                                        @endif
+                                                            @if($data->canbodanhgia->hasRole(CHANH_VAN_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
                                                     @endif
@@ -2111,7 +2121,7 @@
                                         @endif
 
 
-                                        @if (( auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG) )&& ($data->trang_thai == 3))
+                                        @if (( auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN) )&& ($data->trang_thai == 3))
                                             <tr>
                                                 <td colspan="23" style="vertical-align: middle;">
 
@@ -2121,7 +2131,7 @@
                                                 </td>
                                                 <td colspan="5" class="text-center"
                                                     style="vertical-align: middle;">
-                                                    @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG))
+                                                    @if(auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN))
                                                     @else
                                                         <select name="lanhdao"
                                                                 class="form-control select2-search">
@@ -2172,15 +2182,15 @@
         var total = 0;
         let $this = null;
 
-        $('.luulai').click(function () {
-            var luulai = $('.luulai').val();
-            if (luulai == 1) {
-                $('.luulai').addClass('hidden');
-                $('.gmoi').removeClass('hidden');
-            }else {
-
-            }
-        });
+        // $('.luulai').click(function () {
+        //     var luulai = $('.luulai').val();
+        //     if (luulai == 1) {
+        //         $('.luulai').addClass('hidden');
+        //         $('.gmoi').removeClass('hidden');
+        //     }else {
+        //
+        //     }
+        // });
 
         $('.select-value').on('change', function () {
             total = 0;

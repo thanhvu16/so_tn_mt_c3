@@ -39,8 +39,8 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Số đến văn bản</label>
-                                        <input type="text" class="form-control " value="{{$van_ban_den->so_den}}" readonly name="so_den" id="exampleInputEmail3"
-                                           placeholder="Số đến" style="font-weight: 800;color: #F44336;cursor: not-allowed;" >
+                                        <input type="text" class="form-control " value="{{$van_ban_den->so_den}}"  name="so_den" id="exampleInputEmail3"
+                                           placeholder="Số đến" style="font-weight: 800;color: #F44336" >
                                 </div>
                             </div>
                             <div class="col-md-3">

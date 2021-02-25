@@ -527,29 +527,32 @@ class VanBanDenController extends Controller
         $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $request->so_van_ban, 'id' => $vanbandv->id])->first();
         $vanbandv->loai_van_ban_id = $request->loai_van_ban;
         $vanbandv->so_van_ban_id = $request->so_van_ban;
-        if ($checktrungsoden == null) {
-            $user = auth::user();
-            $nam = date("Y");
-            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-                $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $user->don_vi_id,
-                    'so_van_ban_id' => $request->so_van_ban,
-                    'type' => 1
-                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-                $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $user->don_vi_id,
-                    'so_van_ban_id' => $request->so_van_ban,
-                    'type' => 2
-                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+
+
+        if ($request->so_den != $vanbandv->so_den)
+        {
+            $vanbandv->so_den = $request->so_den;
+        }else{
+            if ($checktrungsoden == null) {
+                $user = auth::user();
+                $nam = date("Y");
+                if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                    $soDenvb = VanBanDen::where([
+                        'don_vi_id' => $user->don_vi_id,
+                        'so_van_ban_id' => $request->so_van_ban,
+                        'type' => 1
+                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+                } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                    $soDenvb = VanBanDen::where([
+                        'don_vi_id' => $user->don_vi_id,
+                        'so_van_ban_id' => $request->so_van_ban,
+                        'type' => 2
+                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+                }
+                $soDenvb = $soDenvb + 1;
+                $vanbandv->so_den = $soDenvb;
             }
 
-//            $soDen = VanBanDen::where([
-//                'so_van_ban_id' => $request->so_van_ban,
-//                'don_vi_id' => auth::user()->don_vi_id
-//            ])->max('so_den');
-            $soDenvb = $soDenvb + 1;
-            $vanbandv->so_den = $soDenvb;
         }
 
         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
