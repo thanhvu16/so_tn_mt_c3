@@ -91,7 +91,7 @@
                                                    name="van_ban-don_vi" value="1" checked>
                                             <label for="van-ban-don-vi-{{ $vbDen2->id }}"
                                                    class="color-red font-weight-normal">
-                                                Văn bản đơn vị chủ trì1
+                                                Văn bản đơn vị chủ trì
                                             </label>
                                         </p>
                                             <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"

@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản xem để biết')
+@section('page_title', 'Văn bản giám sát - theo dõi')
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản xem để biết</h4>
+                                <h4 class="header-title pt-2">Văn bản giám sát - theo dõi</h4>
                             </div>
                         </div>
                     </div>

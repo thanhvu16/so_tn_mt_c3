@@ -19,4 +19,11 @@ class LogXuLyVanBanDen extends Model
         'tu_tham_muu',
         'user_id'
     ];
+
+    public static function luuLogXuLyVanBanDen($dataXuLyVanBanDen)
+    {
+        $luuVetVanBanDen = new LogXuLyVanBanDen();
+        $luuVetVanBanDen->fill($dataXuLyVanBanDen);
+        $luuVetVanBanDen->save();
+    }
 }

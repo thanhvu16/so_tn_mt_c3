@@ -188,14 +188,16 @@ class LichCongTac extends Model
 
         //thêm file giấy mời vào quản lý cuộc họp$vanBanDenId
         $fileVanBanDen = FileVanBanDen::where('vb_den_id',$vanBanDenId)->first();
-        $filecuochop = new FileCuocHop();
-        $filecuochop->ten_file = $fileVanBanDen->ten_file;
-        $filecuochop->duong_dan = $fileVanBanDen->duong_dan;
-        $filecuochop->duoi_file = $fileVanBanDen->duoi_file;
-        $filecuochop->lich_hop_id = $lichCongTac->id;
-        $filecuochop->nguoi_tao = $fileVanBanDen->nguoi_dung_id;
-        $filecuochop->trang_thai = 1;
-        $filecuochop->save();
+        if (!empty($fileVanBanDen)) {
+            $filecuochop = new FileCuocHop();
+            $filecuochop->ten_file = $fileVanBanDen->ten_file;
+            $filecuochop->duong_dan = $fileVanBanDen->duong_dan;
+            $filecuochop->duoi_file = $fileVanBanDen->duoi_file;
+            $filecuochop->lich_hop_id = $lichCongTac->id;
+            $filecuochop->nguoi_tao = $fileVanBanDen->nguoi_dung_id;
+            $filecuochop->trang_thai = 1;
+            $filecuochop->save();
+        }
     }
 
     public function listThanhPhanDuHop()

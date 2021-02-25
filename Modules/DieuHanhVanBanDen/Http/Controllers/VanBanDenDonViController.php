@@ -37,15 +37,15 @@ class VanBanDenDonViController extends Controller
         $trinhTuNhanVanBan = null;
 
         if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 3;
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 4;
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = 5;
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
 
         $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
@@ -91,7 +91,7 @@ class VanBanDenDonViController extends Controller
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
                 $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
-                if ($trinhTuNhanVanBan != 5) {
+                if ($trinhTuNhanVanBan != VanBanDen::CHUYEN_VIEN_NHAN_VB) {
                     $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                     $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
@@ -99,7 +99,7 @@ class VanBanDenDonViController extends Controller
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
                 }
 
-                if ($trinhTuNhanVanBan == 5) {
+                if ($trinhTuNhanVanBan == VanBanDen::CHUYEN_VIEN_NHAN_VB) {
                     $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
                     $vanBanDen->giaHanVanBanTraLai = $vanBanDen->giaHanVanBanTraLai();
                     $vanBanDen->giaiQuyetVanBanTraLai = $vanBanDen->giaiQuyetVanBanTraLai();
@@ -112,7 +112,7 @@ class VanBanDenDonViController extends Controller
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
 
-        if ($trinhTuNhanVanBan == 5) {
+        if ($trinhTuNhanVanBan == VanBanDen::CHUYEN_VIEN_NHAN_VB) {
 
             return view('dieuhanhvanbanden::don-vi.chuyen_vien', compact('danhSachVanBanDen', 'danhSachPhoPhong',
                 'danhSachChuyenVien', 'trinhTuNhanVanBan', 'order', 'loaiVanBanGiayMoi', 'donVi'));
@@ -132,15 +132,15 @@ class VanBanDenDonViController extends Controller
         $date = $request->get('date') ?? null;
 
         if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 3;
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole([PHO_PHONG,PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-            $trinhTuNhanVanBan = 4;
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
         }
 
         if ($currentUser->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = 5;
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
 
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
@@ -435,12 +435,12 @@ class VanBanDenDonViController extends Controller
 
                         } else {
                             if (!empty($danhSachPhoPhongIds[$vanBanDenId])) {
-                                $vanBanDen->trinh_tu_nhan_van_ban = 4;
+                                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_PHONG_NHAN_VB;
                                 $vanBanDen->save();
                             }
 
                             if (!empty($danhSachChuyenVienIds[$vanBanDenId]) && empty($danhSachPhoPhongIds[$vanBanDenId])) {
-                                $vanBanDen->trinh_tu_nhan_van_ban = 5;
+                                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHUYEN_VIEN_NHAN_VB;
                                 $vanBanDen->save();
                             }
                         }
@@ -527,9 +527,7 @@ class VanBanDenDonViController extends Controller
                             DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
 
                             // luu vet van ban den
-                            $luuVetVanBanDen = new LogXuLyVanBanDen();
-                            $luuVetVanBanDen->fill($dataLuuDonViPhoiHop);
-                            $luuVetVanBanDen->save();
+                            LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataLuuDonViPhoiHop);
                         }
 
                     }
@@ -557,9 +555,7 @@ class VanBanDenDonViController extends Controller
                         $chuyenNhanVanBanPhoPhong->save();
 
                         // luu log dh van ban den pho phong
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
-                        $luuVetVanBanDen->save();
+                        LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataChuyenNhanVanBanDonVi);
 
                         NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachTruongPhongIds[$vanBanDenId]);
                     }
@@ -587,9 +583,7 @@ class VanBanDenDonViController extends Controller
                         $chuyenNhanVanBanPhoPhong->save();
 
                         // luu log dh van ban den pho phong
-                        $luuVetVanBanDen = new LogXuLyVanBanDen();
-                        $luuVetVanBanDen->fill($dataChuyenNhanVanBanDonVi);
-                        $luuVetVanBanDen->save();
+                        LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataChuyenNhanVanBanDonVi);
 
                         NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId]);
                     }
@@ -618,9 +612,7 @@ class VanBanDenDonViController extends Controller
                         $chuyenNhanVanBanChuyenVienDonVi->save();
 
                         // luu log dh van ban den chuyen vien
-                        $logChuyenVien = new LogXuLyVanBanDen();
-                        $logChuyenVien->fill($dataChuyenNhanVanBanChuyenVien);
-                        $logChuyenVien->save();
+                        LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataChuyenNhanVanBanChuyenVien);
 
                         NguoiThamDu::taoNguoiDuHop($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId]);
                     }

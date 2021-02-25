@@ -25,7 +25,7 @@
         </li>
 
         <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
-                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB xem để biết</a>
+                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB giám sát, theo dõi</a>
         </li>
 
         <li class="{{ Route::is('van-ban-den-don-vi.quan_trong') ? 'active' : '' }}"><a

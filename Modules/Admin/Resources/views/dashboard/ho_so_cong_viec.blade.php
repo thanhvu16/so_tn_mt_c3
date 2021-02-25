@@ -48,7 +48,7 @@
 
                 @hasanyrole('phó phòng|phó chánh văn phòng|phó trưởng ban')
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
-                        <p>VB xem để biết
+                        <p>VB giám sát, theo dõi
                             <button
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
@@ -119,7 +119,7 @@
                 @endrole
                 @hasanyrole('chủ tịch|phó chủ tịch')
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
-                        <p>VB xem để biết
+                        <p>VB giám sát, theo dõi
                             <button
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
