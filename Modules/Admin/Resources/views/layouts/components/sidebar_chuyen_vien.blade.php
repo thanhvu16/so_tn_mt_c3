@@ -138,3 +138,6 @@
         {{--                    <li class="{{ Route::is('vanbandichoso') ? 'active' : '' }}"><a href="{{ route('vanbandichoso') }}"><i class="fa fa-circle-o"></i> Danh sách chờ số</a></li>--}}
     </ul>
 </li>
+{{--@hasanyrole('phó phòng|phó trưởng ban')--}}
+
+{{--@endrole--}}

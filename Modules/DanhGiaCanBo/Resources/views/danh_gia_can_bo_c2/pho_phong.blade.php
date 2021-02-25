@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Đánh giá cán bộ1</h3>
+                        <h3 class="box-title">Đánh giá cán bộ</h3>
                     </div>
                     <div class="box-body">
                         <div class="row" >
@@ -2044,15 +2044,15 @@
 @section('script')
     <script type="text/javascript">
 
-        $('.luulai').click(function () {
-            var luulai = $('.luulai').val();
-            if (luulai == 1) {
-                $('.luulai').addClass('hidden');
-                $('.gmoi').removeClass('hidden');
-            }else {
-
-            }
-        });
+        // $('.luulai').click(function () {
+        //     var luulai = $('.luulai').val();
+        //     if (luulai == 1) {
+        //         $('.luulai').addClass('hidden');
+        //         $('.gmoi').removeClass('hidden');
+        //     }else {
+        //
+        //     }
+        // });
         var total = 0;
         let $this = null;
 

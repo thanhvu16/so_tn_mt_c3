@@ -17,6 +17,7 @@
 
 Route::resource('danh-gia-can-bo', 'DanhGiaCanBoController');
 Route::resource('danh-gia-can-bo-c2', 'LanhDaoController');
+Route::resource('danh-gia-can-bo-chi_cuc', 'ChiCucDanhGiaController');
 Route::get('cap-tren-danh-gia-can-bo-c2','LanhDaoController@captrendanhgia')->name('captrendanhgiac2');
 Route::match(['post','put'],'danh-gia-cap-tren-c2', ['as' =>'danhgiacaptrenc2' , 'uses' => 'LanhDaoController@danhgiacaptren']);
 Route::match(['post','put'],'chuyen-noi-vu', ['as' =>'chuyennoivu' , 'uses' => 'DanhGiaCanBoController@chuyennoivu']);
