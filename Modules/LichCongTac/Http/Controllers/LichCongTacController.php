@@ -49,8 +49,10 @@ class LichCongTacController extends Controller
         $ngaybd = date('Y-m-d', $start_date);
         $ngaykt = date('Y-m-d', $end_date);
 
-        $totalWeekOfYear = max(date("W", strtotime($year . "-12-27")), date("W", strtotime($year . "-12-29")),
+        $totalWeekOfYear = max(date("W", strtotime($year . "-12-27")),
+            date("W", strtotime($year . "-12-29")),
             date("W", strtotime($year . "-12-31")));
+//        dd($totalWeekOfYear);
 
         $tuanTruoc = $week != 1 ? $week - 1 : 01;
         $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
