@@ -14,3 +14,4 @@
 Route::prefix('layvanbantuemail')->group(function() {
     Route::get('/', 'LayVanBanTuEmailController@index');
 });
+Route::resource('lay-van-ban-tu-email', 'LayVanBanTuEmailController');
