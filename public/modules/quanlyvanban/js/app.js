@@ -170,7 +170,39 @@ function duthaovanban() {
                     </div>`;
 
     $('.duthaovb').append(htmlForm);
+}function themnoinhan() {
+    let htmlForm = `<div class="remove-multi-file col-md-12 mt-2">
+                         <div class="row">
+                             <div class="col-md-4">
+                                        <label for="" class="col-form-label">Tên Đơn vị nhận ngoài</label>
+                                        <input type="text"
+                                               value=""
+                                                name="ten_don_vi_them[]"  class="form-control"
+                                               placeholder="Tên đơn vị..." >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="email_them" class="col-form-label">Email</label>
+                                        <div class="form-line input-group control-group">
+                                        <input type="text"
+                                               value=""
+                                                name="email_them[]"  class="form-control"
+                                               placeholder="Email..." >
+                                               <div class="input-group-btn customize-group-btn">
+                                        <span class="btn btn-danger btn-remove-file" type="button">
+                                        <i class="fa fa-remove"></i></span>
+                                    </div>
+                                    </div>
+                                    </div>
+                        </div>
+                    </div>`;
+
+    $('.themnoinhan').append(htmlForm);
 }
+
+
+
+
+
 $('.layidnguoiky').on('change', function () {
     let chucVu = $(this).find('option:selected').data('chuc-vu');
     $('[name=chuc_vu]').val(chucVu);
