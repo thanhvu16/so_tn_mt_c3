@@ -55,9 +55,11 @@
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
         <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" id="nguoi_ky" autofocus required>
             <option>--Chọn người ký--</option>
-            @foreach ($ds_nguoiKy as $nguoiky)
-                <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>
-            @endforeach
+            @if (!empty($ds_nguoiKy))
+                @foreach ($ds_nguoiKy as $nguoiky)
+                    <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>
+                @endforeach
+            @endif
         </select>
     </div>
 
