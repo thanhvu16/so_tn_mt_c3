@@ -913,12 +913,14 @@ class DuThaoVanBanController extends Controller
 
     public function tao_van_ban_di(Request $request)
     {
+
         $user = auth::user();
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
         $canbothuocduthaocu = CanBoPhongDuThao::where('du_thao_vb_id', $request->id_duthao)->get();
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
-
+        try {
+            DB::beginTransaction();
         foreach ($canbothuocduthaocu as $canbo) {
             $canbothuocduthaophongcu = CanBoPhongDuThao::where('id', $canbo->id)->first();
             $canbothuocduthaophongcu->trang_thai = 12;
@@ -935,6 +937,8 @@ class DuThaoVanBanController extends Controller
         $filehoso = !empty($request['file_name']) ? $request['file_name'] : null;
         $filephieutrinh = !empty($request['file_phieu_trinh']) ? $request['file_phieu_trinh'] : null;
         $filetrinhky = !empty($request['file_trinh_ky']) ? $request['file_trinh_ky'] : null;
+        $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
+        $EmailThem = $request->email_them;
         $duthaochot = Duthaovanbandi::where('id', $request->id_duthao)->first();
         $nguoiky = User::where('id', $request->nguoiky_id)->first();
         $duthaochot->stt = 3;
@@ -977,6 +981,15 @@ class DuThaoVanBanController extends Controller
         $vanbandi->save();
         UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
 
+
+            if ($tenMailThem && count($tenMailThem) > 0) {
+                foreach ($tenMailThem as $key => $data) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi -> ten_don_vi= $data;
+                    $themDonVi -> email= $EmailThem[$key];
+                    $themDonVi -> save();
+                }
+            }
 
         if ($filetrinhky && count($filetrinhky) > 0) {
             if ($filehoso && count($filehoso) > 0) {
@@ -1179,6 +1192,11 @@ class DuThaoVanBanController extends Controller
                 $mailngoai->email = $ngoai;
                 $mailngoai->save();
             }
+        }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            dd($e);
         }
 
         return redirect()->route('Danhsachduthao')->with('success', 'Thêm văn bản đi thành công !');

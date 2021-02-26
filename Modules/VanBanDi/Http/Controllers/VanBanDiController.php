@@ -411,7 +411,19 @@ class VanBanDiController extends Controller
             $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
             $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
             $nguoiky = User::where('id', $request->nguoiky_id)->first();
+            $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
+            $EmailThem = $request->email_them;
             $user = auth::user();
+
+
+            if ($tenMailThem && count($tenMailThem) > 0) {
+                foreach ($tenMailThem as $key => $data) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi -> ten_don_vi= $data;
+                    $themDonVi -> email= $EmailThem[$key];
+                    $themDonVi -> save();
+                }
+            }
 
             $vanbandi = new VanBanDi();
             $vanbandi->trich_yeu = $request->vb_trichyeu;

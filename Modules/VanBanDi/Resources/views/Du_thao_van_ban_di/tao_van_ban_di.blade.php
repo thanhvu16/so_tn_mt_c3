@@ -157,6 +157,41 @@
 
                                 </select>
                             </div>
+                            <div class="form-group col-md-12 ">
+                                <span style="font-style: italic">( <span style="color: red">Có thể thêm mới nơi nhận mail bên ngoài phía dưới</span> )</span><br>
+
+                                <div class="row themnoinhan">
+
+                                    <div class="col-md-4">
+                                        <label for="" class="col-form-label">Tên Đơn vị nhận ngoài</label>
+                                        <input type="text"
+                                               value=""
+                                                name="ten_don_vi_them[]"  class="form-control"
+                                               placeholder="Tên đơn vị..." >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="email_them" class="col-form-label">Email</label>
+                                        <input type="text"
+                                               value=""
+                                                name="email_them[]"  class="form-control"
+                                               placeholder="Email..." >
+                                    </div>
+                                    <div class="col-md-5 mt-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a class="btn btn-success btn-xs" style="color: white"
+                                                   onclick="themnoinhan()"
+                                                   role="button"
+                                                ><i class="fa fa-plus"></i>
+                                                </a>
+                                                <b class="text-danger"> Thêm nơi nhận</b> &emsp;
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div class="row clearfix"></div>
 
 

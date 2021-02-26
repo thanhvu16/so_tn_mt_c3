@@ -25,12 +25,6 @@
                             <thead>
                             <tr>
                                 <th class="text-center" width="5%">STT</th>
-                                <th class="text-center" width="10%"> Ngày dự thảo
-
-                                </th>
-                                <th class="text-center" width="10%">Ký hiệu
-
-                                </th>
                                 <th class="text-center" width="">Trích yếu
 
                                 </th>
@@ -46,14 +40,14 @@
                                     @csrf
                                     <tr>
                                         <td>{{$key+1}}</td>
-                                        <td class="text-center">
-                                            {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}
-                                        </td>
-                                        <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td><a href=""
                                                title="{{$data->thongtinduthao->vb_trich_yeu ?? ''}}">{{$data->thongtinduthao->vb_trich_yeu ?? ''}}</a><br>
                                             <span
-                                                style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
+                                                style="font-style: italic">Ký hiệu : {{$data->thongtinduthao->so_ky_hieu ?? ''}}</span><br>
+                                            <span
+                                                style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span><br>
+                                            <span
+                                                style="font-style: italic">Ngày nhập: {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}</span>
 
                                         </td>
                                         <td class="text-center" style="vertical-align: middle">
@@ -74,7 +68,7 @@
                                         <td>
                                             <div class="col-md-12">
                                                                 <textarea rows="2"
-                                                                          class="form-control @if($data->trang_thai == 2) hidden @else  @endif"
+                                                                          class="form-control @if($data->trang_thai == 2 || $data->trang_thai == 12) hidden @else  @endif"
                                                                           required
                                                                           placeholder="Nhập ý kiến góp ý ..."
                                                                           name="y_kien"
@@ -82,6 +76,7 @@
                                             </div>
                                             @if($data->trang_thai == 12)
                                                 <div class="col-md-12 text-right">
+                                                    {{$data->y_kien  }}
                                                 @forelse($data->gopyFile as $key=>$item)
                                                     <a href="{{$item->getUrlFile()}}" target="_blank">
                                                         [xem file góp ý]</a>
@@ -184,14 +179,17 @@
                                     @csrf
                                     <tr>
                                         <td>{{$key+1+$key2}}</td>
-                                        <td class="text-center">
-                                            {{ !empty($data->thongtinduthao) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
-                                        </td>
-                                        <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
+
                                         <td><a href=""
                                                title="{{$data->thongtinduthao->vb_trich_yeu ?? null }}">{{$data->thongtinduthao->vb_trich_yeu ?? null }}</a><br>
                                             <span
-                                                style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
+                                                style="font-style: italic">Ký hiệu : {{$data->thongtinduthao->so_ky_hieu ?? ''}}</span><br>
+                                            <span
+                                                style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span><br>
+                                            <span
+                                                style="font-style: italic">Ngày nhập : {{ !empty($data->thongtinduthao) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}</span>
+{{--                                            <span--}}
+{{--                                                style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>--}}
 
                                         </td>
                                         <td class="text-center" style="vertical-align: middle">
