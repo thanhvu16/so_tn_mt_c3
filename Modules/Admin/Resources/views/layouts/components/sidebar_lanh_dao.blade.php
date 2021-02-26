@@ -23,7 +23,7 @@
         <li class="{{ Route::is('gia-han-van-ban.index') ? 'active' : '' }}"><a
                 href="{{ route('gia-han-van-ban.index') }}"><i class="fa fa-circle-o"></i>VB xin gia hạn</a>
         </li>
-
+        <hr class="hr-line">
         <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB giám sát, theo dõi</a>
         </li>

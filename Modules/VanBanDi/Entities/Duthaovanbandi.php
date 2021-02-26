@@ -69,5 +69,16 @@ class Duthaovanbandi extends Model
         return $ten_chuc_vu;
     }
 
+    public function phieuTrinhVanBanDi()
+    {
+        return $this->hasOne(Fileduthao::class, 'vb_du_thao_id', 'id')
+                    ->where('stt', 1);
+    }
+
+    public function fileTrinhKyVanBanDi()
+    {
+        return $this->hasOne(Fileduthao::class, 'vb_du_thao_id', 'id')
+            ->where('stt', 2);
+    }
 
 }

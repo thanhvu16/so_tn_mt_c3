@@ -466,7 +466,7 @@ class VanBanDiController extends Controller
             if ($filehoso && count($filehoso) > 0) {
                 foreach ($filehoso as $key => $getFile) {
                     $extFile = $getFile->extension();
-                    $ten = strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile;
+                    $ten = !empty($tenfilehoso[$key]) ? strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile : null;
                     $vbDiFile = new FileVanBanDi();
                     $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
 

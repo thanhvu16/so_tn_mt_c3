@@ -449,3 +449,11 @@ img.brand-logo {
     font-weight: 700;
     font-size: 12px;
 }
+hr.hr-line{
+    margin-top: 1px !important;
+     margin-bottom: 1px !important;
+}
+
+.btn-remove-file:hover {
+    cursor: pointer;
+}

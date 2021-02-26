@@ -419,6 +419,10 @@ class VanBanDenDonViController extends Controller
                         if (isset($vanBanTraLoi[$vanBanDenId]) && !empty($vanBanTraLoi[$vanBanDenId])) {
                             $vanBanDen->van_ban_can_tra_loi = VanBanDen::VB_TRA_LOI;
                             $vanBanDen->save();
+                            // update van ban con co parent_id = vanbanden->id
+                            VanBanDen::where('parent_id', $vanBanDen->id)->update([
+                               'van_ban_can_tra_loi' => VanBanDen::VB_TRA_LOI
+                            ]);
                         }
 
                         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {

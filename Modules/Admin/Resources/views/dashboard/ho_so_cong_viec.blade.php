@@ -56,12 +56,14 @@
                 @endrole
 
                 @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên|trưởng ban|phó trưởng ban')
-                    <a class="text-title-item" href="{{ route('van-ban-den-hoan-thanh.cho-duyet') }}">
-                        <p>VB hoàn thành chờ duyệt
-                            <button
-                                class="btn br-10 btn-purple btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanHoanThanhChoDuyet }}</button>
-                        </p>
-                    </a>
+                    @unlessrole('chuyên viên')
+                        <a class="text-title-item" href="{{ route('duyet-van-ban-cap-duoi-trinh') }}">
+                            <p>Duyệt VB cấp dưới trình
+                                <button
+                                    class="btn br-10 btn-purple btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $duyetVanBanCapDuoiTrinh }}</button>
+                            </p>
+                        </a>
+                    @endunlessrole
                     @role('chuyên viên')
                         <a class="text-title-item" href="{{ route('van_ban_den_chuyen_vien.index') }}">
                             <p>VB chuyên viên PH chờ xử lý

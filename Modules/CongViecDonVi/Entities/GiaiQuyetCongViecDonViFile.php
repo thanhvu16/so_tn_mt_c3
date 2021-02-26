@@ -23,7 +23,7 @@ class GiaiQuyetCongViecDonViFile extends Model
 
             $typeArray = explode('.', $getFile->getClientOriginalName());
             $extFile = strtolower($typeArray[1]);
-            $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
+            $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile : null;
 
             $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
             $url = THU_MUC_CONG_VIEC_DON_VI . '/' . $fileName;

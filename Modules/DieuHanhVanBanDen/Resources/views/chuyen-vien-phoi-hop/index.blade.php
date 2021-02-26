@@ -76,7 +76,7 @@
                                     <td>
                                         @if($vanBanDen->hasChild)
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop') }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop&edit=true') }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
@@ -88,7 +88,7 @@
                                             </p>
                                         @else
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?type=cv_phoi_hop&edit=true') }}">{{ $vanBanDen->trich_yeu }}</a>
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>

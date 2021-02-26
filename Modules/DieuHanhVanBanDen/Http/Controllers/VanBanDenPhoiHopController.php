@@ -427,7 +427,21 @@ class VanBanDenPhoiHopController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $phoiHopGiaiQuyet = PhoiHopGiaiQuyet::findOrFail($id);
+        $phoiHopGiaiQuyet->noi_dung = $data['noi_dung'];
+        $phoiHopGiaiQuyet->save();
+
+        //upload file
+        $txtFiles = !empty($data['txt_file']) ? $data['txt_file'] : null;
+        $multiFiles = !empty($data['ten_file']) ? $data['ten_file'] : null;
+
+        if ($multiFiles && count($multiFiles) > 0) {
+
+            PhoiHopGiaiQuyetFile::dinhKemFileGiaiQuyet($multiFiles, $txtFiles, $phoiHopGiaiQuyet->id);
+        }
+
+        return redirect()->route('van_ban_den_chuyen_vien.da_xu_ly', 'status=1')->with('success', 'Đã phối hợp giải quyết.');
     }
 
     /**

@@ -982,7 +982,7 @@ class DuThaoVanBanController extends Controller
             if ($filehoso && count($filehoso) > 0) {
                 foreach ($filehoso as $key => $getFile) {
                     $extFile = $getFile->extension();
-                    $ten = strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile;
+                    $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile : null;
                     $vbDiFile = new FileVanBanDi();
                     $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
 
@@ -1227,7 +1227,7 @@ class DuThaoVanBanController extends Controller
 
 //        $donViXa = DonVi::where(['id'=>auth::user()->don_vi_id , 'cap_xa'=>1])->first();
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id ?? null)->first();
 
 
         $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 0, 'tra_lai' => 1])->get();

@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản hoàn thành chờ duyệt')
+@section('page_title', 'Duyệt văn bản cấp dưới trình')
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản hoàn thành chờ duyệt</h4>
+                                <h4 class="header-title pt-2">Duyệt văn bản cấp dưới trình</h4>
                             </div>
                         </div>
                     </div>

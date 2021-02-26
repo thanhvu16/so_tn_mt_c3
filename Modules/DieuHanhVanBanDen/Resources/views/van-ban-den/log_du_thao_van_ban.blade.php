@@ -33,19 +33,31 @@
                             </td>
                             <td>
                                 <p><a href="{{ route('Danhsachduthao') }}" class="color-black">{{ $duThaoVanBan->vb_trich_yeu }}</a></p>
-                                File:
+                                @if ($duThaoVanBan->phieuTrinhVanBanDi)
                                 <p>
-                                    @if (isset($duThaoVanBan->Duthaofile))
-                                        @foreach($duThaoVanBan->Duthaofile as $key => $file)
-                                            <a href="{{ $file->getUrlFile() }}"
-                                               target="popup"
-                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                            @if (count($duThaoVanBan->Duthaofile)-1 != $key)
-                                                &nbsp;|&nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                   - <a href="{{ $duThaoVanBan->phieuTrinhVanBanDi->getUrlFile() }}"
+                                       target="popup" class="detail-file-name seen-new-window color-black">Phiếu trình văn bản dự thảo</a>
                                 </p>
+                                @endif
+                                @if ($duThaoVanBan->fileTrinhKyVanBanDi)
+                                    <p>
+                                        - <a href="{{ $duThaoVanBan->fileTrinhKyVanBanDi->getUrlFile() }}"
+                                             target="popup" class="detail-file-name seen-new-window color-black">File trình ký văn bản dự thảo</a>
+                                    </p>
+                                @endif
+                                {{--                                File:--}}
+{{--                                <p>--}}
+{{--                                    @if (isset($duThaoVanBan->Duthaofile))--}}
+{{--                                        @foreach($duThaoVanBan->Duthaofile as $key => $file)--}}
+{{--                                            <a href="{{ $file->getUrlFile() }}"--}}
+{{--                                               target="popup"--}}
+{{--                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>--}}
+{{--                                            @if (count($duThaoVanBan->Duthaofile)-1 != $key)--}}
+{{--                                                &nbsp;|&nbsp;--}}
+{{--                                            @endif--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+{{--                                </p>--}}
                                 @if ($duThaoVanBan->stt == 3)
                                     <label class="label label-success">Đã duyệt</label>
                                 @endif

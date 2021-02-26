@@ -46,6 +46,8 @@ Route::resource('giai-quyet-van-ban', 'GiaiQuyetVanBanController');
 
 Route::get('van-ban-den-hoan-thanh-cho-duyet', 'VanBanDenHoanThanhController@choDuyet')->name('van-ban-den-hoan-thanh.cho-duyet');
 
+Route::get('duyet-van-ban-cap-duoi-trinh', 'VanBanDenHoanThanhController@duyetVanBanCapDuoiTrinh')->name('duyet-van-ban-cap-duoi-trinh');
+
 Route::post('duyet-van-ban', 'VanBanDenHoanThanhController@duyetVanBan');
 
 Route::get('van-ban-hoan-thanh', 'VanBanDenHoanThanhController@index')->name('van-ban-den-hoan-thanh.index');
@@ -53,6 +55,7 @@ Route::get('van-ban-hoan-thanh', 'VanBanDenHoanThanhController@index')->name('va
 Route::get('van-ban-den-chuyen-vien-phoi-hop', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.index');
 
 Route::post('phoi-hop-giai-quyet', 'VanBanDenPhoiHopController@phoiHopGiaiQuyet')->name('phoi_hop_giai_quyet.store');
+Route::post('phoi-hop-giai-quyet/update/{id}', 'VanBanDenPhoiHopController@update')->name('phoi_hop_giai_quyet.update');
 
 Route::get('van-ban-den-chuyen-vien-phoi-hop-da-xu-ly', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.da_xu_ly');
 
@@ -66,3 +69,5 @@ Route::get('van-ban-den-dang-xu-ly', 'VanBanDenDonViController@dangXuLy')->name(
 
 Route::get('van-ban-xem-de-biet', 'DieuHanhVanBanDenController@vanBanXemDeBiet')->name('van-ban-den-don-vi.xem_de_biet');
 Route::get('van-ban-trong', 'DieuHanhVanBanDenController@vanBanQuanTrong')->name('van-ban-den-don-vi.quan_trong');
+
+Route::post('remove-file/{id}', 'DieuHanhVanBanDenController@removeFile');

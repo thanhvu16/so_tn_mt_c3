@@ -239,7 +239,7 @@ class AdminController extends Controller
         $vanBanXemDeBiet = 0;
         $vanBanChoXuLy = 0;
         $vanBanXinGiaHan = 0;
-        $vanBanHoanThanhChoDuyet = 0;
+        $duyetVanBanCapDuoiTrinh = 0;
         $donViPhoiHop = 0;
         $chuyenVienPhoiHop = 0;
         $vanBanChoPhanLoai = 0;
@@ -332,17 +332,13 @@ class AdminController extends Controller
 
             // VAN BAN HOAN THANH CHO DUYET
             if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
-                $vanBanHoanThanhChoDuyet = GiaiQuyetVanBan::where('can_bo_duyet_id', $user->id)
+
+                $duyetVanBanCapDuoiTrinh = GiaiQuyetVanBan::where('can_bo_duyet_id', $user->id)
                     ->whereNull('status')->count();
 
-
-            } else {
-                $vanBanHoanThanhChoDuyet = GiaiQuyetVanBan::where('user_id', $user->id)
-                    ->whereNull('status')->count();
-
+                array_push($hoSoCongViecPiceCharts, array('Duyệt VB cấp dưới trình', $duyetVanBanCapDuoiTrinh));
+                array_push($hoSoCongViecCoLors, COLOR_PURPLE);
             }
-            array_push($hoSoCongViecPiceCharts, array('VB hoàn thành chờ duyệt', $vanBanHoanThanhChoDuyet));
-            array_push($hoSoCongViecCoLors, COLOR_PURPLE);
 
             //VB DON VI PHOI HOP
             $chuyenTiep = null;
@@ -612,7 +608,7 @@ class AdminController extends Controller
             'vanBanXinGiaHan',
             'vanBanQuanTrong',
             'vanBanXemDeBiet',
-            'vanBanHoanThanhChoDuyet',
+            'duyetVanBanCapDuoiTrinh',
             'donViPhoiHop',
             'chuyenVienPhoiHop',
             'vanBanChoPhanLoai',

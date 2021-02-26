@@ -20,10 +20,9 @@ class GiaiQuyetVanBanFile extends Model
         $uploadPath = public_path(UPLOAD_GIAI_QUYET_VAN_BAN_DEN);
 
         foreach ($multiFiles as $key => $getFile) {
-
             $typeArray = explode('.', $getFile->getClientOriginalName());
             $extFile = strtolower($typeArray[1]);
-            $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
+            $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile : null;
 
             $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
             $url = UPLOAD_GIAI_QUYET_VAN_BAN_DEN . '/' . $fileName;
@@ -35,7 +34,7 @@ class GiaiQuyetVanBanFile extends Model
             $getFile->move($uploadPath, $fileName);
 
             $giaiQuyetFile = new GiaiQuyetVanBanFile();
-            $giaiQuyetFile->ten_file = isset($ten) ? $ten : $fileName;
+            $giaiQuyetFile->ten_file = isset($ten) ? $ten : $getFile->getClientOriginalName();
             $giaiQuyetFile->url_file = $url;
             $giaiQuyetFile->giai_quyet_van_ban_id = $giaiQuyetVanBanId;
             $giaiQuyetFile->save();

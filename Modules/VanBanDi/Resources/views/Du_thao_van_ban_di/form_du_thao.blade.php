@@ -26,7 +26,7 @@
     </div>
 
     <div class=" col-md-3 form-group">
-        <label for="exampleInputEmail2">Cán bộ phòng khác góp ý <span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Cán bộ phòng khác góp ý </label>
         <select name="lanh_dao_phong_khac[]" id="lanh_dao_phong_khac"
                 class="form-control select2"
                 multiple="multiple"

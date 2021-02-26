@@ -276,6 +276,29 @@
                 $('.form-du-thao').addClass('hide');
             }
         });
+
+        $('.btn-remove-file').on('click', function () {
+            let id = $(this).data('id');
+
+            if (confirm('Bạn muốn xóa dữ liệu này?')) {
+                $.ajax({
+                    url: APP_URL + '/remove-file/' + id,
+                    type: 'POST',
+                })
+                    .done(function (response) {
+                        if (response.success) {
+                            toastr['success'](response.message, 'Thông báo hệ thống');
+                            $('.file-phoi-hop-'+id).remove();
+                        }
+                    })
+                    .fail(function (error) {
+                        toastr['error'](error.message, 'Thông báo hệ thống');
+                    });
+            } else{
+                return false;
+            }
+        });
+
     </script>
 @endsection
 

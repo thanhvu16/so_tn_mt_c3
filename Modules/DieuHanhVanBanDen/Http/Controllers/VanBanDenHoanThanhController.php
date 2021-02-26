@@ -159,24 +159,53 @@ class VanBanDenHoanThanhController extends Controller
         //
     }
 
+    public function duyetVanBanCapDuoiTrinh()
+    {
+        $currentUser = auth::user();
+        $giaiQuyetVanBan = GiaiQuyetVanBan::where('can_bo_duyet_id', $currentUser->id)
+            ->whereNull('status')->select('id', 'van_ban_den_id')->get();
+
+        $arrVanBanDenId = $giaiQuyetVanBan->pluck('van_ban_den_id')->toArray();
+
+        $danhSachVanBanDen = VanBanDen::with('vanBanDenFile', 'nguoiDung', 'donViChuTri', 'xuLyVanBanDen')
+            ->whereIn('id', $arrVanBanDenId)
+            ->paginate(PER_PAGE);
+
+        if (count($danhSachVanBanDen) > 0) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet = $vanBanDen->giaiQuyetVanBanHoanThanhChoDuyet() ?? null;
+            }
+        }
+
+        $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE + 1;
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')->first();
+
+        return view('dieuhanhvanbanden::van-ban-hoan-thanh.truong_phong_cho_duyet',
+            compact('danhSachVanBanDen', 'order', 'loaiVanBanGiayMoi'));
+
+    }
+
     public function choDuyet()
     {
 
         $currentUser = auth::user();
 
-        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, PHO_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
-            $giaiQuyetVanBan = GiaiQuyetVanBan::where('can_bo_duyet_id', $currentUser->id)
-                ->whereNull('status')->select('id', 'van_ban_den_id')->get();
-
-            $view = 'dieuhanhvanbanden::van-ban-hoan-thanh.truong_phong_cho_duyet';
-
-        } else {
+//        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, PHO_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
+//            $giaiQuyetVanBan = GiaiQuyetVanBan::where('can_bo_duyet_id', $currentUser->id)
+//                ->whereNull('status')->select('id', 'van_ban_den_id')->get();
+//
+//            $view = 'dieuhanhvanbanden::van-ban-hoan-thanh.truong_phong_cho_duyet';
+//
+//        } else {
 
             $giaiQuyetVanBan = GiaiQuyetVanBan::where('user_id', $currentUser->id)
                 ->whereNull('status')->select('id', 'van_ban_den_id')->get();
 
             $view = 'dieuhanhvanbanden::van-ban-hoan-thanh.chuyen_vien_cho_duyet';
-        }
+//        }
 
         $arrVanBanDenId = $giaiQuyetVanBan->pluck('van_ban_den_id')->toArray();
 

@@ -3,7 +3,7 @@
         <div class="table-responsive box-panel">
             <h3>
                 <a data-toggle="collapse" href="#phong-chu-tri" class="color-black font-weight-bold">
-                    <i class="fa fa-link"></i> Trình tự chuyển phòng Chủ trì:
+                    <i class="fa fa-link"></i> Trình tự chuyển phòng chủ trì:
                     <i class="fa fa-plus pull-right"></i>
                 </a>
             </h3>
