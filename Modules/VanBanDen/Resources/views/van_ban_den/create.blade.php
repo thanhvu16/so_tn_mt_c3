@@ -156,14 +156,14 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="col-form-label" for="chu_tri_phoi_hop">Văn bản</label>
+                                <label class="col-form-label" for="chu_tri_phoi_hop">Trách nhiệm giải quyết</label>
                                 <br>
                                     <input type="radio" name="chu_tri_phoi_hop" class="flat-red" value="1" checked
-                                       > Đơn vị chủ trì
+                                       > chủ trì
                                 &nbsp;
                                     <input type="radio" name="chu_tri_phoi_hop" class="flat-red" value="2"
                                         {{ isset($user) && $user->trang_thai == 2 ? 'checked' : '' }}
-                                    > Đơn vị phối hợp
+                                    >phối hợp
                             </div>
 {{--                            @hasanyrole('văn thư đơn vị')--}}
 {{--                            <div class="col-md-3 mt-4">--}}
