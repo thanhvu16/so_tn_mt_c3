@@ -16,8 +16,6 @@
                             <thead>
                             <tr>
                                 <th class="text-center" width="5%">STT</th>
-                                <th class="text-center" width="10%"> Ngày dự thảo
-                                </th>
                                 <th class="text-center" width="">Trích yếu
                                 </th>
                                 <th class="text-center" width="23%">Người xử lý</th>
@@ -29,13 +27,15 @@
                             @forelse ($ds_duthao as $key=>$data)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td class="text-center">{{ date('d-m-Y', strtotime($data->ngay_thang)) }}</td>
 
                                     <td style="text-align: justify"><a
                                             href="@if($data->van_ban_den_don_vi_id != null){{route('van_ban_den_chi_tiet.show',$data->van_ban_den_don_vi_id)}}@else#@endif"
                                             title="{{$data->vb_trich_yeu}}">{{$data->vb_trich_yeu}}</a><br>
                                         <span
-                                            style="font-style: italic">Người nhập : {{$data->nguoiDung->ho_ten ?? ''}}&emsp;({{date_format($data->created_at, 'd-m-Y H:i:s')}})</span>
+                                            style="font-style: italic">Người nhập : {{$data->nguoiDung->ho_ten ?? ''}}&emsp;({{date_format($data->created_at, 'd/m/Y H:i:s')}})</span><br>
+                                        <span
+                                            style="font-style: italic">Ngày nhập : {{ date('d/m/Y', strtotime($data->ngay_thang)) }}</span>
+
                                         <div class="text-right" style="margin: 15px 10px">
                                             @forelse($data->Duthaofile as $key=>$item)
                                                 <a href="{{$item->getUrlFile()}}" class="seen-new-window"
@@ -62,7 +62,7 @@
                                     <td>
                                         <div class="form-control" style="height: 150px;overflow: auto">
                                             <span><span
-                                                    style="color: red">(*)</span> Danh sách cán bộ trong phòng: </span><br>
+                                                    style="color: red">(*)</span> Góp ý nội bộ: </span><br>
                                             @forelse($data->canbotrongphong as $key=>$phong)
                                                 <span style="font-style: italic">- {{$phong->nguoiDung->ho_ten ?? ''}} : <span
                                                         style="color: black;font-weight: bold">{{$phong->y_kien}}</span> &ensp;
@@ -74,7 +74,7 @@
                                                     @endforelse <br>
                                                                                         @empty
                                                     @endforelse
-                                                                                        <span><span style="color: red">(*)</span> Danh sách cán bộ phòng khác:</span><br>
+                                                                                        <span><span style="color: red">(*)</span> Góp ý từ đơn vị khác:</span><br>
                                                                                         @forelse($data->canbophongkhac as $key=>$khac)
                                                         <span
                                                             style="font-style: italic">- {{$khac->nguoiDung->ho_ten ?? ''}} : <span

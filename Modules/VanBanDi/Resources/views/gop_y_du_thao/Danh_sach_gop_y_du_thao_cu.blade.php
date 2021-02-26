@@ -78,10 +78,20 @@
                                                                           required
                                                                           placeholder="Nhập ý kiến góp ý ..."
                                                                           name="y_kien"
-                                                                          type="text"></textarea>
+                                                                          type="text">{{$data->y_kien}}</textarea>
                                             </div>
+                                            @if($data->trang_thai == 12)
+                                                <div class="col-md-12 text-right">
+                                                @forelse($data->gopyFile as $key=>$item)
+                                                    <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                        [xem file góp ý]</a>
+                                                        @empty
+                                                        @endforelse
+                                                @endif
+                                                </div>
+
                                             <div
-                                                class="col-md-12 @if($data->trang_thai == 2) hidden @else  @endif "
+                                                class="col-md-12 @if($data->trang_thai == 2 || $data->trang_thai == 12) hidden @else  @endif "
                                                 style="margin-top: 5px">
                                                 <input class="form-control hidden " value="123hihi"
                                                        name="txt_file[]" type="text">
@@ -96,7 +106,7 @@
                                             <div
                                                 class="col-md-12  @if($data->trang_thai == 2) @else hidden @endif">
                                                 <div class="">
-                                                    {{$data->y_kien}}
+                                                    {{$data->y_kien  }}
                                                     @forelse($data->gopyFile as $key=>$item)
                                                         <a href="{{$item->getUrlFile()}}" target="_blank">
                                                             [xem file góp ý]
@@ -111,7 +121,7 @@
                                                 {{--                                                               aria-expanded="false"><span class="btn btn-danger">--}}
                                                 {{--                                        <i class="fa fa-plus"></i> Sửa</span>--}}
                                                 {{--                                                            </a>--}}
-                                                <button onclick="showModal()" data-sua-can-bo="{{$data->id}}"  class="btn btn-danger bttuonsua">Sửa</button>
+                                                <button onclick="showModal()" data-sua-can-bo="{{$data->id}}" type="button"  class="btn btn-danger bttuonsua">Sửa</button>
                                             @elseif($data->trang_thai == 12)
                                                 -
                                             @endif
@@ -148,7 +158,7 @@
                                                            value="{{$data->du_thao_vb_id}}" name="id_van_ban"
                                                            class="hidden">
                                                     <input type="text" id="url-file"
-                                                           value="" name="id_can_bo"
+                                                           value="{{$data->id}}" name="id_can_bo"
                                                            class="hidden">
                                                     <input type="text" id="url-file"
                                                            value="1" name="type"
@@ -203,9 +213,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="col-md-12  @if($data->trang_thai == 2) @else hidden @endif">
+                                            <div class="col-md-12  @if($data->trang_thai == 2 || $data->trang_thai == 12 ) @else hidden @endif">
                                                 <div class="">
-                                                    {{$data->y_kien}}
                                                     @forelse($data->gopyFilecanbophongngoai as $key=>$item)
                                                         <a href="{{$item->getUrlFile()}}" target="_blank">
                                                             [xem file góp ý]
@@ -252,7 +261,7 @@
                                                            value="{{$data->du_thao_vb_id}}" name="id_van_ban"
                                                            class="hidden">
                                                     <input type="text" id="url-file"
-                                                           value="" name="id_can_bo"
+                                                           value="{{$data->id}}" name="id_can_bo"
                                                            class="hidden">
                                                     <input type="text" id="url-file"
                                                            value="2" name="type"

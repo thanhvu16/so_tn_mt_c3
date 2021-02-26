@@ -179,6 +179,7 @@ class GopYVanbanDiController extends Controller
 
             if ($multiFiles && count($multiFiles) > 0) {
                 $filegopy = Filecanbogopyduthao::where(['can_bo_gop_y' => $request->id_can_bo, 'Du_thao_id' => $request->id_van_ban])->get();
+                dd($filegopy);
                 foreach ($filegopy as $filevb) {
                     $fileid = Filecanbogopyduthao::where('id', $filevb->id)->first();
                     $fileid->trang_thai = 0;
