@@ -36,5 +36,10 @@ class DonVi extends Model
     {
         return $this->belongsTo(DonVi::class, 'parent_id', 'id')->select('id', 'ten_don_vi');
     }
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'don_vi_id', 'id');
+    }
 }
 

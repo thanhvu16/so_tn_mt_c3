@@ -71,10 +71,9 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="27%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="25%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center">Ý kiến</th>
-                                <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+                                <th class="text-center" width="21%">Ý kiến</th>
+                                <th width="22%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
@@ -108,12 +107,18 @@
                                                 @endif
                                             </p>
                                         @endif
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
-                                    </td>
-                                    <td>
                                         <p>
-                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            <a data-toggle="collapse" class="color-black"
+                                               href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button"
+                                               aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                <i class="fa fa-book"></i> Tóm tăt văn bản
+                                            </a>
                                         </p>
+                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                            <p>
+                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            </p>
+                                        </div>
                                         @if ($vanBanDen->vanBanTraLai)
                                             <p class="color-red"><b>Lý
                                                     do trả
@@ -126,6 +131,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
+                                        @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">

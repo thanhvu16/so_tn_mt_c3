@@ -67,8 +67,10 @@
                             <thead>
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="22%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="{{ auth::user()->hasRole(CHU_TICH) ? '42' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
+                                @unlessrole('chủ tịch')
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
+                                @endunlessrole
                                 <th class="15%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="15%" class="text-center">Tác vụ</th>
@@ -93,8 +95,23 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
+                                        @if (auth::user()->hasRole(CHU_TICH))
+                                            <p>
+                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                    <i class="fa fa-book"></i> Tóm tăt văn bản
+                                                </a>
+                                            </p>
+                                            <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                                <p>
+                                                    {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                </p>
+                                            </div>
+                                            @include('dieuhanhvanbanden::van-ban-den.thong_tin')
+                                        @else
+                                            @include('dieuhanhvanbanden::van-ban-den.info')
+                                        @endif
                                     </td>
+                                    @unlessrole('chủ tịch')
                                     <td>
                                         <p>
                                             <textarea name="tom_tat[{{ $vanBanDen->id }}]" class="form-control"
@@ -103,6 +120,7 @@
                                                       rows="9">{{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}</textarea>
                                         </p>
                                     </td>
+                                    @endunlessrole
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             @if (empty($active))

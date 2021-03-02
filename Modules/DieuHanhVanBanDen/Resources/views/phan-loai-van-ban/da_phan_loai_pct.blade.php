@@ -58,10 +58,9 @@
                             <thead>
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="22%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="19%" class="text-center">Tóm tắt văn bản</th>
-                                <th width="15%" class="text-center">Ý kiến</th>
-                                <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="22%" class="text-center">Ý kiến</th>
+                                <th width="24%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
@@ -84,12 +83,17 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
-                                    </td>
-                                    <td>
                                         <p>
-                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                <i class="fa fa-book"></i> Tóm tăt văn bản
+                                            </a>
                                         </p>
+                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                            <p>
+                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            </p>
+                                        </div>
+                                        @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">

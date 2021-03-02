@@ -32,9 +32,8 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="25%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="20%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center" width="15%">Ý kiến</th>
+                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+                                <th class="text-center" width="21%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 @if (auth::user()->hasRole(PHO_CHUC_TICH))
                                     <th class="text-center" width="7%">
@@ -57,7 +56,8 @@
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
-                                                        (Vào hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
+                                                        (Vào
+                                                        hồi {{ date( "H:i", strtotime($vanBanDen->hasChild->gio_hop)) }}
                                                         ngày {{ date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_hop)) }}
                                                         , tại {{ $vanBanDen->hasChild->dia_diem }})
                                                     </i>
@@ -76,12 +76,18 @@
                                                 @endif
                                             </p>
                                         @endif
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
-                                    </td>
-                                    <td>
                                         <p>
-                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            <a data-toggle="collapse" class="color-black"
+                                               href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button"
+                                               aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                <i class="fa fa-book"></i> Tóm tăt văn bản
+                                            </a>
                                         </p>
+                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                            <p>
+                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            </p>
+                                        </div>
                                         @if ($vanBanDen->vanBanTraLai)
                                             <p class="color-red"><b>Lý
                                                     do trả
@@ -103,6 +109,8 @@
                                                 </a>
                                             </p>
                                         @endif
+
+                                        @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
@@ -197,7 +205,7 @@
                                                    class="color-red font-weight-normal">
                                                 VB Quan trọng
                                             </label>
-                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
+                                            @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
                                                 <p>Lãnh đạo dự họp:</p>
                                                 @if (auth::user()->hasRole(CHU_TICH))
                                                     <input type="radio"
@@ -231,7 +239,6 @@
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự
                                                         họp</i></label>
                                             @endif
-
                                         </div>
                                     </td>
                                     <td>
@@ -254,7 +261,8 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->DonViCapXaPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị
+                                                phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>

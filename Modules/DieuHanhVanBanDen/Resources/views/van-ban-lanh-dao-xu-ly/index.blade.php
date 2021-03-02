@@ -32,10 +32,10 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="25%" class="text-center">Trích yếu - Thông tin</th>
-                                <th width="20%" class="text-center">Tóm tắt VB</th>
-                                <th class="text-center" width="15%">Ý kiến</th>
-                                <th width="20%" class="text-center">Chỉ đạo</th>
+                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+{{--                                <th width="20%" class="text-center">Tóm tắt VB</th>--}}
+                                <th class="text-center" width="22%">Ý kiến</th>
+                                <th width="22%" class="text-center">Chỉ đạo</th>
                                 <th class="text-center" width="7%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">
                                 </th>
@@ -60,12 +60,16 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        @include('dieuhanhvanbanden::van-ban-den.info')
-                                    </td>
-                                    <td>
                                         <p>
-                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                <i class="fa fa-book"></i> Tóm tăt văn bản
+                                            </a>
                                         </p>
+                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                            <p>
+                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                            </p>
+                                        </div>
                                         @if ($vanBanDen->vanBanTraLai)
                                             <p class="color-red"><b>Lý
                                                     do trả
@@ -84,7 +88,14 @@
                                                 <span><i class="fa fa-reply"></i>Trả lại VB</span>
                                             </a>
                                         </p>
+
+                                        @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
+{{--                                    <td>--}}
+{{--                                        <p>--}}
+{{--                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}--}}
+{{--                                        </p>--}}
+{{--                                    </td>--}}
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             <p>

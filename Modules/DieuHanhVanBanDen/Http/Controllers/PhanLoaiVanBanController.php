@@ -61,7 +61,8 @@ class PhanLoaiVanBanController extends Controller
             ->where('don_vi_id', $chuTich->don_vi_id)
             ->select('id', 'ho_ten')->get();
 
-        $danhSachDonVi = DonVi::whereNull('deleted_at')
+        $danhSachDonVi = DonVi::whereHas('user')
+            ->whereNull('deleted_at')
             ->where('parent_id', DonVi::NO_PARENT_ID)
             ->select('id', 'ten_don_vi')
             ->get();

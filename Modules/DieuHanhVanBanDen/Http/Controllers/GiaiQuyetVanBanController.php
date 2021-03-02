@@ -71,7 +71,9 @@ class GiaiQuyetVanBanController extends Controller
         // hoan thanh cong viec cap lanh dao
         if ($currentUser->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
             if ($donVi->cap_xa == DonVi::CAP_XA) {
-                $this->updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi);
+                $this->updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi, $data);
+
+                return redirect()->route('van-ban-lanh-dao-xu-ly.index')->with('success', 'Hoành thành văn bản.');
             } else {
 
                 $chuyenNhanVanBanDonVi = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
@@ -81,7 +83,9 @@ class GiaiQuyetVanBanController extends Controller
                     ->select('id', 'van_ban_den_id')
                     ->first();
 
-                $this->updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi);
+                $this->updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi, $data);
+
+                return redirect()->route('van-ban-lanh-dao-xu-ly.index')->with('success', 'Hoành thành văn bản.');
             }
 
         }
@@ -214,7 +218,7 @@ class GiaiQuyetVanBanController extends Controller
         //
     }
 
-    public function updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi)
+    public function updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi, $data)
     {
         if ($vanBanDenDonVi) {
             $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
@@ -223,12 +227,17 @@ class GiaiQuyetVanBanController extends Controller
             $vanBanDenDonVi->save();
 
             // luu giai quyet vb
+            $dataGiaiQuyetVanBan = [
+              'van_ban_den_id' => $vanBanDenDonVi->id,
+              'noi_dung' => $data['noi_dung'] ?? null,
+              'user_id' => $currentUser->id,
+              'can_bo_duyet_id' => $currentUser->id,
+              'status' => GiaiQuyetVanBan::STATUS_DA_DUYET
+            ];
+
+
             $giaiQuyetVanBan = new GiaiQuyetVanBan();
-            $giaiQuyetVanBan->van_ban_den_id = $vanBanDenDonVi->id;
-            $giaiQuyetVanBan->noi_dung = $data['noi_dung'] ?? null;
-            $giaiQuyetVanBan->user_id = auth::user()->id;
-            $giaiQuyetVanBan->can_bo_duyet_id = auth::user()->id;
-            $giaiQuyetVanBan->status = GiaiQuyetVanBan::STATUS_DA_DUYET;
+            $giaiQuyetVanBan->fill($dataGiaiQuyetVanBan);
             $giaiQuyetVanBan->save();
 
             //upload file
@@ -245,7 +254,7 @@ class GiaiQuyetVanBanController extends Controller
                 if ($chuyenNhanVanBanDonVi) {
                     DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
                         ->where('id', '>', $chuyenNhanVanBanDonVi->id)
-                        ->where('don_vi_id', auth::user()->don_vi_id)
+                        ->where('don_vi_id', $currentUser->don_vi_id)
                         ->whereNull('hoan_thanh')->delete();
                 }
             } else {
@@ -265,7 +274,6 @@ class GiaiQuyetVanBanController extends Controller
             DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
                 ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
 
-            return redirect()->back()->with('success', 'Hoành thành văn bản.');
         }
     }
 
