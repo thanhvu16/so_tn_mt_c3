@@ -16,32 +16,28 @@ class RenameRoleSeeder extends Seeder
             'name' => 'quản trị hệ thống'
         ]);
 
-        Role::where('name', CHU_TICH)->update([
+        Role::where('name', 'chủ tịch')->update([
            'name' => 'giám đốc / chi cục trưởng'
         ]);
 
-        Role::where('name', PHO_CHU_TICH)->update([
+        Role::where('name', 'phó chủ tịch')->update([
             'name' => 'phó giám đốc / phó chi cục trưởng'
         ]);
 
-        Role::where('name', PHO_PHONG)->update([
+        Role::where('name', 'phó phòng')->update([
             'name' => 'phó trưởng phòng'
         ]);
 
-        Role::where('name', TRUONG_BAN)->update([
+        Role::where('name', 'trưởng ban')->update([
             'name' => 'tp đơn vị cấp 2'
         ]);
 
-        Role::where('name', PHO_TRUONG_BAN)->update([
+        Role::where('name', 'phó trưởng ban')->update([
             'name' => 'phó tp đơn vị cấp 2'
         ]);
 
-        Role::where('name', VAN_THU_HUYEN)->update([
+        Role::where('name', 'văn thư huyện')->update([
             'name' => 'văn thư sở'
-        ]);
-
-        Role::where('name', VAN_THU_DON_VI)->update([
-            'name' => 'văn thư đơn vị'
         ]);
     }
 }
