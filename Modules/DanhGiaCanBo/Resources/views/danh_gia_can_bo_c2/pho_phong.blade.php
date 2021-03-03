@@ -1277,7 +1277,7 @@
 
 
                                             </tr>
-                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) &&(auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN)) )
+                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) &&(auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN)) )
                                             <tr>
                                                 <td style="vertical-align: middle;">
                                                     <b style="color: blue">{{$data->layhotenphophongdanhgia($data->id_dau_tien,$data->can_bo_chuyen)}}  </b><i
@@ -1987,7 +1987,7 @@
                                         @endif
 
 
-                                        @if((auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN))&& ($data->trang_thai == 2))
+                                        @if((auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)||auth::user()->hasRole(CHUYEN_VIEN) || auth::user()->hasRole(VAN_THU_HUYEN))&& ($data->trang_thai == 2))
                                             <tr>
                                                 <td colspan="22" style="vertical-align: middle;">
 

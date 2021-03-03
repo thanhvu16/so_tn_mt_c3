@@ -43,15 +43,15 @@ class DanhGiaCanBoController extends Controller
                 $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case TRUONG_PHONG:
-//                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+//                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
                 break;
-            case PHO_CHUC_TICH:
+            case PHO_CHU_TICH:
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
@@ -62,12 +62,12 @@ class DanhGiaCanBoController extends Controller
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 }
                 break;
             case PHO_CHANH_VAN_PHONG:
@@ -78,10 +78,10 @@ class DanhGiaCanBoController extends Controller
                 break;
             case VAN_THU_HUYEN:
 
-                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -160,7 +160,7 @@ class DanhGiaCanBoController extends Controller
         $chitietdanhgia0->mau_chi_tieu = $request->mau_van_ban;
         $chitietdanhgia0->save();
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
             $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
             $duyetdanhgia = new DuyetDanhGia();
             $duyetdanhgia->can_bo_chuyen = auth::user()->id;
@@ -238,15 +238,15 @@ class DanhGiaCanBoController extends Controller
                 $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case TRUONG_PHONG:
-//                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+//                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->where('don_vi_id', $donVi->id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
                 break;
-            case PHO_CHUC_TICH:
+            case PHO_CHU_TICH:
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
@@ -257,12 +257,12 @@ class DanhGiaCanBoController extends Controller
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
                 }
                 break;
             case PHO_CHANH_VAN_PHONG:
@@ -273,10 +273,10 @@ class DanhGiaCanBoController extends Controller
                 break;
             case VAN_THU_HUYEN:
 
-                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -305,7 +305,7 @@ class DanhGiaCanBoController extends Controller
         //lấy đánh giá cũ và cập nhật trạng thái
         $capnhatdanhgiacu = DuyetDanhGia::where('id', $request->id_danh_gia)->first();
         $laycanbogoc = DuyetDanhGia::where('id_dau_tien', $capnhatdanhgiacu->id_dau_tien)->orderBy('created_at', 'asc')->first();
-        if (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN)) {
+        if (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN)) {
             $capnhatdanhgiacu->trang_thai = 3;
             $capnhatdanhgiacu->save();
         } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN)) {
@@ -361,7 +361,7 @@ class DanhGiaCanBoController extends Controller
 
         if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN)) {
             $duyetdanhgia->cap_danh_gia = 2;
-        } elseif (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN) || auth::user()->hasRole(VAN_THU_HUYEN)) {
+        } elseif (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN) || auth::user()->hasRole(VAN_THU_HUYEN)) {
             $duyetdanhgia->cap_danh_gia = 3;
         }
 

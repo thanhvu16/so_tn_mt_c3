@@ -13,7 +13,7 @@
         <li class="{{ Route::is('van-ban-den-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.index') }}"><i class="fa fa-circle-o"></i>VB chờ xử lý</a>
         </li>
-        @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban')
+        @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2')
         <li class="{{ Route::is('van_ban_don_vi.da_chi_dao') ? 'active' : '' }}"><a
                 href="{{ route('van_ban_don_vi.da_chi_dao') }}"><i class="fa fa-circle-o"></i>VB đã chỉ đạo</a>
         </li>
@@ -21,7 +21,7 @@
                 href="{{ route('gia-han-van-ban.index') }}"><i class="fa fa-circle-o"></i>VB xin gia hạn</a>
         </li>
         @endrole
-        @hasanyrole('phó phòng|phó trưởng ban')
+        @hasanyrole('phó trưởng phòng|phó tp đơn vị cấp 2')
         <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB giám sát, theo dõi</a>
         </li>
@@ -30,13 +30,13 @@
                 href="{{ route('van-ban-den-don-vi.dang_xu_ly') }}"><i class="fa fa-circle-o"></i>VB đang xử lý</a>
         </li>
         <hr class="hr-line">
-        @hasanyrole('trưởng phòng|trưởng ban|chánh văn phòng|phó phòng|phó trưởng ban|phó chánh văn phòng')
+        @hasanyrole('trưởng phòng|tp đơn vị cấp 2|chánh văn phòng|phó trưởng phòng|phó tp đơn vị cấp 2|phó chánh văn phòng')
         <li class="{{ Route::is('duyet-van-ban-cap-duoi-trinh') ? 'active' : '' }}"><a
                 href="{{ route('duyet-van-ban-cap-duoi-trinh') }}"><i class="fa fa-circle-o"></i>Duyệt VB cấp dưới trình</a>
         </li>
         @endrole
 
-        @hasanyrole('phó phòng|phó trưởng ban|phó chánh văn phòng|chuyên viên')
+        @hasanyrole('phó trưởng phòng|phó tp đơn vị cấp 2|phó chánh văn phòng|chuyên viên')
         <li class="{{ Route::is('van-ban-den-hoan-thanh.cho-duyet') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-hoan-thanh.cho-duyet') }}"><i class="fa fa-circle-o"></i>VB hoàn thành chờ duyệt</a>
         </li>

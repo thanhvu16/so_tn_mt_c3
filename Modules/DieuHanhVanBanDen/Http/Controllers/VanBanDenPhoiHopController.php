@@ -85,7 +85,7 @@ class VanBanDenPhoiHopController extends Controller
             ->select('id', 'ho_ten')
             ->orderBy('id', 'DESC')->get();
 
-        $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+        $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
             ->where('trang_thai', ACTIVE)
             ->where('don_vi_id', $currentUser->don_vi_id)
             ->select('id', 'ho_ten')
@@ -264,7 +264,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
 
                     // luu don vi chu tri tu cap xa
-                    if ($currentUser->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH])) {
                         //data don vi phoi hop
                         $dataLuuDonViPhoiHop = [
                             'van_ban_den_id' => $vanBanDenId,

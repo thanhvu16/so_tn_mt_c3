@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         @endrole
-                        @role('văn thư huyện')
+                        @role('văn thư sở')
                         <div class="col-md-6 text-right">
                             <a role="button" href="{{route('in-so-van-ban-di.index')}}" class="btn btn-success ">
                                 <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>
@@ -245,7 +245,7 @@
                                         @endforelse
                                     </td>
                                     <td class="text-center" style="vertical-align: middle">
-                                        @hasanyrole('văn thư đơn vị|văn thư huyện')
+                                        @hasanyrole('văn thư đơn vị|văn thư sở')
                                         <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
                                             @csrf
                                             <a href="{{route('van-ban-di.edit',$vbDi->id)}}"

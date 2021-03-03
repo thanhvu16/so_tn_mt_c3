@@ -136,7 +136,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-                                            @role('chủ tịch')
+                                            @role(CHU_TICH)
                                             <p>
                                                 <select
                                                     name="pho_chu_tich_id[{{ $vanBanDen->id }}]"

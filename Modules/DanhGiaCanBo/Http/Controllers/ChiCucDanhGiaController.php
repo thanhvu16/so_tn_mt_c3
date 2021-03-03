@@ -37,7 +37,7 @@ class ChiCucDanhGiaController extends Controller
                     $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 }
                 break;
-            case PHO_CHUC_TICH:
+            case PHO_CHU_TICH:
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
@@ -48,11 +48,11 @@ class ChiCucDanhGiaController extends Controller
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
                 }
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -123,7 +123,7 @@ class ChiCucDanhGiaController extends Controller
         $chitietdanhgia0->save();
 
 
-    if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(TRUONG_BAN) || $user->hasRole(PHO_TRUONG_BAN)|| $user->hasRole(PHO_CHUC_TICH) ) {
+    if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(TRUONG_BAN) || $user->hasRole(PHO_TRUONG_BAN)|| $user->hasRole(PHO_CHU_TICH) ) {
             $duyetdanhgia = new DuyetDanhGia();
             $duyetdanhgia->can_bo_chuyen = auth::user()->id;
             $duyetdanhgia->can_bo_nhan = $request->lanhdao;
@@ -160,14 +160,14 @@ class ChiCucDanhGiaController extends Controller
             case TRUONG_PHONG:
                 $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
-            case PHO_CHUC_TICH:
+            case PHO_CHU_TICH:
                 $nguoinhan = User::role([CHU_TICH])->get();
                 break;
             case CHU_TICH:
                 $nguoinhan = null;
                 break;
             case CHANH_VAN_PHONG:
-                $nguoinhan = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
                 $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
@@ -176,7 +176,7 @@ class ChiCucDanhGiaController extends Controller
                 $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $nguoinhan = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }
@@ -202,7 +202,7 @@ class ChiCucDanhGiaController extends Controller
         //lấy đánh giá cũ và cập nhật trạng thái
         $capnhatdanhgiacu = DuyetDanhGia::where('id', $request->id_danh_gia)->first();
         $laycanbogoc = DuyetDanhGia::where('id_dau_tien', $capnhatdanhgiacu->id_dau_tien)->orderBy('created_at', 'asc')->first();
-        if (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)) {
+        if (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)) {
             $capnhatdanhgiacu->trang_thai = 3;
             $capnhatdanhgiacu->save();
         } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)) {
@@ -258,7 +258,7 @@ class ChiCucDanhGiaController extends Controller
 
         if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)) {
             $duyetdanhgia->cap_danh_gia = 2;
-        } elseif (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG) || auth::user()->hasRole(VAN_THU_HUYEN)) {
+        } elseif (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG) || auth::user()->hasRole(VAN_THU_HUYEN)) {
             $duyetdanhgia->cap_danh_gia = 3;
         }
 

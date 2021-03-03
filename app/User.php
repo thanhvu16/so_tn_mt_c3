@@ -65,7 +65,7 @@ class User extends Authenticatable
     {
         $role = Role::findById($this->role_id);
 
-        if ($role->name == 'admin') {
+        if ($role->name == QUAN_TRI_HT) {
             return true;
         }
 

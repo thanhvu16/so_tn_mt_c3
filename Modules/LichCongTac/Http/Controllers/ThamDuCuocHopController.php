@@ -133,11 +133,11 @@ class ThamDuCuocHopController extends Controller
         $role = null;
 
         if ($user->hasRole(CHU_TICH)) {
-            $role = [CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
+            $role = [CHU_TICH, PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
         }
 
-        if ($user->hasRole(PHO_CHUC_TICH)) {
-            $role = [PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
+        if ($user->hasRole(PHO_CHU_TICH)) {
+            $role = [PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN];
         }
 
         if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {

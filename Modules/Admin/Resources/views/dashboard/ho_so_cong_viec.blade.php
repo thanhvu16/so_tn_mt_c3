@@ -12,51 +12,50 @@
         <div class="clearfix"></div>
         <div class="panel-body">
             <div class="col-md-7 pl-1">
-                @hasanyrole('chủ tịch|phó chủ tịch')
+                @if( auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                 <a class="text-title-item" href="{{ route('van-ban-lanh-dao-xu-ly.index') }}">
                     <p>VB chờ xử lý
                         <button
                             class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoXuLy }}</button>
                     </p>
                 </a>
-                @endrole
-                @role('chánh văn phòng')
+                @endif
+                @if(auth::user()->hasRole(CHANH_VAN_PHONG))
                     <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
                         <p>VB chờ chờ phân loại
                             <button
                                 class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoPhanLoai }}</button>
                         </p>
                     </a>
-                @endrole
-                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên|trưởng ban|phó trưởng ban')
+                @endif
+                @if(auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.index') }}">
                         <p>VB chờ xử lý
                             <button
                                 class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoXuLy }}</button>
                         </p>
                     </a>
-                @endrole
+                @endif
 
-                @hasanyrole('trưởng phòng|phó phòng|chủ tịch|phó chủ tịch|phó chánh văn phòng|chánh văn phòng|trưởng ban|phó trưởng ban')
-                <a class="text-title-item" href="{{ route('gia-han-van-ban.index') }}">
-                    <p>VB xin gia hạn
-                        <button
-                            class="btn br-10 btn-pinterest btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXinGiaHan }}</button>
-                    </p>
-                </a>
-                @endrole
-
-                @hasanyrole('phó phòng|phó chánh văn phòng|phó trưởng ban')
+                @if(auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN]))
+                    <a class="text-title-item" href="{{ route('gia-han-van-ban.index') }}">
+                        <p>VB xin gia hạn
+                            <button
+                                class="btn br-10 btn-pinterest btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXinGiaHan }}</button>
+                        </p>
+                    </a>
+                @endif
+                @if(auth::user()->hasRole([PHO_CHANH_VAN_PHONG, PHO_PHONG, PHO_TRUONG_BAN]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
                         <p>VB giám sát, theo dõi
                             <button
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
-                </a>
-                @endrole
+                    </a>
+                @endif
 
-                @hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|chuyên viên|trưởng ban|phó trưởng ban')
-                    @unlessrole('chuyên viên')
+                @if (auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN]))
+                    @unlessrole(CHUYEN_VIEN)
                         <a class="text-title-item" href="{{ route('duyet-van-ban-cap-duoi-trinh') }}">
                             <p>Duyệt VB cấp dưới trình
                                 <button
@@ -64,7 +63,7 @@
                             </p>
                         </a>
                     @endunlessrole
-                    @role('chuyên viên')
+                    @role(CHUYEN_VIEN)
                         <a class="text-title-item" href="{{ route('van_ban_den_chuyen_vien.index') }}">
                             <p>VB chuyên viên PH chờ xử lý
                                 <button
@@ -79,17 +78,17 @@
                                 class="btn br-10 btn-primary btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $donViPhoiHop }}</button>
                         </p>
                     </a>
-                @endrole
+                @endif
 
 
-                @hasanyrole('chủ tịch|phó chủ tịch')
+                @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.quan_trong') }}">
                         <p>VB quan trọng
                             <button
                                 class="btn br-10 btn-primary btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanQuanTrong }}</button>
                         </p>
                     </a>
-                @endrole
+                @endif
 
                 <a class="text-title-item" href="{{ route('van-ban-den-don-vi.dang_xu_ly', 'qua_han=1') }}">
                     <p>VB quá hạn đang xử lý
@@ -97,7 +96,7 @@
                             class="btn br-10 btn-yellow btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanQuaHanDangXuLy }}</button>
                     </p>
                 </a>
-                @hasanyrole('chủ tịch|phó chủ tịch|trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|trưởng ban|phó trưởng ban')
+                @if(auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN]))
                 <a class="text-title-item" href="{{ route('lich-cong-tac.index') }}">
                     <p>Lịch công tác
                         <button
@@ -110,8 +109,8 @@
                             class="btn br-10 btn-light-pink btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $thamDuCuocHop }}</button>
                     </p>
                 </a>
-                @endrole
-                @role('chuyên viên')
+                @endif
+                @role(CHUYEN_VIEN)
                 <a class="text-title-item" href="{{ route('tham-du-cuoc-hop.index') }}">
                     <p>Cuộc họp được mời tham dự
                         <button
@@ -119,7 +118,7 @@
                     </p>
                 </a>
                 @endrole
-                @hasanyrole('chủ tịch|phó chủ tịch')
+                @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
                         <p>VB giám sát, theo dõi
                             <button
@@ -134,7 +133,7 @@
                         </p>
                     </a>
                     @endif
-                @endrole
+                @endif
             </div>
             <div class="col-md-5 ">
                 <div id="pie-chart-ho-so-cong-viec">

@@ -339,7 +339,7 @@ class CongViecDonViController extends Controller
 //            $danhSachLanhDao = User::role([CHU_TICH, CHANH_VAN_PHONG,TRUONG_PHONG])->where('don_vi_id', $currentUser->donvi_id)
 //                ->orderBy('id', 'ASC')->get();
 //        }else{
-//        $danhSachLanhDao = User::role([PHO_CHUC_TICH, PHO_CHANH_VAN_PHONG,PHO_PHONG])->where('don_vi_id', $currentUser->donvi_id)
+//        $danhSachLanhDao = User::role([PHO_CHU_TICH, PHO_CHANH_VAN_PHONG,PHO_PHONG])->where('don_vi_id', $currentUser->donvi_id)
 //            ->orderBy('id', 'ASC')->get();
 //    }
 
@@ -353,14 +353,14 @@ class CongViecDonViController extends Controller
             case TRUONG_PHONG:
                 $danhSachLanhDao = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
-            case PHO_CHUC_TICH:
+            case PHO_CHU_TICH:
                 $danhSachLanhDao = User::role([CHU_TICH])->get();
                 break;
             case CHU_TICH:
                 $nguoinhan = null;
                 break;
             case CHANH_VAN_PHONG:
-                $danhSachLanhDao = User::role([PHO_CHUC_TICH, CHU_TICH])->get();
+                $danhSachLanhDao = User::role([PHO_CHU_TICH, CHU_TICH])->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
                 $danhSachLanhDao = User::role([CHANH_VAN_PHONG])->get();
@@ -369,7 +369,7 @@ class CongViecDonViController extends Controller
                 $danhSachLanhDao = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $danhSachLanhDao = User::role([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $danhSachLanhDao = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
 
         }

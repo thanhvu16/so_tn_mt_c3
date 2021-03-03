@@ -103,7 +103,7 @@
         @endif
         @if(!empty($vanBanDen->hasChild->han_xu_ly))
             <!--gia han cua lanh dao-->
-            @if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && empty(auth::user()->donVi->cap_xa))
+            @if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && empty(auth::user()->donVi->cap_xa))
                 @if (!empty($vanBanDen->giaHanXuLy->han_xu_ly))
                     <p class="text-initial">
                         - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->giaHanXuLy->han_xu_ly)) }}
@@ -163,7 +163,7 @@
         @endif
         @if(!empty($vanBanDen->han_xu_ly))
             <!--gia han cua lanh dao-->
-            @if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && empty(auth::user()->donVi->cap_xa))
+            @if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && empty(auth::user()->donVi->cap_xa))
                 @if (!empty($vanBanDen->giaHanXuLy->han_xu_ly))
                     <p class="text-initial">
                         - <b>Hạn xử lý: {{ date('d/m/Y', strtotime($vanBanDen->giaHanXuLy->han_xu_ly)) }}

@@ -249,9 +249,7 @@
 
             <!--giai quyet van ban-->
                 @if ($vanBanDen->trinh_tu_nhan_van_ban != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-{{--                    @hasanyrole('trưởng phòng|phó phòng|chuyên viên|chánh văn phòng|phó chánh văn phòng|trưởng ban|phó trưởng ban')--}}
                     @include('dieuhanhvanbanden::van-ban-den._form_giai_quyet')
-{{--                    @endrole--}}
                 @endif
 
                 <div class="col-md-12 mt-3">

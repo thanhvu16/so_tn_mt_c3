@@ -15,10 +15,10 @@ class PermissionSeeder extends Seeder
     public function run()
     {
 
-        $role = Role::where('name', 'admin')->first();
+        $role = Role::where('name', QUAN_TRI_HT)->first();
 
         if (empty($role)) {
-            $role = Role::create(['name' => 'admin']);
+            $role = Role::create(['name' => QUAN_TRI_HT]);
             $user = \App\User::where('username', 'admin')->update([
                 'role_id' => $role->id
             ]);

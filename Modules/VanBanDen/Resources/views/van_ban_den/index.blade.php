@@ -225,7 +225,7 @@
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">
-                                        @hasanyrole('văn thư đơn vị|văn thư huyện')
+                                        @hasanyrole('văn thư đơn vị|văn thư sở')
                                         <form method="POST" action="{{route('delete_vb_den')}}">
                                             @csrf
                                             <a href="{{route('chi_tiet_van_ban_den',$vbDen->id)}}"

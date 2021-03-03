@@ -25,7 +25,7 @@ class BaoCaoThongKeController extends Controller
         $donViId = null;
         $giayMoi = SoVanBan::where('ten_so_van_ban', 'like', 'giấy mời')->select('id')->first();
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, VAN_THU_HUYEN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, VAN_THU_HUYEN])) {
 
             $type = VanBanDen::TYPE_VB_HUYEN;
 

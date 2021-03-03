@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Quản lý người dùng')
+@section('page_title', 'Đơn vị')
 @section('content')
     <section class="content">
     {{--        <div class="box">--}}
@@ -7,19 +7,19 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="">
-                    <a href="{{ route('nguoi-dung.index') }}">
-                        <i class="fa fa-user"></i> Danh sách người dùng
+                    <a href="{{ route('danhsachdonvi') }}">
+                        <i class="fa fa-user"></i> Danh sách
                     </a>
                 </li>
                 <li class="active">
-                    <a href="{{ route('nguoi-dung.create') }}">
-                        <i class="fa fa-plus"></i> Thêm mới</a>
+                    <a href="{{ route('don-vi.create') }}">
+                        <i class="fa fa-plus"></i> Thêm phòng ban cho đơn vị</a>
                 </li>
             </ul>
             <div class="tab-content">
                 <!-- /.tab-pane -->
                 <div class="tab-pane active" id="tab_2">
-                    @include('admin::nguoi-dung._form')
+                    @include('admin::Don_vi._form')
                 </div>
             </div>
             <!-- /.tab-content -->

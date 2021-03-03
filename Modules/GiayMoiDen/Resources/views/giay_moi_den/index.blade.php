@@ -215,7 +215,7 @@
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">
-                                        @hasanyrole('văn thư đơn vị|văn thư huyện')
+                                        @hasanyrole('văn thư đơn vị|văn thư sở')
                                         @if(auth::user()->id == $vbDen->nguoi_tao)
                                             <form method="POST" action="{{route('giaymoidelete',$vbDen->id)}}">
                                                 @csrf

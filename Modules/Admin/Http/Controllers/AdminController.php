@@ -58,7 +58,7 @@ class AdminController extends Controller
         $month = date('m');
         $year = date('Y');
 
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole(QUAN_TRI_HT)) {
             return redirect()->route('nguoi-dung.index');
         }
         $danhSachDuThao = Duthaovanbandi::where(['nguoi_tao' => $user->id, 'stt' => 1])->count();
@@ -454,7 +454,7 @@ class AdminController extends Controller
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $vanBanQuanTrong = VanBanQuanTrong::where('user_id', $user->id)
                 ->count();
@@ -471,7 +471,7 @@ class AdminController extends Controller
             array_push($hoSoCongViecPiceCharts, array('Lịch công tác', $lichCongTac));
             array_push($hoSoCongViecCoLors, COLOR_GREEN);
 
-            if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+            if ($user->hasRole([CHU_TICH, PHO_CHU_TICH])) {
                 $vanBanXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', $user->id)
                     ->whereMonth('created_at', $month)
                     ->whereYear('created_at', $year)
@@ -516,7 +516,7 @@ class AdminController extends Controller
         //VB DANG XU LY QUA HAN
         $trinhTuNhanVanBan = null;
 
-        if ($user->hasRole([CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
             $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
                 ->whereNull('status')
                 ->whereNull('hoan_thanh')
@@ -528,7 +528,7 @@ class AdminController extends Controller
                 $trinhTuNhanVanBan = 1;
             }
 
-            if ($user->hasRole(PHO_CHUC_TICH)) {
+            if ($user->hasRole(PHO_CHU_TICH)) {
                 $trinhTuNhanVanBan = 2;
             }
 

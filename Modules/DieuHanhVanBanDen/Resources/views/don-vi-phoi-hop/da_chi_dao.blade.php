@@ -135,7 +135,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet">
-                                            @hasanyrole('trưởng phòng|trưởng ban|chánh văn phòng')
+                                            @hasanyrole('trưởng phòng|tp đơn vị cấp 2|chánh văn phòng')
                                             <p>
                                                 <select name="pho_phong_id[{{ $vanBanDen->id }}]"
                                                         id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -154,7 +154,7 @@
                                                 </select>
                                             </p>
                                             @endrole
-                                            @hasanyrole('trưởng phòng|phó phòng|trưởng ban|phó trưởng ban|chánh văn phòng|phó chánh văn phòng')
+                                            @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2|chánh văn phòng|phó chánh văn phòng')
                                             <p>
                                                 <select name="chuyen_vien_id[{{ $vanBanDen->id }}]"
                                                         id="chuyen-vien-{{ $vanBanDen->id }}"
@@ -191,13 +191,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {{--                                        @role ('trưởng phòng|trưởng ban')--}}
+                                        {{--                                        @role ('trưởng phòng|tp đơn vị cấp 2')--}}
                                         {{--                                        <p>--}}
                                         {{--                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}--}}
                                         {{--                                        </p>--}}
                                         {{--                                        @endrole--}}
 
-                                        @role('trưởng phòng|trưởng ban|chánh văn phòng')
+                                        @role('trưởng phòng|tp đơn vị cấp 2|chánh văn phòng')
                                         <p>
                                             <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"

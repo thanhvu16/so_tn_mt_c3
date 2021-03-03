@@ -90,7 +90,7 @@
                         @endif
                     </select>
                 </div>
-                @if (auth::user()->checkRole())
+                @if (auth::user()->hasRole(QUAN_TRI_HT))
                     <div class="form-group col-md-4">
                         <label class="col-form-label" for="quyen-han">Quyền hạn</label>
                         <select class="form-control select2" name="role_id">

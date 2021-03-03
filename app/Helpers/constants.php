@@ -26,7 +26,7 @@ define('QUYEN_CHUYEN_VIEN', 3);
 define('QUYEN_PHO_PHONG', 5);
 define('QUYEN_TRUONG_PHONG', 4);
 define('QUYEN_CHU_TICH', 7);
-define('QUYEN_PHO_CHUC_TICH', 8);
+define('QUYEN_PHO_CHU_TICH', 8);
 define('QUYEN_TRUONG_PHONG_DON_VI', 9);
 define('QUYEN_PHO_PHONG_DON_VI', 10);
 define('QUYEN_VAN_THU_DON_VI', 11);
@@ -37,20 +37,21 @@ define('QUYEN_PHO_CHANH_VAN_PHONG', 14);
 define('UBND_HUYEN', 8);
 
 const TRANG_THAI_HOAT_DONG = 1;
-//rold
-CONST THAM_MUU = 'tham mưu';
-CONST VAN_THU = 'Văn thư';
+
+//Role
+CONST QUAN_TRI_HT = 'quản trị hệ thống';
 CONST CHUYEN_VIEN = 'chuyên viên';
 CONST TRUONG_PHONG = 'trưởng phòng';
-CONST PHO_PHONG = 'phó phòng';
-CONST CHU_TICH = 'chủ tịch';
-CONST PHO_CHUC_TICH = 'phó chủ tịch';
-CONST TRUONG_BAN = 'trưởng ban';
-CONST PHO_TRUONG_BAN = 'phó trưởng ban';
-CONST VAN_THU_DON_VI = 'văn thư đơn vị';
-CONST VAN_THU_HUYEN = 'văn thư huyện';
+CONST PHO_PHONG = 'phó trưởng phòng';
 CONST CHANH_VAN_PHONG = 'chánh văn phòng';
 CONST PHO_CHANH_VAN_PHONG = 'phó chánh văn phòng';
+CONST CHU_TICH = 'giám đốc / chi cục trưởng';
+CONST PHO_CHU_TICH = 'phó giám đốc / phó chi cục trưởng';
+CONST TRUONG_BAN = 'tp đơn vị cấp 2';
+CONST PHO_TRUONG_BAN = 'phó tp đơn vị cấp 2';
+CONST VAN_THU_DON_VI = 'văn thư đơn vị';
+CONST VAN_THU_HUYEN = 'văn thư sở';
+
 
 
 define('COLOR_INFO', '#4fbde9');

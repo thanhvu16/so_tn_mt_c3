@@ -26,7 +26,7 @@ class ThongkeVanBanDenController extends Controller
         if ($id) {
             $vanbanden = VanBanDen::where('id', $id)->first();
         }
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
             $ds_vanBanDen =  VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($timloaiso) {

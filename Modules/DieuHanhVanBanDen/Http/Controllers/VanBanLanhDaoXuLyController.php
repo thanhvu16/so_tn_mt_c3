@@ -41,7 +41,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 $active = VanBanDen::CHU_TICH_XA_NHAN_VB;
             }
 
-            if ($user->hasRole(PHO_CHUC_TICH)) {
+            if ($user->hasRole(PHO_CHU_TICH)) {
                 $active = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
             }
 
@@ -70,7 +70,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->paginate(PER_PAGE_10);
 
 
-            $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
                 ->where('trang_thai', ACTIVE)
                 ->where('don_vi_id', $user->don_vi_id)
                 ->select('id', 'ho_ten')
@@ -144,7 +144,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->whereNull('cap_xa')
                 ->first();
 
-            $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
                 ->where('trang_thai', ACTIVE)
                 ->where('don_vi_id', $chuTich->don_vi_id)
                 ->whereNull('cap_xa')
@@ -170,7 +170,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     $vanBanDen->lichCongTacChuTich = $vanBanDen->checkLichCongTac([$chuTich->id]) ?? null;
                     $vanBanDen->PhoChuTich = $vanBanDen->checkCanBoNhan($danhSachPhoChuTich->pluck('id')->toArray());
                     $vanBanDen->lichCongTacPhoChuTich = $vanBanDen->checkLichCongTac($danhSachPhoChuTich->pluck('id')->toArray());
-                    if ($user->hasRole(PHO_CHUC_TICH)) {
+                    if ($user->hasRole(PHO_CHU_TICH)) {
                         $vanBanDen->checkVanBanQuaChuTich = $vanBanDen->checkVanBanQuaChuTich();
                     }
                 }

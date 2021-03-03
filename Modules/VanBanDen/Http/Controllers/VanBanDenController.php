@@ -45,7 +45,7 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
 
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
@@ -181,7 +181,7 @@ class VanBanDenController extends Controller
         canPermission(AllPermission::themVanBanDen());
 
         $user = auth::user();
-        $user->can('văn thư đơn vị');
+        $user->can(VAN_THU_DON_VI);
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();

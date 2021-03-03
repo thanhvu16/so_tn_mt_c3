@@ -68,7 +68,7 @@
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="{{ auth::user()->hasRole(CHU_TICH) ? '42' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
-                                @unlessrole('chủ tịch')
+                                @unlessrole(CHU_TICH)
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 @endunlessrole
                                 <th class="15%">Ý kiến</th>
@@ -111,7 +111,7 @@
                                             @include('dieuhanhvanbanden::van-ban-den.info')
                                         @endif
                                     </td>
-                                    @unlessrole('chủ tịch')
+                                    @unlessrole(CHU_TICH)
                                     <td>
                                         <p>
                                             <textarea name="tom_tat[{{ $vanBanDen->id }}]" class="form-control"

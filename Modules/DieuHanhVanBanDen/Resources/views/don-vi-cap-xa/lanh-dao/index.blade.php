@@ -35,7 +35,7 @@
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
                                 <th class="text-center" width="21%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                @if (auth::user()->hasRole(PHO_CHUC_TICH))
+                                @if (auth::user()->hasRole(PHO_CHU_TICH))
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
@@ -268,7 +268,7 @@
                                             </textarea>
                                         </p>
                                     </td>
-                                    @if (auth::user()->hasRole(PHO_CHUC_TICH))
+                                    @if (auth::user()->hasRole(PHO_CHU_TICH))
                                         <td class="text-center">
                                             <label style="color: red; font-weight: 500 !important;"
                                                    for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>

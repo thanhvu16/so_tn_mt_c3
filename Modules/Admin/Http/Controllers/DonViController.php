@@ -53,7 +53,10 @@ class DonViController extends Controller
      */
     public function create()
     {
-        return view('admin::create');
+        $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->select('id', 'ten_don_vi')->get();
+
+        return view('admin::Don_vi.create', compact('nhom_don_vi', 'donViCapXa'));
     }
 
     /**
@@ -63,6 +66,7 @@ class DonViController extends Controller
      */
     public function store(Request $request)
     {
+
         $donvi = new DonVi();
         $donvi->ten_don_vi = $request->ten_don_vi;
         $donvi->ten_viet_tat = $request->ten_viet_tat;
@@ -97,6 +101,12 @@ class DonViController extends Controller
         $donvi = DonVi::where('id', $id)->first();
         $nhom_don_vi = NhomDonVi::wherenull('deleted_at')->get();
         $donViCapXa = DonVi::whereNotNull('cap_xa')->select('id', 'ten_don_vi')->get();
+
+        if ($donvi->parent_id != 0) {
+
+            return view('admin::Don_vi.edit_cap_phong_ban', compact('donvi','nhom_don_vi', 'donViCapXa'));
+
+        }
 
         return view('admin::Don_vi.edit', compact('donvi','nhom_don_vi', 'donViCapXa'));
     }

@@ -72,7 +72,7 @@
         <div class="box box box-info">
             <div class="row">
                 <div class="col-md-12">
-                    @if (auth::user()->hasrole([CHU_TICH, PHO_CHUC_TICH]))
+                    @if (auth::user()->hasrole([CHU_TICH, PHO_CHU_TICH]))
                         <h4 class="text-center text-uppercase">Biểu đồ thống kê văn bản
                             đến - đi của năm {{ $year }}</h4>
                     @else

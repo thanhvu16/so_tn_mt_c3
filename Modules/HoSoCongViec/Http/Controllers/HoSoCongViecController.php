@@ -79,7 +79,7 @@ class HoSoCongViecController extends Controller
         $van_ban = null;
 
         if ($loai_van_ban == 1) {
-            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
                 $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 $van_ban = VanBanDen::where(['type' => 1, 'don_vi_id' => auth::user()->don_vi_id])
                 ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
@@ -115,7 +115,7 @@ class HoSoCongViecController extends Controller
             }
 
         } elseif ($loai_van_ban == 2) {
-            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH) ||
+            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
                 $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 $van_ban = $ds_vanBanDi = VanBanDi::where(['don_vi_soan_thao' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                     ->where(function ($query) use ($trich_yeu) {

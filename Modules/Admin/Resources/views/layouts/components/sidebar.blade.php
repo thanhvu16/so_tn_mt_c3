@@ -15,39 +15,39 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENU CHỨC NĂNG</li>
 
-            @role('admin')
+            @role(QUAN_TRI_HT)
             @include('admin::layouts.components.sidebar_admin')
             @endrole
-            @hasanyrole('văn thư đơn vị')
+            @role(VAN_THU_DON_VI)
             @include('admin::layouts.components.sidebar_van_thu_don_vi')
             @endrole
-            @hasanyrole('văn thư huyện')
+            @role(VAN_THU_HUYEN)
             @include('admin::layouts.components.sidebar_van_thu_huyen')
             @endrole
-            @hasanyrole('tham mưu|chánh văn phòng')
+            @if(auth::user()->hasRole([CHANH_VAN_PHONG]))
                 @include('admin::layouts.components.sidebar_tham_muu')
-            @endrole
-            @hasanyrole('chủ tịch|phó chủ tịch')
+            @endif
+            @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                 @include('admin::layouts.components.sidebar_lanh_dao')
-            @endrole
+            @endif
             @role(CHUYEN_VIEN)
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_chuyen_vien')
             @endrole
-            @hasanyrole('trưởng phòng|trưởng ban')
+            @if(auth::user()->hasRole([TRUONG_PHONG, TRUONG_BAN]))
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_truong_phong')
-            @endrole
-            @hasanyrole('phó phòng|phó trưởng ban')
+            @endif
+            @if(auth::user()->hasRole([PHO_PHONG, PHO_TRUONG_BAN]))
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_phong')
-            @endrole
-            @role('phó chánh văn phòng')
+            @endif
+            @role(PHO_CHANH_VAN_PHONG)
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_pho_chanh_van_phong')
                 @include('admin::layouts.components.sidebar_chanh_van_phong')
             @endrole
-            @role('chánh văn phòng')
+            @role(CHANH_VAN_PHONG)
                 @include('admin::layouts.components.dieu_hanh_cv')
                 @include('admin::layouts.components.sidebar_chanh_van_phong')
             @endrole
@@ -61,7 +61,7 @@
 {{--            </li>--}}
 {{--            @endcan--}}
 
-            @unlessrole(ADMIN)
+            @unlessrole(QUAN_TRI_HT)
 
                 <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} }} ">
                     <a href="#">

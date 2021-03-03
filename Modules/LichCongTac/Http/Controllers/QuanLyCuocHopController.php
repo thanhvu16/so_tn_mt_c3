@@ -37,7 +37,7 @@ class QuanLyCuocHopController extends Controller
         $nguoi_tham_du = null;
         $lich_cong_tac = LichCongTac::where('id', $id)->first();
         $cuochop = CuocHopChiTiet::where('lich_hop_id', $id)->first();
-        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
+        $roles = [CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
         $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
             return $query->whereIn('name', $roles);
         })
@@ -54,7 +54,7 @@ class QuanLyCuocHopController extends Controller
         $chucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->whereNull('deleted_at')->get();
         $donvi = DonVi::orderBy('ten_don_vi', 'asc')->whereNull('deleted_at')->get();
         $cuocHopLienQuan = CuocHopLienQuan::where('id_lich_hop', $id)->whereNull('deleted_at')->get();
-        $nguoi_chu_tri = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH])->get();
+        $nguoi_chu_tri = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH])->get();
         $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1,'thanh_phan_moi'=>1])->get();
         $phong_up_tai_lieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1,'thanh_phan_moi'=>1])->distinct()->pluck('don_vi_id');
 

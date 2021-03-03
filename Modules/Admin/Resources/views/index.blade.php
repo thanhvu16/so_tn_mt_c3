@@ -4,20 +4,20 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                @unlessrole('văn thư huyện|văn thư đơn vị')
+                @unlessrole('văn thư sở|văn thư đơn vị')
                     @include('admin::dashboard.ho_so_cong_viec')
                 @endunlessrole
 
-                @hasanyrole('văn thư huyện|văn thư đơn vị')
+                @hasanyrole('văn thư sở|văn thư đơn vị')
                     @include('admin::dashboard.nhap_van_ban_den')
                     @include('admin::dashboard.nhap_van_ban_di')
                 @endrole
 
-                @unlessrole('văn thư huyện|văn thư đơn vị')
+                @unlessrole('văn thư sở|văn thư đơn vị')
                     @include('admin::dashboard.du_thao_van_ban')
                 @endunlessrole
 
-                @unlessrole('chủ tịch|phó chủ tịch|văn thư huyện|văn thư đơn vị')
+                @unlessrole('giám đốc / chi cục trưởng|phó giám đốc / phó chi cục trưởng|văn thư sở|văn thư đơn vị')
                     @include('admin::dashboard.cong_viec_phong_ban')
                 @endunlessrole
             </div>

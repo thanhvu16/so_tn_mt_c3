@@ -51,7 +51,7 @@ class GiayMoiDenController extends Controller
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
 
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1,
                 'so_van_ban_id' => 100
@@ -236,7 +236,7 @@ class GiayMoiDenController extends Controller
 
 
         $user = auth::user();
-        $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHUC_TICH, TRUONG_PHONG, PHO_PHONG])->orderBy('username', 'desc')->get();
+        $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG])->orderBy('username', 'desc')->get();
 
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();

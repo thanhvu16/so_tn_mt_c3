@@ -220,7 +220,7 @@ class VanBanDen extends Model
 
     public function getGiaHanLanhDao()
     {
-        if (auth::user()->donVi->cap_xa == DonVi::CAP_XA && auth::user()->hasRole(PHO_CHUC_TICH)) {
+        if (auth::user()->donVi->cap_xa == DonVi::CAP_XA && auth::user()->hasRole(PHO_CHU_TICH)) {
             return DonViChuTri::where('van_ban_den_id', $this->id)
                 ->where('parent_don_vi_id', auth::user()->don_vi_id)
                 ->where('can_bo_chuyen_id', auth::user()->id)
@@ -237,7 +237,7 @@ class VanBanDen extends Model
 
     public function getGiaHanXuLy()
     {
-        if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && empty(auth::user()->donVi->cap_xa)) {
+        if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && empty(auth::user()->donVi->cap_xa)) {
             return XuLyVanBanDen::where('van_ban_den_id', $this->id)
                 ->where('can_bo_nhan_id', auth::user()->id)
                 ->whereNull('status')
@@ -428,7 +428,7 @@ class VanBanDen extends Model
     public function donViPhoiHopGiaiQuyetByUserId()
     {
         $donVi = auth::user()->donVi;
-        if (auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]) && $donVi->cap_xa == DonVi::CAP_XA) {
+        if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             return $this->hasOne(PhoiHopGiaiQuyet::class, 'van_ban_den_id', 'id')
                 ->where('status', PhoiHopGiaiQuyet::GIAI_QUYET_DON_VI_PHOI_HOP)
@@ -549,7 +549,7 @@ class VanBanDen extends Model
         $donVi = auth::user()->donVi;
         $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
-        if (auth::user()->hasRole(PHO_CHUC_TICH) && auth::user()->cap_xa == DonVi::CAP_XA) {
+        if (auth::user()->hasRole(PHO_CHU_TICH) && auth::user()->cap_xa == DonVi::CAP_XA) {
             // lanh dao cap xa xem van ban phoi hop
             $type = 1;
             return VanBanDen::where('parent_id', $this->id)

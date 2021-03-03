@@ -101,7 +101,7 @@
                                             <td class="text-center">
 
 
-                                                @hasanyrole('văn thư đơn vị|văn thư huyện')
+                                                @hasanyrole('văn thư đơn vị|văn thư sở')
                                                 <form method="Get" action="{{route('vanbandidelete',$data->id)}}">
                                                     @csrf
                                                     <a href="{{route('van-ban-di.edit',$data->id)}}"

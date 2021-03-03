@@ -248,7 +248,7 @@
                                     <td class="text-center" style="color: red; vertical-align: middle;">-
                                     </td>
                                     <td class="text-center" style="vertical-align: middle">
-                                        @hasanyrole('văn thư đơn vị|văn thư huyện')
+                                        @hasanyrole('văn thư đơn vị|văn thư sở')
                                         @if(auth::user()->id == $vbDi->nguoi_tao)
                                             <form method="POST" action="{{route('giaymoididelete',$vbDi->id)}}">
                                                 @csrf

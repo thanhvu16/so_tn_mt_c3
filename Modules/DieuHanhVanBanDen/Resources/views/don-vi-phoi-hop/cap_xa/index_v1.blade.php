@@ -41,13 +41,13 @@
                                 <th width="25%" class="text-center">Tóm tắt VB</th>
                                 <th class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-                                @hasanyrole ('phó chủ tịch|trưởng ban|phó trưởng ban')
-                                @if (empty(Request::get('chuyen_tiep')))
-                                    <th class="text-center" width="7%">
-                                        <input id="check-all" type="checkbox" name="check_all" value="">
-                                    </th>
+                                @if (auth::user()->hasRole([PHO_CHU_TICH, TRUONG_BAN, PHO_TRUONG_BAN]))
+                                    @if (empty(Request::get('chuyen_tiep')))
+                                        <th class="text-center" width="7%">
+                                            <input id="check-all" type="checkbox" name="check_all" value="">
+                                        </th>
+                                    @endif
                                 @endif
-                                @endrole
                             </tr>
                             </thead>
                             <tbody>
@@ -101,7 +101,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-                                            @role('chủ tịch')
+                                            @role(CHU_TICH)
                                             <p>
                                                 <select
                                                     name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
@@ -121,7 +121,7 @@
                                                 </select>
                                             </p>
                                             @endrole
-                                            @hasanyrole('chủ tịch|phó chủ tịch')
+                                            @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                                             <p>
                                                 <select name="truong_phong_id[{{ $vanBanDen->id }}]"
                                                         id="truong-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -136,8 +136,8 @@
                                                         value="{{ $truongPhong->id ?? null }}" {{ isset($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $truongPhong->id ? 'selected' : null }}>{{ $truongPhong->ho_ten ?? null }}</option>
                                                 </select>
                                             </p>
-                                            @endrole
-                                            @hasanyrole('chủ tịch|phó chủ tịch|trưởng ban')
+                                            @endif
+                                            @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH, TRUONG_BAN]))
                                             <p>
                                                 <select name="pho_phong_id[{{ $vanBanDen->id }}]"
                                                         id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -155,7 +155,7 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-                                            @endrole
+                                            @endif
                                             <p>
                                                 <select name="chuyen_vien_id[{{ $vanBanDen->id }}]"
                                                         id="chuyen-vien-{{ $vanBanDen->id }}"
@@ -173,7 +173,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @role('chủ tịch')
+                                        @role(CHU_TICH)
                                         <p>
                                                 <textarea
                                                     name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
@@ -182,22 +182,22 @@
                                                     rows="3">{{ $vanBanDen->phoChuTich->noi_dung ?? '' }}</textarea>
                                         </p>
                                         @endrole
-                                        @hasanyrole('chủ tịch|phó chủ tịch')
+                                        @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                                         <p>
                                             <textarea name="noi_dung_truong_phong[{{ $vanBanDen->id }}]"
                                                       form="form-tham-muu"
                                                       class="form-control {{ !empty($vanBanDen->truongPhong) ? 'show' : 'hide' }}"
                                                       rows="3">{{ $vanBanDen->truongPhong->noi_dung ?? null  }}</textarea>
                                         </p>
-                                        @endrole
-                                        @hasanyrole('chủ tịch|phó chủ tịch|trưởng ban')
+                                        @endif
+                                        @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH, TRUONG_BAN]))
                                         <p>
                                                 <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                           form="form-tham-muu"
                                                           class="form-control {{ !empty($vanBanDen->phoPhong) ? 'show' : 'hide' }}"
                                                           rows="3">{{ $vanBanDen->phoPhong->noi_dung ?? null  }}</textarea>
                                         </p>
-                                        @endrole
+                                        @endif
                                         <p>
                                             <textarea
                                                 name="noi_dung_chuyen_vien[{{ $vanBanDen->id }}]"
@@ -206,21 +206,22 @@
                                                 rows="3">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
-                                    @hasanyrole ('phó chủ tịch|trưởng ban|phó trưởng ban')
-                                    @if (empty(Request::get('chuyen_tiep')))
-                                        <td class="text-center">
-                                            <p>
-                                                <span style="color: red;"> Chọn duyệt:</span><br>
-                                                <input id="checkbox{{ $vanBanDen->id }}"
-                                                       type="checkbox"
-                                                       name="duyet[{{ $vanBanDen->id }}]"
-                                                       value="{{ $vanBanDen->id }}"
-                                                       class="duyet sub-check">
-                                                <label for="checkbox{{ $vanBanDen->id }}"></label>
-                                            </p>
-                                        </td>
+
+                                    @if(auth::user()->hasRole([PHO_CHU_TICH, TRUONG_BAN, PHO_TRUONG_BAN]))
+                                        @if (empty(Request::get('chuyen_tiep')))
+                                            <td class="text-center">
+                                                <p>
+                                                    <span style="color: red;"> Chọn duyệt:</span><br>
+                                                    <input id="checkbox{{ $vanBanDen->id }}"
+                                                           type="checkbox"
+                                                           name="duyet[{{ $vanBanDen->id }}]"
+                                                           value="{{ $vanBanDen->id }}"
+                                                           class="duyet sub-check">
+                                                    <label for="checkbox{{ $vanBanDen->id }}"></label>
+                                                </p>
+                                            </td>
+                                        @endif
                                     @endif
-                                    @endrole
                                 </tr>
                             @empty
                                 <td colspan="6" class="text-center">Không tìm

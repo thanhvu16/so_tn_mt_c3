@@ -7,6 +7,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
+use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBanFile;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -69,7 +71,7 @@ class GiaiQuyetVanBanController extends Controller
             ->whereNull('hoan_thanh')->first();
 
         // hoan thanh cong viec cap lanh dao
-        if ($currentUser->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+        if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH])) {
             if ($donVi->cap_xa == DonVi::CAP_XA) {
                 $this->updateVanBanHoanThanh($vanBanDenDonVi, $chuyenNhanVanBanDonVi, $currentUser, $donVi, $data);
 
@@ -256,12 +258,30 @@ class GiaiQuyetVanBanController extends Controller
                         ->where('id', '>', $chuyenNhanVanBanDonVi->id)
                         ->where('don_vi_id', $currentUser->don_vi_id)
                         ->whereNull('hoan_thanh')->delete();
+
+                    // update don vi phoi hop
+                    DonViPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)->where('don_vi_id', $currentUser->don_vi_id)
+                        ->whereNull('hoan_thanh')
+                        ->delete();
+
+                    ChuyenVienPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->where('don_vi_id', $currentUser->don_vi_id)
+                        ->whereNull('status')
+                        ->delete();
                 }
             } else {
                 if ($chuyenNhanVanBanDonVi) {
                     XuLyVanBanDen::where('van_ban_den_id', $vanBanDenDonVi->id)
                         ->whereNull('status')
                         ->where('id', '>', $chuyenNhanVanBanDonVi->id)
+                        ->delete();
+
+                    DonViPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->whereNull('hoan_thanh')
+                        ->delete();
+
+                    ChuyenVienPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->whereNull('status')
                         ->delete();
                 }
             }

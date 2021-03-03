@@ -252,7 +252,7 @@ class VanBanDenHoanThanhController extends Controller
 
             if ($status == GiaiQuyetVanBan::STATUS_DA_DUYET) {
                 if ($vanBanDen) {
-                    if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, CHU_TICH, PHO_CHUC_TICH])) {
+                    if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, CHU_TICH, PHO_CHU_TICH])) {
 
 //                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 //                            // chu tich xa duyet van ban

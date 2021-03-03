@@ -26,7 +26,7 @@ class ThongkeVanBanDiController extends Controller
             $vanbandi = VanBanDi::where('id', $id)->first();
         }
         $user = auth::user();
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHUC_TICH)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => null])->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($timloaiso) {
                     if (!empty($timloaiso)) {

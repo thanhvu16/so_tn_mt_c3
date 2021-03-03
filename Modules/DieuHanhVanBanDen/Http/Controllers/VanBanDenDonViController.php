@@ -231,7 +231,7 @@ class VanBanDenDonViController extends Controller
                 $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
             }
 
-            if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+            if ($currentUser->hasRole(PHO_CHU_TICH)) {
                 $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
             }
 
@@ -270,7 +270,7 @@ class VanBanDenDonViController extends Controller
                 $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
             }
 
-            if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+            if ($currentUser->hasRole(PHO_CHU_TICH)) {
                 $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
             }
 
@@ -431,7 +431,7 @@ class VanBanDenDonViController extends Controller
                                 $vanBanDen->save();
                             }
 
-                            if (!empty($danhSachDonViChuTriIds[$vanBanDenId]) && $currentUser->hasRole(PHO_CHUC_TICH))
+                            if (!empty($danhSachDonViChuTriIds[$vanBanDenId]) && $currentUser->hasRole(PHO_CHU_TICH))
                             {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                                 $vanBanDen->save();
@@ -461,7 +461,7 @@ class VanBanDenDonViController extends Controller
                     }
 
                     if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
-                        if ($currentUser->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+                        if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH])) {
                             if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
                                 LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId], $chuyenTuDonVi = 1);
                             }
@@ -502,7 +502,7 @@ class VanBanDenDonViController extends Controller
                     }
 
                     // luu don vi chu tri tu cap xa
-                    if ($currentUser->hasRole([CHU_TICH, PHO_CHUC_TICH])) {
+                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH])) {
                         // van ban quan trong
                         if(!empty($dataVanBanQuanTrong[$vanBanDenId])) {
                             VanBanQuanTrong::saveVanBanQuanTrong($vanBanDenId, $dataVanBanQuanTrong[$vanBanDenId]);

@@ -39,7 +39,7 @@ class GopYVanbanDiController extends Controller
 //                $nguoinhan = User::role([ PHO_PHONG])->get();
 //                break;
 //            case CHU_TICH:
-//                $nguoinhan = User::role([PHO_CHUC_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
+//                $nguoinhan = User::role([PHO_CHU_TICH])->where('don_vi_id',auth::user()->don_vi_id)->get();
 //                break;
 //        }
         return view('vanbandi::gop_y_du_thao.Danh_sach_gop_y_du_thao', compact('canbogopy', 'canbogopyngoai','key2','key1'));

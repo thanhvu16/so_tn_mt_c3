@@ -19,7 +19,7 @@
                     <a class="text-title-item" href="{{ route('giay-moi-den.create') }}">
                         <p>Nhập mới giấy mời</p>
                     </a>
-                    @role('văn thư huyện')
+                    @role('văn thư sở')
                     <a class="text-title-item" href="{{route('dsvanbandentumail')}}">
                         <p>Hòm thư công
                             <button

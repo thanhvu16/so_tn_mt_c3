@@ -55,9 +55,9 @@ class PhanLoaiVanBanController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
-        $chuTich = User::role('chủ tịch')->select('id', 'ho_ten', 'don_vi_id')->first();
+        $chuTich = User::role(CHU_TICH)->select('id', 'ho_ten', 'don_vi_id')->first();
 
-        $danhSachPhoChuTich = User::role('phó chủ tịch')
+        $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
             ->where('don_vi_id', $chuTich->don_vi_id)
             ->select('id', 'ho_ten')->get();
 
@@ -298,7 +298,7 @@ class PhanLoaiVanBanController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
-        $chuTich = User::role('chủ tịch')->select('id', 'ho_ten', 'don_vi_id', 'cap_xa')
+        $chuTich = User::role(CHU_TICH)->select('id', 'ho_ten', 'don_vi_id', 'cap_xa')
             ->whereNull('cap_xa')
             ->first();
         $donVi = $user->donVi;
@@ -322,7 +322,7 @@ class PhanLoaiVanBanController extends Controller
             if ($user->hasRole(CHU_TICH)) {
                 $active = VanBanDen::CHU_TICH_XA_NHAN_VB;
             }
-            if ($user->hasRole(PHO_CHUC_TICH)) {
+            if ($user->hasRole(PHO_CHU_TICH)) {
                 $active = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
             }
 
@@ -367,7 +367,7 @@ class PhanLoaiVanBanController extends Controller
 
 
 
-            $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
                 ->where('trang_thai', ACTIVE)
                 ->where('don_vi_id', $user->don_vi_id)
                 ->select('id', 'ho_ten')
@@ -407,7 +407,7 @@ class PhanLoaiVanBanController extends Controller
         } else {
 
 
-            $danhSachPhoChuTich = User::role(PHO_CHUC_TICH)
+            $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
                 ->where('don_vi_id', $chuTich->don_vi_id)
                 ->select(['id', 'ho_ten'])->get();
 

@@ -1390,7 +1390,7 @@
                                             <tr  style="text-align: justify">
                                                 <td colspan="9"><i>Nhận xét cá nhân  : {{$data->laydanhgia($data->id_dau_tien)->nhan_xet}}</i></td>
                                                 <td colspan="9">
-                                                    @if( $data->canbodanhgia->hasRole(PHO_CHUC_TICH) || $data->canbodanhgia->hasRole(PHO_CHANH_VAN_PHONG)|| $data->canbodanhgia->hasRole(VAN_THU_HUYEN) )
+                                                    @if( $data->canbodanhgia->hasRole(PHO_CHU_TICH) || $data->canbodanhgia->hasRole(PHO_CHANH_VAN_PHONG)|| $data->canbodanhgia->hasRole(VAN_THU_HUYEN) )
                                                     @else
 {{--                                                        //xem lại đoạn check comment phó phòng--}}
 {{--                                                    {{dd($data->laydanhgia($data->id_dau_tien)->nguoinhan)}}--}}
@@ -1401,16 +1401,16 @@
                                                             @if($data->canbodanhgia->hasRole(CHUYEN_VIEN) && ($data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_TRUONG_BAN)|| $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_PHONG)|| $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHANH_VAN_PHONG)))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
-                                                                @if($data->canbodanhgia->hasRole(TRUONG_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                                @if($data->canbodanhgia->hasRole(TRUONG_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHU_TICH))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
-                                                                @if($data->canbodanhgia->hasRole(CHU_TICH) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                                @if($data->canbodanhgia->hasRole(CHU_TICH) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHU_TICH))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
-                                                                @if($data->canbodanhgia->hasRole(TRUONG_BAN) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                                @if($data->canbodanhgia->hasRole(TRUONG_BAN) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHU_TICH))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
-                                                            @if($data->canbodanhgia->hasRole(CHANH_VAN_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHUC_TICH))
+                                                            @if($data->canbodanhgia->hasRole(CHANH_VAN_PHONG) && $data->laydanhgia($data->id_dau_tien)->nguoinhan->hasRole(PHO_CHU_TICH))
                                                             <i>Nhận xét của cấp phó:{{$data->nhan_xet}}
                                                         @endif
                                                     @endif
@@ -1419,7 +1419,7 @@
 
 
                                             </tr>
-                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->hasRole(PHO_CHUC_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)))
+                                        @elseif(($data->trang_thai == 3 || $data->trang_thai == 4) && (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)))
 
                                             <tr>
                                                 <td style="vertical-align: middle;">

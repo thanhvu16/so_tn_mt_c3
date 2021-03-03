@@ -59,19 +59,19 @@ class LichCongTacController extends Controller
 
         $tuanTruoc = $tuanTruoc < 10 ? '0' . $tuanTruoc : $tuanTruoc;
         $tuanSau = $tuanSau < 10 ? '0' . $tuanSau : $tuanSau;
-        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
+        $roles = [CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
 
         $donVi = $currentUser->donVi;
         $donViCapXa = DonVi::whereNotNull('cap_xa')->whereNull('deleted_at')->first();
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
-            $roles = [CHU_TICH, PHO_CHUC_TICH, TRUONG_BAN];
+            $roles = [CHU_TICH, PHO_CHU_TICH, TRUONG_BAN];
         }
 
         $id = [];
 
         //
-        if ($currentUser->hasRole(PHO_CHUC_TICH)) {
+        if ($currentUser->hasRole(PHO_CHU_TICH)) {
 
             $id = [$currentUser->id];
 //            array_push( $id, $currentUser->id);
@@ -278,7 +278,7 @@ class LichCongTacController extends Controller
 
         $lichCongTac = LichCongTac::find($id);
 
-        $roles = [CHU_TICH, PHO_CHUC_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
+        $roles = [CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG];
         $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
             return $query->whereIn('name', $roles);
         })

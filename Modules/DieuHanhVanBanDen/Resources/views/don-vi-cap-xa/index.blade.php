@@ -218,7 +218,7 @@
                                                         for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                     ><i>GD</i></label>&nbsp;&nbsp;
                                                     @endif
-                                                    @if (auth::user()->hasRole(CHU_TICH) || (auth::user()->hasRole(PHO_CHUC_TICH) && $vanBanDen->phoChuTich->can_bo_nhan_id == auth::user()->id))
+                                                    @if (auth::user()->hasRole(CHU_TICH) || (auth::user()->hasRole(PHO_CHU_TICH) && $vanBanDen->phoChuTich->can_bo_nhan_id == auth::user()->id))
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                                id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"

@@ -125,7 +125,7 @@ class AllPermission
 
     public static function vanThuHuyen()
     {
-        return 'Văn thư huyện';
+        return 'văn thư sở';
     }
     // văn thư
     public static function themVanBanDen()
@@ -220,13 +220,13 @@ class AllPermission
     //chu tich
     public static function chuTich()
     {
-        return 'chủ tịch';
+        return 'giám đốc / chi cục trưởng';
     }
 
     //phó chu tich
     public static function phoChuTich()
     {
-        return 'phó chủ tịch';
+        return 'phó giám đốc / phó chi cục trưởng';
     }
 
     public static function truongPhong()

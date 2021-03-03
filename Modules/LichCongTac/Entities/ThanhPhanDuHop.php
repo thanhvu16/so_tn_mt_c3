@@ -86,7 +86,7 @@ class ThanhPhanDuHop extends Model
                     ->orderBy('created_at', 'DESC')
                     ->first();
 
-                if (empty($donVi->cap_xa) && (auth::user()->can(AllPermission::thamMuu()) || auth::user()->hasRole([CHU_TICH, PHO_CHUC_TICH]))) {
+                if (empty($donVi->cap_xa) && (auth::user()->can(AllPermission::thamMuu()) || auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))) {
                     ThanhPhanDuHop::where('lich_cong_tac_id', $lichCongTac->id)
                         ->where('object_id', $vanBan->id)
                         ->where(function ($query) use ($type) {
