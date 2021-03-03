@@ -219,7 +219,9 @@ class GiayMoiDiController extends Controller
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
         $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id)->first();
         $vanThuVanBanDiPiceCharts = [];
-
+        $emailSoBanNganh = MailTrongThanhPho::where('mail_group',1)->orderBy('ten_don_vi', 'asc')->get();
+        $emailQuanHuyen = MailTrongThanhPho::where('mail_group',2)->orderBy('ten_don_vi', 'asc')->get();
+        $emailTrucThuoc = MailTrongThanhPho::where('mail_group',3)->orderBy('ten_don_vi', 'asc')->get();
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if (empty($donVi->cap_xa)) {
@@ -376,7 +378,7 @@ class GiayMoiDiController extends Controller
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         return view('giaymoidi::giay_moi_di.create',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_DonVi_nhan','ds_loaiVanBan','ds_soVanBan',
-            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi', 'giayMoi'));
+            'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi', 'giayMoi','emailTrucThuoc','emailSoBanNganh','emailQuanHuyen'));
     }
 
     /**
@@ -391,7 +393,19 @@ class GiayMoiDiController extends Controller
         $donvinhanmailtrongtp = !empty($request['don_vi_nhan_trong_thanh_php']) ? $request['don_vi_nhan_trong_thanh_php'] : null;
         $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
+        $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
+        $EmailThem = $request->email_them;
         $gio_hop= date ('H:i',strtotime($request->gio_hop));
+
+
+        if ($tenMailThem && count($tenMailThem) > 0) {
+            foreach ($tenMailThem as $key => $data) {
+                $themDonVi = new MailNgoaiThanhPho();
+                $themDonVi -> ten_don_vi= $data;
+                $themDonVi -> email= $EmailThem[$key];
+                $themDonVi -> save();
+            }
+        }
 
         $vanbandi = new VanBanDi();
         $vanbandi->trich_yeu = $request->vb_trichyeu;

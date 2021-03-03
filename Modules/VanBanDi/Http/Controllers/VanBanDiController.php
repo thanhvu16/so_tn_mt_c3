@@ -225,6 +225,11 @@ class VanBanDiController extends Controller
         $donVi = $user->donVi;
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
+
+        $emailSoBanNganh = MailTrongThanhPho::where('mail_group',1)->orderBy('ten_don_vi', 'asc')->get();
+        $emailQuanHuyen = MailTrongThanhPho::where('mail_group',2)->orderBy('ten_don_vi', 'asc')->get();
+        $emailTrucThuoc = MailTrongThanhPho::where('mail_group',3)->orderBy('ten_don_vi', 'asc')->get();
+//        dd($emailTrucThuoc);
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $laysovanban = [];
@@ -390,7 +395,8 @@ class VanBanDiController extends Controller
         }
 
         return view('vanbandi::van_ban_di.create', compact('ds_nguoiKy',
-            'ds_soVanBan', 'ds_loaiVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_DonVi', 'nguoinhan', 'ds_DonVi_nhan', 'emailtrongthanhpho', 'emailngoaithanhpho'));
+            'ds_soVanBan', 'ds_loaiVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_DonVi', 'nguoinhan', 'ds_DonVi_nhan',
+            'emailtrongthanhpho', 'emailngoaithanhpho','emailQuanHuyen','emailSoBanNganh','emailTrucThuoc'));
     }
 
     /**
