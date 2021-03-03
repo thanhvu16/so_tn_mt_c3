@@ -134,8 +134,10 @@
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
                                           required></textarea>
                             </div>
-                            <div class="form-group col-md-12 hidden " >
-                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận bên ngoài</label>
+
+
+                            <div class="form-group col-md-12 ">
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
                                 <select name="don_vi_nhan_trong_thanh_php[]" id="don_vi_nhan"
                                         class="form-control select2"
                                         multiple
@@ -147,19 +149,12 @@
 
                                 </select>
                             </div>
+                            <div class="col-md-12 text-right">
+                                <a role="button" onclick="showModal()" class="btn btn-primary ">
+                                    <span style="color: white;font-size: 14px"><i class="fa fa-check-square-o"></i> Chọn đơn vị</span></a>
 
-                            <div class="form-group col-md-12 ">
-                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
-                                <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
-                                        class="form-control select2"
-                                        multiple
-                                        data-placeholder=" Chọn đơn vị nhận ...">
-                                    @foreach ($ds_DonVi_nhan as $donVi)
-                                        <option value="{{ $donVi->id }}"
-                                        >{{ $donVi->ten_don_vi }}</option>
-                                    @endforeach
-
-                                </select>
+                                <a role="button" onclick="xoatatca()" class="btn btn-danger ">
+                                    <span style="color: white;font-size: 14px"><i class="far fa-trash-alt"></i> Xóa tất cả</span></a>
                             </div>
                             <div class="form-group col-md-12 " >
                                 <label for="" class="col-form-label">Đơn vị nhận bên ngoài</label>
@@ -173,6 +168,165 @@
                                     @endforeach
 
                                 </select>
+                            </div>
+                            <div class="form-group col-md-12 ">
+                                <span style="font-style: italic">( <span style="color: red">Có thể thêm mới nơi nhận mail bên ngoài phía dưới</span> )</span><br>
+
+                                <div class="row themnoinhan">
+
+                                    <div class="col-md-4">
+                                        <label for="" class="col-form-label">Tên Đơn vị nhận ngoài</label>
+                                        <input type="text"
+                                               value=""
+                                               name="ten_don_vi_them[]"  class="form-control"
+                                               placeholder="Tên đơn vị..." >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="email_them" class="col-form-label">Email</label>
+                                        <input type="text"
+                                               value=""
+                                               name="email_them[]"  class="form-control"
+                                               placeholder="Email..." >
+                                    </div>
+                                    <div class="col-md-5 mt-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a class="btn btn-success btn-xs" style="color: white"
+                                                   onclick="themnoinhan()"
+                                                   role="button"
+                                                ><i class="fa fa-plus"></i>
+                                                </a>
+                                                <b class="text-danger"> Thêm nơi nhận</b> &emsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="myModal">
+                                <div class="modal-dialog modal-lg" style="max-width: 1800px">
+                                    <div class="modal-content">
+                                        <form action="{{ route('multiple_file_di') }}" method="POST"
+                                              enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title"><i class="fa fa-home"></i> Nơi nhận mail Sở ban ngành</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+
+
+
+
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12 text-left">
+                                                            <a class=" " data-toggle="collapse"
+                                                               href="#collapseExample" style="color: black"
+                                                               aria-expanded="false" aria-controls="collapseExample"> <i class="fa fa-home"></i>
+                                                                <span
+                                                                    style="font-size: 14px">Nơi nhận mail Sở ban ngành</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-12 collapse "
+                                                             id="collapseExample">
+                                                            <table id="dtVerticalScrollExample" class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="text-center " width="10%"><input type="checkbox" name="checkall1" class="checkboxall1" onclick="docheckall1();"></th>
+                                                                    <th class="text-center" width="">Sở ban ngành</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="dulieu_phoihop">
+                                                                @foreach($emailSoBanNganh as $data1)
+                                                                    <tr id="chon_phoihop_1">
+                                                                        <td class="text-center">
+                                                                            <input type="checkbox" name="CBphongban1[]" value="{{$data1->id}}" class="CBphongban1 loaiPB1">
+                                                                        </td>
+                                                                        <td class="text-left">{{$data1->ten_don_vi}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12 text-left">
+                                                            <a class=" " data-toggle="collapse"
+                                                               href="#collapseExample1"
+                                                               aria-expanded="false" style="color: black" aria-controls="collapseExample"> <i class="fa fa-home"></i>
+                                                                <span
+                                                                    style="font-size: 14px">Nơi nhận Quận huyện</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-12 collapse "
+                                                             id="collapseExample1">
+                                                            <table id="dtVerticalScrollExample" class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="text-center" width="10%"><input type="checkbox" name="checkall2" class="checkboxall1" onchange="docheckall2();"></th>
+                                                                    <th class="text-center" width="">Nơi nhận Quận huyện</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="dulieu_phoihop1">
+                                                                @foreach($emailQuanHuyen as $data2)
+                                                                    <tr id="chon_phoihop_16">
+                                                                        <td class="text-center">
+                                                                            <input type="checkbox" name="CBphongban1[]" value="{{$data2->id}}" class="CBphongban1 loaiPB2">
+                                                                        </td>
+                                                                        <td class="text-left">{{$data2->ten_don_vi}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12 text-left">
+                                                            <a class="  " data-toggle="collapse"
+                                                               href="#collapseExample2"
+                                                               aria-expanded="false" style="color: black" aria-controls="collapseExample"> <i class="fa fa-home"></i>
+                                                                <span
+                                                                    style="font-size: 14px">Nơi nhận mail đơn vị trực thuộc</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-12 collapse "
+                                                             id="collapseExample2">
+                                                            <table id="dtVerticalScrollExample" class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="text-center" width="10%"><input type="checkbox" name="checkall3" class="checkboxall1" onchange="docheckall3();"></th>
+                                                                    <th class="text-center" width="">Nơi nhận mail đơn vị trực thuộc</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="dulieu_phoihop1">
+                                                                @foreach($emailTrucThuoc as $data3)
+                                                                    <tr id="chon_phoihop_16">
+                                                                        <td class="text-center">
+                                                                            <input type="checkbox" name="CBphongban1[]" value="{{$data3->id}}"  class="CBphongban1 loaiPB3">
+                                                                        </td>
+                                                                        <td class="text-left">{{$data3->ten_don_vi}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 text-right">
+                                                        <button type="button" name="luu_phoihop" value="luu_phoihop"  onclick="themphoihop()" class="btn btn-primary btn-sm"  data-dismiss="modal"><i class="fa fa-close"></i> Ghi lại</button>
+                                                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Đóng lại</button>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
 
 
@@ -190,4 +344,10 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+    <script src="{{ asset('modules/quanlyvanban/js/noigui.js') }}"></script>
+    <script type="text/javascript">
+        function showModal() {
+            $("#myModal").modal('show');
+        }
+    </script>
 @endsection
