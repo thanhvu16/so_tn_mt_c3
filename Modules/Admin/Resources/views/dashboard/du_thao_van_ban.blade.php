@@ -54,6 +54,6 @@
         </div>
     </div>
 </div>
-@hasanyrole('trưởng phòng|phó phòng|phó chánh văn phòng|chánh văn phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2|chuyên viên')
+@if (auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, CHUYEN_VIEN]))
     <div class="clearfix"></div>
-@endrole
+@endif

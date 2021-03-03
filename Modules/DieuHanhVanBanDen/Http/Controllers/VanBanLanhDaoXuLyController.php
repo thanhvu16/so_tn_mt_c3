@@ -287,7 +287,7 @@ class VanBanLanhDaoXuLyController extends Controller
                         }
                     }
                     // chu tich
-                    if ($currentUser->hasRole('chủ tịch')) {
+                    if ($currentUser->hasRole(CHU_TICH)) {
 
                         if (!empty($arrPhoChuTich[$vanBanDenId])) {
 
