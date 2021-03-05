@@ -19,8 +19,8 @@ class LayVanBanTuEmailController extends Controller
     {
         set_time_limit(3000);
         $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
-        $username = 'vanthu_sotc@hanoi.gov.vn';
-        $password = '****';
+        $username = 'testvpdt@hanoi.gov.vn';
+        $password = 'testvpdt';
 
         $time =time()-7200;
         $maxdate['mail_date'] = date('Y-m-d H:i:s',$time);
@@ -29,7 +29,7 @@ class LayVanBanTuEmailController extends Controller
 
         $inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Email: ');
 
-        $emails = imap_search($inbox,'SINCE "'.$date.'"');
+        $emails = imap_search($inbox, 'NEW');
 
         if($emails) {
             rsort($emails);
@@ -46,14 +46,17 @@ class LayVanBanTuEmailController extends Controller
                     $date_header	= $cut_header[2].' '.$cut_header[3].' '.$cut_header[4].' '.$cut_header[5];
                 }
                 $overview = imap_fetch_overview($inbox,$email_number,0);
+
                 $arr['mail_subject'] = $this->decode($overview[0]->subject);
                 $arr['mail_from'] = $this->decode($overview[0]->from);
-                $arr['mail_date'] = date('Y-m-d H:i:s',strtotime($date_header));
+                $arr['mail_date'] = date('Y-m-d',strtotime($date_header));
+
                 $kiemtra = GetEmail::where([
-                    ['mail_subject', '=', $arr['mail_subject']],
-                    ['mail_from', '=', $arr['mail_from']],
-                    ['mail_date', '=', $arr['mail_date']],
+                    'mail_subject' => $arr['mail_subject'],
+                    'mail_from' => $arr['mail_from'],
+                    'mail_date' => $arr['mail_date'],
                 ])->count();
+
                 if($kiemtra==0)
                 {
                     $message = imap_fetchbody($inbox,$email_number,2);
@@ -119,10 +122,10 @@ class LayVanBanTuEmailController extends Controller
                             $filename = str_replace(' ','-',$filename);
                             if(empty($filename)) $filename = $time . ".dat";
                             if(is_dir('emailFile_'.date('Y'))==false){
-                                mkdir('emailFile_'.date('Y'));
+                                mkdir('emailFile_'.date('Y'), 0777);
                             }
                             // download and save pdf
-                            if('pdf' === $this->filename_extension( $filename) || 'PDF' === $this->filename_extension( $filename)){
+                            if('pdf' === $this->filename_extension( $filename) || 'PDF' === $this->filename_extension( $filename)) {
                                 //$filename = str_replace('.sdk','.xml',$filename);
                                 $fp = @fopen("emailFile_".date('Y')."/".$key.'_'.strtotime($date_header).'_'.$filename, "w+");
 
@@ -180,7 +183,8 @@ class LayVanBanTuEmailController extends Controller
                             'mail_pdf'        => $arr['mail_attachment1'],
                             'mail_doc'        => $arr['mail_attachment2'],
                             'mail_xls'        => $arr['mail_attachment3'],
-                            'noigui' 		  => $noigui
+                            'noigui' 		  => $noigui,
+                            'mail_active'     => 1
                         );
                         $getEmail = new GetEmail();
                         $getEmail->fill($data);
