@@ -14,7 +14,7 @@ use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
-use auth, File;
+use auth, File, DB;
 use Modules\Admin\Entities\MailNgoaiThanhPho;
 use Modules\Admin\Entities\MailTrongThanhPho;
 use Modules\Admin\Entities\NhomDonVi;
@@ -47,15 +47,15 @@ class DuThaoVanBanController extends Controller
         $donvikhongdieuhanh = DonVi::where('dieu_hanh', '!=', 1)->whereNull('deleted_at')->get();
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN,PHO_CHANH_VAN_PHONG,CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
-        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN,CHANH_VAN_PHONG,PHO_CHANH_VAN_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
+        $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, PHO_CHANH_VAN_PHONG, CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
+        $lanhdaokhac = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
         //$ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHU_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
 
         $user = auth::user();
         $donVi = $user->donVi;
-        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id)->first();
+        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id)->first();
 
 
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -120,7 +120,7 @@ class DuThaoVanBanController extends Controller
                 $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
                 break;
             case PHO_CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([CHANH_VAN_PHONG,PHO_CHU_TICH, CHU_TICH])->get();
+                $ds_nguoiKy = User::role([CHANH_VAN_PHONG, PHO_CHU_TICH, CHU_TICH])->get();
                 break;
             case VAN_THU_DON_VI:
                 $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -326,51 +326,46 @@ class DuThaoVanBanController extends Controller
         $file = Fileduthao::where(['vb_du_thao_id' => $id])->where('stt', '!=', 0)->get();
         $vanThuVanBanDiPiceCharts = [];
 
-        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id ?? null)->first();
-
-
+        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
+        $dataNguoiKy = [];
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
 
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if (empty($donVi->cap_xa)) {
-                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+
                     foreach ($truongpho as $data2) {
-                        array_push($vanThuVanBanDiPiceCharts, $data2);
-                    }
-                    $chanvanphong = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                    $giamdoc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
-
-                    foreach ($chanvanphong as $data) {
-                        array_push($vanThuVanBanDiPiceCharts, $data);
+                        array_push($dataNguoiKy, $data2);
                     }
 
-                    foreach ($giamdoc as $data2) {
-                        array_push($vanThuVanBanDiPiceCharts, $data2);
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
                     }
-                    $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+                    $ds_nguoiKy = $dataNguoiKy;
                 } else {
                     $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 }
                 break;
             case PHO_PHONG:
-                $truongpho = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 foreach ($truongpho as $data2) {
-                    array_push($vanThuVanBanDiPiceCharts, $data2);
+                    array_push($dataNguoiKy, $data2);
                 }
-                $chanvanphong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chanvanphong as $data) {
-                    array_push($vanThuVanBanDiPiceCharts, $data);
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
                 }
-                $giamdoc = User::role([CHU_TICH, PHO_CHU_TICH])->get();
-                foreach ($giamdoc as $data2) {
-                    array_push($vanThuVanBanDiPiceCharts, $data2);
-                }
-                $ds_nguoiKy = $vanThuVanBanDiPiceCharts;
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
             case TRUONG_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $ds_nguoiKy = $lanhDaoSo;
                 } else {
                     $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -390,25 +385,46 @@ class DuThaoVanBanController extends Controller
                 }
                 break;
             case CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id ?? null)->get();
+                $ds_nguoiKy = $lanhDaoSo;
                 break;
             case PHO_CHANH_VAN_PHONG:
-                $ds_nguoiKy = User::role([CHANH_VAN_PHONG,PHO_CHU_TICH, CHU_TICH])->get();
+                $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                foreach ($chanhVanPhong as $data) {
+                    array_push($dataNguoiKy, $data);
+                }
+                foreach ($lanhDaoSo as $item) {
+                    array_push($dataNguoiKy, $item);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
+
             case VAN_THU_DON_VI:
                 $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
+
             case VAN_THU_HUYEN:
                 $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
+
             case TRUONG_BAN:
-                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 break;
+
             case PHO_TRUONG_BAN:
-                $ds_nguoiKy = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                array_push($dataNguoiKy, $truongBan);
+
+                $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                if ($danhSachLanhDaoPhongBan) {
+                    foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
+                        array_push($dataNguoiKy, $lanhDaoPhongBan);
+                    }
+                }
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
         }
+
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
@@ -443,7 +459,7 @@ class DuThaoVanBanController extends Controller
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG,CHANH_VAN_PHONG,PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
                     $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 }
@@ -455,7 +471,7 @@ class DuThaoVanBanController extends Controller
 //                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
 
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = $lanhDaoSo;
                 } else {
                     $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
@@ -476,7 +492,7 @@ class DuThaoVanBanController extends Controller
                 break;
             case CHANH_VAN_PHONG:
                 if (empty($donVi->cap_xa)) {
-                    $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donViCapHuyen->id)->get();
+                    $nguoinhan = $lanhDaoSo;
                 }
                 break;
             case PHO_CHANH_VAN_PHONG:
@@ -490,7 +506,7 @@ class DuThaoVanBanController extends Controller
                 $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -921,129 +937,128 @@ class DuThaoVanBanController extends Controller
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
         try {
             DB::beginTransaction();
-        foreach ($canbothuocduthaocu as $canbo) {
-            $canbothuocduthaophongcu = CanBoPhongDuThao::where('id', $canbo->id)->first();
-            $canbothuocduthaophongcu->trang_thai = 12;
-            $canbothuocduthaophongcu->save();
-        }
-        $canbothuocduthaophongkhaccu = CanBoPhongDuThaoKhac::where('du_thao_vb_id', $request->id_duthao)->get();
-        foreach ($canbothuocduthaophongkhaccu as $canbokhac) {
-            $canbothuocduthaocukhac = CanBoPhongDuThaoKhac::where('id', $canbokhac->id)->first();
-            $canbothuocduthaocukhac->trang_thai = 12;
-            $canbothuocduthaocukhac->save();
-        }
-        $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
-        $tenfilehoso = !empty($request['txt_file']) ? $request['txt_file'] : null;
-        $filehoso = !empty($request['file_name']) ? $request['file_name'] : null;
-        $filephieutrinh = !empty($request['file_phieu_trinh']) ? $request['file_phieu_trinh'] : null;
-        $filetrinhky = !empty($request['file_trinh_ky']) ? $request['file_trinh_ky'] : null;
-        $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
-        $EmailThem = $request->email_them;
-        $duthaochot = Duthaovanbandi::where('id', $request->id_duthao)->first();
-        $nguoiky = User::where('id', $request->nguoiky_id)->first();
-        $duthaochot->stt = 3;
-        $duthaochot->save();
-        $vanbandi = new VanBanDi();
-        $vanbandi->trich_yeu = $request->vb_trichyeu;
-        $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
-        $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
-        $vanbandi->loai_van_ban_id = $request->loaivanban_id;
-        $vanbandi->do_khan_cap_id = $request->dokhan_id;
-        $vanbandi->chuc_vu = $request->chuc_vu;
-        $vanbandi->do_bao_mat_id = $request->dobaomat_id;
-        if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
-            $nguoiky->role_id == QUYEN_CHANH_VAN_PHONG || $nguoiky->role_id == QUYEN_PHO_CHANH_VAN_PHONG) //đây là huyện ký
-        {
-            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
-                $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
-                //đây là huyện soạn thảo và huyện ký
-//                $vanbandi->don_vi_soan_thao = ;
-            } else {//đây là đơn vị soạn thảo do huyện ký
-//                $vanbandi->don_vi_soan_thao = '';
-                $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+            foreach ($canbothuocduthaocu as $canbo) {
+                $canbothuocduthaophongcu = CanBoPhongDuThao::where('id', $canbo->id)->first();
+                $canbothuocduthaophongcu->trang_thai = 12;
+                $canbothuocduthaophongcu->save();
             }
-            $vanbandi->type = 1;
-        } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG) {
-            //đây là đơn vị ký
-            $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
-            $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
-            $vanbandi->type = 2;
-        }
-        $vanbandi->so_van_ban_id = $request->sovanban_id;
-        $vanbandi->nguoi_ky = $request->nguoiky_id;
-        $vanbandi->nguoi_tao = auth::user()->id;
-        $vanbandi->van_ban_den_id = \GuzzleHttp\json_encode($duthaochot->van_ban_den_don_vi_id)  ?? null;
-        if ($duthaochot->loai_van_ban_id == $giayMoi->id) {
-            $vanbandi->loai_van_ban_giay_moi = 2;
-        } else {
-            $vanbandi->loai_van_ban_giay_moi = 1;
-        }
-        $vanbandi->save();
-        UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
+            $canbothuocduthaophongkhaccu = CanBoPhongDuThaoKhac::where('du_thao_vb_id', $request->id_duthao)->get();
+            foreach ($canbothuocduthaophongkhaccu as $canbokhac) {
+                $canbothuocduthaocukhac = CanBoPhongDuThaoKhac::where('id', $canbokhac->id)->first();
+                $canbothuocduthaocukhac->trang_thai = 12;
+                $canbothuocduthaocukhac->save();
+            }
+            $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
+            $tenfilehoso = !empty($request['txt_file']) ? $request['txt_file'] : null;
+            $filehoso = !empty($request['file_name']) ? $request['file_name'] : null;
+            $filephieutrinh = !empty($request['file_phieu_trinh']) ? $request['file_phieu_trinh'] : null;
+            $filetrinhky = !empty($request['file_trinh_ky']) ? $request['file_trinh_ky'] : null;
+            $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
+            $EmailThem = $request->email_them;
+            $duthaochot = Duthaovanbandi::where('id', $request->id_duthao)->first();
+            $nguoiky = User::where('id', $request->nguoiky_id)->first();
+            $duthaochot->stt = 3;
+            $duthaochot->save();
+            $vanbandi = new VanBanDi();
+            $vanbandi->trich_yeu = $request->vb_trichyeu;
+            $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
+            $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
+            $vanbandi->loai_van_ban_id = $request->loaivanban_id;
+            $vanbandi->do_khan_cap_id = $request->dokhan_id;
+            $vanbandi->chuc_vu = $request->chuc_vu;
+            $vanbandi->do_bao_mat_id = $request->dobaomat_id;
+            if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
+                $nguoiky->role_id == QUYEN_CHANH_VAN_PHONG || $nguoiky->role_id == QUYEN_PHO_CHANH_VAN_PHONG) //đây là huyện ký
+            {
+                if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
+                    $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
+                    //đây là huyện soạn thảo và huyện ký
+//                $vanbandi->don_vi_soan_thao = ;
+                } else {//đây là đơn vị soạn thảo do huyện ký
+//                $vanbandi->don_vi_soan_thao = '';
+                    $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+                }
+                $vanbandi->type = 1;
+            } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG) {
+                //đây là đơn vị ký
+                $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
+                $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
+                $vanbandi->type = 2;
+            }
+            $vanbandi->so_van_ban_id = $request->sovanban_id;
+            $vanbandi->nguoi_ky = $request->nguoiky_id;
+            $vanbandi->nguoi_tao = auth::user()->id;
 
+            $vanbandi->van_ban_den_id = [(string)$duthaochot->van_ban_den_don_vi_id] ?? null;
+            if ($duthaochot->loai_van_ban_id == $giayMoi->id) {
+                $vanbandi->loai_van_ban_giay_moi = 2;
+            } else {
+                $vanbandi->loai_van_ban_giay_moi = 1;
+            }
+            $vanbandi->save();
+
+            UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
 
             if ($tenMailThem && count($tenMailThem) > 0) {
                 foreach ($tenMailThem as $key => $data) {
                     $themDonVi = new MailNgoaiThanhPho();
-                    $themDonVi -> ten_don_vi= $data;
-                    $themDonVi -> email= $EmailThem[$key];
-                    $themDonVi -> save();
+                    $themDonVi->ten_don_vi = $data;
+                    $themDonVi->email = $EmailThem[$key];
+                    $themDonVi->save();
                 }
             }
 
-        if ($filetrinhky && count($filetrinhky) > 0) {
-            if ($filehoso && count($filehoso) > 0) {
-                foreach ($filehoso as $key => $getFile) {
-                    $extFile = $getFile->extension();
-                    $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile : null;
-                    $vbDiFile = new FileVanBanDi();
-                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+            if ($filetrinhky && count($filetrinhky) > 0) {
+                if ($filehoso && count($filehoso) > 0) {
+                    foreach ($filehoso as $key => $getFile) {
+                        $extFile = $getFile->extension();
+                        $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($tenfilehoso[$key]), '_') . '.' . $extFile : null;
+                        $vbDiFile = new FileVanBanDi();
+                        $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
 
-                    $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
-                    if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
-                    }
-                    $getFile->move($uploadPath, $fileName);
+                        $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
+                        if (!File::exists($uploadPath)) {
+                            File::makeDirectory($uploadPath, 0775, true, true);
+                        }
+                        $getFile->move($uploadPath, $fileName);
 
-                    $vbDiFile->ten_file = isset($ten) ? $ten : $fileName;
-                    $vbDiFile->duong_dan = $urlFile;
-                    $vbDiFile->van_ban_di_id = $vanbandi->id;
-                    $vbDiFile->nguoi_dung_id = auth::user()->id;
-                    $vbDiFile->don_vi_id = auth::user()->donvi_id;
-                    $vbDiFile->trang_thai = 3;
-                    $vbDiFile->save();
-
-                }
-
-
-            }
-            if ($filephieutrinh && count($filephieutrinh) > 0) {
-                foreach ($filephieutrinh as $key => $getFile) {
-                    $extFile = $getFile->extension();
-                    $vbDiFile = new FileVanBanDi();
-                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
-
-                    $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
-                    if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
-                    }
-                    $getFile->move($uploadPath, $fileName);
-
-                    $vbDiFile->ten_file = $fileName;
-                    $vbDiFile->duong_dan = $urlFile;
-                    $vbDiFile->van_ban_di_id = $vanbandi->id;
-                    $vbDiFile->nguoi_dung_id = auth::user()->id;
-                    $vbDiFile->don_vi_id = auth::user()->donvi_id;
-                    $vbDiFile->trang_thai = 1;
-
-                    if ($extFile == 'pdf') {
-                        $vbDiFile->trang_thai = 1;
-                    } else {
+                        $vbDiFile->ten_file = isset($ten) ? $ten : $fileName;
+                        $vbDiFile->duong_dan = $urlFile;
+                        $vbDiFile->van_ban_di_id = $vanbandi->id;
+                        $vbDiFile->nguoi_dung_id = auth::user()->id;
+                        $vbDiFile->don_vi_id = auth::user()->donvi_id;
                         $vbDiFile->trang_thai = 3;
-                    }
-                    $vbDiFile->save();
+                        $vbDiFile->save();
 
+                    }
                 }
+                if ($filephieutrinh && count($filephieutrinh) > 0) {
+                    foreach ($filephieutrinh as $key => $getFile) {
+                        $extFile = $getFile->extension();
+                        $vbDiFile = new FileVanBanDi();
+                        $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                        $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
+                        if (!File::exists($uploadPath)) {
+                            File::makeDirectory($uploadPath, 0775, true, true);
+                        }
+                        $getFile->move($uploadPath, $fileName);
+
+                        $vbDiFile->ten_file = $fileName;
+                        $vbDiFile->duong_dan = $urlFile;
+                        $vbDiFile->van_ban_di_id = $vanbandi->id;
+                        $vbDiFile->nguoi_dung_id = auth::user()->id;
+                        $vbDiFile->don_vi_id = auth::user()->donvi_id;
+                        $vbDiFile->trang_thai = 1;
+
+                        if ($extFile == 'pdf') {
+                            $vbDiFile->trang_thai = 1;
+                        } else {
+                            $vbDiFile->trang_thai = 3;
+                        }
+                        $vbDiFile->save();
+
+                    }
 //                if ($extFile == 'doc' || $extFile == 'docx') {
 //                    if (config('system.convert_doc_to_pdf') == true) {
 //                        $explodeFileDoc = explode('.', $vbDiFile->ten_file);
@@ -1063,33 +1078,32 @@ class DuThaoVanBanController extends Controller
 //                        $vbDiFile2->save();
 //                    }
 //                }
+                }
+                if ($filetrinhky && count($filetrinhky) > 0) {
+                    foreach ($filetrinhky as $key => $getFile) {
+                        $extFile = $getFile->extension();
+                        $vbDiFile = new FileVanBanDi();
+                        $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
 
-            }
-            if ($filetrinhky && count($filetrinhky) > 0) {
-                foreach ($filetrinhky as $key => $getFile) {
-                    $extFile = $getFile->extension();
-                    $vbDiFile = new FileVanBanDi();
-                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                        $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
+                        if (!File::exists($uploadPath)) {
+                            File::makeDirectory($uploadPath, 0775, true, true);
+                        }
+                        $getFile->move($uploadPath, $fileName);
 
-                    $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
-                    if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
-                    }
-                    $getFile->move($uploadPath, $fileName);
-
-                    $vbDiFile->ten_file = $fileName;
-                    $vbDiFile->duong_dan = $urlFile;
-                    $vbDiFile->van_ban_di_id = $vanbandi->id;
-                    $vbDiFile->nguoi_dung_id = auth::user()->id;
-                    $vbDiFile->don_vi_id = auth::user()->donvi_id;
-                    $vbDiFile->trang_thai = 2;
-
-                    if ($extFile == 'pdf') {
+                        $vbDiFile->ten_file = $fileName;
+                        $vbDiFile->duong_dan = $urlFile;
+                        $vbDiFile->van_ban_di_id = $vanbandi->id;
+                        $vbDiFile->nguoi_dung_id = auth::user()->id;
+                        $vbDiFile->don_vi_id = auth::user()->donvi_id;
                         $vbDiFile->trang_thai = 2;
-                    } else {
-                        $vbDiFile->trang_thai = 3;
-                    }
-                    $vbDiFile->save();
+
+                        if ($extFile == 'pdf') {
+                            $vbDiFile->trang_thai = 2;
+                        } else {
+                            $vbDiFile->trang_thai = 3;
+                        }
+                        $vbDiFile->save();
 //                    if ($extFile == 'doc' || $extFile == 'docx') {
 //                        if (config('system.convert_doc_to_pdf') == true) {
 //                            $explodeFileDoc = explode('.', $vbDiFile->ten_file);
@@ -1109,19 +1123,18 @@ class DuThaoVanBanController extends Controller
 //                            $vbDiFile2->save();
 //                        }
 //                    }
+                    }
+
                 }
+            } else {
+                //lấy file cũ vào để làm file vb đi
+                $fileduthao = Fileduthao::where(['vb_du_thao_id' => $request->id_duthao])->where('stt', '!=', 0)->OrderBy('created_at', 'desc')->get();
 
-            }
-        } else {
+                foreach ($fileduthao as $file) {
+                    $explodeFileDoc = explode('.', $file->ten_file);
+                    $extFile = strtolower($explodeFileDoc[1]);
 
-            //lấy file cũ vào để làm file vb đi
-            $fileduthao = Fileduthao::where(['vb_du_thao_id' => $request->id_duthao])->where('stt', '!=', 0)->OrderBy('created_at', 'desc')->get();
-
-            foreach ($fileduthao as $file) {
-                $explodeFileDoc = explode('.', $file->ten_file);
-                $extFile = strtolower($explodeFileDoc[1]);
-
-                if ($file->stt == 1 || $file->stt == 2) {
+                    if ($file->stt == 1 || $file->stt == 2) {
 
 //                    if($extFile == 'doc' || $extFile == 'docx'){
 //
@@ -1142,57 +1155,57 @@ class DuThaoVanBanController extends Controller
 //                            $vbDiFile2->save();
 //                        }
 //                    }else{
-                    $filevanbandi = new FileVanBanDi();
-                    $filevanbandi->ten_file = $file->ten_file ?? null;
-                    $filevanbandi->duong_dan = $file->duong_dan ?? null;
-                    $filevanbandi->van_ban_di_id = $vanbandi->id;
-                    $filevanbandi->nguoi_dung_id = $file->nguoi_tao;
-                    $filevanbandi->don_vi_id = $file->don_vi;
-                    $filevanbandi->trang_thai = $file->stt;
-                    $filevanbandi->save();
+                        $filevanbandi = new FileVanBanDi();
+                        $filevanbandi->ten_file = $file->ten_file ?? null;
+                        $filevanbandi->duong_dan = $file->duong_dan ?? null;
+                        $filevanbandi->van_ban_di_id = $vanbandi->id;
+                        $filevanbandi->nguoi_dung_id = $file->nguoi_tao;
+                        $filevanbandi->don_vi_id = $file->don_vi;
+                        $filevanbandi->trang_thai = $file->stt;
+                        $filevanbandi->save();
 //                    }
 
-                } else {
-                    ;
-                    $filevanbandi = new FileVanBanDi();
-                    $filevanbandi->ten_file = $file->ten_file ?? null;
-                    $filevanbandi->duong_dan = $file->duong_dan ?? null;
-                    $filevanbandi->van_ban_di_id = $vanbandi->id;
-                    $filevanbandi->nguoi_dung_id = $file->nguoi_tao;
-                    $filevanbandi->don_vi_id = $file->don_vi;
-                    $filevanbandi->trang_thai = $file->stt;
-                    $filevanbandi->save();
+                    } else {
+                        ;
+                        $filevanbandi = new FileVanBanDi();
+                        $filevanbandi->ten_file = $file->ten_file ?? null;
+                        $filevanbandi->duong_dan = $file->duong_dan ?? null;
+                        $filevanbandi->van_ban_di_id = $vanbandi->id;
+                        $filevanbandi->nguoi_dung_id = $file->nguoi_tao;
+                        $filevanbandi->don_vi_id = $file->don_vi;
+                        $filevanbandi->trang_thai = $file->stt;
+                        $filevanbandi->save();
+                    }
+
+
                 }
-
-
             }
 
+            $canbonhan = new VanBanDiChoDuyet();
+            $canbonhan->van_ban_di_id = $vanbandi->id;
+            $canbonhan->can_bo_chuyen_id = $vanbandi->nguoi_tao;
+            $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
+            $canbonhan->id_du_thao = $duthaochot->id;
+            $canbonhan->save();
 
-        }
-
-        $canbonhan = new VanBanDiChoDuyet();
-        $canbonhan->van_ban_di_id = $vanbandi->id;
-        $canbonhan->can_bo_chuyen_id = $vanbandi->nguoi_tao;
-        $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
-        $canbonhan->id_du_thao = $duthaochot->id;
-        $canbonhan->save();
-
-        if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
-            foreach ($donvinhanvanbandi as $key => $donvi) {
-                $donvinhan = new NoiNhanVanBanDi();
-                $donvinhan->van_ban_di_id = $vanbandi->id;
-                $donvinhan->don_vi_id_nhan = $donvi;
-                $donvinhan->save();
+            if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
+                foreach ($donvinhanvanbandi as $key => $donvi) {
+                    $donvinhan = new NoiNhanVanBanDi();
+                    $donvinhan->van_ban_di_id = $vanbandi->id;
+                    $donvinhan->don_vi_id_nhan = $donvi;
+                    $donvinhan->save();
+                }
             }
-        }
-        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
-            foreach ($donvinhanmailngoaitp as $key => $ngoai) {
-                $mailngoai = new NoiNhanMailNgoai();
-                $mailngoai->van_ban_di_id = $vanbandi->id;
-                $mailngoai->email = $ngoai;
-                $mailngoai->save();
+            if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+                foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                    $mailngoai = new NoiNhanMailNgoai();
+                    $mailngoai->van_ban_di_id = $vanbandi->id;
+                    $mailngoai->email = $ngoai;
+                    $mailngoai->save();
+                }
             }
-        }
+            DB::commit();
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -1244,8 +1257,8 @@ class DuThaoVanBanController extends Controller
         $idnguoiky = null;
 
 //        $donViXa = DonVi::where(['id'=>auth::user()->don_vi_id , 'cap_xa'=>1])->first();
-        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id ?? null)->first();
+        $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
 
 
         $van_ban_di_tra_lai = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 0, 'tra_lai' => 1])->get();
@@ -1264,7 +1277,7 @@ class DuThaoVanBanController extends Controller
             switch (auth::user()->roles->pluck('name')[0]) {
                 case CHUYEN_VIEN:
                     if (empty($donVi->cap_xa)) {
-                        $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG,CHANH_VAN_PHONG,PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                        $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     } else {
                         $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     }

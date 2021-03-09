@@ -81,7 +81,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen2->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen2->vanBanDen->noi_dung != null)
                                             <br>@endif
-                                                     Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) ?? '' }} -
+                                                     Hạn giải quyết: {{ !empty($vbDen2->vanBanDen->han_giai_quyet) ? date('d/m/Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) : '' }} -
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
 
@@ -131,7 +131,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen2->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen2->vanBanDen->noi_dung != null)
                                             <br>@endif
-                                        Hạn giải quyết: {{ date('d-m-Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) ?? '' }} -
+                                        Hạn giải quyết: {{ !empty($vbDen2->vanBanDen->han_giai_quyet) ? date('d/m/Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) : '' }} -
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <p class="mt-2">

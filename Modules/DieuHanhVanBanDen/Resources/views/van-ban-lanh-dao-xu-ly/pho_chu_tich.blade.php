@@ -88,7 +88,7 @@
                                         </p>
                                         @if (!empty($vanBanDen->checkVanBanQuaChuTich))
                                             <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="2">
-                                                <span> <i class="fa fa-reply"></i> Chuyển báo cáo lại chủ tịch</span>
+                                                <span> <i class="fa fa-reply"></i> Chuyển báo cáo lại giám đốc</span>
                                             </a>
                                         @endif
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')

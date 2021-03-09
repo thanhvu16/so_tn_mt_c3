@@ -225,12 +225,6 @@ class AdminController extends Controller
         array_push($duThaoPiceCharts, array('Danh sách văn bản đi chờ duyệt', $vanbandichoduyet));
         array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
 
-//        array_push($duThaoPiceCharts, array('Task', 'Danh sách'));
-//        array_push($duThaoPiceCharts, array('Danh sách cá nhân dự thảo', $danhSachDuThao));
-//        array_push($duThaoPiceCharts, array('dự thảo chờ góp ý', $gopy));
-//        array_push($duThaoPiceCharts, array('Danh sách văn bản đi chờ duyệt', $vanbandichoduyet));
-//        array_push($duThaoPiceCharts, array('Danh sách văn bản trả lại', $van_ban_di_tra_lai));
-
         // ho so cong viec
         $currentDate = date('Y-m-d');
         $hoSoCongViecPiceCharts = [];
@@ -467,6 +461,7 @@ class AdminController extends Controller
             $lichCongTac = LichCongTac::where('ngay', '>=', $ngaybd)
                 ->where('ngay', '<=', $ngaykt)
                 ->where('lanh_dao_id', $user->id)
+                ->whereNotNull('trang_thai')
                 ->count();
 
             array_push($hoSoCongViecPiceCharts, array('Lịch công tác', $lichCongTac));

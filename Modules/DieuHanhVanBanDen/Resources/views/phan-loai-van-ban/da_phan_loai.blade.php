@@ -383,7 +383,7 @@
                 if (checkChuTich && checkChuTich.length > 0) {
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
                 } else {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo phó chủ tịch ' + textPhoChuTich);
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo phó giám đốc ' + textPhoChuTich);
                 }
 
                 checkVanBanDenId(vanBanDenDonViId);

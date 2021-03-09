@@ -45,6 +45,7 @@ class LichCongTac extends Model
     const TYPE_VB_DI = 1;
     const TYPE_NHAP_TRUC_TIEP = 2;
     const DON_VI_DU_HOP = 1;
+    const TRANG_THAI_HOAT_DONG = 1;
 
     public function vanBanDen()
     {
@@ -122,7 +123,6 @@ class LichCongTac extends Model
 
     public static function taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
     {
-//        dd(1);
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
         $currentUser = auth::user();
         $lanhDaoId = $lanhDaoDuHopId;
@@ -185,6 +185,15 @@ class LichCongTac extends Model
         }
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+
+        //lanh dao duyet
+        if (auth::user()->id == $lanhDaoId) {
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->save();
+        } else {
+            $lichCongTac->trang_thai = null;
+            $lichCongTac->save();
+        }
 
         //thêm file giấy mời vào quản lý cuộc họp$vanBanDenId
         $fileVanBanDen = FileVanBanDen::where('vb_den_id',$vanBanDenId)->first();

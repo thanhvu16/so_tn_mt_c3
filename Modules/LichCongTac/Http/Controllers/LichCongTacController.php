@@ -122,13 +122,7 @@ class LichCongTacController extends Controller
                     return $query->where('lanh_dao_id', $lanhDaoId);
                 }
             })
-//            ->where(function ($query) use ($donViDuHop, $currentUser, $donViId) {
-//
-//                if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
-//                    return $query->where('don_vi_du_hop', $donViDuHop)
-//                        ->orWhere('don_vi_id', $donViId);
-//                }
-//            })
+            ->whereNotNull('trang_thai')
             ->orderBy('buoi', 'ASC')->get();
 
 
@@ -150,7 +144,23 @@ class LichCongTacController extends Controller
         // don vi nhan vb xem lich ct cua ld
         if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
-            $arrLanhDaoId = $danhSachLichCongTac->pluck('lanh_dao_id')->toArray();
+            $LanhDaoId = $danhSachLichCongTac->pluck('lanh_dao_id')->toArray();
+
+
+            $user = User::where('don_vi_id', auth::user()->don_vi_id)->select('id')->get();
+
+            if (auth::user()->hasRole([PHO_CHANH_VAN_PHONG, PHO_PHONG, PHO_TRUONG_BAN])) {
+
+                $roleDonVi = [CHUYEN_VIEN];
+
+                $user = User::whereHas('roles', function ($query) use ($roleDonVi) {
+                    return $query->whereIn('name', $roleDonVi);
+                    })
+                    ->where('don_vi_id', auth::user()->don_vi_id)->select('id')->get();
+            }
+
+            $arrLanhDaoId = array_merge($LanhDaoId, $user->pluck('id')->toArray());
+
 
             $danhSachLanhDao = User::whereIn('id', $arrLanhDaoId)
                 ->orderBy('id', 'ASC')
