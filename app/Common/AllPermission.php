@@ -216,6 +216,21 @@ class AllPermission
     {
         return 'xóa văn bản đi';
     }
+    //Tiêu chuẩn
+    public static function themTieuChuan()
+    {
+        return 'thêm tiêu chuẩn';
+    }
+
+    public static function suaTieuChuan()
+    {
+        return 'sửa tiêu chuẩn';
+    }
+
+    public static function xoaTieuChuan()
+    {
+        return 'xóa tiêu chuẩn';
+    }
 
     //chu tich
     public static function chuTich()

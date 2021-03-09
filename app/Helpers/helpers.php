@@ -48,7 +48,7 @@ if (!function_exists('getStatusLabel')) {
             return '<span class="label label-pill label-sm label-success">Hoạt động</span>';
         }
 
-        return '<span class="label label-pill label-sm label-danger">Không hoạt động</span>';
+        return '<span class="label label-pill label-sm label-danger">Khóa</span>';
     }
 }
 

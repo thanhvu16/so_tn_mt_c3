@@ -51,7 +51,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Ngày ban hành <span style="color: red">*</span></label>
-                                    <input type="date" class="form-control vanbantrung" name="ngay_ban_hanh" id="exampleInputEmail5"
+                                    <input type="date" class="form-control vanbantrung ngay-ban-hanh" name="ngay_ban_hanh" id="exampleInputEmail5"
                                            placeholder="" required >
                                 </div>
                             </div>
@@ -127,6 +127,7 @@
                         <i class="fa fa-plus"></i> thêm nội dung</span>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Độ khẩn</label>
@@ -149,35 +150,33 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3 hidden van-ban">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Tiêu Chuẩn <span style="color: red">*</span></label>
+                                    <select class="form-control select2 lay_van_ban " required   name="tieu_chuan">
+                                                                                <option value="">-- Chọn tiêu chuẩn --</option>
+                                        @foreach($tieuChuan as $tieuChuandata)
+                                            <option value="{{ $tieuChuandata->id }}" >{{ $tieuChuandata->ten_tieu_chuan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control" name="han_xu_ly" value="{{$hangiaiquyet}}" placeholder="Hạn xử lý" required>
+                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly" value="" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="chu_tri_phoi_hop">Trách nhiệm giải quyết</label>
                                 <br>
                                     <input type="radio" name="chu_tri_phoi_hop" class="flat-red" value="1" checked
-                                       > chủ trì
+                                       >&ensp;Chủ trì
                                 &nbsp;
                                     <input type="radio" name="chu_tri_phoi_hop" class="flat-red" value="2"
                                         {{ isset($user) && $user->trang_thai == 2 ? 'checked' : '' }}
-                                    >phối hợp
+                                    >&ensp;Phối hợp
                             </div>
-{{--                            @hasanyrole('văn thư đơn vị')--}}
-{{--                            <div class="col-md-3 mt-4">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <div class="checkbox">--}}
-{{--                                        <label>--}}
-{{--                                            <input type="checkbox" value="1" name="don_vi_phoi_hop">--}}
-{{--                                            Là văn bản phối hợp--}}
-{{--                                        </label>--}}
-{{--                                    </div>--}}
-
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            @endrole--}}
                             <div class="col-md-12 text-right">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square-o mr-1"></i> Thêm mới</button>
@@ -195,4 +194,34 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+    <script type="text/javascript">
+        $('.ngay-ban-hanh').on('change', function () {
+            console.log($('[name=ngay_ban_hanh]').val());
+            $('.van-ban').removeClass('hidden');
+        });
+        $('.lay_van_ban').on('change', function (e) {
+            var tieu_chuan = $('[name=tieu_chuan]').val();
+            var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
+
+            e.preventDefault();
+            $.ajax({
+                beforeSend: showLoading(),
+                url: APP_URL + '/han-van-ban',
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    tieu_chuan: tieu_chuan,
+                    ngay_ban_hanh: ngay_ban_hanh,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+
+            }).done(function (res) {
+                hideLoading();
+                $('.han-xu-ly').val(res.html);
+
+
+            });
+        });
+    </script>
 @endsection

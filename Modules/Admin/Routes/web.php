@@ -49,6 +49,8 @@ Route::get('get-chuc-vu/{id}', 'NguoiDungController@getChucVu');
 Route::get('get-don-vi/{id}', 'NguoiDungController@getDonVi');
 Route::resource('vai-tro', 'VaiTroController');
 Route::resource('chuc-nang', 'ChucNangController');
+Route::resource('tieu-chuan', 'TieuChuanController');
+Route::post('tieu-chuan/delete/{id}', array('as' => 'xoaTieuChuan', 'uses' => 'TieuChuanController@destroy'));
 
 Route::resource('ngay-nghi', 'NgayNghiController');
 

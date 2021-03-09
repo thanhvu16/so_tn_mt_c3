@@ -19,6 +19,7 @@ use File, auth, DB;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
+use Modules\VanBanDen\Entities\TieuChuanVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use function GuzzleHttp\Promise\all;
@@ -185,6 +186,7 @@ class VanBanDenController extends Controller
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
 
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -214,9 +216,35 @@ class VanBanDenController extends Controller
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
 
-        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'loaivanban', 'sovanban', 'users', 'hangiaiquyet'));
+        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'loaivanban', 'sovanban','tieuChuan', 'users', 'hangiaiquyet'));
     }
 
+    public function layhantruyensangview(Request $request)
+    {
+        //lấy hạn
+        $ngaynhan = $request->get('ngay_ban_hanh');
+        $tieuChuan = $request->get('tieu_chuan');
+        $tieuChuandata = TieuChuanVanBan::where('id',$tieuChuan)->first();
+        $songay = $tieuChuandata->so_ngay;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        return response()->json(
+            [
+                'html' => $hangiaiquyet
+            ]
+        );
+    }
     public function laysoden(Request $request)
     {
         $nam = date("Y");

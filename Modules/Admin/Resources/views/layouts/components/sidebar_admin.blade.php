@@ -56,6 +56,13 @@
             </span>
     </a>
 </li>
+<li class="{{ Route::is('tieu-chuan.index')  ? 'active' : '' }}  ">
+    <a href="{{route('tieu-chuan.index')}}">
+        <i class="fa  fa-warning" aria-hidden="true"></i> <span>Tiêu chuẩn</span>
+        <span class="pull-right-container">
+            </span>
+    </a>
+</li>
 <li class="treeview {{ Route::is('nguoi-dung.index') || Route::is('nguoi-dung.create') || Route::is('chuc-nang.index')
 
                || Route::is('vai-tro.index') || Route::is('ngay-nghi.index') || Route::is('sao-luu-du-lieu.index') || Route::is('nhat-ky-truy-cap.index')  ? 'active menu-open' : '' }} }} ">

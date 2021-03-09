@@ -171,6 +171,7 @@ class HoSoCongViecController extends Controller
                 $vanbanden->loai_van_ban = 1;
                 $vanbanden->trang_thai = 1;
                 $vanbanden->save();
+                UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbanden);
             } elseif ($request->loai_van_ban == 2) {
                 $layvanbandentuvanbandi = VanBanDi::where('id', $request->id_van_ban)->first();
                 if ($layvanbandentuvanbandi->van_ban_den_don_vi_id != null) {
@@ -187,9 +188,10 @@ class HoSoCongViecController extends Controller
                 $vanbandi->loai_van_ban = 2;
                 $vanbandi->trang_thai = 1;
                 $vanbandi->save();
+                UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbandi);
             }
 
-            UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbandi);
+
             return redirect()->route('ds_van_ban_hs', $request->id_ho_so)->with('success', 'Lưu thành công văn bản !');
         } else {
             return redirect()->back()->with('error', 'Đã tồn tại văn bản !');

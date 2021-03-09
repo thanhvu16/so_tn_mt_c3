@@ -90,6 +90,11 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::suaVanBanDi());
         Permission::findOrCreate(AllPermission::xoaVanBanDi());
 
+        //Tiêu chuẩn
+        Permission::findOrCreate(AllPermission::themTieuChuan());
+        Permission::findOrCreate(AllPermission::suaTieuChuan());
+        Permission::findOrCreate(AllPermission::xoaTieuChuan());
+
         //lich cong tac
         Permission::findOrCreate(AllPermission::xemLichCongTac());
         Permission::findOrCreate(AllPermission::suaLichCongTac());

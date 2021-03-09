@@ -293,4 +293,34 @@
             });
         })
     </script>
+    <script type="text/javascript">
+        $('.ngay-ban-hanh').on('change', function () {
+            console.log($('[name=ngay_ban_hanh]').val());
+            $('.van-ban').removeClass('hidden');
+        });
+        $('.lay_van_ban').on('change', function (e) {
+            var tieu_chuan = $('[name=tieu_chuan]').val();
+            var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
+
+            e.preventDefault();
+            $.ajax({
+                beforeSend: showLoading(),
+                url: APP_URL + '/han-van-ban',
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    tieu_chuan: tieu_chuan,
+                    ngay_ban_hanh: ngay_ban_hanh,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+
+            }).done(function (res) {
+                hideLoading();
+                $('.han-xu-ly').val(res.html);
+
+
+            });
+        });
+    </script>
 @endsection
