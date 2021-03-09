@@ -8,12 +8,14 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Sửa văn bản đi</h3>
                     </div>
+                    @include('vanbandi::van_ban_di.form_them_van_ban_den')
                     <div class="box-body">
                         <form class="form-row"
                               action="{{ route('van-ban-di.update',$vanbandi->id)}}"
                               method="post" enctype="multipart/form-data" id="formCreateDoc">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" name="van_ban_den_id">
                             <div class="form-group col-md-3">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
                                 <select class="form-control show-tick " autofocus name="loaivanban_id" id="loaivanban_id" required>
@@ -150,8 +152,27 @@
                                 </select>
                             </div>
 
+                            <div class="col-md-12">
+                                <label for="">Trả lời cho văn bản đến:</label>
+                                <a class="them-van-ban-den" data-toggle="modal" data-target="#modal-them-van-ban-den">
+                                    <span><i class="fa fa-plus-square-o"></i> Thêm văn bản đến</span>
+                                </a>
+                                <div class="row">
+                                    @if ($vanbandi->listVanBanDen)
+                                        @foreach($vanbandi->listVanBanDen as $vanBanDen)
+                                            <div class="col-md-3 chi-tiet-vb-den">
+                                                <p>
+                                                    số ký hiệu: <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}" target="_blank">{{ $vanBanDen->so_ky_hieu }}</a>
+                                                    <i class="fa fa-trash rm-van-ban-den" data-id="{{ $vanBanDen->id }}" data-van-ban-di="{{ $vanbandi->id }}"></i>
+                                                </p>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div class="row main-so-ky-hieu-van-ban-den">
 
-
+                                </div>
+                            </div>
 
                             <div class="form-group col-md-12 text-center">
                                 <button

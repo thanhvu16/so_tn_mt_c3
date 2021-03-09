@@ -470,30 +470,32 @@ class VanBanDen extends Model
 
     public static function updateHoanThanhVanBanDen($vanBanDenId)
     {
-        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $danhSachVanBanDen = VanBanDen::whereIn('id', $vanBanDenId)->get();
 
-        if ($vanBanDen) {
-            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
-            $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
-            $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
-            $vanBanDen->save();
+        if ($danhSachVanBanDen) {
+            foreach ($danhSachVanBanDen as $vanBanDen) {
+                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+                $vanBanDen->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDen->han_xu_ly);
+                $vanBanDen->ngay_hoan_thanh = date('Y-m-d H:i:s');
+                $vanBanDen->save();
 
-            // update van ban co parent_id
-            if ($vanBanDen->hasChild()) {
-                $vanBanDenDonVi = $vanBanDen->hasChild();
-                $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
-                $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
-                $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
-                $vanBanDenDonVi->save();
+                // update van ban co parent_id
+                if ($vanBanDen->hasChild()) {
+                    $vanBanDenDonVi = $vanBanDen->hasChild();
+                    $vanBanDenDonVi->trinh_tu_nhan_van_ban = VanBanDen::HOAN_THANH_VAN_BAN;
+                    $vanBanDenDonVi->hoan_thanh_dung_han = VanBanDen::checkHoanThanhVanBanDungHan($vanBanDenDonVi->han_xu_ly);
+                    $vanBanDenDonVi->ngay_hoan_thanh = date('Y-m-d H:i:s');
+                    $vanBanDenDonVi->save();
+                }
+
+                //update luu vet van ban
+                XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
+                    ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
+
+                //update chuyen nhan vb don vi
+                DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
+                    ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
             }
-
-            //update luu vet van ban
-            XuLyVanBanDen::where('van_ban_den_id', $vanBanDen->id)
-                ->update(['hoan_thanh' => XuLyVanBanDen::HOAN_THANH_VB]);
-
-            //update chuyen nhan vb don vi
-            DonViChuTri::where('van_ban_den_id', $vanBanDen->id)
-                ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
         }
     }
 

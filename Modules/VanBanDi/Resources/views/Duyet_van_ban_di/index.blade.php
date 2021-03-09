@@ -73,36 +73,35 @@
                                         <td class="text-center" style="vertical-align: middle">
                                             @if(auth::user()->donvi->cap_don_vi == 3 && (auth::user()->vai_tro==4 || auth::user()->vai_tro==3) )
                                             @else
+                                                @if (!empty($vanban->vanbandi->filetrinhky))
+                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)
+                                                        @if ($filedata->trang_thai ==2)
+                                                            <button name="kydientu" id="kydientu_{{$vanban->vanbandi->id ?? ''}}"
+                                                                    type="button" class="btn btn-primary btn-sm mb-2 ky-token"
+                                                                    onclick="exc_sign_approved('{{$filedata->getUrlFile()}}',{{$vanban->vanbandi->id}},{{ $vanban->id }});"
+                                                                    value="{{$vanban->vanbandi->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký token</button>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
 
-                                                @forelse($vanban->vanbandi->filetrinhky as $filedata)
-                                                    @if ($filedata->trang_thai ==2)
-                                                        <button name="kydientu" id="kydientu_{{$vanban->vanbandi->id ?? ''}}"
-                                                                type="button" class="btn btn-primary btn-sm mb-2 ky-token"
-                                                                onclick="exc_sign_approved('{{$filedata->getUrlFile()}}',{{$vanban->vanbandi->id}},{{ $vanban->id }});"
-                                                                value="{{$vanban->vanbandi->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký token</button>
-                                                    @endif
-                                                @empty
-                                                @endforelse
+                                                @if (!empty($vanban->vanbandi->filetrinhky))
+                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)
+                                                        @if ($filedata->trang_thai ==2)
+                                                            <br>
 
+                                                            <button name="kydientu" type="button" id="_lanhdaoPheduyet"
+                                                                    class="btn btn-primary btn-sm mb-2"
+                                                                    onclick="exc_sign_sim('{{$filedata->duongdan}}','{{$vanban->vanbandi->id}}', '{{ $vanban->id }}');"
+                                                                    value="{{$vanban->vanbandi->id}}">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký sim&nbsp;&nbsp;</button>
 
-                                                @forelse($vanban->vanbandi->filetrinhky as $filedata)
-                                                    @if ($filedata->trang_thai ==2)
-                                                        <br>
-
-                                                        <button name="kydientu" type="button" id="_lanhdaoPheduyet"
-                                                                class="btn btn-primary btn-sm mb-2"
-                                                                onclick="exc_sign_sim('{{$filedata->duongdan}}','{{$vanban->vanbandi->id}}', '{{ $vanban->id }}');"
-                                                                value="{{$vanban->vanbandi->id}}">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký sim&nbsp;&nbsp;</button>
-
-                                                        <p><input type="checkbox" name="kyruoi_{{$vanban->vanbandi->id}}"
-                                                                  id="kyruoi_{{$vanban->vanbandi->id}}" value="1">
-                                                            <label for="kyruoi_{{$vanban->vanbandi->id}}">
-                                                                <b>&nbsp; Ký nháy</b>
-                                                            </label></p>
-                                                    @endif
-                                                @empty
-                                                @endforelse
-
+                                                            <p><input type="checkbox" name="kyruoi_{{$vanban->vanbandi->id}}"
+                                                                      id="kyruoi_{{$vanban->vanbandi->id}}" value="1">
+                                                                <label for="kyruoi_{{$vanban->vanbandi->id}}">
+                                                                    <b>&nbsp; Ký nháy</b>
+                                                                </label></p>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             @endif
 
                                         </td>
@@ -127,13 +126,13 @@
                                                                     value="{{$vanban->vanbandi->nguoi_ky}}"
                                                                 >{{ $vanban->vanbandi->nguoidung2->ho_ten ?? '' }}</option>
                                                             @else
-                                                                @forelse ($nguoinhan as $data)
-                                                                    <option
-                                                                        value="{{ $data->id }}" {{ isset($data) && !empty($vanban->vanbandi) && $data->id == $vanban->vanbandi->nguoi_ky ? 'selected ' : '' }}
-                                                                    >{{ $data->ho_ten}}</option>
-
-                                                                @empty
-                                                                @endforelse
+                                                                @if ($nguoinhan)
+                                                                    @foreach($nguoinhan as $data)
+                                                                        <option
+                                                                            value="{{ $data->id }}" {{ isset($data) && !empty($vanban->vanbandi) && $data->id == $vanban->vanbandi->nguoi_ky ? 'selected ' : '' }}
+                                                                        >{{ $data->ho_ten}}</option>
+                                                                    @endforeach
+                                                                @endif
                                                             @endif
                                                         </select>
                                                     </div>

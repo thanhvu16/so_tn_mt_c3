@@ -217,7 +217,7 @@ class GiayMoiDiController extends Controller
         $user= auth::user();
         $donVi = $user->donVi;
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
-        $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id)->first();
+        $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
         $vanThuVanBanDiPiceCharts = [];
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group',1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group',2)->orderBy('ten_don_vi', 'asc')->get();
@@ -396,6 +396,7 @@ class GiayMoiDiController extends Controller
         $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
         $EmailThem = $request->email_them;
         $gio_hop= date ('H:i',strtotime($request->gio_hop));
+        $vanBanDenId = $request->get('van_ban_den_id') ?? null;
 
 
         if ($tenMailThem && count($tenMailThem) > 0) {
@@ -406,9 +407,9 @@ class GiayMoiDiController extends Controller
                 $themDonVi -> save();
             }
         }
-
         $vanbandi = new VanBanDi();
         $vanbandi->trich_yeu = $request->vb_trichyeu;
+        $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? explode(',', $vanBanDenId) : null;
         $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
         $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
         $vanbandi->loai_van_ban_id = $request->loaivanban_id;
@@ -651,6 +652,7 @@ class GiayMoiDiController extends Controller
 
         }
         $giaymoidi = VanBanDi::where('id',$id)->first();
+        $giaymoidi->listVanBanDen = $giaymoidi->getListVanBanDen();
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
@@ -672,8 +674,14 @@ class GiayMoiDiController extends Controller
         $nguoiky = User::where('id', $request->nguoiky_id)->first();
         $user=auth::user();
         $gio_hop= date ('H:i',strtotime($request->gio_hop));
+
         $vanbandi = VanBanDi::where('id', $id)->first();
+
+        $arrVanBanDenId = $vanbandi->van_ban_den_id ?? [];
+        $vanBanDenId = !empty($request->get('van_ban_den_id')) ?  explode(',', $request->get('van_ban_den_id')) : null;
+
         $vanbandi->trich_yeu = $request->vb_trichyeu;
+        $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? array_merge($vanBanDenId, $arrVanBanDenId) : null;
         $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
         $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
         $vanbandi->loai_van_ban_id = $request->loaivanban_id;

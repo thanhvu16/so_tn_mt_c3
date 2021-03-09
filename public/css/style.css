@@ -457,3 +457,19 @@ hr.hr-line{
 .btn-remove-file:hover {
     cursor: pointer;
 }
+
+a.them-van-ban-den:hover {
+    text-decoration: underline !important;
+    color: #3533ff !important;
+    font-weight: bold;
+}
+
+.col-md-12.main-data {
+    height: 300px !important;
+    overflow: scroll;
+}
+
+.rm-van-ban-den:hover {
+    cursor: pointer;
+    color: red;
+}

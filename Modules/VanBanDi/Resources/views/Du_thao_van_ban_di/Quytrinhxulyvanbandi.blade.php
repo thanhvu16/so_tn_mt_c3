@@ -225,7 +225,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        @if (!empty($vanbandi->vanBanDenDonVi))
+                        @if (!empty($vanbandi->listVanBanDen))
                             <div class="col-md-12">
                                 <label for="">Trả lời cho văn bản :</label>
                                 <table class="table table-bordered table-striped dataTable mb-0">
@@ -238,84 +238,72 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                    <tr>
-                                        <td class="text-center">{{$key+1}}</td>
-                                        <td>
-                                            <p>- Số ký hiệu: {{$vanbandi->vanBanDenDonVi->so_ky_hieu}}</p>
-                                            <p>- Ngày ban
-                                                hành: {{ date('d-m-Y', strtotime($vanbandi->vanBanDenDonVi->ngay_ban_hanh)) }}</p>
-                                            <p>- Cơ quan ban hành: {{$vanbandi->vanBanDenDonVi->co_quan_ban_hanh}}</p>
-                                            <p>- Số đến: <span
-                                                    class="font-bold"
-                                                    style="color: red">{{$vanbandi->vanBanDenDonVi->so_den}}</span></p>
-                                            <p>- Sổ văn
-                                                bản: {{$vanbandi->vanBanDenDonVi->soVanBan->ten_so_van_ban ?? ''}}</p>
-                                        </td>
-                                        <td style="text-align: justify">
-                                            @if ($vanbandi->vanBanDenDonVi->loai_van_ban_don_vi == 1)
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id.'?status=1' : $vanbandi->vanBanDenDonVi->id .'?status=1') }}"
-                                                   title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a>
-                                                <br>
-                                            @else
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanbandi->vanBanDenDonVi->parent_id ? $vanbandi->vanBanDenDonVi->parent_id : $vanbandi->vanBanDenDonVi->id) }}"
-                                                   title="{{$vanbandi->vanBanDenDonVi->trich_yeu}}">{{$vanbandi->vanBanDenDonVi->trich_yeu}}</a>
-                                                <br>
-                                            @endif
-
-                                            @if($vanbandi->vanBanDenDonVi->noi_dung != null)<span
-                                                style="font-weight: bold;">Nội dung:</span>@endif
-                                            <span
-                                                style="font-style: italic">{{$vanbandi->vanBanDenDonVi->noi_dung ?? ''}}</span>@if($vanbandi->vanBanDenDonVi->noi_dung != null)
-                                                <br>@endif
-                                                     (Hạn giải quyết: {{ date('d/m/Y', strtotime($vanbandi->vanBanDenDonVi->han_xu_ly)) }})
-                                            <br>
-                                            <span
-                                                style="font-style: italic">Người nhập : {{$vanbandi->vanBanDenDonVi->nguoiDung->ho_ten ?? ''}}</span>
-                                            <div class="text-right " style="pointer-events: auto">
-                                                @if($vanbandi->vanBanDenDonVi->vanBanDenFile)
-                                                    @forelse($vanbandi->vanBanDenDonVi->vanBanDenFile as $key=>$item)
-                                                        <a href="{{$item->getUrlFile()}}" target="popup"
-                                                           class="seen-new-window">
-                                                            @if($item->duoi_file == 'pdf')<i
-                                                                class="fa fa-file-pdf-o"
-                                                                style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')
-                                                                <i class="fa fa-file-word-o"
-                                                                   style="font-size:20px;color:blue"></i> @elseif($item->duoi_file == 'xlsx' || $item->duoi_file == 'xls')
-                                                                <i class="fa fa-file-excel-o"
-                                                                   style="font-size:20px;color:green"></i> @endif
-                                                        </a>@if(count($vanbandi->vanBanDenDonVi->vanBanDenFile) == $key+1) @else
-                                                            &nbsp;
-                                                            |&nbsp; @endif
-                                                    @empty
-                                                    @endforelse
+                                    @foreach($vanbandi->listVanBanDen as  $key => $vanBanDen)
+                                        <tr>
+                                            <td class="text-center">{{$key+1}}</td>
+                                            <td>
+                                                <p>- Số ký hiệu: {{$vanBanDen->so_ky_hieu}}</p>
+                                                <p>- Ngày ban
+                                                    hành: {{ date('d-m-Y', strtotime($vanBanDen->ngay_ban_hanh)) }}</p>
+                                                <p>- Cơ quan ban
+                                                    hành: {{$vanBanDen->co_quan_ban_hanh}}</p>
+                                                <p>- Số đến: <span
+                                                        class="font-bold"
+                                                        style="color: red">{{$vanBanDen->so_den}}</span>
+                                                </p>
+                                                <p>- Sổ văn
+                                                    bản: {{$vanBanDen->soVanBan->ten_so_van_ban ?? ''}}</p>
+                                            </td>
+                                            <td style="text-align: justify">
+                                                @if ($vanBanDen->loai_van_ban_don_vi == 1)
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->parent_id ? $vanBanDen->parent_id.'?status=1' : $vanBanDen->id .'?status=1') }}"
+                                                       title="{{$vanBanDen->trich_yeu}}">{{$vanBanDen->trich_yeu}}</a>
+                                                    <br>
+                                                @else
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->parent_id ? $vanBanDen->parent_id : $vanBanDen->id) }}"
+                                                       title="{{$vanBanDen->trich_yeu}}">{{$vanBanDen->trich_yeu}}</a>
+                                                    <br>
                                                 @endif
-                                                @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
-                                                    <a title="Cập nhật file"
-                                                       href="{{route('ds_file',$vanbandi->vanBanDenDonVi->vb_den_id)}}"><span
-                                                            role="button">&emsp;<i
-                                                                class="fa  fa-search"></i></span></a>@endif
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <!--vb den don vi-->
-                                            @if ($vanbandi->vanBanDenDonVi->parent_id)
-                                                @foreach($vanbandi->vanBanDenDonVi->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
-                                                    @if (count($vanbandi->vanBanDenDonVi->getParent()->donViChuTri)-1 == $key)
-                                                        <p>
-                                                            {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
-                                                            <br>
-                                                            <i>(Cán bộ xử
-                                                                lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
-                                                                )</i>
-                                                        </p>
+
+                                                @if($vanBanDen->noi_dung != null)<span
+                                                    style="font-weight: bold;">Nội dung:</span>@endif
+                                                <span
+                                                    style="font-style: italic">{{$vanBanDen->noi_dung ?? ''}}</span>@if($vanBanDen->noi_dung != null)
+                                                    <br>@endif
+                                                     (Hạn giải quyết: {{ date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }})
+                                                <br>
+                                                <span
+                                                    style="font-style: italic">Người nhập : {{$vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
+                                                <div class="text-right " style="pointer-events: auto">
+                                                    @if($vanBanDen->vanBanDenFile)
+                                                        @forelse($vanBanDen->vanBanDenFile as $key=>$item)
+                                                            <a href="{{$item->getUrlFile()}}" target="popup"
+                                                               class="seen-new-window">
+                                                                @if($item->duoi_file == 'pdf')<i
+                                                                    class="fa fa-file-pdf-o"
+                                                                    style="font-size:20px;color:red"></i>@elseif($item->duoi_file == 'docx' || $item->duoi_file == 'doc')
+                                                                    <i class="fa fa-file-word-o"
+                                                                       style="font-size:20px;color:blue"></i> @elseif($item->duoi_file == 'xlsx' || $item->duoi_file == 'xls')
+                                                                    <i class="fa fa-file-excel-o"
+                                                                       style="font-size:20px;color:green"></i> @endif
+                                                            </a>@if(count($vanBanDen->vanBanDenFile) == $key+1) @else
+                                                                &nbsp;
+                                                                |&nbsp; @endif
+                                                        @empty
+                                                        @endforelse
                                                     @endif
-                                                @endforeach
-                                            @else
-                                            <!--vb den huyen-->
-                                                @if($vanbandi->vanBanDenDonVi->donViChuTri)
-                                                    @foreach($vanbandi->vanBanDenDonVi->donViChuTri as $key => $chuyenNhanVanBanDonVi)
-                                                        @if (count($vanbandi->vanBanDenDonVi->donViChuTri)-1 == $key)
+                                                    @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
+                                                        <a title="Cập nhật file"
+                                                           href="{{route('ds_file',$vanBanDen->vb_den_id)}}"><span
+                                                                role="button">&emsp;<i
+                                                                    class="fa  fa-search"></i></span></a>@endif
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!--vb den don vi-->
+                                                @if ($vanBanDen->parent_id)
+                                                    @foreach($vanBanDen->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                        @if (count($vanBanDen->getParent()->donViChuTri)-1 == $key)
                                                             <p>
                                                                 {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
                                                                 <br>
@@ -325,10 +313,25 @@
                                                             </p>
                                                         @endif
                                                     @endforeach
+                                                @else
+                                                <!--vb den huyen-->
+                                                    @if($vanBanDen->donViChuTri)
+                                                        @foreach($vanBanDen->donViChuTri as $key => $chuyenNhanVanBanDonVi)
+                                                            @if (count($vanBanDen->donViChuTri)-1 == $key)
+                                                                <p>
+                                                                    {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                                    <br>
+                                                                    <i>(Cán bộ xử
+                                                                        lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                                        )</i>
+                                                                </p>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 @endif
-                                            @endif
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -24,9 +24,14 @@ class VanBanDi extends Model
 
     ];
 
+    protected $casts = [
+        'van_ban_den_id' => 'array'
+    ];
+
     const VAN_BAN_DU_THAO = 1;
     const DUYET_DU_THAO = 1;
     const LOAI_VAN_BAN_DI = 1;
+
 
     public function nguoidung2()
     {
@@ -108,10 +113,10 @@ class VanBanDi extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function vanBanDen()
-    {
-        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
-    }
+//    public function vanBanDen()
+//    {
+//        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+//    }
 
     public static function duThaoVanBanChoDuyet($user, $danhSachDonVi)
     {
@@ -122,8 +127,20 @@ class VanBanDi extends Model
             ->whereNull('status');
     }
 
-    public function vanBanDenDonVi() {
-        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+//    public function vanBanDenDonVi() {
+//        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+//    }
+
+    public function getListVanBanDen()
+    {
+
+        if (!empty($this->van_ban_den_id)) {
+
+            return VanBanDen::whereIn('id', $this->van_ban_den_id)->get();
+        }
+
+        return false;
+
     }
 
     public function vanBanDiFileDaKy()

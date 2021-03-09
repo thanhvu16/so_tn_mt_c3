@@ -112,7 +112,8 @@ class AdminController extends Controller
             //van ban di
             $giayMoiDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 2,
-                'loai_van_ban_id' => $giayMoi->id ?? null
+                'loai_van_ban_id' => $giayMoi->id ?? null,
+                'don_vi_soan_thao' => null
             ])
                 ->whereNotNull('so_di')
                 ->whereNull('deleted_at')->count();

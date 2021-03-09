@@ -972,7 +972,7 @@ class DuThaoVanBanController extends Controller
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->nguoi_ky = $request->nguoiky_id;
         $vanbandi->nguoi_tao = auth::user()->id;
-        $vanbandi->van_ban_den_id = $duthaochot->van_ban_den_don_vi_id ?? null;
+        $vanbandi->van_ban_den_id = \GuzzleHttp\json_encode($duthaochot->van_ban_den_don_vi_id)  ?? null;
         if ($duthaochot->loai_van_ban_id == $giayMoi->id) {
             $vanbandi->loai_van_ban_giay_moi = 2;
         } else {
