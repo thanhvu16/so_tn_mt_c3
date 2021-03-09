@@ -98,10 +98,20 @@ class CongViecDonViController extends Controller
     public function create()
     {
         $currentUser = auth::user();
-        $danhSachDonViChutri = Donvi::
-        where('id', '!=', auth::user()->don_vi_id)
+
+        $danhSachDonViChutri = Donvi::where('id', '!=', auth::user()->don_vi_id)
+            ->where('parent_id', 0)
+            ->whereNull('cap_xa')
             ->whereNull('deleted_at')
             ->get();
+
+        if ($currentUser->donVi->parent_id != 0) {
+
+            $danhSachDonViChutri = Donvi::where('id', '!=', auth::user()->don_vi_id)
+                ->where('parent_id', $currentUser->donVi->parent_id)
+                ->whereNull('deleted_at')
+                ->get();
+        }
 
         $donViChuTri = Donvi::where('id', auth::user()->don_vi_id)
             ->whereNull('deleted_at')

@@ -8,6 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Sửa giấy mời đi</h3>
                     </div>
+                    @include('vanbandi::van_ban_di.form_them_van_ban_den')
                     <div class="box-body">
                         <form class="form-row"
                               action="{{ route('giay-moi-di.update',$giaymoidi->id)}}"
@@ -126,13 +127,31 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
-
                             <div class="form-group col-md-12" >
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span style="color: red">*</span></label>
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
                                           required>{{$giaymoidi->trich_yeu}}</textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="">Trả lời cho văn bản đến:</label>
+                                <a class="them-van-ban-den" data-toggle="modal" data-target="#modal-them-van-ban-den">
+                                    <span><i class="fa fa-plus-square-o"></i> Thêm văn bản đến</span>
+                                </a>
+                                <div class="row">
+                                    @if ($giaymoidi->listVanBanDen)
+                                        @foreach($giaymoidi->listVanBanDen as $vanBanDen)
+                                            <div class="col-md-3 chi-tiet-vb-den">
+                                                <p>
+                                                    số ký hiệu: <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}" target="_blank">{{ $vanBanDen->so_ky_hieu }}</a>
+                                                    <i class="fa fa-trash rm-van-ban-den" data-id="{{ $vanBanDen->id }}" data-van-ban-di="{{ $giaymoidi->id }}"></i>
+                                                </p>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div class="row main-so-ky-hieu-van-ban-den">
+
+                                </div>
                             </div>
                             <div class="form-group col-md-12 hidden" >
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nhận trong thành phố</label>

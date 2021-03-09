@@ -71,7 +71,7 @@
                                 @unlessrole(CHU_TICH)
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 @endunlessrole
-                                <th class="15%">Ý kiến</th>
+                                <th width="15%" class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="15%" class="text-center">Tác vụ</th>
                             </tr>

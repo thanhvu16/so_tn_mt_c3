@@ -10,6 +10,7 @@ use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth, DB;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use App\Http\Controllers\Controller;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class GiaHanVanBanController extends Controller
 {
@@ -34,9 +35,20 @@ class GiaHanVanBanController extends Controller
             })
             ->paginate(PER_PAGE);
 
+        foreach ($giaHanVanBanDonVi as $giaHan) {
+            $giaHan->vanBanDen = $this->vanBanDenHasChild($giaHan->vanBanDen);
+        }
+
         $order = ($giaHanVanBanDonVi->currentPage() - 1) * PER_PAGE + 1;
 
         return view('dieuhanhvanbanden::gia-han.index', compact('order', 'giaHanVanBanDonVi'));
+    }
+
+    public function vanBanDenHasChild($vanBanDen)
+    {
+        $vanBanDen->hasChild = $vanBanDen->hasChild();
+
+        return $vanBanDen;
     }
 
     /**

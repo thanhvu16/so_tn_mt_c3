@@ -420,7 +420,7 @@ class VanBanDiController extends Controller
             $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
             $EmailThem = $request->email_them;
             $user = auth::user();
-
+            $vanBanDenId = $request->get('van_ban_den_id') ?? null;
 
             if ($tenMailThem && count($tenMailThem) > 0) {
                 foreach ($tenMailThem as $key => $data) {
@@ -433,6 +433,7 @@ class VanBanDiController extends Controller
 
             $vanbandi = new VanBanDi();
             $vanbandi->trich_yeu = $request->vb_trichyeu;
+            $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? explode(',', $vanBanDenId) : null;
             $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
             $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
             $vanbandi->loai_van_ban_id = $request->loaivanban_id;
@@ -598,6 +599,7 @@ class VanBanDiController extends Controller
 
         canPermission(AllPermission::suaVanBanDi());
         $vanbandi = VanBanDi::where('id', $id)->first();
+
         $user = auth::user();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
@@ -621,6 +623,8 @@ class VanBanDiController extends Controller
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
+        $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
+
         return view('vanbandi::van_ban_di.edit', compact('vanbandi', 'ds_soVanBan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_doKhanCap',
             'ds_mucBaoMat', 'ds_nguoiKy', 'emailtrongthanhpho', 'emailngoaithanhpho', 'ds_DonVi_nhan', 'lay_emailtrongthanhpho', 'lay_emailngoaithanhpho', 'lay_noi_nhan_van_ban_di'));
     }
@@ -637,12 +641,17 @@ class VanBanDiController extends Controller
         $user = auth::user();
         try {
             $vanbandi = VanBanDi::where('id', $id)->first();
+
+            $arrVanBanDenId = $vanbandi->van_ban_den_id ?? [];
+            $vanBanDenId = !empty($request->get('van_ban_den_id')) ?  explode(',', $request->get('van_ban_den_id')) : null;
+
             $vanbandi->trich_yeu = $request->vb_trichyeu;
             $vanbandi->so_ky_hieu = $request->vb_sokyhieu;
             $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
             $vanbandi->loai_van_ban_id = $request->loaivanban_id;
             $vanbandi->do_khan_cap_id = $request->dokhan_id;
             $vanbandi->chuc_vu = $request->chuc_vu;
+            $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? array_merge($vanBanDenId, $arrVanBanDenId) : null;
             $vanbandi->do_bao_mat_id = $request->dobaomat_id;
             if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
                 $nguoiky->role_id == QUYEN_CHANH_VAN_PHONG || $nguoiky->role_id == QUYEN_PHO_CHANH_VAN_PHONG) //đây là huyện ký
@@ -1218,11 +1227,39 @@ class VanBanDiController extends Controller
 
         $quatrinhtruyennhan = Vanbandichoduyet::where('van_ban_di_id', $id)->get();
 
-        $vanbandi = VanBanDi::with('vanBanDenDonVi')
-            ->where('id', $id)->first();
+        $vanbandi = VanBanDi::where('id', $id)->first();
+
+        $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
+
 
         $file = FileVanBanDi::where('van_ban_di_id', $id)->get();
 
         return view('vanbandi::Du_thao_van_ban_di.Quytrinhxulyvanbandi', compact('quatrinhtruyennhan', 'file', 'vanbandi', 'laytatcaduthao'));
+    }
+
+    public function removeVanBanDen(Request $request)
+    {
+        $vanBanDiId = $request->get('van_ban_di_id');
+        $vanBanDenId = $request->get('van_ban_den_id');
+
+        $vanBanDi = VanBanDi::where('id', $vanBanDiId)->first();
+        if ($vanBanDi) {
+            $arrVanBanDen = $vanBanDi->van_ban_den_id;
+            $pos =  array_search($vanBanDenId, $arrVanBanDen);
+            unset($arrVanBanDen[$pos]);
+
+            $vanBanDi->van_ban_den_id = $arrVanBanDen;
+            $vanBanDi->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã xoá thành công.'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tìm thấy dữ liệu.'
+        ], 500);
     }
 }
