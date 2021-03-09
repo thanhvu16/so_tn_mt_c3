@@ -19,8 +19,7 @@
                                 <th width="25%" class="text-center">Thông tin</th>
                                 <th width="15%" class="text-center">Sổ văn bản</th>
                                 <th  class="text-center">Trích yếu</th>
-                                <th width="20%" class="text-center">Nơi nhận
-                                </th>
+                                <th width="20%" class="text-center">Nơi nhận</th>
                                 <th width="5%" class="text-center">Tác vụ
                                 </th>
                                 <th width="12%" class="text-center">Duyệt

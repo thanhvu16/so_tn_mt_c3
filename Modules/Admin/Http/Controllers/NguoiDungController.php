@@ -25,7 +25,6 @@ class NguoiDungController extends Controller
     public function index(Request $request)
     {
         canPermission(AllPermission::themNguoiDung());
-
         $donViId = $request->get('don_vi_id') ?? null;
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
@@ -37,7 +36,7 @@ class NguoiDungController extends Controller
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
-            ->where('trang_thai', ACTIVE)
+//            ->where('trang_thai', ACTIVE)
             ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
                     return $query->where('don_vi_id', $donViId);
