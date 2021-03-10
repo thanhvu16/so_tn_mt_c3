@@ -125,13 +125,16 @@
                                                     form="form-tham-muu"
                                                     data-placeholder="Chọn lãnh đạo xem để biết"
                                                 >
-                                                    <option value="">Chọn lãnh đạo xem để
+                                                    <option value=""> Chọn lãnh đạo xem để
                                                         biết
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         @if (isset($vanBanDen->PhoChuTich) && $vanBanDen->PhoChuTich->can_bo_nhan_id != $phoChuTich->id)
                                                         <option
                                                             value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
+                                                        @else
+                                                            <option
+                                                                value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
                                                         @endif
                                                     @empty
                                                     @endforelse

@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -81,6 +82,12 @@ class DonViController extends Controller
             $donvi->parent_id = $request->get('parent_id');
         }
         $donvi->save();
+
+        // check update nguoi dung
+        User::where('don_vi_id', $donvi->id)->update([
+            'cap_xa' => $donvi->cap_xa
+        ]);
+
         return redirect()->route('danhsachdonvi')->with('success', 'Thêm mới thành công !');
     }
 
@@ -134,6 +141,12 @@ class DonViController extends Controller
             $donvi->parent_id = $request->get('parent_id');
         }
         $donvi->save();
+
+        // check update nguoi dung
+        User::where('don_vi_id', $donvi->id)->update([
+            'cap_xa' => $donvi->cap_xa
+        ]);
+
         return redirect()->route('danhsachdonvi')->with('success', 'Cập nhật thành công !');
     }
 

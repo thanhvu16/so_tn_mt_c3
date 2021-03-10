@@ -60,9 +60,18 @@
                                                placeholder="Nhập tài khoản...">
                                     </div>
                                     <div class="col-md-3 form-group">
+                                        <label for="exampleInputEmail1">Tìm theo trạng thái</label>
+                                        <select name="trang_thai" class="form-control select2">
+                                            <option value="">-- Tất cả --</option>
+                                            <option value="1" {{ Request::get('trang_thai') == 1 ? 'selected' : '' }}>Hoạt động</option>
+                                            <option value="2" {{ Request::get('trang_thai') == 2 ? 'selected' : '' }}>Khoá</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label for="">&nbsp;</label><br>
                                         <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                         @if (!empty(Request::get('don_vi_id')) || !empty(Request::get('chuc_vu_id')) ||
-                                            !empty(Request::get('ho_ten')) || !empty(Request::get('username')))
+                                            !empty(Request::get('ho_ten')) || !empty(Request::get('username')) || !empty(Request::get('trang_thai')))
                                             <a href="{{ route('nguoi-dung.index') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
                                         @endif
                                     </div>
@@ -129,7 +138,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="pagination pagination-sm no-margin pull-right">
                                         {!! $users->appends(['don_vi_id' => Request::get('don_vi_id'), 'chuc_vu_id' => Request::get('chuc_vu_id'),
-                                       'ho_ten' => Request::get('ho_ten'),'username' =>Request::get('username') ])->render() !!}
+                                       'ho_ten' => Request::get('ho_ten'),'username' => Request::get('username'), 'trang_thai' => Request::get('trang_thai')])->render() !!}
                                     </div>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Quản lý văn bản | Log in</title>
+    <title>Quản lý văn bản | Đăng nhập</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ url('theme/dist/css/AdminLTE.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ url('theme/plugins/iCheck/square/blue.css') }}">
+    <link rel="stylesheet" href="{{ url('theme/plugins/toastr/toastr.min.css') }}">
+
     <link rel="stylesheet" href="{{ url('css/style.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -148,7 +150,9 @@
 <script src="{{ url('theme/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
-<script>
+<script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
+
+<script type="text/javascript">
     $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -156,6 +160,39 @@
             increaseArea: '20%' /* optional */
         });
     });
+
+    window.flashMessages = [];
+
+    @if ($message = session('status'))
+    toastr.success("{{ $message }}");
+
+    @elseif ($message = session('warning'))
+    toastr.warning("{{ $message }}");
+
+    @elseif ($message = session('error'))
+    toastr.error("{{ $message }}");
+
+    @elseif ($message = session('info'))
+    toastr.info("{{ $message }}");
+    @endif
+
+        toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 </script>
 </body>
 </html>

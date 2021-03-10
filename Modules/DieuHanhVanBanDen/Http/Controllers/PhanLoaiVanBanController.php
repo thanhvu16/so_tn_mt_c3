@@ -55,7 +55,11 @@ class PhanLoaiVanBanController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
-        $chuTich = User::role(CHU_TICH)->select('id', 'ho_ten', 'don_vi_id')->first();
+        $chuTich = User::role(CHU_TICH)
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })
+            ->select('id', 'ho_ten', 'don_vi_id')->first();
 
         $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
             ->where('don_vi_id', $chuTich->don_vi_id)

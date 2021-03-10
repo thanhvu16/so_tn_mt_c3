@@ -59,4 +59,13 @@ class LoginController extends Controller
             'password.required' => 'Vui lòng nhập mật khẩu.'
         ]);
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->trang_thai == 2) {
+            auth()->logout();
+            return back()->with('warning', 'Tài khoản của bạn đã bị khóa vui lòng liên hệ Quản trị hệ thống để được trợ giúp.');
+        }
+        return redirect()->intended($this->redirectPath());
+    }
 }

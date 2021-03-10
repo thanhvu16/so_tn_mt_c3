@@ -38,6 +38,10 @@
             /*max-width: 432px !important;*/
         }
 
+        .login-box{
+            width: 370px !important;
+        }
+
 
         .body input:focus {
             outline: 0;
@@ -69,7 +73,7 @@
             <div class="text-center">
                 <img src="{{ asset('theme/image/logo-login-hanoi.svg') }}" style="vertical-align: middle" alt="" height="90">
             </div>
-            <h4 style="font-weight: bold;font-family: Arial;"  class="text-center">VĂN PHÒNG UBND HUYỆN {{HUYEN}}</h4>
+            <h4 style="font-weight: bold;font-family: Arial;"  class="text-center">{{ TITLE_APP }}</h4>
             <h5 style="font-weight: bold ;font-family: Arial; " >HỆ THỐNG VĂN PHÒNG ĐIỆN TỬ</h5>
         </a>
     </div>

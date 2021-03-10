@@ -29,6 +29,7 @@ class NguoiDungController extends Controller
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
         $username = $request->get('username') ?? null;
+        $trangThai = $request->get('trang_thai') ?? null;
 
         $users = User::with(['chucVu' => function ($query) {
                 return $query->select('id', 'ten_chuc_vu');
@@ -36,7 +37,6 @@ class NguoiDungController extends Controller
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
-//            ->where('trang_thai', ACTIVE)
             ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
                     return $query->where('don_vi_id', $donViId);
@@ -55,6 +55,11 @@ class NguoiDungController extends Controller
             ->where(function ($query) use ($username) {
                 if (!empty($username)) {
                     return $query->where('username', $username);
+                }
+            })
+            ->where(function ($query) use ($trangThai) {
+                if (!empty($trangThai)) {
+                    return $query->where('trang_thai', $trangThai);
                 }
             })
             ->whereNull('deleted_at')

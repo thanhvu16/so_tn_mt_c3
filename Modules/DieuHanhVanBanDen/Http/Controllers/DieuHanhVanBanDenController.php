@@ -512,6 +512,9 @@ class DieuHanhVanBanDenController extends Controller
                     ->whereHas('roles', function ($query) use ($role) {
                         return $query->whereIn('name', $role);
                     })
+                    ->whereHas('donVi', function ($query) {
+                        return $query->whereNull('cap_xa');
+                    })
                     ->where(function ($query) use ($id) {
                         if (count($id) > 0) {
                             return $query->whereNotIn('id', $id);
