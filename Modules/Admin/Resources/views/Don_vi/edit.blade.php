@@ -101,24 +101,24 @@
                                 </label> &emsp;
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label >Có phòng ban trong đơn vị</label>
-                                    <div class="form-group">
-                                        <div class="radio">&emsp;
-                                            <label>
-                                                <input type="radio" name="check_parent" id="optionsRadios3"
-                                                       value="0" {{ $donvi->parent_id == 0 ? 'checked' : null }} class="check_parent">
-                                                Không
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="check_parent" id="optionsRadios4" class="check_parent" value="1" {{ $donvi->parent_id != 0 ? 'checked' : null }} >
-                                                Có
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-3">--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label >Có phòng ban trong đơn vị</label>--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <div class="radio">&emsp;--}}
+{{--                                            <label>--}}
+{{--                                                <input type="radio" name="check_parent" id="optionsRadios3"--}}
+{{--                                                       value="0" {{ $donvi->parent_id == 0 ? 'checked' : null }} class="check_parent">--}}
+{{--                                                Không--}}
+{{--                                            </label>--}}
+{{--                                            <label>--}}
+{{--                                                <input type="radio" name="check_parent" id="optionsRadios4" class="check_parent" value="1" {{ $donvi->parent_id != 0 ? 'checked' : null }} >--}}
+{{--                                                Có--}}
+{{--                                            </label>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <div class="col-md-3 parent-id {{ $donvi->parent_id != 0 ? 'show' : 'hide' }}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Chọn đơn vị</label>

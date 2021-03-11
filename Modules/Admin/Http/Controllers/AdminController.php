@@ -139,14 +139,14 @@ class AdminController extends Controller
 
             $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
                 ->where('type', VanBanDen::TYPE_VB_DON_VI)
-                ->where('don_vi_id', $user->don_vi_id)
+                ->where('don_vi_id', $user->donVi->parent_id)
                 ->whereNull('deleted_at')
                 ->count();
 
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách văn bản đến', $danhSachVanBanDen));
             array_push($vanThuVanBanDenCoLors, COLOR_PINTEREST);
 
-            $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->don_vi_id])
+            $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->donVi->parent_id])
                 ->whereNull('vao_so_van_ban')
                 ->whereNull('parent_id')
                 ->whereNull('tra_lai')
@@ -154,11 +154,11 @@ class AdminController extends Controller
                 ->whereNull('type')
                 ->count();
 
-            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->don_vi_id])
+            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->donVi->parent_id])
                 ->whereIn('trang_thai', [2])
                 ->count();
 
-            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
+            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->donVi->parent_id)
                 ->whereNull('vao_so_van_ban')
                 ->whereNull('parent_id')
                 ->whereNull('type')
@@ -172,7 +172,7 @@ class AdminController extends Controller
 
             $giayMoiDen = VanBanDen::where('so_van_ban_id', '=', $giayMoi->id ?? null)
                 ->where('type', VanBanDen::TYPE_VB_DON_VI)
-                ->where('don_vi_id', $user->don_vi_id)
+                ->where('don_vi_id', $user->donVi->parent_id)
                 ->whereNull('deleted_at')
                 ->count();
 

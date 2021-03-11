@@ -54,7 +54,7 @@ Route::get('van-ban-hoan-thanh', 'VanBanDenHoanThanhController@index')->name('va
 
 Route::get('van-ban-den-chuyen-vien-phoi-hop', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.index');
 
-Route::post('phoi-hop-giai-quyet', 'VanBanDenPhoiHopController@phoiHopGiaiQuyet ')->name('phoi_hop_giai_quyet.store');
+Route::post('phoi-hop-giai-quyet', 'VanBanDenPhoiHopController@phoiHopGiaiQuyet')->name('phoi_hop_giai_quyet.store');
 Route::post('phoi-hop-giai-quyet/update/{id}', 'VanBanDenPhoiHopController@update')->name('phoi_hop_giai_quyet.update');
 
 Route::get('van-ban-den-chuyen-vien-phoi-hop-da-xu-ly', 'VanBanDenPhoiHopController@chuyenVienPhoiHop')->name('van_ban_den_chuyen_vien.da_xu_ly');

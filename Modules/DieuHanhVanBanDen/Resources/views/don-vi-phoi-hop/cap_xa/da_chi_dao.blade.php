@@ -323,6 +323,8 @@
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 removeVanBanDenDonViId(vanBanDenDonViId);
             }
+
+            lanhDaoXemDeBiet($this, 'PCT');
         });
 
 

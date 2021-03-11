@@ -107,8 +107,8 @@ class VanBanDenController extends Controller
         } else
             $ds_vanBanDen = VanBanDen::
             where([
-                'don_vi_id' => auth::user()->don_vi_id,
-                'type' => 2])
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'type' => VanBanDen::TYPE_VB_DON_VI])
                 ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
@@ -258,7 +258,7 @@ class VanBanDenController extends Controller
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $request->donViId,
+                'don_vi_id' => auth::user()->donVi->parent_id,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');

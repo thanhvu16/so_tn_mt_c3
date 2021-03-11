@@ -51,6 +51,7 @@ class VanBanDen extends Model
     const TYPE_VB_DON_VI = 2;
 
     const LOAI_VAN_BAN_DON_VI_PHOI_HOP = 1;
+    const LA_PHOI_HOP = 2;
 
     protected $fillable = [];
 
@@ -553,7 +554,7 @@ class VanBanDen extends Model
 
         if (auth::user()->hasRole(PHO_CHU_TICH) && auth::user()->cap_xa == DonVi::CAP_XA) {
             // lanh dao cap xa xem van ban phoi hop
-            $type = 1;
+//            $type = 1;
             return VanBanDen::where('parent_id', $this->id)
                 ->where('don_vi_id', auth::user()->don_vi_id)
                 ->where('type', VanBanDen::TYPE_VB_DON_VI)

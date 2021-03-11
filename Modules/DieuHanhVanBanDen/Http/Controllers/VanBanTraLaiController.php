@@ -70,7 +70,11 @@ class VanBanTraLaiController extends Controller
         $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
         $vanBanDenDonVi = $vanBanDen->hasChild();
 
-        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
+        $chuTich = User::role(CHU_TICH)
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })
+            ->where('trang_thai', ACTIVE)
             ->select('id', 'ho_ten')
             ->first();
 
@@ -96,7 +100,7 @@ class VanBanTraLaiController extends Controller
 
                 if ($currentUser->hasRole(VAN_THU_DON_VI)) {
                     // van thu gui tra lai van ban tu van ban cho vao so
-                    $chuyenNhanDonViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
+                    $chuyenNhanDonViChuTri = DonViChuTri::where('don_vi_id', $currentUser->donVi->parent_id)
                         ->whereNull('vao_so_van_ban')
                         ->whereNull('hoan_thanh')
                         ->whereNull('chuyen_tiep')

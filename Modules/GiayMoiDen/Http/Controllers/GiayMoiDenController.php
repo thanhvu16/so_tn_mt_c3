@@ -108,7 +108,7 @@ class GiayMoiDenController extends Controller
 
         } else
             $ds_vanBanDen = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => auth::user()->donVi->parent_id,
                 'type' => 2,
                 'so_van_ban_id' => 100
             ])->where(function ($query) use ($trichyeu) {

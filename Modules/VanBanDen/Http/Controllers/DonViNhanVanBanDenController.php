@@ -31,7 +31,7 @@ class DonViNhanVanBanDenController extends Controller
     public function index(Request $request)
     {
         $hienthi = $request->get('don_vi_van_ban');
-        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->don_vi_id])->whereIn('trang_thai', [2])
+        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->donVi->parent_id])->whereIn('trang_thai', [2])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     return $query->where('trang_thai', "$hienthi");
@@ -40,7 +40,7 @@ class DonViNhanVanBanDenController extends Controller
             ->paginate(PER_PAGE);
 
 
-        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->don_vi_id,])->whereNull('vao_so_van_ban')
+        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->donVi->parent_id])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -59,7 +59,7 @@ class DonViNhanVanBanDenController extends Controller
 
         $donvinhancount = count($donvinhan);
         // don vi phoi hop
-        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->don_vi_id)
+        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->donVi->parent_id)
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -883,11 +883,12 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = auth::user()->donVi->parent_id ?? null;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->noi_dung = $data;
                     $vanbandv->type = 2;
                     $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
+                    $vanbandv->chu_tri_phoi_hop = !empty($type) ? VanBanDen::LA_PHOI_HOP : 1;
                     if ($request->han_giai_quyet[$key] == null) {
                         $vanbandv->han_xu_ly = $request->han_xu_ly;
                         $vanbandv->han_giai_quyet = $request->han_xu_ly;
@@ -932,9 +933,10 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->han_xu_ly = $request->han_xu_ly;
                 $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->don_vi_id = auth::user()->donVi->parent_id ?? null;
                 $vanbandv->type = 2;
                 $vanbandv->loai_van_ban_don_vi = !empty($type) ? VanBanDen::LOAI_VAN_BAN_DON_VI_PHOI_HOP : null;
+                $vanbandv->chu_tri_phoi_hop = !empty($type) ? VanBanDen::LA_PHOI_HOP : 1;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);

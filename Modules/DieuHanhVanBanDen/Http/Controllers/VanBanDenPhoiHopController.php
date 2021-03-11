@@ -99,13 +99,13 @@ class VanBanDenPhoiHopController extends Controller
             ->orderBy('id', 'DESC')->first();
 
         $danhSachVanBanDen = VanBanDen::with([
-                'xuLyVanBanDen' => function ($query) {
-                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
-                },
-                'donViChuTri' => function ($query) {
-                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
-                }
-            ])
+            'xuLyVanBanDen' => function ($query) {
+                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+            },
+            'donViChuTri' => function ($query) {
+                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
+            }
+        ])
             ->where(function ($query) use ($trichYeu) {
                 if (!empty($trichYeu)) {
                     return $query->where('trich_yeu', "LIKE", $trichYeu);
@@ -154,6 +154,7 @@ class VanBanDenPhoiHopController extends Controller
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             $danhSachDonVi = DonVi::whereNull('deleted_at')
+                ->whereHas('user')
                 ->where('parent_id', $currentUser->don_vi_id)
                 ->select('id', 'ten_don_vi')
                 ->get();
@@ -531,76 +532,93 @@ class VanBanDenPhoiHopController extends Controller
         $donVi = auth::user()->donVi;
         $data['user_id'] = auth::user()->id;
         $data['don_vi_id'] = auth::user()->don_vi_id;
-        $data['parent_don_vi_id'] = $donVi->parent_id ?? $donVi->id;
+        $data['parent_don_vi_id'] = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
         $type = $request->get('type');
 
-        if (!empty($type)) {
-            $data['status'] = PhoiHopGiaiQuyet::GIAI_QUYET_CHUYEN_VIEN_PHOI_HOP;
-        }
-
-        //tao giai quyet vb don vi
-        $phoiHopGiaiQuyet = new PhoiHopGiaiQuyet();
-        $phoiHopGiaiQuyet->fill($data);
-        $phoiHopGiaiQuyet->save();
-
-        if (empty($type)) {
-            //update chuyen nhan van ban don vi phoi hop
-            $donViPhoiHop = DonViPhoiHop::where([
-                'van_ban_den_id' => $data['van_ban_den_id'],
-                'can_bo_nhan_id' => auth::user()->id
-            ])->first();
-
-            if ($donViPhoiHop) {
-                $donViPhoiHop->hoan_thanh = DonViPhoiHop::HOAN_THANH_VB;
-                $donViPhoiHop->save();
+        try {
+            DB::beginTransaction();
+            if (!empty($type)) {
+                $data['status'] = PhoiHopGiaiQuyet::GIAI_QUYET_CHUYEN_VIEN_PHOI_HOP;
             }
 
-            // truong phong hoac pho phong giai quyet
-            if (auth::user()->hasRole(TRUONG_PHONG) || auth::user()->hasrole(PHO_PHONG)) {
+            //tao giai quyet vb don vi
+            $phoiHopGiaiQuyet = new PhoiHopGiaiQuyet();
+            $phoiHopGiaiQuyet->fill($data);
+            $phoiHopGiaiQuyet->save();
+
+            if (empty($type)) {
+                //update chuyen nhan van ban don vi phoi hop
+                $donViPhoiHop = DonViPhoiHop::where([
+                    'van_ban_den_id' => $data['van_ban_den_id'],
+                    'can_bo_nhan_id' => auth::user()->id
+                ])->first();
+
+                if ($donViPhoiHop) {
+                    $donViPhoiHop->hoan_thanh = DonViPhoiHop::HOAN_THANH_VB;
+                    $donViPhoiHop->save();
+                }
+
+                // truong phong hoac pho phong giai quyet
+                if (auth::user()->hasRole(TRUONG_PHONG) || auth::user()->hasrole(PHO_PHONG)) {
+                    DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
+                        ->where('don_vi_id', auth::user()->don_vi_id)
+                        ->where('id', '>', $donViPhoiHop->id)->delete();
+                }
+
+                // chu tich xa hoac pho chu tich xa giai quyet van ban
+                if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH])) {
+                    DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
+                        ->where('parent_don_vi_id', auth::user()->don_vi_id)
+                        ->where('id', '>', $donViPhoiHop->id)->delete();
+                }
+
+                // don vi phoi hop
                 DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
                     ->where('don_vi_id', auth::user()->don_vi_id)
-                    ->where('id', '>', $donViPhoiHop->id)->delete();
+                    ->update(['hoan_thanh' => DonViPhoiHop::HOAN_THANH_VB]);
+
+                //update chuyen nhan van ban don vi co don vi cha
+                $parentDonViId = auth::user()->donVi->parent_id;
+                DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
+                    ->where('don_vi_id', $parentDonViId)
+                    ->update(['hoan_thanh' => DonViPhoiHop::HOAN_THANH_VB]);
             }
 
-            // don vi phoi hop
-            DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
-                ->where('don_vi_id', auth::user()->don_vi_id)
-                ->update(['hoan_thanh' => DonViPhoiHop::HOAN_THANH_VB]);
+            if (!empty($type)) {
+                $chuyenVienPhoiHop = ChuyenVienPhoiHop::where([
+                    'van_ban_den_id' => $data['van_ban_den_id'],
+                    'can_bo_nhan_id' => auth::user()->id,
+                ])->first();
 
-            //update chuyen nhan van ban don vi co don vi cha
-            $parentDonViId = auth::user()->donVi->parent_id;
-            DonViPhoiHop::where('van_ban_den_id', $data['van_ban_den_id'])
-                ->where('don_vi_id', $parentDonViId)
-                ->update(['hoan_thanh' => DonViPhoiHop::HOAN_THANH_VB]);
-        }
-
-        if (!empty($type)) {
-            $chuyenVienPhoiHop = ChuyenVienPhoiHop::where([
-                'van_ban_den_id' => $data['van_ban_den_id'],
-                'can_bo_nhan_id' => auth::user()->id,
-            ])->first();
-
-            if ($chuyenVienPhoiHop) {
-                $chuyenVienPhoiHop->status = ChuyenVienPhoiHop::CHUYEN_VIEN_GIAI_QUYET;
-                $chuyenVienPhoiHop->save();
+                if ($chuyenVienPhoiHop) {
+                    $chuyenVienPhoiHop->status = ChuyenVienPhoiHop::CHUYEN_VIEN_GIAI_QUYET;
+                    $chuyenVienPhoiHop->save();
+                }
             }
+
+            //upload file
+            $txtFiles = !empty($data['txt_file']) ? $data['txt_file'] : null;
+            $multiFiles = !empty($data['ten_file']) ? $data['ten_file'] : null;
+
+            if ($multiFiles && count($multiFiles) > 0) {
+
+                PhoiHopGiaiQuyetFile::dinhKemFileGiaiQuyet($multiFiles, $txtFiles, $phoiHopGiaiQuyet->id);
+            }
+
+            DB::commit();
+
+            if (!empty($type)) {
+
+                return redirect()->route('van_ban_den_chuyen_vien.da_xu_ly', 'status=1')->with('success', 'Đã phối hợp giải quyết.');
+            }
+
+            return redirect()->route('van-ban-den-phoi-hop.da-xu-ly')->with('success', 'Đã phối hợp giải quyết.');
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
         }
-
-        //upload file
-        $txtFiles = !empty($data['txt_file']) ? $data['txt_file'] : null;
-        $multiFiles = !empty($data['ten_file']) ? $data['ten_file'] : null;
-
-        if ($multiFiles && count($multiFiles) > 0) {
-
-            PhoiHopGiaiQuyetFile::dinhKemFileGiaiQuyet($multiFiles, $txtFiles, $phoiHopGiaiQuyet->id);
-        }
-
-        if (!empty($type)) {
-
-            return redirect()->route('van_ban_den_chuyen_vien.da_xu_ly', 'status=1')->with('success', 'Đã phối hợp giải quyết.');
-        }
-
-        return redirect()->route('van-ban-den-phoi-hop.da-xu-ly')->with('success', 'Đã phối hợp giải quyết.');
     }
 
     public function luuLogXuLyVanBanDen($dataChuyenNhanVanBanDonVi)

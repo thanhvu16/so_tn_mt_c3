@@ -58,7 +58,7 @@ class BaoCaoThongKeController extends Controller
 
         } else {
             $type = VanBanDen::TYPE_VB_DON_VI;
-            $donViId = $user->don_vi_id;
+            $donViId = $user->donVi->parent_id;
 
             $totalVanBanDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 1,

@@ -259,14 +259,20 @@ class GiaiQuyetVanBanController extends Controller
                         ->where('don_vi_id', $currentUser->don_vi_id)
                         ->whereNull('hoan_thanh')->delete();
 
+                    //xoa don vi chu tri co parent_don_vi_id
+                    DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->where('id', '>', $chuyenNhanVanBanDonVi->id)
+                        ->where('parent_don_vi_id', $currentUser->don_vi_id)
+                        ->whereNull('hoan_thanh')->delete();
+
                     // update don vi phoi hop
                     DonViPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)->where('don_vi_id', $currentUser->don_vi_id)
                         ->whereNull('hoan_thanh')
                         ->delete();
 
-                    ChuyenVienPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)
-                        ->where('don_vi_id', $currentUser->don_vi_id)
-                        ->whereNull('status')
+                    DonViPhoiHop::where('van_ban_den_id', $vanBanDenDonVi->id)
+                        ->where('parent_don_vi_id', $currentUser->don_vi_id)
+                        ->whereNull('hoan_thanh')
                         ->delete();
                 }
             } else {

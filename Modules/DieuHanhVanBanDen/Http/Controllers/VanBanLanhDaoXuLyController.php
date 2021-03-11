@@ -84,6 +84,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
             // sua o day
             $danhSachDonVi = DonVi::whereNull('deleted_at')
+                ->whereHas('user')
                 ->where('parent_id', $user->don_vi_id)
                 ->select('id', 'ten_don_vi')
                 ->get();
