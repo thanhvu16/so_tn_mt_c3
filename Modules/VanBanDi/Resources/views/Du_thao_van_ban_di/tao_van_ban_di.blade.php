@@ -242,8 +242,16 @@
                                                autocomplete="off" required>
                                     </div>
 
-
-                                    <div class=" col-md-3 form-group" style="margin-top: 35px">
+                                    <div class=" col-md-3 form-group">
+                                        <label for="exampleInputEmail2">Phòng phát hành văn bản <span class="color-red">*</span></label>
+                                        <select class="form-control select2" name="phong_phat_hanh" id=""  required>
+                                            <option value="">Chọn phòng phát hành</option>
+                                            @foreach ($ds_DonVi_phatHanh as $DonVi_phatHanh)
+                                                <option value="{{ $DonVi_phatHanh->id }}" {{ isset($vanbanduthao) && $vanbanduthao->phong_phat_hanh == $DonVi_phatHanh->id ? 'selected' : '' }} >{{ $DonVi_phatHanh->ten_don_vi }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class=" col-md-3 form-group" >
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <a class="btn btn-success btn-xs" style="color: white"

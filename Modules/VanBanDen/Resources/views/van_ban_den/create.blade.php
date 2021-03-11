@@ -152,8 +152,8 @@
                             </div>
                             <div class="col-md-3 hidden van-ban">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Tiêu Chuẩn <span style="color: red">*</span></label>
-                                    <select class="form-control select2 lay_van_ban " required   name="tieu_chuan">
+                                    <label for="exampleInputEmail4">Thời hạn theo quy chế <span style="color: red">*</span></label>
+                                    <select class="form-control select2 lay_van_ban "    name="tieu_chuan">
                                                                                 <option value="">-- Chọn tiêu chuẩn --</option>
                                         @foreach($tieuChuan as $tieuChuandata)
                                             <option value="{{ $tieuChuandata->id }}" >{{ $tieuChuandata->ten_tieu_chuan }}</option>

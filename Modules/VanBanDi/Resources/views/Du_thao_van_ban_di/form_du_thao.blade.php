@@ -51,6 +51,15 @@
         <textarea rows="3" class="form-control" required placeholder="nội dung" name="vb_trich_yeu"
                   type="text">{{ old('vb_trich_yeu') }}</textarea>
     </div>
+    <div class=" col-md-12 form-group">
+        <label for="exampleInputEmail2">Phòng phát hành văn bản <span class="color-red">*</span></label>
+        <select class="form-control select2" name="phong_phat_hanh" id=""  required>
+            <option value="">Chọn phòng phát hành</option>
+            @foreach ($ds_DonVi_phatHanh as $DonVi_phatHanh)
+                <option value="{{ $DonVi_phatHanh->id }}" >{{ $DonVi_phatHanh->ten_don_vi }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="col-md-3   form-group">
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
         <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" id="nguoi_ky" autofocus required>
@@ -110,6 +119,7 @@
                 </a>
                 <b class="text-danger"> Thêm file hồ sơ</b>
             </div>
+
             <div class=" col-md-3"  style="margin-top: 35px">
                 <button type="submit"
                         class="btn btn-primary"><i class="fa fa-plus-square-o"></i>

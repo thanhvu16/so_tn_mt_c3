@@ -309,6 +309,7 @@ class VanBanDenController extends Controller
                         $vanbandv->so_van_ban_id = $request->so_van_ban;
                         $vanbandv->so_den = $soDenvb;
                         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
+                        $vanbandv->tieu_chuan = $request->tieu_chuan;
                         $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
                         $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                         $vanbandv->trich_yeu = $request->trich_yeu;

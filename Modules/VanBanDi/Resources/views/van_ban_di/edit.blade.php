@@ -49,17 +49,38 @@
                                        value="{{$vanbandi->ngay_ban_hanh}}"
                                        autocomplete="off" required>
                             </div>
-
+                            @if(auth::user()->hasRole(VAN_THU_HUYEN))
                             <div class="form-group col-md-3">
                                 <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo <span class="color-red">*</span></label>
                                 <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
                                     <option value="">-- Chọn đơn vị soạn thảo --</option>
-                                    @foreach ($ds_DonVi as $donVi)
-                                        <option value="{{ $donVi->id }}" {{$vanbandi->don_vi_soan_thao == $donVi->id ? 'selected' : ''}}
-                                        >{{ $donVi->ten_don_vi }}</option>
-                                    @endforeach
+                                    @if($vanbandi->donvisoanthao_id == null && $vanbandi->van_ban_huyen_ky == null)
+{{--                                        //đây là văn bản của huyện--}}
+                                        @foreach ($ds_DonVi as $donVi)
+                                            <option value="{{ $donVi->id }}" {{$vanbandi->nguoitao->donVi->id == $donVi->id ? 'selected' : ''}}
+                                            >{{ $donVi->ten_don_vi }}</option>
+                                        @endforeach
+                                    @elseif($vanbandi->donvisoanthao_id == null && $vanbandi->van_ban_huyen_ky != null)
+{{--                                        đây là văn bản của huyện do đơn vị soạn thảo--}}
+                                        @foreach ($ds_DonVi as $donVi)
+                                            <option value="{{ $donVi->id }}" {{$vanbandi->van_ban_huyen_ky == $donVi->id ? 'selected' : ''}}
+                                            >{{ $donVi->ten_don_vi }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
+                            @else
+                                <div class="form-group col-md-3">
+                                    <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo <span class="color-red">*</span></label>
+                                    <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
+                                        <option value="">-- Chọn đơn vị soạn thảo --</option>
+                                        @foreach ($ds_DonVi as $donVi)
+                                            <option value="{{ $donVi->id }}" {{$vanbandi->don_vi_soan_thao == $donVi->id ? 'selected' : ''}}
+                                            >{{ $donVi->ten_don_vi }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                             {{--                            <div class="form-group col-md-3">--}}
                             {{--                                <label for="sokyhieu" class="col-form-label">Người duyệt</label>--}}
                             {{--                                <select name="nguoi_nhan" id="" class="form-control ">--}}
