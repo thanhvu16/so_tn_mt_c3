@@ -129,9 +129,18 @@
                                 <textarea rows="3" name="vb_trichyeu" class="form-control no-resize" placeholder="Nhập nội dung trích yếu ..."
                                           required></textarea>
                             </div>
-                            <div class="col-md-12">
-                                <label class="col-form-label">Trả lời cho văn bản đến:</label>
-                                <a class="them-van-ban-den" data-toggle="modal" data-target="#modal-them-van-ban-den">
+                            <div class=" col-md-6 form-group">
+                                <label for="exampleInputEmail2">Phòng phát hành văn bản <span class="color-red">*</span></label>
+                                <select class="form-control select2" name="phong_phat_hanh" id=""  required>
+                                    <option value="">Chọn phòng phát hành</option>
+                                    @foreach ($ds_DonVi_phatHanh as $DonVi_phatHanh)
+                                        <option value="{{ $DonVi_phatHanh->id }}" {{ isset($vanbanduthao) && $vanbanduthao->phong_phat_hanh == $DonVi_phatHanh->id ? 'selected' : '' }} >{{ $DonVi_phatHanh->ten_don_vi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-form-label">Trả lời cho văn bản đến:</label><br>
+                                <a class="them-van-ban-den" style="cursor: pointer" data-toggle="modal" data-target="#modal-them-van-ban-den">
                                     <span><i class="fa fa-plus-square-o"></i> Thêm văn bản đến</span>
                                 </a>
                                 <div class="row main-so-ky-hieu-van-ban-den">

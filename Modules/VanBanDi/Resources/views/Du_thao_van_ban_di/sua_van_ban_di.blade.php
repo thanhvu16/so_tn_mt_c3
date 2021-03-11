@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="header-title mb-3">Tạo văn bản đi</h4>
+                <h4 class="header-title mb-3">Tạo văn bản đi1</h4>
                 <div class="card-box pd-0">
                     <div class="tab-content pd-0">
                         <div class="tab-pane active" id="home">
@@ -48,18 +48,37 @@
                                     </div>
 
 
+                                    @if(auth::user()->hasRole(VAN_THU_HUYEN))
 
                                     <div class="form-group col-md-3">
                                         <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo</label>
                                         <select class="form-control show-tick dropdown-search" name="donvisoanthao_id"
                                                 required>
                                             <option value="">-- Chọn Đơn Vị Soạn Thảo --</option>
+                                            @if($vanbandi->donvisoanthao_id == null && $vanbandi->van_ban_huyen_ky != null)
+
                                             @foreach ($ds_DonVi as $donVi)
-                                                <option value="{{ $donVi->ma_id }}"
-                                                    {{ isset($vanbandi) && $vanbandi->donvisoanthao_id == $donVi->ma_id ? 'selected' : '' }}>{{ $donVi->ten_don_vi}}</option>
+                                                <option value="{{ $donVi->id }}"
+                                                    {{ isset($vanbandi) && $vanbandi->donvisoanthao_id == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi}}</option>
                                             @endforeach
+                                                @elseif()
                                         </select>
                                     </div>
+                                    @else
+                                        <div class="form-group col-md-3">
+                                            <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo</label>
+                                            <select class="form-control show-tick dropdown-search" name="donvisoanthao_id"
+                                                    required>
+                                                <option value="">-- Chọn Đơn Vị Soạn Thảo --</option>
+                                                @foreach ($ds_DonVi as $donVi)
+                                                    <option value="{{ $donVi->id }}"
+                                                        {{ isset($vanbandi) && $vanbandi->van_ban_huyen_ky == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @endif
+
+
                                     <div class="form-group col-md-3">
                                         <label for="linhvuc_id" class="col-form-label">Lĩnh vực</label>
                                         <select class="form-control show-tick dropdown-search" name="linhvuc_id"
