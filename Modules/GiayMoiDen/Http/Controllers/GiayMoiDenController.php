@@ -401,7 +401,7 @@ class GiayMoiDenController extends Controller
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
 
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
-                if (auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
+                if (auth::user()->donVi->parent_id != 0) {
                     $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
                 }
 
@@ -410,7 +410,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv = new VanBanDen();
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
@@ -466,7 +466,7 @@ class GiayMoiDenController extends Controller
                     }
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
                     $vanbandv->nguoi_ky = $nguoiky;

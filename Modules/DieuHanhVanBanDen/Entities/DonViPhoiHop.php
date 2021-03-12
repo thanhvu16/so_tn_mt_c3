@@ -101,21 +101,29 @@ class DonViPhoiHop extends Model
             ->whereNull('deleted_at')->first();
 
         $donVi = auth::user()->donVi;
+        $tenDonVi = $donVi->ten_don_vi;
+        $donViId = $donVi->id;
+        $dieuHanh = $donVi->dieu_hanh;
 
-        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+        if (auth::user()->hasRole([VAN_THU_DON_VI])) {
             $nguoiDung = User::role(CHU_TICH)
-                ->where('don_vi_id', auth::user()->don_vi_id)
+                ->where('don_vi_id', auth::user()->donVi->parent_id)
                 ->where('trang_thai', ACTIVE)
                 ->whereNull('deleted_at')->first();
+
+            $parentDonVi = DonVi::where('id', $donVi->parent_id)->first();
+            $tenDonVi = $parentDonVi->ten_don_vi ?? $donVi->ten_don_vi;
+            $donViId = $parentDonVi->id ?? $donVi->id;
+            $dieuHanh = $donVi->dieu_hanh;
         }
 
         $dataLuuDonViPhoiHop = [
             'van_ban_den_id' => $vanBanDenId,
             'can_bo_chuyen_id'=> auth::user()->id,
             'can_bo_nhan_id'=> $nguoiDung->id ?? null,
-            'don_vi_id'=> $donVi->id,
-            'noi_dung'=> 'Chuyển đơn vị phối hợp: '. $donVi->ten_don_vi,
-            'don_vi_co_dieu_hanh'=> $donVi->dieu_hanh ?? null,
+            'don_vi_id'=> $donViId,
+            'noi_dung'=> 'Chuyển đơn vị phối hợp: '. $tenDonVi,
+            'don_vi_co_dieu_hanh'=> $dieuHanh,
             'vao_so_van_ban' =>  1,
             'type' => 1,
             'user_id' => auth::user()->id

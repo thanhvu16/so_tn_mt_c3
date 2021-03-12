@@ -294,7 +294,7 @@ class VanBanDenController extends Controller
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $user->don_vi_id,
+                    'don_vi_id' => $user->donVi->parent_id,
                     'so_van_ban_id' => $request->so_van_ban,
                     'type' => 2
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -358,7 +358,7 @@ class VanBanDenController extends Controller
                 }
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
-                if (auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
+                if (auth::user()->donVi->parent_id != 0) {
                     $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
                 }
                 if ($noi_dung && $noi_dung[0] != null) {
@@ -376,7 +376,7 @@ class VanBanDenController extends Controller
                         $vanbandv->do_khan_cap_id = $request->do_khan;
                         $vanbandv->do_bao_mat_id = $request->do_mat;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->type = 2;
                         $vanbandv->noi_dung = $data;
@@ -418,7 +418,7 @@ class VanBanDenController extends Controller
                     $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                     $vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 2;
                     $vanbandv->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
