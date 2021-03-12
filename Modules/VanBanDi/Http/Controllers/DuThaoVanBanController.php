@@ -1012,7 +1012,7 @@ class DuThaoVanBanController extends Controller
             $vanbandi->nguoi_ky = $request->nguoiky_id;
             $vanbandi->nguoi_tao = auth::user()->id;
 
-            $vanbandi->van_ban_den_id = [(string)$duthaochot->van_ban_den_don_vi_id] ?? null;
+            $vanbandi->van_ban_den_id = !empty($duthaochot->van_ban_den_don_vi_id) ? [(string)$duthaochot->van_ban_den_don_vi_id] : null;
             if ($duthaochot->loai_van_ban_id == $giayMoi->id) {
                 $vanbandi->loai_van_ban_giay_moi = 2;
             } else {

@@ -787,7 +787,7 @@ class VanBanDiController extends Controller
 
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'don_vi_soan_thao' => auth::user()->don_vi_id])->first();
+                    $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'don_vi_soan_thao' => auth::user()->donVi->parent_id])->first();
                 }
             }
             if ($vanban) {
