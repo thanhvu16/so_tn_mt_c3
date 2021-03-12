@@ -227,7 +227,7 @@ class DieuHanhVanBanDenController extends Controller
         $lanhdaotrongphong = null;
         $lanhdaokhac = null;
         $date = null;
-
+        $ds_DonVi_phatHanh = null;
 
         if ($vanBanDen->trinh_tu_nhan_van_ban != VanBanDen::HOAN_THANH_VAN_BAN) {
             // data cua du thao
@@ -240,6 +240,7 @@ class DieuHanhVanBanDenController extends Controller
             $donVi = $user->donVi;
             $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi','LIKE',LANH_DAO_UY_BAN)->first();
             $donViCapHuyen = DonVi::where('nhom_don_vi',$nhomDonVi->id ?? null)->first();
+            $ds_DonVi_phatHanh= DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
             $dataNguoiKy = [];
             $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
                 ->whereHas('donVi', function ($query) {
@@ -339,7 +340,7 @@ class DieuHanhVanBanDenController extends Controller
         }
 
         return view('dieuhanhvanbanden::van-ban-den.show',
-            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date'));
+            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan','ds_DonVi_phatHanh', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date'));
     }
 
     /**

@@ -138,7 +138,7 @@ class VanBanDiController extends Controller
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
         } else
             //đây là văn bản của đơn vị
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => auth::user()->donVi->parent_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
@@ -962,7 +962,7 @@ class VanBanDiController extends Controller
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => null])->orderBy('created_at', 'desc')->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => auth::user()->don_vi_id])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, auth::user()->donVi->parent_id])->orderBy('created_at', 'desc')->get();
         }
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [2, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
