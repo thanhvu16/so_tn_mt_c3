@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDi\Entities;
 
+use App\Models\VanBanDiVanBanDen;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -134,9 +135,11 @@ class VanBanDi extends Model
     public function getListVanBanDen()
     {
 
-        if (!empty($this->van_ban_den_id)) {
+        $vanBanDi = VanBanDiVanBanDen::where('van_ban_di_id', $this->id)->get();
+        $arrVanBanDenId = $vanBanDi->pluck('van_ban_den_id')->toArray();
+        if (count($arrVanBanDenId) > 0) {
 
-            return VanBanDen::whereIn('id', $this->van_ban_den_id)->get();
+            return VanBanDen::whereIn('id', $arrVanBanDenId)->get();
         }
 
         return false;
@@ -167,5 +170,17 @@ class VanBanDi extends Model
         return $this->hasMany(FileVanBanDi::class, 'van_ban_di_id', 'id')
             ->where('trang_thai', FileVanBanDi::TRANG_THAI_FILE_TRINH_KY)
             ->where('loai_file', FileVanBanDi::LOAI_FILE_DA_KY);
+    }
+
+    public static function luuVanBanDiVanBanDen($vanBanDiId, $arrVanBanDen)
+    {
+        if (!empty($arrVanBanDen)) {
+            $arrVanBanDenId = explode(',', $arrVanBanDen);
+
+            foreach ($arrVanBanDenId as $vanBanDenId) {
+                VanBanDiVanBanDen::saveVanBanDiVanBanDen($vanBanDiId, $vanBanDenId);
+            }
+
+        }
     }
 }

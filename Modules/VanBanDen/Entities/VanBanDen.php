@@ -3,6 +3,7 @@
 namespace Modules\VanBanDen\Entities;
 
 use App\Models\LichCongTac;
+use App\Models\VanBanDiVanBanDen;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -53,7 +54,44 @@ class VanBanDen extends Model
     const LOAI_VAN_BAN_DON_VI_PHOI_HOP = 1;
     const LA_PHOI_HOP = 2;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'parent_id',
+        'loai_van_ban_id',
+        'so_van_ban_id',
+        'so_den',
+        'so_ky_hieu',
+        'ngay_ban_hanh',
+        'co_quan_ban_hanh',
+        'nguoi_ky',
+        'chuc_vu',
+        'trich_yeu',
+        'noi_dung',
+        'tom_tat',
+        'do_khan_cap_id',
+        'do_bao_mat_id',
+        'noi_gui_den',
+        'ngay_hop',
+        'gio_hop',
+        'noi_dung_hop',
+        'dia_diem',
+        'han_xu_ly',
+        'lanh_dao_tham_muu',
+        'trinh_tu_nhan_van_ban',
+        'nguoi_tao',
+        'don_vi_id',
+        'han_giai_quyet',
+        'ngay_hop_phu',
+        'gio_hop_phu',
+        'noi_dung_hop_phu',
+        'dia_diem_phu',
+        'van_ban_can_tra_loi',
+        'hoan_thanh_dung_han',
+        'ngay_hoan_thanh',
+        'type',
+        'loai_van_ban_don_vi',
+        'chu_tri_phoi_hop',
+        'tieu_chuan',
+    ];
 
     public function nguoiDung()
     {
@@ -502,9 +540,16 @@ class VanBanDen extends Model
 
     public function vanBanDi()
     {
-        return $this->hasOne(VanBanDi::class, 'van_ban_den_id', 'id')
-            ->select('id', 'so_di', 'trich_yeu', 'van_ban_den_id', 'so_ky_hieu', 'loai_van_ban_id', 'ngay_ban_hanh')
-            ->orderBy('id', 'DESC');
+        $vanBanDiDen = VanBanDiVanBanDen::where('van_ban_den_id', $this->id)->first();
+
+        if (!empty($vanBanDiDen)) {
+
+            return VanBanDi::where('id', $vanBanDiDen->van_ban_di_id)
+                ->select('id', 'so_di', 'trich_yeu', 'van_ban_den_id', 'so_ky_hieu', 'loai_van_ban_id', 'ngay_ban_hanh')
+                ->orderBy('id', 'DESC')
+                ->first();
+        }
+         return false;
     }
 
     public function checkLichCongTac($arrLanhDaoId)

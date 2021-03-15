@@ -31,7 +31,15 @@ class DonViNhanVanBanDenController extends Controller
     public function index(Request $request)
     {
         $hienthi = $request->get('don_vi_van_ban');
-        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => auth::user()->donVi->parent_id])->whereIn('trang_thai', [2])
+
+        $donVi = auth::user()->donVi;
+        $donViId = $donVi->id;
+
+        if (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $donViId = $donVi->parent_id;
+        }
+
+        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $donViId])->whereIn('trang_thai', [2])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     return $query->where('trang_thai', "$hienthi");
@@ -39,8 +47,7 @@ class DonViNhanVanBanDenController extends Controller
             })
             ->paginate(PER_PAGE);
 
-
-        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => auth::user()->donVi->parent_id])->whereNull('vao_so_van_ban')
+        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => $donViId])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -59,7 +66,7 @@ class DonViNhanVanBanDenController extends Controller
 
         $donvinhancount = count($donvinhan);
         // don vi phoi hop
-        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', auth::user()->donVi->parent_id)
+        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $donViId)
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -681,7 +688,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = auth::user()->donVi->parent_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->noi_dung = $data;
                     $vanbandv->type = 2;
@@ -692,7 +699,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vanbandv->han_xu_ly = $request->han_xu_ly;
                         $vanbandv->han_giai_quyet = $han_gq[$key];
                     }
-                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                    $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
                     $vanbandv->save();
                     UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                     //save chuyen don vi chu tri
@@ -707,7 +714,7 @@ class DonViNhanVanBanDenController extends Controller
                             $vbDenFile->duoi_file = $file->duoi_file;
                             $vbDenFile->vb_den_id = $vanbandv->id;
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->don_vi_id = auth::user()->donVi->parent_id;
                             $vbDenFile->save();
                             UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
@@ -731,10 +738,10 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->han_xu_ly = $request->han_xu_ly;
                 $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->don_vi_id = auth::user()->donVi->parent_id;
                 $vanbandv->type = 2;
                 $vanbandv->nguoi_tao = auth::user()->id;
-                $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                $vanbandv->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                 //save chuyen don vi chu tri
@@ -748,7 +755,7 @@ class DonViNhanVanBanDenController extends Controller
                         $vbDenFile->duoi_file = $file->duoi_file;
                         $vbDenFile->vb_den_id = $vanbandv->id;
                         $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->don_vi_id = auth::user()->donVi->parent_id;
                         $vbDenFile->save();
                         UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
 
@@ -759,16 +766,10 @@ class DonViNhanVanBanDenController extends Controller
             }
         }
         $layvanbandi = NoiNhanVanBanDi::where('id', $request->id_van_ban_di)->first();
-        if ($layvanbandi != null) {
-            $updatenoinhan = NoiNhanVanBanDi::where('van_ban_di_id', $layvanbandi->van_ban_di_id)->get();
-            if ($updatenoinhan) {
-                //update
-                foreach ($updatenoinhan as $data) {
-                    $trangthai = NoiNhanVanBanDi::where('id', $data->id)->first();
-                    $trangthai->trang_thai = 3;
-                    $trangthai->save();
-                }
-            }
+        if (!empty($layvanbandi)) {
+            $layvanbandi->trang_thai = 3;
+            $layvanbandi->save();
+
         }
         return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
     }

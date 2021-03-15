@@ -5,6 +5,7 @@ namespace Modules\VanBanDi\Http\Controllers;
 
 use App\Common\AllPermission;
 use App\Models\UserLogs;
+use App\Models\VanBanDiVanBanDen;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
@@ -1018,8 +1019,11 @@ class DuThaoVanBanController extends Controller
             } else {
                 $vanbandi->loai_van_ban_giay_moi = 1;
             }
+            $vanbandi->du_thao_van_ban_di_id = $duthaochot->id ?? null;
             $vanbandi->save();
 
+            // luu vao van ban di van ban den
+            VanBanDiVanBanDen::saveVanBanDiVanBanDen($vanbandi->id, $duthaochot->van_ban_den_don_vi_id);
             UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
 
             if ($tenMailThem && count($tenMailThem) > 0) {

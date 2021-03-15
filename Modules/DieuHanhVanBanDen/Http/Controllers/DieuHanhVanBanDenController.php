@@ -101,6 +101,7 @@ class DieuHanhVanBanDenController extends Controller
             'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban','created_at')
             ->findOrFail($id);
 
+        $vanBanDen->vanBanDi = $vanBanDen->vanBanDi();
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 
@@ -430,6 +431,7 @@ class DieuHanhVanBanDenController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->vanBanDi = $vanBanDen->vanBanDi();
                 $vanBanDen->giaiQuyetVanBanHoanThanh = $vanBanDen->giaiQuyetVanBanHoanThanh();
             }
         }
@@ -483,6 +485,7 @@ class DieuHanhVanBanDenController extends Controller
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
+                $vanBanDen->vanBanDi = $vanBanDen->vanBanDi();
                 $vanBanDen->giaiQuyetVanBanHoanThanh = $vanBanDen->giaiQuyetVanBanHoanThanh();
             }
         }

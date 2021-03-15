@@ -56,7 +56,7 @@ class VanBanDenHoanThanhController extends Controller
 
         $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile', 'vanBanDi',
+        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
             'xuLyVanBanDen' => function ($query) {
                 return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
             },
@@ -89,6 +89,7 @@ class VanBanDenHoanThanhController extends Controller
             foreach ($danhSachVanBanDen as $vanBanDen) {
                 $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
                 $vanBanDen->giaiQuyetVanBanHoanThanh = $vanBanDen->giaiQuyetVanBanHoanThanh();
+                $vanBanDen->vanBanDi = $vanBanDen->vanBanDi();
             }
         }
 

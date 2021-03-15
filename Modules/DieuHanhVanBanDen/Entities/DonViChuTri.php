@@ -165,14 +165,13 @@ class DonViChuTri extends Model
         // save thành phần dự họp
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
-        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id], null, $nguoiDung->don_vi_id ?? null);
+        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id ?? null], null, $nguoiDung->don_vi_id ?? null);
     }
 
     public static function luuDonViCapXa($donViId, $txtDonViChuTri,  $vanBanDenId, $donViChuTri, $hanXuLyCu, $hanXuLyMoi)
     {
         // luu don vi chu tri
         $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();
-
         $role = [TRUONG_BAN];
         $nguoiDung = User::where('don_vi_id', $donViId)
             ->whereHas('roles', function ($query) use ($role) {
@@ -196,6 +195,37 @@ class DonViChuTri extends Model
             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
             'user_id' => auth::user()->id,
             'parent_don_vi_id' => auth::user()->don_vi_id,
+        ];
+
+        $donViChuTri = new DonViChuTri();
+        $donViChuTri->fill($dataLuuDonViChuTri);
+        $donViChuTri->save();
+    }
+
+    public static function LuuDonViKhongDieuHanh($vanBanDenId, $donViId)
+    {
+        $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+        $nguoiDung = User::where('don_vi_id', $donViId)
+            ->whereHas('roles', function ($query) use ($role) {
+                return $query->whereIn('name', $role);
+            })
+            ->where('trang_thai', ACTIVE)
+            ->whereNull('deleted_at')->first();
+
+        $donVi = DonVi::where('id', $donViId)->first();
+        $tenDonVi = $donVi->ten_don_vi;
+
+
+        $dataLuuDonViChuTri = [
+            'van_ban_den_id' => $vanBanDenId,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'noi_dung' => 'Chuyển đơn vị thực hiện: '. $tenDonVi,
+            'don_vi_id' => $donViId,
+            'user_id' => auth::user()->id,
+            'don_vi_co_dieu_hanh' => $donVi->dieu_hanh,
+            'vao_so_van_ban' =>  1,
+            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI
         ];
 
         $donViChuTri = new DonViChuTri();

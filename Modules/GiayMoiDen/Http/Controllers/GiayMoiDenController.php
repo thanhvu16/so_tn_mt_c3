@@ -517,7 +517,7 @@ class GiayMoiDenController extends Controller
                             $vbDenFile->duoi_file = $extFile;
                             $vbDenFile->vb_den_id = $data;
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                             $vbDenFile->save();
                         }
 

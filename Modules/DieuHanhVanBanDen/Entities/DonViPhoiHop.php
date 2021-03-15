@@ -85,7 +85,7 @@ class DonViPhoiHop extends Model
                 // save thành phần dự họp
                 $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
                 $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
-                ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id], null, $nguoiDung->don_vi_id ?? null);
+                ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id ?? null], null, $nguoiDung->don_vi_id ?? null);
             }
         }
     }
