@@ -58,3 +58,5 @@ Route::get('sao-luu-du-lieu', 'AdminController@exportDatabase')->name('sao-luu-d
 Route::post('create-backup', 'AdminController@createBackup')->name('backup.create');
 Route::get('download-backup/{fileName}', 'AdminController@downloadBackup')->name('backup.download');
 Route::post('delete-backup/{fileName}', 'AdminController@deleteBackup')->name('backup.destroy');
+
+Route::get('get-list-phong-ban/{id}', 'DonViController@getListPhongBan');

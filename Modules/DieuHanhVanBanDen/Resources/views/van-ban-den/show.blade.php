@@ -133,7 +133,7 @@
                             </p>
                             <p>
                                 <b>Ngày
-                                    nhập: </b> {{ $vanBanDen->created_at  }}
+                                    nhập: </b> {{ date('d/m/Y H:i:s', strtotime($vanBanDen->created_at))  }}
                             </p>
                             <p>
                                 <b>Hạn văn bản: </b> {{ !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}

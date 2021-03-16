@@ -35,7 +35,7 @@
                                     @foreach($vanBanDen->vanBanDi->filechinh as $key => $file)
                                         <a href="{{ $file->getUrlFile() }}"
                                            target="popup"
-                                           class="detail-file-name seen-new-window">[{{ cutStr($file->ten_file) }}]</a>
+                                           class="detail-file-name seen-new-window">[{{ $file->ten_file ?? 'file-tai-lieu' }}]</a>
                                         @if (count($vanBanDen->vanBanDi->filechinh)-1 != $key)
                                             &nbsp;|&nbsp;
                                         @endif

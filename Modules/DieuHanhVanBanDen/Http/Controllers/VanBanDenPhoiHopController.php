@@ -60,11 +60,11 @@ class VanBanDenPhoiHopController extends Controller
                     return $query->whereNull('chuyen_tiep');
                 }
             })
+            ->where('active', DonViPhoiHop::ACTIVE)
             ->whereNull('hoan_thanh')
             ->whereNotNull('vao_so_van_ban')
             ->select('id', 'van_ban_den_id')
             ->get();
-
 
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
 
@@ -224,6 +224,7 @@ class VanBanDenPhoiHopController extends Controller
         $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
+        $active = null;
 
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
@@ -256,7 +257,8 @@ class VanBanDenPhoiHopController extends Controller
                             'noi_dung' => $textnoidungPhoChuTich[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                            'user_id' => $currentUser->id
+                            'user_id' => $currentUser->id,
+                            'active' => DonViPhoiHop::ACTIVE
                         ];
 
                         $chuyenNhanVanBanPhoChuTich = new DonViPhoiHop();
@@ -282,7 +284,7 @@ class VanBanDenPhoiHopController extends Controller
                         ])->where('parent_don_vi_id', auth::user()->don_vi_id)->delete();
 
                         if (!empty($danhSachDonViPhoiHopIds[$vanBanDenId])) {
-                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
+                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
 
                             // luu vet van ban den
                             $this->luuLogXuLyVanBanDen($dataLuuDonViPhoiHop);
@@ -310,7 +312,8 @@ class VanBanDenPhoiHopController extends Controller
                             'noi_dung' => $textnoidungTruongPhong[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                            'user_id' => $currentUser->id
+                            'user_id' => $currentUser->id,
+                            'active'    => DonViPhoiHop::ACTIVE
                         ];
 
                         $chuyenNhanVanBanTruongPhong = new DonViPhoiHop();
@@ -322,7 +325,11 @@ class VanBanDenPhoiHopController extends Controller
                     }
 
                     //chuyen nhan van ban don vi
+
                     if (isset($danhSachPhoPhongIds) && !empty($danhSachPhoPhongIds[$vanBanDenId])) {
+                        if (empty($danhSachTruongPhongIds[$vanBanDenId])) {
+                            $active = DonViPhoiHop::ACTIVE;
+                        }
                         $dataChuyenNhanVanBanDonVi = [
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
@@ -333,7 +340,8 @@ class VanBanDenPhoiHopController extends Controller
                             'noi_dung' => $textnoidungPhoPhong[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                            'user_id' => $currentUser->id
+                            'user_id' => $currentUser->id,
+                            'active'    => $active
                         ];
 
                         $chuyenNhanVanBanPhoPhong = new DonViPhoiHop();
@@ -346,6 +354,12 @@ class VanBanDenPhoiHopController extends Controller
                     }
 
                     if (isset($danhSachChuyenVienIds) && !empty($danhSachChuyenVienIds[$vanBanDenId])) {
+                        if (empty($danhSachPhoPhongIds[$vanBanDenId])) {
+                            $active = DonViPhoiHop::ACTIVE;
+                        } else {
+                            $active = null;
+                        }
+
                         //save chuyen vien thuc hien
                         $dataChuyenNhanVanBanChuyenVien = [
                             'van_ban_den_id' => $vanBanDenId,
@@ -357,7 +371,8 @@ class VanBanDenPhoiHopController extends Controller
                             'noi_dung' => $textNoiDungChuyenVien[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
-                            'user_id' => $currentUser->id
+                            'user_id' => $currentUser->id,
+                            'active'    => $active
                         ];
 
                         $chuyenNhanVanBanChuyenVienDonVi = new DonViPhoiHop();

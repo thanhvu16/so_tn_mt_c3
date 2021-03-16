@@ -69,10 +69,22 @@
 
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="don-vi">Đơn vị</label>
-                    <select class="form-control select2" name="don_vi_id">
+                    <select class="form-control select-option-don-vi select2" name="don_vi_id">
                         <option value="">-- Chọn đơn vị --</option>
                         @if (count($danhSachDonVi) > 0)
                             @foreach($danhSachDonVi as $donVi)
+                                <option value="{{ $donVi->id }}" {{ isset($user) && $donViId == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4 show-phong-ban {{ isset($user) && $user->donVi->parent_id != 0 ? 'show' : 'hide' }}">
+                    <label class="col-form-label" for="phong-ban">Phòng ban</label>
+                    <select class="form-control select2 select-phong-ban" name="phong_ban_id">
+                        <option value="">-- Chọn phòng ban --</option>
+                        @if (isset($danhSachPhongBan) && count($danhSachPhongBan) > 0)
+                            @foreach($danhSachPhongBan as $donVi)
                                 <option value="{{ $donVi->id }}" {{ isset($user) && $user->don_vi_id == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
                             @endforeach
                         @endif
@@ -115,31 +127,12 @@
                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
-
-
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="so-dien-thoai">Số điện thoại</label>
                     <input type="number" name="so_dien_thoai" id="so-dien-thoai" placeholder="Nhập SDT.."
                            value="{{ old('so_dien_thoai', isset($user) ? $user->so_dien_thoai : '') }}"
                            class="form-control">
                 </div>
-                <div class="form-group col-md-4">
-                    <label class="col-form-label" for="gioi_tinh">Giới tính</label>
-                    <br>
-                    <label>
-                        <input type="radio" name="gioi_tinh" class="flat-red" value="1"
-                               {{ isset($user) && $user->gioi_tinh == 1 ? 'checked' : '' }}
-                               checked> Nam
-                    </label>
-                    &nbsp;
-                    <label>
-                        <input type="radio" name="gioi_tinh" class="flat-red"
-                               value="2"
-                            {{ isset($user) && $user->gioi_tinh == 2 ? 'checked' : '' }}
-                        > Nữ
-                    </label>
-                </div>
-                <div class="clearfix"></div>
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="chu_ky_chinh">Ảnh chữ ký chính</label>
                     <div>
@@ -175,6 +168,22 @@
                     <input type="number" name="uu_tien" id="uu-tien" placeholder="Nhập vị trí sắp xếp..."
                            value="{{ old('uu_tien', isset($user) ? $user->uu_tien : '') }}"
                            class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="gioi_tinh">Giới tính</label>
+                    <br>
+                    <label>
+                        <input type="radio" name="gioi_tinh" class="flat-red" value="1"
+                               {{ isset($user) && $user->gioi_tinh == 1 ? 'checked' : '' }}
+                               checked> Nam
+                    </label>
+                    &nbsp;
+                    <label>
+                        <input type="radio" name="gioi_tinh" class="flat-red"
+                               value="2"
+                            {{ isset($user) && $user->gioi_tinh == 2 ? 'checked' : '' }}
+                        > Nữ
+                    </label>
                 </div>
                 <div class="col-md-4">
                     <label class="col-form-label" for="trang_thai">Trạng thái</label>

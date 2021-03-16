@@ -118,8 +118,11 @@ class NguoiDungController extends Controller
 
 
             ]);
+        $phongBanId = $request->get('phong_ban_id') ?? null;
+        $donViId = $request->get('don_vi_id') ?? null;
 
         $data = $request->all();
+        $data['don_vi_id'] = !empty($phongBanId) ? $phongBanId : $donViId;
 
         if (!empty($data['anh_dai_dien'])) {
             $inputFile = $data['anh_dai_dien'];
@@ -193,13 +196,21 @@ class NguoiDungController extends Controller
 //        canPermission(AllPermission::suaNguoiDung());
 
         $user = User::findOrFail($id);
+        $donVi = $user->donVi;
+        $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+
         $roles = Role::all();
         $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->get();
         $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->get();
         $viTriUuTien = User::max('uu_tien');
 
-        return view('admin::nguoi-dung.edit', compact('user',
-            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien'));
+        $danhSachPhongBan = null;
+        if ($donVi->parent_id != 0) {
+            $danhSachPhongBan = DonVi::where('parent_id', $donVi->parent_id)->select('id', 'ten_don_vi')->get();
+        }
+
+        return view('admin::nguoi-dung.edit', compact('user', 'donViId',
+            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien', 'danhSachPhongBan', 'donVi'));
     }
 
     /**
@@ -213,8 +224,10 @@ class NguoiDungController extends Controller
 //        canPermission(AllPermission::suaNguoiDung());
 
         $user = User::findOrFail($id);
-
+        $phongBanId = $request->get('phong_ban_id') ?? null;
+        $donViId = $request->get('don_vi_id') ?? null;
         $data = $request->all();
+        $data['don_vi_id'] = !empty($phongBanId) ? $phongBanId : $donViId;
 
         if (!empty($data['anh_dai_dien'])) {
             $inputFile = $data['anh_dai_dien'];
