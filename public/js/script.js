@@ -321,4 +321,37 @@ $('body').on('click', '.rm-van-ban-den', function () {
     }
 });
 
+$('.select-option-don-vi').on('change', function () {
+    let donViId = $(this).val();
+
+    if (donViId) {
+        $.ajax({
+            url: APP_URL + '/get-list-phong-ban/' + donViId,
+            type: 'GET',
+        })
+            .done(function (response) {
+                console.log(response.data.length > 0);
+
+                let html = '<option value="">Chọn phòng ban</option>';
+                if (response.success && response.data.length > 0) {
+                    let selectAttributes = response.data.map((function (attribute) {
+                        return `<option value="${attribute.id}" >${attribute.ten_don_vi}</option>`;
+                    }));
+                    $('.show-phong-ban').removeClass('hide');
+
+                    $('.select-phong-ban').html(html + selectAttributes);
+                } else {
+                    $('.show-phong-ban').addClass('hide');
+                    $('.select-phong-ban').html(' ');
+                }
+            })
+            .fail(function (error) {
+                toastr['error'](error.message, 'Thông báo hệ thống');
+            });
+    } else {
+        $('.show-phong-ban').addClass('hide');
+        $('.select-phong-ban').html(' ');
+    }
+});
+
 

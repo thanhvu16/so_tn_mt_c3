@@ -347,6 +347,7 @@ class AdminController extends Controller
                         return $query->whereNull('chuyen_tiep');
                     }
                 })
+                ->where('active', DonViPhoiHop::ACTIVE)
                 ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
                 ->count();

@@ -27,12 +27,23 @@ class DonViPhoiHop extends Model
         'vao_so_van_ban',
         'type',
         'chuyen_tiep',
+        'active',
         'hoan_thanh'
     ];
 
     const HOAN_THANH_VB = 1;
     const CHUYEN_TIEP = 1;
     const GIAI_QUYET = 2;
+
+    const ACTIVE_VB = [
+      CHU_TICH => 1,
+      PHO_CHU_TICH => 2,
+      TRUONG_PHONG => 3,
+      PHO_PHONG => 4,
+      CHUYEN_VIEN => 5
+    ];
+
+    const ACTIVE = 1;
 
     public static function luuDonViPhoiHop($arrDonViId, $vanBanDenId)
     {
@@ -44,7 +55,7 @@ class DonViPhoiHop extends Model
                     'parent_don_vi_id' => null,
                     'hoan_thanh'  => null
                 ])->delete();
-
+            $active = null;
             foreach ($arrDonViId as $donViId) {
 
                 $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
@@ -60,6 +71,8 @@ class DonViPhoiHop extends Model
                         ->orderBy('id', 'DESC')
                         ->whereNull('deleted_at')->first();
 
+                    $active = self::ACTIVE;
+
                 } else {
                     $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
                     $nguoiDung = User::where('trang_thai', ACTIVE)
@@ -69,6 +82,8 @@ class DonViPhoiHop extends Model
                         })
                         ->orderBy('id', 'DESC')
                         ->whereNull('deleted_at')->first();
+
+                    $active = self::ACTIVE;
                 }
 
                 $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;
@@ -80,6 +95,7 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop->don_vi_id = $donViId;
                 $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
                 $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
+                $donViPhoiHop->active = $active;
                 $donViPhoiHop->save();
 
                 // save thành phần dự họp
@@ -159,7 +175,7 @@ class DonViPhoiHop extends Model
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
     }
 
-    public static function luuDonViPhoiHopCapXa($arrDonViId, $vanBanDenId)
+    public static function luuDonViPhoiHopCapXa($arrDonViId, $vanBanDenId, $phoChuTichId)
     {
         if (!empty($arrDonViId) && count($arrDonViId) > 0) {
             DonViPhoiHop::where([
@@ -194,6 +210,7 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
                 $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
                 $donViPhoiHop->parent_don_vi_id = auth::user()->don_vi_id;
+                $donViPhoiHop->active = empty($phoChuTichId) ? self::ACTIVE : null;
                 $donViPhoiHop->save();
 
                 // save thành phần dự họp

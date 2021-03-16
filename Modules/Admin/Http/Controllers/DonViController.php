@@ -161,4 +161,14 @@ class DonViController extends Controller
         $phat->delete();
         return redirect()->route('danhsachdonvi')->with('success', 'Xóa thành công !');
     }
+
+    public function getListPhongBan(Request $request, $id)
+    {
+        $phongBan = DonVi::where('parent_id', $id)->select('id', 'ten_don_vi', 'parent_id')->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $phongBan
+        ]);
+    }
 }
