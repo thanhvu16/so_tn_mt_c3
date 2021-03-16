@@ -80,8 +80,8 @@
                 </div>
 
                 <div class="form-group col-md-4 show-phong-ban {{ isset($user) && $user->donVi->parent_id != 0 ? 'show' : 'hide' }}">
-                    <label class="col-form-label" for="phong-ban">phòng ban</label>
 
+                    <label class="col-form-label" for="phong-ban">Phòng ban</label>
                     <select class="form-control select2 select-phong-ban" name="phong_ban_id">
                         <option value="">-- Chọn phòng ban --</option>
                         @if (isset($danhSachPhongBan) && count($danhSachPhongBan) > 0)
