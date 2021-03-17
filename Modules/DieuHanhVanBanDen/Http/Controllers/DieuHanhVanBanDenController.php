@@ -263,7 +263,7 @@ class DieuHanhVanBanDenController extends Controller
                         }
                         $ds_nguoiKy = $dataNguoiKy;
                     } else {
-                        $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                     }
                     break;
                 case PHO_PHONG:

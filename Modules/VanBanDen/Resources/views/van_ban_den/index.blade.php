@@ -150,7 +150,7 @@
                                     <td>
                                         <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
                                         <p>- Ngày ban
-                                            hành: {{ date('d-m-Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
+                                            hành: {{ date('d/m/Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
                                         <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>

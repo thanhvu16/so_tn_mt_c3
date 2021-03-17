@@ -147,7 +147,7 @@
                                     <td>
                                         <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
                                         <p>- Ngày ban
-                                            hành: {{ date('d-m-Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
+                                            hành: {{ date('d/m/Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
                                         <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold color-red">{{$vbDen->so_den}}</span></p>
@@ -160,7 +160,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung_hop ?? ''}}</span>@if($vbDen->noi_dung_hop != null)
                                             <br>@endif
-                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  ngày {{ date('d-m-Y', strtotime($vbDen->ngay_hop_phu)) }} ,tại {{$vbDen->dia_diem_phu}})
+                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  ngày {{ date('d/m/Y', strtotime($vbDen->ngay_hop_phu)) }} ,tại {{$vbDen->dia_diem_phu}})
                                         | (Hạn xử
                                         lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})<br>
                                         <span
