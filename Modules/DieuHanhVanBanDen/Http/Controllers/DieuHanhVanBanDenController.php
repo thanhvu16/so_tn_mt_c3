@@ -250,7 +250,7 @@ class DieuHanhVanBanDenController extends Controller
 
             switch (auth::user()->roles->pluck('name')[0]) {
                 case CHUYEN_VIEN:
-                    if (empty($donVi->cap_xa)) {
+                    if ($donVi->parent_id == 0) {
                         $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
                             ->where('don_vi_id', auth::user()->don_vi_id)->get();
 
@@ -278,21 +278,21 @@ class DieuHanhVanBanDenController extends Controller
                     $ds_nguoiKy = $dataNguoiKy;
                     break;
                 case TRUONG_PHONG:
-                    if (empty($donVi->cap_xa)) {
+                    if ($donVi->parent_id == 0) {
                         $ds_nguoiKy = $lanhDaoSo;
                     } else {
                         $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                     }
                     break;
                 case PHO_CHU_TICH:
-                    if (empty($donVi->cap_xa)) {
+                    if ($donVi->parent_id == 0) {
                         $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     } else {
                         $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                     }
                     break;
                 case CHU_TICH:
-                    if (empty($donVi->cap_xa)) {
+                    if ($donVi->parent_id == 0) {
                         $ds_nguoiKy = null;
                     } else {
                         $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->get();

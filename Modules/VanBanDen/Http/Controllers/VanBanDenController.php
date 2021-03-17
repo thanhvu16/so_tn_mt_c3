@@ -475,7 +475,7 @@ class VanBanDenController extends Controller
                     $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->don_vi_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $sovanban->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
                 }
                 if ($vanban) {

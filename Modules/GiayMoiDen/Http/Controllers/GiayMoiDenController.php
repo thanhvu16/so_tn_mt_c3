@@ -626,7 +626,7 @@ class GiayMoiDenController extends Controller
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => auth::user()->donVi->parent_id,
                 'so_van_ban_id' => $giayMoi->id,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -649,7 +649,7 @@ class GiayMoiDenController extends Controller
                     ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
                 } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                     $soDenvb = VanBanDen::where([
-                        'don_vi_id' => $user->don_vi_id,
+                        'don_vi_id' => $user->donVi->parent_id,
                         'so_van_ban_id' => $request->so_van_ban_id,
                         'type' => 2
                     ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
