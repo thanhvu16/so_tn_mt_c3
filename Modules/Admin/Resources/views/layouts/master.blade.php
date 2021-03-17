@@ -101,8 +101,6 @@
 
 <script src="{{ url('theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-
-
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
 

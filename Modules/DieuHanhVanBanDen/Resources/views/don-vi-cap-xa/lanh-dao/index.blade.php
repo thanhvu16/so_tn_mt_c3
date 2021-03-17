@@ -261,8 +261,7 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->DonViCapXaPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị
-                                                phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>

@@ -279,6 +279,7 @@ class VanBanDenController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $user = auth::user();
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;

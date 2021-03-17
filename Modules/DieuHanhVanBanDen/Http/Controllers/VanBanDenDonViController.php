@@ -95,12 +95,12 @@ class VanBanDenDonViController extends Controller
                     $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
                     $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
-                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien(count($danhSachChuyenVien) > 0 ? $danhSachChuyenVien->pluck('id')->toArray() : [0]);
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
                 }
 
                 if ($trinhTuNhanVanBan == VanBanDen::CHUYEN_VIEN_NHAN_VB) {
-                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien($danhSachChuyenVien->pluck('id')->toArray());
+                    $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien(count($danhSachChuyenVien) > 0 ? $danhSachChuyenVien->pluck('id')->toArray() : [0]);
                     $vanBanDen->giaHanVanBanTraLai = $vanBanDen->giaHanVanBanTraLai();
                     $vanBanDen->giaiQuyetVanBanTraLai = $vanBanDen->giaiQuyetVanBanTraLai();
                     $vanBanDen->giaHanVanBanLanhDaoChoDuyet = $vanBanDen->giaHanVanBanLanhDaoDuyet(GiaHanVanBan::STATUS_CHO_DUYET);
@@ -528,7 +528,7 @@ class VanBanDenDonViController extends Controller
                             ->delete();
 
                         if (!empty($danhSachDonViPhoiHopIds[$vanBanDenId])) {
-                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
+                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
 
                             // luu vet van ban den
                             LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataLuuDonViPhoiHop);

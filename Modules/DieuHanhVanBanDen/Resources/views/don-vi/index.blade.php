@@ -35,7 +35,7 @@
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="22%" class="text-center">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
-                                @if ($trinhTuNhanVanBan == 4 || $donVi->cap_xa == 1)
+                                @if ($trinhTuNhanVanBan == 4 || $donVi->parent_id != 0)
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
@@ -246,7 +246,7 @@
                                                     rows="5">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
-                                    @if ($trinhTuNhanVanBan == 4 || $donVi->cap_xa == 1)
+                                    @if ($trinhTuNhanVanBan == 4 || $donVi->parent_id != 0)
                                         <td class="text-center">
                                             <p>
                                                 <span style="color: red;"> Chọn duyệt:</span><br>
