@@ -246,7 +246,7 @@ class GiayMoiDiController extends Controller
                     }
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
-                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_PHONG:
@@ -264,7 +264,7 @@ class GiayMoiDiController extends Controller
                 if ($donVi->parent_id == 0) {
                     $ds_nguoiKy = $lanhDaoSo;
                 } else {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_CHU_TICH:
@@ -558,7 +558,7 @@ class GiayMoiDiController extends Controller
                     }
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
-                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_PHONG:
@@ -576,7 +576,7 @@ class GiayMoiDiController extends Controller
                 if ($donVi->parent_id == 0) {
                     $ds_nguoiKy = $lanhDaoSo;
                 } else {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_CHU_TICH:
