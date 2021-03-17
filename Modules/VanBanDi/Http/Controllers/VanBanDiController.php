@@ -275,7 +275,7 @@ class VanBanDiController extends Controller
                     }
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
-                    $ds_nguoiKy = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_PHONG:
@@ -912,7 +912,7 @@ class VanBanDiController extends Controller
                     $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
 
                 } else {
-                    $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_PHONG:
