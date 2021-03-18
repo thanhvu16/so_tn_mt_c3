@@ -33,6 +33,7 @@ class VanBanDenController extends Controller
      */
     public function index(Request $request)
     {
+        $donVi = auth::user()->donVi;
         $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
@@ -46,7 +47,7 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
 
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
@@ -104,10 +105,12 @@ class VanBanDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        } else
+        }else
+        {
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
             $ds_vanBanDen = VanBanDen::
             where([
-                'don_vi_id' => auth::user()->donVi->parent_id,
+                'don_vi_id' => $donViId,
                 'type' => VanBanDen::TYPE_VB_DON_VI])
                 ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
@@ -163,6 +166,7 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+        }
 
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
         $ds_soVanBan = $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')->get();

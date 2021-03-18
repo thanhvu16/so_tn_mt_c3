@@ -30,6 +30,7 @@ class GiayMoiDenController extends Controller
      */
     public function index(Request $request)
     {
+        $donVi = auth::user()->donVi;
         $user = auth::user();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -51,7 +52,7 @@ class GiayMoiDenController extends Controller
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
 
 
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
+        if($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1,
                 'so_van_ban_id' => 100
@@ -106,9 +107,12 @@ class GiayMoiDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        } else
+        }
+        {
+
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
             $ds_vanBanDen = VanBanDen::where([
-                'don_vi_id' => auth::user()->donVi->parent_id,
+                'don_vi_id' => $donViId,
                 'type' => 2,
                 'so_van_ban_id' => 100
             ])->where(function ($query) use ($trichyeu) {
@@ -161,6 +165,8 @@ class GiayMoiDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+        }
+
 
         return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen'));
     }

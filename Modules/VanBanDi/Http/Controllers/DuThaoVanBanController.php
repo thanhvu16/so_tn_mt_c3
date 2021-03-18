@@ -1023,7 +1023,12 @@ class DuThaoVanBanController extends Controller
             $vanbandi->save();
 
             // luu vao van ban di van ban den
-            VanBanDiVanBanDen::saveVanBanDiVanBanDen($vanbandi->id, $duthaochot->van_ban_den_don_vi_id);
+            if($duthaochot->van_ban_den_don_vi_id != null)
+            {
+                VanBanDiVanBanDen::saveVanBanDiVanBanDen($vanbandi->id, $duthaochot->van_ban_den_don_vi_id);
+
+            }
+
             UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
 
             if ($tenMailThem && count($tenMailThem) > 0) {
