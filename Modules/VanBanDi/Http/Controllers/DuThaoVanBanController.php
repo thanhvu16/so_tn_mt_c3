@@ -369,7 +369,7 @@ class DuThaoVanBanController extends Controller
                     }
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
-                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                 }
                 break;
             case PHO_PHONG:
@@ -449,7 +449,7 @@ class DuThaoVanBanController extends Controller
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_nhan = Donvi::whereNull('deleted_at')
+        $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('parent_id', 0)
             ->orderBy('ten_don_vi', 'asc')->get();
         $ds_DonVi_phatHanh= DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
         $user = auth::user();
