@@ -32,6 +32,7 @@ class GiayMoiDiController extends Controller
     public function index(Request $request)
     {
         $user= auth::user();
+        $donVi = auth::user()->donVi;
         $trichyeu = $request->get('vb_trichyeu');
         $so_ky_hieu = $request->get('vb_sokyhieu');
         $chucvu = $request->get('chuc_vu');
@@ -53,7 +54,8 @@ class GiayMoiDiController extends Controller
         } else {
             $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG,CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHU_TICH, PHO_CHU_TICH])->orderBy('username', 'desc')->get();
         }
-        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH)) {
+
+        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
             //đây là văn bản của huyện
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null , 'don_vi_soan_thao' => null])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
@@ -129,8 +131,11 @@ class GiayMoiDiController extends Controller
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
         } else
+        {
+
             //đây là văn bản của đơn vị
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null, 'van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', '')->whereNull('deleted_at')
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null,'phong_phat_hanh' => $donViId])->where('so_di', '!=', '')->whereNull('deleted_at')
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
@@ -202,6 +207,8 @@ class GiayMoiDiController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+        }
+
 
         return view('giaymoidi::giay_moi_di.index', compact('ds_vanBanDi', 'ds_DonVi', 'ds_nguoiKy','ds_soVanBan'));
     }

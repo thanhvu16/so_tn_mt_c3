@@ -26,6 +26,7 @@
                             </div>
 
                         </div>
+                        @if(auth::user()->donVi->parent_id == 0)
                         @role('văn thư đơn vị')
                         <div class="col-md-6 text-right">
                             <div class="row">
@@ -53,6 +54,7 @@
                             </div>
                         </div>
                         @endrole
+                        @endif
                         @role('văn thư sở')
                         <div class="col-md-6 text-right">
                             <a role="button" href="{{route('in-so-van-ban-di.index')}}" class="btn btn-success ">
