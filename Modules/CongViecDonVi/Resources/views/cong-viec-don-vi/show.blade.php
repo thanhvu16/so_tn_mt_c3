@@ -9,35 +9,35 @@
                         <h3 class="box-title">Chi tiết công việc</h3>
                     </div>
                     <div class="box-body">
-{{--                        <div class="col-md-12">--}}
-                            {{--                                    @include('congviecdonvi::cong-viec-don-vi.log_chi_tiet_van_ban', ['congViecDonVi' => $chuyenNhanCongViecDonVi->congViecDonVi])--}}
-                            <div class="row row-bd-bt">
-                                <div class="col-md-12 form-group">
-                                    <label class="col-form-label">Nội dung công việc:</label>
-                                    {{ $chuyenNhanCongViecDonVi->congViecDonVi->noi_dung_cuoc_hop ?? '' }}
-                                    <br>
-                                    <span class="font-bold">Tệp tin:</span>
-                                    @if (isset($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile))
-                                        @foreach($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile as $key => $file)
-                                            <a href="{{ $file->getUrlFile() }}"
-                                               target="popup"
-                                               class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                ]</a>
-                                            @if (count($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile)-1 != $key)
-                                                &nbsp;|&nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </div>
+                        {{--                        <div class="col-md-12">--}}
+                        {{--                                    @include('congviecdonvi::cong-viec-don-vi.log_chi_tiet_van_ban', ['congViecDonVi' => $chuyenNhanCongViecDonVi->congViecDonVi])--}}
+                        <div class="row row-bd-bt">
+                            <div class="col-md-12 form-group">
+                                <label class="col-form-label">Nội dung công việc:</label>
+                                {{ $chuyenNhanCongViecDonVi->congViecDonVi->noi_dung_cuoc_hop ?? '' }}
+                                <br>
+                                <span class="font-bold">Tệp tin:</span>
+                                @if (isset($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile))
+                                    @foreach($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile as $key => $file)
+                                        <a href="{{ $file->getUrlFile() }}"
+                                           target="popup"
+                                           class="detail-file-name seen-new-window">[{{ $file->ten_file }}
+                                            ]</a>
+                                        @if (count($chuyenNhanCongViecDonVi->congViecDonVi->congViecDonViFile)-1 != $key)
+                                            &nbsp;|&nbsp;
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
-                            <div class="row row-bd-bt">
-                                <div class="col-md-12 form-group mt-2">
-                                    <label class="col-form-label">Nội dung đầu việc đơn
-                                        vị:</label> {{ $chuyenNhanCongViecDonVi->noi_dung }}
-                                    <br>
-                                </div>
+                        </div>
+                        <div class="row row-bd-bt">
+                            <div class="col-md-12 form-group mt-2">
+                                <label class="col-form-label">Nội dung đầu việc đơn
+                                    vị:</label> {{ $chuyenNhanCongViecDonVi->noi_dung }}
+                                <br>
                             </div>
-                            <div class="row">
+                        </div>
+                        <div class="row">
                             @include('congviecdonvi::cong-viec-don-vi.log_trinh_tu_chuyen_nhan_cong_viec', ['chuyenNhanCongViecDonVi' => $chuyenNhanCongViecDonVi])
                             @include('congviecdonvi::cong-viec-don-vi.log_gia_han_cong_viec', ['chuyenNhanCongViecDonVi' => $chuyenNhanCongViecDonVi])
 
@@ -49,205 +49,299 @@
 
                             @include('congviecdonvi::cong-viec-don-vi.log_chuyen_vien_phoi_hop_giai_quyet', ['danhSachPhoiHopGiaiQuyet' => $chuyenNhanCongViecDonVi->chuyenVienPhoiHop() ])
                             @include('congviecdonvi::cong-viec-don-vi.log_giai_quyet_cong_viec', ['danhSachPhoiHopGiaiQuyet' => $chuyenNhanCongViecDonVi->chuyenVienPhoiHop() ])
-                            </div>
-                            <div class="row row-bd-bt mt-3">
-                                @if (Request::get('type') && Request::get('type') == 'cv_phoi_hop' && empty($chuyenNhanCongViecDonVi->chuyenVienphoiHopGiaiQuyet()))
-                                    <div class="col-md-12 phoi-hop-giai-quyet">
-                                        <form action="{{ route('cong-viec-don-vi-phoi-hop.store') }}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
-                                                   value="{{ $chuyenNhanCongViecDonVi->id }}">
-                                            <input type="hidden" name="type" value="2">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label class="form-noi-dung">Nội dung </label>
-                                                    <textarea name="noi_dung"
-                                                              placeholder="nhập nội dung kết quả"
-                                                              cols="5" rows="3"
-                                                              class="form-control noi-dung-cong-viec"
-                                                              aria-required="true" required=""></textarea>
-                                                </div>
+                        </div>
+                        <div class="row row-bd-bt mt-3">
+                            @if (Request::get('type') && Request::get('type') == 'cv_phoi_hop' && empty($chuyenNhanCongViecDonVi->chuyenVienphoiHopGiaiQuyet()))
+                                <div class="col-md-12 phoi-hop-giai-quyet">
+                                    <form action="{{ route('cong-viec-don-vi-phoi-hop.store') }}" method="post"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
+                                               value="{{ $chuyenNhanCongViecDonVi->id }}">
+                                        <input type="hidden" name="type" value="2">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-noi-dung">Nội dung </label>
+                                                <textarea name="noi_dung"
+                                                          placeholder="nhập nội dung kết quả"
+                                                          cols="5" rows="3"
+                                                          class="form-control noi-dung-cong-viec"
+                                                          aria-required="true" required=""></textarea>
                                             </div>
-                                            <div class="form-group col-md-6">
-                                                <div class="row">
-                                                    <div class="increment">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-4">
-                                                                <label for="ten_file">Tên tệp</label>
-                                                                <input type="text" class="form-control pho-phong-file"
-                                                                       name="txt_file[]" value=""
-                                                                       placeholder="Nhập tên file...">
-                                                            </div>
-                                                            <div class="form-group col-md-8">
-                                                                <label for="url-file">Chọn tệp tin</label>
-                                                                <div class="form-line input-group control-group">
-                                                                    <input type="file" id="url-file" name="ten_file[]"
-                                                                           class="form-control">
-                                                                    <div class="input-group-btn">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <div class="row">
+                                                <div class="increment">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="ten_file">Tên tệp</label>
+                                                            <input type="text" class="form-control pho-phong-file"
+                                                                   name="txt_file[]" value=""
+                                                                   placeholder="Nhập tên file...">
+                                                        </div>
+                                                        <div class="form-group col-md-8">
+                                                            <label for="url-file">Chọn tệp tin</label>
+                                                            <div class="form-line input-group control-group">
+                                                                <input type="file" id="url-file" name="ten_file[]"
+                                                                       class="form-control">
+                                                                <div class="input-group-btn">
                                         <span class="btn btn-info"
                                               onclick="multiUploadFile('ten_file[]')"
                                               type="button">
                                             <i class="fa fa-plus"></i> thêm</span>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <button type="submit"
+                                                    class="btn btn-primary waves-effect text-uppercase">
+                                                Gửi
+                                            </button>
+                                            <a href=""
+                                               title="hủy" class="btn btn-default go-back">Hủy</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            @elseif (Request::get('type') && Request::get('type') == 'phoi_hop' && empty($chuyenNhanCongViecDonVi->chuyenVienDonViPhoiHopGiaiQuyet()))
+                                <div class="col-md-12 phoi-hop-giai-quyet">
+                                    <form action="{{ route('cong-viec-don-vi-phoi-hop.store') }}" method="post"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
+                                               value="{{ $chuyenNhanCongViecDonVi->id }}">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-noi-dung">Nội dung </label>
+                                                <textarea name="noi_dung"
+                                                          placeholder="nhập nội dung kết quả"
+                                                          cols="5" rows="3"
+                                                          class="form-control noi-dung-cong-viec"
+                                                          aria-required="true" required=""></textarea>
                                             </div>
-                                            <div class="form-group col-md-12">
-                                                <button type="submit"
-                                                        class="btn btn-primary waves-effect text-uppercase">
-                                                    Gửi
-                                                </button>
-                                                <a href=""
-                                                   title="hủy" class="btn btn-default go-back">Hủy</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                @elseif (Request::get('type') && Request::get('type') == 'phoi_hop' && empty($chuyenNhanCongViecDonVi->chuyenVienDonViPhoiHopGiaiQuyet()))
-                                    <div class="col-md-12 phoi-hop-giai-quyet">
-                                        <form action="{{ route('cong-viec-don-vi-phoi-hop.store') }}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
-                                                   value="{{ $chuyenNhanCongViecDonVi->id }}">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label class="form-noi-dung">Nội dung </label>
-                                                    <textarea name="noi_dung"
-                                                              placeholder="nhập nội dung kết quả"
-                                                              cols="5" rows="3"
-                                                              class="form-control noi-dung-cong-viec"
-                                                              aria-required="true" required=""></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <div class="row">
-                                                    <div class="increment">
-                                                        <div class="row">
-                                                            <div class="form-group col-md-4">
-                                                                <label for="ten_file">Tên tệp</label>
-                                                                <input type="text" class="form-control pho-phong-file"
-                                                                       name="txt_file[]" value=""
-                                                                       placeholder="Nhập tên file...">
-                                                            </div>
-                                                            <div class="form-group col-md-8">
-                                                                <label for="url-file">Chọn tệp tin</label>
-                                                                <div class="form-line input-group control-group">
-                                                                    <input type="file" id="url-file" name="ten_file[]"
-                                                                           class="form-control">
-                                                                    <div class="input-group-btn">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <div class="row">
+                                                <div class="increment">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="ten_file">Tên tệp</label>
+                                                            <input type="text" class="form-control pho-phong-file"
+                                                                   name="txt_file[]" value=""
+                                                                   placeholder="Nhập tên file...">
+                                                        </div>
+                                                        <div class="form-group col-md-8">
+                                                            <label for="url-file">Chọn tệp tin</label>
+                                                            <div class="form-line input-group control-group">
+                                                                <input type="file" id="url-file" name="ten_file[]"
+                                                                       class="form-control">
+                                                                <div class="input-group-btn">
                                         <span class="btn btn-info"
                                               onclick="multiUploadFile('ten_file[]')"
                                               type="button">
                                             <i class="fa fa-plus"></i> thêm</span>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <button type="submit"
-                                                        class="btn btn-primary waves-effect text-uppercase">
-                                                    Gửi
-                                                </button>
-                                                <a href=""
-                                                   title="hủy" class="btn btn-default go-back">Hủy</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                @else
-                                    @if (!empty(Request::get('xuly')) && Request::get('xuly') == 'true')
-                                        @if (count($chuyenNhanCongViecDonVi->giaiQuyetCongViec) == 0 || !empty($chuyenNhanCongViecDonVi->giaiQuyetCongViecTraLai()))
-                                            <div class="col-md-12 truc-tiep-giai-quyet">
-                                                <form action="{{ route('giai-quyet-cong-viec.store') }}"
-                                                      method="post"
-                                                      enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
-                                                           value="{{ $chuyenNhanCongViecDonVi->id }}">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="form-noi-dung">Nhập kết quả <span
-                                                                    class="color-red">(*)</span></label>
-                                                            <textarea name="noi_dung"
-                                                                      placeholder="nhập kết quả.."
-                                                                      cols="5" rows="3"
-                                                                      class="form-control noi-dung-cong-viec"
-                                                                      aria-required="true" required=""></textarea>
-                                                        </div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <button type="submit"
+                                                    class="btn btn-primary waves-effect text-uppercase">
+                                                Gửi
+                                            </button>
+                                            <a href=""
+                                               title="hủy" class="btn btn-default go-back">Hủy</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            @else
+                                @if (!empty(Request::get('xuly')) && Request::get('xuly') == 'true')
+                                    @if (count($chuyenNhanCongViecDonVi->giaiQuyetCongViec) == 0 || !empty($chuyenNhanCongViecDonVi->giaiQuyetCongViecTraLai()))
+                                        <div class="col-md-12 truc-tiep-giai-quyet">
+                                            <form action="{{ route('giai-quyet-cong-viec.store') }}"
+                                                  method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="chuyen_nhan_cong_viec_don_vi_id"
+                                                       value="{{ $chuyenNhanCongViecDonVi->id }}">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="form-noi-dung">Nhập kết quả <span
+                                                                class="color-red">(*)</span></label>
+                                                        <textarea name="noi_dung"
+                                                                  placeholder="nhập kết quả.."
+                                                                  cols="5" rows="3"
+                                                                  class="form-control noi-dung-cong-viec"
+                                                                  aria-required="true" required=""></textarea>
                                                     </div>
-                                                    <div class="form-group col-md-12">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="increment">
-                                                                        <div class="row">
-                                                                            <div class="form-group col-md-4">
-                                                                                <label for="ten_file">Tên tệp</label>
-                                                                                <input type="text"
-                                                                                       class="form-control pho-phong-file"
-                                                                                       name="txt_file[]" value=""
-                                                                                       placeholder="Nhập tên file...">
-                                                                            </div>
-                                                                            <div class="form-group col-md-8">
-                                                                                <label for="url-file">Chọn tệp
-                                                                                    tin</label>
-                                                                                <div
-                                                                                    class="form-line input-group control-group">
-                                                                                    <input type="file" id="url-file"
-                                                                                           name="ten_file[]"
-                                                                                           class="form-control">
-                                                                                    <div class="input-group-btn">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="row">
+                                                                <div class="increment">
+                                                                    <div class="row">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label for="ten_file">Tên tệp</label>
+                                                                            <input type="text"
+                                                                                   class="form-control pho-phong-file"
+                                                                                   name="txt_file[]" value=""
+                                                                                   placeholder="Nhập tên file...">
+                                                                        </div>
+                                                                        <div class="form-group col-md-8">
+                                                                            <label for="url-file">Chọn tệp
+                                                                                tin</label>
+                                                                            <div
+                                                                                class="form-line input-group control-group">
+                                                                                <input type="file" id="url-file"
+                                                                                       name="ten_file[]"
+                                                                                       class="form-control">
+                                                                                <div class="input-group-btn">
                                                                             <span class="btn btn-info"
                                                                                   onclick="multiUploadFile('ten_file[]')"
                                                                                   type="button">
                                                                                 <i class="fa fa-plus"></i> thêm</span>
-                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label for="lanh-dao-duyet">Cán bộ
-                                                                    duyệt</label>
-                                                                <select name="lanh_dao_duyet_id"
-                                                                        class="form-control select2-search">
-                                                                    @foreach($danhSachLanhDao as $LanhDao)
-                                                                        <option
-                                                                            value="{{ $LanhDao->id }}">{{ $LanhDao->ho_ten }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="lanh-dao-duyet">Cán bộ
+                                                                duyệt</label>
+                                                            <select name="lanh_dao_duyet_id"
+                                                                    class="form-control select2-search">
+                                                                @foreach($danhSachLanhDao as $LanhDao)
+                                                                    <option
+                                                                        value="{{ $LanhDao->id }}">{{ $LanhDao->ho_ten }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-12">
+                                                    <div class="row">
+                                                        <button type="submit"
+                                                                class="btn btn-primary waves-effect text-uppercase">
+                                                            Lưu
+                                                        </button>
+                                                        <a href=""
+                                                           title="hủy" class="btn btn-default go-back">Hủy</a>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endif
+                                @endif
+                                @if (Request::get('edit') == 'true' && $chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId)
+                                    <div class="col-md-12 truc-tiep-giai-quyet">
+                                        <form
+                                            action="{{ route('giai-quyet-cong-viec.update', $chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId->id) }}"
+                                            method="post"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label class="form-noi-dung">Nhập kết quả <span
+                                                            class="color-red">(*)</span></label>
+                                                    <textarea name="noi_dung"
+                                                              placeholder="nhập kết quả.."
+                                                              cols="5" rows="3"
+                                                              class="form-control noi-dung-cong-viec"
+                                                              aria-required="true"
+                                                              required="">{{ $chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId->noi_dung }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    File:
+                                                    @if (isset($chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId->giaiQuyetCongViecDonViFile))
+                                                        @foreach($chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId->giaiQuyetCongViecDonViFile as $key => $file)
+                                                            <p class="file-giai-quyet-cv-{{ $file->id }}">
+                                                                <a href="{{ $file->getUrlFile() }}"
+                                                                   target="popup"
+                                                                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}
+                                                                    ]</a>
+                                                                <i class="fa fa-trash color-red btn-remove-file"
+                                                                   data-id="{{ $file->id }}"></i>
+                                                            </p>
+                                                        @endforeach
+                                                    @endif
+                                                    <div class="col-md-6">
+                                                        <div class="row">
+                                                            <div class="increment">
+                                                                <div class="row">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="ten_file">Tên tệp</label>
+                                                                        <input type="text"
+                                                                               class="form-control pho-phong-file"
+                                                                               name="txt_file[]" value=""
+                                                                               placeholder="Nhập tên file...">
+                                                                    </div>
+                                                                    <div class="form-group col-md-8">
+                                                                        <label for="url-file">Chọn tệp
+                                                                            tin</label>
+                                                                        <div
+                                                                            class="form-line input-group control-group">
+                                                                            <input type="file" id="url-file"
+                                                                                   name="ten_file[]"
+                                                                                   class="form-control">
+                                                                            <div class="input-group-btn">
+                                                                            <span class="btn btn-info"
+                                                                                  onclick="multiUploadFile('ten_file[]')"
+                                                                                  type="button">
+                                                                                <i class="fa fa-plus"></i> thêm</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div class="form-group col-md-12">
-                                                        <div class="row">
-                                                            <button type="submit"
-                                                                    class="btn btn-primary waves-effect text-uppercase">
-                                                                Lưu
-                                                            </button>
-                                                            <a href=""
-                                                               title="hủy" class="btn btn-default go-back">Hủy</a>
-                                                        </div>
-
+                                                    <div class="col-md-3">
+                                                        <label for="lanh-dao-duyet">Cán bộ
+                                                            duyệt</label>
+                                                        <select name="lanh_dao_duyet_id"
+                                                                class="form-control select2-search">
+                                                            @foreach($danhSachLanhDao as $LanhDao)
+                                                                <option
+                                                                    value="{{ $LanhDao->id }}" {{ $chuyenNhanCongViecDonVi->giaiQuyetCongViecChoDuyetByUserId->lanh_dao_duyet_id == $LanhDao->id ? 'selected' : null }}>{{ $LanhDao->ho_ten }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        @endif
-                                    @endif
+
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <button type="submit"
+                                                            class="btn btn-primary waves-effect text-uppercase">
+                                                        Lưu
+                                                    </button>
+                                                    <a href=""
+                                                       title="hủy" class="btn btn-default go-back">Hủy</a>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
                                 @endif
-                            </div>
-{{--                        </div>--}}
+                            @endif
+                        </div>
+                        {{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -282,6 +376,28 @@
                 $('input[name="chuc_vu"]').val();
             }
         })
+
+        $('.btn-remove-file').on('click', function () {
+            let id = $(this).data('id');
+
+            if (confirm('Bạn muốn xóa dữ liệu này?')) {
+                $.ajax({
+                    url: APP_URL + '/remove-file-giai-quyet-cong-viec-don-vi/' + id,
+                    type: 'POST',
+                })
+                    .done(function (response) {
+                        if (response.success) {
+                            toastr['success'](response.message, 'Thông báo hệ thống');
+                            $('.file-giai-quyet-cv-'+id).remove();
+                        }
+                    })
+                    .fail(function (error) {
+                        toastr['error'](error.message, 'Thông báo hệ thống');
+                    });
+            } else{
+                return false;
+            }
+        });
 
     </script>
 @endsection

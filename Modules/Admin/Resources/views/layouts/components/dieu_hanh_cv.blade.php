@@ -4,7 +4,7 @@
   || Route::is('van-ban-den-phoi-hop.dang-xu-ly') || Route::is('van-ban-den-phoi-hop.da-xu-ly') || Route::is('van-ban-den-don-vi.dang_xu_ly')
    || Route::is('van-ban-den-don-vi.xem_de_biet') || Route::is('duyet-van-ban-cap-duoi-trinh') ? 'active menu-open' : '' }}">
     <a href="#">
-        <i class="fa fa-th" aria-hidden="true"></i> <span>Hồ sơ công việc</span>
+        <i class="fa fa-th" aria-hidden="true"></i> <span>Xử lý văn bản đến</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

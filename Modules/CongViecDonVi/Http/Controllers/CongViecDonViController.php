@@ -342,16 +342,7 @@ class CongViecDonViController extends Controller
     public function show($id)
     {
         $currentUser = auth::user();
-        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('giaHanCongViec')->findOrFail($id);
-
-//
-//        if ( $currentUser->hasRole(PHO_CHANH_VAN_PHONG,PHO_PHONG) ) {
-//            $danhSachLanhDao = User::role([CHU_TICH, CHANH_VAN_PHONG,TRUONG_PHONG])->where('don_vi_id', $currentUser->donvi_id)
-//                ->orderBy('id', 'ASC')->get();
-//        }else{
-//        $danhSachLanhDao = User::role([PHO_CHU_TICH, PHO_CHANH_VAN_PHONG,PHO_PHONG])->where('don_vi_id', $currentUser->donvi_id)
-//            ->orderBy('id', 'ASC')->get();
-//    }
+        $chuyenNhanCongViecDonVi = ChuyenNhanCongViecDonVi::with('giaHanCongViec', 'giaiQuyetCongViecChoDuyetByUserId')->findOrFail($id);
 
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
@@ -396,6 +387,13 @@ class CongViecDonViController extends Controller
             ->where('chuyen_tiep', ChuyenNhanCongViecDonVi::GIAI_QUYET)
             ->whereNull('hoan_thanh')
             ->paginate(PER_PAGE);
+
+        foreach ($chuyenNhanCongViecDonVi as $congViecDonVi)
+        {
+            $congViecDonVi->getTrinhTuXuLy = $congViecDonVi->getTrinhTuXuLy();
+            $congViecDonVi->giaiQuyetCongViecHoanThanh = $congViecDonVi->giaiQuyetCongViecHoanThanh();
+
+        }
 
         $order = ($chuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
 

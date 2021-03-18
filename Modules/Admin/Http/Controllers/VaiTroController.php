@@ -2,13 +2,14 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use DB;
+use DB, Auth;
 
 class VaiTroController extends Controller
 {
@@ -19,6 +20,10 @@ class VaiTroController extends Controller
      */
     public function index(Request $request)
     {
+        if (!auth::user()->hasRole(ADMIN)) {
+            return abort(403);
+        }
+
         $name = $request->get('name') ?? null;
         $roles = Role::where(function ($query) use ($name) {
             if (!empty($name)) {

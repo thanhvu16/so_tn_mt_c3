@@ -24,7 +24,6 @@ class CongViecDonViFile extends Model
             $typeArray = explode('.', $getFile->getClientOriginalName());
             $extFile = strtolower($typeArray[1]);
             $ten = !empty($txtFiles[$key]) ? strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile : null;
-
             $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
             $url = THU_MUC_CONG_VIEC_DON_VI . '/' . $fileName;
 
@@ -35,7 +34,7 @@ class CongViecDonViFile extends Model
             $getFile->move($uploadPath, $fileName);
 
             $congViecDonViFile = new CongViecDonViFile();
-            $congViecDonViFile->ten_file = isset($ten) ? $ten : $fileName;
+            $congViecDonViFile->ten_file = isset($ten) ? $ten : $getFile->getClientOriginalName();
             $congViecDonViFile->url_file = $url;
             $congViecDonViFile->cong_viec_don_vi_id = $congViecDonViId;
             $congViecDonViFile->save();

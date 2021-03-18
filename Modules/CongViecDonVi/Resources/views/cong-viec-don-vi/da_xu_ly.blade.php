@@ -28,7 +28,7 @@
                                         <td class="text-center">{{ $order++ }}</td>
                                         <td>
                                             <p>
-                                                <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id) }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
+                                                <a href="{{ route('cong-viec-don-vi.show', $congViecDonVi->id.'?edit=true') }}">{{ $congViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
                                             </p>
                                             @if (!empty($congViecDonVi->han_xu_ly))
                                                 <p>
@@ -56,25 +56,25 @@
                                             </p>
                                         </td>
                                         <td>
-                                            @if (!empty($congViecDonVi->getTrinhTuXuLy()))
-                                                @foreach($congViecDonVi->getTrinhTuXuLy() as $key => $trinhTuXuLy)
+                                            @if (!empty($congViecDonVi->getTrinhTuXuLy))
+                                                @foreach($congViecDonVi->getTrinhTuXuLy as $key => $trinhTuXuLy)
                                                     <p>
                                                         {{ $key+1 }}
                                                         . {{ $trinhTuXuLy->canBoNhan->ho_ten ?? null }}
                                                     </p>
-                                                    <hr class="border-dashed {{  count($congViecDonVi->getTrinhTuXuLy())-1 == $key ? 'hide' : 'show' }}">
+                                                    <hr class="border-dashed {{  count($congViecDonVi->getTrinhTuXuLy)-1 == $key ? 'hide' : 'show' }}">
                                                 @endforeach
                                             @endif
                                         </td>
                                         <td>
-                                            <p>{{ $congViecDonVi->giaiQuyetCongViecHoanThanh()->noi_dung ?? null }}</p>
+                                            <p>{{ $congViecDonVi->giaiQuyetCongViecHoanThanh->noi_dung ?? null }}</p>
 
-                                            @if (isset($congViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile))
-                                                @foreach($congViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile as $key => $file)
+                                            @if (isset($congViecDonVi->giaiQuyetCongViecHoanThanh->giaiQuyetCongViecDonViFile))
+                                                @foreach($congViecDonVi->giaiQuyetCongViecHoanThanh->giaiQuyetCongViecDonViFile as $key => $file)
                                                     <a href="{{ $file->getUrlFile() }}"
                                                        target="popup"
                                                        class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
-                                                    @if (count($congViecDonVi->giaiQuyetCongViecHoanThanh()->giaiQuyetCongViecDonViFile)-1 != $key)
+                                                    @if (count($congViecDonVi->giaiQuyetCongViecHoanThanh->giaiQuyetCongViecDonViFile)-1 != $key)
                                                         &nbsp;|&nbsp;
                                                     @endif
                                                 @endforeach
@@ -90,15 +90,6 @@
                                 @endforelse
                                 </tbody>
                             </table>
-                            @if (Auth::user()->hasRole(CHUYEN_VIEN) == false)
-                                <div class="clearfix">
-                                    <button type="button"
-                                            class="btn btn-sm btn-primary btn-submit waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
-                                            form="form-tham-muu"
-                                            title=""><i class="fa fa-check"></i> Duyệt
-                                    </button>
-                                </div>
-                            @endif
                             <div class="row mb-1">
                                 <div class="col-md-6 col-12">
                                     Tổng số công việc: <b>{{ $chuyenNhanCongViecDonVi->total() }}</b>

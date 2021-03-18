@@ -63,7 +63,7 @@
                                     </td>
                                     <td>
 
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 90%;">
                                             @if (auth::user()->hasRole(TRUONG_PHONG))
                                                 <p>
                                                     <select name="pho_phong_id[{{ $congViecDonVi->id }}]"

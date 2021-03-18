@@ -36,3 +36,5 @@ Route::get('list-can-bo-phoi-hop/{id}', 'CongViecDonViController@getCanBoPhoiHop
 Route::get('cong-viec-xem-de-biet', 'CongViecDonViController@CongViecXemDeBiet')->name('cong-viec-don-vi.can-bo-xem-de-biet');
 
 Route::get('cong-viec-hoan-thanh/{id}', 'CongViecHoanThanhController@show')->name('cong-viec-hoan-thanh.show');
+
+Route::post('remove-file-giai-quyet-cong-viec-don-vi/{id}', 'GiaiQuyetCongViecController@removeFileGiaiQuyet');

@@ -106,7 +106,21 @@ class GiaiQuyetCongViecController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $giaiQuyetCongViecDonVi = GiaiQuyetCongViecDonVi::findOrFail($id);
+        $giaiQuyetCongViecDonVi->noi_dung = $request->get('noi_dung');
+        $giaiQuyetCongViecDonVi->lanh_dao_duyet_id = $request->get('lanh_dao_duyet_id');
+        $giaiQuyetCongViecDonVi->save();
+
+        //upload file
+        $txtFiles = !empty($request->get('txt_file')) ? $request->get('txt_file') : null;
+        $multiFiles = !empty($request->ten_file) ? $request->ten_file : null;
+
+        if ($multiFiles && count($multiFiles) > 0) {
+            GiaiQuyetCongViecDonViFile::dinhKemFileGiaiQuyet($multiFiles, $txtFiles, $giaiQuyetCongViecDonVi->id);
+        }
+
+        return redirect()->route('cong-viec-don-vi.da-xu-ly')->with('success', 'Cập nhật thành công.');
     }
 
     /**
@@ -117,5 +131,16 @@ class GiaiQuyetCongViecController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function removeFileGiaiQuyet($id)
+    {
+        $giaiQuyetFile = GiaiQuyetCongViecDonViFile::findOrFail($id);
+        $giaiQuyetFile->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã xoá file thành công.'
+        ]);
     }
 }

@@ -1,5 +1,6 @@
 @unlessrole(CHANH_VAN_PHONG)
-<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') ? 'active menu-open' : '' }} }} ">
+<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai')
+ || Route::is('vb_di_da_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -32,7 +33,7 @@
 || Route::is('cong-viec-don-vi.hoan-thanh')||Route::is('cong-viec-don-vi-phoi-hop.index')||Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly')||Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')||
 Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
-        <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
+        <i class="fa fa-expeditedssl"></i> <span>Công việc nội bộ</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

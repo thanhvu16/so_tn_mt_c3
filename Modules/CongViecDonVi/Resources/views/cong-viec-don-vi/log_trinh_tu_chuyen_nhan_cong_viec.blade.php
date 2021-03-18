@@ -21,19 +21,21 @@
                     </thead>
                     <tbody>
                     @foreach($chuyenNhanCongViecDonVi->getTrinhTuXuLy() as $key => $trinhTuXuLy)
-                        <tr>
-                            <td>{{ $key+1 }}</td>
-                            <td>{{  date('d/m/Y H:i:s', strtotime($trinhTuXuLy->created_at)) }}</td>
-                            <td>
-                                Đ/c {{ $trinhTuXuLy->canBoChuyen->ho_ten ?? null }}</td>
-                            <td>{{ $trinhTuXuLy->noi_dung_chuyen }}</td>
-                            <td>
-                                Đ/c {{ $trinhTuXuLy->canBoNhan->ho_ten ?? null }}</td>
-                            <td>
-                                <p>Hạn công
-                                    việc: {{ !empty($trinhTuXuLy->han_xu_ly) ? date('d/m/Y', strtotime($trinhTuXuLy->han_xu_ly)) : null }}</p>
-                            </td>
-                        </tr>
+                        @if (!empty($trinhTuXuLy->noi_dung_chuyen))
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{  date('d/m/Y H:i:s', strtotime($trinhTuXuLy->created_at)) }}</td>
+                                <td>
+                                    Đ/c {{ $trinhTuXuLy->canBoChuyen->ho_ten ?? null }}</td>
+                                <td>{{ $trinhTuXuLy->noi_dung_chuyen }}</td>
+                                <td>
+                                    Đ/c {{ $trinhTuXuLy->canBoNhan->ho_ten ?? null }}</td>
+                                <td>
+                                    <p>Hạn công
+                                        việc: {{ !empty($trinhTuXuLy->han_xu_ly) ? date('d/m/Y', strtotime($trinhTuXuLy->han_xu_ly)) : null }}</p>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>

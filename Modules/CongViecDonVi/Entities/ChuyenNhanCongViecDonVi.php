@@ -169,6 +169,14 @@ class ChuyenNhanCongViecDonVi extends Model
             ->where('don_vi_id', $this->don_vi_id);
     }
 
+    public function giaiQuyetCongViecChoDuyetByUserId()
+    {
+        return $this->hasOne(GiaiQuyetCongViecDonVi::class, 'chuyen_nhan_cong_viec_don_vi_id', 'id')
+            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('user_id', auth::user()->id)
+            ->whereNull('status');
+    }
+
     public function giaiQuyetCongViecTraLai()
     {
         return GiaiQuyetCongViecDonVi::where('chuyen_nhan_cong_viec_don_vi_id', $this->id)

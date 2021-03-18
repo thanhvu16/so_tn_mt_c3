@@ -44,7 +44,7 @@
 </li>
 @endunless
 <li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ||
- Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') ? 'active menu-open' : '' }} }} ">
+ Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') || Route::is('vb_di_da_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -84,7 +84,7 @@
  Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ||
  Route::is('cong-viec-don-vi.edit') || Route::is('cong-viec-don-vi.hoan-thanh') ? 'active menu-open' : '' }} }} ">
     <a href="#">
-        <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
+        <i class="fa fa-expeditedssl"></i> <span>Công việc nội bộ</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -96,7 +96,7 @@
                 href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a>
         </li>
         <li class="{{ Route::is('cong-viec-don-vi.da-xu-ly') ? 'active' : '' }}"><a
-                href="{{ route('cong-viec-don-vi.da-xu-ly') }}"><i class="fa fa-circle-o"></i> Công Việc đã xử lý</a>
+                href="{{ route('cong-viec-don-vi.da-xu-ly') }}"><i class="fa fa-circle-o"></i> Công việc đã xử lý</a>
         </li>
         <li class="{{ Route::is('cong-viec-don-vi.hoan-thanh') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.hoan-thanh') }}"><i class="fa fa-circle-o"></i>CV hoàn thành </a></li>

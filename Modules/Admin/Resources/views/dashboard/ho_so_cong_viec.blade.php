@@ -3,7 +3,7 @@
         <div class="panel-heading col-md-12 pl-1" style="background:#3c8dbc;color:white;font-weight: bold">
             <div class="col-md-7">
                 <i class="fa fa-th"></i>
-                <span>&ensp;Hồ sơ công việc</span>
+                <span>&ensp;Xử lý văn bản đến</span>
             </div>
             <div class="col-md-5 text-center panel-bieu-do">
                 <span class="text-center">Biểu đồ</span>
