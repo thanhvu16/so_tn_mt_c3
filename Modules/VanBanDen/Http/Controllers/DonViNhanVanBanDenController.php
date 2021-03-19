@@ -38,7 +38,6 @@ class DonViNhanVanBanDenController extends Controller
         if (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $donViId = $donVi->parent_id;
         }
-
         $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $donViId])->whereIn('trang_thai', [2])
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
@@ -46,6 +45,8 @@ class DonViNhanVanBanDenController extends Controller
                 }
             })
             ->paginate(PER_PAGE);
+
+
 
         $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => $donViId])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
