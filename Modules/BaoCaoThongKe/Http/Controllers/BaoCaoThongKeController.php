@@ -5,6 +5,7 @@ namespace Modules\BaoCaoThongKe\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\VanBanDi\Entities\VanBanDi;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -20,18 +21,20 @@ class BaoCaoThongKeController extends Controller
     public function index(Request $request)
     {
         $user = auth::user();
+        $donVi = $user->donVi;
         $year = $request->get('year') ?? date('Y');
         $month = null;
         $donViId = null;
         $giayMoi = SoVanBan::where('ten_so_van_ban', 'like', 'giấy mời')->select('id')->first();
 
-        if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, VAN_THU_HUYEN])) {
+        if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, VAN_THU_HUYEN]) && $donVi->cap_xa != DonVi::CAP_XA) {
 
             $type = VanBanDen::TYPE_VB_HUYEN;
+            $donViId = $donVi->id;
 
             $totalVanBanDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 1,
-                'don_vi_soan_thao' => null
+                'phong_phat_hanh' => $donVi->id
                 ])
                 ->where('so_di', '!=', null)
                 ->whereNull('deleted_at')
@@ -58,11 +61,11 @@ class BaoCaoThongKeController extends Controller
 
         } else {
             $type = VanBanDen::TYPE_VB_DON_VI;
-            $donViId = $user->donVi->parent_id;
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
             $totalVanBanDi = VanBanDi::where([
                 'loai_van_ban_giay_moi' => 1,
-                'van_ban_huyen_ky' => $user->don_vi_id])
+                'phong_phat_hanh' => $donViId])
                 ->where('so_di', '!=', null)
                 ->whereNull('deleted_at')
                 ->where(function($query) use ($year) {
@@ -117,7 +120,7 @@ class BaoCaoThongKeController extends Controller
                 })
                 ->where(function($query) use ($donViId) {
                     if (!empty($donViId)) {
-                        return $query->where('van_ban_huyen_ky', $donViId);
+                        return $query->where('phong_phat_hanh', $donViId);
                     }
                 })
                 ->whereNull('deleted_at')

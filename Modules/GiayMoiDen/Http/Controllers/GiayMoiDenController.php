@@ -107,8 +107,7 @@ class GiayMoiDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        }
-        {
+        } else {
 
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
             $ds_vanBanDen = VanBanDen::where([
