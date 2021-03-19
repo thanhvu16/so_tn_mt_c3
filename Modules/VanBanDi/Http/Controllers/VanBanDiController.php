@@ -149,7 +149,7 @@ class VanBanDiController extends Controller
 
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])->orwhere('van_ban_huyen_ky',$donViId)
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
@@ -635,6 +635,7 @@ class VanBanDiController extends Controller
 
         canPermission(AllPermission::suaVanBanDi());
         $vanbandi = VanBanDi::where('id', $id)->first();
+        $donVi = auth::user()->donVi;
 
         $user = auth::user();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
@@ -652,13 +653,115 @@ class VanBanDiController extends Controller
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
-        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+
+        $ds_nguoiKy = null;
+        $dataNguoiKy = [];
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
+
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                if ($donVi->parent_id == 0) {
+                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+
+                    foreach ($truongpho as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    $ds_nguoiKy = $dataNguoiKy;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                }
+                break;
+            case PHO_PHONG:
+                $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                foreach ($truongpho as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+            case TRUONG_PHONG:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = $lanhDaoSo;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                }
+                break;
+            case PHO_CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                }
+                break;
+            case CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = null;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                }
+                break;
+            case CHANH_VAN_PHONG:
+                $ds_nguoiKy = $lanhDaoSo;
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                foreach ($chanhVanPhong as $data) {
+                    array_push($dataNguoiKy, $data);
+                }
+                foreach ($lanhDaoSo as $item) {
+                    array_push($dataNguoiKy, $item);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case VAN_THU_DON_VI:
+                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+
+            case VAN_THU_HUYEN:
+                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                    ->whereHas('donVi', function ($query) {
+                        return $query->whereNull('cap_xa');
+                    })
+                    ->get();
+                break;
+
+            case TRUONG_BAN:
+                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                break;
+
+            case PHO_TRUONG_BAN:
+                $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                array_push($dataNguoiKy, $truongBan);
+
+                $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                if ($danhSachLanhDaoPhongBan) {
+                    foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
+                        array_push($dataNguoiKy, $lanhDaoPhongBan);
+                    }
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+        }
+
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
 
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
-        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
+        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2 , 3])->get();
         $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
 
         return view('vanbandi::van_ban_di.edit', compact('vanbandi', 'ds_soVanBan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_doKhanCap',
