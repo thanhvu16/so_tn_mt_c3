@@ -330,8 +330,6 @@ $('.select-option-don-vi').on('change', function () {
             type: 'GET',
         })
             .done(function (response) {
-                console.log(response.data.length > 0);
-
                 let html = '<option value="">Chọn phòng ban</option>';
                 if (response.success && response.data.length > 0) {
                     let selectAttributes = response.data.map((function (attribute) {

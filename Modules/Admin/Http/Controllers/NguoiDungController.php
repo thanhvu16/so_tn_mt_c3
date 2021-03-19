@@ -30,6 +30,13 @@ class NguoiDungController extends Controller
         $hoTen = $request->get('ho_ten') ?? null;
         $username = $request->get('username') ?? null;
         $trangThai = $request->get('trang_thai') ?? null;
+        $danhSachPhongBan = null;
+        $phonBanId = $request->get('phong_ban_id') ?? null;
+
+        if ($donViId) {
+            $danhSachPhongBan = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
+        }
+
 
         $users = User::with(['chucVu' => function ($query) {
                 return $query->select('id', 'ten_chuc_vu');
@@ -37,9 +44,11 @@ class NguoiDungController extends Controller
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
-            ->where(function ($query) use ($donViId) {
-                if (!empty($donViId)) {
+            ->where(function ($query) use ($donViId, $phonBanId) {
+                if (!empty($donViId) && empty($phonBanId)) {
                     return $query->where('don_vi_id', $donViId);
+                } else if (!empty($donViId) && !empty($phonBanId)){
+                    return $query->where('don_vi_id', $phonBanId);
                 }
             })
             ->where(function ($query) use ($chucVuId) {
@@ -75,7 +84,7 @@ class NguoiDungController extends Controller
         $viTriUuTien = User::max('uu_tien');
 
         return view('admin::nguoi-dung.index', compact('users', 'order',
-            'danhSachDonVi', 'danhSachChucVu', 'viTriUuTien'));
+            'danhSachDonVi', 'danhSachChucVu', 'viTriUuTien', 'danhSachPhongBan'));
     }
 
     /**
@@ -308,13 +317,16 @@ class NguoiDungController extends Controller
 
     public function getChucVu(Request $request, $id)
     {
+
         if($id == 0)
         {
             $ds_chucvu = ChucVu::whereNull('deleted_at')->get();
+
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'data' => $ds_chucvu
+                    'data' => $ds_chucvu,
+                    'phongBan' => null
                 ]);
             }
         }else{
@@ -326,10 +338,13 @@ class NguoiDungController extends Controller
                 $chucvu = ChucVu::where('id', $data->id_chuc_vu)->first();
                 array_push($ds_chucvu, $chucvu);
             }
+            $phongBan = DonVi::where('parent_id', $id)->select('id', 'ten_don_vi', 'parent_id')->get();
+
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'data' => $ds_chucvu
+                    'data' => $ds_chucvu,
+                    'phongBan' => $phongBan
                 ]);
             }
         }

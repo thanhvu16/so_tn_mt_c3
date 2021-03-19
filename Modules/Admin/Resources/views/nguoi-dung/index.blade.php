@@ -25,11 +25,23 @@
                                 <form action="{{route('nguoi-dung.index')}}" method="get">
                                     <div class="col-md-3 form-group">
                                         <label for="exampleInputEmail1">Tìm theo đơn vị</label>
-                                        <select name="don_vi_id" id="don-vi" onchange="selectDonViAppend()" class="form-control select2">
+                                        <select name="don_vi_id" id="don-vi" class="form-control select-don-vi-id select2">
                                             <option value="">-- Tất cả --</option>
                                             @if (count($danhSachDonVi) > 0)
                                                 @foreach($danhSachDonVi as $donVi)
                                                     <option value="{{ $donVi->id }}" {{ Request::get('don_vi_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3 show-phong-ban {{ isset($danhSachPhongBan) && count($danhSachPhongBan) > 0 ? 'show' : 'hide' }}">
+
+                                        <label class="col-form-label" for="phong-ban">Phòng ban</label>
+                                        <select class="form-control select2 select-phong-ban" name="phong_ban_id">
+                                            <option value="">-- Chọn phòng ban --</option>
+                                            @if (isset($danhSachPhongBan) && count($danhSachPhongBan) > 0)
+                                                @foreach($danhSachPhongBan as $donVi)
+                                                    <option value="{{ $donVi->id }}" {{ Request::get('phong_ban_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -138,7 +150,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="pagination pagination-sm no-margin pull-right">
                                         {!! $users->appends(['don_vi_id' => Request::get('don_vi_id'), 'chuc_vu_id' => Request::get('chuc_vu_id'),
-                                       'ho_ten' => Request::get('ho_ten'),'username' => Request::get('username'), 'trang_thai' => Request::get('trang_thai')])->render() !!}
+                                       'ho_ten' => Request::get('ho_ten'),'username' => Request::get('username'), 'trang_thai' => Request::get('trang_thai'), 'phong_ban_id' => Request::get('phong_ban_id')])->render() !!}
                                     </div>
                                 </div>
                             </div>
@@ -153,18 +165,17 @@
 @section('script')
     <script>
         donVi='#don-vi';
-        function selectDonViAppend() {
-            let $this = $(donVi);
-            var don_vi = $('[name=don_vi_id]').val();
-            let arrId = $this.val;
-            if (arrId) {
+        $('.select-don-vi-id').on('change', function () {
+            let $this = $(this);
+            let id = $this.val();
+
+            if (id) {
                 //lấy danh sach cán bộ phối hơp
                 $.ajax({
-                    url: APP_URL + '/get-chuc-vu/' + don_vi,
+                    url: APP_URL + '/get-chuc-vu/' + id,
                     type: 'GET',
                 })
                     .done(function (response) {
-
                         var html = '<option value="">--Tất cả--</option>';
                         if (response.success) {
                             let selectAttributes = response.data.map((function (attribute) {
@@ -172,12 +183,30 @@
                             }));
                             $('.chuc-vu').html(html+ selectAttributes);
                         }
+                        showPhongBan(response.phongBan);
+
                     })
                     .fail(function (error) {
                         toastr['error'](error.message, 'Thông báo hệ thống');
                     });
             }
 
+        });
+
+        function showPhongBan(data) {
+            let html = '<option value="">Chọn phòng ban</option>';
+            if (data.length > 0) {
+                let selectAttributes = data.map((function (attribute) {
+                    return `<option value="${attribute.id}" >${attribute.ten_don_vi}</option>`;
+                }));
+                $('.show-phong-ban').removeClass('hide');
+
+                $('.select-phong-ban').html(html + selectAttributes);
+            } else {
+                $('.show-phong-ban').addClass('hide');
+                $('.select-phong-ban').html(' ');
+            }
         }
+
     </script>
 @endsection
