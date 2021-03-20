@@ -76,6 +76,7 @@ class AdminController extends Controller
         array_push($vanThuVanBanDiPiceCharts, array('Task', 'Danh sách'));
 
         $homThuCong = 0;
+        $vanBanTuDonViGui = 0;
         $danhSachVanBanDen = 0;
         $vanBanDenDonViChoVaoSo = 0;
         $vanBanDenTraLai = 0;
@@ -89,6 +90,7 @@ class AdminController extends Controller
         if ($user->hasRole(VAN_THU_HUYEN)) {
 
             $homThuCong = GetEmail::where(['mail_active' => ACTIVE])->count();
+
             array_push($vanThuVanBanDenPiceCharts, array('Hòm thư công', $homThuCong));
             array_push($vanThuVanBanDenCoLors, COLOR_INFO_SHADOW);
 
@@ -138,6 +140,14 @@ class AdminController extends Controller
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
             array_push($vanThuVanBanDiCoLors, COLOR_WARNING);
+
+            // van ban tu chi cuc gui len so
+
+            $vanBanTuDonViGui = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $lanhDaoSo->don_vi_id]
+            )->whereIn('trang_thai', [2])->count();
+
+            array_push($vanThuVanBanDenPiceCharts, array('Văn bản đến trong đơn vi', $vanBanTuDonViGui));
+            array_push($vanThuVanBanDenCoLors, COLOR_WARNING);
         }
 
         if ($user->hasRole(VAN_THU_DON_VI)) {
@@ -210,7 +220,7 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => $user->donVi->parent_id])->count();
+            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => auth::user()->donVi->parent_id])->count();
 
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
@@ -591,6 +601,7 @@ class AdminController extends Controller
             'vanBanDenDonViChoVaoSo',
             'vanBanDenTraLai',
             'homThuCong',
+            'vanBanTuDonViGui',
             'giayMoiDen',
             'giayMoiDi',
             'vanBanDi',
