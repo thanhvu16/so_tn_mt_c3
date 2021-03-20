@@ -409,8 +409,6 @@ class PhanLoaiVanBanController extends Controller
                     'active', 'loaiVanBanGiayMoi', 'order', 'chuTich'));
 
         } else {
-
-
             $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
                 ->where('don_vi_id', $chuTich->don_vi_id)
                 ->select(['id', 'ho_ten'])->get();
