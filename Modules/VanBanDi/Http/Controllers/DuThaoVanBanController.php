@@ -357,7 +357,7 @@ class DuThaoVanBanController extends Controller
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if ($donVi->parent_id == 0) {
-                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                    $truongpho = User::role([ CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
                         ->where('don_vi_id', auth::user()->don_vi_id)->get();
 
                     foreach ($truongpho as $data2) {

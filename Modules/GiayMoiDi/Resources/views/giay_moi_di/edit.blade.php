@@ -52,6 +52,20 @@
                                         <option value="{{ $donVi->id }}" {{$giaymoidi->don_vi_soan_thao == $donVi->id ? 'selected' : ''}}
                                         >{{ $donVi->ten_don_vi }}</option>
                                     @endforeach
+
+                        {{--                @if($giaymoidi->donvisoanthao_id == null && $giaymoidi->van_ban_huyen_ky == null)
+                                            --}}{{--                                        //đây là văn bản của huyện--}}{{--
+                                            @foreach ($ds_DonVi as $donVi)
+                                                <option value="{{ $donVi->id }}" {{$giaymoidi->nguoitao->donVi->id == $donVi->id ? 'selected' : ''}}
+                                                >{{ $donVi->ten_don_vi }}</option>
+                                            @endforeach
+                                        @elseif($giaymoidi->donvisoanthao_id == null && $giaymoidi->van_ban_huyen_ky != null)
+                                            --}}{{--                                        đây là văn bản của huyện do đơn vị soạn thảo--}}{{--
+                                            @foreach ($ds_DonVi as $donVi)
+                                                <option value="{{ $donVi->id }}" {{$giaymoidi->van_ban_huyen_ky == $donVi->id ? 'selected' : ''}}
+                                                >{{ $donVi->ten_don_vi }}</option>
+                                            @endforeach
+                                        @endif--}}
                                 </select>
                             </div>
                             <div class="col-md-3" >
@@ -184,7 +198,7 @@
                                 <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
                                         class="form-control select2"
                                         multiple
-                                        data-placeholder=" Chọn đơn vị nhận ...">$lay_noi_nhan_van_ban_di
+                                        data-placeholder=" Chọn đơn vị nhận ...">
                                     @foreach ($ds_DonVi_nhan as $donVi)
                                         <option value="{{ $donVi->id }}"{{  in_array($donVi->id, $lay_noi_nhan_van_ban_di->pluck('don_vi_id_nhan')->toArray()) ? 'selected' : '' }}
                                         >{{ $donVi->ten_don_vi }}</option>

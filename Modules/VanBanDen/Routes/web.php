@@ -29,7 +29,10 @@ Route::post('delete-van-ban-den', array('as' => 'delete_vb_den', 'uses' => 'VanB
 Route::get('chi-tiet-van-ban-den/{id}', array('as' => 'chi_tiet_van_ban_den', 'uses' => 'VanBanDenController@chi_tiet_van_ban_den'));
 
 Route::get('don-vi-nhan-van-ban-den/thong-tin-van-ban/{id}', array('as' => 'thongtinvb', 'uses' => 'DonViNhanVanBanDenController@thongtinvb'));
+Route::get('so-nhan-van-ban-den/thong-tin-van-ban/{id}', array('as' => 'thongtinvbsonhan', 'uses' => 'DonViNhanVanBanDenController@thongtinvbsonhan'));
 Route::get('don-vi-nhan-van-ban-den/thong-tin-van-ban-huyen/{id}', array('as' => 'thongtinvbhuyen', 'uses' => 'DonViNhanVanBanDenController@thongtinvbhuyen'));
+Route::get('van-ban-den-so', array('as' => 'vanBanDonViGuiSo', 'uses' => 'DonViNhanVanBanDenController@vanBanDonViGuiSo'));
+Route::get('van-ban-den-so-vao-so/{id}', array('as' => 'vaoSoVanBanDonViGuiSo', 'uses' => 'DonViNhanVanBanDenController@vaoSoVanBanDonViGuiSo'));
 
 Route::get('chi-tiet-van-ban-den-don-vi/{id}', array('as' => 'chi_tiet_van_ban_den_don_vi', 'uses' => 'DonViNhanVanBanDenController@chi_tiet_van_ban_den_don_vi'));
 Route::match(['get', 'post','put'], 'ds-van-ban-den-tu-mail', ['as' =>'dsvanbandentumail','uses' => 'VanBanDenController@dsvanbandentumail']);

@@ -16,6 +16,7 @@ use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\VanBanDen\Entities\FileVanBanDen;
+use Modules\VanBanDen\Entities\TieuChuanVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
 use Modules\VanBanDi\Entities\FileVanBanDi;
@@ -88,6 +89,24 @@ class DonViNhanVanBanDenController extends Controller
 //        dd( count($donvinhan) , count($vanbanhuyenxuongdonvi) , count($vanBanHuyenChuyenDonViPhoiHop));
         return view('vanbanden::don_vi_nhan_van_ban.index', compact('donvinhan',
             'vanbanhuyenxuongdonvi', 'donvinhancount', 'tong', 'vanBanHuyenChuyenDonViPhoiHop', 'countphoihop'));
+    }
+
+    public function vanBanDonViGuiSo(Request $request)
+    {
+        $hienthi = $request->get('don_vi_van_ban');
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
+
+        $donvinhan = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $lanhDaoSo->don_vi_id])->whereIn('trang_thai', [2])
+            ->where(function ($query) use ($hienthi) {
+                if (!empty($hienthi)) {
+                    return $query->where('trang_thai', "$hienthi");
+                }
+            })
+            ->paginate(PER_PAGE);
+        return view('vanbanden::don_vi_nhan_van_ban.ds_van_ban_trong_don_vi_gui_den_so', compact('donvinhan'));
     }
 
     public function chi_tiet_van_ban_den_don_vi(Request $request, $id)
@@ -483,6 +502,34 @@ class DonViNhanVanBanDenController extends Controller
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
         return view('vanbanden::don_vi_nhan_van_ban.edit', compact('dokhan', 'domat', 'loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
     }
+    public function vaoSoVanBanDonViGuiSo($id)
+    {
+        $user = auth::user();
+        $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $sovanban = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+        $ngaynhan = date('Y-m-d');
+        $songay = 10;
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        $van_ban_den = NoiNhanVanBanDi::where('id', $id)->first();
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        return view('vanbanden::don_vi_nhan_van_ban.vao_so_van_ban_don_vi_gui_so', compact('dokhan', 'domat', 'tieuChuan','loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
+    }
 
     public function thongtinvb($id)
     {
@@ -532,17 +579,54 @@ class DonViNhanVanBanDenController extends Controller
                 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung', 'phanbiet'));
 
     }
+    public function thongtinvbsonhan($id)
+    {
+        $vanban = NoiNhanVanBanDi::where('id', $id)->first();
+        $phanbiet = null;
+        $nam = date("Y");
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->don_vi_id,
+                'so_van_ban_id' => 100,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+
+        $sodengiaymoi = $soDenvb + 1;
+        $user = auth::user();
+        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id, 'type' => 1])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $ds_soVanBan = $laysovanban;
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+
+        return view('vanbanden::don_vi_nhan_van_ban.giaymoiso',
+            compact('vanban', 'sodengiaymoi', 'ds_loaiVanBan', 'id', 'ds_nguoiKy',
+                'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung', 'phanbiet'));
+
+    }
 
     public function thongtinvbhuyen($id)
     {
 
         $vanban = DonViChuTri::where('id', $id)->first();
-//        $soDen = VanBanDen::where([
-//            'don_vi_id' => auth::user()->don_vi_id,
-//            'so_van_ban_id' => 100,
-//
-//        ])->max('so_den');
-//        dd($vanban);
 
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {

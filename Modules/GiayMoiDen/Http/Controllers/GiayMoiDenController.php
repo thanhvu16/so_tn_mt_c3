@@ -21,6 +21,8 @@ use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use File, auth, DB;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
+use Modules\VanBanDi\Entities\FileVanBanDi;
+use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 
 class GiayMoiDenController extends Controller
 {
@@ -107,7 +109,8 @@ class GiayMoiDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        } else {
+        }
+        else{
 
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
             $ds_vanBanDen = VanBanDen::where([
@@ -403,6 +406,32 @@ class GiayMoiDenController extends Controller
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
                 }
+                if ($request->id_file) {
+                    $file = FileVanBanDi::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
+                }
+                if($request->id_van_ban_di){
+                    $layvanbandi = NoiNhanVanBanDi::where('id', $request->id_van_ban_di)->first();
+                    if (!empty($layvanbandi)) {
+                        $layvanbandi->trang_thai = 3;
+                        $layvanbandi->save();
+
+                    }
+                    DB::commit();
+
+                    return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !!');
+                }
+
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
 
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;

@@ -135,9 +135,8 @@ class GiayMoiDiController extends Controller
 
             //đây là văn bản của đơn vị
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null,'phong_phat_hanh' => $donViId])
-                ->orwhere('van_ban_huyen_ky',$donViId)
-                ->where('so_di', '!=', '')->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null,'phong_phat_hanh' => $donViId]) ->where('so_di', '!=', '')->whereNull('deleted_at')
+                ->orwhere(['van_ban_huyen_ky'=> $donViId,])
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
@@ -231,6 +230,7 @@ class GiayMoiDiController extends Controller
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group',2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group',3)->orderBy('ten_don_vi', 'asc')->get();
         $ds_DonVi_phatHanh= DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+
 
 
         $ds_nguoiKy = null;
@@ -397,7 +397,8 @@ class GiayMoiDiController extends Controller
 
 
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
+
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id','!=',auth::user()->don_vi_id)->orderBy('id', 'desc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
@@ -536,7 +537,7 @@ class GiayMoiDiController extends Controller
         canPermission(AllPermission::suaGiayMoiDi());
         $user= auth::user();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id','!=',auth::user()->donVi->parent_id)->orderBy('id', 'desc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
@@ -617,7 +618,7 @@ class GiayMoiDiController extends Controller
                 break;
 
             case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $ds_nguoiKy =  User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 break;
 
             case VAN_THU_HUYEN:
@@ -726,7 +727,7 @@ class GiayMoiDiController extends Controller
         $giaymoidi->listVanBanDen = $giaymoidi->getListVanBanDen();
         $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
         $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
-        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2])->get();
+        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2,3])->get();
 
         return view('giaymoidi::giay_moi_di.edit',compact('ds_mucBaoMat','nguoinhan','ds_doKhanCap','ds_loaiVanBan','ds_soVanBan',
             'ds_nguoiKy','emailngoaithanhpho','emailtrongthanhpho','ds_DonVi','ds_DonVi_nhan','giaymoidi',
@@ -744,7 +745,7 @@ class GiayMoiDiController extends Controller
     {
         $nguoiky = User::where('id', $request->nguoiky_id)->first();
         $user=auth::user();
-        $gio_hop= date ('H:i',strtotime($request->gio_hop));
+        $gio_hop= date ('H:i:00',strtotime($request->gio_hop));
 
         $vanbandi = VanBanDi::where('id', $id)->first();
 
@@ -759,21 +760,23 @@ class GiayMoiDiController extends Controller
         $vanbandi->do_khan_cap_id = $request->dokhan_id;
         $vanbandi->chuc_vu = $request->chuc_vu;
         $vanbandi->do_bao_mat_id = $request->dobaomat_id;
+
         if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
             $nguoiky->role_id == QUYEN_CHANH_VAN_PHONG || $nguoiky->role_id == QUYEN_PHO_CHANH_VAN_PHONG) //đây là huyện ký
         {
             if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
                 $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
                 //đây là huyện soạn thảo và huyện ký
-                $vanbandi->don_vi_soan_thao = '';
+                $vanbandi->don_vi_soan_thao = null;
             } else {//đây là đơn vị soạn thảo do huyện ký
-                $vanbandi->don_vi_soan_thao = '';
+                $vanbandi->don_vi_soan_thao = null;
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
             }
         } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG || $nguoiky->role_id == QUYEN_VAN_THU_DON_VI) {
             //đây là đơn vị ký
             $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
         }
+
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->nguoi_ky = $request->nguoiky_id;
         $vanbandi->gio_hop = $gio_hop;
@@ -781,10 +784,13 @@ class GiayMoiDiController extends Controller
         $vanbandi->dia_diem = $request->dia_diem;
         $vanbandi->user_id = $request->nguoi_nhan;
         $vanbandi->save();
+
+
         UserLogs::saveUserLogs('Sửa giấy mời đi ', $vanbandi);
         $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
         $noinhanvb = NoiNhanVanBanDi::where(['van_ban_di_id' => $id, 'trang_thai' => 1])->get();
         $idnoinhanvb = $noinhanvb->pluck('don_vi_id_nhan')->toArray();
+
         if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
 
             if (array_diff($donvinhanvanbandi, $idnoinhanvb) == null && count($idnoinhanvb) == count($donvinhanvanbandi)) {
@@ -797,6 +803,7 @@ class GiayMoiDiController extends Controller
                         $noinhanvbdi->delete();
                     }
                 }
+
                 foreach ($donvinhanvanbandi as $key => $trong) {
                     $laydonvimoi = new NoiNhanVanBanDi();
                     $laydonvimoi->van_ban_di_id = $vanbandi->id;
