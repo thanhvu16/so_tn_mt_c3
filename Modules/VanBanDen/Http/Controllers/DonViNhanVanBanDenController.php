@@ -93,6 +93,7 @@ class DonViNhanVanBanDenController extends Controller
 
     public function vanBanDonViGuiSo(Request $request)
     {
+
         $hienthi = $request->get('don_vi_van_ban');
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {

@@ -216,24 +216,6 @@
                                                    href="{{$filedata->getUrlFile()}}">[File văn bản đi]</a>
                                             @empty
                                             @endforelse
-                                       {{--         @forelse($vbDi->filetrinhky as $filedata)
-                                                <a class="seen-new-window" target="popup"
-                                                   href="{{$filedata->getUrlFile()}}">[File trình ký]</a>
-                                            @empty
-                                            @endforelse
-                                            @forelse($vbDi->filephieutrinh as $filedata)
-                                                &nbsp; |<a class="seen-new-window" target="popup"
-                                                           href="{{$filedata->getUrlFile()}}"> [File phiếu
-                                                    trình]</a>
-                                            @empty
-                                            @endforelse
-                                            @forelse($vbDi->filehoso as $filedata)
-                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}"> [File hồ
-                                                    sơ]</a>
-                                            @empty
-                                            @endforelse--}}
-                                            {{--                                                        @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)--}}
-                                            {{--                                                            <a title="Cập nhật file" href="{{route('ds_file_di',$vbDi->id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif--}}
                                         </div>
                                     </td>
                                     <td>
