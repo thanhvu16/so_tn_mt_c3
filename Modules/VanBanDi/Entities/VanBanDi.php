@@ -90,6 +90,11 @@ class VanBanDi extends Model
     public function donvinhanvbdi(){
         return $this->hasMany(NoiNhanVanBanDi::class,'van_ban_di_id');
     }
+
+
+
+
+
     public function loaiVanBanid()
     {
         return $this->belongsTo(LoaiVanBan::class, 'loai_van_ban_id', 'id');

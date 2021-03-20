@@ -17,6 +17,10 @@ class NoiNhanVanBanDi extends Model
 {
     protected $table = 'don_vi_nhan_van_ban_di';
 
+    public function donViGuiDen($id){
+        $donVi = DonVi::where('id',$id)->first();
+        return $donVi;
+    }
     public function laytendonvinhan()
     {
         return $this->belongsTo(DonVi::class, 'don_vi_id_nhan', 'id');

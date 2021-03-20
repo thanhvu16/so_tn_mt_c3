@@ -249,7 +249,7 @@
                                     </td>
                                     <td class="text-center" style="vertical-align: middle">
                                         @hasanyrole('văn thư đơn vị|văn thư sở')
-                                        @if(auth::user()->id == $vbDi->nguoi_tao)
+                                        @if(auth::user()->id == $vbDi->nguoi_tao || auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(VAN_THU_DON_VI))
                                             <form method="POST" action="{{route('giaymoididelete',$vbDi->id)}}">
                                                 @csrf
                                                 <a href="{{route('giay-moi-di.edit',$vbDi->id)}}"

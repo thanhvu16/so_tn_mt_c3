@@ -243,7 +243,7 @@
                                 </div>
                                 <div class="form-group col-md-3" id="div_select_cqbh">
                                     <label for="co_quan_ban_hanh_id" class="col-form-label">Nơi gửi đến <span class="color-red">*</span></label>
-                                    <input type="text" value="{{isset($vanban)? $vanban->vanbandi->co_quan_ban_hanh : ''}}" class="form-control"
+                                    <input type="text" value="{{isset($vanban)? $vanban->donViGuiDen($vanban->vanbandi->phong_phat_hanh)->ten_don_vi : ''}}" class="form-control"
                                            name="co_quan_ban_hanh_id" required>
 
                                 </div>

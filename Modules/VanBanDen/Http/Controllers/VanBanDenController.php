@@ -22,6 +22,8 @@ use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\TieuChuanVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
+use Modules\VanBanDi\Entities\FileVanBanDi;
+use Modules\VanBanDi\Entities\NoiNhanVanBanDi;
 use function GuzzleHttp\Promise\all;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 
@@ -47,7 +49,8 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
 
-        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
+        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
+            ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
 
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
@@ -254,9 +257,10 @@ class VanBanDenController extends Controller
         $nam = date("Y");
         $soDenvb = null;
 
+
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $request->donViId,
+                'don_vi_id' =>  $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -360,6 +364,33 @@ class VanBanDenController extends Controller
 
                     UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                 }
+
+                if ($request->id_file) {
+                    $file = FileVanBanDi::where('id', $request->id_file)->first();
+                    if ($file) {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $file->ten_file;
+                        $vbDenFile->duong_dan = $file->duong_dan;
+                        $vbDenFile->duoi_file = $file->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
+                }
+                if($request->id_van_ban_di){
+                    $layvanbandi = NoiNhanVanBanDi::where('id', $request->id_van_ban_di)->first();
+                    if (!empty($layvanbandi)) {
+                        $layvanbandi->trang_thai = 3;
+                        $layvanbandi->save();
+                        DB::commit();
+                        return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !!');
+
+                    }
+                }
+
+
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 if (auth::user()->donVi->parent_id != 0) {
@@ -440,9 +471,9 @@ class VanBanDenController extends Controller
                         DonViChuTri::saveDonViChuTri($vanbandv->id);
                     }
                 }
+
             }
             DB::commit();
-
             return redirect()->back()->with('success', 'Thêm văn bản thành công !!');
 
         } catch (\Exception $e) {
