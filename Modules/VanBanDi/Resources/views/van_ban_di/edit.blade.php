@@ -75,7 +75,7 @@
                                     <select class="form-control show-tick select2-search" name="donvisoanthao_id" required>
                                         <option value="">-- Chọn đơn vị soạn thảo --</option>
                                         @foreach ($ds_DonVi as $donVi)
-                                            <option value="{{ $donVi->id }}" {{$vanbandi->don_vi_soan_thao == $donVi->id ? 'selected' : ''}}
+                                            <option value="{{ $donVi->id }}" {{$vanbandi->van_ban_huyen_ky == $donVi->id ? 'selected' : ''}}
                                             >{{ $donVi->ten_don_vi }}</option>
                                         @endforeach
                                     </select>
