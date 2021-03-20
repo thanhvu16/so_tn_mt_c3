@@ -1111,8 +1111,12 @@ class VanBanDiController extends Controller
     {
         $date = Carbon::now()->format('Y-m-d');
         $user = auth::user();
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'don_vi_soan_thao' => null])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])->orderBy('created_at', 'desc')->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2,'phong_phat_hanh'=> auth::user()->donVi->parent_id])->orderBy('created_at', 'desc')->get();
         }
