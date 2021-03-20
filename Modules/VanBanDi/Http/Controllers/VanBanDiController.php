@@ -277,11 +277,20 @@ class VanBanDiController extends Controller
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if ($donVi->parent_id == 0) {
-                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
-                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    if($donVi->dieu_hanh == 1)
+                    {
+                        $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                            ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    }else{
+                        $truongpho = null;
+                    }
 
-                    foreach ($truongpho as $data2) {
-                        array_push($dataNguoiKy, $data2);
+                    if($truongpho != null)
+                    {
+                        foreach ($truongpho as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+
                     }
 
                     foreach ($lanhDaoSo as $data2) {
@@ -665,11 +674,20 @@ class VanBanDiController extends Controller
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if ($donVi->parent_id == 0) {
-                    $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
-                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    if($donVi->dieu_hanh == 1)
+                    {
+                        $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                            ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    }else{
+                        $truongpho = null;
+                    }
 
-                    foreach ($truongpho as $data2) {
-                        array_push($dataNguoiKy, $data2);
+                    if($truongpho != null)
+                    {
+                        foreach ($truongpho as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+
                     }
 
                     foreach ($lanhDaoSo as $data2) {
