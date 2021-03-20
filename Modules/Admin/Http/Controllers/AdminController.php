@@ -121,7 +121,12 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách giấy mời đi', $giayMoiDi));
             array_push($vanThuVanBanDiCoLors, COLOR_RED);
 
-            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'don_vi_soan_thao' => null])
+            $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->count();
 
@@ -197,7 +202,8 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách giấy mời đi', $giayMoiDi));
             array_push($vanThuVanBanDiCoLors, COLOR_RED);
 
-            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'van_ban_huyen_ky' => $user->don_vi_id])
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+            $vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->count();
 

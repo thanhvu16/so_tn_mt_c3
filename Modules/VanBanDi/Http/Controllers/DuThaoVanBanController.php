@@ -1240,9 +1240,11 @@ class DuThaoVanBanController extends Controller
 
             if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
                 foreach ($donvinhanvanbandi as $key => $donvi) {
+                    $donVi = DonVi::where('id', $donvi)->first();
                     $donvinhan = new NoiNhanVanBanDi();
                     $donvinhan->van_ban_di_id = $vanbandi->id;
                     $donvinhan->don_vi_id_nhan = $donvi;
+                    $donvinhan->dieu_hanh = $donVi->dieu_hanh ?? 0;
                     $donvinhan->save();
                 }
             }

@@ -2,18 +2,18 @@
 <EXPORTMAIL>
   <NOIGUI>
     <STRMADONVI></STRMADONVI>
-    <STRTENDONVI>Phòng tài chính</STRTENDONVI>
+    <STRTENDONVI>Văn phòng Sở</STRTENDONVI>
   </NOIGUI>
   <NOINHANVANBAN/>
   <NOIDUNGVANBAN>
-    <STRLOAIVANBAN>Giấy mời</STRLOAIVANBAN>
-    <STRKYHIEU>1/1/2021/gm/BC</STRKYHIEU>
-    <STRTRICHYEU>Họp giải trình việc xin vốn cho các dự án cải tạo đất và xử lý rác thải sinh hoạt trên địa bàn thành phố giai đoạn 2020 - 2025 và dự án cải tạo sông Tô Lịch</STRTRICHYEU>
-    <STRNGAYKY>19/03/2021</STRNGAYKY>
-    <STRNGUOIKY>chicuctruong</STRNGUOIKY>
-    <STRNOIGUI>Giấy mời</STRNOIGUI>
+    <STRLOAIVANBAN>Quyết định</STRLOAIVANBAN>
+    <STRKYHIEU>4/4/2021/QD/</STRKYHIEU>
+    <STRTRICHYEU>day la noi dung van ban trich yeu cho van ban di</STRTRICHYEU>
+    <STRNGAYKY>20/03/2021</STRNGAYKY>
+    <STRNGUOIKY>Phạm Văn Minh</STRNGUOIKY>
+    <STRNOIGUI>Quyết định</STRNOIGUI>
     <STRHANXULY></STRHANXULY>
-    <STRTHUOCLOAIVANBAN>Giấy mời</STRTHUOCLOAIVANBAN>
+    <STRTHUOCLOAIVANBAN>Quyết định</STRTHUOCLOAIVANBAN>
   </NOIDUNGVANBAN>
   <NGHIEPVUVANBAN>
     <STRMANGHIEPVU>0</STRMANGHIEPVU>

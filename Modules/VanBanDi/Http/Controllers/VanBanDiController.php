@@ -957,7 +957,7 @@ class VanBanDiController extends Controller
                 //xóa file trình ký khi đã ký số lỗi
 
                 //gửi văn bản đi đến các đơn vị
-                $noinhan = NoiNhanVanBanDi::where('van_ban_di_id', $vanban->id)->get();
+                $noinhan = NoiNhanVanBanDi::where('van_ban_di_id', $vanban->id)->where('trang_thai', 1)->get();
                 foreach ($noinhan as $key => $noiNhanVanBanDi) {
                     $noiNhanVanBanDi->trang_thai = 2;
                     $noiNhanVanBanDi->save();
