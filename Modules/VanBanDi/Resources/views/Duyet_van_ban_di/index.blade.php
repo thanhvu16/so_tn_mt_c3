@@ -119,20 +119,37 @@
                                             @else
                                                 <div class="col-md-12 form-group">
                                                     <div class="row">
+
                                                         <select name="nguoi_nhan" id=""
                                                                 class="form-control select2-search select-nguoi-nhan-{{ $vanban->id }}">
-                                                            {{--@if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))
-                                                                <option
-                                                                    value="{{$vanban->vanbandi->nguoi_ky}}"
-                                                                >{{ $vanban->vanbandi->nguoidung2->ho_ten ?? '' }}</option>
-                                                            @else--}}
-                                                                @if ($nguoinhan)
-                                                                    @foreach($nguoinhan as $data)
-                                                                        <option
-                                                                            value="{{ $data->id }}" {{ isset($data) && !empty($vanban->vanbandi) && $data->id == $vanban->vanbandi->nguoi_ky ? 'selected ' : '' }}
-                                                                        >{{ $data->ho_ten}}</option>
-                                                                    @endforeach
+{{--                                                        @if($vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true || $vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true)--}}
+                                                                @if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))
+                                                                    <option
+                                                                        value="{{$vanban->vanbandi->nguoi_ky}}"
+                                                                    >{{ $vanban->vanbandi->nguoidung2->ho_ten ?? '' }}</option>
+                                                                @else
+                                                                    @if ($nguoinhan)
+                                                                        @foreach($nguoinhan as $data)
+                                                                            <option
+                                                                                value="{{ $data->id }}" {{ isset($data) && !empty($vanban->vanbandi) && $data->id == $vanban->vanbandi->nguoi_ky ? 'selected ' : '' }}
+                                                                            >{{ $data->ho_ten}}</option>
+                                                                        @endforeach
+                                                                    @endif
                                                                 @endif
+{{--                                                            @else--}}
+{{--                                                                @if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))--}}
+{{--                                                                    <option--}}
+{{--                                                                        value="{{$vanban->vanbandi->nguoi_ky}}"--}}
+{{--                                                                    >{{ $vanban->vanbandi->nguoidung2->ho_ten ?? '' }}</option>--}}
+{{--                                                                @else--}}
+{{--                                                                    @if ($nguoinhan)--}}
+{{--                                                                        @foreach($nguoinhan as $data)--}}
+{{--                                                                            <option--}}
+{{--                                                                                value="{{ $data->id }}" {{ isset($data) && !empty($vanban->vanbandi) && $data->id == $vanban->vanbandi->nguoi_ky ? 'selected ' : '' }}--}}
+{{--                                                                            >{{ $data->ho_ten}}</option>--}}
+{{--                                                                        @endforeach--}}
+{{--                                                                    @endif--}}
+{{--                                                                @endif--}}
 {{--                                                            @endif--}}
                                                         </select>
                                                     </div>
