@@ -109,7 +109,7 @@
                                     </td>
 
                                     <td>
-{{--                                        {{$vbDen2->donvigui->ten_don_vi ?? ''}}--}} <span>Văn phòng UBND </span>
+                                        <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>
@@ -155,7 +155,7 @@
                                     </td>
 
                                     <td>
-                                        {{--                                        {{$vbDen2->donvigui->ten_don_vi ?? ''}}--}} <span>Văn phòng UBND </span>
+                                        <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>

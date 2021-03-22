@@ -49,7 +49,8 @@ class DonViNhanVanBanDenController extends Controller
 
 
 
-        $vanbanhuyenxuongdonvi = DonViChuTri::where(['don_vi_id' => $donViId])->whereNull('vao_so_van_ban')
+        $vanbanhuyenxuongdonvi = DonViChuTri::with('canBoChuyen')
+            ->where(['don_vi_id' => $donViId])->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
@@ -68,7 +69,8 @@ class DonViNhanVanBanDenController extends Controller
 
         $donvinhancount = count($donvinhan);
         // don vi phoi hop
-        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $donViId)
+        $vanBanHuyenChuyenDonViPhoiHop = DonViPhoiHop::with('canBoChuyen')
+            ->where('don_vi_id', $donViId)
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)
