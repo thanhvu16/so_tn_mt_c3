@@ -121,11 +121,11 @@
                                                     <div class="row">
                                                         <select name="nguoi_nhan" id=""
                                                                 class="form-control select2-search select-nguoi-nhan-{{ $vanban->id }}">
-                                                            @if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))
+                                                            {{--@if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))
                                                                 <option
                                                                     value="{{$vanban->vanbandi->nguoi_ky}}"
                                                                 >{{ $vanban->vanbandi->nguoidung2->ho_ten ?? '' }}</option>
-                                                            @else
+                                                            @else--}}
                                                                 @if ($nguoinhan)
                                                                     @foreach($nguoinhan as $data)
                                                                         <option
@@ -133,7 +133,7 @@
                                                                         >{{ $data->ho_ten}}</option>
                                                                     @endforeach
                                                                 @endif
-                                                            @endif
+{{--                                                            @endif--}}
                                                         </select>
                                                     </div>
                                                 </div>

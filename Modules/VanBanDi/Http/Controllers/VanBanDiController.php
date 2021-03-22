@@ -1106,10 +1106,10 @@ class VanBanDiController extends Controller
                 }
                 break;
             case CHU_TICH:
-                if ($donVi->parent_id == 0) {
+                if ($donVi->cap_xa == 0) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('cap_xa',null)->whereNull('deleted_at')->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
