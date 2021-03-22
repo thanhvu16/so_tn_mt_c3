@@ -270,7 +270,16 @@ class DieuHanhVanBanDenController extends Controller
                         }
                         $ds_nguoiKy = $dataNguoiKy;
                     } else {
-                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                        $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                        foreach ($lanhDaoSo as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+                        foreach ($chiCuc as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                        $ds_nguoiKy = $dataNguoiKy;
                     }
                     break;
                 case PHO_PHONG:

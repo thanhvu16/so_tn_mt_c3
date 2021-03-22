@@ -16,9 +16,8 @@
                             <thead>
                             <tr>
                                 <th style="width: 2%; vertical-align: middle;" class="text-center">STT</th>
-                                <th width="25%" class="text-center">Thông tin</th>
+                                <th width="" class="text-center">Thông tin</th>
                                 <th width="15%" class="text-center">Sổ văn bản</th>
-                                <th  class="text-center">Trích yếu</th>
                                 <th width="20%" class="text-center">Nơi nhận</th>
                                 <th width="5%" class="text-center">Tác vụ
                                 </th>
@@ -36,6 +35,23 @@
                                         <td
                                             class="text-center"> {{$key+1}}</td>
                                         <td>
+                                            <a href="">{{$data->trich_yeu ?? ''}}</a><br>
+                                            <span
+                                                style="font-style: italic">(Người ký: {{$data->nguoidung2->ho_ten ?? ''}})</span><br>
+                                            <span style="color: black;font-weight: normal">(Ngày nhập: {{date('d/m/Y', strtotime($data->ngay_ban_hanh))}})
+                                                           </span>
+                                            <p>
+                                                @if (isset($data->filetrinhky))
+                                                    - Tệp tin:
+                                                    @foreach($data->filetrinhky as $key => $filedata)
+                                                        <a href="{{ $filedata->getUrlFile() }}"
+                                                           target="popup"
+                                                           class="detail-file-name seen-new-window">[file_trinh_ky]</a>
+
+                                                    @endforeach
+                                                @endif
+
+                                            </p><br>
                                             <p>- Số ký hiệu: {{$data->so_ky_hieu ?? ''}}</p>
                                             <p>- Loại văn
                                                 bản: {{$data->loaivanban->ten_loai_van_ban ?? null }}</p>
@@ -55,25 +71,6 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                        <td>
-                                            <a href="">{{$data->trich_yeu ?? ''}}</a><br>
-                                            <span
-                                                style="font-style: italic">(Người ký: {{$data->nguoidung2->ho_ten ?? ''}})</span><br>
-                                            <span style="color: black;font-weight: normal">(Ngày nhập: {{date('d/m/Y', strtotime($data->ngay_ban_hanh))}})
-                                                           </span>
-                                            <p>
-                                                @if (isset($data->filetrinhky))
-                                                    - Tệp tin:
-                                                    @foreach($data->filetrinhky as $key => $filedata)
-                                                        <a href="{{ $filedata->getUrlFile() }}"
-                                                           target="popup"
-                                                           class="detail-file-name seen-new-window">[file_trinh_ky]</a>
-
-                                                    @endforeach
-                                                @endif
-
-                                            </p>
-                                        </td>
                                         <td>
                                             {{--                                                        <div class="form-control" style="height: 100px;overflow: auto">--}}
                                             @forelse($data->donvinhanvbdi as $key=>$item)

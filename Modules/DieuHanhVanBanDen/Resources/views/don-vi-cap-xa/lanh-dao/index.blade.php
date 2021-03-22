@@ -125,7 +125,7 @@
                                                         placeholder="Chọn phó giám đốc"
                                                         form="form-tham-muu"
                                                     >
-                                                        <option value="">Chọn phó giám đốc chủ trì
+                                                        <option value="">Chọn phó chi cục trưởng chủ trì
                                                         </option>
                                                         @forelse($danhSachPhoChuTich as $phoChuTich)
                                                             <option
