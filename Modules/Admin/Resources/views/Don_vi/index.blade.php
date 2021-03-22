@@ -87,7 +87,7 @@
                             <div class="col-md-3">
                                 <label>
                                     <input type="checkbox" name="cap_xa" value="1">
-                                        Đơn vị cấp xã/phường
+                                        Cấp chi cục
                                 </label> &emsp;
                             </div>
 {{--                            <div class="col-md-3">--}}

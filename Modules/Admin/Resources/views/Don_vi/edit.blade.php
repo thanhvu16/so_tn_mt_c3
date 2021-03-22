@@ -97,7 +97,7 @@
                             <div class="col-md-3">
                                 <label>
                                     <input type="checkbox" name="cap_xa" value="1" {{ isset($donvi) && $donvi->cap_xa == 1 ? "checked" : null }}>
-                                    Đơn vị cấp xã/phường
+                                   Cấp chi cục
                                 </label> &emsp;
                             </div>
 
