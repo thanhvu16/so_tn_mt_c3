@@ -306,7 +306,16 @@ class DieuHanhVanBanDenController extends Controller
                     if ($donVi->parent_id == 0) {
                         $ds_nguoiKy = $lanhDaoSo;
                     } else {
-                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                        $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                        foreach ($lanhDaoSo as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+                        foreach ($chiCuc as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                        $ds_nguoiKy = $dataNguoiKy;
                     }
                     break;
                 case PHO_CHU_TICH:
@@ -346,19 +355,32 @@ class DieuHanhVanBanDenController extends Controller
                     break;
 
                 case TRUONG_BAN:
-                    $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                    $ds_nguoiKy = $dataNguoiKy;
                     break;
 
                 case PHO_TRUONG_BAN:
                     $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
                     array_push($dataNguoiKy, $truongBan);
-
                     $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                     if ($danhSachLanhDaoPhongBan) {
                         foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
                             array_push($dataNguoiKy, $lanhDaoPhongBan);
                         }
                     }
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+
                     $ds_nguoiKy = $dataNguoiKy;
                     break;
 
