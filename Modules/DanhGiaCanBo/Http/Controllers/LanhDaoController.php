@@ -163,7 +163,7 @@ class LanhDaoController extends Controller
         $lay_danh_gia_dau->save();
 
 
-        return redirect()->back()->with('success', 'Đánh giá thành công !!');
+        return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
 
 
@@ -326,7 +326,7 @@ class LanhDaoController extends Controller
         $duyetdanhgia->thang = $request->thang;
         $duyetdanhgia->don_vi_id = auth::user()->donvi_id;
         $duyetdanhgia->save();
-        return redirect()->back()->with('success', 'Đánh giá thành công !!');
+        return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
 
     public function chitietcanhan($id, Request $request)

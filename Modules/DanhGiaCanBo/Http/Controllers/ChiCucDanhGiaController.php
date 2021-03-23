@@ -141,7 +141,7 @@ class ChiCucDanhGiaController extends Controller
         }
 
 
-        return redirect()->back()->with('success', 'Đánh giá thành công !!');
+        return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
 
     public function captrendanhgia(Request $request)
@@ -270,7 +270,7 @@ class ChiCucDanhGiaController extends Controller
         $duyetdanhgia->thang = $request->thang;
         $duyetdanhgia->don_vi_id = auth::user()->don_vi_id;
         $duyetdanhgia->save();
-        return redirect()->back()->with('success', 'Đánh giá thành công !!');
+        return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
 
     /**

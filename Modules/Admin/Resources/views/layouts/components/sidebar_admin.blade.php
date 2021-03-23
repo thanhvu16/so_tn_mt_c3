@@ -1,6 +1,6 @@
 <li class="{{ Route::is('don-vi.index') || Route::is('danhsachdonvi') ? 'active' : '' }} ">
     <a href="{{route('danhsachdonvi')}}">
-        <i class="fa fa-university" ></i> <span>Đơn Vị</span>
+        <i class="fa fa-university" ></i> <span>Đơn vị</span>
         <span class="pull-right-container">
 {{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
@@ -8,7 +8,7 @@
 </li>
 <li class="{{ Route::is('Nhom-don-vi.index')  ? 'active' : '' }} ">
     <a href="{{route('Nhom-don-vi.index')}}">
-        <i class="fa fa-user-plus"></i> <span>Nhóm đơn Vị</span>
+        <i class="fa fa-user-plus"></i> <span>Nhóm đơn vị</span>
         <span class="pull-right-container">
 {{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>
@@ -17,7 +17,7 @@
 
 <li class="{{ Route::is('chuc-vu.index') || Route::is('danhsachchucvu') ? 'active' : '' }}  ">
     <a href="{{route('danhsachchucvu')}}">
-        <i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Chức Vụ</span>
+        <i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Chức vụ</span>
         <span class="pull-right-container">
 {{--              <i class="fa fa-angle-left pull-right"></i>--}}
             </span>

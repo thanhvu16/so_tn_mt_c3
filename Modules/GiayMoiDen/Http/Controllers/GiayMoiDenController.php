@@ -429,7 +429,7 @@ class GiayMoiDenController extends Controller
                     }
                     DB::commit();
 
-                    return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !!');
+                    return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !');
                 }
 
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {

@@ -859,7 +859,7 @@ class DonViNhanVanBanDenController extends Controller
             $layvanbandi->save();
 
         }
-        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !');
     }
 
 
@@ -1061,7 +1061,7 @@ class DonViNhanVanBanDenController extends Controller
         }
 
 
-        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !!');
+        return redirect()->route('don-vi-nhan-van-ban-den.index')->with('success', 'Thêm văn bản thành công !');
     }
 
     /**

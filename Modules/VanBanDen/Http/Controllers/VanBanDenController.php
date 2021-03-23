@@ -385,7 +385,7 @@ class VanBanDenController extends Controller
                         $layvanbandi->trang_thai = 3;
                         $layvanbandi->save();
                         DB::commit();
-                        return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !!');
+                        return redirect()->route('vanBanDonViGuiSo')->with('success', 'Thêm văn bản thành công !');
 
                     }
                 }
@@ -474,7 +474,7 @@ class VanBanDenController extends Controller
 
             }
             DB::commit();
-            return redirect()->back()->with('success', 'Thêm văn bản thành công !!');
+            return redirect()->back()->with('success', 'Thêm văn bản thành công !');
 
         } catch (\Exception $e) {
             DB::rollback();

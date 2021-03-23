@@ -101,7 +101,6 @@
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"
                                                         class="form-control don-vi-chu-tri dropdown-search select2"
-                                                        data-placeholder="Chọn đơn vị chủ trì"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         form="form-tham-muu">
                                                     <option value="">Chọn đơn vị chủ trì</option>

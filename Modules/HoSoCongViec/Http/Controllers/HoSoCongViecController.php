@@ -53,7 +53,7 @@ class HoSoCongViecController extends Controller
         $hoso->nguoi_tao = auth::user()->id;
         $hoso->save();
         UserLogs::saveUserLogs(' Tạo hồ sơ ', $hoso);
-        return redirect()->back()->with('success', 'Tạo hồ sơ thành công !!');
+        return redirect()->back()->with('success', 'Tạo hồ sơ thành công !');
     }
 
     public function ds_van_ban_hs($id)
@@ -245,7 +245,7 @@ class HoSoCongViecController extends Controller
         $hoso->trang_thai = $request->trang_thai;
         $hoso->save();
         UserLogs::saveUserLogs('Cập nhật hồ sơ  ', $hoso);
-        return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công !!');
+        return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công !');
     }
 
     /**
