@@ -380,6 +380,9 @@ class GiayMoiDiController extends Controller
                         array_push($dataNguoiKy, $lanhDaoPhongBan);
                     }
                 }
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
                 $ds_nguoiKy = $dataNguoiKy;
                 break;
 
@@ -743,6 +746,9 @@ class GiayMoiDiController extends Controller
                     foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
                         array_push($dataNguoiKy, $lanhDaoPhongBan);
                     }
+                }
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
                 }
                 $ds_nguoiKy = $dataNguoiKy;
                 break;

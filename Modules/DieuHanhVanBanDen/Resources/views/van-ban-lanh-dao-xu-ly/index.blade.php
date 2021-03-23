@@ -144,7 +144,6 @@
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"
                                                         class="form-control don-vi-chu-tri dropdown-search select2"
-                                                        data-placeholder="Chọn đơn vị chủ trì"
                                                         data-id="{{ $vanBanDen->id }}"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
