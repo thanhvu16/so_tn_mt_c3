@@ -99,8 +99,6 @@ class ThanhPhanDuHop extends Model
                         ->where(function ($query) use ($donViId) {
                             if (!empty($donViId)) {
                                 return $query->where('don_vi_id', $donViId);
-                            } else {
-                                return $query->whereNull('type');
                             }
                         })
                         ->delete();
@@ -119,8 +117,6 @@ class ThanhPhanDuHop extends Model
                         ->where(function ($query) use ($donViId) {
                             if (!empty($donViId)) {
                                 return $query->where('don_vi_id', $donViId);
-                            } else {
-                                return $query->whereNull('type');
                             }
                         })
                         ->where('id', '>', $check->id)

@@ -264,14 +264,6 @@ class VanBanLanhDaoXuLyController extends Controller
                         XuLyVanBanDen::where('van_ban_den_id', $vanBanDenId)
                             ->whereNull('status')->where('id', '>', $checkXuLyVanBanDen->id)->delete();
                     }
-
-                    //han xu ly
-//                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->han_xu_ly != $dataHanXuLy[$vanBanDenId]) {
-//                        $checkXuLyVanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-//                        $checkXuLyVanBanDen->save();
-//                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-//                        $vanBanDen->save();
-//                    }
                     // van ban quan trong
                     VanBanQuanTrong::where([
                         'user_id' => $currentUser->id,
@@ -562,11 +554,6 @@ class VanBanLanhDaoXuLyController extends Controller
                             }
                         }
 
-                        //han xu ly
-//                    if (isset($dataHanXuLy[$vanBanDenId]) && $vanBanDen->han_xu_ly != $dataHanXuLy[$vanBanDenId]) {
-//                        $vanBanDen->han_xu_ly = $dataHanXuLy[$vanBanDenId];
-//                        $vanBanDen->save();
-//                    }
                         $dataLuuDonViChuTri = [
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
@@ -582,7 +569,6 @@ class VanBanLanhDaoXuLyController extends Controller
                         ];
 
                         // luu don vi chu tri
-                        //chuyen nhan van ban don vi
                         DonViChuTri::where([
                             'van_ban_den_id' => $vanBanDenId,
                             'parent_don_vi_id' => null,
@@ -595,6 +581,8 @@ class VanBanLanhDaoXuLyController extends Controller
                             $donViChuTri->save();
                             // luu vet van ban den
                             LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataLuuDonViChuTri);
+                            // save thành phần dự họp
+                            ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$nguoiDung->id ?? null], null, $nguoiDung->don_vi_id ?? null);
                         }
                         //data don vi phoi hop
                         $dataLuuDonViPhoiHop = [

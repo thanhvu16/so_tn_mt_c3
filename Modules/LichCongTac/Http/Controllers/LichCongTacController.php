@@ -109,9 +109,7 @@ class LichCongTacController extends Controller
 
 
         if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
-            $donViId = $currentUser->don_vi_id;
             $lanhDaoId = $currentUser->id;
-            $donViDuHop = $currentUser->don_vi_id;
         }
 
         $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi', 'congViecDonVi')
@@ -124,7 +122,6 @@ class LichCongTacController extends Controller
             })
             ->whereNotNull('trang_thai')
             ->orderBy('buoi', 'ASC')->get();
-
 
 
         if ($danhSachLichCongTac) {
@@ -215,6 +212,7 @@ class LichCongTacController extends Controller
                     'user_id' => $currentUser->id,
                     'don_vi_du_hop' => $lichCongTac->don_vi_du_hop,
                     'thanh_phan_du_hop_id' => $thanhPhanDuHopId,
+                    'trang_thai' => LichCongTac::TRANG_THAI_HOAT_DONG,
                 );
 
                 $newLichCongTac = new LichCongTac();
