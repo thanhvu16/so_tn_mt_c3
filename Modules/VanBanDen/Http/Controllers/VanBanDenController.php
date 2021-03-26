@@ -502,8 +502,9 @@ class VanBanDenController extends Controller
             $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
             $tachchuoi = explode("-", $tenchinhfile);
             $tenviettatso = strtoupper($tachchuoi[0]);
-            $soden = (int)$tachchuoi[1];
-            $yearsfile = (int)$tachchuoi[2];
+            $soden = isset($tachchuoi[1]) ? (int)$tachchuoi[1] : null;
+            $yearsfile = isset($tachchuoi[2]) ? (int)$tachchuoi[2] : null;
+
             $sovanban = SoVanBan::where('ten_viet_tat', 'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($sovanban != null) {
                 if ($user->hasRole(VAN_THU_HUYEN)) {

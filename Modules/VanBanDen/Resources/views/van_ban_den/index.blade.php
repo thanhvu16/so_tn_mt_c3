@@ -285,7 +285,7 @@
                                                 </label>
 
                                                 <input type="file" multiple name="ten_file[]"
-                                                       accept=".xlsx,.xls,image/*,.doc, .docx,.txt,.pdf"/>
+                                                       accept=".xlsx,.xls,.doc,.docx,.txt,.pdf"/>
                                                 <input type="text" id="url-file" value="123"
                                                        class="hidden" name="txt_file[]">
                                             </div>
