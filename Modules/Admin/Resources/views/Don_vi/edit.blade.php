@@ -23,7 +23,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail2">Nhóm đơn vi</label>
+                                    <label for="exampleInputEmail2">Nhóm đơn vị</label>
                                     <select class="form-control select2" name="nhom_don_vi">
                                         @foreach($nhom_don_vi as $data)
                                             <option value="{{$data->id}}"  {{$donvi && $data->id == $donvi->nhom_don_vi ? 'selected' : ''}}>{{$data->ten_nhom_don_vi}}</option>
@@ -97,7 +97,7 @@
                             <div class="col-md-3">
                                 <label>
                                     <input type="checkbox" name="cap_xa" value="1" {{ isset($donvi) && $donvi->cap_xa == 1 ? "checked" : null }}>
-                                   Cấp chi cục
+                                   Cấp chi cục / Trung tâm
                                 </label> &emsp;
                             </div>
 

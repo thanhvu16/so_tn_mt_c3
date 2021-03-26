@@ -103,7 +103,7 @@ class AdminController extends Controller
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách văn bản đến', $danhSachVanBanDen));
             array_push($vanThuVanBanDenCoLors, COLOR_PINTEREST);
 
-            $giayMoiDen = VanBanDen::where('so_van_ban_id', '=', $giayMoi->id ?? null)
+            $giayMoiDen = VanBanDen::where('so_van_ban_id', $giayMoi->id ?? null)
                 ->where('type', VanBanDen::TYPE_VB_HUYEN)
                 ->whereNull('deleted_at')
                 ->count();

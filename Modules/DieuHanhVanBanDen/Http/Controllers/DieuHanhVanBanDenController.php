@@ -105,14 +105,15 @@ class DieuHanhVanBanDenController extends Controller
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 
-        $chuTich = User::role(CHU_TICH)->where('trang_thai', ACTIVE)
-            ->select('id', 'ho_ten')
-            ->first();
+        $chuTich = User::role(CHU_TICH)
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })
+            ->select('id', 'ho_ten', 'don_vi_id')->first();
 
         $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
-            ->where('trang_thai', ACTIVE)
-            ->select('id', 'ho_ten')
-            ->get();
+            ->where('don_vi_id', $chuTich->don_vi_id)
+            ->select('id', 'ho_ten')->get();
 
         $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
 
@@ -233,15 +234,22 @@ class DieuHanhVanBanDenController extends Controller
         if ($vanBanDen->trinh_tu_nhan_van_ban != VanBanDen::HOAN_THANH_VAN_BAN) {
             // data cua du thao
             $date = Carbon::now()->format('Y-m-d');
-            $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+            $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')
+                ->whereIn('loai_van_ban', [2, 3])
                 ->orderBy('ten_loai_van_ban', 'desc')->get();
-            $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
+
+            $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                ->where(['don_vi_id' => auth::user()->don_vi_id])
+                ->where('id', '!=', auth::user()->id)
+                ->whereNull('deleted_at')->get();
+
             $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
             $user = auth::user();
             $donVi = $user->donVi;
             $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
             $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
-            $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+            $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')
+                ->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
             $dataNguoiKy = [];
             $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
                 ->whereHas('donVi', function ($query) {
@@ -319,6 +327,7 @@ class DieuHanhVanBanDenController extends Controller
                     }
                     break;
                 case PHO_CHU_TICH:
+
                     if ($donVi->parent_id == 0) {
                         $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     } else {

@@ -25,9 +25,45 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                     <div class="box-body">
+                        <form action="{{ route('phan-loai-van-ban.index') }}" method="get">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="so-den" class="col-form-label">Tìm theo số đến</label>
+                                    <input type="number" class="form-control" placeholder="Nhập số đến"
+                                           name="so_den" value="{{ Request::get('so_den') ?? null }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="han-xu-ly" class="col-form-label">Tìm theo ngày nhập</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right datepicker" placeholder="DD/MM/YYYY"
+                                               name="ngay_den" value="{{ Request::get('ngay_den') ?? null }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="trich-yeu">Tìm theo trích yếu</label>
+                                    <input type="text" name="trich_yeu" class="form-control" value="{{ Request::get('trich_yeu') ?? null }}" placeholder="nhập nội dung...">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="search" class="col-form-label">&nbsp;</label><br>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-search"></i> Tìm kiếm
+                                    </button>
+                                    @if(request('ngay_den') || request('trich_yeu') || request('so_den'))
+                                        <a href="{{ route('phan-loai-van-ban.index') }}">
+                                            <button type="button" class="btn btn-success">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
+                        <br>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr role="row">
@@ -158,11 +194,13 @@
                                                     data-id="{{ $vanBanDen->id }}"
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                     form="form-tham-muu">
-                                                    @forelse($danhSachDonVi as $donVi)
-                                                        <option
-                                                            value="{{ $donVi->id }}">{{ $donVi->ten_don_vi }}</option>
-                                                    @empty
-                                                    @endforelse
+                                                    @if (!empty($vanBanDen->vanBanTraLai))
+                                                        @forelse($danhSachDonVi as $donVi)
+                                                            <option
+                                                                value="{{ $donVi->id }}">{{ $donVi->ten_don_vi }}</option>
+                                                        @empty
+                                                        @endforelse
+                                                    @endif
                                                 </select>
                                             </p>
                                         </div>
@@ -248,7 +286,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->render() !!}
+                                {!! $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'ngay_den'  => Request::get('ngay_den'), 'trich_yeu' => Request::get('trich_yeu')])->render() !!}
                             </div>
                         </div>
                     </div>

@@ -4,8 +4,7 @@
             <b>Nội dung:</b> <i>{{ $vanBanDen->hasChild->noi_dung }}</i>
         </p>
     @endif
-    <p class="text-initial">- Nơi gửi
-        đến: {{ $vanBanDen->hasChild->co_quan_ban_hanh ?? null }}</p>
+    <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->hasChild->co_quan_ban_hanh ?? null }}</p>
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <p class="text-initial">- Số đến: <span
@@ -75,8 +74,7 @@
             <b>Nội dung:</b> <i>{{ $vanBanDen->noi_dung }}</i>
         </p>
     @endif
-    <p class="text-initial">- Nơi gửi
-        đến: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
+    <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <p class="text-initial">- Số đến: <span

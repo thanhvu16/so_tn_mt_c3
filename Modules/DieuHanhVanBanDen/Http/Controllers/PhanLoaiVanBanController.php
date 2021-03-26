@@ -30,9 +30,13 @@ class PhanLoaiVanBanController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        canPermission(AllPermission::thamMuu());
+//        canPermission(AllPermission::thamMuu());
+        $ngayDen = $request->get('ngay_den') ? formatYMD($request->get('ngay_den')) : null;
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDen = $request->get('so_den') ?? null;
+
         $user = auth::user();
 
         $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
@@ -42,6 +46,21 @@ class PhanLoaiVanBanController extends Controller
                 }
             ])
             ->whereNull('trinh_tu_nhan_van_ban')
+            ->where(function ($query) use ($ngayDen) {
+                if (!empty($ngayDen)) {
+                    return $query->where('created_at', $ngayDen);
+                }
+            })
+            ->where(function ($query) use ($soDen) {
+                if (!empty($soDen)) {
+                    return $query->where('so_den', $soDen);
+                }
+            })
+            ->where(function ($query) use ($ngayDen) {
+                if (!empty($ngayDen)) {
+                    return $query->where('created_at', $ngayDen);
+                }
+            })
             ->paginate(PER_PAGE_10);
 
         if (count($danhSachVanBanDen) > 0) {

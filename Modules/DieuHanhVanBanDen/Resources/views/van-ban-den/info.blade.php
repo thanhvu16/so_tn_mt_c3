@@ -5,8 +5,7 @@
                 <b>Nội dung:</b> <i>{{ $vanBanDen->hasChild()->noi_dung }}</i>
             </p>
         @endif
-        <p class="text-initial">- Nơi gửi
-            đến: {{ $vanBanDen->hasChild()->co_quan_ban_hanh ?? null }}</p>
+        <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->hasChild()->co_quan_ban_hanh ?? null }}</p>
         <p class="text-initial">- Số đến: <span
                 class="color-red text-bold">{{ $vanBanDen->hasChild()->so_den ?? null }}</span></p>
         <p class="text-initial">- Ngày
@@ -85,8 +84,7 @@
                 <b>Nội dung:</b> <i>{{ $vanBanDen->hasChild->noi_dung }}</i>
             </p>
         @endif
-        <p class="text-initial">- Nơi gửi
-            đến: {{ $vanBanDen->hasChild->co_quan_ban_hanh ?? null }}</p>
+        <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->hasChild->co_quan_ban_hanh ?? null }}</p>
         <p class="text-initial">- Số đến: <span
                 class="color-red text-bold">{{ $vanBanDen->hasChild->so_den ?? null }}</span></p>
         <p class="text-initial">- Ngày
@@ -146,8 +144,7 @@
                 <b>Nội dung:</b> <i>{{ $vanBanDen->noi_dung }}</i>
             </p>
         @endif
-        <p class="text-initial">- Nơi gửi
-            đến: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
+        <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
         <p class="text-initial">- Số đến: <span class="color-red text-bold">{{ $vanBanDen->so_den ?? null }}</span></p>
         <p class="text-initial">- Ngày
             nhập: {{  !empty($vanBanDen->created_at) ? date('d/m/Y', strtotime($vanBanDen->created_at)) : null }}</p>
