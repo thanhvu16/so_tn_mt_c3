@@ -101,7 +101,7 @@
  Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ||
  Route::is('cong-viec-don-vi.edit') || Route::is('cong-viec-don-vi.hoan-thanh') ? 'active menu-open' : '' }} }} ">
     <a href="#">
-        <i class="fa fa-expeditedssl"></i> <span>Công việc nội bộ</span>
+        <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

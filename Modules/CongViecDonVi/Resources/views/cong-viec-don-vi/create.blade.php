@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Công việc nội bộ')
+@section('page_title', 'Công việc phòng ban')
 @section('content')
     <section class="content">
         <div class="row">
