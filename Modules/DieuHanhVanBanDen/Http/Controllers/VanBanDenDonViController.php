@@ -582,7 +582,7 @@ class VanBanDenDonViController extends Controller
                             'parent_don_vi_id' => $donViChuTri->parent_don_vi_id ?? null,
                             'noi_dung' => $textnoidungPhoPhong[$vanBanDenId],
                             'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
-                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : $donViChuTri->han_xu_ly_moi,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : $donViChuTri->han_xu_ly_moi ?? null,
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
