@@ -609,10 +609,10 @@ class VanBanDenDonViController extends Controller
                             'parent_id' => $donViChuTri ? $donViChuTri->id : null,
                             'parent_don_vi_id' => $donViChuTri->parent_don_vi_id ?? null,
                             'noi_dung' => $textNoiDungChuyenVien[$vanBanDenId],
-                            'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
+                            'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh ?? 0,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
                             'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
-                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : $donViChuTri->han_xu_ly_moi,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : $donViChuTri->han_xu_ly_moi ?? null,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                             'user_id' => $currentUser->id
 
