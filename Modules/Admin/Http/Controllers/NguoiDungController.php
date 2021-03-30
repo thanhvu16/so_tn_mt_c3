@@ -78,8 +78,13 @@ class NguoiDungController extends Controller
 
         $order = ($users->currentPage() - 1) * PER_PAGE + 1;
 
-        $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->orderBy('ten_chuc_vu', 'asc')->get();
-        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->orderBy('ten_don_vi', 'asc')->get();
+        $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')
+            ->whereNull('deleted_at')
+            ->orderBy('ten_chuc_vu', 'asc')
+            ->get();
+        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->orderBy('ten_don_vi', 'asc')
+            ->whereNull('deleted_at')
+            ->get();
 
         $viTriUuTien = User::max('uu_tien');
 

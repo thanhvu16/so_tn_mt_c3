@@ -129,7 +129,7 @@
 
                                         </tr>
                                     @empty
-                                        <td class="text-center" colspan="7" style="vertical-align: middle">Không có dữ
+                                        <td class="text-center" colspan="9" style="vertical-align: middle">Không có dữ
                                             liệu !
                                         </td>
                                     @endforelse
