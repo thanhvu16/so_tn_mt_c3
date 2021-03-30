@@ -638,10 +638,11 @@ class VanBanDenDonViController extends Controller
                         ChuyenVienPhoiHop::savechuyenVienPhoiHop($arrChuyenVienPhoiHopIds[$vanBanDenId],
                             $vanBanDenId, $currentUser->don_vi_id);
                     }
-                    // save thanh phan du hop
-                    ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenId], $danhSachTruongPhongIds[$vanBanDenId],
-                        $danhSachPhoPhongIds[$vanBanDenId], $danhSachChuyenVienIds[$vanBanDenId]], null, $donVi->id);
-
+                    if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
+                        // save thanh phan du hop
+                        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenId], $danhSachTruongPhongIds[$vanBanDenId],
+                            $danhSachPhoPhongIds[$vanBanDenId], $danhSachChuyenVienIds[$vanBanDenId]], null, $donVi->id);
+                    }
                     //luu can bo xem de biet
                     LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
                         ->where('don_vi_id', auth::user()->don_vi_id)
