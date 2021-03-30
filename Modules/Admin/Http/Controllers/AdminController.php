@@ -329,7 +329,7 @@ class AdminController extends Controller
             }
 
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-//                ->where('can_bo_nhan_id', $user->id)
+                ->where('can_bo_nhan_id', $user->id)
                 ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
                 ->get();
