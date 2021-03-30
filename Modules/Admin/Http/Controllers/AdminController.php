@@ -298,7 +298,7 @@ class AdminController extends Controller
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
             $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
+//                ->where('can_bo_nhan_id', $user->id)
                 ->select('id', 'van_ban_den_id')
                 ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
@@ -317,19 +317,19 @@ class AdminController extends Controller
             $trinhTuNhanVanBan = null;
 
             if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-                $trinhTuNhanVanBan = 3;
+                $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
             }
 
             if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-                $trinhTuNhanVanBan = 4;
+                $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
             }
 
             if ($user->hasRole(CHUYEN_VIEN)) {
-                $trinhTuNhanVanBan = 5;
+                $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
             }
 
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
+//                ->where('can_bo_nhan_id', $user->id)
                 ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
                 ->get();
