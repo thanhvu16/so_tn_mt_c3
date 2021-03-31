@@ -1,3 +1,6 @@
+function showModalpass() {
+    $("#myModal_pass").modal('show');
+}
 function readURL(input,name) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -39,6 +42,10 @@ $('.seen-new-window').on('click', function () {
 $('.btn-remove-item').on('click', function () {
 
     return confirm('Bạn muốn xóa dữ liệu này?');
+});
+$('.btn-remove-item-duyet').on('click', function () {
+
+    return confirm('Bạn có chắc chắc muốn duyệt?');
 });
 
 $('.select2').select2({

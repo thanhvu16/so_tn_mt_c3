@@ -19,8 +19,10 @@ Route::resource('Nhom-don-vi', 'NhomDonViController');
 Route::post('Nhom-don-vi/delete/{id}', array('as' => 'xoanhomdonvi', 'uses' => 'NhomDonViController@destroy'));
 //đơn vị
 Route::get('danh-sach-don-vi', 'DonViController@danhsach')->name('danhsachdonvi');
+Route::get('cap-nhat-password-email', 'NguoiDungController@capNhatPassWord')->name('capNhatPassWord');
 Route::resource('don-vi', 'DonViController')->except('show');
 Route::post('don-vi/delete/{id}', array('as' => 'xoadonvi', 'uses' => 'DonViController@destroy'));
+Route::post('cap-nhat-password-email', array('as' => 'guiXuLy', 'uses' => 'NguoiDungController@guiXuLy'));
 //chức vụ
 Route::get('danh-sach-chuc-vu', 'ChucVuController@danhsach')->name('danhsachchucvu');
 Route::resource('chuc-vu', 'ChucVuController')->except('show');

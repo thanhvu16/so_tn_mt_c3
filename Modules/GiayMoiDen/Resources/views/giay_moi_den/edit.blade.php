@@ -212,14 +212,25 @@
                                             </div>
                                         </div>
                                     </div>
+
                                         <div class=" col-md-3 mt-4" >
                                             <button
                                                 class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>
                                                 <span>Cập nhật</span></button>
                                         </div>
+
                                 </div>
                             </div>
-                            <div class="col-md-12"><br></div>
+                            <div class="col-md-12 mt-4">
+                                    <div class="form-group">
+                                        <label for="">File văn bản:
+                                            @forelse($vanban->vanBanDenFile as $key=>$filedata)
+                                                <a class="seen-new-window" target="popup"
+                                                   href="{{$filedata->getUrlFile()}}">[File văn bản] &emsp; </a> <a class="btn-remove-item" href="{{route('xoaFileDen',$filedata->id)}}"><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a> |
+                                            @empty
+                                            @endforelse</label>
+                                </div>
+                            </div>
                             <div class="col-md-12"><br></div>
                             <div class="col-md-12"><br></div>
                         </form>

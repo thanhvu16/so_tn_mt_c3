@@ -297,7 +297,7 @@ class DonViNhanVanBanDenController extends Controller
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = auth::user()->donVi->parent_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
@@ -344,7 +344,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = auth::user()->donVi->parent_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
                     $vanbandv->nguoi_ky = $nguoiky;

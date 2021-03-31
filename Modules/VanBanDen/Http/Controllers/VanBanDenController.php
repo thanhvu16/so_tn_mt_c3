@@ -538,6 +538,13 @@ class VanBanDenController extends Controller
         return redirect()->back()->with('success', 'Thêm file thành công !');
     }
 
+    public function xoaFileDen($id)
+    {
+        $vanBanDi = FileVanBanDen::where('id', $id)->first();
+            $vanBanDi->delete();
+        return redirect()->back()->with('success', 'Xóa file thành công !');
+    }
+
     /**
      * Show the specified resource.
      * @param int $id
