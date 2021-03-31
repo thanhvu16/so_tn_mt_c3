@@ -39,15 +39,15 @@ class NguoiDungController extends Controller
 
 
         $users = User::with(['chucVu' => function ($query) {
-                return $query->select('id', 'ten_chuc_vu');
-            },
+            return $query->select('id', 'ten_chuc_vu');
+        },
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
             ->where(function ($query) use ($donViId, $phonBanId) {
                 if (!empty($donViId) && empty($phonBanId)) {
                     return $query->where('don_vi_id', $donViId);
-                } else if (!empty($donViId) && !empty($phonBanId)){
+                } else if (!empty($donViId) && !empty($phonBanId)) {
                     return $query->where('don_vi_id', $phonBanId);
                 }
             })
@@ -190,6 +190,19 @@ class NguoiDungController extends Controller
 
     }
 
+    public function capNhatPassWord()
+    {
+        return view('admin::nguoi-dung.cap_nhat_password');
+    }
+
+    public function guiXuLy(Request $request)
+    {
+        $nguoiDung = User::where('id', auth::user()->id)->first();
+        $nguoiDung->password_email = Hash::make($request->passWord);
+        $nguoiDung->save();
+        return redirect('/')->with('success', 'Cập nhật thành công .');
+    }
+
     /**
      * Show the specified resource.
      * @param int $id
@@ -323,8 +336,7 @@ class NguoiDungController extends Controller
     public function getChucVu(Request $request, $id)
     {
 
-        if($id == 0)
-        {
+        if ($id == 0) {
             $ds_chucvu = ChucVu::whereNull('deleted_at')->get();
 
             if ($request->ajax()) {
@@ -334,7 +346,7 @@ class NguoiDungController extends Controller
                     'phongBan' => null
                 ]);
             }
-        }else{
+        } else {
             $ds_chucvu = [];
             $don_vi = DonVi::where('id', $id)->first();
             $nhom_don_vi = $don_vi->nhom_don_vi;
@@ -355,6 +367,7 @@ class NguoiDungController extends Controller
         }
 
     }
+
     public function getDonVi(Request $request, $id)
     {
         $nhom_don_vi = NhomDonVi::where('id', $id)->first();

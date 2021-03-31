@@ -43,3 +43,7 @@ Route::post('ds-van-ban-den-tu-mail/luu-van-ban-tu-mail','VanBanDenController@lu
 Route::post('van-ban-den/vao-so-van-ban','DonViNhanVanBanDenController@vaosovanbandvnhan')->name('vaosovanbandvnhan');
 Route::post('van-ban-den/vao-so-van-ban-huyen','DonViNhanVanBanDenController@vaosovanbanhuyen')->name('vaosovanbanhuyen');
 Route::post('han-van-ban','VanBanDenController@layhantruyensangview')->name('layhantruyensangview');
+//Route::get('xoa-van-ban-den/{id}','VanBanDenController@xoaFileDen')->name('xoaFileDen');
+Route::match(['get', 'post','put'], 'xoa-file-van-ban/{id}', ['as' =>'xoaFileDen', 'uses' => 'VanBanDenController@xoaFileDen']);
+
+

@@ -274,3 +274,4 @@ $('.lay_van_ban').on('click', function (e) {
 
     });
 })
+
