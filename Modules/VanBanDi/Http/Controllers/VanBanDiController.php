@@ -1095,6 +1095,7 @@ class VanBanDiController extends Controller
         $idnguoiky = null;
         $idcuanguoinhan = null;
         $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 1])->get();
+//        dd(auth::user()->id);
 
 
         $user = auth::user();
@@ -1413,8 +1414,8 @@ class VanBanDiController extends Controller
     {
 
         $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
-        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
-        $vanbandiduyet->cho_cap_so = 3;
+//        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
+//        $vanbandiduyet->cho_cap_so = 3;
 //        $vanbandiduyet->save();
         $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
         $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
@@ -1461,6 +1462,7 @@ class VanBanDiController extends Controller
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
+        $vanbandi->truong_phong_ky = 3;
         $vanbandi->save();
 
         $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->get();
