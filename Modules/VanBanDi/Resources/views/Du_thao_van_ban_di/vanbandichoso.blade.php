@@ -18,7 +18,7 @@
                                 <th style="width: 2%; vertical-align: middle;" class="text-center">STT</th>
                                 <th width="" class="text-center">Thông tin</th>
                                 <th width="10%" class="text-center">Ngày tháng</th>
-                                <th width="25%" class="text-center">Sổ văn bản</th>
+                                <th width="15%" class="text-center">Sổ văn bản</th>
                                 <th width="6%" class="text-center">File</th>
                                 <th width="20%" class="text-center">Nơi nhận</th>
                                 <th width="5%" class="text-center">Duyệt

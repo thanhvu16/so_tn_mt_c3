@@ -38,6 +38,14 @@ class VanBanDi extends Model
     {
         return $this->belongsTo(User::class,'nguoi_ky');
     }
+    public function donViPhatHanh()
+    {
+        return $this->belongsTo(DonVi::class,'phong_phat_hanh');
+    }
+    public function donViSoanThaoVB()
+    {
+        return $this->belongsTo(DonVi::class,'van_ban_huyen_ky');
+    }
     public function nguoitao()
     {
         return $this->belongsTo(User::class,'nguoi_tao');
