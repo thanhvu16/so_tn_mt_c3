@@ -1328,10 +1328,47 @@ class VanBanDiController extends Controller
                 $canbonhan->save();
 
                 $vanbandi = VanBanDi::where('id', $nguoicu->van_ban_di_id)->first();
-                if (auth::user()->hasRole(TRUONG_PHONG)) {
-                    $vanbandi->truong_phong_ky = 2;
-                    $vanbandi->save();
+                //ĐÂY Là văn bản của huyện do đơn vị soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->dieu_hanh == 0 && $vanbandi->donViSoanThaoVB->parent_id == 0  )
+                {
+//                    dd(1);
+                    if (auth::user()->hasRole(TRUONG_PHONG)) {
+                        $vanbandi->truong_phong_ky = 2;
+                        $vanbandi->save();
+                    }
                 }
+                //ĐÂY Là văn bản của huyện do chi cục soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->parent_id != 0  )
+                {
+//                    dd(2);
+                    $user = auth::user();
+                    switch (auth::user()->roles->pluck('name')[0]) {
+                        case CHU_TICH:
+                            if ($user->cap_xa == 1) {
+                                $vanbandi->truong_phong_ky = 2;
+                                $vanbandi->save();
+                            }
+                            break;
+                    }
+                }
+                //Đây là văn bản của chi cục do phòng soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == 1 && $vanbandi->donViSoanThaoVB->parent_id != 0  )
+                {
+//                    dd(3);
+                    switch (auth::user()->roles->pluck('name')[0]) {
+                        case TRUONG_BAN:
+                                $vanbandi->truong_phong_ky = 2;
+                                $vanbandi->save();
+                            break;
+                    }
+                }
+
+
+
+
+
+
+
                 UserLogs::saveUserLogs(' Duyệt văn bản đi', $canbonhan);
                 $nguoicu->trang_thai = 2;
                 $nguoicu->save();
