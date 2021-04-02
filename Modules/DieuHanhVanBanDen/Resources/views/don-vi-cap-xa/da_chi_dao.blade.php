@@ -116,7 +116,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-                                            @if ($trinhTuNhanVanBan == 8)
+                                            @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::CHU_TICH_XA_NHAN_VB)
                                                 <p>
                                                     <select
                                                         name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
@@ -267,7 +267,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if ($trinhTuNhanVanBan == 8)
+                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::CHU_TICH_XA_NHAN_VB)
                                             <p>
                                                 <textarea
                                                     name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"

@@ -32,6 +32,16 @@ body {
     border-color: #119bea !important;
 }
 
+.btn-blue-dark {
+    background-color: #4937de !important;
+    border-color: #4937de !important;
+}
+
+.btn-green-light {
+    background-color: #13b39d !important;
+    border-color: #13b39d !important;
+}
+
 .nav-tabs-custom>.nav-tabs>li.active {
     border-top-color: #119bea !important;
 }

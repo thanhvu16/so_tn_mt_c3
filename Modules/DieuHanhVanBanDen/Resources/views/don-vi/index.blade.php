@@ -35,7 +35,7 @@
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
                                 <th width="22%" class="text-center">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
-                                @if ($trinhTuNhanVanBan == 4 || $donVi->cap_xa == 1)
+                                @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB || $donVi->cap_xa == \Modules\Admin\Entities\DonVi::CAP_XA)
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
@@ -72,17 +72,18 @@
                                                 @endif
                                             </p>
                                         @endif
-                                        <p>
-                                            <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
-                                                <i class="fa fa-book"></i> Tóm tăt văn bản
-                                            </a>
-                                        </p>
-                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                        @if (!empty($vanBanDen->tom_tat))
                                             <p>
-                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                    <i class="fa fa-book"></i> Tóm tăt văn bản
+                                                </a>
                                             </p>
-                                        </div>
-
+                                            <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                                <p>
+                                                    {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                </p>
+                                            </div>
+                                        @endif
                                         @if ($vanBanDen->vanBanTraLai)
                                             <p class="color-red"><b>Lý
                                                     do trả
@@ -95,7 +96,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == 2) || $vanBanDen->type == 1)
+                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)
                                             <p>
                                                 <a class="tra-lai-van-ban" data-toggle="modal"
                                                    data-target="#modal-tra-lai"
@@ -109,7 +110,7 @@
 
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-                                            @if ($trinhTuNhanVanBan == 3)
+                                            @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                 <p>
                                                     <select name="pho_phong_id[{{ $vanBanDen->id }}]"
                                                             id="pho-phong-chu-tri-{{ $vanBanDen->id }}"
@@ -128,7 +129,7 @@
                                                     </select>
                                                 </p>
                                             @endif
-                                            @if ($trinhTuNhanVanBan == 3 || $trinhTuNhanVanBan == 4)
+                                            @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
                                                 <p>
                                                     <select name="chuyen_vien_id[{{ $vanBanDen->id }}]"
                                                             id="chuyen-vien-{{ $vanBanDen->id }}"
@@ -176,7 +177,7 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-                                            @if ($trinhTuNhanVanBan == 3 || $trinhTuNhanVanBan == 4)
+                                            @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
                                                 <p>
                                                     <span>Gia hạn xử lý</span>
                                                     <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
@@ -198,7 +199,7 @@
                                             @endif
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
                                                 <p>Lãnh đạo dự họp:</p>
-                                                @if ($trinhTuNhanVanBan == 3)
+                                                @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                            id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
@@ -222,19 +223,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if ($trinhTuNhanVanBan == 3)
+                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                             <p>
                                                 {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}
                                             </p>
                                         @endif
 
-                                        @if ($trinhTuNhanVanBan == 3)
+                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                             <p>
 
                                                     <textarea name="noi_dung_pho_phong[{{ $vanBanDen->id }}]"
                                                               form="form-tham-muu"
                                                               class="form-control {{ !empty($vanBanDen->phoPhong) ? 'show' : 'hide' }}"
-                                                              rows="5">{{ $vanBanDen->phoPhong->noi_dung ?? null  }}</textarea>
+                                                              rows="3">{{ $vanBanDen->phoPhong->noi_dung ?? null  }}</textarea>
                                             </p>
                                         @endif
 
@@ -243,10 +244,10 @@
                                                     name="noi_dung_chuyen_vien[{{ $vanBanDen->id }}]"
                                                     form="form-tham-muu"
                                                     class="form-control noi-dung-chuyen-vien {{ !empty($vanBanDen->chuyenVien) ? 'show' : 'hide' }}"
-                                                    rows="5">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
+                                                    rows="4">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
-                                    @if ($trinhTuNhanVanBan == 4 || $donVi->cap_xa == 1)
+                                    @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB || $donVi->cap_xa == \Modules\Admin\Entities\DonVi::CAP_XA)
                                         <td class="text-center">
                                             <p>
                                                 <span style="color: red;"> Chọn duyệt:</span><br>
@@ -309,7 +310,8 @@
             let textPhoPhong = $this.find("option:selected").text() + ' chỉ đạo';
 
             if (id) {
-                if (status == 3) {
+                //truong phong nhan van ban
+                if (status == 6) {
                     checkVanBanDenId(vanBanDenDonViId);
                 }
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_phong[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó phòng ' + textPhoPhong);
@@ -340,7 +342,7 @@
             vanBanDenDonViId = $this.data('id');
 
             if (id) {
-                if (status == 3) {
+                if (status == 6) {
                     checkVanBanDenId(vanBanDenDonViId);
                 }
 

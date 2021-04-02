@@ -2,6 +2,7 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -167,7 +168,8 @@ class VanBanDenPhoiHopController extends Controller
 
             // view da chi dao
             if (!empty($chuyenTiep)) {
-                return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.da_chi_dao', compact('danhSachVanBanDen',
+                return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.da_chi_dao',
+                    compact('danhSachVanBanDen',
                     'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
                     'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan', 'chuTich', 'danhSachDonVi'));
             }
@@ -207,13 +209,17 @@ class VanBanDenPhoiHopController extends Controller
     {
         $data = $request->all();
         $currentUser = auth::user();
+        $donVi = $currentUser->donVi;
+        $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
         $vanBanDenDonViIds = json_decode($data['van_ban_den_id']);
+        $danhSachChuTichIds = $data['chu_tich_id'] ?? null;
         $danhSachPhoChuTichIds = $data['pho_chu_tich_id'] ?? null;
         $danhSachTruongPhongIds = $data['truong_phong_id'] ?? null;
         $danhSachPhoPhongIds = $data['pho_phong_id'] ?? null;
         $danhSachChuyenVienIds = $data['chuyen_vien_id'] ?? null;
-        $textnoidungPhoChuTich = $data['noi_dung_pho_chu_tich'] ?? null;
+        $textNoiDungPhoChuTich = $data['noi_dung_pho_chu_tich'] ?? null;
+        $textNoiDungChuTich = $data['noi_dung_chu_tich'] ?? null;
         $textnoidungTruongPhong = $data['noi_dung_truong_phong'] ?? null;
         $textnoidungPhoPhong = $data['noi_dung_pho_phong'] ?? null;
         $textNoiDungChuyenVien = $data['noi_dung_chuyen_vien'] ?? null;
@@ -229,7 +235,6 @@ class VanBanDenPhoiHopController extends Controller
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
                 DB::beginTransaction();
-
                 foreach ($vanBanDenDonViIds as $vanBanDenId) {
 
                     $donViPhoiHop = DonViPhoiHop::where('van_ban_den_id', $vanBanDenId)
@@ -247,14 +252,33 @@ class VanBanDenPhoiHopController extends Controller
                     }
                     $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
 
+                    if (isset($danhSachChuTichIds) && !empty($danhSachChuTichIds[$vanBanDenId])) {
+                        $dataChuyenNhanVanBanDonVi = [
+                            'van_ban_den_id' => $vanBanDenId,
+                            'can_bo_chuyen_id' => $currentUser->id,
+                            'can_bo_nhan_id' => $danhSachChuTichIds[$vanBanDenId],
+                            'don_vi_id' => $donViId,
+                            'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
+                            'noi_dung' => $textNoiDungChuTich[$vanBanDenId],
+                            'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
+                            'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
+                            'user_id' => $currentUser->id,
+                            'active' => DonViPhoiHop::ACTIVE
+                        ];
+
+                        $chuyenNhanVanBanPhoChuTich = new DonViPhoiHop();
+                        $chuyenNhanVanBanPhoChuTich->fill($dataChuyenNhanVanBanDonVi);
+                        $chuyenNhanVanBanPhoChuTich->save();
+                    }
+
                     if (isset($danhSachPhoChuTichIds) && !empty($danhSachPhoChuTichIds[$vanBanDenId])) {
                         $dataChuyenNhanVanBanDonVi = [
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
                             'can_bo_nhan_id' => $danhSachPhoChuTichIds[$vanBanDenId],
-                            'don_vi_id' => $currentUser->don_vi_id,
+                            'don_vi_id' => $donViId,
                             'parent_id' => $donViPhoiHop ? $donViPhoiHop->id : null,
-                            'noi_dung' => $textnoidungPhoChuTich[$vanBanDenId],
+                            'noi_dung' => $textNoiDungPhoChuTich[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViPhoiHop->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViPhoiHop->vao_so_van_ban,
                             'user_id' => $currentUser->id,
@@ -267,7 +291,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
 
                     // luu don vi chu tri tu cap xa
-                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH])) {
+                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH]) || $currentUser->can(AllPermission::thamMuu())) {
                         //data don vi phoi hop
                         $dataLuuDonViPhoiHop = [
                             'van_ban_den_id' => $vanBanDenId,

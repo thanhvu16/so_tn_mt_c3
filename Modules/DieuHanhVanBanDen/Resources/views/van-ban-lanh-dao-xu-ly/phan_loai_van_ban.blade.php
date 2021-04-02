@@ -33,12 +33,8 @@
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
-{{--                                <th width="20%" class="text-center">Tóm tắt VB</th>--}}
                                 <th class="text-center" width="22%">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
-                                <th class="text-center" width="7%">
-                                    <input id="check-all" type="checkbox" name="check_all" value="">
-                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -62,7 +58,9 @@
                                         </p>
                                         @if (!empty($vanBanDen->tom_tat))
                                             <p>
-                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                <a data-toggle="collapse" class="color-black"
+                                                   href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button"
+                                                   aria-expanded="false" aria-controls="tom-tat-van-ban">
                                                     <i class="fa fa-book"></i> Tóm tăt văn bản
                                                 </a>
                                             </p>
@@ -84,20 +82,8 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
-                                               data-id="{{ $vanBanDen->id }}">
-                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
-                                            </a>
-                                        </p>
-
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
-{{--                                    <td>--}}
-{{--                                        <p>--}}
-{{--                                            {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}--}}
-{{--                                        </p>--}}
-{{--                                    </td>--}}
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             <p>
@@ -132,8 +118,8 @@
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         @if (isset($vanBanDen->PhoChuTich) && $vanBanDen->PhoChuTich->can_bo_nhan_id != $phoChuTich->id)
-                                                        <option
-                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
+                                                            <option
+                                                                value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
                                                         @else
                                                             <option
                                                                 value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
@@ -197,7 +183,7 @@
                                                        id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                        class="radio-col-cyan chu-tich-du-hop"
                                                        value="{{ $chuTich->id ?? null }}"
-                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
+                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : 'checked'  }}>
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
                                                 ><i>GD</i></label>
@@ -243,19 +229,12 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị
+                                                phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
                                         </p>
-                                    </td>
-                                    <td class="text-center">
-                                        <label style="color: red; font-weight: 500 !important;"
-                                               for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>
-                                        <input id="checkbox{{ $vanBanDen->id }}" type="checkbox"
-                                               name="duyet[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->id }}"
-                                               class="duyet sub-check">
-
                                     </td>
                                 </tr>
                             @empty
@@ -324,13 +303,13 @@
                     $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
                 }
-
+                checkVanBanDenId(vanBanDenDonViId);
             } else {
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
+                removeVanBanDenDonViId(vanBanDenDonViId);
             }
-
             lanhDaoXemDeBiet($this, 'PCT');
         });
 
@@ -356,6 +335,7 @@
 
             if (donViChuTri.length > 0 && id.length > 0) {
                 $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
+                checkVanBanDenId(vanBanDenDonViId);
                 $(this).parents('.data-row').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
             } else {
                 removeVanBanDenDonViId(vanBanDenDonViId);
@@ -472,7 +452,7 @@
         });
 
         function checkVanBanDenId(vanBanDenDonViId) {
-
+            console.log(vanBanDenDonViId);
             if (ArrVanBanDenDonViId.indexOf(vanBanDenDonViId) === -1) {
                 ArrVanBanDenDonViId.push(vanBanDenDonViId);
             }

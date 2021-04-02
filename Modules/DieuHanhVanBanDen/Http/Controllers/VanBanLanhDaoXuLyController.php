@@ -2,6 +2,7 @@
 
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
 use App\Models\LichCongTac;
 use App\User;
@@ -34,6 +35,12 @@ class VanBanLanhDaoXuLyController extends Controller
         $donVi = $user->donVi;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
+
+        $checkThamMuuSo = User::permission(AllPermission::thamMuu())
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa')
+                    ->where('parent_id', DonVi::NO_PARENT_ID);
+            })->select('id', 'ho_ten', 'don_vi_id')->orderBy('id', 'DESC')->first();
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
@@ -177,14 +184,24 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             }
 
-            if ($active == 2) {
+            if ($active == VanBanDen::PHO_CHU_TICH_NHAN_VB) {
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.pho_chu_tich',
                     compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
             }
 
-            return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.index',
-                compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
-                    'order', 'active', 'danhSachDonVi'));
+            if (!empty($checkThamMuuSo)) {
+
+                return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.index',
+                    compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
+                        'order', 'active', 'danhSachDonVi'));
+            } else {
+
+                return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.phan_loai_van_ban',
+                    compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
+                        'order', 'active', 'danhSachDonVi'));
+            }
+
+
         }
     }
 
@@ -445,6 +462,13 @@ class VanBanLanhDaoXuLyController extends Controller
                     ->get();
             }
 
+            if ($donVi->parent_id != 0) {
+                $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
+                    ->where('parent_id', $donVi->parent_id)
+                    ->whereNull('deleted_at')
+                    ->get();
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $danhSachDonViChutri
@@ -565,7 +589,7 @@ class VanBanLanhDaoXuLyController extends Controller
                             'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
                             'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
                             'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
-                            'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == 3 || $vanBanDen->trinh_tu_nhan_van_ban == 8 ? 1 : null
+                            'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == VanBanDen::TRUONG_PHONG_NHAN_VB || $vanBanDen->trinh_tu_nhan_van_ban == VanBanDen::CHU_TICH_XA_NHAN_VB ? 1 : null
                         ];
 
                         // luu don vi chu tri

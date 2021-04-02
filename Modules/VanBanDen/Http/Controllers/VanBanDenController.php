@@ -17,6 +17,7 @@ use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use File, auth, DB;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\TieuChuanVanBan;
@@ -50,7 +51,7 @@ class VanBanDenController extends Controller
         $year = $request->get('year') ?? null;
 
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
-            ( $user->hasRole(PHO_CHU_TICH )&& $donVi->cap_xa != DonVi::CAP_XA)) {
+            ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
 
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
@@ -101,15 +102,14 @@ class VanBanDenController extends Controller
 
                     }
                 })
-                ->where(function($query) use ($year) {
+                ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-        }else
-        {
+        } else {
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
             $ds_vanBanDen = VanBanDen::
             where([
@@ -163,7 +163,7 @@ class VanBanDenController extends Controller
 
                     }
                 })
-                ->where(function($query) use ($year) {
+                ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
                     }
@@ -206,7 +206,8 @@ class VanBanDenController extends Controller
         }
         $sovanban = $laysovanban;
 
-        $users = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+
         $ngaynhan = date('Y-m-d');
         $songay = 10;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
@@ -223,7 +224,7 @@ class VanBanDenController extends Controller
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
 
-        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'loaivanban', 'sovanban','tieuChuan', 'users', 'hangiaiquyet'));
+        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'loaivanban', 'sovanban', 'tieuChuan', 'users', 'hangiaiquyet'));
     }
 
     public function layhantruyensangview(Request $request)
@@ -231,7 +232,7 @@ class VanBanDenController extends Controller
         //lấy hạn
         $ngaynhan = $request->get('ngay_ban_hanh');
         $tieuChuan = $request->get('tieu_chuan');
-        $tieuChuandata = TieuChuanVanBan::where('id',$tieuChuan)->first();
+        $tieuChuandata = TieuChuanVanBan::where('id', $tieuChuan)->first();
         $songay = $tieuChuandata->so_ngay;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
         $i = 0;
@@ -252,6 +253,7 @@ class VanBanDenController extends Controller
             ]
         );
     }
+
     public function laysoden(Request $request)
     {
         $nam = date("Y");
@@ -260,7 +262,7 @@ class VanBanDenController extends Controller
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' =>  $request->donViId,
+                'don_vi_id' => $request->donViId,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -291,6 +293,8 @@ class VanBanDenController extends Controller
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
+        $thamMuuId = !empty($request->lanh_dao_tham_muu) ?? null;
+
         try {
             DB::beginTransaction();
 
@@ -337,8 +341,40 @@ class VanBanDenController extends Controller
                             $vanbandv->han_xu_ly = $request->han_xu_ly;
                             $vanbandv->han_giai_quyet = $han_gq[$key];
                         }
-
+                        $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
                         $vanbandv->save();
+
+                        // nếu empty tham mưu thì chuyển thẳng giám đốc (chủ tịch)
+                        if (empty($thamMuuId)) {
+                            $chuTich = User::role(CHU_TICH)
+                                ->whereHas('donVi', function ($query) {
+                                    return $query->whereNull('cap_xa');
+                                })->select('id', 'ho_ten', 'don_vi_id')->first();
+
+                            $dataXuLyVanBanDen = [
+                                'van_ban_den_id' => $vanbandv->id,
+                                'can_bo_chuyen_id' => $user->id,
+                                'can_bo_nhan_id' => $chuTich->id,
+                                'noi_dung' => 'Kính chuyển giám đốc ' . $chuTich->ho_ten . ' chỉ đạo',
+                                'tom_tat' => $vanbandv->trich_yeu ?? null,
+                                'user_id' => $user->id,
+                                'tu_tham_muu' => XuLyVanBanDen::TU_VAN_THU,
+                                'lanh_dao_chi_dao' => 1,
+                                'quyen_gia_han' => 1
+                            ];
+
+                            $checkTonTaiData = XuLyVanBanDen::where([
+                                'van_ban_den_id' => $vanbandv->id,
+                                'can_bo_nhan_id' => $chuTich->id
+                            ])
+                                ->whereNull('status')
+                                ->first();
+
+                            if (empty($checkTonTaiData)) {
+                                XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
+                            }
+                        }
+
                         UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                     }
                 } else {
@@ -360,7 +396,39 @@ class VanBanDenController extends Controller
                     $vanbandv->don_vi_id = auth::user()->don_vi_id;
                     $vanbandv->type = 1;
                     $vanbandv->nguoi_tao = auth::user()->id;
+                    $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
                     $vanbandv->save();
+
+                    // nếu empty tham mưu thì chuyển thẳng giám đốc (chủ tịch)
+                    if (empty($thamMuuId)) {
+                        $chuTich = User::role(CHU_TICH)
+                            ->whereHas('donVi', function ($query) {
+                                return $query->whereNull('cap_xa');
+                            })->select('id', 'ho_ten', 'don_vi_id')->first();
+
+                        $dataXuLyVanBanDen = [
+                            'van_ban_den_id' => $vanbandv->id,
+                            'can_bo_chuyen_id' => $user->id,
+                            'can_bo_nhan_id' => $chuTich->id,
+                            'noi_dung' => 'Kính chuyển giám đốc ' . $chuTich->ho_ten . ' chỉ đạo',
+                            'tom_tat' => $vanbandv->trich_yeu ?? null,
+                            'user_id' => $user->id,
+                            'tu_tham_muu' => XuLyVanBanDen::TU_VAN_THU,
+                            'lanh_dao_chi_dao' => 1,
+                            'quyen_gia_han' => 1
+                        ];
+
+                        $checkTonTaiData = XuLyVanBanDen::where([
+                            'van_ban_den_id' => $vanbandv->id,
+                            'can_bo_nhan_id' => $chuTich->id
+                        ])
+                            ->whereNull('status')
+                            ->first();
+
+                        if (empty($checkTonTaiData)) {
+                            XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
+                        }
+                    }
 
                     UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
                 }
@@ -379,7 +447,7 @@ class VanBanDenController extends Controller
                     }
 
                 }
-                if($request->id_van_ban_di){
+                if ($request->id_van_ban_di) {
                     $layvanbandi = NoiNhanVanBanDi::where('id', $request->id_van_ban_di)->first();
                     if (!empty($layvanbandi)) {
                         $layvanbandi->trang_thai = 3;
@@ -394,7 +462,16 @@ class VanBanDenController extends Controller
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 if (auth::user()->donVi->parent_id != 0) {
+                    $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                        ->whereHas('donVi', function ($query) {
+                            return $query->where('parent_id', auth::user()->donVi->parent_id);
+                        })->orderBy('id', 'DESC')->first();
+
                     $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
+
+                    if ($thamMuuChiCuc && empty($request->don_vi_phoi_hop)) {
+                        $trinhTuNhanVanBan = VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB;
+                    }
                 }
                 if ($noi_dung && $noi_dung[0] != null) {
                     foreach ($noi_dung as $key => $data) {
@@ -601,10 +678,9 @@ class VanBanDenController extends Controller
         $vanbandv->so_van_ban_id = $request->so_van_ban;
 
 
-        if ($request->so_den != $vanbandv->so_den)
-        {
+        if ($request->so_den != $vanbandv->so_den) {
             $vanbandv->so_den = $request->so_den;
-        }else{
+        } else {
             if ($checktrungsoden == null) {
                 $user = auth::user();
                 $nam = date("Y");
@@ -650,7 +726,6 @@ class VanBanDenController extends Controller
 //        $vanbandv->han_giai_quyet = $han_giai_quyet[0];
         $vanbandv->save();
         UserLogs::saveUserLogs('Cập nhật văn bản đến', $vanbandv);
-
 
 
         return redirect()->route('van-ban-den.index')->with('success', 'Cập nhật dữ liệu thành công !');
@@ -829,8 +904,8 @@ class VanBanDenController extends Controller
     public function luuvanbantumail(Request $request)
     {
         $requestData = $request->all();
-        $user=auth::user();
-        $nam=date("Y");
+        $user = auth::user();
+        $nam = date("Y");
         //vb tu truc
         if (!empty($request->get('type_van_ban'))) {
             $docEmail = DocEmails::where('id', $request->id_vanban_tumail)->first();
@@ -957,8 +1032,8 @@ class VanBanDenController extends Controller
     {
         $requestData = $request->all();
         $idvanbanden = [];
-        $user=auth::user();
-        $nam=date("Y");
+        $user = auth::user();
+        $nam = date("Y");
         //vb tu truc
         if (!empty($request->get('type_van_ban'))) {
             $docEmail = DocEmails::where('id', $request->id_vanban_tumail)->first();
@@ -1141,6 +1216,11 @@ class VanBanDenController extends Controller
         } else {
             return substr($filename, $pos + 1);
         }
+    }
+
+    public function createXuLyVanBanDenLanhDao($vanBanDenId)
+    {
+
     }
 
 }

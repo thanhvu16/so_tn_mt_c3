@@ -2,6 +2,7 @@
 
 namespace Modules\DieuHanhVanBanDen\Entities;
 
+use App\Common\AllPermission;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\ChucVu;
@@ -127,6 +128,15 @@ class DonViPhoiHop extends Model
                 ->where('trang_thai', ACTIVE)
                 ->whereNull('deleted_at')->first();
 
+            $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                ->whereHas('donVi', function ($query) {
+                    return $query->where('parent_id', auth::user()->donVi->parent_id);
+                })->orderBy('id', 'DESC')->first();
+
+            if ($thamMuuChiCuc) {
+                $nguoiDung = $thamMuuChiCuc;
+            }
+
             $parentDonVi = DonVi::where('id', $donVi->parent_id)->first();
             $tenDonVi = $parentDonVi->ten_don_vi ?? $donVi->ten_don_vi;
             $donViId = $parentDonVi->id ?? $donVi->id;
@@ -209,7 +219,7 @@ class DonViPhoiHop extends Model
                 $donViPhoiHop->don_vi_id = $donViId;
                 $donViPhoiHop->don_vi_co_dieu_hanh = $donVi->dieu_hanh ?? null;
                 $donViPhoiHop->vao_so_van_ban = !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null;
-                $donViPhoiHop->parent_don_vi_id = auth::user()->don_vi_id;
+                $donViPhoiHop->parent_don_vi_id = auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                 $donViPhoiHop->active = empty($phoChuTichId) ? self::ACTIVE : null;
                 $donViPhoiHop->save();
 

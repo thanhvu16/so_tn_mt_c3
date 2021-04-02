@@ -27,6 +27,7 @@ class XuLyVanBanDen extends Model
 
     const STATUS_TRA_LAI = 1;
     const TU_THAM_MUU = 1;
+    const TU_VAN_THU = 2;
     const QUYEN_GIA_HAN = 1;
     const LA_CAN_BO_CHI_DAO = 1;
     const HOAN_THANH_VB = 1;
@@ -45,5 +46,16 @@ class XuLyVanBanDen extends Model
     public function vanBanDen()
     {
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
+    }
+
+    public static function luuXuLyVanBanDen($dataXuLyVanBanDen)
+    {
+
+        $xuLyVanBanDen = new XuLyVanBanDen();
+        $xuLyVanBanDen->fill($dataXuLyVanBanDen);
+        $xuLyVanBanDen->save();
+
+        // luu vet van ban den
+        LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataXuLyVanBanDen);
     }
 }
