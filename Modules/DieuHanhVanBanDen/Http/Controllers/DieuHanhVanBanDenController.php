@@ -604,7 +604,13 @@ class DieuHanhVanBanDenController extends Controller
                     ->whereHas('roles', function ($query) use ($role) {
                         return $query->whereIn('name', $role);
                     })
-                    ->where('don_vi_id', $currentUser->don_vi_id)
+                    ->where(function ($query) use ($donVi, $currentUser) {
+                        if ($donVi->parent_id != 0) {
+                            return $query->where('don_vi_id', $donVi->parent_id);
+                        } else {
+                            return $query->where('don_vi_id', $currentUser->don_vi_id);
+                        }
+                    })
                     ->whereNotIn('id', $id)
                     ->select('id', 'don_vi_id', 'ho_ten')
                     ->orderBy('id', 'DESC')

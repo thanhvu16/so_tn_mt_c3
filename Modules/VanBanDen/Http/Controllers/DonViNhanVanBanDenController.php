@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDen\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -373,7 +374,7 @@ class DonViNhanVanBanDenController extends Controller
 
                 // gui chu tich xa nhan van ban
                 if ($donVi->cap_xa == DonVi::CAP_XA) {
-                    $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id);
+                    $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id, $type);
                 }
 
                 if ($layvanbandi != null) {
@@ -1052,12 +1053,27 @@ class DonViNhanVanBanDenController extends Controller
         if ($layvanbandi) {
             //update
             $layvanbandi->vao_so_van_ban = 1;
+            $layvanbandi->da_tham_muu = DonViChuTri::DA_THAM_MUU;
             $layvanbandi->save();
+
+            /** check có tham mưu chi cục không? nếu có thì cập nhập cán bộ nhận id trong bảng đơn vị chủ trì **/
+            if (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                    ->whereHas('donVi', function ($query) {
+                        return $query->where('parent_id', auth::user()->donVi->parent_id);
+                    })->orderBy('id', 'DESC')->first();
+
+                if ($thamMuuChiCuc) {
+                    $layvanbandi->can_bo_nhan_id = $thamMuuChiCuc->id;
+                    $layvanbandi->da_tham_muu = null;
+                    $layvanbandi->save();
+                }
+            }
         }
 
         // gui chu tich xa nhan van ban
-        if (auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
-            $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id);
+        if (auth::user()->donVi->parent_id != 0) {
+            $this->updateTrinhTuNhanVanBan($layvanbandi->van_ban_den_id, $type);
         }
 
 
@@ -1085,11 +1101,23 @@ class DonViNhanVanBanDenController extends Controller
         //
     }
 
-    public function updateTrinhTuNhanVanBan($vanBanDenId)
+    public function updateTrinhTuNhanVanBan($vanBanDenId, $type)
     {
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
         if ($vanBanDen) {
-            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+
+            $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                ->whereHas('donVi', function ($query) {
+                    return $query->where('parent_id', auth::user()->donVi->parent_id);
+                })->orderBy('id', 'DESC')->first();
+
+            $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
+
+            if ($thamMuuChiCuc) {
+                $trinhTuNhanVanBan = VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB;
+            }
+
+            $vanBanDen->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
             $vanBanDen->save();
         }
     }
