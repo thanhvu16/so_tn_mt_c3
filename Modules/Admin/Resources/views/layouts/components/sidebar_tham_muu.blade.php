@@ -1,4 +1,5 @@
-<li class="treeview {{ Route::is('phan-loai-van-ban.index') || Route::is('phan-loai-van-ban.da_phan_loai') ? 'active menu-open' : '' }}">
+<li class="treeview {{ Route::is('phan-loai-van-ban.index') || Route::is('phan-loai-van-ban.da_phan_loai')
+ || Route::is('phan-loai-van-ban-phoi-hop.index') || Route::is('van-ban-phoi-hop.da_phan_loai') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-laptop" aria-hidden="true"></i> <span>Phân loại văn bản</span>
         <span class="pull-right-container">
@@ -12,5 +13,14 @@
         <li class="{{ Route::is('phan-loai-van-ban.da_phan_loai') ? 'active' : '' }}"><a
                 href="{{route('phan-loai-van-ban.da_phan_loai')}}"><i class="fa fa-circle-o"></i>Văn bản đã phân loại</a>
         </li>
+        @if (isset(auth::user()->donVi) && auth::user()->donVi->parent_id != 0)
+            <hr class="hr-line">
+            <li class="{{ Route::is('phan-loai-van-ban-phoi-hop.index') ? 'active' : '' }}"><a
+                    href="{{route('phan-loai-van-ban-phoi-hop.index')}}"><i class="fa fa-circle-o"></i>VB phối hợp chờ phân loại</a>
+            </li>
+            <li class="{{ Route::is('van-ban-phoi-hop.da_phan_loai') ? 'active' : '' }}"><a
+                    href="{{route('van-ban-phoi-hop.da_phan_loai', 'chuyen_tiep=1')}}"><i class="fa fa-circle-o"></i>VB phối hợp đã phân loại</a>
+            </li>
+        @endif
     </ul>
 </li>

@@ -2,6 +2,7 @@
 
 namespace Modules\VanBanDen\Entities;
 
+use App\Common\AllPermission;
 use App\Models\LichCongTac;
 use App\Models\VanBanDiVanBanDen;
 use App\User;
@@ -35,15 +36,27 @@ class VanBanDen extends Model
     use Notifiable, SoftDeletes, HasRoles;
     protected $table = 'van_ban_den';
 
+//    const CHU_TICH_NHAN_VB = 1;
+//    const PHO_CHU_TICH_NHAN_VB = 2;
+//    const CHU_TICH_XA_NHAN_VB = 8;
+//    const PHO_CHU_TICH_XA_NHAN_VB = 9;
+//    const TRUONG_PHONG_NHAN_VB = 3;
+//    const PHO_PHONG_NHAN_VB = 4;
+//    const CHUYEN_VIEN_NHAN_VB = 5;
+//    const HOAN_THANH_CHO_DUYET = 6;
+//    const HOAN_THANH_VAN_BAN = 7;
+
     const CHU_TICH_NHAN_VB = 1;
     const PHO_CHU_TICH_NHAN_VB = 2;
-    const TRUONG_PHONG_NHAN_VB = 3;
-    const PHO_PHONG_NHAN_VB = 4;
-    const CHUYEN_VIEN_NHAN_VB = 5;
-    const HOAN_THANH_CHO_DUYET = 6;
-    const HOAN_THANH_VAN_BAN = 7;
-    const CHU_TICH_XA_NHAN_VB = 8;
-    const PHO_CHU_TICH_XA_NHAN_VB = 9;
+    const THAM_MUU_CHI_CUC_NHAN_VB = 3;
+    const CHU_TICH_XA_NHAN_VB = 4;
+    const PHO_CHU_TICH_XA_NHAN_VB = 5;
+    const TRUONG_PHONG_NHAN_VB = 6;
+    const PHO_PHONG_NHAN_VB = 7;
+    const CHUYEN_VIEN_NHAN_VB = 8;
+    const HOAN_THANH_CHO_DUYET = 9;
+    const HOAN_THANH_VAN_BAN = 10;
+
 
     const VB_TRA_LOI = 1;
     const DON_VI_DU_HOP = 1;
@@ -190,8 +203,13 @@ class VanBanDen extends Model
 
     public function donViCapXaChuTri()
     {
+        $donViId = auth::user()->don_vi_id;
+        if (auth::user()->donVi->parent_id != 0 && auth::user()->can(AllPermission::thamMuu())) {
+            $donViId = auth::user()->donVi->parent_id;
+        }
+
         return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')
-            ->where('parent_don_vi_id', auth::user()->don_vi_id)
+            ->where('parent_don_vi_id', $donViId)
             ->select('id', 'van_ban_den_id', 'don_vi_id', 'noi_dung');
     }
 
@@ -203,8 +221,13 @@ class VanBanDen extends Model
 
     public function DonViCapXaPhoiHop()
     {
+        $donViId = auth::user()->don_vi_id;
+        if (auth::user()->donVi->parent_id != 0 && auth::user()->can(AllPermission::thamMuu())) {
+            $donViId = auth::user()->donVi->parent_id;
+        }
+
         return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id')
-            ->where('parent_don_vi_id', auth::user()->don_vi_id);
+            ->where('parent_don_vi_id', $donViId);
     }
 
     public  function donViCapXaPhoiHopXuLyChinh()
@@ -245,15 +268,19 @@ class VanBanDen extends Model
 
     public function getChuyenVienThucHien($canBoNhanId = null)
     {
-
+        $donViId = auth::user()->don_vi_id;
+        if (auth::user()->donVi->parent_id != 0 && auth::user()->can(AllPermission::thamMuu())) {
+            $donViId = auth::user()->donVi->parent_id;
+        }
         return DonViChuTri::where('van_ban_den_id', $this->id)
-            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('don_vi_id', $donViId)
             ->where(function ($query) use ($canBoNhanId) {
                 if (!empty($canBoNhanId)) {
                     return $query->whereIn('can_bo_nhan_id', $canBoNhanId);
                 }
             })
             ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'han_xu_ly_moi'])
+            ->orderBy('id', 'DESC')
             ->first();
     }
 
@@ -333,9 +360,10 @@ class VanBanDen extends Model
 
     public function donViPhoiHopVanBan($canBoNhanId)
     {
+        $donViId = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
 
         return DonViPhoiHop::where('van_ban_den_id', $this->id)
-            ->where('don_vi_id', auth::user()->don_vi_id)
+            ->where('don_vi_id', $donViId)
             ->whereIn('can_bo_nhan_id', $canBoNhanId)
             ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id')
             ->first();

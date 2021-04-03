@@ -36,7 +36,7 @@
                                 <th width="22%" class="text-center">Tóm tắt VB</th>
                                 <th width="15%" class="text-center">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
-                                @if ($trinhTuNhanVanBan == 9)
+                                @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_CHU_TICH_XA_NHAN_VB)
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
@@ -91,7 +91,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == 2) || $vanBanDen->type == 1)
+                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)
                                             <p>
                                                 <a class="tra-lai-van-ban" data-toggle="modal"
                                                    data-target="#modal-tra-lai"
@@ -103,7 +103,7 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-                                            @if($trinhTuNhanVanBan == 8)
+                                            @if($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::CHU_TICH_XA_NHAN_VB)
                                                 <p>
                                                     <select
                                                         name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
@@ -237,7 +237,7 @@
                                                                form="form-tham-muu" {{ !empty($vanBanDen->truongPhong) && $vanBanDen->truongPhong->can_bo_nhan_id == $vanBanDen->lichCongTacDonVi->lanh_dao_id ? 'checked' : null  }}>
                                                         <label
                                                             for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
-                                                        ><i>TP</i></label> {!!  $trinhTuNhanVanBan == 8 ? "&nbsp;" : "<br/>"  !!}
+                                                        ><i>TP</i></label> {!!  $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::CHU_TICH_XA_NHAN_VB ? "&nbsp;" : "<br/>"  !!}
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                                id="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"
@@ -253,7 +253,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if ($trinhTuNhanVanBan == 8)
+                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::CHU_TICH_XA_NHAN_VB)
                                             <p>
                                                 <textarea
                                                     name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
@@ -282,7 +282,7 @@
                                                 rows="3">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
-                                    @if ($trinhTuNhanVanBan == 9)
+                                    @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_CHU_TICH_XA_NHAN_VB)
                                         <td class="text-center">
                                             <p>
                                                 <span style="color: red;"> Chọn duyệt:</span><br>

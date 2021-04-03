@@ -18,15 +18,19 @@
             @role(QUAN_TRI_HT)
             @include('admin::layouts.components.sidebar_admin')
             @endrole
+
+            @unlessrole(QUAN_TRI_HT)
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                    @include('admin::layouts.components.sidebar_tham_muu')
+                @endif
+            @endunlessrole
+
             @role(VAN_THU_DON_VI)
             @include('admin::layouts.components.sidebar_van_thu_don_vi')
             @endrole
             @role(VAN_THU_HUYEN)
             @include('admin::layouts.components.sidebar_van_thu_huyen')
             @endrole
-            @if(auth::user()->hasRole([CHANH_VAN_PHONG]))
-                @include('admin::layouts.components.sidebar_tham_muu')
-            @endif
             @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                 @include('admin::layouts.components.sidebar_lanh_dao')
             @endif

@@ -60,16 +60,18 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        <p>
-                                            <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
-                                                <i class="fa fa-book"></i> Tóm tăt văn bản
-                                            </a>
-                                        </p>
-                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                        @if (!empty($vanBanDen->tom_tat))
                                             <p>
-                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                    <i class="fa fa-book"></i> Tóm tăt văn bản
+                                                </a>
                                             </p>
-                                        </div>
+                                            <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                                <p>
+                                                    {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                </p>
+                                            </div>
+                                        @endif
                                         @if ($vanBanDen->vanBanTraLai)
                                             <p class="color-red"><b>Lý
                                                     do trả
@@ -81,11 +83,13 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="1">
-                                                <span><i class="fa fa-reply"></i> Chuyển lại tham mưu</span>
-                                            </a>
-                                        </p>
+                                        @if (!empty($vanBanDen->lanh_dao_tham_muu))
+                                            <p>
+                                                <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="1">
+                                                    <span><i class="fa fa-reply"></i> Chuyển lại tham mưu</span>
+                                                </a>
+                                            </p>
+                                        @endif
                                         @if (!empty($vanBanDen->checkVanBanQuaChuTich))
                                             <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="2">
                                                 <span> <i class="fa fa-reply"></i> Chuyển báo cáo lại giám đốc</span>

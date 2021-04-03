@@ -207,14 +207,16 @@
                                        value="{{auth::user()->don_vi_id}}">
                             </div>
                             @hasanyrole('văn thư sở')
-                            <div class="col-md-3" >
-                                <label for="vb_ngay_ban_hanh" class="col-form-label">Lãnh đạo tham mưu</label>
-                                <select name="lanh_dao_tham_muu" class="form-control " id="">
-                                    @foreach($nguoi_dung as $nguoidung)
-                                        <option value="{{$nguoidung->id}}">{{$nguoidung->ho_ten}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            @if (count($nguoi_dung) > 0)
+                                <div class="col-md-3" >
+                                    <label for="vb_ngay_ban_hanh" class="col-form-label">Lãnh đạo tham mưu</label>
+                                    <select name="lanh_dao_tham_muu" class="form-control " id="">
+                                        @foreach($nguoi_dung as $nguoidung)
+                                            <option value="{{$nguoidung->id}}">{{$nguoidung->ho_ten}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                             @endrole
                             @hasanyrole('văn thư đơn vị')
                             <div class="col-md-3 mt-4">

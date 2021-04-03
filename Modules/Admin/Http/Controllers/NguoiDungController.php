@@ -14,6 +14,7 @@ use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\NhomDonVi_chucVu;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class NguoiDungController extends Controller
@@ -28,6 +29,7 @@ class NguoiDungController extends Controller
         $donViId = $request->get('don_vi_id') ?? null;
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
+        $permission = $request->get('permission') ?? null;
         $username = $request->get('username') ?? null;
         $trangThai = $request->get('trang_thai') ?? null;
         $danhSachPhongBan = null;
@@ -58,17 +60,24 @@ class NguoiDungController extends Controller
             })
             ->where(function ($query) use ($hoTen) {
                 if (!empty($hoTen)) {
-                    return $query->where('ho_ten', $hoTen);
+                    return $query->where('ho_ten', 'LIKE', "%$hoTen");
                 }
             })
             ->where(function ($query) use ($username) {
                 if (!empty($username)) {
-                    return $query->where('username', $username);
+                    return $query->where('username', 'LIKE', "%$username");
                 }
             })
             ->where(function ($query) use ($trangThai) {
                 if (!empty($trangThai)) {
                     return $query->where('trang_thai', $trangThai);
+                }
+            })
+            ->where(function ($query) use ($permission) {
+                if (!empty($permission)) {
+                    return $query->whereHas('permissions', function ($query) use ($permission) {
+                        $query->where('name', 'LIKE', "%$permission%");
+                    });
                 }
             })
             ->whereNull('deleted_at')
@@ -104,7 +113,10 @@ class NguoiDungController extends Controller
         $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
         $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
-        return view('admin::nguoi-dung.create', compact('roles', 'danhSachDonVi', 'danhSachChucVu'));
+        $permissions = Permission::all();
+
+        return view('admin::nguoi-dung.create',
+            compact('roles', 'danhSachDonVi', 'danhSachChucVu', 'permissions'));
     }
 
     /**
@@ -184,6 +196,12 @@ class NguoiDungController extends Controller
         if (!empty($request->get('role_id'))) {
             $role = Role::findById($request->get('role_id'));
             $user->assignRole($role->name);
+            $permissions = $role->permissions->pluck('name')->toArray();
+            $user->syncPermissions($permissions);
+        }
+
+        if (isset($data['permission'])) {
+            $user->syncPermissions($data['permission']);
         }
 
         return redirect()->route('nguoi-dung.index')->with('success', 'Thêm mới thành công .');
@@ -224,7 +242,7 @@ class NguoiDungController extends Controller
 
         $user = User::findOrFail($id);
         $donVi = $user->donVi;
-        $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+        $donViId = isset($donVi) && $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id ?? null;
 
         $roles = Role::all();
         $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->get();
@@ -232,12 +250,17 @@ class NguoiDungController extends Controller
         $viTriUuTien = User::max('uu_tien');
 
         $danhSachPhongBan = null;
-        if ($donVi->parent_id != 0) {
+        if (isset($donVi) && $donVi->parent_id != 0) {
             $danhSachPhongBan = DonVi::where('parent_id', $donVi->parent_id)->select('id', 'ten_don_vi')->get();
         }
 
-        return view('admin::nguoi-dung.edit', compact('user', 'donViId',
-            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien', 'danhSachPhongBan', 'donVi'));
+        $permissions = Permission::all();
+        $permissionUser = $user->permissions;
+        $arrPermissionId = $permissionUser->pluck('id')->toArray();
+
+
+        return view('admin::nguoi-dung.edit', compact('user', 'donViId', 'permissions',
+            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien', 'danhSachPhongBan', 'donVi', 'arrPermissionId'));
     }
 
     /**
@@ -311,6 +334,10 @@ class NguoiDungController extends Controller
             DB::table('model_has_roles')->where('model_id', $id)->delete();
             $user->assignRole($role->name);
             $user->syncPermissions($permissions);
+        }
+
+        if (isset($data['permission'])) {
+            $user->syncPermissions($data['permission']);
         }
 
         return redirect()->back()->with('success', 'Cập nhật thành công.');

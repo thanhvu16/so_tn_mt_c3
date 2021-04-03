@@ -39,7 +39,8 @@ class LichCongTac extends Model
         'user_id',
         'don_vi_du_hop',
         'parent_don_vi_id',
-        'thanh_phan_du_hop_id'
+        'thanh_phan_du_hop_id',
+        'trang_thai'
     ];
 
     const TYPE_VB_DI = 1;

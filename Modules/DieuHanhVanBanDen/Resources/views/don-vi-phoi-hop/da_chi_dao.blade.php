@@ -275,7 +275,7 @@
             let textPhoPhong = $this.find("option:selected").text() + ' chỉ đạo';
 
             if (id) {
-                if (status == 3) {
+                if (status == 6) {
                     checkVanBanDenId(vanBanDenDonViId);
                 }
 
@@ -307,7 +307,7 @@
             vanBanDenDonViId = $this.data('id');
 
             if (id) {
-                if (status == 3) {
+                if (status == 6) {
                     checkVanBanDenId(vanBanDenDonViId);
                 }
 

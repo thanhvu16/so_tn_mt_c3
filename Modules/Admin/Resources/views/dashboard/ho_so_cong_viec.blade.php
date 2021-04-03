@@ -20,13 +20,21 @@
                     </p>
                 </a>
                 @endif
-                @if(auth::user()->hasRole(CHANH_VAN_PHONG))
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
                     <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
                         <p>VB chờ chờ phân loại
                             <button
                                 class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoPhanLoai }}</button>
                         </p>
                     </a>
+                    @if (auth::user()->donVi->parent_id != 0)
+                        <a class="text-title-item" href="{{ route('phan-loai-van-ban-phoi-hop.index') }}">
+                            <p>VB phối hợp chờ chờ phân loại
+                                <button
+                                    class="btn br-10 btn-green-light btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanPhoiHopChoPhanLoai }}</button>
+                            </p>
+                        </a>
+                    @endif
                 @endif
                 @if(auth::user()->hasRole([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.index') }}">
@@ -100,7 +108,7 @@
                 <a class="text-title-item" href="{{ route('lich-cong-tac.index') }}">
                     <p>Lịch công tác
                         <button
-                            class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
+                            class="btn br-10 btn-blue-dark btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $lichCongTac }}</button>
                     </p>
                 </a>
                 <a class="text-title-item" href="{{ route('tham-du-cuoc-hop.index') }}">

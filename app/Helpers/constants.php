@@ -68,3 +68,4 @@ define('COLOR_LIGHT_PINK', '#b661bf');
 define('COLOR_BLUE_DARK', '#4937de');
 define('COLOR_PINTEREST', '#cb2027');
 define('COLOR_YELLOW', '#f1df07');
+define('COLOR_GREEN_LIGHT', '#0fd0b5');

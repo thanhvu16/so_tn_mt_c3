@@ -17,6 +17,7 @@ use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
 use File, auth, DB;
@@ -313,7 +314,8 @@ class GiayMoiDenController extends Controller
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
         $txtFiles = !empty($requestData['txt_file']) ? $requestData['txt_file'] : null;
         $idvanbanden = [];
-
+        $thamMuuId = $request->lanh_dao_tham_muu ?? null;
+        $user = auth::user();
         try {
             DB::beginTransaction();
             $sokyhieu = $request->so_ky_hieu;
@@ -376,8 +378,40 @@ class GiayMoiDenController extends Controller
                         $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                         $vanbandv->chuc_vu = $chucvu;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                        $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
                         $vanbandv->save();
                         array_push($idvanbanden, $vanbandv->id);
+
+                        // nếu empty tham mưu thì chuyển thẳng giám đốc (chủ tịch)
+                        if (empty($thamMuuId)) {
+                            $chuTich = User::role(CHU_TICH)
+                                ->whereHas('donVi', function ($query) {
+                                    return $query->whereNull('cap_xa');
+                                })->select('id', 'ho_ten', 'don_vi_id')->first();
+
+                            $dataXuLyVanBanDen = [
+                                'van_ban_den_id' => $vanbandv->id,
+                                'can_bo_chuyen_id' => $user->id,
+                                'can_bo_nhan_id' => $chuTich->id,
+                                'noi_dung' => 'Kính chuyển giám đốc ' . $chuTich->ho_ten . ' chỉ đạo',
+                                'tom_tat' => $vanbandv->trich_yeu ?? null,
+                                'user_id' => $user->id,
+                                'tu_tham_muu' => XuLyVanBanDen::TU_VAN_THU,
+                                'lanh_dao_chi_dao' => 1,
+                                'quyen_gia_han' => 1
+                            ];
+
+                            $checkTonTaiData = XuLyVanBanDen::where([
+                                'van_ban_den_id' => $vanbandv->id,
+                                'can_bo_nhan_id' => $chuTich->id
+                            ])
+                                ->whereNull('status')
+                                ->first();
+
+                            if (empty($checkTonTaiData)) {
+                                XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
+                            }
+                        }
                     }
                 } else {
                     $vanbandv = new VanBanDen();
@@ -403,8 +437,39 @@ class GiayMoiDenController extends Controller
                     $vanbandv->dia_diem_phu = $diadiemchinh;
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
+
+                    if (empty($thamMuuId)) {
+                        $chuTich = User::role(CHU_TICH)
+                            ->whereHas('donVi', function ($query) {
+                                return $query->whereNull('cap_xa');
+                            })->select('id', 'ho_ten', 'don_vi_id')->first();
+
+                        $dataXuLyVanBanDen = [
+                            'van_ban_den_id' => $vanbandv->id,
+                            'can_bo_chuyen_id' => $user->id,
+                            'can_bo_nhan_id' => $chuTich->id,
+                            'noi_dung' => 'Kính chuyển giám đốc ' . $chuTich->ho_ten . ' chỉ đạo',
+                            'tom_tat' => $vanbandv->trich_yeu ?? null,
+                            'user_id' => $user->id,
+                            'tu_tham_muu' => XuLyVanBanDen::TU_VAN_THU,
+                            'lanh_dao_chi_dao' => 1,
+                            'quyen_gia_han' => 1
+                        ];
+
+                        $checkTonTaiData = XuLyVanBanDen::where([
+                            'van_ban_den_id' => $vanbandv->id,
+                            'can_bo_nhan_id' => $chuTich->id
+                        ])
+                            ->whereNull('status')
+                            ->first();
+
+                        if (empty($checkTonTaiData)) {
+                            XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
+                        }
+                    }
                 }
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();
@@ -436,7 +501,16 @@ class GiayMoiDenController extends Controller
 
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 if (auth::user()->donVi->parent_id != 0) {
+                    $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                        ->whereHas('donVi', function ($query) {
+                            return $query->where('parent_id', auth::user()->donVi->parent_id);
+                        })->orderBy('id', 'DESC')->first();
+
                     $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
+
+                    if ($thamMuuChiCuc && empty($request->don_vi_phoi_hop)) {
+                        $trinhTuNhanVanBan = VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB;
+                    }
                 }
 
                 if ($giaymoicom && $giaymoicom[0] != null) {
@@ -576,6 +650,7 @@ class GiayMoiDenController extends Controller
                 ->with('success', 'Thêm văn bản thành công !');
 
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
 
 
