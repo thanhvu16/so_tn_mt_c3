@@ -29,6 +29,7 @@ class NguoiDungController extends Controller
         $donViId = $request->get('don_vi_id') ?? null;
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
+        $permission = $request->get('permission') ?? null;
         $username = $request->get('username') ?? null;
         $trangThai = $request->get('trang_thai') ?? null;
         $danhSachPhongBan = null;
@@ -70,6 +71,13 @@ class NguoiDungController extends Controller
             ->where(function ($query) use ($trangThai) {
                 if (!empty($trangThai)) {
                     return $query->where('trang_thai', $trangThai);
+                }
+            })
+            ->where(function ($query) use ($permission) {
+                if (!empty($permission)) {
+                    return $query->whereHas('permissions', function ($query) use ($permission) {
+                        $query->where('name', 'LIKE', "%$permission%");
+                    });
                 }
             })
             ->whereNull('deleted_at')

@@ -189,19 +189,19 @@ class VanBanLanhDaoXuLyController extends Controller
                     compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
             }
 
-            if (!empty($checkThamMuuSo)) {
+
+//            if (!empty($checkThamMuuSo)) {
 
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.index',
                     compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
                         'order', 'active', 'danhSachDonVi'));
-            } else {
 
-                return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.phan_loai_van_ban',
-                    compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
-                        'order', 'active', 'danhSachDonVi'));
-            }
-
-
+//            } else {
+//
+//                return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.phan_loai_van_ban',
+//                    compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
+//                        'order', 'active', 'danhSachDonVi'));
+//            }
         }
     }
 

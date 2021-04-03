@@ -18,9 +18,11 @@
             @role(QUAN_TRI_HT)
             @include('admin::layouts.components.sidebar_admin')
             @endrole
-            @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
-                @include('admin::layouts.components.sidebar_tham_muu')
-            @endif
+            @unlessrole(QUAN_TRI_HT)
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                    @include('admin::layouts.components.sidebar_tham_muu')
+                @endif
+            @endunlessrole
             @role(VAN_THU_DON_VI)
             @include('admin::layouts.components.sidebar_van_thu_don_vi')
             @endrole

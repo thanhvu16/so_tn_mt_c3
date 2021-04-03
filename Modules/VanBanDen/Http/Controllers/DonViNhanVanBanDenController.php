@@ -1053,6 +1053,7 @@ class DonViNhanVanBanDenController extends Controller
         if ($layvanbandi) {
             //update
             $layvanbandi->vao_so_van_ban = 1;
+            $layvanbandi->da_tham_muu = DonViChuTri::DA_THAM_MUU;
             $layvanbandi->save();
 
             /** check có tham mưu chi cục không? nếu có thì cập nhập cán bộ nhận id trong bảng đơn vị chủ trì **/
@@ -1064,6 +1065,7 @@ class DonViNhanVanBanDenController extends Controller
 
                 if ($thamMuuChiCuc) {
                     $layvanbandi->can_bo_nhan_id = $thamMuuChiCuc->id;
+                    $layvanbandi->da_tham_muu = null;
                     $layvanbandi->save();
                 }
             }

@@ -29,7 +29,8 @@ class DonViChuTri extends Model
         'don_vi_co_dieu_hanh',
         'vao_so_van_ban',
         'chuyen_tiep',
-        'hoan_thanh'
+        'hoan_thanh',
+        'da_tham_muu'
     ];
 
     const HOAN_THANH_VB = 1;
@@ -71,6 +72,7 @@ class DonViChuTri extends Model
         $tenDonVi = $donVi->ten_don_vi;
         $donViId = $donVi->id;
         $dieuHanh = $donVi->dieu_hanh;
+        $daThamMuu = DonViChuTri::DA_THAM_MUU;
 
         if (auth::user()->hasRole([VAN_THU_DON_VI])) {
             $nguoiDung = User::role(CHU_TICH)
@@ -85,6 +87,7 @@ class DonViChuTri extends Model
 
             if ($thamMuuChiCuc) {
                 $nguoiDung = $thamMuuChiCuc;
+                $daThamMuu = null;
             }
 
             $parentDonVi = DonVi::where('id', $donVi->parent_id)->first();
@@ -102,7 +105,8 @@ class DonViChuTri extends Model
             'user_id' => auth::user()->id,
             'don_vi_co_dieu_hanh' => $dieuHanh,
             'vao_so_van_ban' =>  1,
-            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI
+            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI,
+            'da_tham_muu' => $daThamMuu
         ];
 
         $donViChuTri = new DonViChuTri();

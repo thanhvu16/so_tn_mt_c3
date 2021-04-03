@@ -16,6 +16,10 @@ class AddColumnDaThamMuuToDhvbdDonViChuTri extends Migration
         Schema::table('dhvbd_don_vi_chu_tri', function (Blueprint $table) {
             $table->tinyInteger('da_tham_muu')->after('vao_so_van_ban')->nullable()->comment('null chưa tham mưu, 1 đã tham mưu');
         });
+
+        Schema::table('dhvbd_don_vi_phoi_hop', function (Blueprint $table) {
+            $table->tinyInteger('da_tham_muu')->after('vao_so_van_ban')->nullable()->comment('null chưa tham mưu, 1 đã tham mưu');
+        });
     }
 
     /**
@@ -29,5 +33,8 @@ class AddColumnDaThamMuuToDhvbdDonViChuTri extends Migration
             $table->dropColumn('da_tham_muu');
         });
 
+        Schema::table('dhvbd_don_vi_phoi_hop', function (Blueprint $table) {
+            $table->dropColumn('da_tham_muu');
+        });
     }
 }

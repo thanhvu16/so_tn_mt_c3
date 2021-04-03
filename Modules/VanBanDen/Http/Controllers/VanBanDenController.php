@@ -457,8 +457,6 @@ class VanBanDenController extends Controller
 
                     }
                 }
-
-
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
                 if (auth::user()->donVi->parent_id != 0) {
@@ -468,8 +466,7 @@ class VanBanDenController extends Controller
                         })->orderBy('id', 'DESC')->first();
 
                     $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
-
-                    if ($thamMuuChiCuc && empty($request->don_vi_phoi_hop)) {
+                    if ($thamMuuChiCuc && $user->donVi->parent_id != 0) {
                         $trinhTuNhanVanBan = VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB;
                     }
                 }

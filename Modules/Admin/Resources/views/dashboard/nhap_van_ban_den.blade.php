@@ -42,7 +42,7 @@
                             </p>
                         </a>
                         @if (auth::user()->donVi->parent_id != 0)
-                            <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
+                            <a class="text-title-item" href="{{ route('phan-loai-van-ban-phoi-hop.index') }}">
                                 <p>VB phối hợp chờ chờ phân loại
                                     <button
                                         class="btn br-10 btn-green-light btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanPhoiHopChoPhanLoai }}</button>
