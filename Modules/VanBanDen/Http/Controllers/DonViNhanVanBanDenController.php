@@ -380,7 +380,22 @@ class DonViNhanVanBanDenController extends Controller
                 if ($layvanbandi != null) {
                     //update
                     $layvanbandi->vao_so_van_ban = 1;
+                    $layvanbandi->da_tham_muu = DonViChuTri::DA_THAM_MUU;
                     $layvanbandi->save();
+
+                    /** check có tham mưu chi cục không? nếu có thì cập nhập cán bộ nhận id trong bảng đơn vị chủ trì **/
+                    if (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                        $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                            ->whereHas('donVi', function ($query) {
+                                return $query->where('parent_id', auth::user()->donVi->parent_id);
+                            })->orderBy('id', 'DESC')->first();
+
+                        if ($thamMuuChiCuc && $donVi->parent_id != 0) {
+                            $layvanbandi->can_bo_nhan_id = $thamMuuChiCuc->id;
+                            $layvanbandi->da_tham_muu = null;
+                            $layvanbandi->save();
+                        }
+                    }
                 }
                 $filegiaymoi = FileVanBanDen::where('vb_den_id',$layvanbandi->van_ban_den_id)->first();
                 if ($filegiaymoi != null) {
@@ -1063,7 +1078,7 @@ class DonViNhanVanBanDenController extends Controller
                         return $query->where('parent_id', auth::user()->donVi->parent_id);
                     })->orderBy('id', 'DESC')->first();
 
-                if ($thamMuuChiCuc) {
+                if ($thamMuuChiCuc && auth::user()->donVi->parent_id != 0) {
                     $layvanbandi->can_bo_nhan_id = $thamMuuChiCuc->id;
                     $layvanbandi->da_tham_muu = null;
                     $layvanbandi->save();
