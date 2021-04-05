@@ -289,6 +289,8 @@ class VanBanDenController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $user = auth::user();
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;
@@ -547,6 +549,26 @@ class VanBanDenController extends Controller
                 }
 
             }
+            $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true, true);
+            }
+            $typeArray = explode('.', $request->File->getClientOriginalName());
+            $tenchinhfile = strtolower($typeArray[0]);
+            $extFile = $request->File->extension();
+            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+            $vbDenFile = new FileVanBanDen();
+            $vbDenFile->ten_file = $tenchinhfile;
+            $vbDenFile->duong_dan = $urlFile;
+            $vbDenFile->duoi_file = $extFile;
+            $vbDenFile->vb_den_id = $vanbandv->id;
+            $vbDenFile->nguoi_dung_id = auth::user()->id;
+            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+            $vbDenFile->save();
+
+
+
             DB::commit();
             return redirect()->back()->with('success', 'Thêm văn bản thành công !');
 
@@ -722,6 +744,24 @@ class VanBanDenController extends Controller
         }
 //        $vanbandv->han_giai_quyet = $han_giai_quyet[0];
         $vanbandv->save();
+
+        $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+        if (!File::exists($uploadPath)) {
+            File::makeDirectory($uploadPath, 0775, true, true);
+        }
+        $typeArray = explode('.', $request->File->getClientOriginalName());
+        $tenchinhfile = strtolower($typeArray[0]);
+        $extFile = $request->File->extension();
+        $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+        $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+        $vbDenFile = new FileVanBanDen();
+        $vbDenFile->ten_file = $tenchinhfile;
+        $vbDenFile->duong_dan = $urlFile;
+        $vbDenFile->duoi_file = $extFile;
+        $vbDenFile->vb_den_id = $vanbandv->id;
+        $vbDenFile->nguoi_dung_id = auth::user()->id;
+        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+        $vbDenFile->save();
         UserLogs::saveUserLogs('Cập nhật văn bản đến', $vanbandv);
 
 
