@@ -158,6 +158,10 @@
                                     <input type="date" class="form-control" value="{{$van_ban_den->han_xu_ly}}" name="han_xu_ly" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail4">File</label>
+                                <input type="file" class="form-control han-xu-ly" name="File" value=""  >
+                            </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
                                     <label for="">File văn bản:
