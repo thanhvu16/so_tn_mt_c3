@@ -113,7 +113,7 @@ class NguoiDungController extends Controller
         $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
         $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
-        $permissions = Permission::all();
+        $permissions = Permission::where('name', AllPermission::thamMuu())->get();
 
         return view('admin::nguoi-dung.create',
             compact('roles', 'danhSachDonVi', 'danhSachChucVu', 'permissions'));
@@ -254,7 +254,7 @@ class NguoiDungController extends Controller
             $danhSachPhongBan = DonVi::where('parent_id', $donVi->parent_id)->select('id', 'ten_don_vi')->get();
         }
 
-        $permissions = Permission::all();
+        $permissions = Permission::where('name', AllPermission::thamMuu())->get();
         $permissionUser = $user->permissions;
         $arrPermissionId = $permissionUser->pluck('id')->toArray();
 

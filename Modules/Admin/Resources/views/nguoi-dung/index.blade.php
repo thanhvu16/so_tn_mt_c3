@@ -83,7 +83,7 @@
                                         <label>Tìm theo chức năng:</label>
                                         <input type="text" class="form-control" value="{{Request::get('permission')}}"
                                                name="permission"
-                                               placeholder="vd: văn thư">
+                                               placeholder="vd: tham mưu">
                                     </div>
                                     <div class="col-md-3 form-group">
                                         <label for="">&nbsp;</label><br>
