@@ -143,6 +143,9 @@
                                     class="detail-file-name seen-new-window">Chữ ký chính</a></p>
                     @endif
                 </div>
+                @if (isset($user) && $user->id == auth::user()->id)
+                    <div class="clearfix"></div>
+                @endif
                 <div class="col-md-4">
                     <label class="col-form-label" for="chu_ky_nhay">Ảnh chữ ký nháy</label>
                     <div>
@@ -154,9 +157,6 @@
                                     class="detail-file-name seen-new-window">Chữ ký nháy</a></p>
                     @endif
                 </div>
-                @if (!auth::user()->hasRole(QUAN_TRI_HT))
-                    <div class="clearfix"></div>
-                @endif
                 <div class="form-group col-md-4 ">
                     <label class="col-form-label" for="so-dien-thoai-ky-sim">Số điện thoại ký sim</label>
                     <input type="number" name="so_dien_thoai_ky_sim" id="so-dien-thoai-ky-sim"
@@ -164,7 +164,9 @@
                            value="{{ old('so_dien_thoai_ky_sim', isset($user) ? $user->so_dien_thoai_ky_sim : null) }}"
                            class="form-control">
                 </div>
-                <div class="clearfix"></div>
+                @if(auth::user()->hasRole(QUAN_TRI_HT))
+                    <div class="clearfix"></div>
+                @endif
                 <div class="col-md-4 form-group">
                     <label class="col-form-label" for="uu-tien">Vị trí sắp xếp</label>
                     <i class="color-red">(Số hiện tại {{ $viTriUuTien ?? 0 }})</i>
