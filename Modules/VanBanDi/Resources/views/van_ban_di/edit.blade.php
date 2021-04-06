@@ -172,8 +172,11 @@
 
                                 </select>
                             </div>
-
-                            <div class="col-md-12">
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail4">File</label>
+                                <input type="file" class="form-control han-xu-ly" name="File" value=""  >
+                            </div>
+                            <div class="col-md-3 mt-4">
                                 <label for="">Trả lời cho văn bản đến:</label>
                                 <a class="them-van-ban-den" data-toggle="modal" data-target="#modal-them-van-ban-den">
                                     <span><i class="fa fa-plus-square-o"></i> Thêm văn bản đến</span>
@@ -192,6 +195,17 @@
                                 </div>
                                 <div class="row main-so-ky-hieu-van-ban-den">
 
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mt-4">
+                                <div class="form-group">
+                                    <label for="">File văn bản:
+                                        @forelse($vanbandi->filechinh as $key=>$filedata)
+                                            <a class="seen-new-window" target="popup"
+                                               href="{{$filedata->getUrlFile()}}">[File văn bản] &emsp; </a> <a class="btn-remove-item" href="{{route('xoaFileDi',$filedata->id)}}"><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a> |
+                                        @empty
+                                        @endforelse</label>
                                 </div>
                             </div>
 

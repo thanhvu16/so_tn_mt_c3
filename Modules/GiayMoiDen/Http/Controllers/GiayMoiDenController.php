@@ -805,7 +805,6 @@ class GiayMoiDenController extends Controller
 
         $vanbandv->save();
         UserLogs::saveUserLogs('Sửa giấy mời đến ', $vanbandv);
-
         if ($multiFiles && count($multiFiles) > 0) {
             $vanbandenfile = FileVanBanDen::where('vb_den_id', $vanbandv->id)->get();
             foreach ($vanbandenfile as $filevb) {
