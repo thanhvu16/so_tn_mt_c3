@@ -154,7 +154,10 @@
                                     class="detail-file-name seen-new-window">Chữ ký nháy</a></p>
                     @endif
                 </div>
-                <div class="form-group col-md-4">
+                @if (!auth::user()->hasRole(QUAN_TRI_HT))
+                    <div class="clearfix"></div>
+                @endif
+                <div class="form-group col-md-4 ">
                     <label class="col-form-label" for="so-dien-thoai-ky-sim">Số điện thoại ký sim</label>
                     <input type="number" name="so_dien_thoai_ky_sim" id="so-dien-thoai-ky-sim"
                            placeholder="Nhập sdt ký sim.."
@@ -162,13 +165,14 @@
                            class="form-control">
                 </div>
                 <div class="clearfix"></div>
-                <div class="col-md-4">
+                <div class="col-md-4 form-group">
                     <label class="col-form-label" for="uu-tien">Vị trí sắp xếp</label>
                     <i class="color-red">(Số hiện tại {{ $viTriUuTien ?? 0 }})</i>
                     <input type="number" name="uu_tien" id="uu-tien" placeholder="Nhập vị trí sắp xếp..."
                            value="{{ old('uu_tien', isset($user) ? $user->uu_tien : '') }}"
                            class="form-control">
                 </div>
+
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="gioi_tinh">Giới tính</label>
                     <br>
@@ -185,6 +189,7 @@
                         > Nữ
                     </label>
                 </div>
+                @if (auth::user()->hasRole(QUAN_TRI_HT))
                 <div class="col-md-4">
                     <label class="col-form-label" for="trang_thai">Trạng thái</label>
                     <br>
@@ -199,8 +204,9 @@
                         > Tạm khóa
                     </label>
                 </div>
-                <div class="clearfix"></div>
+                @endif
                 @if (auth::user()->hasRole(QUAN_TRI_HT))
+                    <div class="clearfix"></div>
                     <div class="form-group col-md-12 mt-2">
                         <p>
                             <a class="" data-toggle="collapse" href="#collapse-permission" role="button" aria-expanded="false" aria-controls="collapse-permission">
