@@ -290,7 +290,7 @@ hr.border-dashed {
 
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
     font-size: 14px !important;
-    margin-top: 5px !important;
+    margin-top: 1px !important;
 }
 
 .panel-body a.text-title-item p {
@@ -482,4 +482,14 @@ a.them-van-ban-den:hover {
 .rm-van-ban-den:hover {
     cursor: pointer;
     color: red;
+}
+
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header>img {
+    z-index: 5;
+    height: 60px !important;
+    width: 60px !important;
+}
+.swith-other-user:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }

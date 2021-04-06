@@ -62,3 +62,7 @@ Route::get('download-backup/{fileName}', 'AdminController@downloadBackup')->name
 Route::post('delete-backup/{fileName}', 'AdminController@deleteBackup')->name('backup.destroy');
 
 Route::get('get-list-phong-ban/{id}', 'DonViController@getListPhongBan');
+
+// switch user
+Route::post('switch-user', 'NguoiDungController@switchOtherUser')->name('user.switch_user');
+Route::get('stop-switch-user', 'NguoiDungController@stopSwitchUser')->name('user.stop_switch_user');

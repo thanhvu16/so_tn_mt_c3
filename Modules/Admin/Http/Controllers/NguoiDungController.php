@@ -8,7 +8,7 @@ use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Hash, DB, Auth;
+use Hash, DB, Auth, Session;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
@@ -113,7 +113,7 @@ class NguoiDungController extends Controller
         $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
         $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
-        $permissions = Permission::where('name', AllPermission::thamMuu())->get();
+        $permissions = Permission::whereIn('name', [AllPermission::thamMuu(), AllPermission::VanThuChuyenTrach()])->get();
 
         return view('admin::nguoi-dung.create',
             compact('roles', 'danhSachDonVi', 'danhSachChucVu', 'permissions'));
@@ -254,7 +254,7 @@ class NguoiDungController extends Controller
             $danhSachPhongBan = DonVi::where('parent_id', $donVi->parent_id)->select('id', 'ten_don_vi')->get();
         }
 
-        $permissions = Permission::where('name', AllPermission::thamMuu())->get();
+        $permissions = Permission::whereIn('name', [AllPermission::thamMuu(), AllPermission::VanThuChuyenTrach()])->get();
         $permissionUser = $user->permissions;
         $arrPermissionId = $permissionUser->pluck('id')->toArray();
 
@@ -406,5 +406,25 @@ class NguoiDungController extends Controller
                 'data' => $lay_don_vi
             ]);
         }
+    }
+
+    public function switchOtherUser(Request $request)
+    {
+        $id = $request->get('user_id');
+        $new_user = User::find($id);
+        Session::put( 'origin_user', Auth::id());
+        Auth::login( $new_user );
+
+        return redirect()->route('home');
+    }
+
+    public function stopSwitchUser(Request $request)
+    {
+        $id = Session::pull('origin_user');
+        $orig_user = User::find( $id );
+        Auth::login( $orig_user );
+        $request->session()->forget('origin_user');
+
+        return redirect()->route('home');
     }
 }
