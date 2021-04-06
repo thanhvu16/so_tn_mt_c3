@@ -558,6 +558,7 @@ class VanBanDenController extends Controller
             $extFile = $request->File->extension();
             $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
             $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+            $request->File->move($uploadPath, $fileName);
             $vbDenFile = new FileVanBanDen();
             $vbDenFile->ten_file = $tenchinhfile;
             $vbDenFile->duong_dan = $urlFile;
@@ -754,6 +755,7 @@ class VanBanDenController extends Controller
         $extFile = $request->File->extension();
         $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
         $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+        $request->File->move($uploadPath, $fileName);
         $vbDenFile = new FileVanBanDen();
         $vbDenFile->ten_file = $tenchinhfile;
         $vbDenFile->duong_dan = $urlFile;
