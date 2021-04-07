@@ -23,7 +23,7 @@
         @endrole
         @hasanyrole('phó trưởng phòng|phó tp đơn vị cấp 2')
         <li class="{{ Route::is('van-ban-den-don-vi.xem_de_biet') ? 'active' : '' }}"><a
-                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB giám sát, theo dõi</a>
+                href="{{ route('van-ban-den-don-vi.xem_de_biet') }}"><i class="fa fa-circle-o"></i>VB chỉ đạo, giám sát</a>
         </li>
         @endrole
         <li class="{{ Route::is('van-ban-den-don-vi.dang_xu_ly') ? 'active' : '' }}"><a

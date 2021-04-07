@@ -55,7 +55,7 @@
                 @endif
                 @if(auth::user()->hasRole([PHO_CHANH_VAN_PHONG, PHO_PHONG, PHO_TRUONG_BAN]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
-                        <p>VB giám sát, theo dõi
+                        <p>VB chỉ đạo, giám sát
                             <button
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
@@ -128,7 +128,7 @@
                 @endrole
                 @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                     <a class="text-title-item" href="{{ route('van-ban-den-don-vi.xem_de_biet') }}">
-                        <p>VB giám sát, theo dõi
+                        <p>VB chỉ đạo, giám sát
                             <button
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
