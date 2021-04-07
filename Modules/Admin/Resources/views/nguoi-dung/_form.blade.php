@@ -69,7 +69,7 @@
 
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="don-vi">Đơn vị @include('admin::required')</label>
-                    <select class="form-control select-option-don-vi select2" name="don_vi_id" required>
+                    <select class="form-control select-option-don-vi select2" name="don_vi_id" {{ auth::user()->hasRole(QUAN_TRI_HT) ? null : 'required' }}>
                         <option value="">-- Chọn đơn vị --</option>
                         @if (count($danhSachDonVi) > 0)
                             @foreach($danhSachDonVi as $donVi)
@@ -94,7 +94,7 @@
 
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="chuc-vu">Chức vụ @include('admin::required')</label>
-                    <select class="form-control select2" name="chuc_vu_id" required>
+                    <select class="form-control select2" name="chuc_vu_id" {{ auth::user()->hasRole(QUAN_TRI_HT) ? null : 'required' }}>
                         <option value="">-- Chọn chức vụ --</option>
                         @if (count($danhSachChucVu) > 0)
                             @foreach($danhSachChucVu as $chucVu)
