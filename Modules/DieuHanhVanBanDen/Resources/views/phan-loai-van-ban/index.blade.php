@@ -155,10 +155,9 @@
                                                     class="form-control lanh-dao-xem-de-biet select2"
                                                     multiple="multiple"
                                                     form="form-tham-muu"
-                                                    data-placeholder="Chọn lãnh đạo xem để biết"
+                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
                                                 >
-                                                    <option value="">Chọn lãnh đạo xem để
-                                                        biết
+                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát
                                                     </option>
                                                     <option
                                                         value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>

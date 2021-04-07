@@ -111,10 +111,9 @@
                                                     class="form-control lanh-dao-xem-de-biet select2"
                                                     multiple="multiple"
                                                     form="form-tham-muu"
-                                                    data-placeholder="Chọn lãnh đạo xem để biết"
+                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
                                                 >
-                                                    <option value=""> Chọn lãnh đạo xem để
-                                                        biết
+                                                    <option value=""> Chọn lãnh đạo chỉ đạo, giám sát
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         @if (isset($vanBanDen->PhoChuTich) && $vanBanDen->PhoChuTich->can_bo_nhan_id != $phoChuTich->id)

@@ -60,12 +60,12 @@ class NguoiDungController extends Controller
             })
             ->where(function ($query) use ($hoTen) {
                 if (!empty($hoTen)) {
-                    return $query->where('ho_ten', 'LIKE', "%$hoTen");
+                    return $query->where('ho_ten', 'LIKE', "%$hoTen%");
                 }
             })
             ->where(function ($query) use ($username) {
                 if (!empty($username)) {
-                    return $query->where('username', 'LIKE', "%$username");
+                    return $query->where('username', 'LIKE', "%$username%");
                 }
             })
             ->where(function ($query) use ($trangThai) {
