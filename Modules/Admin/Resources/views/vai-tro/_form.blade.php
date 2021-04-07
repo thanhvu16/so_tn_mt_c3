@@ -9,7 +9,7 @@
     <div class="box-body">
         <div class="form-group col-md-12">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="name" class="col-form-label">Tên quyền hạn @include('admin::required')</label>
                         <input type="text" id="name" name="name"
@@ -21,19 +21,26 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="col-12 mb-1">
                         <label>Chức năng:</label>
                     </div>
-                    @if (count($permissions) > 0)
+                    @if ($permissions && count($permissions) > 0)
                         @foreach($permissions as $key => $permission)
-                            <div class="col-md-3 col-sm-6">
-                                <label>
-                                    <input type="checkbox" class="flat-red" name="permission[]" value="{{ $permission->id }}"
-                                    {{ isset($role) && in_array($permission->id, $arrPermisson) ? 'checked' : '' }}
-                                    >
-                                    {{ ucfirst($permission->name) }}
-                                </label>
+                            <div class="col-md-3 data-item mb-3">
+                                <div class="parent-item">
+                                    <input type="checkbox" value="{{ $permission->id }}" name="check_all" id="parent-{{ $permission->id }}" class="check-all">
+                                    <label for="parent-{{ $permission->id }}" class="font-weight-bold">{{ $permission->name }}</label>
+                                </div>
+                                @if (count($permission->childPers) > 0)
+                                    @foreach($permission->childPers as $childPermission)
+                                        <div class="col-auto ml-2">
+                                            <input type="checkbox" class="sub-check" value="{{ $childPermission->id }}" name="permission[]"
+                                                   id="child-item-{{ $childPermission->id }}" {{ isset($role) && in_array($childPermission->id, $arrPermisson) ? 'checked' : '' }}>
+                                            <label for="child-item-{{ $childPermission->id }}" class="font-weight-normal">{{ ucfirst($childPermission->name) }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                             @if (($key+1) % 4 == 0)
                                 <div class="clearfix"></div>
@@ -41,7 +48,6 @@
                         @endforeach
                     @endif
                 </div>
-
             </div>
         </div>
         <div class="col-md-12">

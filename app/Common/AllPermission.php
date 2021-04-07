@@ -4,6 +4,10 @@ namespace App\Common;
 
 class AllPermission
 {
+    public static function nguoiDung()
+    {
+        return 'Người dùng';
+    }
     public static function themNguoiDung()
     {
         return 'thêm người dùng';
@@ -20,6 +24,11 @@ class AllPermission
     }
 
     // don vi
+    public static function donVi()
+    {
+        return 'Đơn vị';
+    }
+
     public static function themDonVi()
     {
         return 'thêm đơn vị';
@@ -36,6 +45,10 @@ class AllPermission
     }
 
     //chuc vu
+    public static function chucVu()
+    {
+        return 'Chức vụ';
+    }
     public static function themChucVu()
     {
         return 'thêm chức vụ';
@@ -51,6 +64,10 @@ class AllPermission
         return 'xoá chức vụ';
     }
 
+    public static function chung()
+    {
+        return 'Chung';
+    }
 
     public static function thamMuu()
     {
@@ -58,6 +75,10 @@ class AllPermission
     }
 
     //Sổ văn bản
+    public static function soVanBan()
+    {
+        return 'Sổ văn bản';
+    }
     public static function themSoVanBan()
     {
         return 'thêm sổ văn bản';
@@ -73,6 +94,10 @@ class AllPermission
         return 'xoá sổ văn bản';
     }
     //Loại văn bản
+    public static function loaiVanBan()
+    {
+        return 'Loại văn bản';
+    }
     public static function themLoaiVanBan()
     {
         return 'thêm loại văn bản';
@@ -88,6 +113,10 @@ class AllPermission
         return 'xoá loại văn bản';
     }
     //Độ mật
+    public static function doMat()
+    {
+        return 'Độ mật';
+    }
     public static function themDoMat()
     {
         return 'thêm độ mật';
@@ -103,6 +132,10 @@ class AllPermission
         return 'xoá độ mật';
     }
     //Độ khẩn
+    public static function doKhan()
+    {
+        return 'Độ khẩn';
+    }
     public static function themDoKhan()
     {
         return 'thêm độ khẩn';
@@ -118,6 +151,10 @@ class AllPermission
         return 'xoá độ khẩn';
     }
     // văn thư
+    public static function vanThu()
+    {
+        return 'Văn thư';
+    }
     public static function vanThuDonVi()
     {
         return 'văn thư đơn vị';
@@ -127,7 +164,11 @@ class AllPermission
     {
         return 'văn thư sở';
     }
-    // văn thư
+    // văn bản đến
+    public static function vanBanDen()
+    {
+        return 'Văn bản đến';
+    }
     public static function themVanBanDen()
     {
         return 'thêm văn bản đến';
@@ -142,6 +183,10 @@ class AllPermission
         return 'xóa văn bản đến';
     }
     //Dự thảo văn bản
+    public static function duThaoVanBan()
+    {
+        return 'Dự thảo văn bản';
+    }
     public static function themDuThao()
     {
         return 'thêm dự thảo văn bản';
@@ -157,6 +202,10 @@ class AllPermission
         return 'xóa dự thảo';
     }
     //Góp ý dự thảo văn bản
+    public static function gopYDuThao()
+    {
+        return 'Góp ý dự thảo';
+    }
     public static function themGopY()
     {
         return 'thêm góp ý';
@@ -172,6 +221,10 @@ class AllPermission
         return 'xóa góp y';
     }
     //Giấy mời đến
+    public static function giayMoiDen()
+    {
+        return 'Giấy mời đến';
+    }
     public static function themGiayMoiDen()
     {
         return 'thêm giấy mời đến';
@@ -187,6 +240,10 @@ class AllPermission
         return 'xóa giấy mời đến';
     }
     //Giấy mời đi
+    public static function giayMoiDi()
+    {
+        return 'Giấy mời đi';
+    }
     public static function themGiayMoiDi()
     {
         return 'thêm giấy mời đi';
@@ -202,6 +259,10 @@ class AllPermission
         return 'xóa giấy mời đi';
     }
     //Văn bản đi
+    public static function vanBanDi()
+    {
+        return 'Văn bản đi';
+    }
     public static function themVanBanDi()
     {
         return 'thêm văn bản đi';
@@ -217,6 +278,10 @@ class AllPermission
         return 'xóa văn bản đi';
     }
     //Tiêu chuẩn
+    public static function tieuChuan()
+    {
+        return 'Tiêu chuẩn';
+    }
     public static function themTieuChuan()
     {
         return 'thêm tiêu chuẩn';
@@ -249,6 +314,11 @@ class AllPermission
         return 'trưởng phòng';
     }
 
+    //lịch công tác
+    public static function lichCongTac()
+    {
+        return 'Lịch công tác';
+    }
     public static function xemLichCongTac()
     {
         return 'xem lịch công tác';
@@ -263,9 +333,16 @@ class AllPermission
     {
         return 'sửa lịch công tác';
     }
+
     public static function homThuCong()
     {
         return 'xem hòm thư công';
+    }
+
+    // đánh giá cán bộ
+    public static function danhGiaCanBo()
+    {
+        return 'Đánh giá cán bộ';
     }
     public static function tuDanhGiaCanBo()
     {
@@ -275,6 +352,7 @@ class AllPermission
     {
         return 'cấp trên đánh giá cán bộ';
     }
+
     public static function inSoVanBan()
     {
         return 'in sổ văn bản đơn vị';
