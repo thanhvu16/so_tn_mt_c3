@@ -19,8 +19,10 @@ Route::resource('Nhom-don-vi', 'NhomDonViController');
 Route::post('Nhom-don-vi/delete/{id}', array('as' => 'xoanhomdonvi', 'uses' => 'NhomDonViController@destroy'));
 //đơn vị
 Route::get('danh-sach-don-vi', 'DonViController@danhsach')->name('danhsachdonvi');
+Route::get('cap-nhat-password-email', 'NguoiDungController@capNhatPassWord')->name('capNhatPassWord');
 Route::resource('don-vi', 'DonViController')->except('show');
 Route::post('don-vi/delete/{id}', array('as' => 'xoadonvi', 'uses' => 'DonViController@destroy'));
+Route::post('cap-nhat-password-email', array('as' => 'guiXuLy', 'uses' => 'NguoiDungController@guiXuLy'));
 //chức vụ
 Route::get('danh-sach-chuc-vu', 'ChucVuController@danhsach')->name('danhsachchucvu');
 Route::resource('chuc-vu', 'ChucVuController')->except('show');
@@ -60,3 +62,7 @@ Route::get('download-backup/{fileName}', 'AdminController@downloadBackup')->name
 Route::post('delete-backup/{fileName}', 'AdminController@deleteBackup')->name('backup.destroy');
 
 Route::get('get-list-phong-ban/{id}', 'DonViController@getListPhongBan');
+
+// switch user
+Route::post('switch-user', 'NguoiDungController@switchOtherUser')->name('user.switch_user');
+Route::get('stop-switch-user', 'NguoiDungController@stopSwitchUser')->name('user.stop_switch_user');

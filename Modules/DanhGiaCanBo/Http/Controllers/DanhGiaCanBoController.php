@@ -90,24 +90,19 @@ class DanhGiaCanBoController extends Controller
         }
 
 
-
-
-
-
-        $laydanhgiacanhan=null;
-        $laydanhgiaphophong=null;
-        $laydanhgiatruongphong=null;
-        if (empty($thang))
-        {
-            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 1,'can_bo_goc'=>auth::user()->id])->first();
-            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 3,'can_bo_goc'=>auth::user()->id])->first();
-            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 2,'can_bo_goc'=>auth::user()->id])->first();
-        }else{
-            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 1,'can_bo_goc'=>auth::user()->id])->first();
-            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 3,'can_bo_goc'=>auth::user()->id])->first();
-            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 2,'can_bo_goc'=>auth::user()->id])->first();
+        $laydanhgiacanhan = null;
+        $laydanhgiaphophong = null;
+        $laydanhgiatruongphong = null;
+        if (empty($thang)) {
+            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 1, 'can_bo_goc' => auth::user()->id])->first();
+            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 3, 'can_bo_goc' => auth::user()->id])->first();
+            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 2, 'can_bo_goc' => auth::user()->id])->first();
+        } else {
+            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 1, 'can_bo_goc' => auth::user()->id])->first();
+            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 3, 'can_bo_goc' => auth::user()->id])->first();
+            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 2, 'can_bo_goc' => auth::user()->id])->first();
         }
-        return view('danhgiacanbo::tieu_chi_danh_gia.mau_so_1', compact('nguoinhan', 'month','laydanhgiaphophong','laydanhgiacanhan','laydanhgiatruongphong'));
+        return view('danhgiacanbo::tieu_chi_danh_gia.mau_so_1', compact('nguoinhan', 'month', 'laydanhgiaphophong', 'laydanhgiacanhan', 'laydanhgiatruongphong'));
 
     }
 
@@ -177,7 +172,7 @@ class DanhGiaCanBoController extends Controller
             $lay_danh_gia_dau = DuyetDanhGia::where('id', $duyetdanhgia->id)->first();
             $lay_danh_gia_dau->id_dau_tien = $duyetdanhgia->id;
             $lay_danh_gia_dau->save();
-        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG)|| $user->hasRole(PHO_TRUONG_BAN) || $user->hasRole(TRUONG_BAN) || $user->hasRole(VAN_THU_DON_VI)) {
+        } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(PHO_TRUONG_BAN) || $user->hasRole(TRUONG_BAN) || $user->hasRole(VAN_THU_DON_VI)) {
             $duyetdanhgia = new DuyetDanhGia();
             $duyetdanhgia->can_bo_chuyen = auth::user()->id;
             $duyetdanhgia->can_bo_nhan = $request->lanhdao;
@@ -197,22 +192,24 @@ class DanhGiaCanBoController extends Controller
 
         return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
+
     public function thongkephongthang(Request $request)
     {
         $thang = $request->get('thang');
         $month = Carbon::now()->format('m');
 
         if (empty($thang)) {
-            $allcanbophong = DuyetDanhGia::where(['trang_thai' => 4, 'thang' => $month, 'don_vi_id'=>auth::user()->don_vi_id])->get();
-            $layphongdachuyennoivu = ChuyenNoiVu::where(['thang' => $month, 'phong'=>auth::user()->donvi_id])->first();
+            $allcanbophong = DuyetDanhGia::where(['trang_thai' => 4, 'thang' => $month, 'don_vi_id' => auth::user()->don_vi_id])->get();
+            $layphongdachuyennoivu = ChuyenNoiVu::where(['thang' => $month, 'phong' => auth::user()->donvi_id])->first();
         } else {
-            $allcanbophong = DuyetDanhGia::where(['trang_thai' => 4, 'thang' => $thang, 'don_vi_id'=>auth::user()->don_vi_id])->get();
-            $layphongdachuyennoivu = ChuyenNoiVu::where(['thang' => $thang, 'phong'=>auth::user()->donvi_id])->first();
+            $allcanbophong = DuyetDanhGia::where(['trang_thai' => 4, 'thang' => $thang, 'don_vi_id' => auth::user()->don_vi_id])->get();
+            $layphongdachuyennoivu = ChuyenNoiVu::where(['thang' => $thang, 'phong' => auth::user()->donvi_id])->first();
         }
 
 
-        return view('danhgiacanbo::thong_ke_thang.thong_ke_phong', compact('allcanbophong', 'month','layphongdachuyennoivu','thang'));
+        return view('danhgiacanbo::thong_ke_thang.thong_ke_phong', compact('allcanbophong', 'month', 'layphongdachuyennoivu', 'thang'));
     }
+
     public function captrendanhgia(Request $request)
     {
 
@@ -228,7 +225,6 @@ class DanhGiaCanBoController extends Controller
             case CHUYEN_VIEN:
                 if (empty($donVi->cap_xa)) {
                     $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
-
 
                 } else {
                     $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -285,18 +281,18 @@ class DanhGiaCanBoController extends Controller
         }
 
         if (empty($thang)) {
-            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 1,'can_bo_nhan'=>auth::user()->id])->first();
-            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 3,'can_bo_nhan'=>auth::user()->id])->first();
-            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 2,'can_bo_nhan'=>auth::user()->id])->first();
+            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 1, 'can_bo_nhan' => auth::user()->id])->first();
+            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 3, 'can_bo_nhan' => auth::user()->id])->first();
+            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $month, 'cap_danh_gia' => 2, 'can_bo_nhan' => auth::user()->id])->first();
             $thongtincanhancham = DuyetDanhGia::where(['can_bo_nhan' => auth::user()->id, 'thang' => $month])->get();;
         } else {
-            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 1,'can_bo_nhan'=>auth::user()->id])->first();
-            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 3,'can_bo_nhan'=>auth::user()->id])->first();
-            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 2,'can_bo_nhan'=>auth::user()->id])->first();
+            $laydanhgiacanhan = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 1, 'can_bo_nhan' => auth::user()->id])->first();
+            $laydanhgiaphophong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 3, 'can_bo_nhan' => auth::user()->id])->first();
+            $laydanhgiatruongphong = DuyetDanhGia::where(['thang' => $thang, 'cap_danh_gia' => 2, 'can_bo_nhan' => auth::user()->id])->first();
             $thongtincanhancham = DuyetDanhGia::where(['can_bo_nhan' => auth::user()->id, 'thang' => $thang])->get();
         }
 
-        return view('danhgiacanbo::danh_gia_can_bo.index', compact('thongtincanhancham', 'month', 'nguoinhan','laydanhgiacanhan','laydanhgiatruongphong','laydanhgiaphophong'));
+        return view('danhgiacanbo::danh_gia_can_bo.index', compact('thongtincanhancham', 'month', 'nguoinhan', 'laydanhgiacanhan', 'laydanhgiatruongphong', 'laydanhgiaphophong'));
     }
 
 
@@ -305,10 +301,10 @@ class DanhGiaCanBoController extends Controller
         //lấy đánh giá cũ và cập nhật trạng thái
         $capnhatdanhgiacu = DuyetDanhGia::where('id', $request->id_danh_gia)->first();
         $laycanbogoc = DuyetDanhGia::where('id_dau_tien', $capnhatdanhgiacu->id_dau_tien)->orderBy('created_at', 'asc')->first();
-        if (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(VAN_THU_HUYEN)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN)) {
+        if (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG) || auth::user()->hasRole(VAN_THU_HUYEN) || auth::user()->hasRole(PHO_PHONG) || auth::user()->hasRole(PHO_TRUONG_BAN)) {
             $capnhatdanhgiacu->trang_thai = 3;
             $capnhatdanhgiacu->save();
-        } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN)) {
+        } elseif (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG) || auth::user()->hasRole(TRUONG_BAN)) {
             $capnhatdanhgiacu->trang_thai = 4;
             $capnhatdanhgiacu->save();
         }
@@ -359,9 +355,9 @@ class DanhGiaCanBoController extends Controller
             $duyetdanhgia->trang_thai = 4;
         }
 
-        if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG)|| auth::user()->hasRole(TRUONG_BAN)) {
+        if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(CHANH_VAN_PHONG) || auth::user()->hasRole(TRUONG_PHONG) || auth::user()->hasRole(TRUONG_BAN)) {
             $duyetdanhgia->cap_danh_gia = 2;
-        } elseif (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG)|| auth::user()->hasRole(PHO_PHONG)|| auth::user()->hasRole(PHO_TRUONG_BAN) || auth::user()->hasRole(VAN_THU_HUYEN)) {
+        } elseif (auth::user()->hasRole(PHO_CHU_TICH) || auth::user()->hasRole(PHO_CHANH_VAN_PHONG) || auth::user()->hasRole(PHO_PHONG) || auth::user()->hasRole(PHO_TRUONG_BAN) || auth::user()->hasRole(VAN_THU_HUYEN)) {
             $duyetdanhgia->cap_danh_gia = 3;
         }
 
@@ -375,6 +371,7 @@ class DanhGiaCanBoController extends Controller
         $duyetdanhgia->save();
         return redirect()->back()->with('success', 'Đánh giá thành công !');
     }
+
     /**
      * Show the specified resource.
      * @param int $id

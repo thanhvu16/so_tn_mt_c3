@@ -22,9 +22,9 @@
                                 <th width="15%" class="visible-lg text-center"
                                     style="vertical-align: middle;">Ý kiến
                                 </th>
-                                <th width="15%" class="text-center">
-                                    Ký số
-                                </th>
+{{--                                <th width="15%" class="text-center">--}}
+{{--                                    Ký số--}}
+{{--                                </th>--}}
                                 <th width="18%" class="text-center">Ý kiến
                                     xử lý
                                 </th>
@@ -70,41 +70,41 @@
                                         <td> @if($vanban->y_kien_gop_y)- @endif {{$vanban->y_kien_gop_y}}
                                             <br>
                                         </td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            @if(auth::user()->donvi->cap_don_vi == 3 && (auth::user()->vai_tro==4 || auth::user()->vai_tro==3) )
-                                            @else
-                                                @if (!empty($vanban->vanbandi->filetrinhky))
-                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)
-                                                        @if ($filedata->trang_thai ==2)
-                                                            <button name="kydientu" id="kydientu_{{$vanban->vanbandi->id ?? ''}}"
-                                                                    type="button" class="btn btn-primary btn-sm mb-2 ky-token"
-                                                                    onclick="exc_sign_approved('{{$filedata->getUrlFile()}}',{{$vanban->vanbandi->id}},{{ $vanban->id }});"
-                                                                    value="{{$vanban->vanbandi->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký token</button>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
+{{--                                        <td class="text-center" style="vertical-align: middle">--}}
+{{--                                            @if(auth::user()->donvi->cap_don_vi == 3 && (auth::user()->vai_tro==4 || auth::user()->vai_tro==3) )--}}
+{{--                                            @else--}}
+{{--                                                @if (!empty($vanban->vanbandi->filetrinhky))--}}
+{{--                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)--}}
+{{--                                                        @if ($filedata->trang_thai ==2)--}}
+{{--                                                            <button name="kydientu" id="kydientu_{{$vanban->vanbandi->id ?? ''}}"--}}
+{{--                                                                    type="button" class="btn btn-primary btn-sm mb-2 ky-token"--}}
+{{--                                                                    onclick="exc_sign_approved('{{$filedata->getUrlFile()}}',{{$vanban->vanbandi->id}},{{ $vanban->id }});"--}}
+{{--                                                                    value="{{$vanban->vanbandi->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký token</button>--}}
+{{--                                                        @endif--}}
+{{--                                                    @endforeach--}}
+{{--                                                @endif--}}
 
-                                                @if (!empty($vanban->vanbandi->filetrinhky))
-                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)
-                                                        @if ($filedata->trang_thai ==2)
-                                                            <br>
+{{--                                                @if (!empty($vanban->vanbandi->filetrinhky))--}}
+{{--                                                    @foreach($vanban->vanbandi->filetrinhky as $filedata)--}}
+{{--                                                        @if ($filedata->trang_thai ==2)--}}
+{{--                                                            <br>--}}
 
-                                                            <button name="kydientu" type="button" id="_lanhdaoPheduyet"
-                                                                    class="btn btn-primary btn-sm mb-2"
-                                                                    onclick="exc_sign_sim('{{$filedata->duongdan}}','{{$vanban->vanbandi->id}}', '{{ $vanban->id }}');"
-                                                                    value="{{$vanban->vanbandi->id}}">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký sim&nbsp;&nbsp;</button>
+{{--                                                            <button name="kydientu" type="button" id="_lanhdaoPheduyet"--}}
+{{--                                                                    class="btn btn-primary btn-sm mb-2"--}}
+{{--                                                                    onclick="exc_sign_sim('{{$filedata->duongdan}}','{{$vanban->vanbandi->id}}', '{{ $vanban->id }}');"--}}
+{{--                                                                    value="{{$vanban->vanbandi->id}}">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Ký sim&nbsp;&nbsp;</button>--}}
 
-                                                            <p><input type="checkbox" name="kyruoi_{{$vanban->vanbandi->id}}"
-                                                                      id="kyruoi_{{$vanban->vanbandi->id}}" value="1">
-                                                                <label for="kyruoi_{{$vanban->vanbandi->id}}">
-                                                                    <b>&nbsp; Ký nháy</b>
-                                                                </label></p>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            @endif
+{{--                                                            <p><input type="checkbox" name="kyruoi_{{$vanban->vanbandi->id}}"--}}
+{{--                                                                      id="kyruoi_{{$vanban->vanbandi->id}}" value="1">--}}
+{{--                                                                <label for="kyruoi_{{$vanban->vanbandi->id}}">--}}
+{{--                                                                    <b>&nbsp; Ký nháy</b>--}}
+{{--                                                                </label></p>--}}
+{{--                                                        @endif--}}
+{{--                                                    @endforeach--}}
+{{--                                                @endif--}}
+{{--                                            @endif--}}
 
-                                        </td>
+{{--                                        </td>--}}
                                         <td>
                                             @if(!empty($vanban->vanbandi) && auth::user()->id == $vanban->vanbandi->nguoi_ky)
                                                 <input type="text" class="hidden vb-cho-so-{{$vanban->id}}" value="1"

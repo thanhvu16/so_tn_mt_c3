@@ -40,7 +40,7 @@
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
                                 <th class="text-center" width="20%">Ý kiến</th>
                                 <th width="21%" class="text-center">Chỉ đạo</th>
-                                @if (auth::user()->hasRole(PHO_CHU_TICH))
+                                @if (auth::user()->hasRole([PHO_CHU_TICH, CHU_TICH]))
                                     <th class="text-center" width="7%">
                                         <input id="check-all" type="checkbox" name="check_all" value="">
                                     </th>
@@ -145,22 +145,6 @@
                                                 </select>
                                             </p>
                                             @endrole
-{{--                                            <p>--}}
-{{--                                                <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"--}}
-{{--                                                        id="don-vi-chu-tri-{{ $vanBanDen->id }}"--}}
-{{--                                                        class="form-control don-vi-chu-tri dropdown-search select2"--}}
-{{--                                                        data-placeholder="Chọn đơn vị xử lý"--}}
-{{--                                                        data-id="{{ $vanBanDen->id }}"--}}
-{{--                                                        data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"--}}
-{{--                                                        form="form-tham-muu">--}}
-{{--                                                    <option value="">Chọn đơn vị xử lý</option>--}}
-{{--                                                    @forelse($danhSachDonVi as $donVi)--}}
-{{--                                                        <option--}}
-{{--                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->vanBanPhoiHopXuLyChinh) && $vanBanDen->vanBanPhoiHopXuLyChinh->don_vi_id == $donVi->id ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>--}}
-{{--                                                    @empty--}}
-{{--                                                    @endforelse--}}
-{{--                                                </select>--}}
-{{--                                            </p>--}}
                                             <p>
                                                 <select
                                                     name="don_vi_phoi_hop_id[{{ $vanBanDen->id }}][]"
@@ -206,7 +190,7 @@
                                             </textarea>
                                         </p>
                                     </td>
-                                    @if (auth::user()->hasRole(PHO_CHU_TICH))
+                                    @if (auth::user()->hasRole([PHO_CHU_TICH, CHU_TICH]))
                                         <td class="text-center">
                                             <label style="color: red; font-weight: 500 !important;"
                                                    for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>

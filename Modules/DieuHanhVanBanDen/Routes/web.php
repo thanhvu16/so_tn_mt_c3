@@ -1,20 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-//Route::prefix('dieuhanhvanbanden')->group(function() {
-//    Route::get('/', 'DieuHanhVanBanDenController@index');
-//});
-
 Route::resource('phan-loai-van-ban', 'PhanLoaiVanBanController');
 
 Route::get('van-ban-den-chi-tiet/{id}', 'DieuHanhVanBanDenController@show')->name('van_ban_den_chi_tiet.show');
@@ -23,7 +8,6 @@ Route::get('van-ban-da-phan-loai', 'PhanLoaiVanBanController@daPhanLoai')->name(
 
 Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 
-//Route::resource('tra-lai-van-van', 'TraLaiVanBanController');
 
 Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonVi');
 Route::get('get-list-lanh-dao-xem-de-biet/{id}', 'DieuHanhVanBanDenController@getListLanhDao');
@@ -71,3 +55,6 @@ Route::get('van-ban-xem-de-biet', 'DieuHanhVanBanDenController@vanBanXemDeBiet')
 Route::get('van-ban-trong', 'DieuHanhVanBanDenController@vanBanQuanTrong')->name('van-ban-den-don-vi.quan_trong');
 
 Route::post('remove-file/{id}', 'DieuHanhVanBanDenController@removeFile');
+
+Route::resource('phan-loai-van-ban-phoi-hop', 'PhanLoaiVanBanPhoiHopController');
+Route::get('van-ban-phoi-hop-da-phan-loai', 'PhanLoaiVanBanPhoiHopController@index')->name('van-ban-phoi-hop.da_phan_loai');

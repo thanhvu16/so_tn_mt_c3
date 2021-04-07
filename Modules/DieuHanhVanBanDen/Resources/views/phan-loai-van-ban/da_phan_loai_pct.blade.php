@@ -83,16 +83,18 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        <p>
-                                            <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
-                                                <i class="fa fa-book"></i> Tóm tăt văn bản
-                                            </a>
-                                        </p>
-                                        <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                        @if (!empty($vanBanDen->tom_tat))
                                             <p>
-                                                {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
+                                                    <i class="fa fa-book"></i> Tóm tăt văn bản
+                                                </a>
                                             </p>
-                                        </div>
+                                            <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
+                                                <p>
+                                                    {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
+                                                </p>
+                                            </div>
+                                        @endif
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>

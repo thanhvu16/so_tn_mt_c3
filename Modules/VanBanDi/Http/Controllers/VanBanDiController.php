@@ -298,9 +298,9 @@ class VanBanDiController extends Controller
                 } else {
                     $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
 
-                        foreach ($lanhDaoSo as $data2) {
-                            array_push($dataNguoiKy, $data2);
-                        }
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
                     foreach ($chiCuc as $data3) {
                         array_push($dataNguoiKy, $data3);
                     }
@@ -643,8 +643,8 @@ class VanBanDiController extends Controller
 
     public function vanBanDiTaoChuaDuyet()
     {
-        $ds_vanBanDi = VanBanDi::where(['so_di'=> null,'nguoi_tao'=>auth::user()->id])->get();
-        return view('vanbandi::van_ban_di.vanBanDiChoDuyet',compact('ds_vanBanDi'));
+        $ds_vanBanDi = VanBanDi::where(['so_di' => null, 'nguoi_tao' => auth::user()->id])->get();
+        return view('vanbandi::van_ban_di.vanBanDiChoDuyet', compact('ds_vanBanDi'));
     }
 
     /**
@@ -945,6 +945,31 @@ class VanBanDiController extends Controller
                 }
 
             }
+            $donVi = auth::user()->donVi;
+            $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+            $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true, true);
+            }
+            $typeArray = explode('.', $request->File->getClientOriginalName());
+            $tenchinhfile = strtolower($typeArray[0]);
+            $extFile = $request->File->extension();
+            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+
+            $vanBanDiFile = new FileVanBanDi();
+            $request->File->move($uploadPath, $fileName);
+            $vanBanDiFile->ten_file = $tenchinhfile;
+            $vanBanDiFile->duong_dan = $urlFile;
+            $vanBanDiFile->duoi_file = $extFile;
+            $vanBanDiFile->van_ban_di_id = $vanbandi->id;
+            $vanBanDiFile->file_chinh_gui_di = 2;
+            $vanBanDiFile->trang_thai = 2;
+            $vanBanDiFile->nguoi_dung_id = auth::user()->id;
+            $vanBanDiFile->don_vi_id = $donViId;
+            $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
+            $vanBanDiFile->save();
+
             $isSuccess = true;
 
             VanBanDi::luuVanBanDiVanBanDen($vanbandi->id, $request->get('van_ban_den_id'));
@@ -1095,6 +1120,7 @@ class VanBanDiController extends Controller
         $idnguoiky = null;
         $idcuanguoinhan = null;
         $vanbandichoduyet = Vanbandichoduyet::where(['can_bo_nhan_id' => auth::user()->id, 'trang_thai' => 1])->get();
+//        dd(auth::user()->id);
 
 
         $user = auth::user();
@@ -1136,7 +1162,7 @@ class VanBanDiController extends Controller
                 if ($donVi->cap_xa == 0) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('cap_xa',null)->whereNull('deleted_at')->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('cap_xa', null)->whereNull('deleted_at')->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
@@ -1181,9 +1207,15 @@ class VanBanDiController extends Controller
                 return $query->whereNull('cap_xa');
             })->first();
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
+                ->orderBy('created_at', 'desc')
+                ->orwhere('truong_phong_ky', 2)
+                ->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => auth::user()->donVi->parent_id])->orderBy('created_at', 'desc')->get();
+            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => auth::user()->donVi->parent_id])
+                ->orwhere('truong_phong_ky', 2)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [2, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -1319,6 +1351,49 @@ class VanBanDiController extends Controller
                 $canbonhan->can_bo_nhan_id = $request->nguoi_nhan;
                 $canbonhan->y_kien_gop_y = $request->noi_dung;
                 $canbonhan->save();
+
+                $vanbandi = VanBanDi::where('id', $nguoicu->van_ban_di_id)->first();
+                //ĐÂY Là văn bản của huyện do đơn vị soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->dieu_hanh == 0 && $vanbandi->donViSoanThaoVB->parent_id == 0  )
+                {
+//                    dd(1);
+                    if (auth::user()->hasRole(TRUONG_PHONG)) {
+                        $vanbandi->truong_phong_ky = 2;
+                        $vanbandi->save();
+                    }
+                }
+                //ĐÂY Là văn bản của huyện do chi cục soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->parent_id != 0  )
+                {
+//                    dd(2);
+                    $user = auth::user();
+                    switch (auth::user()->roles->pluck('name')[0]) {
+                        case CHU_TICH:
+                            if ($user->cap_xa == 1) {
+                                $vanbandi->truong_phong_ky = 2;
+                                $vanbandi->save();
+                            }
+                            break;
+                    }
+                }
+                //Đây là văn bản của chi cục do phòng soạn thảo
+                if($vanbandi->donViPhatHanh->cap_xa == 1 && $vanbandi->donViSoanThaoVB->parent_id != 0  )
+                {
+//                    dd(3);
+                    switch (auth::user()->roles->pluck('name')[0]) {
+                        case TRUONG_BAN:
+                                $vanbandi->truong_phong_ky = 2;
+                                $vanbandi->save();
+                            break;
+                    }
+                }
+
+
+
+
+
+
+
                 UserLogs::saveUserLogs(' Duyệt văn bản đi', $canbonhan);
                 $nguoicu->trang_thai = 2;
                 $nguoicu->save();
@@ -1340,6 +1415,12 @@ class VanBanDiController extends Controller
                 $canbonhan->trang_thai = 0;
                 $canbonhan->tra_lai = 1;
                 $canbonhan->save();
+
+                $vanbandi = VanBanDi::where('id', $nguoicu->van_ban_di_id)->first();
+                if (auth::user()->hasRole(CHU_TICH) || auth::user()->hasRole(PHO_CHU_TICH)) {
+                    $vanbandi->truong_phong_ky = 1;
+                    $vanbandi->save();
+                }
                 UserLogs::saveUserLogs(' trả lại văn bản đi', $canbonhan);
                 return redirect()->back()->with('success', 'Trả lại thành công !');
             } elseif ($duyetlai == 3) {
@@ -1395,8 +1476,8 @@ class VanBanDiController extends Controller
     {
 
         $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
-        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
-        $vanbandiduyet->cho_cap_so = 3;
+//        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
+//        $vanbandiduyet->cho_cap_so = 3;
 //        $vanbandiduyet->save();
         $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
         $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
@@ -1443,7 +1524,18 @@ class VanBanDiController extends Controller
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
+        $vanbandi->truong_phong_ky = 3;
         $vanbandi->save();
+
+        $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->get();
+        foreach ($vanbanduthao as $data) {
+            $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
+            $vanbanduthao->trang_thai = 10;
+            $vanbanduthao->save();
+        }
+        $vanbandiupdate = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->orderBy('created_at', 'desc')->first();
+        $vanbandiupdate->cho_cap_so = 1;
+        $vanbandiupdate->save();
 
 
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
@@ -1500,4 +1592,11 @@ class VanBanDiController extends Controller
             'message' => 'Không tìm thấy dữ liệu.'
         ], 500);
     }
+    public function xoaFileDi($id)
+    {
+        $vanBanDi = FileVanBanDi::where('id', $id)->first();
+        $vanBanDi->delete();
+        return redirect()->back()->with('success', 'Xóa file thành công !');
+    }
+
 }

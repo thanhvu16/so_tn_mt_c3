@@ -36,6 +36,7 @@
                 href="{{ route('van-ban-den-hoan-thanh.index') }}"><i class="fa fa-circle-o"></i>VB hoàn thành</a>
         </li>
         @if (!empty(auth::user()->donVi->cap_xa))
+            <hr class="hr-line">
             <li class="{{ Route::is('van-ban-den-phoi-hop.index') ? 'active' : '' }}"><a
                     href="{{ route('van-ban-den-phoi-hop.index') }}"><i class="fa fa-circle-o"></i>VB đơn vị phối hợp chờ xử lý</a>
             </li>

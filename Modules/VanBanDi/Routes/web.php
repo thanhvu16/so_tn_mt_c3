@@ -42,6 +42,7 @@ Route::get('chi-tiet-van-ban/{id}', array('as' => 'Quytrinhxulyvanbandi', 'uses'
 Route::match(['get', 'post','put'], 'chi-tiet-truyen-nhan/{id}', ['as' =>'quytrinhtruyennhangopy' , 'uses' => 'GopYVanbanDiController@quytrinhtruyennhangopy']);
 Route::match(['get', 'post','put'], 'danh-sach-van-ban-di-da-duyet', ['as' =>'vb_di_da_duyet' , 'uses' => 'DuThaoVanBanController@vb_di_da_duyet']);
 Route::match(['get', 'post','put'], 'danh-sach-van-ban-di-tra-lai', ['as' =>'vb_di_tra_lai' , 'uses' => 'DuThaoVanBanController@vb_di_tra_lai']);
+Route::match(['get', 'post','put'], 'xoaFileDi/{id}', ['as' =>'xoaFileDi' , 'uses' => 'VanBanDiController@xoaFileDi']);
 //sửa lại
 Route::match(['get', 'post','put'], 'cap-so-van-ban/{id}', ['as' =>'Capsovanbandi' , 'uses' => 'VanBanDiController@Capsovanbandi']);
 //Route::match(['get', 'post','put'], 'sua-van-ban-di-cho-so/{id}', ['as' =>'suavanbandichocapso' ,'uses' => 'DuThaoVanBanController@suavanbandichocapso']);

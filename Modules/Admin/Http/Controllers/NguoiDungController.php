@@ -8,12 +8,13 @@ use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Hash, DB, Auth;
+use Hash, DB, Auth, Session;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\Admin\Entities\NhomDonVi_chucVu;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class NguoiDungController extends Controller
@@ -28,6 +29,7 @@ class NguoiDungController extends Controller
         $donViId = $request->get('don_vi_id') ?? null;
         $chucVuId = $request->get('chuc_vu_id') ?? null;
         $hoTen = $request->get('ho_ten') ?? null;
+        $permission = $request->get('permission') ?? null;
         $username = $request->get('username') ?? null;
         $trangThai = $request->get('trang_thai') ?? null;
         $danhSachPhongBan = null;
@@ -39,15 +41,15 @@ class NguoiDungController extends Controller
 
 
         $users = User::with(['chucVu' => function ($query) {
-                return $query->select('id', 'ten_chuc_vu');
-            },
+            return $query->select('id', 'ten_chuc_vu');
+        },
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
             ->where(function ($query) use ($donViId, $phonBanId) {
                 if (!empty($donViId) && empty($phonBanId)) {
                     return $query->where('don_vi_id', $donViId);
-                } else if (!empty($donViId) && !empty($phonBanId)){
+                } else if (!empty($donViId) && !empty($phonBanId)) {
                     return $query->where('don_vi_id', $phonBanId);
                 }
             })
@@ -58,17 +60,24 @@ class NguoiDungController extends Controller
             })
             ->where(function ($query) use ($hoTen) {
                 if (!empty($hoTen)) {
-                    return $query->where('ho_ten', $hoTen);
+                    return $query->where('ho_ten', 'LIKE', "%$hoTen");
                 }
             })
             ->where(function ($query) use ($username) {
                 if (!empty($username)) {
-                    return $query->where('username', $username);
+                    return $query->where('username', 'LIKE', "%$username");
                 }
             })
             ->where(function ($query) use ($trangThai) {
                 if (!empty($trangThai)) {
                     return $query->where('trang_thai', $trangThai);
+                }
+            })
+            ->where(function ($query) use ($permission) {
+                if (!empty($permission)) {
+                    return $query->whereHas('permissions', function ($query) use ($permission) {
+                        $query->where('name', 'LIKE', "%$permission%");
+                    });
                 }
             })
             ->whereNull('deleted_at')
@@ -104,7 +113,10 @@ class NguoiDungController extends Controller
         $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
         $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
 
-        return view('admin::nguoi-dung.create', compact('roles', 'danhSachDonVi', 'danhSachChucVu'));
+        $permissions = Permission::whereIn('name', [AllPermission::thamMuu(), AllPermission::VanThuChuyenTrach()])->get();
+
+        return view('admin::nguoi-dung.create',
+            compact('roles', 'danhSachDonVi', 'danhSachChucVu', 'permissions'));
     }
 
     /**
@@ -184,10 +196,29 @@ class NguoiDungController extends Controller
         if (!empty($request->get('role_id'))) {
             $role = Role::findById($request->get('role_id'));
             $user->assignRole($role->name);
+            $permissions = $role->permissions->pluck('name')->toArray();
+            $user->syncPermissions($permissions);
+        }
+
+        if (isset($data['permission'])) {
+            $user->syncPermissions($data['permission']);
         }
 
         return redirect()->route('nguoi-dung.index')->with('success', 'Thêm mới thành công .');
 
+    }
+
+    public function capNhatPassWord()
+    {
+        return view('admin::nguoi-dung.cap_nhat_password');
+    }
+
+    public function guiXuLy(Request $request)
+    {
+        $nguoiDung = User::where('id', auth::user()->id)->first();
+        $nguoiDung->password_email = Hash::make($request->passWord);
+        $nguoiDung->save();
+        return redirect('/')->with('success', 'Cập nhật thành công .');
     }
 
     /**
@@ -211,7 +242,7 @@ class NguoiDungController extends Controller
 
         $user = User::findOrFail($id);
         $donVi = $user->donVi;
-        $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+        $donViId = isset($donVi) && $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id ?? null;
 
         $roles = Role::all();
         $danhSachChucVu = ChucVu::select('id', 'ten_chuc_vu')->get();
@@ -219,12 +250,17 @@ class NguoiDungController extends Controller
         $viTriUuTien = User::max('uu_tien');
 
         $danhSachPhongBan = null;
-        if ($donVi->parent_id != 0) {
+        if (isset($donVi) && $donVi->parent_id != 0) {
             $danhSachPhongBan = DonVi::where('parent_id', $donVi->parent_id)->select('id', 'ten_don_vi')->get();
         }
 
-        return view('admin::nguoi-dung.edit', compact('user', 'donViId',
-            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien', 'danhSachPhongBan', 'donVi'));
+        $permissions = Permission::whereIn('name', [AllPermission::thamMuu(), AllPermission::VanThuChuyenTrach()])->get();
+        $permissionUser = $user->permissions;
+        $arrPermissionId = $permissionUser->pluck('id')->toArray();
+
+
+        return view('admin::nguoi-dung.edit', compact('user', 'donViId', 'permissions',
+            'roles', 'danhSachChucVu', 'danhSachDonVi', 'viTriUuTien', 'danhSachPhongBan', 'donVi', 'arrPermissionId'));
     }
 
     /**
@@ -300,6 +336,10 @@ class NguoiDungController extends Controller
             $user->syncPermissions($permissions);
         }
 
+        if (isset($data['permission'])) {
+            $user->syncPermissions($data['permission']);
+        }
+
         return redirect()->back()->with('success', 'Cập nhật thành công.');
 
     }
@@ -323,8 +363,7 @@ class NguoiDungController extends Controller
     public function getChucVu(Request $request, $id)
     {
 
-        if($id == 0)
-        {
+        if ($id == 0) {
             $ds_chucvu = ChucVu::whereNull('deleted_at')->get();
 
             if ($request->ajax()) {
@@ -334,7 +373,7 @@ class NguoiDungController extends Controller
                     'phongBan' => null
                 ]);
             }
-        }else{
+        } else {
             $ds_chucvu = [];
             $don_vi = DonVi::where('id', $id)->first();
             $nhom_don_vi = $don_vi->nhom_don_vi;
@@ -355,6 +394,7 @@ class NguoiDungController extends Controller
         }
 
     }
+
     public function getDonVi(Request $request, $id)
     {
         $nhom_don_vi = NhomDonVi::where('id', $id)->first();
@@ -366,5 +406,25 @@ class NguoiDungController extends Controller
                 'data' => $lay_don_vi
             ]);
         }
+    }
+
+    public function switchOtherUser(Request $request)
+    {
+        $id = $request->get('user_id');
+        $new_user = User::find($id);
+        Session::put( 'origin_user', Auth::id());
+        Auth::login( $new_user );
+
+        return redirect()->route('home');
+    }
+
+    public function stopSwitchUser(Request $request)
+    {
+        $id = Session::pull('origin_user');
+        $orig_user = User::find( $id );
+        Auth::login( $orig_user );
+        $request->session()->forget('origin_user');
+
+        return redirect()->route('home');
     }
 }

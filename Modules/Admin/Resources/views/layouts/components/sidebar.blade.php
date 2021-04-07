@@ -18,15 +18,17 @@
             @role(QUAN_TRI_HT)
             @include('admin::layouts.components.sidebar_admin')
             @endrole
+            @unlessrole(QUAN_TRI_HT)
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                    @include('admin::layouts.components.sidebar_tham_muu')
+                @endif
+            @endunlessrole
             @role(VAN_THU_DON_VI)
             @include('admin::layouts.components.sidebar_van_thu_don_vi')
             @endrole
             @role(VAN_THU_HUYEN)
             @include('admin::layouts.components.sidebar_van_thu_huyen')
             @endrole
-            @if(auth::user()->hasRole([CHANH_VAN_PHONG]))
-                @include('admin::layouts.components.sidebar_tham_muu')
-            @endif
             @if(auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                 @include('admin::layouts.components.sidebar_lanh_dao')
             @endif
@@ -53,6 +55,9 @@
             @endrole
 
 
+
+
+
 {{--            @can(\App\Common\AllPermission::xemLichCongTac())--}}
 {{--            <li class="{{ Route::is('lich-cong-tac.index') }}">--}}
 {{--                <a href="{{ route('lich-cong-tac.index') }}">--}}
@@ -63,7 +68,7 @@
 
             @unlessrole(QUAN_TRI_HT)
 
-                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} }} ">
+                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} ">
                     <a href="#">
                         <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
                         <span class="pull-right-container">
@@ -83,6 +88,16 @@
                   </a>
                 </li>
             @endunlessrole
+            @if(auth::user()->hasRole([VAN_THU_DON_VI, VAN_THU_HUYEN]))
+                <li class="{{ Route::is('capNhatPassWord') ? 'active menu-open' : '' }}">
+                    <a  href="{{route('capNhatPassWord')}}">
+                        <i class="fa fa-unlock" ></i> <span>Đổi mật khẩu gửi email</span>
+                        <span class="pull-right-container">
+
+            </span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </section>
     <!-- /.sidebar -->

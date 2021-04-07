@@ -79,7 +79,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-md-4 show-phong-ban {{ isset($user) && $user->donVi->parent_id != 0 ? 'show' : 'hide' }}">
+                <div class="form-group col-md-4 show-phong-ban {{ isset($user) && $user->donVi && $user->donVi->parent_id != 0 ? 'show' : 'hide' }}">
 
                     <label class="col-form-label" for="phong-ban">Phòng ban</label>
                     <select class="form-control select2 select-phong-ban" name="phong_ban_id">
@@ -117,7 +117,6 @@
                     </div>
                 @endif
 
-
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="email">Email @include('admin::required')</label>
                     <input type="text" name="email" id="email" placeholder="Nhập địa chỉ email..."
@@ -144,6 +143,9 @@
                                     class="detail-file-name seen-new-window">Chữ ký chính</a></p>
                     @endif
                 </div>
+                @if (isset($user) && $user->id == auth::user()->id)
+                    <div class="clearfix"></div>
+                @endif
                 <div class="col-md-4">
                     <label class="col-form-label" for="chu_ky_nhay">Ảnh chữ ký nháy</label>
                     <div>
@@ -155,21 +157,24 @@
                                     class="detail-file-name seen-new-window">Chữ ký nháy</a></p>
                     @endif
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4 ">
                     <label class="col-form-label" for="so-dien-thoai-ky-sim">Số điện thoại ký sim</label>
                     <input type="number" name="so_dien_thoai_ky_sim" id="so-dien-thoai-ky-sim"
                            placeholder="Nhập sdt ký sim.."
                            value="{{ old('so_dien_thoai_ky_sim', isset($user) ? $user->so_dien_thoai_ky_sim : null) }}"
                            class="form-control">
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-4">
+                @if(auth::user()->hasRole(QUAN_TRI_HT))
+                    <div class="clearfix"></div>
+                @endif
+                <div class="col-md-4 form-group">
                     <label class="col-form-label" for="uu-tien">Vị trí sắp xếp</label>
                     <i class="color-red">(Số hiện tại {{ $viTriUuTien ?? 0 }})</i>
                     <input type="number" name="uu_tien" id="uu-tien" placeholder="Nhập vị trí sắp xếp..."
                            value="{{ old('uu_tien', isset($user) ? $user->uu_tien : '') }}"
                            class="form-control">
                 </div>
+
                 <div class="form-group col-md-4">
                     <label class="col-form-label" for="gioi_tinh">Giới tính</label>
                     <br>
@@ -186,6 +191,7 @@
                         > Nữ
                     </label>
                 </div>
+                @if (auth::user()->hasRole(QUAN_TRI_HT))
                 <div class="col-md-4">
                     <label class="col-form-label" for="trang_thai">Trạng thái</label>
                     <br>
@@ -200,6 +206,34 @@
                         > Tạm khóa
                     </label>
                 </div>
+                @endif
+                @if (auth::user()->hasRole(QUAN_TRI_HT))
+                    <div class="clearfix"></div>
+                    <div class="form-group col-md-12 mt-2">
+                        <p>
+                            <a class="" data-toggle="collapse" href="#collapse-permission" role="button" aria-expanded="false" aria-controls="collapse-permission">
+                                Chức năng của người dùng <i class="fa fa-plus"></i>
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapse-permission">
+                            @if (count($permissions) > 0)
+                                @foreach($permissions as $key => $permission)
+                                    <div class="col-md-4 col-sm-6">
+                                        <label>
+                                            <input type="checkbox" class="flat-red" name="permission[]" value="{{ $permission->name }}"
+                                                {{ isset($user) && in_array($permission->id, $arrPermissionId) ? 'checked' : '' }}
+                                            >
+                                            {{ ucfirst($permission->name) }}
+                                        </label>
+                                    </div>
+                                    @if (($key+1) % 3 == 0)
+                                        <div class="clearfix"></div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="col-md-12 text-center">

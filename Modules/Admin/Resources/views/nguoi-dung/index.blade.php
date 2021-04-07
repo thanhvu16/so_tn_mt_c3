@@ -80,10 +80,17 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3 form-group">
+                                        <label>Tìm theo chức năng:</label>
+                                        <input type="text" class="form-control" value="{{Request::get('permission')}}"
+                                               name="permission"
+                                               placeholder="vd: tham mưu">
+                                    </div>
+                                    <div class="col-md-3 form-group">
                                         <label for="">&nbsp;</label><br>
                                         <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                         @if (!empty(Request::get('don_vi_id')) || !empty(Request::get('chuc_vu_id')) ||
-                                            !empty(Request::get('ho_ten')) || !empty(Request::get('username')) || !empty(Request::get('trang_thai')))
+                                            !empty(Request::get('ho_ten')) || !empty(Request::get('username')) ||
+                                            !empty(Request::get('trang_thai')) || !empty(Request::get('permission')))
                                             <a href="{{ route('nguoi-dung.index') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
                                         @endif
                                     </div>
@@ -150,7 +157,8 @@
                                 <div class="col-md-6 col-12">
                                     <div class="pagination pagination-sm no-margin pull-right">
                                         {!! $users->appends(['don_vi_id' => Request::get('don_vi_id'), 'chuc_vu_id' => Request::get('chuc_vu_id'),
-                                       'ho_ten' => Request::get('ho_ten'),'username' => Request::get('username'), 'trang_thai' => Request::get('trang_thai'), 'phong_ban_id' => Request::get('phong_ban_id')])->render() !!}
+                                       'ho_ten' => Request::get('ho_ten'),'username' => Request::get('username'), 'trang_thai' => Request::get('trang_thai'), 'phong_ban_id' => Request::get('phong_ban_id'),
+                                       'permission' => Request::get('permission')])->render() !!}
                                     </div>
                                 </div>
                             </div>

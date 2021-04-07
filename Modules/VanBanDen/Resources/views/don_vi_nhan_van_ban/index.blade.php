@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách văn bản chờ vào sổ</h3>
                     </div>
-                    @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => 3])
+                    @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB])
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 mb-1" >
 {{--                        <form action="{{route('don-vi-nhan-van-ban-den.index')}}" method="get">--}}
@@ -43,18 +43,20 @@
                                     <td class="text-center">{{$key+1}}</td>
                                     <td class="text-center">{{$vbDen->vanbandi->loaiVanBanid->ten_loai_van_ban ?? ''}}</td>
                                     <td>
-                                        <p> {{$vbDen->vanbandi->so_ky_hieu}}</p>
+                                        <p> {{ isset($vbDen->vanbandi) && $vbDen->vanbandi->so_ky_hieu ?? null }}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="@if($vbDen->vanbandi->loai_van_ban_id == 1000){{route('thongtinvb',$vbDen->id)}}@else{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}} @endif" title="{{$vbDen->vanbandi->trich_yeu}}">{{$vbDen->vanbandi->trich_yeu}}</a><br>
+                                        <a href="@if(isset($vbDen->vanbandi) && $vbDen->vanbandi->loai_van_ban_id == 1000){{route('thongtinvb',$vbDen->id)}}@else{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}} @endif" title="{{isset($vbDen->vanbandi) && $vbDen->vanbandi->trich_yeu}}">{{isset($vbDen->vanbandi) && $vbDen->vanbandi->trich_yeu}}</a><br>
                                     </td>
                                     <td>
-                                        <div class="text-center " style="pointer-events: auto">
-                                            @forelse($vbDen->vanbandi->filechinh as $filedata)
-                                                <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File trình ký]</a><br>
-                                            @empty
-                                            @endforelse
-                                        </div>
+                                        @if (isset($vbDen->vanbandi))
+                                            <div class="text-center " style="pointer-events: auto">
+                                                @forelse($vbDen->vanbandi->filechinh as $filedata)
+                                                    <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File trình ký]</a><br>
+                                                @empty
+                                                @endforelse
+                                            </div>
+                                        @endif
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">

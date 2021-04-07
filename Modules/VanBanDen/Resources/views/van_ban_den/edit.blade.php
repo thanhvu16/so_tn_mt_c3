@@ -158,7 +158,21 @@
                                     <input type="date" class="form-control" value="{{$van_ban_den->han_xu_ly}}" name="han_xu_ly" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-right">
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail4">File</label>
+                                <input type="file" class="form-control han-xu-ly" name="File" value=""  >
+                            </div>
+                            <div class="col-md-6 ">
+                                <div class="form-group">
+                                    <label for="">File văn bản:
+                                        @forelse($van_ban_den->vanBanDenFile as $key=>$filedata)
+                                            <a class="seen-new-window" target="popup"
+                                               href="{{$filedata->getUrlFile()}}">[File văn bản] &emsp; </a> <a class="btn-remove-item" href="{{route('xoaFileDen',$filedata->id)}}"><i class="fa fa-trash" aria-hidden="true" style="color: red"></i></a> |
+                                        @empty
+                                        @endforelse</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
                                 <div class="form-group">
                                     <button
                                         class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>

@@ -2,6 +2,7 @@
 
 namespace Modules\DieuHanhVanBanDen\Entities;
 
+use App\Common\AllPermission;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\DonVi;
@@ -28,7 +29,8 @@ class DonViChuTri extends Model
         'don_vi_co_dieu_hanh',
         'vao_so_van_ban',
         'chuyen_tiep',
-        'hoan_thanh'
+        'hoan_thanh',
+        'da_tham_muu'
     ];
 
     const HOAN_THANH_VB = 1;
@@ -37,6 +39,7 @@ class DonViChuTri extends Model
     const TYPE_NHAP_TU_VAN_THU_DON_VI = 1;
     const VB_DA_CHUYEN_XUONG_DON_VI = 1;
     const DON_VI_CO_DIEU_HANH = 1;
+    const DA_THAM_MUU = 1;
     const TRA_LAI = 1;
 
     public function canBoChuyen()
@@ -69,12 +72,23 @@ class DonViChuTri extends Model
         $tenDonVi = $donVi->ten_don_vi;
         $donViId = $donVi->id;
         $dieuHanh = $donVi->dieu_hanh;
+        $daThamMuu = DonViChuTri::DA_THAM_MUU;
 
         if (auth::user()->hasRole([VAN_THU_DON_VI])) {
             $nguoiDung = User::role(CHU_TICH)
                 ->where('don_vi_id', auth::user()->donVi->parent_id)
                 ->where('trang_thai', ACTIVE)
                 ->whereNull('deleted_at')->first();
+
+            $thamMuuChiCuc = User::permission(AllPermission::thamMuu())
+                ->whereHas('donVi', function ($query) {
+                    return $query->where('parent_id', auth::user()->donVi->parent_id);
+                })->orderBy('id', 'DESC')->first();
+
+            if ($thamMuuChiCuc) {
+                $nguoiDung = $thamMuuChiCuc;
+                $daThamMuu = null;
+            }
 
             $parentDonVi = DonVi::where('id', $donVi->parent_id)->first();
             $tenDonVi = $parentDonVi->ten_don_vi ?? $donVi->ten_don_vi;
@@ -91,7 +105,8 @@ class DonViChuTri extends Model
             'user_id' => auth::user()->id,
             'don_vi_co_dieu_hanh' => $dieuHanh,
             'vao_so_van_ban' =>  1,
-            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI
+            'type' => DonViChuTri::TYPE_NHAP_TU_VAN_THU_DON_VI,
+            'da_tham_muu' => $daThamMuu
         ];
 
         $donViChuTri = new DonViChuTri();
@@ -194,12 +209,14 @@ class DonViChuTri extends Model
             'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi,
             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
             'user_id' => auth::user()->id,
-            'parent_don_vi_id' => auth::user()->don_vi_id,
+            'parent_don_vi_id' => auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id,
         ];
 
         $donViChuTri = new DonViChuTri();
         $donViChuTri->fill($dataLuuDonViChuTri);
         $donViChuTri->save();
+
+        LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataLuuDonViChuTri);
     }
 
     public static function LuuDonViKhongDieuHanh($vanBanDenId, $donViId)

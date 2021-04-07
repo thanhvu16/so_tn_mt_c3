@@ -69,7 +69,7 @@
                                            placeholder="Người ký" required>
                                 </div>
                             </div>
-                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN)
+                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Lãnh đạo tham mưu <span style="color: red">*</span></label>
@@ -150,7 +150,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3 hidden van-ban">
+                            <div class="col-md-3  van-ban ">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Thời hạn theo quy chế <span style="color: red">*</span></label>
                                     <select class="form-control select2 lay_van_ban "    name="tieu_chuan">
@@ -164,10 +164,14 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly" value="" placeholder="Hạn xử lý" required>
+                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly" disabled value="" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
+                                <label for="exampleInputEmail4">File</label>
+                                <input type="file" class="form-control han-xu-ly" name="File" value=""  >
+                            </div>
+                            <div class="col-md-3 ">
                                 <label class="col-form-label" for="chu_tri_phoi_hop">Trách nhiệm giải quyết</label>
                                 <br>
                                     <input type="radio" name="chu_tri_phoi_hop" class="flat-red" value="1" checked
@@ -177,7 +181,8 @@
                                         {{ isset($user) && $user->trang_thai == 2 ? 'checked' : '' }}
                                     >&ensp;Phối hợp
                             </div>
-                            <div class="col-md-12 text-right">
+
+                            <div class="col-md-3 mt-4">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square-o mr-1"></i> Thêm mới</button>
                                 </div>
@@ -196,8 +201,8 @@
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
     <script type="text/javascript">
         $('.ngay-ban-hanh').on('change', function () {
-            console.log($('[name=ngay_ban_hanh]').val());
-            $('.van-ban').removeClass('hidden');
+            // console.log($('[name=ngay_ban_hanh]').val());
+            // $('.van-ban').removeClass('hidden');
         });
         $('.lay_van_ban').on('change', function (e) {
             var tieu_chuan = $('[name=tieu_chuan]').val();

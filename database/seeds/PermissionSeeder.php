@@ -107,6 +107,8 @@ class PermissionSeeder extends Seeder
         //in sổ văn bản
         Permission::findOrCreate(AllPermission::inSoVanBan());
 
+        // văn thư chuyên trách
+        Permission::findOrCreate(AllPermission::VanThuChuyenTrach());
 
         if ($role) {
             $permissions = Permission::all();

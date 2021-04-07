@@ -127,7 +127,7 @@ class VanBanTraLaiController extends Controller
                 ];
 
                 switch ($active) {
-                    case 2:
+                    case VanBanDen::PHO_CHU_TICH_NHAN_VB:
                         //PCT tra lai vb
                         if ($type == 2) {
                             //tra lai chu tich
@@ -147,25 +147,25 @@ class VanBanTraLaiController extends Controller
                         }
                         break;
 
-                    case 5:
+                    case VanBanDen::CHUYEN_VIEN_NHAN_VB:
                         // chuyen vien tra lai
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                         $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
 
-                        $vanBanDen->trinh_tu_nhan_van_ban = 4;
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_PHONG_NHAN_VB;
                         $vanBanDen->save();
 
                         break;
 
-                    case 4:
+                    case VanBanDen::PHO_PHONG_NHAN_VB:
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                         $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
 
-                        $vanBanDen->trinh_tu_nhan_van_ban = 3;
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                         $vanBanDen->save();
                         break;
 
-                    case 3:
+                    case VanBanDen::TRUONG_PHONG_NHAN_VB:
                         if ($donVi->cap_xa = DonVi::CAP_XA && $currentUser->hasRole(TRUONG_BAN)) {
                             // chuyen van ban len pho chu tich xa chuyen lai van ban
                             $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
@@ -200,10 +200,10 @@ class VanBanTraLaiController extends Controller
                                     // chuyen len PCT hoac CT
                                     $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                                     $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                                    $vanBanDen->trinh_tu_nhan_van_ban = 2;
+                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
                                     if ($canBoNhan == $chuTich->id) {
-                                        $vanBanDen->trinh_tu_nhan_van_ban = 1;
+                                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
                                     }
                                     $vanBanDen->save();
                                 }
@@ -212,10 +212,10 @@ class VanBanTraLaiController extends Controller
                                 // van thu tra lai
                                 $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                                 $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                                $vanBanDen->trinh_tu_nhan_van_ban = 2;
+                                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
                                 if ($canBoNhan == $chuTich->id) {
-                                    $vanBanDen->trinh_tu_nhan_van_ban = 1;
+                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
                                 }
                                 $vanBanDen->save();
 
@@ -240,7 +240,7 @@ class VanBanTraLaiController extends Controller
                         }
                         break;
 
-                    case 9:
+                    case VanBanDen::PHO_CHU_TICH_XA_NHAN_VB:
                         // pho ct xa chuyen lai van ban cho chu tich xa
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                         $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
@@ -248,7 +248,7 @@ class VanBanTraLaiController extends Controller
                         $vanBanDen->save();
                         break;
 
-                    case 8:
+                    case VanBanDen::CHU_TICH_XA_NHAN_VB:
                         if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
 
                             $canBoNhan = $vanThuDonVi->id ?? null;
@@ -263,10 +263,10 @@ class VanBanTraLaiController extends Controller
                             // chuyen len PCT hoac CT
                             $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                             $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                            $vanBanDen->trinh_tu_nhan_van_ban = 2;
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
                             if ($canBoNhan == $chuTich->id) {
-                                $vanBanDen->trinh_tu_nhan_van_ban = 1;
+                                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
                             }
                             $vanBanDen->save();
                         }

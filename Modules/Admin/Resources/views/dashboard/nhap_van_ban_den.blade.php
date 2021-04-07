@@ -34,6 +34,22 @@
                     </a>
                     @endrole
                     @role('văn thư đơn vị')
+                    @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                        <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
+                            <p>VB chờ chờ phân loại
+                                <button
+                                    class="btn br-10 btn-purple btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoPhanLoai }}</button>
+                            </p>
+                        </a>
+                        @if (auth::user()->donVi->parent_id != 0)
+                            <a class="text-title-item" href="{{ route('phan-loai-van-ban-phoi-hop.index') }}">
+                                <p>VB phối hợp chờ chờ phân loại
+                                    <button
+                                        class="btn br-10 btn-green-light btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanPhoiHopChoPhanLoai }}</button>
+                                </p>
+                            </a>
+                        @endif
+                    @endif
                     <a class="text-title-item" href="{{ route('don-vi-nhan-van-ban-den.index') }}">
                         <p>Văn bản chờ vào sổ
                             <button
