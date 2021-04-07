@@ -31,3 +31,14 @@
         <!-- nav-tabs-custom -->
     </section>
 @endsection
+@section('script')
+    <script type="text/javascript">
+        $(document).on('change', 'input[name=check_all]', function () {
+            if ($(this).is(':checked', true)) {
+                $(this).closest('.data-item').find(".sub-check").prop('checked', true);
+            } else {
+                $(this).closest('.data-item').find(".sub-check").prop('checked', false);
+            }
+        });
+    </script>
+@endsection

@@ -40,7 +40,11 @@ class VaiTroController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::orderBy('id', 'ASC')->get();
+        $permissions = Permission::where('parent_id', 0)->orderBy('id', 'DESC')->get();
+
+        foreach ($permissions as $permission) {
+            $permission->childPers = $this->getChildPermission($permission->id);
+        }
 
         return view('admin::vai-tro.create', compact('permissions'));
     }
@@ -91,7 +95,12 @@ class VaiTroController extends Controller
     {
         $role = Role::findOrFail($id);
         $arrPermisson = $role->permissions->pluck('id')->toArray();
-        $permissions = Permission::orderBy('id', 'ASC')->get();
+
+        $permissions = Permission::where('parent_id', 0)->orderBy('id', 'DESC')->get();
+
+        foreach ($permissions as $permission) {
+            $permission->childPers = $this->getChildPermission($permission->id);
+        }
 
         return view('admin::vai-tro.edit', compact('role', 'arrPermisson',
             'permissions'));
@@ -148,5 +157,10 @@ class VaiTroController extends Controller
         $role->delete();
 
         return redirect()->back()->with('success', 'Xoá thành công.');
+    }
+
+    public function getChildPermission($permissionId)
+    {
+        return Permission::where('parent_id', $permissionId)->get();
     }
 }
