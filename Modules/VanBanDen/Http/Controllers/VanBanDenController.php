@@ -36,6 +36,9 @@ class VanBanDenController extends Controller
      */
     public function index(Request $request)
     {
+//        $arayEcabinet=;
+//        $data = json_decode($arayEcabinet);
+//        dd($data);
         $donVi = auth::user()->donVi;
         $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');

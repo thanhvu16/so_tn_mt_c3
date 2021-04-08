@@ -1090,6 +1090,7 @@ class DuThaoVanBanController extends Controller
                 $canbothuocduthaocukhac->save();
             }
             $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
+
             $tenfilehoso = !empty($request['txt_file']) ? $request['txt_file'] : null;
             $filehoso = !empty($request['file_name']) ? $request['file_name'] : null;
             $filephieutrinh = !empty($request['file_phieu_trinh']) ? $request['file_phieu_trinh'] : null;

@@ -99,7 +99,7 @@
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.chuyen-vien-phoi-hop')||
  Route::is('cong-viec-don-vi.dang-xu-ly')|| Route::is('cong-viec-don-vi.da-xu-ly')|| Route::is('cong-viec-don-vi.chuyen-vien-da-phoi-hop') ||
  Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ||
- Route::is('cong-viec-don-vi.edit') || Route::is('cong-viec-don-vi.hoan-thanh') ? 'active menu-open' : '' }} }} ">
+ Route::is('cong-viec-don-vi.edit') || Route::is('cong-viec-don-vi.hoan-thanh') || Route::is('congViecDaDeXuat')|| Route::is('congViecDeXuat') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
         <span class="pull-right-container">
@@ -130,6 +130,11 @@
         <li class="{{ Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi-phoi-hop.da-xu-ly') }}"><i class="fa fa-circle-o"></i> CV đơn vị PH đã
                 xử lý</a></li>
+        <hr style="border: 1px dashed #fda709;margin-top: 6px;margin-bottom: 6px;">
+        <li class="{{ Route::is('congViecDeXuat') ? 'active' : '' }}"><a
+                href="{{ route('congViecDeXuat') }}"><i class="fa fa-circle-o"></i> Tạo đề xuất công việc</a></li>
+        <li class="{{ Route::is('congViecDaDeXuat') ? 'active' : '' }}"><a
+                href="{{ route('congViecDaDeXuat') }}"><i class="fa fa-circle-o"></i> Công việc đã đề xuất</a></li>
 
     </ul>
 </li>

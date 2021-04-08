@@ -2,13 +2,16 @@
 
 namespace Modules\CongViecDonVi\Http\Controllers;
 
+use App\Common\AllPermission;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use DB, auth;
+use DB, auth, File;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDeXuat;
+use Modules\CongViecDonVi\Entities\CongViecDeXuatFile;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonViPhoiHop;
 
@@ -132,6 +135,124 @@ class CongViecDonViController extends Controller
 
         return view('congviecdonvi::cong-viec-don-vi.create',
             compact('danhSachDonViChutri', 'donViChuTri', 'danhSachPhoPhong', 'danhSachChuyenVien'));
+    }
+
+    public function congViecDeXuat()
+    {
+        canPermission(AllPermission::deXuatCongViec());
+        $user = auth::user();
+        $donVi = $user->donVi;
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+
+                } else {
+                    $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                }
+                break;
+            case PHO_PHONG:
+                $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
+                break;
+            case PHO_TRUONG_BAN:
+                $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+
+        }
+        return view('congviecdonvi::cong-viec-don-vi.cong-viec-chuyen-vien-de-xuat', compact('nguoinhan'));
+    }
+
+    public function congViecDaDeXuat()
+    {
+        canPermission(AllPermission::deXuatCongViec());
+        $congviecdexuat = CongViecDeXuat::whereNull('deleted_at')->where('nguoi_gui', auth::user()->id)->orderBy('created_at','desc')->get();
+        return view('congviecdonvi::cong-viec-don-vi.cong-viec-da-de-xuat',
+            compact('congviecdexuat'));
+    }
+
+    public function congViecDeXuatChoXuLy()
+    {
+        $congviecdexuat = CongViecDeXuat::whereNull('deleted_at')->where(['truong_phong' => auth::user()->id, 'trang_thai' => 1])->get();
+        return view('congviecdonvi::cong-viec-don-vi.cong-viec-de-xuat-cho-xu-ly',
+            compact('congviecdexuat'));
+    }
+
+    public function DuyetCongViecDeXuat(Request $request)
+    {
+        $congViec = CongViecDeXuat::where('id', $request->id)->first();
+        if ($request->submit_Duyet == 1) {
+            $congViec->trang_thai = 2;
+            $congViec->save();
+            return redirect()->back()->with('success', 'Duyệt công việc thành công !');
+        } elseif ($request->submit_tralai == 2) {
+            $congViec->trang_thai = 3;
+            $congViec->save();
+            return redirect()->back()->with('success', 'Trả lại công việc thành công !');
+        }
+    }
+
+    public function chiTietCongViecDeXuat(Request $request)
+    {
+        $congviec = CongViecDeXuat::where('id', $request->id)->first();
+        return response()->json(
+            [
+                'html' => $congviec
+            ]
+        );
+    }
+
+    public function suaCongViecDeXuat(Request $request)
+    {
+        $congViec = CongViecDeXuat::where('id', $request->id)->first();
+        $congViec->noi_dung = $request->noi_dung;
+        $congViec->han_xu_ly = $request->han_xu_ly;
+        $congViec->save();
+        return redirect()->back()->with('success', 'Sửa công việc thành công !');
+    }
+
+    function xoaCongViecDeXuat($id)
+    {
+        $congViec = CongViecDeXuat::where('id', $id)->first();
+        $congViec->delete();
+        return redirect()->back()->with('success', 'Xóa công việc thành công !');
+    }
+
+    public function luuCongViecDeXuat(Request $request)
+    {
+        $file = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        $ten_file = !empty($request['txt_file']) ? $request['txt_file'] : null;
+        $uploadPath = THU_MUC_CONG_VIEC_DON_VI;
+        $congViec = new CongViecDeXuat();
+        $congViec->noi_dung = $request->noi_dung;
+        $congViec->nguoi_gui = auth::user()->id;
+        $congViec->truong_phong = $request->truong_phong;
+        $congViec->han_xu_ly = $request->han_xu_ly;
+        $congViec->save();
+        if ($file && count($file) > 0) {
+            foreach ($file as $key => $getFile) {
+                $extFile = $getFile->extension();
+                $Filecv = new CongViecDeXuatFile();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                $urlFile = THU_MUC_CONG_VIEC_DON_VI . '/' . $fileName;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $getFile->move($uploadPath, $fileName);
+
+                $Filecv->ten_file = $ten_file[$key];
+                $Filecv->duong_dan = $urlFile;
+                $Filecv->duoi_file = $extFile;
+                $Filecv->cong_viec_id = $congViec->id;
+                $Filecv->don_vi_id = auth::user()->donvi_id;
+                $Filecv->save();
+            }
+
+        }
+        return redirect()->route('congViecDaDeXuat')->with('success', 'Thêm đề xuất thành công !');
     }
 
     /**
@@ -388,8 +509,7 @@ class CongViecDonViController extends Controller
             ->whereNull('hoan_thanh')
             ->paginate(PER_PAGE);
 
-        foreach ($chuyenNhanCongViecDonVi as $congViecDonVi)
-        {
+        foreach ($chuyenNhanCongViecDonVi as $congViecDonVi) {
             $congViecDonVi->getTrinhTuXuLy = $congViecDonVi->getTrinhTuXuLy();
             $congViecDonVi->giaiQuyetCongViecHoanThanh = $congViecDonVi->giaiQuyetCongViecHoanThanh();
 

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\CongViecDonVi\Entities\ChuyenNhanCongViecDonVi;
+use Modules\CongViecDonVi\Entities\CongViecDeXuat;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonVi;
 use auth;
@@ -18,6 +19,7 @@ class CongViecHoanThanhController extends Controller
      */
     public function index()
     {
+
         $currentUser = auth::user();
 
         if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG) || $currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG) || $currentUser->hasRole(CHU_TICH) || $currentUser->hasRole(CHUYEN_VIEN)) {
@@ -27,10 +29,13 @@ class CongViecHoanThanhController extends Controller
                 ->whereNull('type')
                 ->where('hoan_thanh', ChuyenNhanCongViecDonVi::HOAN_THANH_CONG_VIEC)
                 ->paginate(PER_PAGE);
+            $congviecdexuat = CongViecDeXuat::whereNull('deleted_at')->where(['truong_phong' => auth::user()->id, 'trang_thai' => 2])->get();
+            $total = $danhSachChuyenNhanCongViecDonVi->count();
+            $tong = $total + $congviecdexuat->count();
 
             $order = ($danhSachChuyenNhanCongViecDonVi->currentPage() - 1) * PER_PAGE + 1;
 
-            return view('congviecdonvi::cong-viec-don-vi.hoan-thanh.index', compact('danhSachChuyenNhanCongViecDonVi', 'order'));
+            return view('congviecdonvi::cong-viec-don-vi.hoan-thanh.index', compact('danhSachChuyenNhanCongViecDonVi','congviecdexuat', 'order','total','tong'));
         } else {
 //
 //            $year = date('Y');
