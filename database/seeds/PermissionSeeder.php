@@ -30,6 +30,8 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::suaNguoiDung());
         Permission::findOrCreate(AllPermission::xoaNguoiDung());
 
+        // đề xuất công việc
+        Permission::findOrCreate(AllPermission::deXuatCongViec());
 
         //don vi
         Permission::findOrCreate(AllPermission::themDonVi());

@@ -357,6 +357,10 @@ class AllPermission
     {
         return 'in sổ văn bản đơn vị';
     }
+    public static function deXuatCongViec()
+    {
+        return 'đề xuất công việc';
+    }
 
     public static function VanThuChuyenTrach()
     {
