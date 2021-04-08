@@ -44,7 +44,7 @@
 </li>
 @endunless
 <li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ||
- Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') || Route::is('vb_di_da_duyet')|| Route::is('vanBanDiTaoChuaDuyet') ? 'active menu-open' : '' }} }} ">
+ Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_tra_lai') || Route::is('vb_di_da_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -56,11 +56,10 @@
                     class="fa fa-circle-o"></i>Danh sách</a></li>
         <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i
                     class="fa fa-circle-o"></i>Thêm mới</a></li>
-        <li class="{{ Route::is('vanBanDiTaoChuaDuyet') ? 'active' : '' }}"><a href="{{ route('vanBanDiTaoChuaDuyet') }}"><i
-                    class="fa fa-circle-o"></i>Văn bản đã tạo </a></li>
-<!--        <li class="{{ Route::is('danh_sach_vb_di_cho_duyet') ? 'active' : '' }}"><a
-                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> Văn bản đi chờ duyệt</a>
-        </li>-->
+
+{{--<!--        <li class="{{ Route::is('danh_sach_vb_di_cho_duyet') ? 'active' : '' }}"><a--}}
+{{--                href="{{ route('danh_sach_vb_di_cho_duyet') }}"><i class="fa fa-circle-o"></i> Văn bản đi chờ duyệt</a>--}}
+{{--        </li>-->--}}
         <li class="{{ Route::is('vb_di_tra_lai') ? 'active' : '' }}"><a href="{{ route('vb_di_tra_lai') }}"><i
                     class="fa fa-circle-o"></i> Văn bản đi bị trả lại</a></li>
     </ul>
@@ -80,7 +79,7 @@
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
 </li>
-<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') || Route::is('danhsachgopy') ? 'active menu-open' : '' }} }} ">
+<li class="treeview {{ Route::is('du-thao-van-ban.index') || Route::is('Danhsachduthao') || Route::is('danhsachgopy') || Route::is('vanBanDiTaoChuaDuyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-balance-scale"></i> <span>Dự thảo văn bản đi</span>
         <span class="pull-right-container">
@@ -94,6 +93,8 @@
                     class="fa fa-circle-o"></i>Danh sách cá nhân dự thảo</a></li>
         <li class="{{ Route::is('danhsachgopy') ? 'active' : '' }}"><a href="{{ route('danhsachgopy') }}"><i
                     class="fa fa-circle-o"></i>Góp ý văn bản</a></li>
+        <li class="{{ Route::is('vanBanDiTaoChuaDuyet') ? 'active' : '' }}"><a href="{{ route('vanBanDiTaoChuaDuyet') }}"><i
+                    class="fa fa-circle-o"></i>Văn bản đã tạo </a></li>
     </ul>
 </li>
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.chuyen-vien-phoi-hop')||

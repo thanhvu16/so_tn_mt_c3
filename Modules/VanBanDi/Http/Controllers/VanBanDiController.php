@@ -150,8 +150,9 @@ class VanBanDiController extends Controller
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])
-                ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->orwhere('van_ban_huyen_ky', $donViId)
+                ->where('so_di', '!=', null)->whereNull('deleted_at')
+
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
