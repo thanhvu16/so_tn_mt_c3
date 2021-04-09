@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản chờ xử lý')
+@section('page_title', 'Danh sách văn bản trả lại')
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản chờ xử lý</h4>
+                                <h4 class="header-title pt-2">Danh sách văn bản trả lại</h4>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('van-ban-lanh-dao.save_don_vi_chu_tri') }}" method="post"
@@ -34,7 +34,7 @@
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
-{{--                                <th width="22%" class="text-center">Tóm tắt VB</th>--}}
+                                {{--                                <th width="22%" class="text-center">Tóm tắt VB</th>--}}
                                 <th class="text-center" width="20%">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
                                 <th class="text-center" width="7%">
@@ -60,40 +60,29 @@
                                                 </i>
                                             @endif
                                         </p>
-                                        @if (!empty($vanBanDen->tom_tat))
-                                            <p>
-                                                <a data-toggle="collapse" class="color-black" href="#tom-tat-van-ban-{{ $vanBanDen->id }}" role="button" aria-expanded="false" aria-controls="tom-tat-van-ban">
-                                                    <i class="fa fa-book"></i> Tóm tăt văn bản
-                                                </a>
-                                            </p>
-                                            <div class="collapse" id="tom-tat-van-ban-{{ $vanBanDen->id }}">
-                                                <p>
-                                                    {{ $vanBanDen->tom_tat ?? $vanBanDen->trich_yeu }}
-                                                </p>
-                                            </div>
-                                        @endif
-                                        @if ($vanBanDen->vanBanTraLai)
+                                        @if ($vanBanDen->vanBanTraLaiChoDuyet)
                                             <p class="color-red"><b>Lý
                                                     do trả
-                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLai->noi_dung ?? '' }}</i>
+                                                    lại: </b><i>{{ $vanBanDen->vanBanTraLaiChoDuyet->noi_dung ?? '' }}</i>
+                                            </p>
+                                            <p>File đính kèm:
+                                                @if (isset($vanBanDen->vanBanTraLaiChoDuyet->vanBanTraLaiFile))
+                                                    @foreach($vanBanDen->vanBanTraLaiChoDuyet->vanBanTraLaiFile as $key => $file)
+                                                        <a href="{{ $file->getUrlFile() }}"
+                                                           target="popup"
+                                                           class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                                                        @if (count($vanBanDen->vanBanTraLaiChoDuyet->vanBanTraLaiFile)-1 != $key)
+                                                            &nbsp;|&nbsp;
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </p>
                                             <p>
-                                                (Cán bộ trả lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
-                                                - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}
-                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
+                                                (Cán bộ trả
+                                                lại: {{ $vanBanDen->vanBanTraLaiChoDuyet->canBoChuyen->ho_ten  ?? '' }}
+                                                - {{ $vanBanDen->vanBanTraLaiChoDuyet->canBoChuyen->donVi->ten_don_vi ?? null }}
+                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLaiChoDuyet->created_at)) }}
                                                 )</p>
-                                        @endif
-                                        @if (!empty($checkThamMuuSo))
-                                            <p>
-                                                <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="1">
-                                                    <span><i class="fa fa-reply"></i> Chuyển lại tham mưu</span>
-                                                </a>
-                                            </p>
-                                        @endif
-                                        @if (!empty($vanBanDen->checkVanBanQuaChuTich))
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai" data-id="{{ $vanBanDen->id }}" data-tra-lai="2">
-                                                <span> <i class="fa fa-reply"></i> Chuyển báo cáo lại giám đốc</span>
-                                            </a>
                                         @endif
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
@@ -124,20 +113,20 @@
                                                     form="form-tham-muu">
                                                     @forelse($danhSachDonVi as $donVi)
                                                         @if(!empty($vanBanDen->checkDonViChuTri) && $vanBanDen->checkDonViChuTri->don_vi_id != $donVi->id)
-                                                        <option
-                                                            value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
+                                                            <option
+                                                                value="{{ $donVi->id }}" {{ !empty($vanBanDen->checkDonViPhoiHop) && in_array($donVi->id, $vanBanDen->checkDonViPhoiHop->pluck('don_vi_id')->toArray()) ? 'selected' : null }}>{{ $donVi->ten_don_vi }}</option>
                                                         @endif
                                                     @empty
                                                     @endforelse
                                                 </select>
                                             </p>
-{{--                                            @if($vanBanDen->checkQuyenGiaHan)--}}
+                                            {{--                                            @if($vanBanDen->checkQuyenGiaHan)--}}
                                             <p>
                                                 <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
                                                        value=""
                                                        class="form-control" form="form-tham-muu">
                                             </p>
-{{--                                            @endif--}}
+                                            {{--                                            @endif--}}
                                             <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                    name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                    form="form-tham-muu">

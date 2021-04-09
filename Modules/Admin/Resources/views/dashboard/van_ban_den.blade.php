@@ -34,7 +34,7 @@
 
                         <a class="text-title-item" href="{{route('phan-loai-van-ban.tra_lai')}}">
 
-                            <p>Văn bản trả lại
+                            <p>Văn bản bị trả lại
                                 <button
                                     class="btn br-10 btn-danger btn-circle waves-effect waves-light btn-sm pull-right count-item">{{  $vanBanDenTraLai }}</button>
                             </p>

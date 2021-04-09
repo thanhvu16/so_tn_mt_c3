@@ -31,4 +31,9 @@ class VanBanTraLai extends Model
     {
         return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id');
     }
+
+    public function vanBanTraLaiFile()
+    {
+        return $this->hasMany(VanBanTraLaiFile::class, 'van_ban_tra_lai_id', 'id');
+    }
 }

@@ -469,6 +469,7 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('updated_at', "LIKE", $date);
                         }
                     })
+                    ->orderBy('updated_at', 'DESC')
                     ->paginate(PER_PAGE_10);
 
                 $danhSachPhoChuTich = User::role(PHO_CHU_TICH)
@@ -490,6 +491,7 @@ class PhanLoaiVanBanController extends Controller
 
                 if (!empty($danhSachVanBanDen)) {
                     foreach ($danhSachVanBanDen as $vanBanDen) {
+                        $vanBanDen->giaHanLanhDao = $vanBanDen->getGiaHanLanhDao();
                         $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
                         $vanBanDen->chuTich = $vanBanDen->getChuyenVienThucHien([$chuTich->id]);
                         $vanBanDen->phoChuTich = $vanBanDen->getChuyenVienThucHien($danhSachPhoChuTich->pluck('id')->toArray());
@@ -561,6 +563,7 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
+                    ->orderBy('updated_at', 'DESC')
                     ->paginate(PER_PAGE_10);
 
                 foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -620,6 +623,7 @@ class PhanLoaiVanBanController extends Controller
                         return $query->where('created_at', "LIKE", "%$date%");
                     }
                 })
+                ->orderBy('updated_at', 'DESC')
                 ->paginate(PER_PAGE_10);
 
             foreach ($danhSachVanBanDen as $vanBanDen) {
