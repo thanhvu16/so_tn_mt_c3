@@ -246,6 +246,24 @@ class VanBanDen extends Model
             ->orderBy('id','DESC');
     }
 
+    public function vanBanDaGuiTraLai()
+    {
+        return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_nhan_id', auth::user()->id)
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
+            ->whereNotNull('status')
+            ->orderBy('id','DESC');
+    }
+
+    public function vanBanTraLaiChoDuyet()
+    {
+        return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_chuyen_id', auth::user()->id)
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'created_at')
+            ->whereNull('status')
+            ->orderBy('id','DESC');
+    }
+
     public function xuLyVanBanDen()
     {
         return $this->hasMany(XuLyVanBanDen::class, 'van_ban_den_id', 'id')->whereNull('status');

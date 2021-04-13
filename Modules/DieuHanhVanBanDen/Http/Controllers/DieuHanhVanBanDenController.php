@@ -102,6 +102,7 @@ class DieuHanhVanBanDenController extends Controller
             ->findOrFail($id);
 
         $vanBanDen->vanBanDi = $vanBanDen->vanBanDi();
+        $vanBanDen->giaHanXuLy = $vanBanDen->getGiaHanXuLy() ?? null;
 
         $donViChuTri = $vanBanDen->checkDonViChuTri;
 

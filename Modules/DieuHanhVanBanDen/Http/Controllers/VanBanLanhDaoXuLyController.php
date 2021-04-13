@@ -186,7 +186,8 @@ class VanBanLanhDaoXuLyController extends Controller
 
             if ($active == VanBanDen::PHO_CHU_TICH_NHAN_VB) {
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.pho_chu_tich',
-                    compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
+                    compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active',
+                        'loaiVanBanGiayMoi', 'checkThamMuuSo'));
             }
 
 

@@ -2,7 +2,7 @@
  || Route::is('gia-han-van-ban.index') || route::is('van-ban-den-hoan-thanh.cho-duyet') || Route::is('van_ban_den_chuyen_vien.index')
  || Route::is('van-ban-den-hoan-thanh.index') || Route::is('van_ban_den_chuyen_vien.da_xu_ly') || Route::is('van-ban-den-phoi-hop.index')
   || Route::is('van-ban-den-phoi-hop.dang-xu-ly') || Route::is('van-ban-den-phoi-hop.da-xu-ly') || Route::is('van-ban-den-don-vi.dang_xu_ly')
-   || Route::is('van-ban-den-don-vi.xem_de_biet') || Route::is('duyet-van-ban-cap-duoi-trinh') ? 'active menu-open' : '' }}">
+   || Route::is('van-ban-den-don-vi.xem_de_biet') || Route::is('duyet-van-ban-cap-duoi-trinh') || Route::is('van_ban_tra_lai.cho_duyet') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-th" aria-hidden="true"></i> <span>Xử lý văn bản đến</span>
         <span class="pull-right-container">
@@ -12,6 +12,9 @@
     <ul class="treeview-menu">
         <li class="{{ Route::is('van-ban-den-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.index') }}"><i class="fa fa-circle-o"></i>VB chờ xử lý</a>
+        </li>
+        <li class="{{ Route::is('van_ban_tra_lai.cho_duyet') ? 'active' : '' }}"><a
+                href="{{ route('van_ban_tra_lai.cho_duyet') }}"><i class="fa fa-circle-o"></i>VB đã gửi trả lại</a>
         </li>
         @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2')
         <li class="{{ Route::is('van_ban_don_vi.da_chi_dao') ? 'active' : '' }}"><a

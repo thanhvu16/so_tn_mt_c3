@@ -160,6 +160,7 @@ class VanBanDenDonViController extends Controller
                 return $query->select('id', 'van_ban_den_id', 'lanh_dao_id');
             }
             ])
+//            ->doesntHave('vanBanDaGuiTraLai')
             ->whereIn('id', $arrVanBanDenId)
             ->where(function ($query) use ($trichYeu) {
                 if (!empty($trichYeu)) {
