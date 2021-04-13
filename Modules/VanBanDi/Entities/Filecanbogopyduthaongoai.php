@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Filecanbogopyduthaongoai extends Model
 {
-    use SoftDeletes;
+
     protected $table = 'dtvb_file_gop_y_du_thao_ngoai';
 
 
