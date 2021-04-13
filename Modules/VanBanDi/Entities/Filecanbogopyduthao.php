@@ -10,7 +10,7 @@ class Filecanbogopyduthao extends Model
 {
 
     protected $table = 'dtvb_file_gop_y_du_thao_trong';
-    use SoftDeletes;
+
 
 
     protected $fillable = [

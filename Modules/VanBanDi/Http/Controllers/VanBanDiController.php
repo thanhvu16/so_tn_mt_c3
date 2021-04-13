@@ -948,28 +948,32 @@ class VanBanDiController extends Controller
             }
             $donVi = auth::user()->donVi;
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-            if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
-            }
-            $typeArray = explode('.', $request->File->getClientOriginalName());
-            $tenchinhfile = strtolower($typeArray[0]);
-            $extFile = $request->File->extension();
-            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+            if($request->File)
+            {
+                $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $typeArray = explode('.', $request->File->getClientOriginalName());
+                $tenchinhfile = strtolower($typeArray[0]);
+                $extFile = $request->File->extension();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+                $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
 
-            $vanBanDiFile = new FileVanBanDi();
-            $request->File->move($uploadPath, $fileName);
-            $vanBanDiFile->ten_file = $tenchinhfile;
-            $vanBanDiFile->duong_dan = $urlFile;
-            $vanBanDiFile->duoi_file = $extFile;
-            $vanBanDiFile->van_ban_di_id = $vanbandi->id;
-            $vanBanDiFile->file_chinh_gui_di = 2;
-            $vanBanDiFile->trang_thai = 2;
-            $vanBanDiFile->nguoi_dung_id = auth::user()->id;
-            $vanBanDiFile->don_vi_id = $donViId;
-            $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
-            $vanBanDiFile->save();
+                $vanBanDiFile = new FileVanBanDi();
+                $request->File->move($uploadPath, $fileName);
+                $vanBanDiFile->ten_file = $tenchinhfile;
+                $vanBanDiFile->duong_dan = $urlFile;
+                $vanBanDiFile->duoi_file = $extFile;
+                $vanBanDiFile->van_ban_di_id = $vanbandi->id;
+                $vanBanDiFile->file_chinh_gui_di = 2;
+                $vanBanDiFile->trang_thai = 2;
+                $vanBanDiFile->nguoi_dung_id = auth::user()->id;
+                $vanBanDiFile->don_vi_id = $donViId;
+                $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
+                $vanBanDiFile->save();
+            }
+
 
             $isSuccess = true;
 

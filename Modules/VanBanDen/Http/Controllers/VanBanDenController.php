@@ -553,23 +553,27 @@ class VanBanDenController extends Controller
 
             }
             $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-            if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
+            if($request->File)
+            {
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $typeArray = explode('.', $request->File->getClientOriginalName());
+                $tenchinhfile = strtolower($typeArray[0]);
+                $extFile = $request->File->extension();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+                $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+                $request->File->move($uploadPath, $fileName);
+                $vbDenFile = new FileVanBanDen();
+                $vbDenFile->ten_file = $tenchinhfile;
+                $vbDenFile->duong_dan = $urlFile;
+                $vbDenFile->duoi_file = $extFile;
+                $vbDenFile->vb_den_id = $vanbandv->id;
+                $vbDenFile->nguoi_dung_id = auth::user()->id;
+                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                $vbDenFile->save();
             }
-            $typeArray = explode('.', $request->File->getClientOriginalName());
-            $tenchinhfile = strtolower($typeArray[0]);
-            $extFile = $request->File->extension();
-            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
-            $request->File->move($uploadPath, $fileName);
-            $vbDenFile = new FileVanBanDen();
-            $vbDenFile->ten_file = $tenchinhfile;
-            $vbDenFile->duong_dan = $urlFile;
-            $vbDenFile->duoi_file = $extFile;
-            $vbDenFile->vb_den_id = $vanbandv->id;
-            $vbDenFile->nguoi_dung_id = auth::user()->id;
-            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-            $vbDenFile->save();
+
 
 
 
@@ -750,23 +754,27 @@ class VanBanDenController extends Controller
         $vanbandv->save();
 
         $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-        if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0775, true, true);
+        if ($request->File)
+        {
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0775, true, true);
+            }
+            $typeArray = explode('.', $request->File->getClientOriginalName());
+            $tenchinhfile = strtolower($typeArray[0]);
+            $extFile = $request->File->extension();
+            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+            $request->File->move($uploadPath, $fileName);
+            $vbDenFile = new FileVanBanDen();
+            $vbDenFile->ten_file = $tenchinhfile;
+            $vbDenFile->duong_dan = $urlFile;
+            $vbDenFile->duoi_file = $extFile;
+            $vbDenFile->vb_den_id = $vanbandv->id;
+            $vbDenFile->nguoi_dung_id = auth::user()->id;
+            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+            $vbDenFile->save();
         }
-        $typeArray = explode('.', $request->File->getClientOriginalName());
-        $tenchinhfile = strtolower($typeArray[0]);
-        $extFile = $request->File->extension();
-        $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-        $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
-        $request->File->move($uploadPath, $fileName);
-        $vbDenFile = new FileVanBanDen();
-        $vbDenFile->ten_file = $tenchinhfile;
-        $vbDenFile->duong_dan = $urlFile;
-        $vbDenFile->duoi_file = $extFile;
-        $vbDenFile->vb_den_id = $vanbandv->id;
-        $vbDenFile->nguoi_dung_id = auth::user()->id;
-        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-        $vbDenFile->save();
+
         UserLogs::saveUserLogs('Cập nhật văn bản đến', $vanbandv);
 
 

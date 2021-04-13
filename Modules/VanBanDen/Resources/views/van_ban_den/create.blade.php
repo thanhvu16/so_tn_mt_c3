@@ -150,7 +150,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3  van-ban ">
+                            <div class="col-md-3  van-ban">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Thời hạn theo quy chế <span style="color: red">*</span></label>
                                     <select class="form-control select2 lay_van_ban "    name="tieu_chuan">
@@ -164,7 +164,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly" disabled value="" placeholder="Hạn xử lý" required>
+                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly"  value="" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
                             <div class="col-md-3">

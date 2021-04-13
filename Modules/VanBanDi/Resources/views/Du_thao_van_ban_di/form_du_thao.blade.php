@@ -17,7 +17,7 @@
         <select name="lanh_dao_phong_phoi_hop[]" id="lanh_dao_phong_phoi_hop"
                 class="form-control select2"
                 multiple="multiple"
-                required data-placeholder="Lãnh đạo góp ý ...">
+                 data-placeholder="Lãnh đạo góp ý ...">
             @foreach ($lanhdaotrongphong as $trongphong)
                 <option value="{{ $trongphong->id }}"
                     {{ isset($vanbandi) && $vanbandi->donvisoanthao_id == $donVi->ma_id ? 'selected' : '' }}>{{ $trongphong->ho_ten }}</option>
@@ -43,7 +43,7 @@
     </div>
     <div class=" col-md-12 form-group">
         <label for="exampleInputEmail2">Ý kiến <span class="color-red">*</span></label>
-        <textarea rows="3" class="form-control" required placeholder="nội dung" name="y_kien"
+        <textarea rows="3" class="form-control" placeholder="nội dung" name="y_kien"
                   type="text">{{ old('y_kien') }}</textarea>
     </div>
     <div class=" col-md-12  form-group">
@@ -52,7 +52,7 @@
                   type="text">{{ old('vb_trich_yeu') }}</textarea>
     </div>
     <div class=" col-md-12 form-group">
-        <label for="exampleInputEmail2">Phòng phát hành văn bản <span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Đơn vị phát hành <span class="color-red">*</span></label>
         <select class="form-control select2" name="phong_phat_hanh" id=""  required>
             <option value="">Chọn phòng phát hành</option>
             @foreach ($ds_DonVi_phatHanh as $DonVi_phatHanh)

@@ -52,12 +52,13 @@
                                             @empty
                                             @endforelse
                                         </div>
-                                        <a  href="{{route('laythongtinduthaocu',$data->id)}}"
+                                        <a href="{{route('laythongtinduthaocu',$data->id)}}"
                                            role="button" class="btn btn-primary color-white"><span style="color: white">Tạo dự thảo
                                             lần {{$data -> lan_du_thao + 1}}</span></a>
                                         <a href="{{route('thongtinvanban',$data->id)}}" role="button"
-                                           class="btn btn-success color-white"><span style="color: white">Tạo văn bản đi</span>
-                                            </a>
+                                           class="btn btn-success color-white"><span
+                                                style="color: white">Tạo văn bản đi</span>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="form-control" style="height: 150px;overflow: auto">
@@ -66,25 +67,29 @@
                                             @forelse($data->canbotrongphong as $key=>$phong)
                                                 <span style="font-style: italic">- {{$phong->nguoiDung->ho_ten ?? ''}} : <span
                                                         style="color: black;font-weight: bold">{{$phong->y_kien}}</span> &ensp;
-                                                                                            @forelse($phong->gopyFilecanbophong as $key=>$item)
-                                                        <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                                                                            @if($phong->trang_thai == 2)
+
+                                                        @forelse($phong->gopyFilecanbophong as $key=>$item)
+                                                            <a href="{{$item->getUrlFile()}}" target="_blank">
                                                                                                    [Xem file]
                                                                                                 </a>
-                                                    @empty
-                                                    @endforelse <br>
+                                                        @empty
+                                                        @endforelse @endif <br>
                                                                                         @empty
                                                     @endforelse
                                                                                         <span><span style="color: red">(*)</span> Góp ý từ đơn vị khác:</span><br>
+
                                                                                         @forelse($data->canbophongkhac as $key=>$khac)
                                                         <span
                                                             style="font-style: italic">- {{$khac->nguoiDung->ho_ten ?? ''}} : <span
                                                                 style="color: black;font-weight: bold">{{$khac->y_kien}}</span>&ensp;
-                                                                                                @forelse($khac->gopyFilecanbophongngoai as $key=>$item)
-                                                                <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                            @if($khac->trang_thai == 2)
+                                                                @forelse($khac->gopyFilecanbophongngoai as $key=>$item)
+                                                                    <a href="{{$item->getUrlFile()}}" target="_blank">
                                                                                                    [Xem file]
                                                                                                 </a>
-                                                            @empty
-                                                            @endforelse <br>
+                                                                @empty
+                                                                @endforelse @endif <br>
                                             @empty
                                             @endforelse
                                         </div>
@@ -115,12 +120,13 @@
                                                 @forelse($landuthao->canbotrongphong as $key=>$phong)
                                                     <span style="font-style: italic">- {{$phong->nguoiDung->ho_ten ?? ''}} : <span
                                                             style="color: black;font-weight: bold">{{$phong->y_kien}}</span> &ensp;
-                                                                                                @forelse($phong->gopyFilecanbophong as $key=>$item)
+                                                        @if($phong->trang_thai == 2)
+                                                        @forelse($phong->gopyFilecanbophong as $key=>$item)
                                                             <a href="{{$item->getUrlFile()}}" target="_blank">
                                                                                                        [Xem file]
                                                                                                     </a>
                                                         @empty
-                                                        @endforelse <br>
+                                                        @endforelse @endif<br>
                                                                                             @empty
                                                         @endforelse
                                                                                                 <span><span
@@ -129,12 +135,13 @@
                                                             <span
                                                                 style="font-style: italic">- {{$khac->nguoiDung->ho_ten ?? ''}} : <span
                                                                     style="color: black;font-weight: bold">{{$khac->y_kien}}</span>&ensp;
-                                                                                                    @forelse($khac->gopyFilecanbophongngoai as $key=>$item)
+                                                                @if($khac->trang_thai == 2)
+                                                                    @forelse($khac->gopyFilecanbophongngoai as $key=>$item)
                                                                     <a href="{{$item->getUrlFile()}}" target="_blank">
                                                                                                        [Xem file]
                                                                                                     </a>
                                                                 @empty
-                                                                @endforelse <br>
+                                                                @endforelse @endif<br>
                                         @empty
                                         @endforelse
                                         @empty

@@ -181,7 +181,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12 hidden" >
-                                <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
+                                <label for="" class="col-form-label">Đơn vị nhận ngoài hệ thống</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
                                         multiple
@@ -194,7 +194,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12 ">
-                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nội bộ </label>
                                 <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
                                         class="form-control select2"
                                         multiple

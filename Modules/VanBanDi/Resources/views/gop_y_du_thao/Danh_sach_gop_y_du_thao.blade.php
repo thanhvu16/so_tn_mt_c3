@@ -42,12 +42,12 @@
                             <tbody>
                             @forelse ($canbogopy as $key=>$data)
                                 <form action="{{  route('gopy',$data->id)}}"
-                                      method="post" enctype="multipart/form-data">
+                                      method="post" id="frmXuLy-{{$data->du_thao_vb_id}}" enctype="multipart/form-data">
                                     @csrf
                                     <tr>
                                         <td> {{$key+1}}</td>
                                         <td>
-                                            {{ !empty($data->thongtinduthao) && !empty($data->thongtinduthao->ngay_thang) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
+                                            {{ !empty($data->thongtinduthao) && !empty($data->thongtinduthao->ngay_thang) ? date('d/m/Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}
                                         </td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td style="text-align: justify"><a href=""
@@ -75,25 +75,27 @@
                                         </td>
                                         <td>
                                             <div class="col-md-12">
-                                                                <textarea rows="2"
-                                                                          class="form-control @if($data->trang_thai == 2) hidden @else  @endif"
-                                                                          required
-                                                                          placeholder="Nhập ý kiến góp ý ..."
-                                                                          name="y_kien"
-                                                                          type="text"></textarea>
+                                                    <textarea rows="2"
+                                                              class="form-control @if($data->trang_thai == 2) hidden @else  @endif"
+                                                              required
+                                                              placeholder="Nhập ý kiến góp ý ..."
+                                                              name="y_kien"
+                                                              type="text"></textarea>
                                             </div>
                                             <div
                                                 class="col-md-12 @if($data->trang_thai == 2) hidden @else  @endif "
                                                 style="margin-top: 5px">
                                                 <input class="form-control hidden " value="123hihi"
                                                        name="txt_file[]" type="text">
-                                                <input type="file" id="url-file" name="ten_file[]">
-                                                <input type="text" id="url-file"
-                                                       value="{{$data->du_thao_vb_id}}" name="id_van_ban"
+                                                <input type="file" id="url-file-up" onchange="javascript: upload_file_trong({{$data->du_thao_vb_id}})" name="ten_file[]">
+                                                <input type="text"
+                                                       value="{{$data->du_thao_vb_id}}" id="du_thao_vb_id" name="id_van_ban"
                                                        class="hidden">
                                                 <input type="text" id="url-file"
                                                        value="{{$data->id}}" name="id_can_bo"
                                                        class="hidden">
+                                                <p class="data-append-trong-{{$data->du_thao_vb_id}} hidden"></p>
+{{--                                                <a href="" id="largeImg" target="popup" class="seen-new-window file-vua-tai-{{$data->du_thao_vb_id}} hidden">Xem file: <p id="hien-ten-trong-{{$data->du_thao_vb_id}}"></p></a>--}}
                                             </div>
                                             <div
                                                 class="col-md-12  @if($data->trang_thai == 2) @else hidden @endif">
@@ -176,11 +178,11 @@
                             @endforelse
                             @forelse ($canbogopyngoai as $key=>$data)
                                 <form action="{{  route('themgopyvbngoai',$data->id)}}"
-                                      method="post" enctype="multipart/form-data">
+                                      method="post" id="frmXuLy2-{{$data->du_thao_vb_id}}" enctype="multipart/form-data">
                                     @csrf
-                                    <tr>
+                                    <tr id="gop-y-{{$data->du_thao_vb_id}}">
                                         <td>{{$key+1+$key2}}</td>
-                                        <td>{{ !empty($data->thongtinduthao) ?  date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang) ) : '' }}</td>
+                                        <td>{{ !empty($data->thongtinduthao) ?  date('d/m/Y', strtotime($data->thongtinduthao->ngay_thang) ) : '' }}</td>
                                         <td>{{$data->thongtinduthao->so_ky_hieu ?? ''}}</td>
                                         <td><a href=""
                                                title="{{$data->thongtinduthao->vb_trich_yeu ?? null }}">{{$data->thongtinduthao->vb_trich_yeu ?? ''}}</a><br>
@@ -188,7 +190,7 @@
                                                 style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span>
 
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             @if ($data->thongtinduthao)
                                                 @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
                                                     <a href="{{$item->getUrlFile()}}" target="_blank">
@@ -230,17 +232,20 @@
                                                           type="text"></textarea>
                                             </div>
                                             <div
-                                                class="col-md-12"
+                                                class="col-md-12 input-file-name-{{$data->du_thao_vb_id}}"
                                                 style="margin-top: 5px">
                                                 <input class="form-control hidden " value="123hihi"
                                                        name="txt_file[]" type="text">
-                                                <input type="file" id="url-file" name="ten_file[]">
-                                                <input type="text" id="url-file"
+                                                <input type="file" id="url-file-ngoai-{{$data->du_thao_vb_id}}" onchange="javascript: upload_file({{$data->du_thao_vb_id}})" data-id="{{$data->du_thao_vb_id}}" name="ten_file[]">
+                                                <input type="text" id="id_van_ban"
                                                        value="{{$data->du_thao_vb_id}}" name="id_van_ban"
                                                        class="hidden">
                                                 <input type="text" id="url-file"
                                                        value="{{$data->id}}" name="id_can_bo"
                                                        class="hidden">
+                                                <p class="data-append-{{$data->du_thao_vb_id}} hidden"></p>
+{{--                                                <a href="" id="largeImg" target="popup" class="seen-new-window file-ngoai-vua-tai-{{$data->du_thao_vb_id}} hidden">Xem file: <p id="hien-ten-{{$data->du_thao_vb_id}}"></p>--}}
+{{--                                                   </a>--}}
                                             </div>
                                         </td>
                                         <td>
@@ -324,7 +329,73 @@
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
     <script type="text/javascript">
+        var frmXuLy = $("#frmXuLy");
+        var frmXuLy2 = $("#frmXuLy2");
+
         function showModal() {
             $("#myModal").modal('show');
         }
-        @endsection
+        function upload_file_trong($id)
+        {
+            var totalFormdata = new FormData($("#frmXuLy-" +$id)[0]);
+            console.log(totalFormdata);
+            $.ajax({
+                url: APP_URL + '/file-demo',
+                type: "POST",
+                data: totalFormdata,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if(res.duong_dan)
+                    {
+                        // $('.file-vua-tai-' + $id).removeClass('hidden');
+                        // $("a").prop("href", APP_URL + "/" + res.duong_dan);
+                        // $("#hien-ten-trong-" + $id).html(res.ten_file);
+
+
+                        let dataAppend = '';
+                        $('.data-append-trong-'+$id).removeClass('hidden');
+                        $("#hien-ten-"+ $id).html(res.ten_file);
+                        dataAppend = (function () {
+                            return `    <br>
+                                        <a href="${res.duong_dan}" class="seen-new-window" target="popup" >Xem File: ${res.ten_file}</a>
+                                    `;
+                        });
+                        $('.data-append-trong-' +$id).html(dataAppend);
+                    }
+                }
+            });
+        }
+
+
+        function upload_file($id)
+        {
+                var totalFormdata2 = new FormData($("#frmXuLy2-" +$id)[0]);
+                $.ajax({
+                    url: APP_URL + '/file-demo-ngoai',
+                    type: "POST",
+                    data: totalFormdata2,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        if(res.duong_dan)
+                        {
+                            let dataAppend = '';
+                            $('.data-append-'+$id).removeClass('hidden');
+                            $("#hien-ten-"+ $id).html(res.ten_file);
+                            dataAppend = (function () {
+                            return `    <br>
+                                        <a href="${res.duong_dan}" class="seen-new-window" target="popup" >Xem File: ${res.ten_file}</a>
+                                    `;
+                            });
+                            $('.data-append-' +$id).html(dataAppend);
+                        }
+
+                    }
+                });
+        }
+
+
+
+    </script>
+@endsection

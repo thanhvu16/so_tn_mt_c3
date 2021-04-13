@@ -61,13 +61,18 @@ class GopYVanbanDiController extends Controller
         $gopy->y_kien = $request->y_kien;
         $gopy->trang_thai = 2;
         $gopy->save();
+        $xoatatcafilegopy = Filecanbogopyduthao::where('du_thao_id',$request->id_van_ban)->get();
+        foreach ($xoatatcafilegopy as $data)
+        {
+            $xoafiel = Filecanbogopyduthao::where('id',$data->id)->first();
+            $xoafiel->delete();
+        }
 
         if ($multiFiles && count($multiFiles) > 0) {
             foreach ($multiFiles as $key => $getFile) {
                 $extFile = $getFile->extension();
                 $fileduthao = new Filecanbogopyduthao();
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
-
                 $urlFile =FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
                     File::makeDirectory($uploadPath, 0775, true, true);
@@ -88,6 +93,7 @@ class GopYVanbanDiController extends Controller
     {
         $uploadPath = FILE_Y_KIEN_GOP_Y;
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        $xoatatcafilegopy = Filecanbogopyduthaongoai::where('du_thao_id',$request->id_van_ban)->delete();
         if ($request->can_bo_chuyen_xuong) {
             $laycanbotrung = CanBoPhongDuThaoKhac::where('du_thao_vb_id',$request->id_van_ban)->get();
             $idcanbo = $laycanbotrung->pluck('can_bo_id');
@@ -244,6 +250,78 @@ class GopYVanbanDiController extends Controller
         $quatrinhtruyennhanphong = CanBoPhongDuThao::where('du_thao_vb_id', $id)->get();
         $quatrinhtruyennhankhac = CanBoPhongDuThaoKhac::where('du_thao_vb_id', $id)->get();
         return view('vanbandi::Du_thao_van_ban_di.Quytrinhtruyennhangopy', compact('quatrinhtruyennhanphong', 'quatrinhtruyennhankhac'));
+    }
+
+    public function filedemo(Request $request)
+    {
+        $file = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        $uploadPath = FILE_Y_KIEN_GOP_Y;
+        if ($file && count($file) > 0) {
+            foreach ($file as $key => $getFile) {
+                $extFile = $getFile->extension();
+                $ten_file = $getFile->getClientOriginalName();
+                $fileduthao = new Filecanbogopyduthao();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                $urlFile =FILE_Y_KIEN_GOP_Y . '/' . $fileName;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $getFile->move($uploadPath, $fileName);
+                $fileduthao->duong_dan = $urlFile;
+                $fileduthao->duoi_file = $extFile;
+                $fileduthao->Du_thao_id = $request->id_van_ban;
+                $fileduthao->can_bo_gop_y = $request->id_can_bo;
+                $fileduthao->save();
+
+
+            }
+        }
+
+        return response()->json(
+            [
+                'duong_dan' => $urlFile,
+                'ten_file' => $ten_file
+            ]
+        );
+
+
+
+    }
+    public function filedemongoai(Request $request)
+    {
+        $file = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        $uploadPath = FILE_Y_KIEN_GOP_Y;
+        if ($file && count($file) > 0) {
+            foreach ($file as $key => $getFile) {
+                $extFile = $getFile->extension();
+                $fileduthao = new Filecanbogopyduthaongoai();
+                $ten_file = $getFile->getClientOriginalName();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $getFile->move($uploadPath, $fileName);
+                $fileduthao->duong_dan = $urlFile;
+                $fileduthao->duoi_file = $extFile;
+                $fileduthao->Du_thao_id = $request->id_van_ban;
+                $fileduthao->can_bo_gop_y = $request->id_can_bo;
+                $fileduthao->save();
+
+
+            }
+        }
+
+        return response()->json(
+            [
+                'duong_dan' => $urlFile,
+                'ten_file' => $ten_file
+            ]
+        );
+
+
+
     }
 
     /**
