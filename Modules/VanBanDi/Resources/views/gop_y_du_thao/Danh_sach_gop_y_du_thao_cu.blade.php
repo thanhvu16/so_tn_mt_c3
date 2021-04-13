@@ -47,23 +47,25 @@
                                             <span
                                                 style="font-style: italic">Người nhập : {{$data->thongtinduthao->nguoiDung->ho_ten ?? ''}}</span><br>
                                             <span
-                                                style="font-style: italic">Ngày nhập: {{ date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) ?? '' }}</span>
+                                                style="font-style: italic">Ngày nhập: {{ !empty($data->thongtinduthao->ngay_thang) ? date('d-m-Y', strtotime($data->thongtinduthao->ngay_thang)) : '' }}</span>
 
                                         </td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
-                                                <a href="{{$item->getUrlFile()}}" target="_blank">
-                                                    @if($item->stt == 1)
-                                                        [file phiếu trình]
-                                                    @elseif($item->stt == 2)
-                                                        [file trình ký]
-                                                    @elseif($item->stt == 3)
-                                                        [file hồ sơ]
-                                                    @endif
-                                                </a><br>
+                                        <td>
+                                            @if ($data->thongtinduthao)
+                                                @forelse($data->thongtinduthao->Duthaofile as $key=>$item)
+                                                    <a href="{{$item->getUrlFile()}}" target="_blank">
+                                                        @if($item->stt == 1)
+                                                            [file phiếu trình]
+                                                        @elseif($item->stt == 2)
+                                                            [file trình ký]
+                                                        @elseif($item->stt == 3)
+                                                            [file hồ sơ]
+                                                        @endif
+                                                    </a><br>
 
-                                            @empty
-                                            @endforelse
+                                                @empty
+                                                @endforelse
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="col-md-12">
