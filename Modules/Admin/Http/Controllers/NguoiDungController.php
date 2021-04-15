@@ -46,9 +46,10 @@ class NguoiDungController extends Controller
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
-            ->where(function ($query) use ($donViId, $phonBanId) {
+            ->where(function ($query) use ($donViId, $phonBanId, $danhSachPhongBan) {
                 if (!empty($donViId) && empty($phonBanId)) {
-                    return $query->where('don_vi_id', $donViId);
+                    return $query->where('don_vi_id', $donViId)
+                                ->orWhere('don_vi_id', $danhSachPhongBan->pluck('id')->toArray());
                 } else if (!empty($donViId) && !empty($phonBanId)) {
                     return $query->where('don_vi_id', $phonBanId);
                 }

@@ -13,7 +13,7 @@
                 @can('thêm người dùng')
                     <li class="{{ Request::get('tab') == 'tab_2' ? 'active' : null }}">
                         <a href="{{ route('don-vi.create') }}">
-                            <i class="fa fa-plus"></i> Thêm phòng ban cho đơn vị</a>
+                            <i class="fa fa-plus"></i> Thêm đơn vị trực thuộc đơn vị</a>
                     </li>
                 @endcan
             </ul>

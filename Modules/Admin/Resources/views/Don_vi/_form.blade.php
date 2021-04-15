@@ -16,9 +16,9 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label for="exampleInputEmail1">Tên đơn vị</label>
+                <label for="exampleInputEmail1">Đơn vị trực thuộc</label>
                 <input type="text" class="form-control" name="ten_don_vi" id="exampleInputEmail1"
-                       placeholder="Tên đơn vị" required>
+                       placeholder="Nhập tên đơn vị" required>
             </div>
         </div>
         <div class="col-md-3">
