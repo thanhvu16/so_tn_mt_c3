@@ -131,13 +131,17 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-{{--                                            @if($vanBanDen->checkQuyenGiaHan)--}}
-                                            <p>
-                                                <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                            Gia hạn xử lý:
+                                            <div class="input-group date">
+                                                <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
                                                        value=""
-                                                       class="form-control" form="form-tham-muu">
-                                            </p>
-{{--                                            @endif--}}
+                                                       class="form-control datepicker"
+                                                       form="form-tham-muu" placeholder="dd/mm/yyyy">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </div>
+                                            </div>
+
                                             <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                    name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
                                                    form="form-tham-muu">

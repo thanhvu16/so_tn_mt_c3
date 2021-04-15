@@ -1283,46 +1283,8 @@ class VanBanDiController extends Controller
                 $vanbandi->save();
 
                 // update van ban den
-                if ($vanbandi->van_ban_den_id != null) {
-                    VanBanDen::updateHoanThanhVanBanDen($vanbandi->van_ban_den_id);
-
-                }
-
-                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-//                //update lich cong tac
-                if (!empty($giayMoi) && $vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
-                    LichCongTac::taoLichCongTac($vanbandi);
-                }
-//                    $tuan = date('W', strtotime($vanbandi->ngay_hop));
-//
-//                    $lanhDaoDuHop = DieuHanhVanBanDenLichCongTac::checkLanhDaoDuHop($vanbandi->nguoiky_id);
-//                    $noiDungMoiHop = null;
-//
-//                    if (!empty($lanhDaoDuHop)) {
-//
-//                        $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
-//                    }
-//
-//                    $dataLichCongTac = array(
-//                        'van_ban_den_don_vi_id' => $vanbandi->id,
-//                        'lanh_dao_id' => $lanhDaoDuHop->id,
-//                        'ngay' => $vanbandi->ngay_hop,
-//                        'gio' => $vanbandi->gio_hop,
-//                        'tuan' => $tuan,
-//                        'buoi' => ($vanbandi->gio_hop <= '12:00') ? 1 : 2,
-//                        'noi_dung' => $noiDungMoiHop,
-//                        'user_id' => auth::user()->id,
-//                        'type' => DieuHanhVanBanDenLichCongTac::TYPE_VB_DI
-//                    );
-//                    //check lich cong tac
-//                    $lichCongTac = DieuHanhVanBanDenLichCongTac::where('van_ban_den_don_vi_id', $vanbandi->id)->first();
-//
-//                    if (empty($lichCongTac)) {
-//                        $lichCongTac = new DieuHanhVanBanDenLichCongTac();
-//                    }
-//                    $lichCongTac->fill($dataLichCongTac);
-//                    $lichCongTac->save();
-//                }
+                // bang trung gian 1 van ban den tra loi cho nhieu van ban di
+                $this->updateVanBanDen($vanbandi);
 
                 return redirect()->back()->with('success', 'Chuyển văn thư chờ cấp số thành công !');
 
@@ -1542,6 +1504,7 @@ class VanBanDiController extends Controller
         $vanbandiupdate->cho_cap_so = 1;
         $vanbandiupdate->save();
 
+        $this->updateVanBanDen($vanbandi);
 
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
         return redirect()->back()->with(['capso' => "$soDi"]);
@@ -1551,6 +1514,25 @@ class VanBanDiController extends Controller
 //            'status' => true,
 //            'message' => 'Đã phát hành văn bản.'
 //        ], 200);
+    }
+
+    public function updateVanBanDen($vanBanDi)
+    {
+        $vanBanDiVanBanDen = VanBanDiVanBanDen::where('van_ban_di_id', $vanBanDi->id)->get();
+        if ($vanBanDiVanBanDen) {
+            foreach ($vanBanDiVanBanDen as $vanBanDiDen) {
+                if ($vanBanDiDen->van_ban_den_id != null) {
+                    VanBanDen::updateHoanThanhVanBanDen([$vanBanDiDen->van_ban_den_id]);
+
+                }
+            }
+        }
+
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        //update lich cong tac
+        if (!empty($giayMoi) && $vanBanDi && $vanBanDi->loai_van_ban_id == $giayMoi->id) {
+            LichCongTac::taoLichCongTac($vanBanDi);
+        }
     }
 
     public function Quytrinhxulyvanbandi($id)

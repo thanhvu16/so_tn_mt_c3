@@ -215,6 +215,7 @@ class DieuHanhVanBanDenController extends Controller
                 $vanBanDen->chuyenVien = count($danhSachChuyenVien) > 0 ? $vanBanDen->getCanBoDonVi($danhSachChuyenVien->pluck('id')->toArray(), $donViChuTri->don_vi_id) : null;
             }
         }
+
         //phoi hop
         $type = $request->get('status') ?? null;
 

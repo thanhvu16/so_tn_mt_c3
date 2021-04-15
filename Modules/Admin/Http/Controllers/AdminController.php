@@ -138,8 +138,26 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
-                ->count();
+
+            $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,
+                    'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
+                    ->orderBy('created_at', 'desc')
+                    ->orwhere('truong_phong_ky', 2)
+                    ->count();
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $vanBanDiChoSo = VanBanDi::where([
+                    'cho_cap_so' => 2,
+                    'phong_phat_hanh' => auth::user()->donVi->parent_id])
+                    ->orwhere('truong_phong_ky', 2)
+                    ->orderBy('created_at', 'desc')
+                    ->count();
+            }
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
             array_push($vanThuVanBanDiCoLors, COLOR_WARNING);

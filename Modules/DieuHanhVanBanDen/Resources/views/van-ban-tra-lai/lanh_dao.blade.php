@@ -17,6 +17,7 @@
                                     <input type="hidden" name="van_ban_den_id" value="">
                                     <input type="hidden" name="van_ban_tra_lai"
                                            value="{{ isset($status) ? $status : null }}">
+                                    <input type="hidden" name="chi_dao_tu_van_ban_tra_lai_cho_duyet" value="1">
 
                                     <button type="button"
                                             class="btn btn-sm mt-1 btn-submit btn-primary waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"

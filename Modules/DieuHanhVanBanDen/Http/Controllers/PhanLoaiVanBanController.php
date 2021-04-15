@@ -385,7 +385,7 @@ class PhanLoaiVanBanController extends Controller
         $active = null;
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soDen = $request->get('so_den') ?? null;
-        $date = $request->get('date') ?? null;
+        $date = $request->get('date') ? formatYMD($request->date) : null;
         $chuTich = User::role(CHU_TICH)->select('id', 'ho_ten', 'don_vi_id', 'cap_xa')
             ->whereNull('cap_xa')
             ->first();

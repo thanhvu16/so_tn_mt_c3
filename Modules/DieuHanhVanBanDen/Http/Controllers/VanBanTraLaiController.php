@@ -379,22 +379,6 @@ class VanBanTraLaiController extends Controller
 
     public function choDuyet(Request $request)
     {
-//        $vanBanTraLai = VanBanTraLai::where('can_bo_chuyen_id', $currentUser->id)
-//            ->whereNull('status')->select('van_ban_den_id', 'id')->get();
-//
-//        $arrVanBanDenId = $vanBanTraLai->pluck('van_ban_den_id')->toArray();
-//
-//        $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
-//            ->whereIn('id', $arrVanBanDenId)
-//            ->orderBy('created_at', 'desc')
-//            ->paginate(PER_PAGE);
-//
-//        if ($danhSachVanBanDen) {
-//            foreach ($danhSachVanBanDen as $vanBanDen) {
-//                $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
-//            }
-//        }
-
         $user = auth::user();
         $active = null;
         $donVi = $user->donVi;
@@ -428,16 +412,12 @@ class VanBanTraLaiController extends Controller
                         $vanBanDen->hasChild = $vanBanDen->hasChild() ?? null;
                     }
                 }
-
                 return view('dieuhanhvanbanden::van-ban-tra-lai.cho_duyet', compact('danhSachVanBanDen'));
             } else {
                 return $this->donViTraLai($arrVanBanDenId, $user, $loaiVanBanGiayMoi, $donVi);
-
-
             }
 
         }
-//        return view('dieuhanhvanbanden::van-ban-tra-lai.cho_duyet', compact('danhSachVanBanDen'));
     }
 
     public function lanhDaoTraLai($user, $active, $donVi, $loaiVanBanGiayMoi, $arrVanBanDenId)

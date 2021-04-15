@@ -29,8 +29,13 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo ngày</label>
-                                    <input type="date" class="form-control" value="{{Request::get('date')}}"
-                                           name="date">
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control datepicker" value="{{Request::get('date')}}"
+                                               name="date" placeholder="dd/mm/yyyy">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label>&nbsp;</label><br>

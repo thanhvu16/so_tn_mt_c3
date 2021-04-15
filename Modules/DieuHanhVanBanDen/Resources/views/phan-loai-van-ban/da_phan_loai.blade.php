@@ -46,8 +46,13 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo ngày</label>
-                                    <input type="date" class="form-control" value="{{Request::get('date')}}"
-                                           name="date">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker" value="{{Request::get('date')}}"
+                                               name="date" placeholder="dd/mm/yyyy">
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label>&nbsp;</label><br>
@@ -213,14 +218,16 @@
                                             </p>
                                             <!-- chu tich -->
                                             @if ($active)
-{{--                                                @if($vanBanDen->checkQuyenGiaHan)--}}
-                                                    <p>
-                                                        <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                               value="{{ $vanBanDen->PhoChuTich->han_xu_ly ?? null }}"
-                                                               class="form-control change-han-xu-ly"
-                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
-                                                    </p>
-{{--                                                @endif--}}
+{{--                                                Hạn xử lý:--}}
+                                                <div class="input-group date">
+                                                <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                       value="{{ !empty($vanBanDen->PhoChuTich->han_xu_ly) ? formatDMY($vanBanDen->PhoChuTich->han_xu_ly) : null }}"
+                                                       class="form-control change-han-xu-ly datepicker"
+                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </div>
+                                                </div>
 
                                                 <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
                                                        name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"

@@ -33,7 +33,7 @@ $('.go-back').on('click', function () {
     window.history.back();
 });
 
-$('.seen-new-window').on('click', function () {
+$('body').on('click', '.seen-new-window', function () {
     let url = $(this).attr('href');
 
     return window.open(url, 'popup', 'width=683,height=672, margin:0 auto');
@@ -128,8 +128,10 @@ $("body").on("click", ".btn-remove-file", function () {
 });
 
 $('.datepicker').datepicker({
+    todayHighlight: true,
     autoclose: true,
     format: "d/m/yyyy",
+    language: "vi"
 });
 
 $('.date-ranger-picker').daterangepicker({
@@ -358,5 +360,3 @@ $('.select-option-don-vi').on('change', function () {
         $('.select-phong-ban').html(' ');
     }
 });
-
-

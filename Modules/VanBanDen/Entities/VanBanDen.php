@@ -555,7 +555,9 @@ class VanBanDen extends Model
 
     public static function updateHoanThanhVanBanDen($vanBanDenId)
     {
-        $danhSachVanBanDen = VanBanDen::whereIn('id', $vanBanDenId)->get();
+        $danhSachVanBanDen = VanBanDen::whereIn('id', $vanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->get();
 
         if ($danhSachVanBanDen) {
             foreach ($danhSachVanBanDen as $vanBanDen) {

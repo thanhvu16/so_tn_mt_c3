@@ -36,4 +36,10 @@ class VanBanTraLai extends Model
     {
         return $this->hasMany(VanBanTraLaiFile::class, 'van_ban_tra_lai_id', 'id');
     }
+
+    public static function updateStatusVanBanTraLai($vanBanTraLai)
+    {
+        $vanBanTraLai->status = self::STATUS_GIAI_QUYET;
+        $vanBanTraLai->save();
+    }
 }

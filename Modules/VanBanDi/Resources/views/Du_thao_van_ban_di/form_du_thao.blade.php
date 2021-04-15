@@ -38,11 +38,11 @@
         </select>
     </div>
     <div class="col-md-3 form-group">
-        <label for="exampleInputEmail2">Ký hiệu <span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Ký hiệu </label>
         <input type="text" class="form-control sokyhieu" placeholder="số kí hiệu..." name="so_ky_hieu">
     </div>
     <div class=" col-md-12 form-group">
-        <label for="exampleInputEmail2">Ý kiến <span class="color-red">*</span></label>
+        <label for="exampleInputEmail2">Ý kiến</label>
         <textarea rows="3" class="form-control" placeholder="nội dung" name="y_kien"
                   type="text">{{ old('y_kien') }}</textarea>
     </div>
@@ -62,8 +62,8 @@
     </div>
     <div class="col-md-3   form-group">
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
-        <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" id="nguoi_ky" autofocus required>
-            <option>--Chọn người ký--</option>
+        <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" required>
+            <option value="">--Chọn người ký--</option>
             @if (!empty($ds_nguoiKy))
                 @foreach ($ds_nguoiKy as $nguoiky)
                     <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>

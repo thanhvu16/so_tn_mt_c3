@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Văn bản chờ xử lý')
+@section('page_title', 'Văn bản trả lại')
 @section('content')
     <section class="content">
         <div class="row">
@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản chờ xử lý</h4>
+                                <h4 class="header-title pt-2">Văn bản trả lại</h4>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('van-ban-den-don-vi.store') }}" method="post"
@@ -16,6 +16,7 @@
                                     @csrf
                                     <input type="hidden" name="van_ban_den_id" value="">
                                     <input type="hidden" name="van_ban_tra_lai" value="">
+                                    <input type="hidden" name="chi_dao_tu_van_ban_tra_lai_cho_duyet" value="1">
 
                                     <button type="button"
                                             class="btn btn-sm mt-1 btn-submit btn-primary waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"

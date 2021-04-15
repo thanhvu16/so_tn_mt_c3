@@ -38,9 +38,9 @@
                                     <label for="han-xu-ly" class="col-form-label">Tìm theo ngày nhập</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
+                                            <i class="fa fa-calendar-o"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right datepicker" placeholder="DD/MM/YYYY"
+                                        <input type="text" class="form-control pull-right datepicker" placeholder="dd/mm/yyyy"
                                                name="ngay_den" value="{{ Request::get('ngay_den') ?? null }}">
                                     </div>
                                 </div>

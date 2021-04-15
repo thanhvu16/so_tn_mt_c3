@@ -16,7 +16,7 @@
         <li class="{{ Route::is('van_ban_tra_lai.cho_duyet') ? 'active' : '' }}"><a
                 href="{{ route('van_ban_tra_lai.cho_duyet') }}"><i class="fa fa-circle-o"></i>VB đã gửi trả lại</a>
         </li>
-        @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2')
+        @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2|chánh văn phòng|phó chánh văn phòng')
         <li class="{{ Route::is('van_ban_don_vi.da_chi_dao') ? 'active' : '' }}"><a
                 href="{{ route('van_ban_don_vi.da_chi_dao') }}"><i class="fa fa-circle-o"></i>VB đã chỉ đạo</a>
         </li>
