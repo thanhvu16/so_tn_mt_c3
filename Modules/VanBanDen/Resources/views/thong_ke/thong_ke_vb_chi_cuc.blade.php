@@ -11,7 +11,7 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-8 text-right">
-                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">
+                                    <form action method="GET" action="{{ route('thongkevbchicuc') }}" class="form-export">
 {{--                                        <input type="hidden" name="so_van_ban" value="{{ request('so_van_ban') }}">--}}
 
                                         <input type="hidden" name="type" value="">
