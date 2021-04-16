@@ -68,4 +68,5 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/LichCongTac/app.js') }}"></script>
+
 @endsection

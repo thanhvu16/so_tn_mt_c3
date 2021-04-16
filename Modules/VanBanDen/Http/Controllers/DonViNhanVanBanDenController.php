@@ -166,10 +166,14 @@ class DonViNhanVanBanDenController extends Controller
      */
     public function store(Request $request)
     {
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -223,7 +227,7 @@ class DonViNhanVanBanDenController extends Controller
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
@@ -267,7 +271,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
                     $vanbandv->nguoi_ky = $nguoiky;
@@ -552,6 +556,10 @@ class DonViNhanVanBanDenController extends Controller
 
     public function thongtinvb($id)
     {
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $vanban = NoiNhanVanBanDi::where('id', $id)->first();
 //        $soDen = VanBanDen::where([
 //            'don_vi_id' => auth::user()->don_vi_id,
@@ -562,7 +570,7 @@ class DonViNhanVanBanDenController extends Controller
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -601,11 +609,15 @@ class DonViNhanVanBanDenController extends Controller
     public function thongtinvbsonhan($id)
     {
         $vanban = NoiNhanVanBanDi::where('id', $id)->first();
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $phanbiet = null;
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -646,11 +658,14 @@ class DonViNhanVanBanDenController extends Controller
     {
 
         $vanban = DonViChuTri::where('id', $id)->first();
-
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -690,6 +705,10 @@ class DonViNhanVanBanDenController extends Controller
     public function vaosovanbandvnhan(Request $request)
     {
         $user = auth::user();
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
@@ -708,7 +727,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 1;
                     $vanbandv->noi_dung = $data;
@@ -755,7 +774,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 $vanbandv->type = 1;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
@@ -881,6 +900,10 @@ class DonViNhanVanBanDenController extends Controller
 
     public function vaosovanbanhuyen(Request $request)
     {
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $type = $request->get('type') ?? null;
         $layvanbandi = DonViChuTri::where('id', $request->id_don_vi_chu_tri)->first();
         // don vi phoi hop
@@ -904,7 +927,7 @@ class DonViNhanVanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->type = 1;
                     $vanbandv->noi_dung = $data;
@@ -951,7 +974,7 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->han_giai_quyet = $request->han_xu_ly;
                 $vanbandv->type = 1;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);

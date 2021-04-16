@@ -366,4 +366,12 @@ class AllPermission
     {
         return 'văn thư chuyên trách';
     }
+    public static function thongKeVanBanSo()
+    {
+        return 'thống kê văn bản đến sở';
+    }
+    public static function thongKeVanBanChiCuc()
+    {
+        return 'thống kê văn bản đến chi cục';
+    }
 }

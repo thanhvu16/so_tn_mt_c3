@@ -261,11 +261,14 @@ class VanBanDenController extends Controller
     {
         $nam = date("Y");
         $soDenvb = null;
-
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $request->donViId,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => $request->soVanBanId,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -299,13 +302,17 @@ class VanBanDenController extends Controller
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         $thamMuuId = !empty($request->lanh_dao_tham_muu) ?? null;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
         try {
             DB::beginTransaction();
 
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $user->don_vi_id,
+                    'don_vi_id' => $lanhDaoSo->don_vi_id,
                     'so_van_ban_id' => $request->so_van_ban,
                     'type' => 1
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -335,7 +342,7 @@ class VanBanDenController extends Controller
                         $vanbandv->do_bao_mat_id = $request->do_mat;
                         $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->type = 1;
                         $vanbandv->noi_dung = $data;
@@ -398,7 +405,7 @@ class VanBanDenController extends Controller
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
                     $vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->type = 1;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
@@ -703,6 +710,10 @@ class VanBanDenController extends Controller
         $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $request->so_van_ban, 'id' => $vanbandv->id])->first();
         $vanbandv->loai_van_ban_id = $request->loai_van_ban;
         $vanbandv->so_van_ban_id = $request->so_van_ban;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
 
         if ($request->so_den != $vanbandv->so_den) {
@@ -713,7 +724,7 @@ class VanBanDenController extends Controller
                 $nam = date("Y");
                 if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                     $soDenvb = VanBanDen::where([
-                        'don_vi_id' => $user->don_vi_id,
+                        'don_vi_id' => $lanhDaoSo->don_vi_id,
                         'so_van_ban_id' => $request->so_van_ban,
                         'type' => 1
                     ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -740,7 +751,7 @@ class VanBanDenController extends Controller
         $vanbandv->do_bao_mat_id = $request->do_mat;
         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;;
 //        $vanbandv->han_giai_quyet = $request->han_giai_quyet;
-        $vanbandv->don_vi_id = auth::user()->don_vi_id;;
+//        $vanbandv->don_vi_id = auth::user()->don_vi_id;;
 
         $vanbandv->noi_dung = $noi_dung[0];
         if ($request->han_giai_quyet[0] == null) {
@@ -970,9 +981,13 @@ class VanBanDenController extends Controller
             $tbl_email->save();
         }
 
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $user->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => $request->so_van_ban,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -983,6 +998,7 @@ class VanBanDenController extends Controller
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
+
         $soDenvb = $soDenvb + 1;
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
@@ -1000,7 +1016,7 @@ class VanBanDenController extends Controller
                 $vanbandv->do_khan_cap_id = $request->do_khan;
                 $vanbandv->do_bao_mat_id = $request->do_mat;
                 $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-                $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                 $vanbandv->nguoi_tao = auth::user()->id;
                 if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                     $vanbandv->type = 1;
@@ -1097,10 +1113,14 @@ class VanBanDenController extends Controller
             $tbl_email->mail_active = 2;
             $tbl_email->save();
         }
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $user->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => $request->so_van_ban,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -1111,6 +1131,7 @@ class VanBanDenController extends Controller
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
+
         $soDenvb = $soDenvb + 1;
         $han_gq = $request->han_giai_quyet;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
@@ -1140,7 +1161,7 @@ class VanBanDenController extends Controller
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban;
                         $vanbandv->so_den = $soDenvb;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
