@@ -82,11 +82,8 @@
                     </ul>
                 </li>
 
-                <li class="{{ Route::is('bao_cao_thong_ke.index') }}">
-                    <a href="{{ route('bao_cao_thong_ke.index') }}">
-                        <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
-                  </a>
-                </li>
+
+
             @endunlessrole
             @if(auth::user()->hasRole([VAN_THU_DON_VI, VAN_THU_HUYEN]))
                 <li class="{{ Route::is('capNhatPassWord') ? 'active menu-open' : '' }}">

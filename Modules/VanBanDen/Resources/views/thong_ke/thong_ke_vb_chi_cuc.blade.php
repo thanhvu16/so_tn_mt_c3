@@ -124,6 +124,7 @@
             let type = $(this).data('type');
             var sovanbanden = $('input[name="sovanbanden"]').val();
             $.ajax({
+                beforeSend: showLoading(),
                 url: APP_URL + '/thong-ke-van-ban-chi-cuc',
                 type: 'GET',
                 data: {
@@ -135,6 +136,7 @@
                 }
             })
                 .done(function (response) {
+                    hideLoading();
                     w = window.open(window.location.href, "_blank");
                     w.document.open();
                     w.document.write(response.html);
