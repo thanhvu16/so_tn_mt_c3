@@ -104,3 +104,17 @@
                     class="fa fa-circle-o"></i>Thống kê đánh giá phòng</a></li>
     </ul>
 </li>
+@if(auth::user()->donVi->cap_xa != 1)
+<li class="{{ Route::is('thongkevbso') ? 'active' : '' }}">
+    <a href="{{ route('thongkevbso') }}">
+        <i class="fa fa-pie-chart"></i> <span>Thống kê văn bản đến sở</span>
+    </a>
+</li>
+@endif
+@if(auth::user()->donVi->cap_xa == 1)
+<li class="{{ Route::is('thongkevbchicuc') ? 'active' : '' }}">
+    <a href="{{ route('thongkevbchicuc') }}">
+        <i class="fa fa-pie-chart"></i> <span>Thống kê văn bản đến </span>
+    </a>
+</li>
+@endif

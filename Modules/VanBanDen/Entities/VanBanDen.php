@@ -67,6 +67,9 @@ class VanBanDen extends Model
     const LOAI_VAN_BAN_DON_VI_PHOI_HOP = 1;
     const LA_PHOI_HOP = 2;
 
+    const HOAN_THANH_DUNG_HAN = 1;
+    const HOAN_THANH_QUA_HAN = 2;
+
     protected $fillable = [
         'parent_id',
         'loai_van_ban_id',

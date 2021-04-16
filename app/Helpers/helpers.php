@@ -2,6 +2,8 @@
 
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
+use Modules\VanBanDen\Entities\VanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use app\Models\UserLogs;
 use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 
@@ -71,6 +73,37 @@ function tenNhom($idnhom)
     }
     return 0;
 
+}
+
+function tongSoVanBanSo($id)
+{
+    $donVi = DonVi::where('id',$id)->first();
+    if( $donVi->dieu_hanh == 1)
+    {
+        $vanBanDen = VanBanDen::where('don_vi_id',$id)->count();
+        return $vanBanDen;
+    }else{
+        $vanBanDen = DonViChuTri::where('don_vi_id',$id)->distinct()->count();
+        return $vanBanDen;
+    }
+
+    return 0;
+}
+function vanBanDaGiaiQuyetTrongHan($id)
+{
+    $donVi = DonVi::where('id',$id)->first();
+    if( $donVi->dieu_hanh == 1)
+    {
+        $vanBanDen = VanBanDen::where(['don_vi_id'=>$id,'hoan_thanh_dung_han'=>1,'trinh_tu_nhan_van_ban'=>6])->count();
+        return $vanBanDen;
+    }else{
+//        $idVanBanDen = VanBanDen::where('don_vi_id',$id)
+        $vanBanDen1 = DonViChuTri::where('don_vi_id',$id)->distinct()->get();
+        $vanBanDen = DonViChuTri::where('don_vi_id',$id)->with('vanBanDen')->distinct()->get();
+        return $vanBanDen;
+    }
+
+    return 0;
 }
 
 

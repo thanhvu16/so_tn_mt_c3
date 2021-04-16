@@ -109,6 +109,10 @@ class PermissionSeeder extends Seeder
         //in sổ văn bản
         Permission::findOrCreate(AllPermission::inSoVanBan());
 
+        //thống kê văn bàn đến
+        Permission::findOrCreate(AllPermission::thongKeVanBanSo());
+        Permission::findOrCreate(AllPermission::thongKeVanBanChiCuc());
+
         // văn thư chuyên trách
         Permission::findOrCreate(AllPermission::VanThuChuyenTrach());
 

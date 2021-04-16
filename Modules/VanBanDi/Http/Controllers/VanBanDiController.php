@@ -1467,7 +1467,7 @@ class VanBanDiController extends Controller
         }
         if ($loaiVanBan->ma_don_vi == 1) {
             $ma_don_vi = $ma_don_vi_ht;
-            $ma_don_vi = "/$ma_don_vi";
+            $ma_don_vi = "-$ma_don_vi";
         }
 
         $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
@@ -1487,7 +1487,7 @@ class VanBanDiController extends Controller
 
         }
         $soDi = $soDi + 1;
-        $soKyHieu = "$soDi/$nam_truoc_skh$ma_phong_ban$ma_van_ban$ma_don_vi";
+        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
