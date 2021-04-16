@@ -171,5 +171,21 @@ class ParentPermissionSeeder extends Seeder
                 'parent_id' => $chung->id
             ]);
 
+        Permission::where('name', 'LIKE', "%".AllPermission::deXuatCongViec()."%")
+            ->update([
+                'parent_id' => $chung->id
+            ]);
+
+        $thongKe = Permission::findOrCreate(AllPermission::thongKe());
+        Permission::where('name', 'LIKE', "%".AllPermission::thongKeVanBanSo()."%")
+            ->update([
+                'parent_id' => $thongKe->id
+            ]);
+
+        Permission::where('name', 'LIKE', "%".AllPermission::thongKeVanBanChiCuc()."%")
+            ->update([
+                'parent_id' => $thongKe->id
+            ]);
+
     }
 }
