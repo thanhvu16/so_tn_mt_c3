@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Thống kê văn bản Sở')
+@section('page_title', 'Thống kê văn bản ')
 @section('content')
     <section class="content">
         <div class="row">
@@ -11,7 +11,7 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-8 text-right">
-                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">
+                                    <form action method="GET" action="{{ route('thongkevbphong') }}" class="form-export">
 {{--                                        <input type="hidden" name="so_van_ban" value="{{ request('so_van_ban') }}">--}}
 
                                         <input type="hidden" name="type" value="">
@@ -37,7 +37,7 @@
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
                                     <h5 style="font-weight: bold">- Thời gian: Từ 01/01/2021 đến 31/12/2021<br><br>
-                                        - Đơn vị kết xuất báo cáo: Sở Tài nguyên và Môi trường
+                                        - Đơn vị kết xuất báo cáo:{{$donViChiCuc->ten_don_vi}}
                                     </h5>
                                 </div>
                                 <div class="col-md-12" style="margin-top: 5px">
@@ -125,7 +125,7 @@
             var sovanbanden = $('input[name="sovanbanden"]').val();
             $.ajax({
                 beforeSend: showLoading(),
-                url: APP_URL + '/thong-ke-van-ban-so',
+                url: APP_URL + '/thong-ke-van-ban-phong',
                 type: 'GET',
                 data: {
                     _token: "{{ csrf_token() }}",
