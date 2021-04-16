@@ -90,7 +90,7 @@ class ThongKeVanBanChiCucController extends Controller
 
 
         if (empty($type)) {
-            $tong =  $vanBanDaGiaiQuyet['tong'];
+            $tong =  $vanBanDaGiaiQuyet['tong']+$vanBanChuaGiaiQuyet['tong'];
         }
 
         ;        return [
@@ -153,6 +153,7 @@ class ThongKeVanBanChiCucController extends Controller
     {
         $vanBanTrongHan = 0;
         $vanBanQuaHan = 0;
+        $tongVanBanDonViKhongDieuHanh = 0;
         if ($type == DonVi::DIEU_HANH) {
             foreach ($danhSachVanBanDenChuaHoanThanh as $vanBanDen) {
                 if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_DUNG_HAN) {
@@ -177,12 +178,14 @@ class ThongKeVanBanChiCucController extends Controller
                 })
                 ->where('don_vi_id', $donViId)->distinct()->count();
             $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
+            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
         }
 
 
         return [
             'chua_giai_quyet_hoan_thanh_dung_han' => $vanBanTrongHan,
             'chua_giai_quyet_hoan_thanh_qua_han' => $vanBanQuaHan,
+            'tong' => $tongVanBanDonViKhongDieuHanh
         ];
     }
 
