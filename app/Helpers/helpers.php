@@ -91,19 +91,7 @@ function tongSoVanBanSo($id)
 }
 function vanBanDaGiaiQuyetTrongHan($id)
 {
-    $donVi = DonVi::where('id',$id)->first();
-    if( $donVi->dieu_hanh == 1)
-    {
-        $vanBanDen = VanBanDen::where(['don_vi_id'=>$id,'hoan_thanh_dung_han'=>1,'trinh_tu_nhan_van_ban'=>6])->count();
-        return $vanBanDen;
-    }else{
-//        $idVanBanDen = VanBanDen::where('don_vi_id',$id)
-        $vanBanDen1 = DonViChuTri::where('don_vi_id',$id)->distinct()->get();
-        $vanBanDen = DonViChuTri::where('don_vi_id',$id)->with('vanBanDen')->distinct()->get();
-        return $vanBanDen;
-    }
 
-    return 0;
 }
 
 
