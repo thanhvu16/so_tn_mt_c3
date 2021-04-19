@@ -51,8 +51,13 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Ngày ban hành <span style="color: red">*</span></label>
-                                    <input type="date" class="form-control vanbantrung ngay-ban-hanh" name="ngay_ban_hanh" id="exampleInputEmail5"
-                                           placeholder="" required >
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker" name="ngay_ban_hanh" id="exampleInputEmail5"
+                                               placeholder="dd/mm/yyyy" required >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -164,7 +169,12 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control han-xu-ly" name="han_xu_ly"  value="" placeholder="Hạn xử lý" required>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker" name="han_xu_ly"  value="" placeholder="Hạn xử lý" required>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -223,7 +233,7 @@
 
             }).done(function (res) {
                 hideLoading();
-                $('.han-xu-ly').val(res.html);
+                $("input[name='han_xu_ly']").val(res.html);
 
 
             });
