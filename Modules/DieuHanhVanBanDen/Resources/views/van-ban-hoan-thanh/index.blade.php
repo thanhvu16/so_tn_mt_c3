@@ -26,7 +26,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control pull-right datepicker" placeholder="DD/MM/YYYY"
+                                        <input type="text" class="form-control pull-right datepicker" placeholder="dd/mm/yyyy"
                                                name="han_xu_ly" value="{{ Request::get('han_xu_ly') ?? null }}">
                                     </div>
                                 </div>

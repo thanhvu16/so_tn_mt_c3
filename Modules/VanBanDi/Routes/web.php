@@ -54,3 +54,5 @@ Route::post('ky-dien-tu-qua-sim', 'DuThaoVanBanController@kydientu')->name('van_
 Route::resource('tim-kiem-van-ban-den', 'TimKiemVanBanDenController');
 
 Route::post('remove-van-ban-den', 'VanBanDiController@removeVanBanDen');
+Route::post('file-demo', 'GopYVanbanDiController@filedemo');
+Route::post('file-demo-ngoai', 'GopYVanbanDiController@filedemongoai');

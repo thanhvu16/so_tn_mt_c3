@@ -186,7 +186,8 @@ class VanBanLanhDaoXuLyController extends Controller
 
             if ($active == VanBanDen::PHO_CHU_TICH_NHAN_VB) {
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.pho_chu_tich',
-                    compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active', 'loaiVanBanGiayMoi'));
+                    compact('danhSachVanBanDen', 'order', 'danhSachDonVi', 'danhSachPhoChuTich', 'active',
+                        'loaiVanBanGiayMoi', 'checkThamMuuSo'));
             }
 
 
@@ -265,8 +266,7 @@ class VanBanLanhDaoXuLyController extends Controller
                         ->whereNull('status')->first();
 
                     if ($vanBanTraLai) {
-                        $vanBanTraLai->status = VanBanTraLai::STATUS_GIAI_QUYET;
-                        $vanBanTraLai->save();
+                        VanBanTraLai::updateStatusVanBanTraLai($vanBanTraLai);
                     }
 
                     //check xu ly van ban den
@@ -308,7 +308,7 @@ class VanBanLanhDaoXuLyController extends Controller
                                 'noi_dung' => $noiDungPhoChuTich[$vanBanDenId],
                                 'tom_tat' => $checkXuLyVanBanDen->tom_tat ?? null,
                                 'user_id' => $currentUser->id,
-                                'han_xu_ly' => $dataHanXuLy[$vanBanDenId] ?? null
+                                'han_xu_ly' => $dataHanXuLy[$vanBanDenId] ? formatYMD($dataHanXuLy[$vanBanDenId]) : null
                             ];
 
                             $checkTonTaiData = XuLyVanBanDen::where([
@@ -492,6 +492,10 @@ class VanBanLanhDaoXuLyController extends Controller
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $dataHanXuLy = $data['han_xu_ly'] ?? null;
         $donViDuHop = $data['don_vi_du_hop'] ?? null;
+        /** van ban da gui tra lai cho lanh dao cho duyet,
+         * lanh dao chua duyet nhung van ci dao tiep van ban
+         **/
+        $chiDaoVanBanTraLaiChoDuyet = $data['chi_dao_tu_van_ban_tra_lai_cho_duyet'] ?? null;
 
         if (count($vanBanDenDonViIds) > 0) {
             try {
@@ -570,6 +574,18 @@ class VanBanLanhDaoXuLyController extends Controller
                                 $vanBanQuanTrong->save();
                             }
                         }
+                        //check van ban tra lai
+                        $canBoNhan = 'can_bo_nhan_id';
+                        if (!empty($chiDaoVanBanTraLaiChoDuyet)) {
+                            $canBoNhan = 'can_bo_chuyen_id';
+                        }
+                        $vanBanTraLai = VanBanTraLai::where('van_ban_den_id', $vanBanDenId)
+                            ->where($canBoNhan, $currentUser->id)
+                            ->whereNull('status')->first();
+                        if ($vanBanTraLai) {
+                            VanBanTraLai::updateStatusVanBanTraLai($vanBanTraLai);
+                        }
+
                         // check lanh dao du hop
                         if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
 
@@ -586,7 +602,7 @@ class VanBanLanhDaoXuLyController extends Controller
                             'don_vi_id' => $danhSachDonViChuTriIds[$vanBanDenId],
                             'user_id' => $currentUser->id,
                             'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
-                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? $dataHanXuLy[$vanBanDenId] : null,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? formatYMD($dataHanXuLy[$vanBanDenId]) : null,
                             'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
                             'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
                             'da_chuyen_xuong_don_vi' => $vanBanDen->trinh_tu_nhan_van_ban == VanBanDen::TRUONG_PHONG_NHAN_VB || $vanBanDen->trinh_tu_nhan_van_ban == VanBanDen::CHU_TICH_XA_NHAN_VB ? 1 : null

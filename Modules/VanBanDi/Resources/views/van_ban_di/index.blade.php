@@ -233,7 +233,7 @@
                                         @empty
                                         @endforelse
                                     </td>
-                                    <td class="text-center" style="vertical-align: middle">
+                                    <td class="text-center">
                                         @hasanyrole('văn thư đơn vị|văn thư sở')
                                         <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
                                             @csrf
@@ -241,7 +241,7 @@
                                                class="fa fa-edit" role="button"
                                                title="Sửa">
                                                 <i class="fas fa-file-signature"></i>
-                                            </a><br><br>
+                                            </a>
                                             <button
                                                 class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item"
                                                 role="button"

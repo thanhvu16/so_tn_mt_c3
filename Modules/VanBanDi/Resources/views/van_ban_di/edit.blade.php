@@ -26,16 +26,6 @@
                                     @endforeach
                                 </select>
                             </div>
-{{--                            <div class="form-group col-md-3">--}}
-{{--                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span class="color-red">*</span></label>--}}
-{{--                                <select class="form-control show-tick" name="sovanban_id" required>--}}
-{{--                                    @foreach ($ds_soVanBan as $data)--}}
-{{--                                        <option value="{{ $data->id }}"  {{$vanbandi->so_van_ban_id == $data->id ? 'selected' : ''}}--}}
-{{--                                        >{{ $data->ten_so_van_ban}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
                                 <input type="text" value="{{$vanbandi->so_ky_hieu}}"
@@ -81,19 +71,6 @@
                                     </select>
                                 </div>
                             @endif
-                            {{--                            <div class="form-group col-md-3">--}}
-                            {{--                                <label for="sokyhieu" class="col-form-label">Người duyệt</label>--}}
-                            {{--                                <select name="nguoi_nhan" id="" class="form-control ">--}}
-                            {{--                                    @foreach ($nguoinhan as $data)--}}
-                            {{--                                        <option value="{{ $data->id }}"--}}
-                            {{--                                        >{{ $data->ho_ten}}</option>--}}
-                            {{--                                    @endforeach--}}
-                            {{--                                </select>--}}
-                            {{--                            </div>--}}
-
-
-
-
                             <div class="form-group col-md-3" >
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký <span class="color-red">*</span></label>
                                 <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" required>
@@ -147,7 +124,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12 ">
-                                <label for="" class="col-form-label">Đơn vị nhận ngoài thành phố</label>
+                                <label for="" class="col-form-label">Đơn vị nhận ngoài hệ thống</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
                                         multiple
@@ -160,7 +137,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12 ">
-                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nội bộ </label>
                                 <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
                                         class="form-control select2"
                                         multiple
@@ -176,7 +153,7 @@
                                 <label for="exampleInputEmail4">File</label>
                                 <input type="file" class="form-control han-xu-ly" name="File" value=""  >
                             </div>
-                            <div class="col-md-3 mt-4">
+                            <div class="col-md-5 mt-4">
                                 <label for="">Trả lời cho văn bản đến:</label>
                                 <a class="them-van-ban-den" data-toggle="modal" data-target="#modal-them-van-ban-den">
                                     <span><i class="fa fa-plus-square-o"></i> Thêm văn bản đến</span>
@@ -197,8 +174,7 @@
 
                                 </div>
                             </div>
-
-                            <div class="col-md-6 mt-4">
+                            <div class="col-md-4 mt-4">
                                 <div class="form-group">
                                     <label for="">File văn bản:
                                         @forelse($vanbandi->filechinh as $key=>$filedata)

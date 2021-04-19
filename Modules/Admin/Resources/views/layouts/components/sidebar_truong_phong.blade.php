@@ -46,7 +46,7 @@ Route::is('danh_sach_vb_di_cho_duyet') || Route::is('vb_di_da_duyet') || Route::
 
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.create')|| Route::is('cong-viec-hoan-thanh.cho-duyet')
 || Route::is('cong-viec-don-vi.hoan-thanh')||Route::is('cong-viec-don-vi-phoi-hop.index')||Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly')||Route::is('cong-viec-don-vi-phoi-hop.dang-xu-ly')||
-Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit') ? 'active menu-open' : '' }} }} ">
+Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')|| Route::is('cong-viec-don-vi.edit')|| Route::is('congViecDeXuatChoXuLy') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-expeditedssl"></i> <span>Công việc phòng ban</span>
         <span class="pull-right-container">
@@ -59,6 +59,8 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
         </li>
         <li class="{{ Route::is('cong-viec-don-vi.index') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.index') }}"><i class="fa fa-circle-o"></i>Công việc chờ xử lý</a></li>
+        <li class="{{ Route::is('congViecDeXuatChoXuLy') ? 'active' : '' }}"><a
+                href="{{ route('congViecDeXuatChoXuLy') }}"><i class="fa fa-circle-o"></i>Công việc đề xuất chờ xử lý</a></li>
         <li class="{{ Route::is('cong-viec-don-vi.dang-xu-ly') ? 'active' : '' }}"><a
                 href="{{ route('cong-viec-don-vi.dang-xu-ly') }}"><i class="fa fa-circle-o"></i>Công việc đang xử lý</a>
         </li>
@@ -108,5 +110,17 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
                 href="{{ route('captrendanhgiac2') }}"><i class="fa fa-circle-o"></i>Cấp trên đánh giá</a></li>
         <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i
                     class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>
+    </ul>
+</li>
+<li class="treeview {{ Route::is('bao_cao_thong_ke.index') || Route::is('thongkevbphong')    ? 'active menu-open' : '' }} ">
+    <a href="#">
+        <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
+        <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('bao_cao_thong_ke.index') ? 'active' : '' }}"><a href="{{ route('bao_cao_thong_ke.index') }}"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>
+        <li class="{{ Route::is('thongkevbphong') ? 'active' : '' }}"><a href="{{ route('thongkevbphong') }}"><i class="fa fa-circle-o"></i>Thống kê văn bản phòng</a></li>
     </ul>
 </li>

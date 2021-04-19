@@ -67,6 +67,9 @@ class VanBanDen extends Model
     const LOAI_VAN_BAN_DON_VI_PHOI_HOP = 1;
     const LA_PHOI_HOP = 2;
 
+    const HOAN_THANH_DUNG_HAN = 1;
+    const HOAN_THANH_QUA_HAN = 2;
+
     protected $fillable = [
         'parent_id',
         'loai_van_ban_id',
@@ -242,6 +245,24 @@ class VanBanDen extends Model
         return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
             ->where('can_bo_nhan_id', auth::user()->id)
             ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
+            ->whereNull('status')
+            ->orderBy('id','DESC');
+    }
+
+    public function vanBanDaGuiTraLai()
+    {
+        return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_nhan_id', auth::user()->id)
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
+            ->whereNotNull('status')
+            ->orderBy('id','DESC');
+    }
+
+    public function vanBanTraLaiChoDuyet()
+    {
+        return $this->hasOne(VanBanTraLai::class, 'van_ban_den_id', 'id')
+            ->where('can_bo_chuyen_id', auth::user()->id)
+            ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'created_at')
             ->whereNull('status')
             ->orderBy('id','DESC');
     }
@@ -537,7 +558,9 @@ class VanBanDen extends Model
 
     public static function updateHoanThanhVanBanDen($vanBanDenId)
     {
-        $danhSachVanBanDen = VanBanDen::whereIn('id', $vanBanDenId)->get();
+        $danhSachVanBanDen = VanBanDen::whereIn('id', $vanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->get();
 
         if ($danhSachVanBanDen) {
             foreach ($danhSachVanBanDen as $vanBanDen) {

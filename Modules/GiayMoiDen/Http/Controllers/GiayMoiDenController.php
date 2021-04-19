@@ -212,12 +212,16 @@ class GiayMoiDenController extends Controller
 //            'don_vi_id' => auth::user()->don_vi_id,
 //            'so_van_ban_id' => 100
 //        ])->max('so_den');
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $donVi = auth::user()->donVi;
         $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -294,10 +298,14 @@ class GiayMoiDenController extends Controller
      */
     public function store(Request $request)
     {
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -343,7 +351,7 @@ class GiayMoiDenController extends Controller
 
                         $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                         $vanbandv->so_den = $sodengiaymoi;
-                        $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                        $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
@@ -419,7 +427,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban_id;
                     $vanbandv->so_den = $sodengiaymoi;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
                     $vanbandv->nguoi_ky = $nguoiky;
@@ -678,13 +686,32 @@ class GiayMoiDenController extends Controller
     public function edit($id)
     {
         canPermission(AllPermission::suaGiayMoiDen());
-
+        $giayMoi = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
         $vanban = VanBanDen::where('id', $id)->first();
-        $soDen = VanBanDen::where([
-            'don_vi_id' => auth::user()->don_vi_id,
-            'so_van_ban_id' => 100,
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
+        $nam = date("Y");
 
-        ])->max('so_den');
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDen = VanBanDen::where([
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
+                'so_van_ban_id' => $giayMoi->id,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDen = VanBanDen::where([
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'so_van_ban_id' => $giayMoi->id,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+//        $soDen = VanBanDen::where([
+//            'don_vi_id' => auth::user()->don_vi_id,
+//            'so_van_ban_id' => 100,
+//
+//        ])->max('so_den');
 
         $sodengiaymoi = $soDen + 1;
         $user = auth::user();
@@ -726,12 +753,16 @@ class GiayMoiDenController extends Controller
         $gio_hop = date('H:i', strtotime($request->gio_hop_chinh));
         $giayMoi = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
         $uploadPath = UPLOAD_FILE_GIAY_MOI_DEN;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
 
 
         $nam = date("Y");
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => auth::user()->don_vi_id,
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => $giayMoi->id,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
@@ -754,7 +785,7 @@ class GiayMoiDenController extends Controller
                 $nam = date("Y");
                 if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                     $soDenvb = VanBanDen::where([
-                        'don_vi_id' => $user->don_vi_id,
+                        'don_vi_id' => $lanhDaoSo->don_vi_id,
                         'so_van_ban_id' => $request->so_van_ban_id,
                         'type' => 1
                     ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');

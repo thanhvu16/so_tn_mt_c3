@@ -357,9 +357,28 @@ class AllPermission
     {
         return 'in sổ văn bản đơn vị';
     }
+    public static function deXuatCongViec()
+    {
+        return 'đề xuất công việc';
+    }
 
     public static function VanThuChuyenTrach()
     {
         return 'văn thư chuyên trách';
     }
+
+    public static function thongKe()
+    {
+        return 'Thống kê';
+    }
+
+    public static function thongKeVanBanSo()
+    {
+        return 'thống kê văn bản đến sở';
+    }
+    public static function thongKeVanBanChiCuc()
+    {
+        return 'thống kê văn bản đến chi cục';
+    }
+
 }

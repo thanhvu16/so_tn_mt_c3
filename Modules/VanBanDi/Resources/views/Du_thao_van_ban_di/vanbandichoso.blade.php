@@ -51,14 +51,14 @@
 
 
                                         </td>
-                                            <td class="text-center" style="vertical-align: middle">
+                                            <td class="text-center" >
                                                 <p>
                                                     <input type="date" name="ngay_ban_hanh" class="form-control ngay-ban-hanh-{{$data->id}}" value="{{$date}}">
                                                     <input type="text" value="{{$data->id}}"
                                                            class="hidden van-ban-di-{{$data->id}}" name="van_ban_di_id">
                                                 </p>
                                             </td>
-                                            <td  style="vertical-align: middle">
+                                            <td>
                                                 <select class="form-control show-tick dropdown-search" name="sovanban_id"
                                                         required>
                                                     <option value="">-- Chọn sổ văn bản --</option>
@@ -69,7 +69,7 @@
                                                 </select>
 
                                             </td>
-                                            <td style="vertical-align: middle">
+                                            <td >
                                                 <p>
                                                     @if (isset($data->filetrinhky))
                                                         @foreach($data->filetrinhky as $key => $filedata)
@@ -82,7 +82,7 @@
 
                                                 </p>
                                             </td>
-                                        <td style="vertical-align: middle">
+                                        <td >
                                             {{--                                                        <div class="form-control" style="height: 100px;overflow: auto">--}}
                                             @forelse($data->donvinhanvbdi as $key=>$item)
                                                 <p>
@@ -105,7 +105,7 @@
 {{--                                                </a>--}}
 {{--                                            </p>--}}
                                         </td>
-                                            <td class="text-center" style="vertical-align: middle">
+                                            <td class="text-center" >
                                                 <button type="submit" form="choso"
                                                         class="btn btn-primary btn-sm btn-remove-item-duyet"><i
                                                         class="fa  fa-check-square-o"></i></button>
@@ -126,7 +126,7 @@
                                                 {{--                                                @endforeach--}}
                                                 {{--                                            @endif--}}
                                             </td>
-                                            <td class="text-center" style="vertical-align: middle">
+                                            <td class="text-center" >
 
 
                                                 @hasanyrole('văn thư đơn vị|văn thư sở')

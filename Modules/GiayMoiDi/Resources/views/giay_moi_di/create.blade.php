@@ -130,7 +130,7 @@
                                           required></textarea>
                             </div>
                             <div class=" col-md-6 form-group">
-                                <label for="exampleInputEmail2">Phòng phát hành văn bản <span class="color-red">*</span></label>
+                                <label for="exampleInputEmail2">Đơn vị phát hành  <span class="color-red">*</span></label>
                                 <select class="form-control select2" name="phong_phat_hanh" id=""  required>
                                     <option value="">Chọn phòng phát hành</option>
                                     @foreach ($ds_DonVi_phatHanh as $DonVi_phatHanh)
@@ -149,7 +149,7 @@
                             </div>
 
                             <div class="form-group col-md-12 ">
-                                <label for="sokyhieu" class="col-form-label">Đơn vị nhận </label>
+                                <label for="sokyhieu" class="col-form-label">Đơn vị nội bộ </label>
                                 <select name="don_vi_nhan_trong_thanh_php[]" id="don_vi_nhan"
                                         class="form-control select2"
                                         multiple
@@ -169,7 +169,7 @@
                                     <span style="color: white;font-size: 14px"><i class="far fa-trash-alt"></i> Xóa tất cả</span></a>
                             </div>
                             <div class="form-group col-md-12 " >
-                                <label for="" class="col-form-label">Đơn vị nhận bên ngoài</label>
+                                <label for="" class="col-form-label">Đơn vị nhận ngoài hệ thống</label>
                                 <select name="don_vi_nhan_ngoai_thanh_pho[]" id="don_vi_nhan_ngoai"
                                         class="form-control select2"
                                         multiple

@@ -2,6 +2,8 @@
 
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
+use Modules\VanBanDen\Entities\VanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use app\Models\UserLogs;
 use Modules\LichCongTac\Entities\DanhGiaTaiLieu;
 
@@ -70,6 +72,25 @@ function tenNhom($idnhom)
         return $lay_nhom_don_vi;
     }
     return 0;
+
+}
+
+function tongSoVanBanSo($id)
+{
+    $donVi = DonVi::where('id',$id)->first();
+    if( $donVi->dieu_hanh == 1)
+    {
+        $vanBanDen = VanBanDen::where('don_vi_id',$id)->count();
+        return $vanBanDen;
+    }else{
+        $vanBanDen = DonViChuTri::where('don_vi_id',$id)->distinct()->count();
+        return $vanBanDen;
+    }
+
+    return 0;
+}
+function vanBanDaGiaiQuyetTrongHan($id)
+{
 
 }
 
@@ -173,7 +194,15 @@ if (!function_exists('cutStr')) {
     }
 }
 
+// format 11/04/2021 to 2021-04-11
 function formatYMD($date)
 {
     return \DateTime::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+}
+
+
+// format 2021-04-11 to 11/04/2021
+function formatDMY($date)
+{
+    return date('d/m/Y', strtotime($date));
 }

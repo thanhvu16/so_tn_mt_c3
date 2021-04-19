@@ -40,7 +40,7 @@ class XuLyVanBanDen extends Model
 
     public function canBoNhan()
     {
-        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id')->select('id', 'ho_ten');
+        return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id')->select('id', 'ho_ten', 'chuc_vu_id');
     }
 
     public function vanBanDen()

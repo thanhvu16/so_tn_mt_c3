@@ -150,8 +150,9 @@ class VanBanDiController extends Controller
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])
-                ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->orwhere('van_ban_huyen_ky', $donViId)
+                ->where('so_di', '!=', null)->whereNull('deleted_at')
+
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
@@ -947,28 +948,32 @@ class VanBanDiController extends Controller
             }
             $donVi = auth::user()->donVi;
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-            if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
-            }
-            $typeArray = explode('.', $request->File->getClientOriginalName());
-            $tenchinhfile = strtolower($typeArray[0]);
-            $extFile = $request->File->extension();
-            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+            if($request->File)
+            {
+                $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0775, true, true);
+                }
+                $typeArray = explode('.', $request->File->getClientOriginalName());
+                $tenchinhfile = strtolower($typeArray[0]);
+                $extFile = $request->File->extension();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
+                $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
 
-            $vanBanDiFile = new FileVanBanDi();
-            $request->File->move($uploadPath, $fileName);
-            $vanBanDiFile->ten_file = $tenchinhfile;
-            $vanBanDiFile->duong_dan = $urlFile;
-            $vanBanDiFile->duoi_file = $extFile;
-            $vanBanDiFile->van_ban_di_id = $vanbandi->id;
-            $vanBanDiFile->file_chinh_gui_di = 2;
-            $vanBanDiFile->trang_thai = 2;
-            $vanBanDiFile->nguoi_dung_id = auth::user()->id;
-            $vanBanDiFile->don_vi_id = $donViId;
-            $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
-            $vanBanDiFile->save();
+                $vanBanDiFile = new FileVanBanDi();
+                $request->File->move($uploadPath, $fileName);
+                $vanBanDiFile->ten_file = $tenchinhfile;
+                $vanBanDiFile->duong_dan = $urlFile;
+                $vanBanDiFile->duoi_file = $extFile;
+                $vanBanDiFile->van_ban_di_id = $vanbandi->id;
+                $vanBanDiFile->file_chinh_gui_di = 2;
+                $vanBanDiFile->trang_thai = 2;
+                $vanBanDiFile->nguoi_dung_id = auth::user()->id;
+                $vanBanDiFile->don_vi_id = $donViId;
+                $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
+                $vanBanDiFile->save();
+            }
+
 
             $isSuccess = true;
 
@@ -1278,46 +1283,8 @@ class VanBanDiController extends Controller
                 $vanbandi->save();
 
                 // update van ban den
-                if ($vanbandi->van_ban_den_id != null) {
-                    VanBanDen::updateHoanThanhVanBanDen($vanbandi->van_ban_den_id);
-
-                }
-
-                $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-//                //update lich cong tac
-                if (!empty($giayMoi) && $vanbandi && $vanbandi->loai_van_ban_id == $giayMoi->id) {
-                    LichCongTac::taoLichCongTac($vanbandi);
-                }
-//                    $tuan = date('W', strtotime($vanbandi->ngay_hop));
-//
-//                    $lanhDaoDuHop = DieuHanhVanBanDenLichCongTac::checkLanhDaoDuHop($vanbandi->nguoiky_id);
-//                    $noiDungMoiHop = null;
-//
-//                    if (!empty($lanhDaoDuHop)) {
-//
-//                        $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
-//                    }
-//
-//                    $dataLichCongTac = array(
-//                        'van_ban_den_don_vi_id' => $vanbandi->id,
-//                        'lanh_dao_id' => $lanhDaoDuHop->id,
-//                        'ngay' => $vanbandi->ngay_hop,
-//                        'gio' => $vanbandi->gio_hop,
-//                        'tuan' => $tuan,
-//                        'buoi' => ($vanbandi->gio_hop <= '12:00') ? 1 : 2,
-//                        'noi_dung' => $noiDungMoiHop,
-//                        'user_id' => auth::user()->id,
-//                        'type' => DieuHanhVanBanDenLichCongTac::TYPE_VB_DI
-//                    );
-//                    //check lich cong tac
-//                    $lichCongTac = DieuHanhVanBanDenLichCongTac::where('van_ban_den_don_vi_id', $vanbandi->id)->first();
-//
-//                    if (empty($lichCongTac)) {
-//                        $lichCongTac = new DieuHanhVanBanDenLichCongTac();
-//                    }
-//                    $lichCongTac->fill($dataLichCongTac);
-//                    $lichCongTac->save();
-//                }
+                // bang trung gian 1 van ban den tra loi cho nhieu van ban di
+                $this->updateVanBanDen($vanbandi);
 
                 return redirect()->back()->with('success', 'Chuyển văn thư chờ cấp số thành công !');
 
@@ -1500,7 +1467,7 @@ class VanBanDiController extends Controller
         }
         if ($loaiVanBan->ma_don_vi == 1) {
             $ma_don_vi = $ma_don_vi_ht;
-            $ma_don_vi = "/$ma_don_vi";
+            $ma_don_vi = "-$ma_don_vi";
         }
 
         $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
@@ -1520,7 +1487,7 @@ class VanBanDiController extends Controller
 
         }
         $soDi = $soDi + 1;
-        $soKyHieu = "$soDi/$nam_truoc_skh$ma_phong_ban$ma_van_ban$ma_don_vi";
+        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
@@ -1537,6 +1504,7 @@ class VanBanDiController extends Controller
         $vanbandiupdate->cho_cap_so = 1;
         $vanbandiupdate->save();
 
+        $this->updateVanBanDen($vanbandi);
 
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
         return redirect()->back()->with(['capso' => "$soDi"]);
@@ -1546,6 +1514,25 @@ class VanBanDiController extends Controller
 //            'status' => true,
 //            'message' => 'Đã phát hành văn bản.'
 //        ], 200);
+    }
+
+    public function updateVanBanDen($vanBanDi)
+    {
+        $vanBanDiVanBanDen = VanBanDiVanBanDen::where('van_ban_di_id', $vanBanDi->id)->get();
+        if ($vanBanDiVanBanDen) {
+            foreach ($vanBanDiVanBanDen as $vanBanDiDen) {
+                if ($vanBanDiDen->van_ban_den_id != null) {
+                    VanBanDen::updateHoanThanhVanBanDen([$vanBanDiDen->van_ban_den_id]);
+
+                }
+            }
+        }
+
+        $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        //update lich cong tac
+        if (!empty($giayMoi) && $vanBanDi && $vanBanDi->loai_van_ban_id == $giayMoi->id) {
+            LichCongTac::taoLichCongTac($vanBanDi);
+        }
     }
 
     public function Quytrinhxulyvanbandi($id)

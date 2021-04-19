@@ -2,7 +2,7 @@
  || Route::is('gia-han-van-ban.index') || Route::is('van-ban-den-don-vi.dang_xu_ly') ||
   Route::is('van-ban-den-hoan-thanh.index') || Route::is('van-ban-den-don-vi.xem_de_biet') ||
    Route::is('van-ban-den-don-vi.quan_trong') || Route::is('van-ban-den-phoi-hop.index')||
-   Route::is('van-ban-den-phoi-hop.da-xu-ly')||
+   Route::is('van-ban-den-phoi-hop.da-xu-ly')|| Route::is('van_ban_tra_lai.cho_duyet') ||
    Route::is('van-ban-den-phoi-hop.dang-xu-ly') ? 'active menu-open' : '' }}">
     <a href="#">
         <i class="fa fa-th" aria-hidden="true"></i> <span>Xử lý văn bản đến</span>
@@ -17,6 +17,16 @@
         <li class="{{ Route::is('phan-loai-van-ban.da_phan_loai') ? 'active' : '' }}"><a
                 href="{{ route('phan-loai-van-ban.da_phan_loai') }}"><i class="fa fa-circle-o"></i>VB đã chỉ đạo</a>
         </li>
+        @if (!auth::user()->hasRole(CHU_TICH))
+            <li class="{{ Route::is('van_ban_tra_lai.cho_duyet') ? 'active' : '' }}"><a
+                    href="{{ route('van_ban_tra_lai.cho_duyet') }}"><i class="fa fa-circle-o"></i>VB đã gửi trả lại</a>
+            </li>
+        @endif
+        @if (auth::user()->hasRole(CHU_TICH) && auth::user()->donVi->cap_xa != 0)
+            <li class="{{ Route::is('van_ban_tra_lai.cho_duyet') ? 'active' : '' }}"><a
+                    href="{{ route('van_ban_tra_lai.cho_duyet') }}"><i class="fa fa-circle-o"></i>VB đã gửi trả lại</a>
+            </li>
+        @endif
         <li class="{{ Route::is('van-ban-den-don-vi.dang_xu_ly') ? 'active' : '' }}"><a
                 href="{{ route('van-ban-den-don-vi.dang_xu_ly') }}"><i class="fa fa-circle-o"></i>VB đang xử lý</a>
         </li>
@@ -92,5 +102,19 @@
                     class="fa fa-circle-o"></i>Cấp trên đánh giá</a></li>
         <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i
                     class="fa fa-circle-o"></i>Thống kê đánh giá phòng</a></li>
+    </ul>
+</li>
+
+<li class="treeview {{ Route::is('bao_cao_thong_ke.index') || Route::is('thongkevbso')|| Route::is('thongkevbchicuc') ? 'active menu-open' : '' }} ">
+    <a href="#">
+        <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
+        <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('bao_cao_thong_ke.index') ? 'active' : '' }}"><a href="{{ route('bao_cao_thong_ke.index') }}"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>
+        @if(auth::user()->donVi->cap_xa != 1)<li class="{{ Route::is('thongkevbso') ? 'active' : '' }}"><a href="{{ route('thongkevbso') }}"><i class="fa fa-circle-o"></i>Thống kê văn bản đến Sở</a></li>@endif
+        @if(auth::user()->donVi->cap_xa == 1)<li class="{{ Route::is('thongkevbchicuc') ? 'active' : '' }}"><a href="{{ route('thongkevbchicuc') }}"><i class="fa fa-circle-o"></i>Thống kê văn bản đến</a></li>@endif
     </ul>
 </li>

@@ -178,12 +178,16 @@
                                                 </select>
                                             </p>
                                             @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
-                                                <p>
-                                                    <span>Gia hạn xử lý</span>
-                                                    <input type="date" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                <span>Gia hạn xử lý</span>
+                                                <div class="input-group date">
+                                                    <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
                                                            value=""
-                                                           class="form-control" form="form-tham-muu">
-                                                </p>
+                                                           class="form-control datepicker"
+                                                           form="form-tham-muu" placeholder="dd/mm/yyyy">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </div>
+                                                </div>
                                                 <p>
                                                     <input
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"

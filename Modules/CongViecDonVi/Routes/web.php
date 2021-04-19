@@ -34,7 +34,15 @@ Route::get('cong-viec-don-vi-phoi-hop-da-xu-ly', 'CongViecDonViPhoiHopController
 Route::get('cong-viec-don-vi-phoi-hop-dang-xu-ly', 'CongViecDonViPhoiHopController@dangXuLy')->name('cong-viec-don-vi-phoi-hop.dang-xu-ly');
 Route::get('list-can-bo-phoi-hop/{id}', 'CongViecDonViController@getCanBoPhoiHop');
 Route::get('cong-viec-xem-de-biet', 'CongViecDonViController@CongViecXemDeBiet')->name('cong-viec-don-vi.can-bo-xem-de-biet');
+Route::get('cong-viec-de-xuat', 'CongViecDonViController@congViecDeXuat')->name('congViecDeXuat');
+Route::get('cong-viec-de-xuat-cho-xu-ly', 'CongViecDonViController@congViecDeXuatChoXuLy')->name('congViecDeXuatChoXuLy');
+Route::get('cong-viec-da-de-xuat', 'CongViecDonViController@congViecDaDeXuat')->name('congViecDaDeXuat');
 
 Route::get('cong-viec-hoan-thanh/{id}', 'CongViecHoanThanhController@show')->name('cong-viec-hoan-thanh.show');
 
 Route::post('remove-file-giai-quyet-cong-viec-don-vi/{id}', 'GiaiQuyetCongViecController@removeFileGiaiQuyet');
+Route::post('luuCongViecDeXuat', 'CongViecDonViController@luuCongViecDeXuat')->name('luuCongViecDeXuat');
+Route::post('chiTietCongViecDeXuat', 'CongViecDonViController@chiTietCongViecDeXuat')->name('chiTietCongViecDeXuat');
+Route::post('suaCongViecDeXuat', 'CongViecDonViController@suaCongViecDeXuat')->name('suaCongViecDeXuat');
+Route::post('DuyetCongViecDeXuat', 'CongViecDonViController@DuyetCongViecDeXuat')->name('DuyetCongViecDeXuat');
+Route::get('xoaCongViecDeXuat/{id}', 'CongViecDonViController@xoaCongViecDeXuat')->name('xoaCongViecDeXuat');

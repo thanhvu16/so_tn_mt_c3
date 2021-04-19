@@ -39,16 +39,16 @@ class NguoiDungController extends Controller
             $danhSachPhongBan = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
         }
 
-
         $users = User::with(['chucVu' => function ($query) {
             return $query->select('id', 'ten_chuc_vu');
         },
             'donVi' => function ($query) {
                 return $query->select('id', 'ten_don_vi');
             }])
-            ->where(function ($query) use ($donViId, $phonBanId) {
+            ->where(function ($query) use ($donViId, $phonBanId, $danhSachPhongBan) {
                 if (!empty($donViId) && empty($phonBanId)) {
-                    return $query->where('don_vi_id', $donViId);
+                    return $query->where('don_vi_id', $donViId)
+                                ->orWhereIn('don_vi_id', $danhSachPhongBan->pluck('id')->toArray());
                 } else if (!empty($donViId) && !empty($phonBanId)) {
                     return $query->where('don_vi_id', $phonBanId);
                 }

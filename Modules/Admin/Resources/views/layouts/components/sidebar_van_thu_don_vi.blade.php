@@ -1,6 +1,6 @@
 
 <li class="treeview {{ Route::is('van-ban-den.index') || Route::is('van-ban-den.create') || Route::is('van-ban-den.edit')
- || Route::is('van-ban-tra-lai.index') ? 'active menu-open' : '' }} }} ">
+ || Route::is('van-ban-tra-lai.index') || Route::is('van_ban_tra_lai.cho_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đến</span>
         <span class="pull-right-container">
@@ -10,7 +10,10 @@
     <ul class="treeview-menu">
         <li class="{{ Route::is('van-ban-den.index') ? 'active' : '' }}"><a href="{{ route('van-ban-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
         <li class="{{ Route::is('van-ban-den.create') ? 'active' : '' }}"><a href="{{ route('van-ban-den.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
-        <li class="{{ Route::is('van-ban-tra-lai.index') ? 'active' : '' }}"><a href="{{ route('van-ban-tra-lai.index') }}"><i class="fa fa-circle-o"></i>Văn bản trả lại</a></li>
+        <li class="{{ Route::is('van-ban-tra-lai.index') ? 'active' : '' }}"><a href="{{ route('van-ban-tra-lai.index') }}"><i class="fa fa-circle-o"></i>Văn bản bị trả lại</a></li>
+        <li class="{{ Route::is('van_ban_tra_lai.cho_duyet') ? 'active' : '' }}"><a
+                href="{{ route('van_ban_tra_lai.cho_duyet') }}"><i class="fa fa-circle-o"></i>VB đã gửi trả lại</a>
+        </li>
         <li class="{{ Route::is('don-vi-nhan-van-ban-den.index') ? 'active' : '' }}"><a href="{{ route('don-vi-nhan-van-ban-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách chờ vào sổ</a></li>
     </ul>
 </li>
@@ -75,3 +78,14 @@
     </ul>
 </li>
 
+<li class="treeview {{ Route::is('bao_cao_thong_ke.index')  ? 'active menu-open' : '' }} ">
+    <a href="#">
+        <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
+        <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('bao_cao_thong_ke.index') ? 'active' : '' }}"><a href="{{ route('bao_cao_thong_ke.index') }}"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>
+    </ul>
+</li>

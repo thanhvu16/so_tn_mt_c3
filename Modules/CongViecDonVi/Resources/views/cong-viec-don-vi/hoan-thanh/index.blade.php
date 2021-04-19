@@ -20,9 +20,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($danhSachChuyenNhanCongViecDonVi as  $chuyenNhanCongViecDonVi)
+                            @forelse($danhSachChuyenNhanCongViecDonVi as  $key=>$chuyenNhanCongViecDonVi)
                                 <tr class="duyet-vb">
-                                    <td class="text-center">{{ $order+1 }}</td>
+                                    <td class="text-center">{{ $key+1 }}</td>
                                     <td>
                                         <p>
                                             <a href="{{ route('cong-viec-don-vi.show', $chuyenNhanCongViecDonVi->id) }}">{{ $chuyenNhanCongViecDonVi->congViecDonVi->noi_dung_cuoc_hop }}</a>
@@ -78,15 +78,47 @@
                                     </td>
                                 </tr>
                             @empty
+
+                            @endforelse
+                            @forelse($congviecdexuat as  $key=>$dexuat)
+                                <tr class="duyet-vb">
+                                    <td class="text-center">{{ $total+1 }}</td>
+                                    <td>
+
+                                        <p>
+                                            <a href="">{{ $dexuat->noi_dung }}</a>
+                                        </p>
+                                        <p>
+                                            - <b>Hạn xử
+                                                lý:
+                                                {{ date('d/m/Y', strtotime($dexuat->han_xu_ly)) }}
+                                            </b>
+                                        </p>
+
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td style="vertical-align: middle" class="text-center">
+                                        <span class="label label-pill label-sm label-success">Đã duyệt</span>
+                                    </td>
+                                </tr>
+                            @empty
+
+                            @endforelse
+                            @if($tong == 0)
                                 <td colspan="5" class="text-center">Không tìm
                                     thấy dữ liệu.
                                 </td>
-                            @endforelse
+                            @endif
                             </tbody>
                         </table>
                         <div class="row col-md-12 mb-1">
                             <div class="float-left">
-                                Tổng số công việc: <b>{{ $danhSachChuyenNhanCongViecDonVi->total() }}</b>
+{{--                                Tổng số công việc: <b>{{ $danhSachChuyenNhanCongViecDonVi->total() }}</b>--}}
+                                Tổng số công việc: <b>{{ $tong }}</b>
                             </div>
                         </div>
                         <div>

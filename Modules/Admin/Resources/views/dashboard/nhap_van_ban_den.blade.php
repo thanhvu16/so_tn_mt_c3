@@ -58,7 +58,7 @@
                     </a>
 
                     <a class="text-title-item" href="{{ route('van-ban-tra-lai.index') }}">
-                        <p>Văn bản trả lại
+                        <p>Văn bản bị trả lại
                             <button
                                 class="btn br-10 btn-primary btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanDenTraLai }}</button>
                         </p>

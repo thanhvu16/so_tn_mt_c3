@@ -11,14 +11,7 @@
 |
 */
 
-//Route::prefix('vanbanden')->group(function() {
-//    Route::get('/', 'VanBanDenController@index');
-//
-//
-//    Route::get('danh-sach-do-bao-mat', 'DoMatController@danhsach')->name('danhsachdobaomat');
-//    Route::resource('do-bao-mat', 'DoMatController')->except('show');
-//    Route::post('do-bao-mat/delete/{id}', array('as' => 'xoadobaomat', 'uses' => 'DoMatController@destroy'));
-//});
+
 Route::resource('van-ban-den', 'VanBanDenController');
 Route::resource('in-so-van-ban-den', 'ThongkeVanBanDenController');
 Route::resource('don-vi-nhan-van-ban-den', 'DonViNhanVanBanDenController');
@@ -45,5 +38,9 @@ Route::post('van-ban-den/vao-so-van-ban-huyen','DonViNhanVanBanDenController@vao
 Route::post('han-van-ban','VanBanDenController@layhantruyensangview')->name('layhantruyensangview');
 //Route::get('xoa-van-ban-den/{id}','VanBanDenController@xoaFileDen')->name('xoaFileDen');
 Route::match(['get', 'post','put'], 'xoa-file-van-ban/{id}', ['as' =>'xoaFileDen', 'uses' => 'VanBanDenController@xoaFileDen']);
+
+Route::get('thong-ke-van-ban-so', array('as' => 'thongkevbso', 'uses' => 'ThongkeVanBanDenController@thongkevbso'));
+Route::get('thong-ke-van-ban-chi-cuc', array('as' => 'thongkevbchicuc', 'uses' => 'ThongKeVanBanChiCucController@index'));
+Route::get('thong-ke-van-ban-phong', array('as' => 'thongkevbphong', 'uses' => 'ThongKeVanBanPhongController@index'));
 
 

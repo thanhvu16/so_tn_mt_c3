@@ -8,18 +8,11 @@
 
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Danh sách văn bản đi đã tạo</h3>
+                        <h3 class="box-title">Danh sách văn bản đã tạo</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 ">
-
-
-
-
                     </div>
-
-
-
                     <div class="box-body">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
@@ -58,22 +51,22 @@
                                                    href="{{$filedata->getUrlFile()}}">[File văn bản đi]</a>
                                             @empty
                                             @endforelse
-                                       {{--         @forelse($vbDi->filetrinhky as $filedata)
-                                                <a class="seen-new-window" target="popup"
-                                                   href="{{$filedata->getUrlFile()}}">[File trình ký]</a>
-                                            @empty
-                                            @endforelse
-                                            @forelse($vbDi->filephieutrinh as $filedata)
-                                                &nbsp; |<a class="seen-new-window" target="popup"
-                                                           href="{{$filedata->getUrlFile()}}"> [File phiếu
-                                                    trình]</a>
-                                            @empty
-                                            @endforelse
-                                            @forelse($vbDi->filehoso as $filedata)
-                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}"> [File hồ
-                                                    sơ]</a>
-                                            @empty
-                                            @endforelse--}}
+                                            {{--         @forelse($vbDi->filetrinhky as $filedata)
+                                                     <a class="seen-new-window" target="popup"
+                                                        href="{{$filedata->getUrlFile()}}">[File trình ký]</a>
+                                                 @empty
+                                                 @endforelse
+                                                 @forelse($vbDi->filephieutrinh as $filedata)
+                                                     &nbsp; |<a class="seen-new-window" target="popup"
+                                                                href="{{$filedata->getUrlFile()}}"> [File phiếu
+                                                         trình]</a>
+                                                 @empty
+                                                 @endforelse
+                                                 @forelse($vbDi->filehoso as $filedata)
+                                                     &nbsp; |<a href="{{$filedata->getUrlFile()}}"> [File hồ
+                                                         sơ]</a>
+                                                 @empty
+                                                 @endforelse--}}
                                             {{--                                                        @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)--}}
                                             {{--                                                            <a title="Cập nhật file" href="{{route('ds_file_di',$vbDi->id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif--}}
                                         </div>
@@ -93,7 +86,7 @@
                                         @empty
                                         @endforelse
                                     </td>
-                                    <td class="text-center" style="vertical-align: middle">
+                                    <td class="text-center">
                                         <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
                                             @csrf
                                             <a href="{{route('van-ban-di.edit',$vbDi->id)}}"
@@ -101,14 +94,14 @@
                                                title="Sửa">
                                                 <i class="fas fa-file-signature"></i>
                                             </a>
-{{--                                            <br><br>--}}
-{{--                                            <button--}}
-{{--                                                class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item"--}}
-{{--                                                role="button"--}}
-{{--                                                title="Xóa">--}}
-{{--                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>--}}
-{{--                                            </button>--}}
-{{--                                            <input type="text" class="hidden" value="{{$vbDi->id}}" name="id_vb">--}}
+                                            {{--                                            <br><br>--}}
+                                            {{--                                            <button--}}
+                                            {{--                                                class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item"--}}
+                                            {{--                                                role="button"--}}
+                                            {{--                                                title="Xóa">--}}
+                                            {{--                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>--}}
+                                            {{--                                            </button>--}}
+                                            {{--                                            <input type="text" class="hidden" value="{{$vbDi->id}}" name="id_vb">--}}
                                         </form>
                                     </td>
                                 </tr>
@@ -122,11 +115,11 @@
                                 Tổng số văn bản: <b>{{ $ds_vanBanDi->count() }}</b>
                             </div>
                             <div class="col-md-6 text-right">
-{{--                                {!! $ds_vanBanDi->appends(['loaivanban_id' => Request::get('loaivanban_id'), 'sovanban_id' => Request::get('sovanban_id')--}}
-{{--                                   ,'vb_sokyhieu' => Request::get('vb_sokyhieu'),--}}
-{{--                                   'donvisoanthao_id' => Request::get('donvisoanthao_id'),'start_date' => Request::get('start_date'),--}}
-{{--                                   'end_date' => Request::get('end_date'),'nguoiky_id' => Request::get('nguoiky_id'),'chuc_vu' => Request::get('chuc_vu'),--}}
-{{--                                   'vb_trichyeu' => Request::get('vb_trichyeu'),'search' =>Request::get('search'), 'year' => Request::get('year')])->render() !!}--}}
+                                {{--                                {!! $ds_vanBanDi->appends(['loaivanban_id' => Request::get('loaivanban_id'), 'sovanban_id' => Request::get('sovanban_id')--}}
+                                {{--                                   ,'vb_sokyhieu' => Request::get('vb_sokyhieu'),--}}
+                                {{--                                   'donvisoanthao_id' => Request::get('donvisoanthao_id'),'start_date' => Request::get('start_date'),--}}
+                                {{--                                   'end_date' => Request::get('end_date'),'nguoiky_id' => Request::get('nguoiky_id'),'chuc_vu' => Request::get('chuc_vu'),--}}
+                                {{--                                   'vb_trichyeu' => Request::get('vb_trichyeu'),'search' =>Request::get('search'), 'year' => Request::get('year')])->render() !!}--}}
                             </div>
                         </div>
                     </div>

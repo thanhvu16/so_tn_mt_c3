@@ -26,10 +26,13 @@ class DonViController extends Controller
         $tendonvi = $request->get('ten_don_vi');
         $tenviettat = $request->get('ten_viet_tat');
         $mahanhchinh = $request->get('ma_hanh_chinh');
+        $donVi = DonVi::where('ten_don_vi', 'LIKE', "%$tendonvi%")->first();
+
         $ds_donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')
-            ->where(function ($query) use ($tendonvi) {
+            ->where(function ($query) use ($tendonvi, $donVi) {
                 if (!empty($tendonvi)) {
-                    return $query->where('ten_don_vi', 'LIKE', "%$tendonvi%");
+                    return $query->where('ten_don_vi', 'LIKE', "%$tendonvi%")
+                                    ->orWhere('parent_id', $donVi->id);
                 }
             })->where(function ($query) use ($tenviettat) {
                 if (!empty($tenviettat)) {
