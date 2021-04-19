@@ -37,7 +37,7 @@
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
                                     <h5 style="font-weight: bold">- Thời gian: Từ 01/01/2021 đến 31/12/2021<br><br>
-                                        - Đơn vị kết xuất báo cáo:{{$donViChiCuc->ten_don_vi}}
+                                        - Đơn vị kết xuất báo cáo: {{auth::user()->donVi->ten_don_vi}}
                                     </h5>
                                 </div>
                                 <div class="col-md-12" style="margin-top: 5px">
@@ -58,17 +58,17 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @forelse ($danhSachDonVi as $key=>$donVidata)
+                                        @forelse ($nguoiDung as $key=>$donVidata)
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
-                                                <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
-                                                <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}
-                                                    <input type="text" class="soVB hidden" value="{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}">
+                                                <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ho_ten  }}</td>
+                                                <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">{{ $donVidata->vanBanDaGiaiQuyet['tong'] + $donVidata->vanBanChuaGiaiQuyet['tong'] }}
+                                                    <input type="text" class="soVB hidden" value="{{ $donVidata->vanBanDaGiaiQuyet['tong'] + $donVidata->vanBanChuaGiaiQuyet['tong'] }}">
                                                 </td>
                                                 <td class="text-center" style="vertical-align: middle">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_trong_han'] }}</td>
                                                 <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</td>
-                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_trong_han'] }}</td>
-                                                <td>{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_qua_han'] }}</td>
+                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_dung_han'] }}</td>
+                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_qua_han'] }}</td>
                                             </tr>
                                         @empty
                                             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>

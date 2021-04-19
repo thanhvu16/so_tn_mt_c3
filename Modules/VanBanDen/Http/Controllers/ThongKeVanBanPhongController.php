@@ -2,12 +2,16 @@
 
 namespace Modules\VanBanDen\Http\Controllers;
 
+use App\Exports\thongKeVanBanChiCucExport;
+use App\Exports\thongKeVanBanPhongExport;
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\VanBanDen\Entities\VanBanDen;
+use auth,Excel;
 
 class ThongKeVanBanPhongController extends Controller
 {
@@ -15,96 +19,140 @@ class ThongKeVanBanPhongController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('vanbanden::thong_ke.thong_ke_vb_phong');
+        $donViPhong = auth::user()->don_vi_id;
+
+        $nguoiDung = User::where('don_vi_id',$donViPhong)
+            ->get();
+        foreach ($nguoiDung as $dataNguoiDung)
+        {
+            $dataNguoiDung->vanBanDaGiaiQuyet = $this->VanBanDenHoanThanhCuaDonVi($dataNguoiDung->id);
+            $dataNguoiDung->vanBanChuaGiaiQuyet = $this->VanBanDenChuaHoanThanhCuaDonVi($dataNguoiDung);
+
+        }
+        $soDonvi = $nguoiDung->count();
+
+        if ($request->get('type') == 'excel') {
+            $tongSoVB = $request->sovanbanden;
+            $fileName = 'thongkeVb'.date('d_m_Y') .'.xlsx';
+            return Excel::download(new thongKeVanBanPhongExport($nguoiDung,$soDonvi,$tongSoVB),
+                $fileName);
+        }
+        if ($request->ajax()) {
+            $tongSoVB =$request->sovanbanden;
+            $danhSachDonVi = $nguoiDung;
+            $html = view('vanbanden::thong_ke.TK_vb_phong',compact('danhSachDonVi','tongSoVB' ) )->render();;
+            return response()->json([
+                'html' => $html,
+            ]);
+        }
+        return view('vanbanden::thong_ke.thong_ke_vb_phong',compact('nguoiDung'));
     }
 
-    public function vanBanGiaiQuyet($donVi)
+
+
+
+
+
+
+
+
+
+
+    public function VanBanDenChuaHoanThanhCuaDonVi($user)
     {
-        $donViId = null;
-        $type = null;
-        if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
-            $donViId = $donVi->id;
-            $type = DonVi::DIEU_HANH;
+        $date = date('Y-m-d');
+        $trinhTuNhanVanBan = 0;
+
+        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
         }
 
-        $danhSachVanBanDenDaHoanThanh = VanBanDen::where(function ($query) use ($donViId) {
-            if (!empty($donViId)) {
-                return $query->where('don_vi_id', $donViId);
-            }
-        })
-            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+        if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
+        }
+
+        if ($user->hasRole(CHUYEN_VIEN)) {
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
+        }
+
+
+
+        $donViChuTri = DonViChuTri::where('can_bo_nhan_id', $user->id)
+            ->whereNotNull('vao_so_van_ban')
+            ->whereNull('hoan_thanh')
+            ->select('van_ban_den_id')
             ->get();
 
-        $danhSachVanBanDenChuaHoanThanh = VanBanDen::where(function ($query) use ($donViId) {
-            if (!empty($donViId)) {
-                return $query->where('don_vi_id', $donViId);
-            }
-        })
+        $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+        $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->where('han_xu_ly', '<', $date)
+            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->count();
+
+
+        $danhSachVanBanDenTrongHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->where('han_xu_ly', '>=', $date)
+            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->count();
+
+
+        return [
+            'hoan_thanh_dung_han' => $danhSachVanBanDenTrongHanDangXuLy,
+            'hoan_thanh_qua_han' => $danhSachVanBanDenQuaHanDangXuLy,
+            'tong' => $danhSachVanBanDenTrongHanDangXuLy + $danhSachVanBanDenQuaHanDangXuLy
+        ];
+
+
+
+    }
+
+    public function VanBanDenHoanThanhCuaDonVi($userId)
+    {
+        $danhSachVanBanDenDaHoanThanhDungHan = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN)
             ->get();
 
-        //hoan thanh
-        $vanBanDaGiaiQuyet = $this->getVanBanDenDaGiaiQuyet($danhSachVanBanDenDaHoanThanh, $donVi->id, $type);
-        //chưa hoàn thành
-        $vanBanChuaGiaiQuyet = $this->getVanBanDenchuaGiaiQuyet($danhSachVanBanDenChuaHoanThanh, $donVi->id, $type);
+        $arrIdVanBanDungHan  = $danhSachVanBanDenDaHoanThanhDungHan->pluck('id')->toArray();
 
-        $tong = $danhSachVanBanDenDaHoanThanh->count() + $danhSachVanBanDenChuaHoanThanh->count();
+        $donViChuTri = DonViChuTri::where('can_bo_nhan_id', $userId)->whereIn('van_ban_den_id', $arrIdVanBanDungHan)->get();
 
-
-        if (empty($type)) {
-            $tong =  $vanBanDaGiaiQuyet['tong']+$vanBanChuaGiaiQuyet['tong'];
-        }
-
-        ;        return [
-        'tong' => $tong,
-        'giai_quyet_trong_han' => $vanBanDaGiaiQuyet['hoan_thanh_dung_han'],
-        'giai_quyet_qua_han' => $vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
-        'chua_giai_quyet_giai_quyet_trong_han' => $vanBanChuaGiaiQuyet['chua_giai_quyet_hoan_thanh_dung_han'],
-        'chua_giai_quyet_giai_quyet_qua_han' => $vanBanChuaGiaiQuyet['chua_giai_quyet_hoan_thanh_qua_han'],
+        $vanBanDaGiaiQuyet = $this->getVanBanDenDaGiaiQuyet($arrIdVanBanDungHan,$userId);
 
 
 
-    ];
+        return [
+            'tong' => $vanBanDaGiaiQuyet['hoan_thanh_dung_han']+$vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
+            'giai_quyet_trong_han' => $vanBanDaGiaiQuyet['hoan_thanh_dung_han'],
+            'giai_quyet_qua_han' => $vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
+
+
+
+        ];
+
     }
 
 
-
-
-    public function getVanBanDenDaGiaiQuyet($danhSachVanBanDenDaHoanThanh, $donViId, $type)
+    public function getVanBanDenDaGiaiQuyet($arrIdVanBanDungHan, $userId)
     {
-        $vanBanTrongHan = 0;
-        $vanBanQuaHan = 0;
-        $tongVanBanDonViKhongDieuHanh = 0;
+        $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrIdVanBanDungHan)
+            ->whereHas('vanBanDen', function ($query) {
+                return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
+            })
+            ->where('can_bo_nhan_id', $userId)->distinct()->count();
+        $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
 
-        if ($type == DonVi::DIEU_HANH) {
-            foreach ($danhSachVanBanDenDaHoanThanh as $vanBanDen) {
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_DUNG_HAN) {
-                    $vanBanTrongHan += 1;
-                }
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_QUA_HAN) {
-                    $vanBanQuaHan += 1;
-                }
-            }
-        } else {
-            $arrVanBanDenId = $danhSachVanBanDenDaHoanThanh->pluck('id')->toArray();
-            $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
-                })
-                ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
+        $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrIdVanBanDungHan)
+            ->whereHas('vanBanDen', function ($query) {
+                return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
+            })
+            ->where('don_vi_id', $userId)->distinct()->count();
+        $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
 
-            $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
-                })
-                ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
-
-            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
-        }
+        $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
 
 
         return [
@@ -113,45 +161,7 @@ class ThongKeVanBanPhongController extends Controller
             'tong' => $tongVanBanDonViKhongDieuHanh
         ];
     }
-    public function getVanBanDenchuaGiaiQuyet($danhSachVanBanDenChuaHoanThanh, $donViId, $type)
-    {
-        $vanBanTrongHan = 0;
-        $vanBanQuaHan = 0;
-        $tongVanBanDonViKhongDieuHanh = 0;
-        if ($type == DonVi::DIEU_HANH) {
-            foreach ($danhSachVanBanDenChuaHoanThanh as $vanBanDen) {
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_DUNG_HAN) {
-                    $vanBanTrongHan += 1;
-                }
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_QUA_HAN) {
-                    $vanBanQuaHan += 1;
-                }
-            }
-        } else {
-            $arrVanBanDenId = $danhSachVanBanDenChuaHoanThanh->pluck('id')->toArray();
-            $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
-                })
-                ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
 
-            $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
-                })
-                ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
-            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
-        }
-
-
-        return [
-            'chua_giai_quyet_hoan_thanh_dung_han' => $vanBanTrongHan,
-            'chua_giai_quyet_hoan_thanh_qua_han' => $vanBanQuaHan,
-            'tong' => $tongVanBanDonViKhongDieuHanh
-        ];
-    }
 
     /**
      * Show the form for creating a new resource.
