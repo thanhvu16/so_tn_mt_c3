@@ -45,7 +45,7 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center" style="vertical-align: middle" rowspan="2" width="5%">STT</th>
-                                            <th class="text-center" style="vertical-align: middle" rowspan="2" width="">Đơn vị</th>
+                                            <th class="text-center" style="vertical-align: middle" rowspan="2" width="">Tên cán bộ</th>
                                             <th class="text-center" style="vertical-align: middle" rowspan="2" width="10%">Tổng số văn bản</th>
                                             <th class="text-center" style="vertical-align: middle" colspan="2" width="20%">Số văn bản đã giải quyết</th>
                                             <th class="text-center" style="vertical-align: middle" colspan="2" width="20%">Số văn bản chưa giải quyết</th>

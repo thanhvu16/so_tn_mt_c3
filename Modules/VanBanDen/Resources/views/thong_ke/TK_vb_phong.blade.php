@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>STT</th>
-            <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>Đơn vị</th>
+            <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>Tên cán bộ</th>
             <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>Tổng số văn bản</th>
             <th colspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Số văn bản đã giải quyết</th>
             <th colspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Số văn bản chưa giải quyết</th>
