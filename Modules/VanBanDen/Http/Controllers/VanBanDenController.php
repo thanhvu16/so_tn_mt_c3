@@ -296,7 +296,6 @@ class VanBanDenController extends Controller
     public function store(Request $request)
     {
 
-
         $user = auth::user();
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;
@@ -348,7 +347,7 @@ class VanBanDenController extends Controller
                         $vanbandv->noi_dung = $data;
                         if ($request->han_giai_quyet[$key] == null) {
                             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
-                            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                            //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                         } else {
                             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
                             $vanbandv->han_giai_quyet = $han_gq[$key];
@@ -403,7 +402,7 @@ class VanBanDenController extends Controller
                     $vanbandv->do_khan_cap_id = $request->do_khan;
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
-                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->type = 1;
@@ -503,7 +502,7 @@ class VanBanDenController extends Controller
                         $vanbandv->noi_dung = $data;
                         if ($request->han_giai_quyet[$key] == null) {
                             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
-                            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                            //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                         } else {
                             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
                             $vanbandv->han_giai_quyet = $han_gq[$key];
@@ -537,7 +536,7 @@ class VanBanDenController extends Controller
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
                     $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
-                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->don_vi_id = auth::user()->donVi->parent_id != 0 ? auth::user()->donVi->parent_id : auth::user()->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
@@ -756,7 +755,7 @@ class VanBanDenController extends Controller
         $vanbandv->noi_dung = $noi_dung[0];
         if ($request->han_giai_quyet[0] == null) {
             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
-            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+            //$vanbandv->han_giai_quyet = $request->han_xu_ly;
         } else {
             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
             $vanbandv->han_giai_quyet = $han_giai_quyet[0];
@@ -1028,7 +1027,7 @@ class VanBanDenController extends Controller
                 $vanbandv->noi_dung = $data;
                 if ($request->han_giai_quyet[$key] == null) {
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
-                    $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                    //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                 } else {
                     $vanbandv->han_xu_ly = $request->han_xu_ly;
                     $vanbandv->han_giai_quyet = $han_gq[$key];
@@ -1061,7 +1060,7 @@ class VanBanDenController extends Controller
             $vanbandv->do_khan_cap_id = $request->do_khan;
             $vanbandv->do_bao_mat_id = $request->do_mat;
             $vanbandv->han_xu_ly = $request->han_xu_ly;
-            $vanbandv->han_giai_quyet = $request->han_xu_ly;
+            //$vanbandv->han_giai_quyet = $request->han_xu_ly;
             $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
             $vanbandv->don_vi_id = auth::user()->don_vi_id;
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
@@ -1166,8 +1165,8 @@ class VanBanDenController extends Controller
                         $vanbandv->so_ky_hieu = $sokyhieu;
                         $vanbandv->nguoi_ky = $nguoiky;
                         $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
-                        $vanbandv->han_xu_ly = $request->han_xu_ly;
-                        $vanbandv->han_giai_quyet = $request->han_xu_ly;
+                        $vanbandv->han_xu_ly = $request->han_xu_ly ? formatYMD($request->han_xu_ly) : null;
+                        //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                         $vanbandv->loai_van_ban_id = $loaivanban;
                         $vanbandv->type = 1;
                         $vanbandv->trich_yeu = $trichyeu;
