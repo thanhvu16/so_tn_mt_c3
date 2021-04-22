@@ -94,6 +94,29 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Hạn xử lý </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker" name="han_xu_ly"  value="" placeholder="Hạn xử lý" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Ngày nhận </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan" name="ngay_nhan"  value="{{$date}}" placeholder="Ngày nhận" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix"></div>
 
                             @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
                                 <div class="col-md-3">
@@ -107,13 +130,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Người nhập </label>
-                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
-                                           placeholder="" disabled >
-                                </div>
-                            </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">*</span></label>
@@ -252,17 +269,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Ngày nhận </label>
-                                    <div class="input-group date">
-                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan" name="ngay_nhan"  value="{{$date}}" placeholder="Ngày nhận" >
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -293,6 +300,13 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Người nhập </label>
+                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
+                                           placeholder="" disabled >
+                                </div>
+                            </div>
 
                             <div class="row clearfix"></div>
 
@@ -300,17 +314,7 @@
                                 <label for="exampleInputEmail4">File</label>
                                 <input type="file" class="form-control han-xu-ly" name="File" value=""  >
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <div class="input-group date">
-                                        <input type="text" class="form-control han-xu-ly datepicker" name="han_xu_ly"  value="" placeholder="Hạn xử lý" >
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-3 mt-4">
 
                                 <div class="form-group">
