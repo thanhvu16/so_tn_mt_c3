@@ -154,7 +154,7 @@
                                         <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
                                                 class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
-                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>
+{{--                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>--}}
                                     </td>
                                     <td style="text-align: justify">
                                         @if ($vbDen->loai_van_ban_don_vi == 1)
@@ -168,8 +168,8 @@
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
                                                      (Hạn giải quyết: {{ date('d/m/Y', strtotime($vbDen->han_xu_ly)) }})<br>
-                                        <span
-                                            style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
+                                        <span style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span> -
+                                        <span style="font-style: italic">Ngày nhập : {{ date('d/m/Y', strtotime($vbDen->ngay_nhan)) }}</span>
                                         <div class="text-right " style="pointer-events: auto">
                                             @if($vbDen->vanBanDenFile)
                                             @forelse($vbDen->vanBanDenFile as $key=>$item)
@@ -188,11 +188,13 @@
                                             @endif
                                             @if(Auth::user()->quyen_vanthu_cq == 1 || Auth::user()->quyen_vanthu_dv == 1)
                                                 <a title="Cập nhật file" href="{{route('ds_file',$vbDen->vb_den_id)}}"><span role="button">&emsp;<i class="fa  fa-search"></i></span></a>@endif
-                                        </div>
 
-                                        <i style="font-weight: initial">
-                                            (<span style="color: red">*</span> {{ $vbDen->chu_tri_phoi_hop == 1 ? 'Là văn bản đơn vị chủ trì' : 'Là văn bản đơn vị phối hợp' }})
-                                        </i>
+                                        </div>
+                                            <i style="font-weight: initial">
+                                                (<span style="color: red">*</span> {{ $vbDen->chu_tri_phoi_hop == 1 ? 'Là văn bản giao sở' : '' }})
+                                            </i>
+
+
                                     </td>
                                     <td>
                                         <!--vb den don vi-->
