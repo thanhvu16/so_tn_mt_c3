@@ -191,7 +191,7 @@
 
                                         </div>
                                             <i style="font-weight: initial">
-                                                (<span style="color: red">*</span> {{ $vbDen->chu_tri_phoi_hop == 1 ? 'Là văn bản giao sở' : '' }})
+                                                @if( $vbDen->chu_tri_phoi_hop == 1)(<span style="color: red">*</span> {{ $vbDen->chu_tri_phoi_hop == 1 ? 'Là văn bản giao sở' : '' }})@endif
                                             </i>
 
 

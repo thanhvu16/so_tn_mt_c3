@@ -37,7 +37,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Số đến văn bản</label>
-                                    <input type="text" class="form-control " value="{{$soDen}}" readonly name="so_den" id="exampleInputEmail3"
+                                    <input type="text" class="form-control " value="{{$soDen}}"  name="so_den" id="exampleInputEmail3"
                                            placeholder="Số đến" style="font-weight: 800;color: #F44336;cursor: not-allowed;" >
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
 
                             <div class="col-md-3  van-ban">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Thời hạn theo quy chế <span style="color: red">*</span></label>
+                                    <label for="exampleInputEmail4">Thời hạn theo quy chế </label>
                                     <select class="form-control select2 lay_van_ban tieu-chuan"    name="tieu_chuan">
                                         @foreach($tieuChuan as $tieuChuandata)
                                             <option value="{{ $tieuChuandata->id }}" >{{ $tieuChuandata->ten_tieu_chuan }}</option>
@@ -215,7 +215,7 @@
                                 <div class="form-group">
                                     <label class="">
                                         <div class="icheckbox_flat-green checked" aria-checked="true" aria-disabled="false" style="position: relative;">
-                                            <input type="checkbox" class="flat-red" value="1"  name="chu_tri_phoi_hop" checked="" style="position: absolute; opacity: 0;">
+                                            <input type="checkbox" class="flat-red" value="1"  name="chu_tri_phoi_hop"  style="position: absolute; opacity: 0;">
                                             <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
                                             </ins>
                                         </div>

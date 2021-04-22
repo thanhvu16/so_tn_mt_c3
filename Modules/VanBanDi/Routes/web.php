@@ -49,10 +49,13 @@ Route::match(['get', 'post','put'], 'cap-so-van-ban/{id}', ['as' =>'Capsovanband
 //Route::match(['get', 'post','put'], 'Xoa-van-ban-di-cho-so/{id}', ['as' =>'xoavanbandichocapso' , 'uses' => 'DuThaoVanBanController@xoavanbandichocapso']);
 
 Route::post('ky-dien-tu-qua-sim', 'DuThaoVanBanController@kydientu')->name('van_ban.ky_dt_qua_sim');
+Route::post('luuVanBanDiSo', 'VanBanDiController@luuVanBanDiSo')->name('luuVanBanDiSo');
 
 // tim van ban de
 Route::resource('tim-kiem-van-ban-den', 'TimKiemVanBanDenController');
 
+Route::post('laySoDi', 'VanBanDiController@laySoDi');
 Route::post('remove-van-ban-den', 'VanBanDiController@removeVanBanDen');
 Route::post('file-demo', 'GopYVanbanDiController@filedemo');
 Route::post('file-demo-ngoai', 'GopYVanbanDiController@filedemongoai');
+Route::get('nhap-van-ban-di', array('as' => 'nhapVanBanDi', 'uses' => 'VanBanDiController@nhapVanBanDiVanThuSo'));

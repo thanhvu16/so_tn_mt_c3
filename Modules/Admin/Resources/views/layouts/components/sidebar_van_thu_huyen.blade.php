@@ -47,7 +47,7 @@
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
 </li>
-<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ? 'active menu-open' : '' }} }} ">
+<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('nhapVanBanDi') || Route::is('van-ban-di.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
@@ -56,7 +56,7 @@
     </a>
     <ul class="treeview-menu">
         <li class="{{ Route::is('van-ban-di.index') ? 'active' : '' }}"><a href="{{ route('van-ban-di.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
-        <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
+        <li class="{{ Route::is('nhapVanBanDi') ? 'active' : '' }}"><a href="{{ route('nhapVanBanDi') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
         <li class="{{ Route::is('vanbandichoso') ? 'active' : '' }}"><a href="{{ route('vanbandichoso') }}"><i class="fa fa-circle-o"></i> Danh sách chờ số</a></li>
     </ul>
 </li>
