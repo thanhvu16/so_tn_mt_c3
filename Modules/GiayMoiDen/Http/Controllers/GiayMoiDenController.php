@@ -233,7 +233,7 @@ class GiayMoiDenController extends Controller
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
         $sodengiaymoi = $soDenvb + 1;
-        $date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->format('d/m/Y');
 //        dd($date);
 //        dd($soDen);
 //        $sodengiaymoi = $soDen + 1;
@@ -269,7 +269,32 @@ class GiayMoiDenController extends Controller
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
 
-        $ngaynhan = date('Y-m-d');
+//        $ngaynhan = date('Y-m-d');
+//        $songay = 8;
+//        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+//        $i = 0;
+//
+//        foreach ($ngaynghi as $key => $value) {
+//            if ($value['ngay_nghi'] != $ngaynhan) {
+//                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+//                    $i++;
+//                }
+//            }
+//
+//        }
+//
+//        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+
+
+        return view('giaymoiden::giay_moi_den.create', compact('ds_nguoiKy', 'ds_soVanBan', 'ds_loaiVanBan',
+            'ds_doKhanCap', 'ds_mucBaoMat', 'sodengiaymoi',
+            'gioHop', 'date', 'nguoi_dung'));
+    }
+
+    public function hanXuLygb(Request $request)
+    {
+        $ngaynhan = formatYMD($request->ngay_nhan);
+
         $songay = 8;
         $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
         $i = 0;
@@ -284,11 +309,6 @@ class GiayMoiDenController extends Controller
         }
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
-
-
-        return view('giaymoiden::giay_moi_den.create', compact('ds_nguoiKy', 'ds_soVanBan', 'ds_loaiVanBan',
-            'ds_doKhanCap', 'ds_mucBaoMat', 'sodengiaymoi',
-            'gioHop', 'date', 'nguoi_dung', 'hangiaiquyet'));
     }
 
     /**
@@ -358,6 +378,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
                         $vanbandv->han_xu_ly = $request->vb_han_xu_ly;
                         $vanbandv->han_giai_quyet = $request->vb_han_xu_ly;
+                        $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                         $vanbandv->loai_van_ban_id = $loaivanban;
                         $vanbandv->type = 1;
                         $vanbandv->trich_yeu = $trichyeu;
@@ -447,6 +468,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->dia_diem_phu = $diadiemchinh;
                     $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
+                    $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
                     $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
@@ -534,6 +556,7 @@ class GiayMoiDenController extends Controller
                         $vanbandv->nguoi_ky = $nguoiky;
                         $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
                         $vanbandv->han_xu_ly = $request->vb_han_xu_ly;
+                        $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                         $vanbandv->han_giai_quyet = $request->vb_han_xu_ly;
                         $vanbandv->loai_van_ban_id = $loaivanban;
                         $vanbandv->trich_yeu = $trichyeu;
@@ -590,6 +613,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->nguoi_ky = $nguoiky;
                     $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
                     $vanbandv->han_xu_ly = $request->vb_han_xu_ly;
+                    $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
                     $vanbandv->chuc_vu = $chucvu;

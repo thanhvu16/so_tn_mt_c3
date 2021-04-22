@@ -164,7 +164,8 @@
                                         | (Hạn xử
                                         lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})<br>
                                         <span
-                                            style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span>
+                                            style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span> -
+                                        <span style="font-style: italic">Ngày nhập : {{ date('d/m/Y', strtotime($vbDen->ngay_nhan)) }}</span>
 
 
                                         <div class="text-right">

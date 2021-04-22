@@ -93,16 +93,27 @@
                                            name="dia_diem_chinh" placeholder="Địa điểm">
                                 </div>
                             </div>
-
-
-                            <div class="col-md-3 text-right {{isset($vanban) ? 'hidden': ''}}" style="margin-top: 40px">
-                                <a class="btn btn-primary btn-xs" role="button" data-toggle="collapse"
-                                   href="#collapseExample"
-                                   aria-expanded="false" aria-controls="collapseExample"><i
-                                        class="fa fa-plus " ></i>
-                                </a>
-                                <b class="text-danger"> Hiển thị thêm nội dung</b>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Ngày nhận </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan" name="ngay_nhan"  value="{{$date}}" placeholder="Ngày nhận" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
+{{--                            <div class="col-md-3 text-right {{isset($vanban) ? 'hidden': ''}}" style="margin-top: 40px">--}}
+{{--                                <a class="btn btn-primary btn-xs" role="button" data-toggle="collapse"--}}
+{{--                                   href="#collapseExample"--}}
+{{--                                   aria-expanded="false" aria-controls="collapseExample"><i--}}
+{{--                                        class="fa fa-plus " ></i>--}}
+{{--                                </a>--}}
+{{--                                <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
+{{--                            </div>--}}
 
                             <div class="form-group col-md-3 hidden" id="loaivanban">
                                 <label for="loai_van_ban_id" class="col-form-label">Loại văn bản <span
@@ -161,6 +172,7 @@
                                             </div>
                                         </div>
 
+
                                     </div>
                                 </div>
                                 <div class="input-group-btn text-right {{ isset($vanban) ? 'hidden' : '' }}">
@@ -168,10 +180,10 @@
                         <i class="fa fa-plus"></i> thêm nội dung</span>
                                 </div>
                             </div>
-                            <div class="col-sm-12" style="margin-top:-14px;margin-left: 0px;">
-                                <hr style="border: 0.5px solid #3c8dbc">
-                            </div>
-                            <div class="col-md-12">
+{{--                            <div class="col-sm-12" style="margin-top:-14px;margin-left: 0px;">--}}
+{{--                                <hr style="border: 0.5px solid #3c8dbc">--}}
+{{--                            </div>--}}
+                            <div class="cotl-md-12">
                                 <div class="row">
                                     <div class="form-group col-md-3 hidden">
                                         <label for="sokyhieu" class="col-form-label ">Số văn bản</label>
@@ -193,10 +205,9 @@
                                        name="nguoi_ky_id">
                             </div>
                             <div class="col-md-3" >
-                                <label for="sokyhieu" class="col-form-label">Chức vụ <span
-                                        class="color-red">*</span></label>
+                                <label for="sokyhieu" class="col-form-label">Chức vụ </label>
                                 <input type="text" class="form-control " placeholder="nhập chức vụ"
-                                       value="" required name="chuc_vu">
+                                       value=""  name="chuc_vu">
                             </div>
 
                             <div class=" col-md-3 " >
@@ -300,6 +311,31 @@
             console.log($('[name=ngay_ban_hanh]').val());
             $('.van-ban').removeClass('hidden');
         });
+        //
+        // $(document).ready(function () {
+        //     var ngay_nhan = $('input[name="ngay_nhan"]').val();
+        //     // var tieu_chuan = $('.tieu-chuan').val();
+        //
+        //     console.log(ngay_nhan, tieu_chuan );
+        //     $.ajax({
+        //         // beforeSend: showLoading(),
+        //         url: APP_URL + '/han-xu-ly-van-ban',
+        //         type: 'POST',
+        //         dataType: 'json',
+        //
+        //         data: {
+        //             tieu_chuan: tieu_chuan,
+        //             ngay_nhan: ngay_nhan,
+        //             _token: $('meta[name="csrf-token"]').attr('content'),
+        //         },
+        //
+        //     }).done(function (res) {
+        //         // hideLoading();
+        //         $("input[name='han_xu_ly']").val(res.html);
+        //
+        //
+        //     });
+        // });
         $('.lay_van_ban').on('change', function (e) {
             var tieu_chuan = $('[name=tieu_chuan]').val();
             var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();

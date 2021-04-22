@@ -197,6 +197,30 @@ class VanBanDenController extends Controller
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $date = date("d/m/Y");
+
+        $nam = date("Y");
+        $soDenvb = null;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
+        $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
+
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
+                'so_van_ban_id' => $soVanBan->id,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'so_van_ban_id' => $soVanBan->id,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+        $soDen = $soDenvb + 1;
 
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -227,7 +251,7 @@ class VanBanDenController extends Controller
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
 
-        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'loaivanban', 'sovanban', 'tieuChuan', 'users', 'hangiaiquyet'));
+        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan','date', 'loaivanban', 'soDen','sovanban', 'tieuChuan', 'users', 'hangiaiquyet'));
     }
 
     public function layhantruyensangview(Request $request)
@@ -336,6 +360,7 @@ class VanBanDenController extends Controller
                         $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                         $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                         $vanbandv->trich_yeu = $request->trich_yeu;
+                        $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                         $vanbandv->nguoi_ky = $request->nguoi_ky;
                         $vanbandv->do_khan_cap_id = $request->do_khan;
                         $vanbandv->do_bao_mat_id = $request->do_mat;
@@ -395,6 +420,7 @@ class VanBanDenController extends Controller
                     $vanbandv->so_den = $soDenvb;
                     $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                     $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+                    $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                     $vanbandv->trich_yeu = $request->trich_yeu;
                     $vanbandv->nguoi_ky = $request->nguoi_ky;
@@ -489,6 +515,7 @@ class VanBanDenController extends Controller
                         $vanbandv->so_den = $soDenvb;
                         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                         $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+                        $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                         $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                         $vanbandv->trich_yeu = $request->trich_yeu;
                         $vanbandv->nguoi_ky = $request->nguoi_ky;
@@ -529,6 +556,7 @@ class VanBanDenController extends Controller
                     $vanbandv->so_den = $soDenvb;
                     $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                     $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+                    $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                     $vanbandv->trich_yeu = $request->trich_yeu;
                     $vanbandv->nguoi_ky = $request->nguoi_ky;
@@ -590,6 +618,35 @@ class VanBanDenController extends Controller
             DB::rollback();
             dd($e);
         }
+    }
+
+    public function hanXuLyvb(Request $request)
+    {
+//        dd($request->all());
+        $ngaynhan =  formatYMD($request->ngay_nhan);
+//        dd($ngaynhan);
+
+        $tieuChuandata = TieuChuanVanBan::where('id', $request->tieu_chuan)->first();
+        $songay = $tieuChuandata->so_ngay ?? null;
+//        dd($songay);
+        $ngaynghi = NgayNghi::where('ngay_nghi', '>', date('Y-m-d'))->where('trang_thai', 1)->orderBy('id', 'desc')->get();
+        $i = 0;
+
+        foreach ($ngaynghi as $key => $value) {
+            if ($value['ngay_nghi'] != $ngaynhan) {
+                if ($ngaynhan <= $value['ngay_nghi'] && $value['ngay_nghi'] <= dateFromBusinessDays((int)$songay, $ngaynhan)) {
+                    $i++;
+                }
+            }
+
+        }
+
+        $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        return response()->json(
+            [
+                'html' => formatDMY($hangiaiquyet)
+            ]
+        );
     }
 
     public function multiple_file(Request $request)
@@ -715,30 +772,31 @@ class VanBanDenController extends Controller
             })->first();
 
 
-        if ($request->so_den != $vanbandv->so_den) {
+        if ($request->so_den == $vanbandv->so_den) {
             $vanbandv->so_den = $request->so_den;
-        } else {
-            if ($checktrungsoden == null) {
-                $user = auth::user();
-                $nam = date("Y");
-                if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-                    $soDenvb = VanBanDen::where([
-                        'don_vi_id' => $lanhDaoSo->don_vi_id,
-                        'so_van_ban_id' => $request->so_van_ban,
-                        'type' => 1
-                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-                } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-                    $soDenvb = VanBanDen::where([
-                        'don_vi_id' => $user->don_vi_id,
-                        'so_van_ban_id' => $request->so_van_ban,
-                        'type' => 2
-                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-                }
-                $soDenvb = $soDenvb + 1;
-                $vanbandv->so_den = $soDenvb;
-            }
-
         }
+//        } else {
+//            if ($checktrungsoden == null) {
+//                $user = auth::user();
+//                $nam = date("Y");
+//                if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+//                    $soDenvb = VanBanDen::where([
+//                        'don_vi_id' => $lanhDaoSo->don_vi_id,
+//                        'so_van_ban_id' => $request->so_van_ban,
+//                        'type' => 1
+//                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+//                } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+//                    $soDenvb = VanBanDen::where([
+//                        'don_vi_id' => $user->don_vi_id,
+//                        'so_van_ban_id' => $request->so_van_ban,
+//                        'type' => 2
+//                    ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+//                }
+//                $soDenvb = $soDenvb + 1;
+//                $vanbandv->so_den = $soDenvb;
+//            }
+//
+//        }
 
         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
         $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
@@ -746,6 +804,7 @@ class VanBanDenController extends Controller
         $vanbandv->trich_yeu = $request->trich_yeu;
         $vanbandv->nguoi_ky = $request->nguoi_ky;
         $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
+        $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
         $vanbandv->do_khan_cap_id = $request->do_khan;
         $vanbandv->do_bao_mat_id = $request->do_mat;
         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;;
@@ -895,7 +954,6 @@ class VanBanDenController extends Controller
             $vb_so_den = null;
         }
 
-
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')
@@ -930,8 +988,35 @@ class VanBanDenController extends Controller
             }
         }
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
+        $nam = date("Y");
+        $soDenvb = null;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->first();
+        $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
 
-        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung'));
+        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => $lanhDaoSo->don_vi_id,
+                'so_van_ban_id' => $soVanBan->id,
+                'type' => 1
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+            $soDenvb = VanBanDen::where([
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'so_van_ban_id' => $soVanBan->id,
+                'type' => 2
+            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+        }
+        $soDen = $soDenvb + 1;
+        $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+        $date = date("d/m/Y");
+
+        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users','tieuChuan',
+            'soDen','ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
+            'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung'));
     }
 
     public function hanmail(Request $request)
@@ -981,25 +1066,30 @@ class VanBanDenController extends Controller
             $tbl_email->save();
         }
 
+        $nam = date("Y");
+        $soDenvb = null;
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
+        $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
+
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
-                'so_van_ban_id' => $request->so_van_ban,
+                'so_van_ban_id' => $soVanBan->id,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $user->don_vi_id,
-                'so_van_ban_id' => $request->so_van_ban,
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'so_van_ban_id' => $soVanBan->id,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
-
         $soDenvb = $soDenvb + 1;
+
+
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($requestData['noi_dung']) ? $requestData['noi_dung'] : null;
         if ($noi_dung && $noi_dung[0] != null) {
@@ -1009,7 +1099,8 @@ class VanBanDenController extends Controller
                 $vanbandv->so_van_ban_id = $request->so_van_ban;
                 $vanbandv->so_den = $soDenvb;
                 $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-                $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+                $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+                $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                 $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
                 $vanbandv->trich_yeu = $request->trich_yeu;
                 $vanbandv->nguoi_ky = $request->nguoi_ky;
@@ -1027,10 +1118,10 @@ class VanBanDenController extends Controller
                 }
                 $vanbandv->noi_dung = $data;
                 if ($request->han_giai_quyet[$key] == null) {
-                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
                     //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                 } else {
-                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
                     $vanbandv->han_giai_quyet = $han_gq[$key];
                 }
                 $vanbandv->save();
@@ -1054,16 +1145,17 @@ class VanBanDenController extends Controller
             $vanbandv->so_van_ban_id = $request->so_van_ban;
             $vanbandv->so_den = $request->so_den;
             $vanbandv->so_ky_hieu = $request->so_ky_hieu;
-            $vanbandv->ngay_ban_hanh = $request->ngay_ban_hanh;
+            $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+            $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
             $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
             $vanbandv->trich_yeu = $request->trich_yeu;
             $vanbandv->nguoi_ky = $request->nguoi_ky;
             $vanbandv->do_khan_cap_id = $request->do_khan;
             $vanbandv->do_bao_mat_id = $request->do_mat;
-            $vanbandv->han_xu_ly = $request->han_xu_ly;
+            $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
             //$vanbandv->han_giai_quyet = $request->han_xu_ly;
             $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
-            $vanbandv->don_vi_id = auth::user()->don_vi_id;
+            $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 $vanbandv->type = 1;
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
@@ -1113,25 +1205,27 @@ class VanBanDenController extends Controller
             $tbl_email->mail_active = 2;
             $tbl_email->save();
         }
+        $nam = date("Y");
+        $soDenvb = null;
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
+        $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
-                'so_van_ban_id' => $request->so_van_ban,
+                'so_van_ban_id' => $soVanBan->id,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
-                'don_vi_id' => $user->don_vi_id,
-                'so_van_ban_id' => $request->so_van_ban,
+                'don_vi_id' => auth::user()->donVi->parent_id,
+                'so_van_ban_id' => $soVanBan->id,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
-
         $soDenvb = $soDenvb + 1;
         $han_gq = $request->han_giai_quyet;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
@@ -1151,7 +1245,7 @@ class VanBanDenController extends Controller
             $giohopcon = $request->gio_hop_con;
             $ngay_hop_con = $request->ngay_hop_con;
             $dia_diem_con = $request->dia_diem_con;
-            $ngaybanhanh = $request->ngay_ban_hanh;
+            $ngaybanhanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
             $chucvu = $request->chuc_vu;
 
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
@@ -1167,6 +1261,7 @@ class VanBanDenController extends Controller
                         $vanbandv->nguoi_ky = $nguoiky;
                         $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
                         $vanbandv->han_xu_ly = $request->han_xu_ly ? formatYMD($request->han_xu_ly) : null;
+                        $vanbandv->ngay_nhan = $request->ngay_nhan ? formatYMD($request->ngay_nhan) : null;
                         //$vanbandv->han_giai_quyet = $request->han_xu_ly;
                         $vanbandv->loai_van_ban_id = $loaivanban;
                         $vanbandv->type = 1;
@@ -1205,12 +1300,13 @@ class VanBanDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
                     $vanbandv->so_den = $soDenvb;
-                    $vanbandv->don_vi_id = auth::user()->don_vi_id;
+                    $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                     $vanbandv->nguoi_tao = auth::user()->id;
                     $vanbandv->so_ky_hieu = $sokyhieu;
                     $vanbandv->nguoi_ky = $nguoiky;
                     $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
-                    $vanbandv->han_xu_ly = $request->han_xu_ly;
+                    $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
+                    $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
 //                    $vanbandv->chuc_vu = $chucvu;

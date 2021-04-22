@@ -44,3 +44,9 @@ Route::get('thong-ke-van-ban-chi-cuc', array('as' => 'thongkevbchicuc', 'uses' =
 Route::get('thong-ke-van-ban-phong', array('as' => 'thongkevbphong', 'uses' => 'ThongKeVanBanPhongController@index'));
 
 
+Route::post('han-xu-ly-van-ban', array('as' => 'hanXuLyvb', 'uses' => 'VanBanDenController@hanXuLyvb'));
+Route::post('han-xu-ly-giay-moi', array('as' => 'hanXuLygb', 'uses' => 'VanBanDenController@hanXuLygb'));
+
+
+
+
