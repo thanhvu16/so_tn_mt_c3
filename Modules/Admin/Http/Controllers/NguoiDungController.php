@@ -208,9 +208,55 @@ class NguoiDungController extends Controller
 
     }
 
-    public function capNhatPassWord()
+    public function cauHinhEmailDonVi()
     {
-        return view('admin::nguoi-dung.cap_nhat_password');
+        $user = auth::user();
+        $donViId = null;
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
+
+        $donVi = DonVi::findOrFail($donViId);
+
+        return view('admin::Don_vi.cau_hinh_email', compact('donVi'));
+    }
+
+    public function luuCauHinhEmailDonVi(Request $request)
+    {
+        $user = auth::user();
+        $donViId = null;
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
+
+        $donVi = DonVi::findOrFail($donViId);
+        if ($donVi) {
+            $donVi->email = $request->email;
+            if ($request->update_password) {
+                $donVi->password = $request->password;
+            }
+            $donVi->status_email = $request->status_email;
+            $donVi->save();
+
+            return redirect()->back()->with('success', 'Lưu cấu hình thành công .');
+        }
+
+        return redirect()->back()->with('warning', 'Không tìm thấy dữ liệu vui lòng kiểm tra.');
+
     }
 
     public function guiXuLy(Request $request)

@@ -86,9 +86,9 @@
 
             @endunlessrole
             @if(auth::user()->hasRole([VAN_THU_DON_VI, VAN_THU_HUYEN]))
-                <li class="{{ Route::is('capNhatPassWord') ? 'active menu-open' : '' }}">
-                    <a  href="{{route('capNhatPassWord')}}">
-                        <i class="fa fa-unlock" ></i> <span>Đổi mật khẩu gửi email</span>
+                <li class="{{ Route::is('cau_hinh_emai_don_vi') ? 'active menu-open' : '' }}">
+                    <a  href="{{route('cau_hinh_emai_don_vi')}}">
+                        <i class="fa fa-unlock" ></i> <span>Cấu hình email đơn vị</span>
                         <span class="pull-right-container">
 
             </span>

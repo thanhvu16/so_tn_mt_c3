@@ -898,7 +898,8 @@ class VanBanDenController extends Controller
 
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'desc')->get();
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')
+            ->orderBy('ten_loai_van_ban', 'asc')->get();
         $user = auth::user();
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [1, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
