@@ -33,7 +33,7 @@
                                         <option value="">-- Chọn loại văn bản --</option>
                                         @foreach($ds_loaiVanBan as $loaivanbands)
                                             <option value="{{ $loaivanbands->id }}"
-                                                {{ isset($loaivb_email) && $loaivb_email->id == $loaiVanBan->id ? 'selected="selected"' : '' }}>{{ $loaivanbands->ten_loai_van_ban }}</option>
+                                                {{ isset($loaivb_email) && $loaivb_email->id == $loaivanbands->id ? 'selected="selected"' : '' }}>{{ $loaivanbands->ten_loai_van_ban }}</option>
                                         @endforeach
                                     </select>
                                 </div>
