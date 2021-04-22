@@ -152,9 +152,9 @@
                         <i class="fa fa-plus"></i> thêm nội dung</span>
                                 </div>
                             </div>
-                            <div class="col-sm-12" style="margin-top:-14px;margin-left: 0px;">
-                                <hr style="border: 0.5px solid #3c8dbc">
-                            </div>
+{{--                            <div class="col-sm-12" style="margin-top:-14px;margin-left: 0px;">--}}
+{{--                                <hr style="border: 0.5px solid #3c8dbc">--}}
+{{--                            </div>--}}
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="form-group col-md-3 hidden">

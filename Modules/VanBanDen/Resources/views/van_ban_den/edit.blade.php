@@ -28,7 +28,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 hidden">
                                 <div class="form-group">
                                     <label for="exampleInputEmail2">Sổ văn bản <span
                                             style="color: red">(*)</span></label>
@@ -74,6 +74,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row clearfix"></div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">(*)</span></label>
@@ -105,6 +106,17 @@
                                     </div>
                                 </div>
                             @endif
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Ngày nhận </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan" name="ngay_nhan"  value="{{ date('d/m/Y', strtotime($van_ban_den->ngay_nhan)) }}" placeholder="Ngày nhận" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span
@@ -195,6 +207,8 @@
                                 <label for="exampleInputEmail4">File</label>
                                 <input type="file" class="form-control han-xu-ly" name="File" value="">
                             </div>
+                            <div class="row clearfix"></div>
+
                             <div class="col-md-6 ">
                                 <div class="form-group">
                                     <label for="">File văn bản:
