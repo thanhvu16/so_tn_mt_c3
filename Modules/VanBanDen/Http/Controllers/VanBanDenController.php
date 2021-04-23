@@ -334,20 +334,20 @@ class VanBanDenController extends Controller
         try {
             DB::beginTransaction();
 
-            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-                $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $lanhDaoSo->don_vi_id,
-                    'so_van_ban_id' => $request->so_van_ban,
-                    'type' => 1
-                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-                $soDenvb = VanBanDen::where([
-                    'don_vi_id' => $user->donVi->parent_id,
-                    'so_van_ban_id' => $request->so_van_ban,
-                    'type' => 2
-                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
-            }
-            $soDenvb = $soDenvb + 1;
+//            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+//                $soDenvb = VanBanDen::where([
+//                    'don_vi_id' => $lanhDaoSo->don_vi_id,
+//                    'so_van_ban_id' => $request->so_van_ban,
+//                    'type' => 1
+//                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+//            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+//                $soDenvb = VanBanDen::where([
+//                    'don_vi_id' => $user->donVi->parent_id,
+//                    'so_van_ban_id' => $request->so_van_ban,
+//                    'type' => 2
+//                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+//            }
+//            $soDenvb = $soDenvb + 1;
             if($request->chu_tri_phoi_hop == null)
             {
                 $request->chu_tri_phoi_hop = 0;
@@ -359,7 +359,7 @@ class VanBanDenController extends Controller
                         $vanbandv = new VanBanDen();
                         $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                         $vanbandv->so_van_ban_id = $request->so_van_ban;
-                        $vanbandv->so_den = $soDenvb;
+                        $vanbandv->so_den = $request->so_den;
                         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                         $vanbandv->tieu_chuan = $request->tieu_chuan;
                         $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
@@ -422,7 +422,7 @@ class VanBanDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
-                    $vanbandv->so_den = $soDenvb;
+                    $vanbandv->so_den = $request->so_den;
                     $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                     $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                     $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
@@ -517,7 +517,7 @@ class VanBanDenController extends Controller
                         $vanbandv = new VanBanDen();
                         $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                         $vanbandv->so_van_ban_id = $request->so_van_ban;
-                        $vanbandv->so_den = $soDenvb;
+                        $vanbandv->so_den = $request->so_den;
                         $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                         $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                         $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
@@ -558,7 +558,7 @@ class VanBanDenController extends Controller
                     $vanbandv = new VanBanDen();
                     $vanbandv->loai_van_ban_id = $request->loai_van_ban;
                     $vanbandv->so_van_ban_id = $request->so_van_ban;
-                    $vanbandv->so_den = $soDenvb;
+                    $vanbandv->so_den = $request->so_den;
                     $vanbandv->so_ky_hieu = $request->so_ky_hieu;
                     $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                     $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
