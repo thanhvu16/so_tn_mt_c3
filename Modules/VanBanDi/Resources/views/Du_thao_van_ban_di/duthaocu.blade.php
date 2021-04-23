@@ -15,7 +15,7 @@
                           method="post" enctype="multipart/form-data" id="formCreateDoc">
                         @csrf
 
-                        <div class=" col-md-3">
+                        <div class=" col-md-3 form-group">
                             <label for="loai_van_ban_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
                             <select class="form-control dropdown-search" name="loai_van_ban_id"
                                     id="loai_van_ban_id" autofocus required>
@@ -26,13 +26,12 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class=" col-md-3">
-                            <label for="loai_van_ban_id" class="col-form-label">Lãnh đạo phòng phối
-                                hợp <span class="color-red">*</span></label>
+                        <div class=" col-md-3 form-group">
+                            <label for="loai_van_ban_id" class="col-form-label">Cán bộ trong phòng góp ý </label>
                             <select name="lanh_dao_phong_phoi_hop[]" id="lanh_dao_phong_phoi_hop"
                                     class="form-control select2"
                                     multiple="multiple"
-                                    required data-placeholder="Lãnh đạo phối hợp ...">
+                                     data-placeholder="Lãnh đạo phối hợp ...">
                                 @foreach ($lanhdaotrongphong as $trongphong)
                                     <option
                                         value="{{ $trongphong->id }}" {{ isset($lay_can_bo_phong) && in_array($trongphong->id, $lay_can_bo_phong->pluck('can_bo_id')->toArray()) ? 'selected' : '' }}
@@ -40,12 +39,12 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label for="loai_van_ban_id" class="col-form-label">Phó giám đốc <span class="color-red">*</span></label>
+                        <div class="col-md-3 form-group">
+                            <label for="loai_van_ban_id" class="col-form-label">Cán bộ phòng khác góp ý <span class="color-red">*</span></label>
                             <select name="lanh_dao_phong_khac[]" id="lanh_dao_phong_khac"
                                     class="form-control select2"
                                     multiple="multiple"
-                                    required data-placeholder="Lãnh đạo phòng khác  ...">
+                                     data-placeholder="Lãnh đạo phòng khác  ...">
                                 @foreach ($lanhdaokhac as $trongphong)
                                     <option
                                         value="{{ $trongphong->id }}" {{ isset($lay_can_bo_khac) && in_array($trongphong->id, $lay_can_bo_khac->pluck('can_bo_id')->toArray()) ? 'selected' : '' }}
@@ -53,28 +52,28 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label for="so_ky_hieu" class="col-form-label">Số ký hiệu</label>
+                        <div class="col-md-3 form-group">
+                            <label for="so_ky_hieu" class="col-form-label">Ký hiệu</label>
                             <input type="text" class="form-control" value="{{$duthao->so_ky_hieu}}"
                                    placeholder="số kí hiệu..."
                                    name="so_ky_hieu">
                         </div>
-                        <div class=" col-md-12">
-                            <label for="sokyhieu" class="col-form-label ">Ý kiến <span class="color-red">*</span></label>
-                            <textarea rows="3" class="form-control" required placeholder="nội dung"
+                        <div class=" col-md-12 form-group">
+                            <label for="sokyhieu" class="col-form-label ">Ý kiến </label>
+                            <textarea rows="3" class="form-control"  placeholder="nội dung"
                                       name="y_kien"
                                       type="text">{{ old('y_kien',$duthao->y_kien) }}</textarea>
                         </div>
-                        <div class=" col-md-12">
+                        <div class=" col-md-12 form-group">
                             <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
                             <textarea rows="3" class="form-control" required placeholder="nội dung"
                                       name="vb_trich_yeu"
                                       type="text">{{ old('vb_trich_yeu',$duthao->vb_trich_yeu) }}</textarea>
                         </div>
-                        <div class=" col-md-3">
+                        <div class=" col-md-3 form-group">
                             <label for="loai_van_ban_id" class="col-form-label">Người ký <span class="color-red">*</span></label>
                             <select class="form-control dropdown-search" name="nguoi_ky" id="nguoi_ky"
-                                    autofocus required>
+                                     required>
                                 @foreach ($ds_nguoiKy as $nguoiky)
                                     <option
                                         {{ isset($duthao) && $duthao->nguoi_ky == $nguoiky->id ? 'selected' : '' }} value="{{ $nguoiky->id }}">{{ $nguoiky->ho_ten }}</option>
@@ -82,14 +81,14 @@
                             </select>
                         </div>
 
-                        <div class=" col-md-3">
+                        <div class=" col-md-3 form-group">
                             <label for="loai_van_ban_id" class="col-form-label">Chức vụ</label>
                             <input type="text" class="form-control"
                                    value="{{ old('vb_trich_yeu',$duthao->chuc_vu) }}" name="chuc_vu"
                                    placeholder="Chức vụ......">
                         </div>
 
-                        <div class=" col-md-3">
+                        <div class=" col-md-3 form-group">
                             <label for="loai_van_ban_id" class="col-form-label">Ngày tháng</label>
                             <input type="date" class="form-control"
                                    value="{{ old('vb_trich_yeu',$duthao->ngay_thang) }}" name="ngay_thang"
@@ -108,7 +107,7 @@
                                    name="han_xu_ly">
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <div class=" row duthaovb">
                                 <div class="col-md-3 ">
                                     <label for="sokyhieu" class="col-form-label">File trình ký</label>
