@@ -777,7 +777,7 @@ class VanBanDenController extends Controller
             })->first();
 
 
-        if ($request->so_den == $vanbandv->so_den) {
+        if ($request->so_den != $vanbandv->so_den) {
             $vanbandv->so_den = $request->so_den;
         }
 //        } else {
