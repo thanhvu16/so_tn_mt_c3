@@ -203,7 +203,7 @@ class DonViChuTri extends Model
             'don_vi_id' => $donViId,
             'parent_id' => $donViChuTri ? $donViChuTri->id : null,
             'noi_dung' => $txtDonViChuTri,
-            'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh ?? null,
+            'don_vi_co_dieu_hanh' => isset($donViChuTri) ? $donViChuTri->don_vi_co_dieu_hanh : null,
             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban ?? null,
             'han_xu_ly_cu' => $hanXuLyCu ?? null,
             'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi,
