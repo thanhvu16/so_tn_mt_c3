@@ -46,7 +46,6 @@
                                     <label for="exampleInputEmail2">Sổ văn bản <span style="color: red">*</span></label>
                                     <select class="form-control select2 check-so-den-vb"
                                             data-don-vi="{{auth::user()->don_vi_id}}" name="so_van_ban" required>
-                                        <option value="">-- Chọn sổ văn bản --</option>
                                         @foreach($ds_soVanBan as $data)
                                             <option
                                                 value="{{ $data->id }}"{{ $data->ten_so_van_ban == 'Công văn' ? 'selected' : '' }} >{{ $data->ten_so_van_ban }}</option>
