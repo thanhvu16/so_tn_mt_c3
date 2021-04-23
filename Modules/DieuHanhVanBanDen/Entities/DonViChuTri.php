@@ -206,8 +206,8 @@ class DonViChuTri extends Model
             'don_vi_co_dieu_hanh' => isset($donViChuTri) ? $donViChuTri->don_vi_co_dieu_hanh : null,
             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban ?? null,
             'han_xu_ly_cu' => $hanXuLyCu ?? null,
-            'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi,
-            'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
+            'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi ?? null,
+            'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi ?? null,
             'user_id' => auth::user()->id,
             'parent_don_vi_id' => auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id,
         ];
