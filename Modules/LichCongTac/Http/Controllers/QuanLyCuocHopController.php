@@ -201,7 +201,7 @@ class QuanLyCuocHopController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_CUOC_HOP . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $filecuochop->ten_file = $fileName;
@@ -229,7 +229,7 @@ class QuanLyCuocHopController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_CUOC_HOP . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $filecuochop->ten_file = $fileName;
@@ -249,7 +249,7 @@ class QuanLyCuocHopController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_CUOC_HOP . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $filecuochop->ten_file = $fileName;

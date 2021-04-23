@@ -595,7 +595,7 @@ class VanBanDenController extends Controller
             if($request->File)
             {
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $typeArray = explode('.', $request->File->getClientOriginalName());
                 $tenchinhfile = strtolower($typeArray[0]);
@@ -659,7 +659,7 @@ class VanBanDenController extends Controller
         $user = auth::user();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
         if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0775, true, true);
+            File::makeDirectory($uploadPath, 0777, true, true);
         }
         $txtFiles = !empty($request['txt_file']) ? $request['txt_file'] : null;
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
@@ -831,7 +831,7 @@ class VanBanDenController extends Controller
         if ($request->File)
         {
             if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
+                File::makeDirectory($uploadPath, 0777, true, true);
             }
             $typeArray = explode('.', $request->File->getClientOriginalName());
             $tenchinhfile = strtolower($typeArray[0]);

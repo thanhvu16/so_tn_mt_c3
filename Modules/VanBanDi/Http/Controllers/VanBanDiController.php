@@ -844,7 +844,7 @@ class VanBanDiController extends Controller
 
                     $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
 
@@ -868,7 +868,7 @@ class VanBanDiController extends Controller
 
                     $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
 
@@ -892,7 +892,7 @@ class VanBanDiController extends Controller
 
                     $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
 
@@ -1242,7 +1242,7 @@ class VanBanDiController extends Controller
             {
                 $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $typeArray = explode('.', $request->File->getClientOriginalName());
                 $tenchinhfile = strtolower($typeArray[0]);
@@ -1289,7 +1289,7 @@ class VanBanDiController extends Controller
         $user = auth::user();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
         if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0775, true, true);
+            File::makeDirectory($uploadPath, 0777, true, true);
         }
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
         if (empty($multiFiles) || count($multiFiles) == 0 || (count($multiFiles) > 19)) {
@@ -1709,7 +1709,7 @@ class VanBanDiController extends Controller
                         $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                         $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                         if (!File::exists($uploadPath)) {
-                            File::makeDirectory($uploadPath, 0775, true, true);
+                            File::makeDirectory($uploadPath, 0777, true, true);
                         }
                         $getFile->move($uploadPath, $fileName);
                         $vbDenFile->ten_file = $ten;

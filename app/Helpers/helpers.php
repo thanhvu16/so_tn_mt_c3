@@ -19,7 +19,7 @@ if (!function_exists('uploadFile')) {
         }
 
         if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0775, true, true);
+            File::makeDirectory($uploadPath, 0777, true, true);
         }
 
         $inputFile->move($uploadPath, $fileName);
