@@ -134,8 +134,10 @@ class GiayMoiDiController extends Controller
 
             //đây là văn bản của đơn vị
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null, 'phong_phat_hanh' => $donViId])->where('so_di', '!=', '')->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 2, 'loai_van_ban_id' => $giayMoi->id ?? null, 'phong_phat_hanh' => $donViId])
                 ->orwhere(['van_ban_huyen_ky' => $donViId,])
+                ->where('so_di', '!=', '')->whereNull('deleted_at')
+
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
