@@ -191,7 +191,7 @@
                                                 <span>Gia hạn xử lý</span>
                                                 <div class="input-group date">
                                                     <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                       value="{{ $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) ?? null }}"
+                                                       value="{{ $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB ? !empty($vanBanDen->chuyenVien->han_xu_ly_moi) ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : null : !empty($vanBanDen->phoPhong->han_xu_ly_moi) ? formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) : null }}"
                                                        class="form-control change-han-xu-ly datepicker"
                                                        form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
                                                     <div class="input-group-addon">
