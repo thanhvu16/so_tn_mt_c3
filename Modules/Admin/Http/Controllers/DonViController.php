@@ -32,7 +32,7 @@ class DonViController extends Controller
             ->where(function ($query) use ($tendonvi, $donVi) {
                 if (!empty($tendonvi)) {
                     return $query->where('ten_don_vi', 'LIKE', "%$tendonvi%")
-                                    ->orWhere('parent_id', $donVi->id);
+                                    ->orWhere('parent_id', $donVi->id ?? 0);
                 }
             })->where(function ($query) use ($tenviettat) {
                 if (!empty($tenviettat)) {
