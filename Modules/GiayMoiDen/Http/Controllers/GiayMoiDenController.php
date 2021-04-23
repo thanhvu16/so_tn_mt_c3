@@ -648,7 +648,7 @@ class GiayMoiDenController extends Controller
                     $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                     $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     if (count($idvanbanden) > 1) {
                         $getFile->move($uploadPath, $fileName);
@@ -874,7 +874,7 @@ class GiayMoiDenController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $vbDenFile->ten_file = $ten;

@@ -239,7 +239,7 @@ class CongViecDonViController extends Controller
 
                 $urlFile = THU_MUC_CONG_VIEC_DON_VI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
 

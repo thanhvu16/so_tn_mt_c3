@@ -28,7 +28,7 @@ class GiaiQuyetVanBanFile extends Model
             $url = UPLOAD_GIAI_QUYET_VAN_BAN_DEN . '/' . $fileName;
 
             if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
+                File::makeDirectory($uploadPath, 0777, true, true);
             }
 
             $getFile->move($uploadPath, $fileName);

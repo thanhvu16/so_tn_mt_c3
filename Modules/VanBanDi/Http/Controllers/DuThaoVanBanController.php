@@ -299,7 +299,7 @@ class DuThaoVanBanController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $ten;
@@ -320,7 +320,7 @@ class DuThaoVanBanController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -344,7 +344,7 @@ class DuThaoVanBanController extends Controller
 
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -762,7 +762,7 @@ class DuThaoVanBanController extends Controller
 
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $ten;
@@ -785,7 +785,7 @@ class DuThaoVanBanController extends Controller
 
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -808,7 +808,7 @@ class DuThaoVanBanController extends Controller
 
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -879,7 +879,7 @@ class DuThaoVanBanController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $ten;
@@ -900,7 +900,7 @@ class DuThaoVanBanController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -924,7 +924,7 @@ class DuThaoVanBanController extends Controller
 
                 $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->ten_file = $fileName;
@@ -1168,7 +1168,7 @@ class DuThaoVanBanController extends Controller
 
                         $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                         if (!File::exists($uploadPath)) {
-                            File::makeDirectory($uploadPath, 0775, true, true);
+                            File::makeDirectory($uploadPath, 0777, true, true);
                         }
                         $getFile->move($uploadPath, $fileName);
 
@@ -1190,7 +1190,7 @@ class DuThaoVanBanController extends Controller
 
                         $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                         if (!File::exists($uploadPath)) {
-                            File::makeDirectory($uploadPath, 0775, true, true);
+                            File::makeDirectory($uploadPath, 0777, true, true);
                         }
                         $getFile->move($uploadPath, $fileName);
 
@@ -1237,7 +1237,7 @@ class DuThaoVanBanController extends Controller
 
                         $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
                         if (!File::exists($uploadPath)) {
-                            File::makeDirectory($uploadPath, 0775, true, true);
+                            File::makeDirectory($uploadPath, 0777, true, true);
                         }
                         $getFile->move($uploadPath, $fileName);
 

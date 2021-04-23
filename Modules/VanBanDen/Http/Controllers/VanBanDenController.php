@@ -308,6 +308,7 @@ class VanBanDenController extends Controller
         return response()->json(
             [
                 'html' => $soDen
+
             ]
         );
     }
@@ -347,6 +348,10 @@ class VanBanDenController extends Controller
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
             }
             $soDenvb = $soDenvb + 1;
+            if($request->chu_tri_phoi_hop == null)
+            {
+                $request->chu_tri_phoi_hop = 0;
+            }
 
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 if ($noi_dung && $noi_dung[0] != null) {
@@ -590,7 +595,7 @@ class VanBanDenController extends Controller
             if($request->File)
             {
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $typeArray = explode('.', $request->File->getClientOriginalName());
                 $tenchinhfile = strtolower($typeArray[0]);
@@ -654,7 +659,7 @@ class VanBanDenController extends Controller
         $user = auth::user();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
         if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0775, true, true);
+            File::makeDirectory($uploadPath, 0777, true, true);
         }
         $txtFiles = !empty($request['txt_file']) ? $request['txt_file'] : null;
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
@@ -826,7 +831,7 @@ class VanBanDenController extends Controller
         if ($request->File)
         {
             if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0775, true, true);
+                File::makeDirectory($uploadPath, 0777, true, true);
             }
             $typeArray = explode('.', $request->File->getClientOriginalName());
             $tenchinhfile = strtolower($typeArray[0]);
@@ -1088,6 +1093,10 @@ class VanBanDenController extends Controller
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
         $soDenvb = $soDenvb + 1;
+        if($request->chu_tri_phoi_hop == null)
+        {
+            $request->chu_tri_phoi_hop = 0;
+        }
 
 
         $han_gq = $request->han_giai_quyet;
@@ -1102,6 +1111,7 @@ class VanBanDenController extends Controller
                 $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                 $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                 $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
+                $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                 $vanbandv->trich_yeu = $request->trich_yeu;
                 $vanbandv->nguoi_ky = $request->nguoi_ky;
                 $vanbandv->do_khan_cap_id = $request->do_khan;
@@ -1150,6 +1160,7 @@ class VanBanDenController extends Controller
             $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
             $vanbandv->trich_yeu = $request->trich_yeu;
             $vanbandv->nguoi_ky = $request->nguoi_ky;
+            $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
             $vanbandv->do_khan_cap_id = $request->do_khan;
             $vanbandv->do_bao_mat_id = $request->do_mat;
             $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
@@ -1230,6 +1241,10 @@ class VanBanDenController extends Controller
         $han_gq = $request->han_giai_quyet;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
         $giaymoicom = !empty($requestData['noi_dung_hop_con']) ? $requestData['noi_dung_hop_con'] : null;
+        if($request->chu_tri_phoi_hop == null)
+        {
+            $request->chu_tri_phoi_hop = 0;
+        }
         try {
             DB::beginTransaction();
             $sokyhieu = $request->so_ky_hieu;
@@ -1258,6 +1273,7 @@ class VanBanDenController extends Controller
                         $vanbandv->don_vi_id = $lanhDaoSo->don_vi_id;
                         $vanbandv->nguoi_tao = auth::user()->id;
                         $vanbandv->so_ky_hieu = $sokyhieu;
+                        $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
                         $vanbandv->nguoi_ky = $nguoiky;
                         $vanbandv->co_quan_ban_hanh = $coquanbanhanh;
                         $vanbandv->han_xu_ly = $request->han_xu_ly ? formatYMD($request->han_xu_ly) : null;

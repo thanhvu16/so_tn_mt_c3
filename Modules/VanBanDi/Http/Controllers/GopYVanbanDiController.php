@@ -75,7 +75,7 @@ class GopYVanbanDiController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile =FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->duong_dan = $urlFile;
@@ -128,7 +128,7 @@ class GopYVanbanDiController extends Controller
                     $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                     $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
                     $fileduthao->duong_dan = $urlFile;
@@ -156,7 +156,7 @@ class GopYVanbanDiController extends Controller
 
                     $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
                     $fileduthao->duong_dan = $urlFile;
@@ -198,7 +198,7 @@ class GopYVanbanDiController extends Controller
 
                     $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
                     $fileduthao->duong_dan = $urlFile;
@@ -229,7 +229,7 @@ class GopYVanbanDiController extends Controller
 
                     $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                     if (!File::exists($uploadPath)) {
-                        File::makeDirectory($uploadPath, 0775, true, true);
+                        File::makeDirectory($uploadPath, 0777, true, true);
                     }
                     $getFile->move($uploadPath, $fileName);
                     $fileduthao->duong_dan = $urlFile;
@@ -265,7 +265,7 @@ class GopYVanbanDiController extends Controller
 
                 $urlFile =FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->duong_dan = $urlFile;
@@ -300,7 +300,7 @@ class GopYVanbanDiController extends Controller
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = FILE_Y_KIEN_GOP_Y . '/' . $fileName;
                 if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0775, true, true);
+                    File::makeDirectory($uploadPath, 0777, true, true);
                 }
                 $getFile->move($uploadPath, $fileName);
                 $fileduthao->duong_dan = $urlFile;
