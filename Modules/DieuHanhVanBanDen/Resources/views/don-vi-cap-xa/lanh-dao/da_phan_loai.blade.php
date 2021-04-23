@@ -172,7 +172,7 @@
                                                             value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $chuTich->ho_ten ?? null }}</option>
                                                     @endif
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
-                                                        @if (!in_array($phoChuTich->id, [$vanBanDen->phoChuTich->can_bo_nhan_id]))
+                                                        @if (!in_array($phoChuTich->id, [$vanBanDen->phoChuTich->can_bo_nhan_id ?? null]))
                                                             <option
                                                                 value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
                                                         @endif
