@@ -573,7 +573,7 @@ class VanBanDenDonViController extends Controller
                         }
                         //luu don vi chu tri
                         if (!empty($danhSachDonViChuTriIds[$vanBanDenId])) {
-                            DonViChuTri::luuDonViCapXa($danhSachDonViChuTriIds[$vanBanDenId], $textDonViChuTri[$vanBanDenId], $vanBanDenId, $donViChuTri, $vanBanDen->han_xu_ly, $dataHanXuLy[$vanBanDenId]);
+                            DonViChuTri::luuDonViCapXa($danhSachDonViChuTriIds[$vanBanDenId], $textDonViChuTri[$vanBanDenId], $vanBanDenId, $donViChuTri, $vanBanDen->han_xu_ly, $dataHanXuLy[$vanBanDenId] ?? null);
                         }
                         //data don vi phoi hop
                         $dataLuuDonViPhoiHop = [
@@ -612,7 +612,7 @@ class VanBanDenDonViController extends Controller
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,
                             'vao_so_van_ban' => $donViChuTri->vao_so_van_ban,
                             'han_xu_ly_cu' => $vanBanDen->han_xu_ly ?? null,
-                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? formatYMD($dataHanXuLy[$vanBanDenId]) : $donViChuTri->han_xu_ly_moi,
+                            'han_xu_ly_moi' => isset($dataHanXuLy[$vanBanDenId]) ? formatYMD($dataHanXuLy[$vanBanDenId]) : $donViChuTri->han_xu_ly_moi ?? null,
                             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi,
                             'user_id' => $currentUser->id,
                             'da_tham_muu' => $donViChuTri->da_tham_muu ?? null
