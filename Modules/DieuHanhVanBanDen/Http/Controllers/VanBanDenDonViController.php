@@ -51,7 +51,6 @@ class VanBanDenDonViController extends Controller
 
         $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
             ->where('can_bo_nhan_id', $currentUser->id)
-            ->select('id', 'van_ban_den_id')
             ->whereNotNull('vao_so_van_ban')
             ->whereNull('hoan_thanh')
             ->select('id', 'van_ban_den_id')
@@ -80,7 +79,6 @@ class VanBanDenDonViController extends Controller
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
 
-
         $danhSachChuyenVien = User::role(CHUYEN_VIEN)
             ->where('don_vi_id', $currentUser->don_vi_id)
             ->where('trang_thai', ACTIVE)
@@ -95,7 +93,7 @@ class VanBanDenDonViController extends Controller
                 if ($trinhTuNhanVanBan != VanBanDen::CHUYEN_VIEN_NHAN_VB) {
                     $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien(count($danhSachPhoPhong) > 0 ? $danhSachPhoPhong->pluck('id')->toArray() : [0]);
                     $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien(count($danhSachChuyenVien) > 0 ? $danhSachChuyenVien->pluck('id')->toArray() : [0]);
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
                 }
@@ -464,7 +462,7 @@ class VanBanDenDonViController extends Controller
                                 $vanBanDen->save();
                             }
 
-                            if (!empty($danhSachDonViChuTriIds[$vanBanDenId]) && $currentUser->hasRole(PHO_CHU_TICH))
+                            if (!empty($danhSachDonViChuTriIds[$vanBanDenId]) && empty($danhSachChuTichIds[$vanBanDenId]) && empty($danhSachPhoChuTichIds[$vanBanDenId]))
                             {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                                 $vanBanDen->save();
@@ -567,7 +565,7 @@ class VanBanDenDonViController extends Controller
                     }
 
                     // luu don vi chu tri tu cap xa
-                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH]) || ($currentUser->can(AllPermission::thamMuu()) && $donVi->parent_id != 0   )) {
+                    if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH]) || ($currentUser->can(AllPermission::thamMuu()) && $donVi->parent_id != 0)) {
                         $donViId = $currentUser->can(AllPermission::thamMuu()) ? $donVi->parent_id : auth::user()->don_vi_id;
                         // van ban quan trong
                         if(!empty($dataVanBanQuanTrong[$vanBanDenId])) {

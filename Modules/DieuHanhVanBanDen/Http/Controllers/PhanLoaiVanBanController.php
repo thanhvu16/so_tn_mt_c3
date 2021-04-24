@@ -419,7 +419,8 @@ class PhanLoaiVanBanController extends Controller
             if ($user->can(AllPermission::thamMuu())) {
 
                 $donViChuTri = DonViChuTri::where(function ($query) use ($donVi) {
-                    return $query->where('don_vi_id', $donVi->parent_id);
+                    return $query->where('don_vi_id', $donVi->parent_id)
+                                ->orWhere('parent_don_vi_id', $donVi->parent_id);
                     })
                     ->where('can_bo_chuyen_id', $user->id)
                     ->whereNotNull('vao_so_van_ban')
