@@ -162,9 +162,19 @@ class VanBanTraLaiController extends Controller
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                         $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
 
+                        $checkTruongPhong = User::role([TRUONG_PHONG, TRUONG_BAN, CHANH_VAN_PHONG])
+                            ->where('trang_thai', ACTIVE)
+                            ->where('don_vi_id', $currentUser->don_vi_id)
+                            ->select('id', 'ho_ten')
+                            ->first();
+
                         $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_PHONG_NHAN_VB;
                         $vanBanDen->save();
 
+                        if ($canBoNhan == $checkTruongPhong->id) {
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                            $vanBanDen->save();
+                        }
                         break;
 
                     case VanBanDen::PHO_PHONG_NHAN_VB:

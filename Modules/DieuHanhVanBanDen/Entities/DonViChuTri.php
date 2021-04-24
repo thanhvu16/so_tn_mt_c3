@@ -187,7 +187,7 @@ class DonViChuTri extends Model
     {
         // luu don vi chu tri
         $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();
-        $role = [TRUONG_BAN];
+        $role = [TRUONG_BAN, TRUONG_PHONG];
         $nguoiDung = User::where('don_vi_id', $donViId)
             ->whereHas('roles', function ($query) use ($role) {
                 return $query->whereIn('name', $role);
