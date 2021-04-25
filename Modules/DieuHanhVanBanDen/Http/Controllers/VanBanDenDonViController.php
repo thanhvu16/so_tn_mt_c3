@@ -707,9 +707,16 @@ class VanBanDenDonViController extends Controller
                             $danhSachPhoPhongIds[$vanBanDenId], $danhSachChuyenVienIds[$vanBanDenId]], null, $donVi->id);
                     }
                     //luu can bo xem de biet
-                    LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
-                        ->where('don_vi_id', auth::user()->don_vi_id)
-                        ->delete();
+                    if($currentUser->can(AllPermission::thamMuu())) {
+                        LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
+                            ->where('don_vi_id', $currentUser->donVi->parent_id)
+                            ->delete();
+                    } else {
+                        LanhDaoXemDeBiet::where('van_ban_den_id', $vanBanDenId)
+                            ->where('don_vi_id', auth::user()->don_vi_id)
+                            ->delete();
+                    }
+
 
                     if (!empty($arrLanhDaoXemDeBiet[$vanBanDenId])) {
                         LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId], $vanBanDenId, $type = 1);
