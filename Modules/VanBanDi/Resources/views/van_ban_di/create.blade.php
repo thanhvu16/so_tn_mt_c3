@@ -25,18 +25,18 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span class="color-red">*</span></label>
-                                <select class="form-control show-tick" name="sovanban_id" required>
-                                    @foreach ($ds_soVanBan as $data)
-                                        <option value="{{ $data->id }}"
-                                        >{{ $data->ten_so_van_ban}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group col-md-3">--}}
+{{--                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span class="color-red">*</span></label>--}}
+{{--                                <select class="form-control show-tick" name="sovanban_id" required>--}}
+{{--                                    @foreach ($ds_soVanBan as $data)--}}
+{{--                                        <option value="{{ $data->id }}"--}}
+{{--                                        >{{ $data->ten_so_van_ban}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
                             <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
+                                <label for="sokyhieu" class="col-form-label">Ký hiệu <span class="color-red">*</span></label>
                                 <input type="text" value=""
                                        id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
                                        placeholder="Nhập ký hiệu văn bản đi..." required>
