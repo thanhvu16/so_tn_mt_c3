@@ -106,7 +106,9 @@
                                             Tổng số văn bản: <b>{{ $getEmail->total() }}</b>
                                         </div>
                                         <div class="col-md-6 col-12">
-                                            {!! $getEmail->appends(['noiguimail' => Request::get('noiguimail'), 'tinhtrang' => Request::get('tinhtrang')])->render() !!}
+                                            <div class="pull-right">
+                                                {!! $getEmail->appends(['noiguimail' => Request::get('noiguimail'), 'tinhtrang' => Request::get('tinhtrang')])->render() !!}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
