@@ -703,8 +703,8 @@ class VanBanDenDonViController extends Controller
                     }
                     if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
                         // save thanh phan du hop
-                        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenId] ?? [0], $danhSachTruongPhongIds[$vanBanDenId] ?? [0],
-                            $danhSachPhoPhongIds[$vanBanDenId] ?? [0], $danhSachChuyenVienIds[$vanBanDenId]] ?? [0], null, $donVi->id);
+                        ThanhPhanDuHop::store($giayMoi, $vanBanDen, [!empty($danhSachPhoChuTichIds[$vanBanDenId]) ? $danhSachPhoChuTichIds[$vanBanDenId] : [0], !empty($danhSachTruongPhongIds[$vanBanDenId]) ? $danhSachTruongPhongIds[$vanBanDenId] : [0],
+                            !empty($danhSachPhoPhongIds[$vanBanDenId]) ? $danhSachPhoPhongIds[$vanBanDenId] : [0], !empty($danhSachChuyenVienIds[$vanBanDenId]) ? $danhSachChuyenVienIds[$vanBanDenId]: [0]], null, $donVi->id);
                     }
                     //luu can bo xem de biet
                     if($currentUser->can(AllPermission::thamMuu())) {
