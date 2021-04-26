@@ -772,6 +772,7 @@ class VanBanDiController extends Controller
             $EmailThem = $request->email_them;
             $user = auth::user();
             $vanBanDenId = $request->get('van_ban_den_id') ?? null;
+            $dataIdEmailNgoai = [];
 
             if ($tenMailThem && count($tenMailThem) > 0) {
                 foreach ($tenMailThem as $key => $data) {
@@ -779,9 +780,9 @@ class VanBanDiController extends Controller
                     $themDonVi->ten_don_vi = $data;
                     $themDonVi->email = $EmailThem[$key];
                     $themDonVi->save();
+                    array_push($dataIdEmailNgoai, $themDonVi->id);
                 }
             }
-
             $vanbandi = new VanBanDi();
             $vanbandi->trich_yeu = $request->vb_trichyeu;
             $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? explode(',', $vanBanDenId) : null;
@@ -911,6 +912,14 @@ class VanBanDiController extends Controller
             }
             if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
                 foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                    $mailngoai = new NoiNhanMailNgoai();
+                    $mailngoai->van_ban_di_id = $vanbandi->id;
+                    $mailngoai->email = $ngoai;
+                    $mailngoai->save();
+                }
+            }
+            if ($tenMailThem && count($tenMailThem) > 0) {
+                foreach ($dataIdEmailNgoai as $key => $ngoai) {
                     $mailngoai = new NoiNhanMailNgoai();
                     $mailngoai->van_ban_di_id = $vanbandi->id;
                     $mailngoai->email = $ngoai;

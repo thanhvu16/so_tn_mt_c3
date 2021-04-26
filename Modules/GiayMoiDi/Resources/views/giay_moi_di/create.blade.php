@@ -21,15 +21,15 @@
                                     <option value="{{ $giayMoi->id ?? null }}">{{ $giayMoi->ten_loai_van_ban ?? null }}</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span style="color: red">*</span></label>
-                                <select class="form-control show-tick" autofocus name="sovanban_id" required>
-                                    @foreach ($ds_soVanBan as $data)
-                                        <option value="{{ $data->id }}"
-                                        >{{ $data->ten_so_van_ban}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group col-md-3">--}}
+{{--                                <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi <span style="color: red">*</span></label>--}}
+{{--                                <select class="form-control show-tick" autofocus name="sovanban_id" required>--}}
+{{--                                    @foreach ($ds_soVanBan as $data)--}}
+{{--                                        <option value="{{ $data->id }}"--}}
+{{--                                        >{{ $data->ten_so_van_ban}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Ký hiệu <span style="color: red">*</span></label>
@@ -54,6 +54,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group col-md-3" >
+                                <label for="sokyhieu" class="col-form-label">Người duyệt <span style="color: red">*</span></label>
+                                <select name="nguoi_nhan" id="" class="form-control ">
+                                    @foreach ($nguoinhan as $data)
+                                        <option value="{{ $data->id }}"
+                                        >{{ $data->ho_ten}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="row clearfix"></div>
                             <div class="col-md-3" >
                                 <div class="form-group">
                                     <label>Giờ họp <span style="color: red">*</span></label>
@@ -82,15 +92,8 @@
                                            name="dia_diem" placeholder="Địa điểm">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3" >
-                                <label for="sokyhieu" class="col-form-label">Người duyệt <span style="color: red">*</span></label>
-                                <select name="nguoi_nhan" id="" class="form-control ">
-                                    @foreach ($nguoinhan as $data)
-                                        <option value="{{ $data->id }}"
-                                        >{{ $data->ho_ten}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <div class="row clearfix"></div>
+
                             <div class="form-group col-md-3" >
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký <span style="color: red">*</span></label>
                                 <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" required>
