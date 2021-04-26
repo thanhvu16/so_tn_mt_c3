@@ -117,11 +117,7 @@ class PermissionSeeder extends Seeder
         Permission::findOrCreate(AllPermission::VanThuChuyenTrach());
 
         //cập nhật thủ công hòm thư công
-        $chung = Permission::findOrCreate(AllPermission::chung());
-        Permission::findOrCreate(
-           AllPermission::capNhatHomThuCongHomThuCong(),
-           $chung->id
-        );
+        Permission::findOrCreate(AllPermission::capNhatHomThuCongHomThuCong());
 
         if ($role) {
             $permissions = Permission::all();
