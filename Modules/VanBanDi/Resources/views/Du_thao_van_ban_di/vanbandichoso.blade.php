@@ -90,12 +90,12 @@
                                                 </p>
                                             @empty
                                             @endforelse
-{{--                                            @forelse($data->mailngoaitp as $key=>$item)--}}
-{{--                                                <p>--}}
-{{--                                                    - {{$item->laytendonvingoai->ten_don_vi}}--}}
-{{--                                                </p>--}}
-{{--                                            @empty--}}
-{{--                                            @endforelse--}}
+                                            @forelse($data->mailngoaitp as $key=>$item)
+                                                <p>
+                                                    - {{$item->laytendonvingoai->ten_don_vi}}
+                                                </p>
+                                            @empty
+                                            @endforelse
 {{--                                            --}}{{--                                                        </div>--}}
 {{--                                            <p>--}}
 {{--                                                <a class="them-noi-nhan" data-toggle="modal"--}}
