@@ -4,6 +4,7 @@ namespace Modules\LayVanBanTuEmail\Http\Controllers;
 
 
 use App\User;
+use http\Env;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -42,7 +43,12 @@ class LayVanBanTuEmailController extends Controller
             }
 
             set_time_limit(3000);
-            $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
+            if (\env('APP_ENV') == 'local') {
+                $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
+            } else {
+                $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
+            }
+
             $username = $donVi->email;
             $password = $donVi->password;
 
