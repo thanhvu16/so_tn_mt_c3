@@ -195,7 +195,7 @@ class VanBanDenController extends Controller
         $user->can(VAN_THU_DON_VI);
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
-        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $date = date("d/m/Y");
 
