@@ -195,7 +195,7 @@ class VanBanDenController extends Controller
         $user->can(VAN_THU_DON_VI);
         $domat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $dokhan = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
-        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $date = date("d/m/Y");
 
@@ -898,7 +898,7 @@ class VanBanDenController extends Controller
                     return $query->where('mail_subject', 'LIKE', "%$mailSubject%");
                 }
             })
-            ->orderBy('mail_date', 'desc')->paginate(20);
+            ->orderBy('mail_date', 'DESC')->paginate(20);
 
         return view('vanbanden::van_ban_den.dsvanbandentumail', compact('getEmail'));
     }

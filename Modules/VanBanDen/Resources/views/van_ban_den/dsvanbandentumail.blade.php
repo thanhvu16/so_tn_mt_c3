@@ -102,7 +102,7 @@
                                                     <a href="{{route('vanbandentumail','id='.$vbDen->id.'&xml='.$vbDen->mail_attachment.'&pdf='.$vbDen->mail_pdf.'&doc='.$vbDen->mail_doc.'&xls='.$vbDen->mail_xls)}}"
                                                        title="Tạo mới văn bản đến">{{$vbDen->mail_subject}}</a></td>
                                                 <td>{{$vbDen->mail_from}}</td>
-                                                <td>{{ !empty($vbDen->mail_date) ? formatDMY($vbDen->mail_date) : null }}</td>
+                                                <td>{{ !empty($vbDen->mail_date) ? date('d/m/Y H:i:s', strtotime($vbDen->mail_date)) : null }}</td>
 
                                                 <td class="text-center">
                                                     @if($vbDen->mail_active == 1)
