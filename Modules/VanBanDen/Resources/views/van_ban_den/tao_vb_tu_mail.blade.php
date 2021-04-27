@@ -302,7 +302,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Người ký <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="nguoi_ky" id="exampleInputEmail7"
-                                           placeholder="Người ký" required>
+                                           placeholder="Người ký" value="{{ isset($data_xml) ? $data_xml->STRNGUOIKY : null  }}" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
