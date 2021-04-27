@@ -898,7 +898,7 @@ class VanBanDenController extends Controller
                     return $query->where('mail_subject', 'LIKE', "%$mailSubject%");
                 }
             })
-            ->orderBy('mail_date', 'desc')->paginate(20);
+            ->orderBy('mail_date', 'DESC')->paginate(20);
 
         return view('vanbanden::van_ban_den.dsvanbandentumail', compact('getEmail'));
     }

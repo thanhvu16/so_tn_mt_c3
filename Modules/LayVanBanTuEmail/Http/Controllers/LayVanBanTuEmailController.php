@@ -89,10 +89,9 @@ class LayVanBanTuEmailController extends Controller
                         }
                         $overview = imap_fetch_overview($inbox, $email_number, 0);
 
-
                         $arr['mail_subject'] = $this->decode($overview[0]->subject);
                         $arr['mail_from'] = $this->decode($overview[0]->from);
-                        $arr['mail_date'] = date('Y-m-d', strtotime($date_header));
+                        $arr['mail_date'] = date('Y-m-d H:i:s', strtotime($date_header));
 
                         $kiemtra = GetEmail::where([
                             'mail_subject' => $arr['mail_subject'],
@@ -228,6 +227,8 @@ class LayVanBanTuEmailController extends Controller
                             $arr['mail_attachment3'] = '';
                         }
                     }
+
+                    imap_clearflag_full($inbox, $email_number, "\\Seen");
                 }
             }
             /* close the connection */
