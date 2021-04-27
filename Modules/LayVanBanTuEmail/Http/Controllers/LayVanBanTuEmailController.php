@@ -43,11 +43,11 @@ class LayVanBanTuEmailController extends Controller
             }
 
             set_time_limit(3000);
-            if (\env('APP_ENV') == 'local') {
+//            if (\env('APP_ENV') == 'local') {
                 $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
-            } else {
-                $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
-            }
+//            } else {
+//                $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
+//            }
 
             $username = $donVi->email;
             $password = $donVi->password;
@@ -226,7 +226,7 @@ class LayVanBanTuEmailController extends Controller
                             $arr['mail_attachment2'] = '';
                             $arr['mail_attachment3'] = '';
 
-                            imap_clearflag_full($inbox, $email_number, "\\Seen");
+//                            imap_clearflag_full($inbox, $email_number, "\\Seen");
                         }
                     }
                 }
