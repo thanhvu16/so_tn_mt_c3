@@ -241,9 +241,10 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                 $arr['mail_attachment1'] = '';
                                 $arr['mail_attachment2'] = '';
                                 $arr['mail_attachment3'] = '';
+
+                                imap_clearflag_full($inbox, $email_number, "\\Seen");
                             }
                         }
-                        imap_clearflag_full($inbox, $email_number, "\\Seen");
                     }
                 }
                 /* close the connection */
