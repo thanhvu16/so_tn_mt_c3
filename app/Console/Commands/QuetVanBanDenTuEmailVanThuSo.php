@@ -56,11 +56,7 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
 
             if (!empty($donVi)) {
                 set_time_limit(3000);
-                if (\env('APP_ENV') == 'local') {
-                    $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
-                } else {
-                    $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
-                }
+                $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
 
                 $username = $donVi->email;
                 $password = $donVi->password;
@@ -241,8 +237,6 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                 $arr['mail_attachment1'] = '';
                                 $arr['mail_attachment2'] = '';
                                 $arr['mail_attachment3'] = '';
-
-                                imap_clearflag_full($inbox, $email_number, "\\Seen");
                             }
                         }
                     }
