@@ -8,11 +8,20 @@
 
                         <div class="box-body">
                             <div class="row">
+
                                 <div class="col-md-4">
+{{--                                            <button type="button"--}}
+{{--                                                    class="btn btn-default waves-effect waves-light btn-sm btn-export-data"><i class="fa fa-search"></i> Lọc dữ liệu văn bản--}}
+{{--                                            </button>--}}
+                                    <a class="btn btn-default waves-effect waves-light btn-sm" role="button"  data-toggle="collapse"
+                                       href="#collapseExample"
+                                       aria-expanded="false" aria-controls="collapseExample"><i
+                                            class="fa fa-search"></i> Lọc dữ liệu văn bản
+                                    </a>
+
                                 </div>
                                 <div class="col-md-8 text-right">
                                     <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">
-{{--                                        <input type="hidden" name="so_van_ban" value="{{ request('so_van_ban') }}">--}}
 
                                         <input type="hidden" name="type" value="">
                                         <input type="hidden" name="sovanbanden" value="">
@@ -20,18 +29,38 @@
                                                 class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
                                                 class="fa fa-file-excel-o"></i> Xuất Excel
                                         </button>
-{{--                                        <button type="button" data-type="pdf"--}}
-{{--                                                class="btn btn-warning waves-effect waves-light btn-sm btn-export-data"><i--}}
-{{--                                                class="fa fa-file-pdf-o"></i> Xuất PDF--}}
-{{--                                        </button>--}}
-{{--                                        <button type="button" data-type="word"--}}
-{{--                                                class="btn btn-info waves-effect waves-light btn-sm btn-export-data"><i--}}
-{{--                                                class="fa  fa-file-word-o"></i> Xuất Word--}}
-{{--                                        </button>--}}
                                         <button type="button" data-type="print"
                                                 class="btn btn-primary waves-effect waves-light btn-sm print-data"><i
                                                 class="fa fa-print "></i> In file
                                         </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-12 collapse in" id="collapseExample">
+                                    <form action method="GET" action="{{ route('thongkevbso') }}" >
+                                    <div class="col-md-5 form-group mt-2">
+                                        <label>Tìm từ ngày</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar-o"></i>
+                                            </div>
+                                            <input type="text" class="form-control datepicker" value="{{Request::get('tu_ngay')}}"
+                                                   name="tu_ngay" placeholder="dd/mm/yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 form-group mt-2">
+                                        <label>Tìm đến ngày</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar-o"></i>
+                                            </div>
+                                            <input type="text" class="form-control datepicker" value="{{Request::get('den_ngay')}}"
+                                                   name="den_ngay" placeholder="dd/mm/yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top: 30px">
+                                        <button type="submit" name="search" class="btn btn-primary"><i
+                                                class="fa fa-search"></i> Tìm Kiếm</button>
+                                    </div>
                                     </form>
                                 </div>
                                 <div class="col-md-12 ">

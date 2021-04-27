@@ -64,12 +64,23 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail4">Cơ quan ban hành <span
+                                            style="color: red">*</span></label>
+                                    <input type="text" class="form-control"
+                                           value="{{empty($data_xml) ? '': $data_xml->STRNOIGUI}}"
+                                           name="co_quan_ban_hanh" id="exampleInputEmail6"
+                                           placeholder="Cơ quan ban hành" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4"
                                            placeholder="Số ký hiệu"
                                            value="{{empty($data_xml) ? '': $data_xml->STRKYHIEU}}" required>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Ngày ban hành <span
@@ -85,76 +96,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row clearfix"></div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Cơ quan ban hành <span
-                                            style="color: red">*</span></label>
-                                    <input type="text" class="form-control"
-                                           value="{{empty($data_xml) ? '': $data_xml->STRNOIGUI}}"
-                                           name="co_quan_ban_hanh" id="exampleInputEmail6"
-                                           placeholder="Cơ quan ban hành" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3  van-ban">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Thời hạn theo quy chế </label>
-                                    <select class="form-control select2 lay_van_ban tieu-chuan" name="tieu_chuan">
-                                        @foreach($tieuChuan as $tieuChuandata)
-                                            <option
-                                                value="{{ $tieuChuandata->id }}">{{ $tieuChuandata->ten_tieu_chuan }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <div class="input-group date">
-                                        <input type="text" class="form-control han-xu-ly datepicker" name="han_xu_ly"
-                                               value="" placeholder="Hạn xử lý">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Ngày nhận </label>
-                                    <div class="input-group date">
-                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan"
-                                               name="ngay_nhan" value="{{$date}}" placeholder="Ngày nhận">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix"></div>
-
-                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
-                                                style="color: red">*</span></label>
-                                        <select class="form-control select2" name="lanh_dao_tham_muu" required>
-                                            @foreach($users as $nguoidung)
-                                                <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">*</span></label>
                                     <textarea class="form-control" name="trich_yeu" rows="3"
                                               required>{{empty($data_xml) ? $email->mail_subject:$data_xml->STRTRICHYEU}}</textarea>
                                 </div>
                             </div>
+                            <div class="row clearfix"></div>
+
+
+
+
+
                             @if( $loaivb_email)
                                 @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')
                                     <div class="col-md-3" style="margin-top: 10px">
@@ -190,11 +144,11 @@
                                         </div>
                                     </div>
                                     {{--                                    <div class="col-md-3 text-right" style="margin-top: 40px">--}}
-                                    {{--                                        <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
-                                    {{--                                           href="#collapseExample"--}}
-                                    {{--                                           aria-expanded="false" aria-controls="collapseExample"><i--}}
-                                    {{--                                                class="fa fa-plus"></i>--}}
-                                    {{--                                        </a>--}}
+{{--                                                                            <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
+{{--                                                                               href="#collapseExample"--}}
+{{--                                                                               aria-expanded="false" aria-controls="collapseExample"><i--}}
+{{--                                                                                    class="fa fa-plus"></i>--}}
+{{--                                                                            </a>--}}
                                     {{--                                        <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
                                     {{--                                    </div>--}}
 
@@ -307,6 +261,38 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail4">Người nhập </label>
+                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
+                                           placeholder="" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Ngày nhận </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan"
+                                               name="ngay_nhan" value="{{$date}}" placeholder="Ngày nhận">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Hạn xử lý </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker" name="han_xu_ly"
+                                               value="" placeholder="Hạn xử lý">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="exampleInputEmail4">Độ Mật</label>
                                     <select class="form-control select2" name="do_mat">
                                         {{--                                        <option value="">-- Chọn độ mật--</option>--}}
@@ -327,13 +313,23 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3  van-ban">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Người nhập </label>
-                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
-                                           placeholder="" disabled>
+                                    <label for="exampleInputEmail4">Thời hạn theo quy chế </label>
+                                    <select class="form-control select2 lay_van_ban tieu-chuan" name="tieu_chuan">
+                                        @foreach($tieuChuan as $tieuChuandata)
+                                            <option
+                                                value="{{ $tieuChuandata->id }}">{{ $tieuChuandata->ten_tieu_chuan }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
+
+
+                            <div class="row clearfix"></div>
+
+
+
 
                             <div class="row clearfix"></div>
 
@@ -387,6 +383,19 @@
                                         @endif
                                         <input type="hidden" name="id_vanban_tumail" value="{{$id}}">
                                     </div>
+                                    @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
+                                                        style="color: red">*</span></label>
+                                                <select class="form-control select2" name="lanh_dao_tham_muu" required>
+                                                    @foreach($users as $nguoidung)
+                                                        <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
 
 
                                 </div>
