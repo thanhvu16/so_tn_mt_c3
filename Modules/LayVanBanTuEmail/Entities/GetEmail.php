@@ -18,6 +18,8 @@ class GetEmail extends Model
         'mail_xls',
         'mail_active',
         'noigui',
-        'mail_status'
+        'mail_status',
+        'don_vi_id',
+        'user_id'
     ];
 }

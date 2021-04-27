@@ -7,7 +7,9 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Văn bản đến từ mail</h3>
-                        <a href="{{ route('lay-van-ban-tu-email.index') }}" class="pull-right"><i class="fa fa-plus"></i> Cập nhật hòm thư công</a>
+                        @can(\App\Common\AllPermission::capNhatHomThuCongHomThuCong())
+                            <a href="{{ route('lay-van-ban-tu-email.index') }}" class="pull-right"><i class="fa fa-plus"></i> Cập nhật hòm thư công</a>
+                        @endcan
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -48,6 +50,37 @@
                         </div>
                         <br>
                         <div class="row">
+                            <div class="col-md-12" >
+                                <div class="row">
+                                    <form action="{{route('dsvanbandentumail')}}" method="get">
+                                        <div class="col-md-3 form-group">
+                                            <label>Tìm theo chủ đề </label>
+                                            <input type="text" class="form-control" value="{{Request::get('mail_subject')}}"
+                                                   name="mail_subject"
+                                                   placeholder="Nhập chủ đề">
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Tìm theo ngày</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control datepicker" value="{{Request::get('mail_date')}}"
+                                                       name="mail_date" placeholder="dd/mm/yyyy">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>&nbsp;</label><br>
+                                            <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                            @if (!empty(Request::get('mail_subject')) ||
+                                                        !empty(Request::get('mail_date')))
+                                                <a href="{{ route('dsvanbandentumail') }}" class="btn btn-success"><i
+                                                        class="fa fa-refresh"></i></a>
+                                            @endif
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped dataTable mb-0">
@@ -69,7 +102,7 @@
                                                     <a href="{{route('vanbandentumail','id='.$vbDen->id.'&xml='.$vbDen->mail_attachment.'&pdf='.$vbDen->mail_pdf.'&doc='.$vbDen->mail_doc.'&xls='.$vbDen->mail_xls)}}"
                                                        title="Tạo mới văn bản đến">{{$vbDen->mail_subject}}</a></td>
                                                 <td>{{$vbDen->mail_from}}</td>
-                                                <td>{{ date('d-m-Y', strtotime($vbDen->mail_date)) }}</td>
+                                                <td>{{ !empty($vbDen->mail_date) ? formatDMY($vbDen->mail_date) : null }}</td>
 
                                                 <td class="text-center">
                                                     @if($vbDen->mail_active == 1)
@@ -107,7 +140,8 @@
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="pull-right">
-                                                {!! $getEmail->appends(['noiguimail' => Request::get('noiguimail'), 'tinhtrang' => Request::get('tinhtrang')])->render() !!}
+                                                {!! $getEmail->appends(['noiguimail' => Request::get('noiguimail'), 'tinhtrang' => Request::get('tinhtrang'),
+                                                'mail_subject' => Request::get('mail_subject'), 'mail_date' => Request::get('mail_date')])->render() !!}
                                             </div>
                                         </div>
                                     </div>

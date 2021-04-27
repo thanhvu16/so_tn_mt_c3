@@ -381,4 +381,9 @@ class AllPermission
         return 'thống kê văn bản đến chi cục';
     }
 
+    public static function capNhatHomThuCongHomThuCong()
+    {
+        return 'cập nhật hòm thư công';
+    }
+
 }

@@ -879,12 +879,27 @@ class VanBanDenController extends Controller
         canPermission(AllPermission::homThuCong());
         $noiguimail = $request->get('noiguimail') ?? null;
         $tinhtrang = $request->get('tinhtrang') ?? 1;
+        $mailDate = $request->get('mail_date') ?? null;
+        $mailSubject = $request->get('mail_subject') ?? null;
+
         $getEmail = GetEmail::where(['mail_active' => $tinhtrang])
             ->where(function ($query) use ($noiguimail) {
                 if (!empty($noiguimail)) {
                     return $query->where('noigui', $noiguimail);
                 }
-            })->orderBy('mail_date', 'desc')->paginate(20);
+            })
+            ->where(function ($query) use ($mailDate) {
+                if (!empty($mailDate)) {
+                    return $query->where('mail_date', formatYMD($mailDate));
+                }
+            })
+            ->where(function ($query) use ($mailSubject) {
+                if (!empty($mailSubject)) {
+                    return $query->where('mail_subject', 'LIKE', "%$mailSubject%");
+                }
+            })
+            ->orderBy('mail_date', 'desc')->paginate(20);
+
         return view('vanbanden::van_ban_den.dsvanbandentumail', compact('getEmail'));
     }
 
