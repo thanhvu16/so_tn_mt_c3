@@ -10,9 +10,6 @@
                             <div class="row">
 
                                 <div class="col-md-4">
-{{--                                            <button type="button"--}}
-{{--                                                    class="btn btn-default waves-effect waves-light btn-sm btn-export-data"><i class="fa fa-search"></i> Lọc dữ liệu văn bản--}}
-{{--                                            </button>--}}
                                     <a class="btn btn-default waves-effect waves-light btn-sm" role="button"  data-toggle="collapse"
                                        href="#collapseExample"
                                        aria-expanded="false" aria-controls="collapseExample"><i
@@ -91,7 +88,8 @@
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
-                                                <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}
+                                                <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">
+                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id)}}">{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}</a>
                                                     <input type="text" class="soVB hidden" value="{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}">
                                                 </td>
                                                 <td class="text-center" style="vertical-align: middle">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_trong_han'] }}</td>

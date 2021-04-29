@@ -293,6 +293,45 @@ class ThongkeVanBanDenController extends Controller
         ];
     }
 
+    public function chiTietTongVanBanSo($id,Request $request)
+    {
+        $donViId = null;
+        $donVi = DonVi::where('id',$id)->first();
+//        dd($donVi);
+        $type = null;
+        if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
+            $donViId = $donVi->id;
+            $type = DonVi::DIEU_HANH;
+        }
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
+        $ds_vanBanDen= VanBanDen::where(function ($query) use ($donViId) {
+            if (!empty($donViId)) {
+                return $query->where('don_vi_id', $donViId);
+            }
+        })
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
+
+
+            ->get();
+//        $vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay);
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable
