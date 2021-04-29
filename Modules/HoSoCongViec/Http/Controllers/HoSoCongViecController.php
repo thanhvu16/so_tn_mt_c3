@@ -3,9 +3,11 @@
 namespace Modules\HoSoCongViec\Http\Controllers;
 
 use App\Models\UserLogs;
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\HoSoCongViec\Entities\DetailHoSoCV;
 use Modules\HoSoCongViec\Entities\ListHoSoCV;
 use auth;
@@ -77,11 +79,12 @@ class HoSoCongViecController extends Controller
         $noi_gui_den = $request->get('noi_gui_den');
         $loai_van_ban = $request->get('loai_van_ban');
         $van_ban = null;
+        $donVi = auth::user()->donVi;
 
         if ($loai_van_ban == 1) {
-            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
-                $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
-                $van_ban = VanBanDen::where(['type' => 1, 'don_vi_id' => auth::user()->don_vi_id])
+            if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
+                ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
+                $van_ban = VanBanDen::where(['type' => 1])
                 ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
                     if (!empty($trich_yeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
@@ -96,8 +99,11 @@ class HoSoCongViecController extends Controller
                             return $query->where('co_quan_ban_hanh_id', 'LIKE', "%$noi_gui_den%");
                         }
                     })->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
-                $van_ban = VanBanDen::where(['type' => 2, 'don_vi_id' => auth::user()->don_vi_id])
+            } else
+            {
+//                if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
+                $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
+                $van_ban = VanBanDen::where(['don_vi_id' => $donViId, 'type' => VanBanDen::TYPE_VB_DON_VI])
                     ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
                     if (!empty($trich_yeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
@@ -115,9 +121,13 @@ class HoSoCongViecController extends Controller
             }
 
         } elseif ($loai_van_ban == 2) {
-            if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHU_TICH) || $user->hasRole(PHO_CHU_TICH) ||
-                $user->hasRole(PHO_CHANH_VAN_PHONG) || $user->hasRole(CHANH_VAN_PHONG)) {
-                $van_ban = $ds_vanBanDi = VanBanDi::where(['don_vi_soan_thao' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
+            if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
+
+                $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+                    ->whereHas('donVi', function ($query) {
+                        return $query->whereNull('cap_xa');
+                    })->first();
+                $van_ban = $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                     ->where(function ($query) use ($trich_yeu) {
                         if (!empty($trich_yeu)) {
                             return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
@@ -128,7 +138,10 @@ class HoSoCongViecController extends Controller
                         }
                     })
                     ->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } elseif ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
+            } else
+            {
+
+//                if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
                 $van_ban = VanBanDi::where(['van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
                     ->where(function ($query) use ($trich_yeu) {
                         if (!empty($trich_yeu)) {

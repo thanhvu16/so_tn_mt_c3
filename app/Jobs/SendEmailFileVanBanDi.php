@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\User;
 use Modules\Admin\Entities\DonVi;
 
 use App\Models\EmailDonVi;
@@ -182,7 +183,20 @@ class SendEmailFileVanBanDi implements ShouldQueue
 //            ->whereNull('deleted_at')
 //            ->first();
 //
-        $donvigui = Donvi::where('id',auth::user()->don_vi_id)
+        $user = auth::user();
+        $donViId = null;
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
+
+        $donvigui = Donvi::where('id',$donViId)
             ->whereNull('deleted_at')
             ->first();
 

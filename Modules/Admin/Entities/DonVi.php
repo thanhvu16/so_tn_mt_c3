@@ -28,6 +28,7 @@ class DonVi extends Model
     const TRANG_THAI_HOAT_DONG = 1;
     const STATUS_EMAIL_ACTIVE = 1;
     const STATUS_EMAIL_INACTIVE = 2;
+    const TYPE_CHI_CUC = 2;
 
     public function nhomDonVi()
     {

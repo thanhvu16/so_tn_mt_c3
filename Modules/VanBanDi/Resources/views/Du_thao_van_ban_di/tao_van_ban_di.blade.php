@@ -26,6 +26,13 @@
                                 </select>
                                 <input type="text" class="hidden" name="id_duthao" value="{{$id_duthao}}">
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Ngày ban hành</label>
+                                <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh"
+                                       class="form-control" style="font-size:16px;width: 100%"
+                                       value="{{$date}}"
+                                       autocomplete="off" required>
+                            </div>
 
 
 
@@ -40,13 +47,13 @@
                                 </select>
                             </div>
                             @endif
-                            <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text"
-                                       value="{{ old('vb_sokyhieu', isset($vanbanduthao) ? $vanbanduthao->so_ky_hieu : '') }}"
-                                       id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
-                                       placeholder="Nhập số ký hiệu văn bản đi..." required>
-                            </div>
+{{--                            <div class="form-group col-md-3">--}}
+{{--                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>--}}
+{{--                                <input type="text"--}}
+{{--                                       value="{{ old('vb_sokyhieu', isset($vanbanduthao) ? $vanbanduthao->so_ky_hieu : '') }}"--}}
+{{--                                       id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"--}}
+{{--                                       placeholder="Nhập số ký hiệu văn bản đi..." required>--}}
+{{--                            </div>--}}
 
 
 
@@ -234,13 +241,7 @@
                                             <input type="file" id="url-file" name="file_phieu_trinh[]" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="sokyhieu" class="col-form-label">Ngày ban hành</label>
-                                        <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh"
-                                               class="form-control" style="font-size:16px;width: 100%"
-                                               value="{{$date}}"
-                                               autocomplete="off" required>
-                                    </div>
+
 
                                     <div class=" col-md-3 form-group">
                                         <label for="exampleInputEmail2">Đơn vị phát hành  <span class="color-red">*</span></label>
@@ -251,6 +252,7 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="row clearfix"></div>
                                     <div class=" col-md-3 form-group" >
                                         <div class="row">
                                             <div class="col-md-12">

@@ -20,23 +20,24 @@
                                        style="font-weight: 800;color: #F44336;cursor: not-allowed;"
                                        placeholder="Số đến văn bản">
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" name="so_ky_hieu"
-                                       value=""
-                                       required autofocus
-                                       class="form-control file_insert tenfile"
-                                       id="sokyhieu"
-                                       placeholder="Số ký hiệu">
-                            </div>
                             <div class="form-group col-md-3" id="div_select_cqbh">
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Nơi gửi đến <span
                                         class="color-red">*</span></label>
                                 <input type="text" value=""
                                        class="form-control"
-                                       name="co_quan_ban_hanh_id" required>
+                                       name="co_quan_ban_hanh_id" autofocus required>
 
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
+                                <input type="text" name="so_ky_hieu"
+                                       value=""
+                                       required
+                                       class="form-control file_insert tenfile"
+                                       id="sokyhieu"
+                                       placeholder="Số ký hiệu">
+                            </div>
+
 
                             <div class="form-group col-md-3">
                                 <label for="ngay_ban_hanh" class="col-form-label">Ngày ban hành <span

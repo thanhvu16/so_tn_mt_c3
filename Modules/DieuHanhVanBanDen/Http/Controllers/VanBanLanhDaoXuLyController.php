@@ -196,7 +196,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
                 return view('dieuhanhvanbanden::van-ban-lanh-dao-xu-ly.index',
                     compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'chuTich', 'loaiVanBanGiayMoi',
-                        'order', 'active', 'danhSachDonVi'));
+                        'order', 'active', 'danhSachDonVi', 'checkThamMuuSo'));
 
 //            } else {
 //

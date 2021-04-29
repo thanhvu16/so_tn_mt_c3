@@ -68,7 +68,7 @@
                         </div>
                         <div class=""></div>
                         <div class="modal fade" id="myModal">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <form action="{{ route('luu_vao_detail') }}" method="POST">
                                         @csrf

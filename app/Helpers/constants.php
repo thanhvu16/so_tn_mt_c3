@@ -52,7 +52,7 @@ CONST TRUONG_BAN = 'tp đơn vị cấp 2';
 CONST PHO_TRUONG_BAN = 'phó tp đơn vị cấp 2';
 CONST VAN_THU_DON_VI = 'văn thư đơn vị';
 CONST VAN_THU_HUYEN = 'văn thư sở';
-
+CONST TXT_CHI_CUC = 'chi cục';
 
 
 define('COLOR_INFO', '#4fbde9');

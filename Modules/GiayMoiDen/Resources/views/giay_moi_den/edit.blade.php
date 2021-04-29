@@ -23,20 +23,21 @@
                                        style="font-weight: 800;color: #F44336;"
                                        placeholder="Số đến văn bản">
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" name="vb_so_ky_hieu"
-                                       value="{{ old('vb_so_ky_hieu', isset($vanban) ? $vanban->so_ky_hieu : '') }}" required autofocus
-                                       class="form-control file_insert"
-                                       id="sokyhieu"
-                                       placeholder="Số ký hiệu">
-                            </div>
                             <div class="form-group col-md-3" id="div_select_cqbh">
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Nơi gửi đến <span class="color-red">*</span></label>
                                 <input type="text" value="{{isset($vanban)? $vanban->co_quan_ban_hanh : ''}}" class="form-control"
                                        name="co_quan_ban_hanh_id" required>
 
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
+                                <input type="text" name="vb_so_ky_hieu"
+                                       value="{{ old('vb_so_ky_hieu', isset($vanban) ? $vanban->so_ky_hieu : '') }}" required
+                                       class="form-control file_insert"
+                                       id="sokyhieu"
+                                       placeholder="Số ký hiệu">
+                            </div>
+
 
                             <div class="form-group col-md-3">
                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành <span class="color-red">*</span></label>

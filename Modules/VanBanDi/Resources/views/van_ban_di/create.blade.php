@@ -247,7 +247,7 @@
                     <div class="modal fade" id="myModal">
                         <div class="modal-dialog modal-lg" style="max-width: 1800px">
                             <div class="modal-content">
-                                <form action="{{ route('multiple_file_di') }}" method="POST"
+                                <form action="" method="POST"
                                       enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-header">
