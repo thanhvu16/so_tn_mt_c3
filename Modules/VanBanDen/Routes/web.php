@@ -40,13 +40,25 @@ Route::post('han-van-ban','VanBanDenController@layhantruyensangview')->name('lay
 Route::match(['get', 'post','put'], 'xoa-file-van-ban/{id}', ['as' =>'xoaFileDen', 'uses' => 'VanBanDenController@xoaFileDen']);
 
 Route::get('thong-ke-van-ban-so', array('as' => 'thongkevbso', 'uses' => 'ThongkeVanBanDenController@thongkevbso'));
-Route::get('chi-tiet-tong-van-ban-so/{id}', array('as' => 'chiTietTongVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietTongVanBanSo'));
 Route::get('thong-ke-van-ban-chi-cuc', array('as' => 'thongkevbchicuc', 'uses' => 'ThongKeVanBanChiCucController@index'));
 Route::get('thong-ke-van-ban-phong', array('as' => 'thongkevbphong', 'uses' => 'ThongKeVanBanPhongController@index'));
+
+//chi tiết thông kê
+Route::get('chi-tiet-tong-van-ban-so/{id}', array('as' => 'chiTietTongVanBanSo', 'uses' => 'VanBanDenController@chiTietTongVanBanSo'));
+
+
+
+
+
+Route::get('upload-tai-lieu-tham-khao', array('as' => 'taiLieuThamKhao', 'uses' => 'VanBanDenController@taiLieuThamKhao'));
+Route::post('post-upload-tai-lieu-tham-khao', array('as' => 'postTaiLieuThamKhao', 'uses' => 'VanBanDenController@postTaiLieuThamKhao'));
+
 
 
 Route::post('han-xu-ly-van-ban', array('as' => 'hanXuLyvb', 'uses' => 'VanBanDenController@hanXuLyvb'));
 Route::post('han-xu-ly-giay-moi', array('as' => 'hanXuLygb', 'uses' => 'VanBanDenController@hanXuLygb'));
+
+
 
 
 

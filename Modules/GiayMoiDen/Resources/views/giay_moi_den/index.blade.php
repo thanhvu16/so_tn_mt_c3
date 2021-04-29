@@ -274,9 +274,8 @@
                                         <div class="row">
                                             <div class="form-group col-md-12">
                                                 <label for="sokyhieu" class="">Chọn tệp
-                                                    tin<br><small><i>(Đặt tên file theo định dạng: tên viết tắt
-                                                            sổ văn bản + số đến + năm (vd:
-                                                            QD-1-2020.pdf))</i></small>
+                                                    tin<br><small><i>(Đặt tên file theo định dạng: số đến + năm ban hành  (vd:
+                                                            16-2020.pdf))</i></small>
                                                 </label>
 
                                                 <input type="file" multiple name="ten_file[]"

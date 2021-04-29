@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Modules\VanBanDen\Entities\TaiLieuThamKhao;
 
 class LoginController extends Controller
 {
@@ -41,7 +42,9 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('auth.components.login');
+        $file = TaiLieuThamKhao::orderBy('created_at','DESC')->first();
+
+        return view('auth.components.login',compact('file'));
     }
 
     public function username()
