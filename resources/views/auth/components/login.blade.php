@@ -141,7 +141,7 @@
 
     </div>
     <div class="col-md-12 text-center mt-2">
-        @if($file->duong_dan != null)
+        @if($file != null)
         <a href="{{$file->getUrlFile()}}" target="popup"
            class="detail-file-name seen-new-window" style="color: black;font-weight: bold"><span style="color: red;font-weight: bold">-></span> Xem Tài liệu hướng dẫn sử dụng tại đây !</a>
         @endif
