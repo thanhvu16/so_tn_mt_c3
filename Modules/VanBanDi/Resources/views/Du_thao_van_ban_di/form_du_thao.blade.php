@@ -37,10 +37,10 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3 form-group">
-        <label for="exampleInputEmail2">Ký hiệu </label>
-        <input type="text" class="form-control sokyhieu" placeholder="số kí hiệu..." name="so_ky_hieu">
-    </div>
+{{--    <div class="col-md-3 form-group">--}}
+{{--        <label for="exampleInputEmail2">Ký hiệu </label>--}}
+{{--        <input type="text" class="form-control sokyhieu" placeholder="số kí hiệu..." name="so_ky_hieu">--}}
+{{--    </div>--}}
     <div class=" col-md-12 form-group">
         <label for="exampleInputEmail2">Ý kiến</label>
         <textarea rows="3" class="form-control" placeholder="nội dung" name="y_kien"

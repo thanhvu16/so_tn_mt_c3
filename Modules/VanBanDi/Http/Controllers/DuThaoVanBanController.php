@@ -1100,6 +1100,19 @@ class DuThaoVanBanController extends Controller
             $duthaochot = Duthaovanbandi::where('id', $request->id_duthao)->first();
             $nguoiky = User::where('id', $request->nguoiky_id)->first();
             $duthaochot->stt = 3;
+
+            $dataIdEmailNgoai = [];
+
+            if ($tenMailThem && count($tenMailThem) > 0) {
+                foreach ($tenMailThem as $key => $data) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi->ten_don_vi = $data;
+                    $themDonVi->email = $EmailThem[$key];
+                    $themDonVi->save();
+                    array_push($dataIdEmailNgoai, $themDonVi->id);
+                }
+            }
+
             $duthaochot->save();
             $vanbandi = new VanBanDi();
             $vanbandi->trich_yeu = $request->vb_trichyeu;
@@ -1149,14 +1162,7 @@ class DuThaoVanBanController extends Controller
 
             UserLogs::saveUserLogs('Tạo văn bản đi', $vanbandi);
 
-            if ($tenMailThem && count($tenMailThem) > 0) {
-                foreach ($tenMailThem as $key => $data) {
-                    $themDonVi = new MailNgoaiThanhPho();
-                    $themDonVi->ten_don_vi = $data;
-                    $themDonVi->email = $EmailThem[$key];
-                    $themDonVi->save();
-                }
-            }
+
 
             if ($filetrinhky && count($filetrinhky) > 0) {
                 if ($filehoso && count($filehoso) > 0) {
@@ -1350,6 +1356,14 @@ class DuThaoVanBanController extends Controller
             }
             if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
                 foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                    $mailngoai = new NoiNhanMailNgoai();
+                    $mailngoai->van_ban_di_id = $vanbandi->id;
+                    $mailngoai->email = $ngoai;
+                    $mailngoai->save();
+                }
+            }
+            if ($tenMailThem && count($tenMailThem) > 0) {
+                foreach ($dataIdEmailNgoai as $key => $ngoai) {
                     $mailngoai = new NoiNhanMailNgoai();
                     $mailngoai->van_ban_di_id = $vanbandi->id;
                     $mailngoai->email = $ngoai;

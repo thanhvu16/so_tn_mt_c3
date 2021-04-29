@@ -687,13 +687,27 @@ class VanBanDiController extends Controller
 
     public function luuVanBanDiSo(Request $request)
     {
+        $tenMailThem = !empty($request['ten_don_vi_them']) ? $request['ten_don_vi_them'] : null;
+        $donvinhanmailngoaitp = !empty($request['don_vi_nhan_ngoai_thanh_pho']) ? $request['don_vi_nhan_ngoai_thanh_pho'] : null;
+        $donvinhanvanbandi = !empty($request['don_vi_nhan_van_ban_di']) ? $request['don_vi_nhan_van_ban_di'] : null;
+        $EmailThem = $request->email_them;
         $nguoiky = User::where('id', $request->nguoiky_id)->first();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
         $file= !empty($request['file']) ? $request['file'] : null;
+        $dataIdEmailNgoai = [];
         $donViSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
+        if ($tenMailThem && count($tenMailThem) > 0) {
+            foreach ($tenMailThem as $key => $data) {
+                $themDonVi = new MailNgoaiThanhPho();
+                $themDonVi->ten_don_vi = $data;
+                $themDonVi->email = $EmailThem[$key];
+                $themDonVi->save();
+                array_push($dataIdEmailNgoai, $themDonVi->id);
+            }
+        }
 
 
         $user = auth::user();
@@ -732,24 +746,53 @@ class VanBanDiController extends Controller
         $vanbandi->loai_van_ban_giay_moi = 1;
         $vanbandi->nguoi_tao = auth::user()->id;
         $vanbandi->save();
-        foreach ($file as $key => $getFile) {
-            $typeArray = explode('.', $getFile->getClientOriginalName());
-            $tenchinhfile = strtolower($typeArray[0]);
-            $extFile = $getFile->extension();
-            $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
-            $vanBanDiFile = new FileVanBanDi();
-            $getFile->move($uploadPath, $fileName);
-            $vanBanDiFile->ten_file = $tenchinhfile;
-            $vanBanDiFile->duong_dan = $urlFile;
-            $vanBanDiFile->duoi_file = $extFile;
-            $vanBanDiFile->van_ban_di_id = $vanbandi->id;
-            $vanBanDiFile->file_chinh_gui_di = 2;
-            $vanBanDiFile->trang_thai = 2;
-            $vanBanDiFile->nguoi_dung_id = auth::user()->id;
-            $vanBanDiFile->don_vi_id = $donViSo->don_vi_id;
-            $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
-            $vanBanDiFile->save();
+        if ($file && count($file) > 0) {
+            foreach ($file as $key => $getFile) {
+                $typeArray = explode('.', $getFile->getClientOriginalName());
+                $tenchinhfile = strtolower($typeArray[0]);
+                $extFile = $getFile->extension();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
+                $vanBanDiFile = new FileVanBanDi();
+                $getFile->move($uploadPath, $fileName);
+                $vanBanDiFile->ten_file = $tenchinhfile;
+                $vanBanDiFile->duong_dan = $urlFile;
+                $vanBanDiFile->duoi_file = $extFile;
+                $vanBanDiFile->van_ban_di_id = $vanbandi->id;
+                $vanBanDiFile->file_chinh_gui_di = 2;
+                $vanBanDiFile->trang_thai = 2;
+                $vanBanDiFile->nguoi_dung_id = auth::user()->id;
+                $vanBanDiFile->don_vi_id = $donViSo->don_vi_id;
+                $vanBanDiFile->loai_file = FileVanBanDi::LOAI_FILE_DA_KY;
+                $vanBanDiFile->save();
+            }
+        }
+        if ($tenMailThem && count($tenMailThem) > 0) {
+            foreach ($dataIdEmailNgoai as $key => $ngoai) {
+                $mailngoai = new NoiNhanMailNgoai();
+                $mailngoai->van_ban_di_id = $vanbandi->id;
+                $mailngoai->email = $ngoai;
+                $mailngoai->save();
+            }
+        }
+        if ($donvinhanmailngoaitp && count($donvinhanmailngoaitp) > 0) {
+            foreach ($donvinhanmailngoaitp as $key => $ngoai) {
+                $mailngoai = new NoiNhanMailNgoai();
+                $mailngoai->van_ban_di_id = $vanbandi->id;
+                $mailngoai->email = $ngoai;
+                $mailngoai->save();
+            }
+        }
+        if ($donvinhanvanbandi && count($donvinhanvanbandi) > 0) {
+            foreach ($donvinhanvanbandi as $key => $donViId) {
+                $donVi = DonVi::where('id', $donViId)->first();
+
+                $donvinhan = new NoiNhanVanBanDi();
+                $donvinhan->van_ban_di_id = $vanbandi->id;
+                $donvinhan->don_vi_id_nhan = $donViId;
+                $donvinhan->dieu_hanh = $donVi->dieu_hanh ?? 0;
+                $donvinhan->save();
+            }
         }
 
         return redirect()->route('van-ban-di.index')
