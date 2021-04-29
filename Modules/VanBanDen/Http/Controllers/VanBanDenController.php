@@ -20,6 +20,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
+use Modules\VanBanDen\Entities\TaiLieuThamKhao;
 use Modules\VanBanDen\Entities\TieuChuanVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
@@ -676,14 +677,16 @@ class VanBanDenController extends Controller
             $tachchuoi = explode("-", $tenchinhfile);
 //            $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = isset($tachchuoi[0]) ? (int)$tachchuoi[0] : null;
-            $yearsfile = isset($tachchuoi[2]) ? (int)$tachchuoi[2] : null;
+            $yearsfile = isset($tachchuoi[1]) ? (int)$tachchuoi[1] : null;
+
+//            dd($yearsfile);
 
 //            dd($soVanBan);
 
 //            $sovanban = SoVanBan::where('ten_viet_tat', 'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($soVanBan != null) {
                 if ($user->hasRole(VAN_THU_HUYEN)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
                     $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
@@ -1489,6 +1492,39 @@ class VanBanDenController extends Controller
             $vanBanDen->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
             $vanBanDen->save();
         }
+    }
+
+    public function taiLieuThamKhao()
+    {
+        return view('vanbanden::tai-lieu-tham-khao.tai-lieu-upload');
+    }
+    public function postTaiLieuThamKhao(Request $request)
+    {
+        $uploadPath = UPLOAD_FILE_TAI_LIEU;
+        $file = !empty($request['ten_file']) ? $request['ten_file'] : null;
+        if ($file && count($file) > 0) {
+            foreach ($file as $key => $getFile) {
+                $extFile = $getFile->extension();
+                $fileTaiLieu = new TaiLieuThamKhao();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+
+                $urlFile = UPLOAD_FILE_TAI_LIEU . '/' . $fileName;
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0777, true, true);
+                }
+                $getFile->move($uploadPath, $fileName);
+
+                $fileTaiLieu->ten_file = $fileName;
+                $fileTaiLieu->duong_dan = $urlFile;
+                $fileTaiLieu->duoi_file = $extFile;
+                $fileTaiLieu->save();
+
+            }
+
+        }
+
+        return redirect()->back()
+            ->with('success', 'Thêm file thành công !');
     }
 }
 
