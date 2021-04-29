@@ -52,6 +52,14 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">(*)</span></label>
+                                    <input type="text" class="form-control" value="{{$van_ban_den->co_quan_ban_hanh}}"
+                                           name="co_quan_ban_hanh" id="exampleInputEmail6"
+                                           placeholder="Cơ quan ban hành" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="exampleInputEmail4">Số ký hiệu <span
                                             style="color: red">(*)</span></label>
                                     <input type="text" class="form-control" value="{{$van_ban_den->so_ky_hieu}}"
@@ -74,23 +82,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row clearfix"></div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Cơ quan ban hành <span style="color: red">(*)</span></label>
-                                    <input type="text" class="form-control" value="{{$van_ban_den->co_quan_ban_hanh}}"
-                                           name="co_quan_ban_hanh" id="exampleInputEmail6"
-                                           placeholder="Cơ quan ban hành" required>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Người ký <span style="color: red">(*)</span></label>
-                                    <input type="text" class="form-control" value="{{$van_ban_den->nguoi_ky}}"
-                                           name="nguoi_ky" id="exampleInputEmail7"
-                                           placeholder="Người ký" required>
-                                </div>
-                            </div>
+
+
                             @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -106,6 +99,30 @@
                                     </div>
                                 </div>
                             @endif
+
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Trích yếu <span
+                                            style="color: red">(*)</span></label>
+                                    <textarea class="form-control" name="trich_yeu" rows="3"
+                                              required>{{$van_ban_den->trich_yeu}}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Người ký <span style="color: red">(*)</span></label>
+                                    <input type="text" class="form-control" value="{{$van_ban_den->nguoi_ky}}"
+                                           name="nguoi_ky" id="exampleInputEmail7"
+                                           placeholder="Người ký" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Người nhập </label>
+                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
+                                           placeholder="" disabled>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Ngày nhận </label>
@@ -117,14 +134,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail4">Trích yếu <span
-                                            style="color: red">(*)</span></label>
-                                    <textarea class="form-control" name="trich_yeu" rows="3"
-                                              required>{{$van_ban_den->trich_yeu}}</textarea>
+                                    <label for="exampleInputEmail4">Hạn xử lý </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control datepicker"
+                                               value="{{ !empty($van_ban_den->han_xu_ly) ? formatDMY($van_ban_den->han_xu_ly) : null }}"
+                                               name="han_xu_ly" placeholder="Hạn xử lý" required>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="row clearfix"></div>
                             <div class="col-md-12 text-right {{isset($van_ban_den) ? 'hidden': ''}}">
                                 <a class="btn btn-primary " role="button" data-toggle="collapse"
                                    href="#collapseExample"
@@ -190,19 +213,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <div class="input-group date">
-                                        <input type="text" class="form-control datepicker"
-                                               value="{{ !empty($van_ban_den->han_xu_ly) ? formatDMY($van_ban_den->han_xu_ly) : null }}"
-                                               name="han_xu_ly" placeholder="Hạn xử lý" required>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-3">
                                 <label for="exampleInputEmail4">File</label>
                                 <input type="file" class="form-control han-xu-ly" name="File" value="">

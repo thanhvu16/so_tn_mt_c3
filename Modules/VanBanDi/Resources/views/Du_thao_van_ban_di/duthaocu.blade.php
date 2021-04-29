@@ -52,12 +52,12 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 form-group">
-                            <label for="so_ky_hieu" class="col-form-label">Ký hiệu</label>
-                            <input type="text" class="form-control" value="{{$duthao->so_ky_hieu}}"
-                                   placeholder="số kí hiệu..."
-                                   name="so_ky_hieu">
-                        </div>
+{{--                        <div class="col-md-3 form-group">--}}
+{{--                            <label for="so_ky_hieu" class="col-form-label">Ký hiệu</label>--}}
+{{--                            <input type="text" class="form-control" value="{{$duthao->so_ky_hieu}}"--}}
+{{--                                   placeholder="số kí hiệu..."--}}
+{{--                                   name="so_ky_hieu">--}}
+{{--                        </div>--}}
                         <div class=" col-md-12 form-group">
                             <label for="sokyhieu" class="col-form-label ">Ý kiến </label>
                             <textarea rows="3" class="form-control"  placeholder="nội dung"
