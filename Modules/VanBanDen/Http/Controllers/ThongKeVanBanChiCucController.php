@@ -20,6 +20,8 @@ class ThongKeVanBanChiCucController extends Controller
      */
     public function index(Request $request)
     {
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
         canPermission(AllPermission::thongKeVanBanChiCuc());
         $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
             ->where('cap_xa',1)
@@ -28,7 +30,7 @@ class ThongKeVanBanChiCucController extends Controller
             ->get();
         foreach ($danhSachDonVi as $donVi)
         {
-            $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi);
+            $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay);
             if($donVi->parent_id == 0)
             {
                 $donViChiCuc = DonVi::where('id',auth::user()->don_vi_id)->first();
@@ -56,7 +58,7 @@ class ThongKeVanBanChiCucController extends Controller
 
     }
 
-    public function vanBanGiaiQuyet($donVi)
+    public function vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay)
     {
         $donViId = null;
         $type = null;
@@ -70,6 +72,21 @@ class ThongKeVanBanChiCucController extends Controller
                 return $query->where('don_vi_id', $donViId);
             }
         })
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
             ->get();
 
@@ -78,6 +95,21 @@ class ThongKeVanBanChiCucController extends Controller
                 return $query->where('don_vi_id', $donViId);
             }
         })
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
             ->get();
 

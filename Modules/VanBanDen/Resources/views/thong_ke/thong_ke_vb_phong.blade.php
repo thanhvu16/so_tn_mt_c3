@@ -9,6 +9,11 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-4">
+                                    <a class="btn btn-default waves-effect waves-light btn-sm" role="button"  data-toggle="collapse"
+                                       href="#collapseExample"
+                                       aria-expanded="false" aria-controls="collapseExample"><i
+                                            class="fa fa-search"></i> Lọc dữ liệu văn bản
+                                    </a>
                                 </div>
                                 <div class="col-md-8 text-right">
                                     <form action method="GET" action="{{ route('thongkevbphong') }}" class="form-export">
@@ -34,6 +39,35 @@
                                         </button>
                                     </form>
                                 </div>
+                                <div class="col-md-12 collapse in" id="collapseExample">
+                                    <form action method="GET" action="{{ route('thongkevbso') }}" >
+                                        <div class="col-md-5 form-group mt-2">
+                                            <label>Tìm từ ngày</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control datepicker" value="{{Request::get('tu_ngay')}}"
+                                                       name="tu_ngay" placeholder="dd/mm/yyyy">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 form-group mt-2">
+                                            <label>Tìm đến ngày</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control datepicker" value="{{Request::get('den_ngay')}}"
+                                                       name="den_ngay" placeholder="dd/mm/yyyy">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="margin-top: 30px">
+                                            <button type="submit" name="search" class="btn btn-primary"><i
+                                                    class="fa fa-search"></i> Tìm Kiếm</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
                                     <h5 style="font-weight: bold">- Thời gian: Từ 01/01/2021 đến 31/12/2021<br><br>
