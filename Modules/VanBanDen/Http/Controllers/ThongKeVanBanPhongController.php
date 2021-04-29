@@ -21,14 +21,16 @@ class ThongKeVanBanPhongController extends Controller
      */
     public function index(Request $request)
     {
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
         $donViPhong = auth::user()->don_vi_id;
 
         $nguoiDung = User::where('don_vi_id',$donViPhong)
             ->get();
         foreach ($nguoiDung as $dataNguoiDung)
         {
-            $dataNguoiDung->vanBanDaGiaiQuyet = $this->VanBanDenHoanThanhCuaDonVi($dataNguoiDung->id);
-            $dataNguoiDung->vanBanChuaGiaiQuyet = $this->VanBanDenChuaHoanThanhCuaDonVi($dataNguoiDung);
+            $dataNguoiDung->vanBanDaGiaiQuyet = $this->VanBanDenHoanThanhCuaDonVi($dataNguoiDung->id,$tu_ngay,$den_ngay);
+            $dataNguoiDung->vanBanChuaGiaiQuyet = $this->VanBanDenChuaHoanThanhCuaDonVi($dataNguoiDung,$tu_ngay,$den_ngay);
 
         }
         $soDonvi = $nguoiDung->count();
@@ -60,7 +62,7 @@ class ThongKeVanBanPhongController extends Controller
 
 
 
-    public function VanBanDenChuaHoanThanhCuaDonVi($user)
+    public function VanBanDenChuaHoanThanhCuaDonVi($user,$tu_ngay,$den_ngay)
     {
         $date = date('Y-m-d');
         $trinhTuNhanVanBan = 0;
@@ -90,6 +92,21 @@ class ThongKeVanBanPhongController extends Controller
             ->where('han_xu_ly', '<', $date)
             ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
             ->count();
 
 
@@ -97,6 +114,21 @@ class ThongKeVanBanPhongController extends Controller
             ->where('han_xu_ly', '>=', $date)
             ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
             ->count();
 
 
@@ -110,9 +142,24 @@ class ThongKeVanBanPhongController extends Controller
 
     }
 
-    public function VanBanDenHoanThanhCuaDonVi($userId)
+    public function VanBanDenHoanThanhCuaDonVi($userId,$tu_ngay,$den_ngay)
     {
         $danhSachVanBanDenDaHoanThanhDungHan = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
             ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN)
             ->get();
 

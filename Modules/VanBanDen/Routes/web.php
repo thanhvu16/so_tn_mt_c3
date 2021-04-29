@@ -40,6 +40,7 @@ Route::post('han-van-ban','VanBanDenController@layhantruyensangview')->name('lay
 Route::match(['get', 'post','put'], 'xoa-file-van-ban/{id}', ['as' =>'xoaFileDen', 'uses' => 'VanBanDenController@xoaFileDen']);
 
 Route::get('thong-ke-van-ban-so', array('as' => 'thongkevbso', 'uses' => 'ThongkeVanBanDenController@thongkevbso'));
+Route::get('chi-tiet-tong-van-ban-so/{id}', array('as' => 'chiTietTongVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietTongVanBanSo'));
 Route::get('thong-ke-van-ban-chi-cuc', array('as' => 'thongkevbchicuc', 'uses' => 'ThongKeVanBanChiCucController@index'));
 Route::get('thong-ke-van-ban-phong', array('as' => 'thongkevbphong', 'uses' => 'ThongKeVanBanPhongController@index'));
 
