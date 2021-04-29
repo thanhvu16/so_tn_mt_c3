@@ -67,3 +67,7 @@ Route::get('get-list-phong-ban/{id}', 'DonViController@getListPhongBan');
 // switch user
 Route::post('switch-user', 'NguoiDungController@switchOtherUser')->name('user.switch_user');
 Route::get('stop-switch-user', 'NguoiDungController@stopSwitchUser')->name('user.stop_switch_user');
+
+Route::resource('email-don-vi-ngoai-he-thong', 'EmailDonViNgoaiHeThongController');
+Route::post('update-all-email-don-vi-ngoai-he-thong', 'EmailDonViNgoaiHeThongController@updateAll')
+    ->name('email-don-vi-ngoai-he-thong.update_all');

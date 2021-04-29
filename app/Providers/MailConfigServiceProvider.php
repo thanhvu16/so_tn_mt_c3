@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Providers;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 //use  Auth;
