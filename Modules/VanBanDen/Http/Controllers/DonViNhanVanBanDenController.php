@@ -51,7 +51,8 @@ class DonViNhanVanBanDenController extends Controller
 
 
         $vanbanhuyenxuongdonvi = DonViChuTri::with('canBoChuyen')
-            ->where(['don_vi_id' => $donViId])->whereNull('vao_so_van_ban')
+            ->where(['don_vi_id' => $donViId])
+            ->whereNull('vao_so_van_ban')
             ->where(function ($query) use ($hienthi) {
                 if (!empty($hienthi)) {
                     if ($hienthi == 2)

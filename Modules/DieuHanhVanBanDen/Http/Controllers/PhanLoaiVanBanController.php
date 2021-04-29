@@ -45,6 +45,10 @@ class PhanLoaiVanBanController extends Controller
             ->select('id')->first();
 
         if ($donVi->parent_id != 0) {
+            $parentDonVi = DonVi::where('id', $donVi->parent_id)
+                ->select('id', 'type')
+                ->whereNull('deleted_at')->first();
+
             $active = VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB;
             // tham muu cap chi cuc
             $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->parent_id)
@@ -103,7 +107,7 @@ class PhanLoaiVanBanController extends Controller
 
             return view('dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.phan_loai_van_ban',
                 compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'danhSachDonVi',
-                    'loaiVanBanGiayMoi', 'order', 'chuTich', 'active'));
+                    'loaiVanBanGiayMoi', 'order', 'chuTich', 'active', 'parentDonVi'));
         } else {
             //tham muu cap so
             $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
@@ -416,6 +420,8 @@ class PhanLoaiVanBanController extends Controller
             $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
                 ->select('id')->first();
 
+            $parentDonVi = null;
+
             if ($user->can(AllPermission::thamMuu())) {
 
                 $donViChuTri = DonViChuTri::where(function ($query) use ($donVi) {
@@ -429,6 +435,11 @@ class PhanLoaiVanBanController extends Controller
                     ->get();
 
                 $donViId = $donVi->parent_id;
+
+                $parentDonVi = DonVi::where('id', $donVi->parent_id)
+                    ->select('id', 'type')
+                    ->whereNull('deleted_at')->first();
+
                 $view = 'dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.da_phan_loai';
 
             } else {
@@ -507,7 +518,7 @@ class PhanLoaiVanBanController extends Controller
 
                 return view($view,
                     compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'danhSachDonVi',
-                        'active', 'loaiVanBanGiayMoi', 'order', 'chuTich'));
+                        'active', 'loaiVanBanGiayMoi', 'order', 'chuTich', 'parentDonVi'));
 
         } else {
             $danhSachPhoChuTich = User::role(PHO_CHU_TICH)

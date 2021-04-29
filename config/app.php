@@ -162,7 +162,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        App\Providers\MailConfigServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -178,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        App\Providers\MailConfigServiceProvider::class,
 
 
     ],

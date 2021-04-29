@@ -110,10 +110,10 @@ class VanBanTraLaiController extends Controller
                 if ($currentUser->hasRole(VAN_THU_DON_VI)) {
                     // van thu gui tra lai van ban tu van ban cho vao so
                     $chuyenNhanDonViChuTri = DonViChuTri::where('don_vi_id', $currentUser->donVi->parent_id)
-                        ->whereNull('vao_so_van_ban')
+//                        ->whereNull('vao_so_van_ban')
                         ->where('van_ban_den_id', $vanBanDenId)
                         ->whereNull('hoan_thanh')
-                        ->whereNull('chuyen_tiep')
+//                        ->whereNull('chuyen_tiep')
                         ->select('id', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'van_ban_den_id')
                         ->first();
                 }
@@ -186,7 +186,7 @@ class VanBanTraLaiController extends Controller
                         break;
 
                     case VanBanDen::TRUONG_PHONG_NHAN_VB:
-                        if ($donVi->cap_xa = DonVi::CAP_XA && $currentUser->hasRole(TRUONG_BAN)) {
+                        if ($donVi->cap_xa = DonVi::CAP_XA && $currentUser->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
                             // chuyen van ban len pho chu tich xa chuyen lai van ban
                             $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                             $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
@@ -204,7 +204,7 @@ class VanBanTraLaiController extends Controller
                                 $vanBanDen->save();
                             }
                         } else {
-                            if ($currentUser->hasRole(TRUONG_PHONG)) {
+                            if ($currentUser->hasRole([TRUONG_PHONG, TRUONG_BAN])) {
                                 // chuyen tra lai van thu neu don vi co dieu hanh
                                 if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
 
@@ -596,7 +596,7 @@ class VanBanTraLaiController extends Controller
                 if ($trinhTuNhanVanBan != VanBanDen::CHUYEN_VIEN_NHAN_VB) {
                     $vanBanDen->getChuyenVienPhoiHop = $vanBanDen->getChuyenVienPhoiHop() ?? null;
                     $vanBanDen->lichCongTacDonVi = $vanBanDen->checkLichCongTacDonVi();
-                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien($danhSachPhoPhong->pluck('id')->toArray());
+                    $vanBanDen->phoPhong = $vanBanDen->getChuyenVienThucHien(count($danhSachPhoPhong) ? $danhSachPhoPhong->pluck('id')->toArray() : [0]);
                     $vanBanDen->chuyenVien = $vanBanDen->getChuyenVienThucHien(count($danhSachChuyenVien) > 0 ? $danhSachChuyenVien->pluck('id')->toArray() : [0]);
                     $vanBanDen->truongPhong = $vanBanDen->getChuyenVienThucHien([$currentUser->id]);
                 }

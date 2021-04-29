@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 //use  Auth;
@@ -26,8 +27,9 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        dd(Auth::user());
-        $user = VanBanDi::all();
+        //$user = Auth::user();
+        //$test = User::role(VAN_THU_HUYEN)->first();
+
 /*            $config = array(
                 'driver'     => env('MAIL_DRIVER'),
                 'host'       => env('MAIL_HOST'),

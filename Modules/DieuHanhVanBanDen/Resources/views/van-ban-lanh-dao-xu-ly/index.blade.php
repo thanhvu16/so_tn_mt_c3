@@ -84,12 +84,14 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        <p>
-                                            <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
-                                               data-id="{{ $vanBanDen->id }}">
-                                                <span><i class="fa fa-reply"></i>Trả lại VB</span>
-                                            </a>
-                                        </p>
+                                        @if (!empty($checkThamMuuSo))
+                                            <p>
+                                                <a class="tra-lai-van-ban" data-toggle="modal" data-target="#modal-tra-lai"
+                                                   data-id="{{ $vanBanDen->id }}">
+                                                    <span><i class="fa fa-reply"></i>Trả lại VB</span>
+                                                </a>
+                                            </p>
+                                        @endif
 
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>

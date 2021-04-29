@@ -130,11 +130,12 @@
                                                 <select name="chu_tich_id[{{ $vanBanDen->id }}]"
                                                         id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
+                                                        data-type="{{ isset($parentDonVi) ? $parentDonVi->type : 1 }}"
                                                         class="form-control select2 chu-tich"
                                                         placeholder="Chọn giám đốc chủ trì"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
-                                                    <option value="">Chọn giám đốc chủ trì</option>
+                                                    <option value="">Chọn {{ isset($parentDonVi) && $parentDonVi->type == 2 ? 'chi cục trưởng' : 'giám đốc' }} chủ trì</option>
                                                     <option
                                                         value="{{ $chuTich->id ?? null }}" {{ isset($vanBanDen->chuTich) && $vanBanDen->chuTich->can_bo_nhan_id == $chuTich->id ? 'selected' : null }}>{{ $chuTich->ho_ten ?? null }}</option>
                                                 </select>
@@ -145,11 +146,12 @@
                                                     id="pho-chu-tich-{{ $vanBanDen->id }}"
                                                     class="form-control pho-chu-tich select2"
                                                     data-id="{{ $vanBanDen->id }}"
+                                                    data-type="{{ isset($parentDonVi) ? $parentDonVi->type : 1 }}"
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                     placeholder="Chọn phó giám đốc"
                                                     form="form-tham-muu"
                                                 >
-                                                    <option value="">Chọn phó giám đốc chủ trì
+                                                    <option value="">Chọn phó {{ isset($parentDonVi) && $parentDonVi->type == 2 ? 'chi cục trưởng' : 'giám đốc' }} chủ trì
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
@@ -359,17 +361,61 @@
         let ArrVanBanDenDonViId = [];
         let txtChuTich = null;
 
+        $('.chu-tich').on('change', function () {
+            let $this = $(this);
+            let id = $this.val();
+            let type = $(this).data('type');
+
+            vanBanDenDonViId = $this.data('id');
+            let statusTraLai = $this.data('tra-lai');
+
+            let textChuTich = $this.find("option:selected").text() + ' xem xét';
+
+            let checkPhoChuTich = $this.parents('.tr-tham-muu').find('.pho-chu-tich option:selected').val();
+
+            if (id) {
+                checkVanBanDenId(vanBanDenDonViId);
+                if (type == 2) {
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo chi cục trưởng ' + textChuTich);
+                    txtChuTich = 'Kính báo cáo chi cục trưởng ' + textChuTich;
+                } else {
+                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo giám đốc ' + textChuTich);
+                    txtChuTich = 'Kính báo cáo giám đốc ' + textChuTich;
+                }
+
+                $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val(id);
+                checkedDuHop($this, '.chu-tich-du-hop');
+            } else {
+                removeVanBanDenDonViId(vanBanDenDonViId);
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
+                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).text('');
+                $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val();
+                removeDuHop($this, '.chu-tich-du-hop');
+            }
+
+            if (statusTraLai) {
+                $('#form-tham-muu').find('input[name="van_ban_tra_lai"]').val(statusTraLai);
+            }
+
+            lanhDaoXemDeBiet($this, 'CT');
+        });
+
         $('.pho-chu-tich').on('change', function () {
             let $this = $(this);
             let id = $this.val();
             let statusTraLai = $(this).data('tra-lai');
+            let type = $(this).data('type');
 
             let textPhoChuTich = $this.find("option:selected").text() + ' chỉ đạo';
             vanBanDenDonViId = $this.data('id');
 
             let ct = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text();
             if (ct.length > 0) {
-                txtChuTich = 'Kính báo cáo giám đốc ' + ct + ' xem xét';
+                if (type == 2) {
+                    txtChuTich = 'Kính báo cáo chi cục trưởng ' + ct + ' xem xét';
+                } else {
+                    txtChuTich = 'Kính báo cáo giám đốc ' + ct + ' xem xét';
+                }
             }
 
             if (statusTraLai) {
@@ -378,23 +424,37 @@
 
             if (id) {
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
+
                 let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
+                if (type == 2) {
+                    txtChiDao = txtChuTich + ', giao PCCT ' + textPhoChuTich;
+                }
+
                 if (status == 2) {
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
-
+                    if (type == 2) {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó chi cục trưởng ' + textPhoChuTich);
+                    }
                 } else {
                     $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
+
+                    if (type == 2) {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó chi cục trưởng ' + textPhoChuTich);
+                    }
                 }
 
                 checkVanBanDenId(vanBanDenDonViId);
+                checkedDuHop($this, '.pho-ct-du-hop');
 
             } else {
-                $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
+                $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(' ');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
                 removeVanBanDenDonViId(vanBanDenDonViId);
+                removeDuHop($this, '.pho-ct-du-hop');
             }
+
             lanhDaoXemDeBiet($this, 'PCT');
         });
 
@@ -599,6 +659,20 @@
                 $('#form-tham-muu').submit();
             }
         });
+
+        // check du hop
+        function checkedDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', true);
+            if ($className === '.don-vi-du-hop') {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
+            } else {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+            }
+        }
+
+        function removeDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', false);
+        }
 
     </script>
 @endsection

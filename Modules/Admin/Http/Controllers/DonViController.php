@@ -84,6 +84,9 @@ class DonViController extends Controller
         if ($request->check_parent == 1) {
             $donvi->parent_id = $request->get('parent_id');
         }
+        if (!empty($request->dieu_hanh) && strpos(strtolower($request->get('ten_don_vi')), TXT_CHI_CUC) !== false) {
+            $donvi->type = DonVi::TYPE_CHI_CUC;
+        }
         $donvi->save();
 
         // check update nguoi dung
@@ -142,6 +145,9 @@ class DonViController extends Controller
         $donvi->parent_id = 0;
         if ($request->check_parent == 1) {
             $donvi->parent_id = $request->get('parent_id');
+        }
+        if (!empty($request->dieu_hanh) && strpos(strtolower($request->get('ten_don_vi')), TXT_CHI_CUC) !== false) {
+            $donvi->type = DonVi::TYPE_CHI_CUC;
         }
         $donvi->save();
 
