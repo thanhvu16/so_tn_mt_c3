@@ -114,7 +114,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
             return view('dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.index',
                 compact('danhSachVanBanDen', 'danhSachPhoChuTich', 'danhSachDonVi',
-                    'loaiVanBanGiayMoi', 'order', 'chuTich', 'active'));
+                    'loaiVanBanGiayMoi', 'order', 'chuTich', 'active', 'donVi'));
 
         } else {
             // chu tich huyen nhan van ban

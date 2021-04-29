@@ -121,13 +121,13 @@
                                                         id="pho-chu-tich-{{ $vanBanDen->id }}"
                                                         class="form-control pho-chu-tich select2"
                                                         data-id="{{ $vanBanDen->id }}"
+                                                        data-type="{{ isset($donVi) ? $donVi->type : 1 }}"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         placeholder="Chọn phó giám đốc"
                                                         form="form-tham-muu"
                                                     >
-                                                        <option value="">Chọn phó chi cục trưởng chủ trì
-                                                        </option>
-                                                        @forelse($danhSachPhoChuTich as $phoChuTich)
+                                                        <option value="">Chọn phó {{ isset($donVi) && $donVi->type == 2 ? 'chi cục trưởng' : 'giám đốc' }} chủ trì
+                                                    @forelse($danhSachPhoChuTich as $phoChuTich)
                                                             <option
                                                                 value="{{ $phoChuTich->id }}" {{ !empty($vanBanDen->phoChuTich) && $vanBanDen->phoChuTich->can_bo_nhan_id == $phoChuTich->id ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
                                                         @empty
@@ -354,13 +354,18 @@
             let $this = $(this);
             let id = $this.val();
             let statusTraLai = $(this).data('tra-lai');
+            let type = $(this).data('type');
 
             let textPhoChuTich = $this.find("option:selected").text() + ' chỉ đạo';
             vanBanDenDonViId = $this.data('id');
 
             let ct = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text();
             if (ct.length > 0) {
-                txtChuTich = 'Kính báo cáo giám đốc ' + ct + ' xem xét';
+                if (type == 2) {
+                    txtChuTich = 'Kính báo cáo chi cục trưởng ' + ct + ' xem xét';
+                } else {
+                    txtChuTich = 'Kính báo cáo giám đốc ' + ct + ' xem xét';
+                }
             }
 
             if (statusTraLai) {
@@ -371,11 +376,19 @@
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
                 let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
                 if (status == 2) {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
+                    if (type == 2) {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó chi cục trưởng ' + textPhoChuTich);
+                    } else {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
+                    }
 
                 } else {
                     $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
+                    if (type == 2) {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó chi cục trưởng ' + textPhoChuTich);
+                    } else {
+                        $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
+                    }
                 }
 
                 checkVanBanDenId(vanBanDenDonViId);
