@@ -436,6 +436,10 @@ class PhanLoaiVanBanController extends Controller
 
                 $donViId = $donVi->parent_id;
 
+                $parentDonVi = DonVi::where('id', $donVi->parent_id)
+                    ->select('id', 'type')
+                    ->whereNull('deleted_at')->first();
+
                 $view = 'dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.da_phan_loai';
 
             } else {
@@ -452,10 +456,6 @@ class PhanLoaiVanBanController extends Controller
                 $donViId = $donVi->id;
                 $view = 'dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.da_chi_dao';
             }
-
-            $parentDonVi = DonVi::where('id', $donViId)
-                ->select('id', 'type')
-                ->whereNull('deleted_at')->first();
 
                 $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 

@@ -16,7 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Mail , auth;
+use Mail, auth;
 
 class SendEmailFileVanBanDi implements ShouldQueue
 {
@@ -44,6 +44,26 @@ class SendEmailFileVanBanDi implements ShouldQueue
      */
     public function handle()
     {
+        $user = auth::user();
+
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
+
+        $donVi = DonVi::where('id', $donViId)->where('status_email', DonVi::STATUS_EMAIL_ACTIVE)
+            ->select('id', 'email', 'password')->first();
+        if ($donVi) {
+            \Config::set('mail.mailers.smtp.username', $donVi->email);
+            \Config::set('mail.mailers.smtp.password', $donVi->password);
+        }
+
         if ($this->type == VanBanDi::LOAI_VAN_BAN_GIAY_MOI) {
             $danhSachVanBanDi = VanBanDi::has('vanBanDiFileDaKy')
                 ->with('vanBanDiFileDaKy', 'mailtrongtp', 'mailngoaitp')
@@ -196,11 +216,11 @@ class SendEmailFileVanBanDi implements ShouldQueue
             $donViId = $user->donVi->parent_id;
         }
 
-        $donvigui = Donvi::where('id',$donViId)
+        $donvigui = Donvi::where('id', $donViId)
             ->whereNull('deleted_at')
             ->first();
 
-        $maDinhDanh = !empty($donvigui) ? $donvigui->ma_hanh_chinh :'';
+        $maDinhDanh = !empty($donvigui) ? $donvigui->ma_hanh_chinh : '';
         $tenDonVi = !empty($donvigui) ? $donvigui->ten_don_vi : '';
 
         $xml = new \DOMDocument("1.0", 'UTF-8');
@@ -326,8 +346,8 @@ class SendEmailFileVanBanDi implements ShouldQueue
 //            $ma = 0;
 //            $ten = 'Văn bản mới';
 //        }
-                 $ma = 0;
-            $ten = 'Văn bản mới';
+        $ma = 0;
+        $ten = 'Văn bản mới';
         $STRMANGHIEPVU = $xml->createElement('STRMANGHIEPVU');
         $STRMANGHIEPVU_Text = $xml->createTextNode($ma);
         $STRMANGHIEPVU->appendChild($STRMANGHIEPVU_Text);
@@ -408,24 +428,15 @@ class SendEmailFileVanBanDi implements ShouldQueue
                 $content = $vanBanDi->trich_yeu;
                 $toEmail = $emailNgoaiDonVi->laytendonvingoai->email;// mail nhận
                 $toName = $emailNgoaiDonVi->laytendonvingoai->ten_don_vi;
-//                Mail::send('emails.gui_mail_van_ban_di', ['content' => $content], function ($message) use ($attachments, $toEmail, $toName, $subject, $XmlFileName) {
-//                    $message->to($toEmail, $toName)->subject
-//                    ($subject);
-//                    if (count($attachments) > 0) {
-//                        foreach ($attachments as $fileAttach) {
-//                            $message->attach($fileAttach);
-//                        }
-//                    }
-//                    $message->attach($XmlFileName);
-//                });
+
                 Mail::Send('emails.gui_mail_van_ban_di', ['content' => $content], function ($message) use ($attachments, $toEmail, $toName, $subject, $XmlFileName) {
                     $message->to($toEmail, $toName)->subject
                     ($subject);
-                        if (count($attachments) > 0) {
-                            foreach ($attachments as $fileAttach) {
-                                $message->attach($fileAttach);
-                            }
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as $fileAttach) {
+                            $message->attach($fileAttach);
                         }
+                    }
                     $message->attach($XmlFileName);
                 });
             }

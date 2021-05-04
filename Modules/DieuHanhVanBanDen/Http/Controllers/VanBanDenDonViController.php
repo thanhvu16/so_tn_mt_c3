@@ -592,7 +592,7 @@ class VanBanDenDonViController extends Controller
                             ->delete();
 
                         if (!empty($danhSachDonViPhoiHopIds[$vanBanDenId])) {
-                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
+                            DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, !empty($danhSachPhoChuTichIds[$vanBanDenId]) ? $danhSachPhoChuTichIds[$vanBanDenId] : null);
 
                             // luu vet van ban den
                             LogXuLyVanBanDen::luuLogXuLyVanBanDen($dataLuuDonViPhoiHop);
