@@ -52,6 +52,7 @@ class VanBanDiController extends Controller
         $donvisoanthao = $request->get('donvisoanthao_id');
         $so_van_ban = $request->get('sovanban_id');
         $don_vi_van_ban = $request->get('don_vi_van_ban');
+        $phatHanhVanBan = $request->get('phat_hanh_van_ban');
 
         $nguoi_ky = $request->get('nguoiky_id');
         $ngaybatdau = $request->get('start_date');
@@ -70,7 +71,8 @@ class VanBanDiController extends Controller
                 ->whereHas('donVi', function ($query) {
                     return $query->whereNull('cap_xa');
                 })->first();
-            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
+            $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
+                ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
@@ -138,6 +140,11 @@ class VanBanDiController extends Controller
                 ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
+                    }
+                })
+                ->where(function ($query) use ($phatHanhVanBan) {
+                    if (!empty($phatHanhVanBan)) {
+                        return $query->where('phat_hanh_van_ban', $phatHanhVanBan);
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
@@ -1349,7 +1356,18 @@ class VanBanDiController extends Controller
         if (empty($multiFiles) || count($multiFiles) == 0 || (count($multiFiles) > 19)) {
             return redirect()->back()->with('warning', 'Bạn phải chọn file hoặc phải chọn số lượng file nhỏ hơn 20 file   !');
         }
-        $donViId = auth::user()->don_vi_id;
+        $donViId = null;
+
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
 
         foreach ($multiFiles as $key => $getFile) {
             $typeArray = explode('.', $getFile->getClientOriginalName());
@@ -1360,7 +1378,8 @@ class VanBanDiController extends Controller
             $tachchuoi = explode("-", $tenchinhfile);
             $tenviettatso = strtoupper($tachchuoi[0]);
             $sodi = (int)$tachchuoi[1];
-            $loaivanban = LoaiVanBan::where(['ten_viet_tat' => $tenviettatso])->whereNull('deleted_at')->first();
+            $loaivanban = LoaiVanBan::where(['ten_viet_tat' => $tenviettatso])
+                ->whereNull('deleted_at')->first();
 
             $vanban = null;
 
@@ -1370,13 +1389,16 @@ class VanBanDiController extends Controller
 
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $donViId = auth::user()->donVi->parent_id;
                     $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'phong_phat_hanh' => auth::user()->donVi->parent_id])->first();
                 }
             }
             if ($vanban) {
 
-                $xoafiletrinhky = FileVanBanDi::where(['trang_thai' => 2, 'file_chinh_gui_di' => 2])->first();
+                $xoafiletrinhky = FileVanBanDi::where([
+                    'trang_thai' => 2,
+                    'file_chinh_gui_di' => 2,
+                    'van_ban_di_id' => $vanban->id
+                ])->first();
                 if ($xoafiletrinhky) {
                     $xoafiletrinhky->delete();
                 }
@@ -1409,8 +1431,8 @@ class VanBanDiController extends Controller
                 }
 
 //                gửi mail đến các đơn vị ngoài
-//                SendEmailFileVanBanDi::dis(VanBanDi::LOAI_VAN_BAN_DI, null);
-                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null)->delay(now()->addMinutes(3));
+//                SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
+                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(4));
             }
         }
 
@@ -1853,7 +1875,7 @@ class VanBanDiController extends Controller
 
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
         return redirect()->back()->with(['capso' => "$soDi"]);
-//        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id)->delay(now()->addMinutes(5));
+//        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id, $donViId)->delay(now()->addMinutes(5));
 
 //        return response()->json([
 //            'status' => true,
