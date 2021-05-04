@@ -30,6 +30,12 @@ class FileVanBanDi extends Model
     {
         return asset($this->duong_dan);
     }
+
+    public function getLinkFile()
+    {
+        return public_path($this->duong_dan);
+    }
+
     public function nguoiDung()
     {
         return $this->belongsTo(User::class, 'nguoi_dung_id', 'id');

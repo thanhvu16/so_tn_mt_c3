@@ -30,11 +30,13 @@ class SendEmailFileVanBanDi implements ShouldQueue
 
     protected $type;
     protected $vanBanDiId;
+    protected $donViId;
 
-    public function __construct($type, $vanBanDiId)
+    public function __construct($type, $vanBanDiId, $donViId)
     {
         $this->type = $type;
         $this->vanBanDiId = $vanBanDiId;
+        $this->donViId = $donViId;
     }
 
     /**
@@ -44,20 +46,8 @@ class SendEmailFileVanBanDi implements ShouldQueue
      */
     public function handle()
     {
-        $user = auth::user();
 
-        if ($user->hasRole(VAN_THU_HUYEN)) {
-            $lanhDaoSo = User::role([CHU_TICH])
-                ->whereHas('donVi', function ($query) {
-                    return $query->whereNull('cap_xa');
-                })->first();
-
-            $donViId = $lanhDaoSo->don_vi_id ?? null;
-        } else {
-            $donViId = $user->donVi->parent_id;
-        }
-
-        $donVi = DonVi::where('id', $donViId)->where('status_email', DonVi::STATUS_EMAIL_ACTIVE)
+        $donVi = DonVi::where('id', $this->donViId)->where('status_email', DonVi::STATUS_EMAIL_ACTIVE)
             ->select('id', 'email', 'password')->first();
         if ($donVi) {
             \Config::set('mail.mailers.smtp.username', $donVi->email);
@@ -94,6 +84,7 @@ class SendEmailFileVanBanDi implements ShouldQueue
 
                 // update file vb di
                 $this->upDateFileVanBanDiDaGui($vanBanDi->vanBanDiFileDaKy);
+                $this->updateVanBanDi($vanBanDi);
             }
         }
     }
@@ -203,20 +194,7 @@ class SendEmailFileVanBanDi implements ShouldQueue
 //            ->whereNull('deleted_at')
 //            ->first();
 //
-        $user = auth::user();
-        $donViId = null;
-        if ($user->hasRole(VAN_THU_HUYEN)) {
-            $lanhDaoSo = User::role([CHU_TICH])
-                ->whereHas('donVi', function ($query) {
-                    return $query->whereNull('cap_xa');
-                })->first();
-
-            $donViId = $lanhDaoSo->don_vi_id ?? null;
-        } else {
-            $donViId = $user->donVi->parent_id;
-        }
-
-        $donvigui = Donvi::where('id', $donViId)
+        $donvigui = Donvi::where('id', $this->donViId)
             ->whereNull('deleted_at')
             ->first();
 
@@ -414,11 +392,11 @@ class SendEmailFileVanBanDi implements ShouldQueue
     {
         $fileVanBanDi = $vanBanDi->vanBanDiFileDaKy;
         $attachments = [];
-        $XmlFileName = asset('XMLOutput_N.sdk');
+        $XmlFileName = public_path('XMLOutput_N.sdk');
 
         if (count($fileVanBanDi) > 0) {
             foreach ($fileVanBanDi as $file) {
-                $attachments[] = $file->getUrlFile();
+                $attachments[] = $file->getLinkFile();
             }
         }
 
@@ -451,5 +429,11 @@ class SendEmailFileVanBanDi implements ShouldQueue
             $file->trang_thai_gui = FileVanBanDi::TRANG_THAI_DA_GUI;
             $file->save();
         }
+    }
+
+    public function updateVanBanDi($vanBanDi)
+    {
+        $vanBanDi->phat_hanh_van_ban = VanBanDi::DA_PHAT_HANH;
+        $vanBanDi->save();
     }
 }

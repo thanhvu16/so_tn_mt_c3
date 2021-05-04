@@ -455,6 +455,10 @@ class PhanLoaiVanBanController extends Controller
 
                 $donViId = $donVi->id;
                 $view = 'dieuhanhvanbanden::don-vi-cap-xa.lanh-dao.da_chi_dao';
+
+                $parentDonVi = DonVi::where('id', $donVi->id)
+                    ->select('id', 'type')
+                    ->whereNull('deleted_at')->first();
             }
 
                 $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();

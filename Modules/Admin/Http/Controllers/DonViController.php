@@ -86,6 +86,8 @@ class DonViController extends Controller
         }
         if (!empty($request->dieu_hanh) && strpos(strtolower($request->get('ten_don_vi')), TXT_CHI_CUC) !== false) {
             $donvi->type = DonVi::TYPE_CHI_CUC;
+        } else {
+            $donvi->type = DonVi::TYPE_TRUNG_TAM;
         }
         $donvi->save();
 
@@ -148,6 +150,8 @@ class DonViController extends Controller
         }
         if (!empty($request->dieu_hanh) && strpos(strtolower($request->get('ten_don_vi')), TXT_CHI_CUC) !== false) {
             $donvi->type = DonVi::TYPE_CHI_CUC;
+        } else {
+            $donvi->type = DonVi::TYPE_TRUNG_TAM;
         }
         $donvi->save();
 

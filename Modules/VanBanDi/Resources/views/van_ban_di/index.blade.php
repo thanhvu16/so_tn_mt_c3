@@ -70,7 +70,7 @@
                                     class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }}"
                                     id="collapseExample">
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="linhvuc_id" class="col-form-label">Loại văn bản</label>
                                             <select class="form-control show-tick select2-search" autofocus
                                                     name="loaivanban_id" id="loaivanban_id">
@@ -82,7 +82,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="cap_ban_hanh_id" class="col-form-label">Sổ văn bản đi</label>
                                             <select class="form-control show-tick select2-search" name="sovanban_id">
                                                 <option value="">-- Chọn Sổ Văn Bản Đi --</option>
@@ -94,13 +94,13 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
                                             <input type="text" value="{{Request::get('vb_sokyhieu')}}"
                                                    id="vb_sokyhieu" name="vb_sokyhieu" class="form-control"
                                                    placeholder="Nhập số ký hiệu văn bản đi...">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo</label>
                                             <select class="form-control show-tick select2-search"
                                                     name="donvisoanthao_id">
@@ -113,19 +113,19 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Nhập từ ngày</label>
                                             <input type="date" name="start_date" class="form-control"
                                                    value="{{Request::get('start_date')}}"
                                                    autocomplete="off">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Nhập đến ngày</label>
                                             <input type="date" name="end_date" id="vb_ngaybanhanh" class="form-control"
                                                    value="{{Request::get('end_date')}}"
                                                    autocomplete="off">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký</label>
                                             <select class="form-control show-tick select2-search" name="nguoiky_id">
                                                 <option value="">-- Chọn Người Ký --</option>
@@ -136,12 +136,20 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
+                                            <label for="co_quan_ban_hanh_id" class="col-form-label">Trạng thái</label>
+                                            <select class="form-control select2" name="phat_hanh_van_ban">
+                                                <option value="">-- Chọn --</option>
+                                                    <option value="1" {{ Request::get('phat_hanh_van_ban') == 1 ? 'selected' : null }}>Chờ phát hành</option>
+                                                    <option value="2" {{ Request::get('phat_hanh_van_ban') == 2 ? 'selected' : null }}>Đã phát hành</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
                                             <label for="co_quan_ban_hanh_id" class="col-form-label">Chức vụ</label>
                                             <input type="text" class="form-control" placeholder="chức vụ" name="chuc_vu"
                                                    value="{{Request::get('chuc_vu')}}">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label class="col-form-label">Năm</label>
                                             <select name="year" class="form-control select2">
                                                 <option value="">-- Tất cả --</option>
@@ -220,37 +228,42 @@
                                     </td>
                                     <td>
                                         {{--                                                    {{$vbDi->mailtrongtp}}--}}
-                                        @forelse($vbDi->donvinhanvbdi as $key=>$item)
-                                            <p>
-                                                - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
-                                            </p>
-                                        @empty
-                                        @endforelse
-                                        @forelse($vbDi->mailngoaitp as $key=>$item)
-                                            <p>
-                                                - {{$item->laytendonvingoai->ten_don_vi ?? ''}}
-                                            </p>
-                                        @empty
-                                        @endforelse
+                                        @if ($vbDi->donvinhanvbdi)
+                                            @foreach($vbDi->donvinhanvbdi as $key=>$item)
+                                                <p>- {{ $item->laytendonvinhan->ten_don_vi }}</p>
+                                            @endforeach
+                                        @endif
+                                        @if ($vbDi->mailngoaitp)
+                                            @foreach($vbDi->mailngoaitp as $key=>$item)
+                                                <p>- {{$item->laytendonvingoai->ten_don_vi ?? ''}}</p>
+                                            @endforeach
+                                        @endif
+                                        @if ($vbDi->phat_hanh_van_ban == \Modules\VanBanDi\Entities\VanBanDi::CHO_PHAT_HANH)
+                                            <span class="label label-warning">Chờ phát hành</span>
+                                        @else
+                                            <span class="label label-success">Đã phát hành</span>
+                                        @endif
                                     </td>
                                     <td class="text-center">
-                                        @hasanyrole('văn thư đơn vị|văn thư sở')
-                                        <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
-                                            @csrf
-                                            <a href="{{route('van-ban-di.edit',$vbDi->id)}}"
-                                               class="fa fa-edit" role="button"
-                                               title="Sửa">
-                                                <i class="fas fa-file-signature"></i>
-                                            </a>
-                                            <button
-                                                class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item"
-                                                role="button"
-                                                title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                            <input type="text" class="hidden" value="{{$vbDi->id}}" name="id_vb">
-                                        </form>
-                                        @endrole
+                                        @if ($vbDi->phat_hanh_van_ban != \Modules\VanBanDi\Entities\VanBanDi::DA_PHAT_HANH)
+                                            @hasanyrole('văn thư đơn vị|văn thư sở')
+                                            <form method="Get" action="{{route('vanbandidelete',$vbDi->id)}}">
+                                                @csrf
+                                                <a href="{{route('van-ban-di.edit',$vbDi->id)}}"
+                                                   class="fa fa-edit" role="button"
+                                                   title="Sửa">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </a>
+                                                <button
+                                                    class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item"
+                                                    role="button"
+                                                    title="Xóa">
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                </button>
+                                                <input type="text" class="hidden" value="{{$vbDi->id}}" name="id_vb">
+                                            </form>
+                                            @endrole
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -267,7 +280,7 @@
                                    ,'vb_sokyhieu' => Request::get('vb_sokyhieu'),
                                    'donvisoanthao_id' => Request::get('donvisoanthao_id'),'start_date' => Request::get('start_date'),
                                    'end_date' => Request::get('end_date'),'nguoiky_id' => Request::get('nguoiky_id'),'chuc_vu' => Request::get('chuc_vu'),
-                                   'vb_trichyeu' => Request::get('vb_trichyeu'),'search' =>Request::get('search'), 'year' => Request::get('year')])->render() !!}
+                                   'vb_trichyeu' => Request::get('vb_trichyeu'),'search' =>Request::get('search'), 'year' => Request::get('year'), 'phat_hanh_van_ban' => Request::get('phat_hanh_van_ban')])->render() !!}
                             </div>
                         </div>
                     </div>

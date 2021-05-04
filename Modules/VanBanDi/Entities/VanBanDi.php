@@ -20,6 +20,8 @@ class VanBanDi extends Model
     use SoftDeletes;
     protected $table = 'van_ban_di';
     const LOAI_VAN_BAN_GIAY_MOI = 2;
+    const CHO_PHAT_HANH = 1;
+    const DA_PHAT_HANH = 2;
 
     protected $fillable = [
 
