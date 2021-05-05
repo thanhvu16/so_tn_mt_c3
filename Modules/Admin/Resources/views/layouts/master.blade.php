@@ -31,7 +31,7 @@
     <link href="{{ url('theme/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
     <link href="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
     <!-- Morris Chart Css-->
-{{--    <link href="{{ url('theme/bower_components/morris.js/morris.css') }}" rel="stylesheet" />--}}
+    <link href="{{ url('theme/bower_components/morris.js/morris.css') }}" rel="stylesheet" />
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">

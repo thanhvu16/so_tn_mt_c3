@@ -6,7 +6,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Danh sách văn bản đến</h3>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <h3 class="box-title">Danh sách văn bản đến</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+{{--                            <i>(STT mà đỏ: <span style="color: red">văn bản đang xử lý</span>; STT màu xanh: <span style="color: blue">Văn bản chưa được phân</span>; STT màu đen: <span style="color: black">Văn bản đã hoàn thành</span>)</i>--}}
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="col-md-12 mt-1 ">
@@ -145,7 +152,7 @@
                             </thead>
                             <tbody>
                             @forelse ($ds_vanBanDen as $key=>$vbDen)
-                                <tr>
+                                <tr >
                                     <td class="text-center">{{$key+1}}</td>
                                     <td>
                                         <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
