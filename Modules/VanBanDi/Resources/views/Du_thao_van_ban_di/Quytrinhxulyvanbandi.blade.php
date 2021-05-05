@@ -241,17 +241,21 @@
                                 </thead>
                                 <tbody>
                                 @foreach($vanbandi->donvinhanvbdi as $key => $item)
-                                    <tr>
-                                        <td class="text-center" width="10%"> {{ $key+1 }}</td>
-                                        <td> {{ $item->laytendonvinhan->ten_don_vi }}</td>
-                                    </tr>
+                                    @if ($item)
+                                        <tr>
+                                            <td class="text-center" width="10%"> {{ $key+1 }}</td>
+                                            <td> {{ $item->laytendonvinhan->ten_don_vi }}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                                 @if ($vanbandi->mailngoaitp)
                                     @foreach($vanbandi->mailngoaitp as $key => $item)
-                                        <tr>
-                                            <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 }}</td>
-                                            <td> {{ $item->laytendonvingoai->ten_don_vi }}</td>
-                                        </tr>
+                                        @if (!empty($item))
+                                            <tr>
+                                                <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 }}</td>
+                                                <td> {{ $item->laytendonvingoai->ten_don_vi }}</td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                                 </tbody>
