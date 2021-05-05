@@ -64,7 +64,7 @@
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
         <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" required>
             <option value="">--Chọn người ký--</option>
-            @if (!empty($ds_nguoiKy))
+            @if ($ds_nguoiKy && count($ds_nguoiKy) > 0)
                 @foreach ($ds_nguoiKy as $nguoiky)
                     <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>
                 @endforeach

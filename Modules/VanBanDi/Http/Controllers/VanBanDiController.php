@@ -1421,7 +1421,7 @@ class VanBanDiController extends Controller
 
 //                gửi mail đến các đơn vị ngoài
 //                SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
-                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(4));
+                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(3));
             }
         }
 
@@ -1895,9 +1895,11 @@ class VanBanDiController extends Controller
     {
         $laytatcaduthao = null;
         $idduthao = Vanbandichoduyet::where('van_ban_di_id', $id)->orderBy('created_at', 'asc')->first();
-        $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
-        if ($duthaovanban != null) {
-            $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
+        if ($idduthao) {
+            $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
+            if ($duthaovanban != null) {
+                $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
+            }
         }
 
 
