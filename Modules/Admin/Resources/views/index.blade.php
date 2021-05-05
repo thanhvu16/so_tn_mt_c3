@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Dashboard')
+@section('page_title', 'Sở TNMT')
 @section('content')
     <section class="content">
         <div class="row">
