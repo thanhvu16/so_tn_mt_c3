@@ -66,7 +66,9 @@
             <option value="">--Chọn người ký--</option>
             @if ($ds_nguoiKy && count($ds_nguoiKy) > 0)
                 @foreach ($ds_nguoiKy as $nguoiky)
-                    <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>
+                    @if (!empty($nguoiky))
+                        <option value="{{ $nguoiky->id }}"  data-chuc-vu ="{{ $nguoiky->chucvu->ten_chuc_vu ?? ''}}">{{ $nguoiky->ho_ten }}</option>
+                    @endif
                 @endforeach
             @endif
         </select>
