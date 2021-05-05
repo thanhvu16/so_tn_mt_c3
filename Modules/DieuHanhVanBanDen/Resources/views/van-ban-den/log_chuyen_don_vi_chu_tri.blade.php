@@ -32,7 +32,7 @@
                                     <p>Hạn lãnh đạo: {{ date('d/m/Y', strtotime($ChuyenNhanCongViec->han_xu_ly_moi)) }}</p>
                                 @else
                                     <p>Hạn văn
-                                        bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) }}</p>
+                                        bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}</p>
                                 @endif
                             </td>
                         </tr>
