@@ -706,13 +706,16 @@ class VanBanDiController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
+
         if ($tenMailThem && count($tenMailThem) > 0) {
             foreach ($tenMailThem as $key => $data) {
-                $themDonVi = new MailNgoaiThanhPho();
-                $themDonVi->ten_don_vi = $data;
-                $themDonVi->email = $EmailThem[$key];
-                $themDonVi->save();
-                array_push($dataIdEmailNgoai, $themDonVi->id);
+                if (!empty($data)) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi->ten_don_vi = $data;
+                    $themDonVi->email = $EmailThem[$key];
+                    $themDonVi->save();
+                    array_push($dataIdEmailNgoai, $themDonVi->id);
+                }
             }
         }
 
@@ -1906,15 +1909,16 @@ class VanBanDiController extends Controller
     {
         $laytatcaduthao = null;
         $idduthao = Vanbandichoduyet::where('van_ban_di_id', $id)->orderBy('created_at', 'asc')->first();
-        $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
-        if ($duthaovanban != null) {
-            $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
+        if ($idduthao) {
+            $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
+            if ($duthaovanban != null) {
+                $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
+            }
         }
-
 
         $quatrinhtruyennhan = Vanbandichoduyet::where('van_ban_di_id', $id)->get();
 
-        $vanbandi = VanBanDi::where('id', $id)->first();
+        $vanbandi = VanBanDi::with('donvinhanvbdi', 'mailngoaitp')->where('id', $id)->first();
 
         $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
 

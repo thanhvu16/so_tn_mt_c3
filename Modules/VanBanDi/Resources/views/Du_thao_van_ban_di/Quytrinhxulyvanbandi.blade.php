@@ -141,91 +141,124 @@
                                 </table>
                             </div>
                         @endif
-                        <div class="col-md-12">
-                            <label for="">Quá trình xử lý văn bản chính:</label>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                    <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Thời gian
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                    </th>
-                                    <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($quatrinhtruyennhan as $key=>$data)
-                                    <tr>
-                                        <td>{{$key+1}}</td>
-                                        <td> {{date_format($data->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
-                                        <td>{{$data->canbochuyen->ho_ten ?? ''}}</td>
-                                        <td>{{$data->y_kien_gop_y}}</td>
-                                        <td>{{$data->canbonhan->ho_ten ?? ''}} </td>
+                        @if (count($quatrinhtruyennhan) > 0)
+                            <div class="col-md-12">
+                                <label for="">Quá trình xử lý văn bản chính:</label>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Thời gian
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                        </th>
+                                        <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
+                                        </th>
                                     </tr>
-                                @empty
-                                @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-12 hide">
-                            <label for="">Phối hợp xử lý:</label>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                    <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
-                                    <th class="text-center" width="15%" style="vertical-align: middle;">Thời gian
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
-                                    </th>
-                                    <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung xử
-                                        lý
-                                    </th>
-                                    <th class="text-center" width="10%" style="vertical-align: middle;">File</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="">Tệp tin đính kèm:</label>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
-                                    <th class="text-center" width="10%" style="vertical-align: middle;">STT</th>
-                                    <th class="text-center" width="30%" style="vertical-align: middle;">Tên tệp
-                                        tin
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Tải về</th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Ngày nhập
-                                    </th>
-                                    <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($file as $key=>$filedata)
-                                    <tr>
-                                        <td class="text-center"> {{$key+1}}</td>
-                                        <td> {{$filedata->ten_file}}</td>
-                                        <td class="text-center"><a href="{{$filedata->getUrlFile()}}"
-                                                                   class="seen-new-window" target="popup">[Tải tài
-                                                liệu]</a></td>
-                                        <td class="text-center"> {{  date_format($filedata->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
-                                        <td class="text-center"> {{$filedata->nguoiDung->ho_ten ?? ''}}</td>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($quatrinhtruyennhan as $key=>$data)
+                                        <tr>
+                                            <td>{{$key+1}}</td>
+                                            <td> {{date_format($data->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
+                                            <td>{{$data->canbochuyen->ho_ten ?? ''}}</td>
+                                            <td>{{$data->y_kien_gop_y}}</td>
+                                            <td>{{$data->canbonhan->ho_ten ?? ''}} </td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        @if (count($file) > 0)
+                            <div class="col-md-12 hide">
+                                <label for="">Phối hợp xử lý:</label>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                        <th class="text-center" width="5%" style="vertical-align: middle;">STT</th>
+                                        <th class="text-center" width="15%" style="vertical-align: middle;">Thời gian
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người nhận
+                                        </th>
+                                        <th class="text-center" width="30%" style="vertical-align: middle;">Nội dung xử
+                                            lý
+                                        </th>
+                                        <th class="text-center" width="10%" style="vertical-align: middle;">File</th>
                                     </tr>
-                                @empty
-                                @endforelse
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="">Tệp tin đính kèm:</label>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                        <th class="text-center" width="10%" style="vertical-align: middle;">STT</th>
+                                        <th class="text-center" width="30%" style="vertical-align: middle;">Tên tệp
+                                            tin
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Tải về</th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Ngày nhập
+                                        </th>
+                                        <th class="text-center" width="20%" style="vertical-align: middle;">Người gửi
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($file as $key=>$filedata)
+                                        <tr>
+                                            <td class="text-center"> {{$key+1}}</td>
+                                            <td> {{$filedata->ten_file}}</td>
+                                            <td class="text-center"><a href="{{$filedata->getUrlFile()}}"
+                                                                       class="seen-new-window" target="popup">[Tải tài
+                                                    liệu]</a></td>
+                                            <td class="text-center"> {{  date_format($filedata->created_at, 'd-m-Y H:i:s') ?? ''}}</td>
+                                            <td class="text-center"> {{$filedata->nguoiDung->ho_ten ?? ''}}</td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+
+                        <div class="col-md-12">
+                            <label for="">Đơn vị nhận:</label>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr style="background: rgb(60, 141, 188); color: rgb(255, 255, 255);">
+                                        <th class="text-center" width="10%">STT</th>
+                                        <th  width="30%">Tên đơn vị</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($vanbandi->donvinhanvbdi as $key => $item)
+                                    <tr>
+                                        <td class="text-center" width="10%"> {{ $key+1 }}</td>
+                                        <td> {{ $item->laytendonvinhan->ten_don_vi }}</td>
+                                    </tr>
+                                @endforeach
+                                @if ($vanbandi->mailngoaitp)
+                                    @foreach($vanbandi->mailngoaitp as $key => $item)
+                                        <tr>
+                                            <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 }}</td>
+                                            <td> {{ $item->laytendonvingoai->ten_don_vi }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>
-                        @if (!empty($vanbandi->listVanBanDen))
+
+                        @if (count($vanbandi->listVanBanDen) > 0)
                             <div class="col-md-12">
                                 <label for="">Trả lời cho văn bản :</label>
                                 <table class="table table-bordered table-striped dataTable mb-0">
