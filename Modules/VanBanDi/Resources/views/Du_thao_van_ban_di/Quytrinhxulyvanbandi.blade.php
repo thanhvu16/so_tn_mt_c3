@@ -244,7 +244,7 @@
                                     @if ($item)
                                         <tr>
                                             <td class="text-center" width="10%"> {{ $key+1 }}</td>
-                                            <td> {{ $item->laytendonvinhan->ten_don_vi }}</td>
+                                            <td> {{ $item->laytendonvinhan->ten_don_vi ?? null }}</td>
                                         </tr>
                                     @endif
                                 @endforeach
@@ -253,7 +253,7 @@
                                         @if (!empty($item))
                                             <tr>
                                                 <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 }}</td>
-                                                <td> {{ $item->laytendonvingoai->ten_don_vi }}</td>
+                                                <td> {{ $item->laytendonvingoai->ten_don_vi ?? null }}</td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -262,7 +262,7 @@
                             </table>
                         </div>
 
-                        @if (count($vanbandi->listVanBanDen) > 0)
+                        @if ($vanbandi->listVanBanDen))
                             <div class="col-md-12">
                                 <label for="">Trả lời cho văn bản :</label>
                                 <table class="table table-bordered table-striped dataTable mb-0">
