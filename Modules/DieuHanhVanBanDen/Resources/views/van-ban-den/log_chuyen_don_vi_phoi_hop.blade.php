@@ -29,7 +29,7 @@
                             <td>Đ/c {{ $ChuyenNhanCongViec->CanBoNhan->ho_ten ?? '' }}</td>
                             <td>
                                 <p>Hạn văn
-                                    bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : !empty($vanBanDen->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->han_xu_ly)) : null }}</p>
+                                    bản: {{ !empty($vanBanDen->hasChild->han_xu_ly) ? date('d/m/Y', strtotime($vanBanDen->hasChild->han_xu_ly)) : null }}</p>
                             </td>
                         </tr>
                     @empty
