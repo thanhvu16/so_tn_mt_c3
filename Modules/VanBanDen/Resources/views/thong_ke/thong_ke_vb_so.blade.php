@@ -17,8 +17,9 @@
                                     </a>
 
                                 </div>
+                                <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">
                                 <div class="col-md-8 text-right">
-                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">
+{{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">--}}
 
                                         <input type="hidden" name="type" value="">
                                         <input type="hidden" name="sovanbanden" value="">
@@ -30,10 +31,10 @@
                                                 class="btn btn-primary waves-effect waves-light btn-sm print-data"><i
                                                 class="fa fa-print "></i> In file
                                         </button>
-                                    </form>
+
                                 </div>
-                                <div class="col-md-12 collapse in" id="collapseExample">
-                                    <form action method="GET" action="{{ route('thongkevbso') }}" >
+                                <div class="col-md-12 collapse in" id="collapseExample" >
+{{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" >--}}
                                     <div class="col-md-5 form-group mt-2">
                                         <label>Tìm từ ngày</label>
                                         <div class="input-group date">
@@ -58,11 +59,12 @@
                                         <button type="submit" name="search" class="btn btn-primary"><i
                                                 class="fa fa-search"></i> Tìm Kiếm</button>
                                     </div>
-                                    </form>
+{{--                                    </form>--}}
                                 </div>
+                                </form>
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
-                                    <h5 style="font-weight: bold">- Thời gian: Từ 01/01/2021 đến 31/12/2021<br><br>
+                                    <h5 style="font-weight: bold">- Thời gian: {{Request::get('tu_ngay')}} @if(Request::get('tu_ngay') && Request::get('den_ngay') ) đến @endif  {{Request::get('den_ngay')}}<br><br>
                                         - Đơn vị kết xuất báo cáo: Sở Tài nguyên và Môi trường
                                     </h5>
                                 </div>
@@ -89,13 +91,23 @@
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
                                                 <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">
-                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id)}}">{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}</a>
+                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['tong'] }}</a>
                                                     <input type="text" class="soVB hidden" value="{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}">
                                                 </td>
-                                                <td class="text-center" style="vertical-align: middle">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_trong_han'] }}</td>
-                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</td>
-                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_trong_han'] }}</td>
-                                                <td>{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_qua_han'] }}</td>
+                                                <td class="text-center" style="vertical-align: middle"> <a href="{{route('chiTietDaGiaiQuyetTrongHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_trong_han'] }}</a></td>
+                                                <td style="vertical-align: middle;text-align: center">
+                                                    <a href="{{route('chiTietDaGiaiQuyetQuaHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</a>
+                                                   </td>
+                                                <td style="vertical-align: middle;text-align: center"><a href="{{route('chiTietChuaGiaiQuyetTrongHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_trong_han'] }}
+                                                    </a></td>
+                                                <td style="vertical-align: middle;text-align: center">
+                                                    <a href="{{route('chiTietChuaGiaiQuyetQuaHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_qua_han'] }}
+                                                    </a></td>
                                             </tr>
                                         @empty
                                             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>
@@ -150,6 +162,8 @@
             let $this = $(this);
             let type = $(this).data('type');
             var sovanbanden = $('input[name="sovanbanden"]').val();
+            var tu_ngay = $('input[name="tu_ngay"]').val();
+            var den_ngay = $('input[name="den_ngay"]').val();
             $.ajax({
                 beforeSend: showLoading(),
                 url: APP_URL + '/thong-ke-van-ban-so',
@@ -158,6 +172,8 @@
                     _token: "{{ csrf_token() }}",
                     type: type,
                     sovanbanden: sovanbanden,
+                    tu_ngay: tu_ngay,
+                    den_ngay: den_ngay
 
 
                 }

@@ -706,16 +706,13 @@ class VanBanDiController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
-
         if ($tenMailThem && count($tenMailThem) > 0) {
             foreach ($tenMailThem as $key => $data) {
-                if (!empty($data)) {
-                    $themDonVi = new MailNgoaiThanhPho();
-                    $themDonVi->ten_don_vi = $data;
-                    $themDonVi->email = $EmailThem[$key];
-                    $themDonVi->save();
-                    array_push($dataIdEmailNgoai, $themDonVi->id);
-                }
+                $themDonVi = new MailNgoaiThanhPho();
+                $themDonVi->ten_don_vi = $data;
+                $themDonVi->email = $EmailThem[$key];
+                $themDonVi->save();
+                array_push($dataIdEmailNgoai, $themDonVi->id);
             }
         }
 
@@ -1359,18 +1356,7 @@ class VanBanDiController extends Controller
         if (empty($multiFiles) || count($multiFiles) == 0 || (count($multiFiles) > 19)) {
             return redirect()->back()->with('warning', 'Bạn phải chọn file hoặc phải chọn số lượng file nhỏ hơn 20 file   !');
         }
-        $donViId = null;
-
-        if ($user->hasRole(VAN_THU_HUYEN)) {
-            $lanhDaoSo = User::role([CHU_TICH])
-                ->whereHas('donVi', function ($query) {
-                    return $query->whereNull('cap_xa');
-                })->first();
-
-            $donViId = $lanhDaoSo->don_vi_id ?? null;
-        } else {
-            $donViId = $user->donVi->parent_id;
-        }
+        $donViId = auth::user()->don_vi_id;
 
         foreach ($multiFiles as $key => $getFile) {
             $typeArray = explode('.', $getFile->getClientOriginalName());
@@ -1878,7 +1864,7 @@ class VanBanDiController extends Controller
 
         UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
         return redirect()->back()->with(['capso' => "$soDi"]);
-//        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id, $donViId)->delay(now()->addMinutes(5));
+//        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id)->delay(now()->addMinutes(5));
 
 //        return response()->json([
 //            'status' => true,
@@ -1909,16 +1895,15 @@ class VanBanDiController extends Controller
     {
         $laytatcaduthao = null;
         $idduthao = Vanbandichoduyet::where('van_ban_di_id', $id)->orderBy('created_at', 'asc')->first();
-        if ($idduthao) {
-            $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
-            if ($duthaovanban != null) {
-                $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
-            }
+        $duthaovanban = Duthaovanbandi::where('id', $idduthao->id_du_thao)->first();
+        if ($duthaovanban != null) {
+            $laytatcaduthao = Duthaovanbandi::where('du_thao_id', $duthaovanban->du_thao_id)->get();
         }
+
 
         $quatrinhtruyennhan = Vanbandichoduyet::where('van_ban_di_id', $id)->get();
 
-        $vanbandi = VanBanDi::with('donvinhanvbdi', 'mailngoaitp')->where('id', $id)->first();
+        $vanbandi = VanBanDi::where('id', $id)->first();
 
         $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
 
