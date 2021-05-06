@@ -264,7 +264,7 @@
                             </table>
                         </div>
 
-                        @if ($vanbandi->listVanBanDen))
+                        @if ($vanbandi->listVanBanDen)
                             <div class="col-md-12">
                                 <label for="">Trả lời cho văn bản :</label>
                                 <table class="table table-bordered table-striped dataTable mb-0">
