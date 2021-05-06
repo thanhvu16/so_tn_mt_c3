@@ -41,8 +41,7 @@
                             <div class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }} " id="collapseExample">
                                 <form action="{{route('van-ban-den.index')}}" method="get">
                                         <div class="row">
-
-                                            <div class="form-group col-md-4" id="loaivanban">
+                                            <div class="form-group col-md-3" id="loaivanban">
                                                 <label for="loai_van_ban_id" class="col-form-label">Loại văn bản</label>
                                                 <select class="form-control " name="loai_van_ban_id" id="loai_van_ban_id">
                                                     <option value="">Chọn loại văn bản</option>
@@ -52,7 +51,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-3">
                                                 <label for="sokyhieu" class="col-form-label">Số văn bản</label>
                                                 <select class="form-control  select-so-van-ban check-so-den-vb"
                                                         name="so_van_ban_id" id="so_van_ban_id">
@@ -63,13 +62,13 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-3">
                                                 <label for="vb_so_den" class="col-form-label">Số đến văn bản</label>
                                                 <input type="text" name="vb_so_den" class="form-control soden" value="{{Request::get('vb_so_den')}}"
                                                        id="vb_so_den"
                                                        placeholder="Số đến văn bản">
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3" >
                                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
                                                 <input type="text" name="vb_so_ky_hieu"
                                                        value="{{Request::get('vb_so_ky_hieu')}}"
@@ -77,7 +76,7 @@
                                                        id="sokyhieu"
                                                        placeholder="Số ký hiệu">
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3" >
                                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>
                                                 <div id="">
                                                     <input class="form-control " id="vb_ngay_ban_hanh"
@@ -85,7 +84,7 @@
                                                            name="start_date">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3" >
                                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>
                                                 <div id="">
                                                     <input class="form-control " id="vb_ngay_ban_hanh"
@@ -93,20 +92,31 @@
                                                            name="end_date">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3" >
                                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Cơ quan ban
                                                     hành</label>
                                                 <input type="text" name="co_quan_ban_hanh_id"
                                                        value="{{Request::get('co_quan_ban_hanh_id')}}"
                                                        class="form-control">
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3" >
                                                 <label for="sokyhieu" class="col-form-label">Người ký</label>
                                                 <input type="text" value="{{Request::get('nguoi_ky_id')}}"
                                                        name="nguoi_ky_id"
                                                        class="form-control">
                                             </div>
-                                            <div class="form-group col-md-4" >
+                                            <div class="form-group col-md-3">
+                                                <label for="sokyhieu" class="col-form-label">Đơn vị chủ trì</label>
+                                                <select class="form-control select2"
+                                                        name="don_vi_id" id="so_van_ban_id">
+                                                    <option value="">-- Chọn đơn vị --</option>
+                                                    @foreach ($danhSachDonVi as $donVi)
+                                                        <option
+                                                            value="{{ $donVi->id }}" {{ Request::get('don_vi_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3" >
                                                 <label class="col-form-label">Năm</label>
                                                 <select name="year" class="form-control select2">
                                                     <option value="">-- Tất cả --</option>
@@ -269,7 +279,8 @@
                        ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
                        'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
                        'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
-                       'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' =>Request::get('year')])->render() !!}
+                       'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' => Request::get('year'),
+                       'don_vi_id' => Request::get('don_vi_id')])->render() !!}
                             </div>
                         </div>
                     </div>
