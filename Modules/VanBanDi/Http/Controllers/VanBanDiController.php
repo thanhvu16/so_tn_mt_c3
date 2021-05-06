@@ -708,11 +708,13 @@ class VanBanDiController extends Controller
             })->first();
         if ($tenMailThem && count($tenMailThem) > 0) {
             foreach ($tenMailThem as $key => $data) {
-                $themDonVi = new MailNgoaiThanhPho();
-                $themDonVi->ten_don_vi = $data;
-                $themDonVi->email = $EmailThem[$key];
-                $themDonVi->save();
-                array_push($dataIdEmailNgoai, $themDonVi->id);
+                if (!empty($data)) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi->ten_don_vi = $data;
+                    $themDonVi->email = $EmailThem[$key];
+                    $themDonVi->save();
+                    array_push($dataIdEmailNgoai, $themDonVi->id);
+                }
             }
         }
 
@@ -1356,7 +1358,18 @@ class VanBanDiController extends Controller
         if (empty($multiFiles) || count($multiFiles) == 0 || (count($multiFiles) > 19)) {
             return redirect()->back()->with('warning', 'Bạn phải chọn file hoặc phải chọn số lượng file nhỏ hơn 20 file   !');
         }
-        $donViId = auth::user()->don_vi_id;
+        $donViId = null;
+
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $lanhDaoSo = User::role([CHU_TICH])
+                ->whereHas('donVi', function ($query) {
+                    return $query->whereNull('cap_xa');
+                })->first();
+
+            $donViId = $lanhDaoSo->don_vi_id ?? null;
+        } else {
+            $donViId = $user->donVi->parent_id;
+        }
 
         foreach ($multiFiles as $key => $getFile) {
             $typeArray = explode('.', $getFile->getClientOriginalName());

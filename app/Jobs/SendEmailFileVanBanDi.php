@@ -45,7 +45,6 @@ class SendEmailFileVanBanDi implements ShouldQueue
      */
     public function handle()
     {
-
         $donVi = DonVi::where('id', $this->donViId)->where('status_email', DonVi::STATUS_EMAIL_ACTIVE)
             ->select('id', 'email', 'password', 'ten_don_vi')->first();
         if ($donVi) {
@@ -54,7 +53,6 @@ class SendEmailFileVanBanDi implements ShouldQueue
             \Config::set('mail.from.address', $donVi->email);
             \Config::set('mail.from.name', $donVi->ten_don_vi);
         }
-
 
         if ($this->type == VanBanDi::LOAI_VAN_BAN_GIAY_MOI) {
             $danhSachVanBanDi = VanBanDi::has('vanBanDiFileDaKy')
