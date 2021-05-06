@@ -112,29 +112,31 @@
                                     </thead>
                                     <tbody>
                                     @forelse($laytatcaduthao as $key=>$data)
-                                        <tr>
-                                            <td class="text-center">{{$data->lan_du_thao}}</td>
-                                            <td class="text-center">{{$data->loaivanban->ten_loai_van_ban}}</td>
-                                            <td class="text-center">{{$data->so_ky_hieu}}</td>
-                                            <td class="text-center">
+                                        @if ($data)
+                                            <tr>
+                                                <td class="text-center">{{ $data->lan_du_thao ?? null }}</td>
+                                                <td class="text-center">{{ $data->loaivanban->ten_loai_van_ban ?? null }}</td>
+                                                <td class="text-center">{{ $data->so_ky_hieu ?? null }}</td>
+                                                <td class="text-center">
 
-                                            </td>
-                                            <td>
-                                                <a href="{{route('quytrinhtruyennhangopy',$data->id)}}">{{$data->vb_trich_yeu}}</a>
-                                            </td>
-                                            <td>
-                                                @forelse($data->Duthaofile as $key=>$item)
-                                                    <a href="{{$item->getUrlFile()}}" class="seen-new-window"
-                                                       target="popup">
-                                                        [File dự thảo {{$key+1}}] <br>
-                                                    </a>
-
-                                                @empty
-                                                @endforelse
-                                            </td>
-                                            <td>{{$data->nguoidung2->ho_ten ?? ''}}</td>
-                                        </tr>
-
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('quytrinhtruyennhangopy',$data->id)}}">{{$data->vb_trich_yeu}}</a>
+                                                </td>
+                                                <td>
+                                                    @if ($data->Duthaofile)
+                                                        @forelse($data->Duthaofile as $key=>$item)
+                                                            <a href="{{$item->getUrlFile()}}" class="seen-new-window"
+                                                               target="popup">
+                                                                [File dự thảo {{$key+1}}] <br>
+                                                            </a>
+                                                        @empty
+                                                        @endforelse
+                                                    @endif
+                                                </td>
+                                                <td>{{$data->nguoidung2->ho_ten ?? ''}}</td>
+                                            </tr>
+                                        @endif
                                     @empty
                                     @endforelse
                                     </tbody>
