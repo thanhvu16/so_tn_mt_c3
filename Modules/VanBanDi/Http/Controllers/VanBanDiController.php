@@ -52,7 +52,6 @@ class VanBanDiController extends Controller
         $donvisoanthao = $request->get('donvisoanthao_id');
         $so_van_ban = $request->get('sovanban_id');
         $don_vi_van_ban = $request->get('don_vi_van_ban');
-        $phatHanhVanBan = $request->get('phat_hanh_van_ban');
 
         $nguoi_ky = $request->get('nguoiky_id');
         $ngaybatdau = $request->get('start_date');

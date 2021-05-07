@@ -228,6 +228,15 @@
                                                 @endforeach
                                             @endif
                                         @endif
+                                            <div class="text-right">
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == 10)
+                                                    <span class="label label-danger">Đã hoàn thành</span>
+                                                @elseif($vbDen->trinh_tu_nhan_van_ban == null)
+                                                    <span class="label label-success">chưa phân</span>
+                                                @else
+                                                    <span class="label label-warning">Đã phân</span>
+                                                @endif
+                                            </div>
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">

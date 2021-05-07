@@ -136,16 +136,9 @@ class ThongkeVanBanDenController extends Controller
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
-            $type = DonVi::DIEU_HANH;
+            $type = 1;
+
         }
-//        $test = VanBanDen::where(function ($query) use ($donViId) {
-//            if (!empty($donViId)) {
-//                return $query->where('don_vi_id', 7);
-//            }
-//        })
-////            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-//            ->get();
-//        dd($test);
 
         $danhSachVanBanDenDaHoanThanh = VanBanDen::where(function ($query) use ($donViId) {
                if (!empty($donViId)) {
@@ -177,8 +170,9 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('don_vi_id', $donViId);
                 }
             })
+            ->orwhere('trinh_tu_nhan_van_ban',Null)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-//            ->orwhere('trinh_tu_nhan_van_ban','==' ,null)
+//            ->orwhere(['trinh_tu_nhan_van_ban' => null,'don_vi_id'=> $donViId])
 
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
@@ -198,6 +192,8 @@ class ThongkeVanBanDenController extends Controller
 
 
             ->get();
+
+
 
         //hoan thanh
         $vanBanDaGiaiQuyet = $this->getVanBanDenDaGiaiQuyet($danhSachVanBanDenDaHoanThanh, $donVi->id, $type);
@@ -281,6 +277,8 @@ class ThongkeVanBanDenController extends Controller
                     $vanBanQuaHan += 1;
                 }
             }
+            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
+
         } else {
             $arrVanBanDenId = $danhSachVanBanDenChuaHoanThanh->pluck('id')->toArray();
             $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
@@ -475,6 +473,91 @@ class ThongkeVanBanDenController extends Controller
 
         return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
     }
+    public function chiTietDaGiaiQuyetQuaHanVanBanSo($id,Request $request)
+    {
+        $donViId = null;
+        $donVi = DonVi::where('id',$id)->first();
+        $user = auth::user();
+        $type = null;
+        if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
+            $donViId = $donVi->id;
+
+        }
+
+
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
+
+        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
+        {
+            if($donVi->cap_xa == null)
+            {
+                $type = null;
+            } else{
+                $type = 2;
+            }
+            $ds_vanBanDen= VanBanDen::
+            whereNull('deleted_at')
+                ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+                ->where(function ($query) use ($donViId) {
+                    if (!empty($donViId)) {
+                        return $query->where('don_vi_id', $donViId);
+                    }
+                })
+                ->where(function ($query) use ($type) {
+                    if (!empty($type)) {
+                        return $query->where('type', $type);
+                    }
+                })
+                ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    }
+                    if ($den_ngay == '' && $tu_ngay != '') {
+                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                    }
+                    if ($tu_ngay == '' && $den_ngay != '') {
+                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                    }
+                })
+                ->get();
+
+        }else{
+            $ds_vanBanDen = VanBanDen::
+            whereNull('deleted_at')
+                ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+                ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    }
+                    if ($den_ngay == '' && $tu_ngay != '') {
+                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                    }
+                    if ($tu_ngay == '' && $den_ngay != '') {
+                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                    }
+                })
+                ->get();
+            $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
+            $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+                ->where('don_vi_id', $donVi->id)->distinct()->get();
+            return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong',compact('ds_vanBanDen'));
+
+
+        }
+
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
+    }
     public function chiTietChuaGiaiQuyetQuaHanVanBanSo($id,Request $request)
     {
         $donViId = null;
@@ -508,6 +591,7 @@ class ThongkeVanBanDenController extends Controller
                 })
                 ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
                 ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+
                 ->where(function ($query) use ($type) {
                     if (!empty($type)) {
                         return $query->where('type', $type);
