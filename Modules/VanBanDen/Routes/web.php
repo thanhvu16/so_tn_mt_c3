@@ -51,6 +51,13 @@ Route::get('chi-tiet-da-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietDaGia
 Route::get('chi-tiet-chua-giai-quyet-trong-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetTrongHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetTrongHanVanBanSo'));
 Route::get('chi-tiet-chua-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetQuaHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetQuaHanVanBanSo'));
 
+//thống kê chi tiết chi cuch
+Route::get('chi-tiet-da-giai-quyet-trong-han-chi-cuc/{id}', array('as' => 'chiTietDaGiaiQuyetTrongHanVanBanChiCuc', 'uses' => 'ThongKeVanBanChiCucController@chiTietDaGiaiQuyetTrongHanVanBanChiCuc'));
+Route::get('chi-tiet-da-giai-quyet-qua-han-chi-cuc/{id}', array('as' => 'chiTietDaGiaiQuyetQuaHanVanBanChiCuc', 'uses' => 'ThongKeVanBanChiCucController@chiTietDaGiaiQuyetQuaHanVanBanChiCuc'));
+
+Route::get('chi-tiet-chua-giai-quyet-trong-han-chi-cuc/{id}', array('as' => 'chiTietChuaGiaiQuyetTrongHanVanBanChiCuc', 'uses' => 'ThongKeVanBanChiCucController@chiTietChuaGiaiQuyetTrongHanVanBanChiCuc'));
+Route::get('chi-tiet-chua-giai-quyet-qua-han-chi-cuc/{id}', array('as' => 'chiTietChuaGiaiQuyetQuaHanVanBanChiCuc', 'uses' => 'ThongKeVanBanChiCucController@chiTietChuaGiaiQuyetQuaHanVanBanChiCuc'));
+
 
 
 

@@ -116,6 +116,16 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+{{--                                            <div class="form-group col-md-3">--}}
+{{--                                                <label for="sokyhieu" class="col-form-label">Trạng thái văn bản</label>--}}
+{{--                                                <select class="form-control select2"--}}
+{{--                                                        name="trinh_tu_nhan_van_ban" id="so_van_ban_id">--}}
+{{--                                                    <option value="">-- Chọn trạng thái--</option>--}}
+{{--                                                    <option value="1">-- Đã phân --</option>--}}
+{{--                                                    <option value="2">-- Chưa phân --</option>--}}
+{{--                                                    <option value="3">-- Đã hoàn thành --</option>--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
                                             <div class="form-group col-md-3" >
                                                 <label class="col-form-label">Năm</label>
                                                 <select name="year" class="form-control select2">
@@ -241,6 +251,16 @@
                                                 @endforeach
                                             @endif
                                         @endif
+                                        <div class="text-right">
+                                            @if ($vbDen->trinh_tu_nhan_van_ban == 10)
+                                                <span class="label label-danger">Đã hoàn thành</span>
+                                            @elseif($vbDen->trinh_tu_nhan_van_ban == null)
+                                                <span class="label label-success">chưa phân</span>
+                                            @else
+                                                <span class="label label-warning">Đã phân</span>
+                                            @endif
+                                        </div>
+
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">
