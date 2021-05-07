@@ -24,13 +24,17 @@ class thongKeVanBanPhongExport implements FromView, ShouldAutoSize, WithEvents
     protected $totalReCord;
     protected $tongSoVB;
     protected $donViChiCuc;
+    protected $tu_ngay;
+    protected $den_ngay;
 
-    public function __construct($danhSachDonVi, $totalReCord,$tongSoVB)
+    public function __construct($danhSachDonVi, $totalReCord,$tongSoVB,$tu_ngay,$den_ngay)
     {
 
         $this->danhSachDonVi = $danhSachDonVi;
         $this->totalReCord=$totalReCord + 6;
         $this->tongSoVB=$tongSoVB;
+        $this->tu_ngay=$tu_ngay;
+        $this->den_ngay=$den_ngay;
     }
 
     /**
@@ -41,6 +45,8 @@ class thongKeVanBanPhongExport implements FromView, ShouldAutoSize, WithEvents
         return view('vanbanden::thong_ke.TK_vb_phong',[
             'danhSachDonVi' => $this->danhSachDonVi,
             'tongSoVB' => $this->tongSoVB,
+            'tu_ngay' => $this->tu_ngay,
+            'den_ngay' => $this->den_ngay,
         ]);
     }
 

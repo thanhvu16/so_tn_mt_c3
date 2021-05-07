@@ -74,7 +74,8 @@ class DanhGiaCanBoController extends Controller
                 $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                dd(auth::user()->don_vi_id);
+                $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
 
