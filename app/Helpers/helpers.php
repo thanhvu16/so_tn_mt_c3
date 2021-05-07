@@ -197,7 +197,9 @@ if (!function_exists('cutStr')) {
 // format 11/04/2021 to 2021-04-11
 function formatYMD($date)
 {
-    return \DateTime::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+    if (!empty($date)) {
+        return \DateTime::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+    }
 }
 
 
