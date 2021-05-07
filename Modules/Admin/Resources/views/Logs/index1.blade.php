@@ -27,24 +27,29 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($newLogCollections as $key=>$data)
-                                <tr>
-                                    <td class="text-center">{{ $key+1 }}</td>
-                                    <td class="text-left">{{ $data['user'] ?? ''}}</td>
-                                    <td class="text-left">{{ $data['action'] }}</td>
-                                    <td class="text-center">
-                                        <a class="btn-action btn btn-color-blue btn-sm btn-view-detail"
-                                           title="xem chi tiết"
-                                           data-id="{{ $key+1 }}" data-content="{{ $data['content'] }}"><i
-                                                class="fa fa-eye"></i> xem chi tiết
-                                        </a>
+                            @if (count($newLogCollections) > 0)
+                                @forelse($newLogCollections as $key=>$data)
+                                    <tr>
+                                        <td class="text-center">{{ $key+1 }}</td>
+                                        <td class="text-left">{{ $data['user'] ?? ''}}</td>
+                                        <td class="text-left">{{ $data['action'] }}</td>
+                                        <td class="text-center">
+                                            <a class="btn-action btn btn-color-blue btn-sm btn-view-detail"
+                                               title="xem chi tiết"
+                                               data-id="{{ $key+1 }}" data-content="{{ $data['content'] }}"><i
+                                                    class="fa fa-eye"></i> xem chi tiết
+                                            </a>
+                                        </td>
+                                        <td class="text-center">{{ date('d/m/Y H:i:s', strtotime($data['date'])) ?? '' }}</td>
+                                    </tr>
+                                @empty
+                                    <td class="text-center" colspan="5">Không có dữ liệu !
                                     </td>
-                                    <td class="text-center">{{ date('d/m/Y H:i:s', strtotime($data['date'])) ?? '' }}</td>
-                                </tr>
-                            @empty
+                                @endforelse
+                            @else
                                 <td class="text-center" colspan="5">Không có dữ liệu !
                                 </td>
-                            @endforelse
+                            @endif
                             </tbody>
                         </table>
                     </div>

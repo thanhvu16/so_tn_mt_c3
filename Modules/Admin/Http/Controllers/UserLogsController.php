@@ -53,26 +53,28 @@ class UserLogsController extends Controller
 
         $filePath = file(storage_path('logs/user_action_'.date('m_Y').'.log'));
 
-        $logFile = file(storage_path().'/logs/user_action.log');
         $logCollection = [];
-        // Loop through an array, show HTML source as HTML source; and line numbers too.
-        foreach (array_reverse($filePath) as $line_num => $line) {
-           $explodeData = explode('.INFO: ', $line);
-            $logCollection[] = $explodeData[1];
-        }
-
         $newLogCollections = [];
-        if ($logCollection) {
-            foreach ($logCollection as $log) {
-                $convertLog = explode('<br>', $log);
-                $newLogCollections[] = [
-                  'user' => $convertLog[0],
-                  'action' => $convertLog[1],
-                  'date' => $convertLog[2],
-                  'content' => $convertLog[3],
-                ];
+        // Loop through an array, show HTML source as HTML source; and line numbers too.
+        if ($filePath) {
+            foreach (array_reverse($filePath) as $line_num => $line) {
+                $explodeData = explode('.INFO: ', $line);
+                $logCollection[] = $explodeData[1];
+            }
+
+            if ($logCollection) {
+                foreach ($logCollection as $log) {
+                    $convertLog = explode('<br>', $log);
+                    $newLogCollections[] = [
+                        'user' => $convertLog[0],
+                        'action' => $convertLog[1],
+                        'date' => $convertLog[2],
+                        'content' => $convertLog[3],
+                    ];
+                }
             }
         }
+
         return view('admin::Logs.index1',compact('logs', 'newLogCollections'));
     }
 
