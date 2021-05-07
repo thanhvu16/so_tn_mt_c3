@@ -101,7 +101,7 @@
                                 </form>
                             </div>
 
-                            <div class="box-body">
+                            <div class="box-body table-responsive">
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                     <tr>

@@ -91,8 +91,9 @@
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
                                                 <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">
-                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
-                                                        {{ $donVidata->vanBanDaGiaiQuyet['tong'] }}</a>
+{{--                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">--}}
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['tong'] }}
+{{--                                                        </a>--}}
                                                     <input type="text" class="soVB hidden" value="{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}">
                                                 </td>
                                                 <td class="text-center" style="vertical-align: middle"> <a href="{{route('chiTietDaGiaiQuyetTrongHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">

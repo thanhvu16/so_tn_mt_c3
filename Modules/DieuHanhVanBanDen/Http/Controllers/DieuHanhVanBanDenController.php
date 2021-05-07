@@ -296,6 +296,7 @@ class DieuHanhVanBanDenController extends Controller
                     if ($donVi->dieu_hanh == 1) {
                         $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])
                             ->where('don_vi_id', auth::user()->don_vi_id)->get();
+
                     } else {
                         $truongpho = null;
                     }
@@ -305,6 +306,10 @@ class DieuHanhVanBanDenController extends Controller
                             array_push($dataNguoiKy, $data2);
                         }
 
+                    }
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
                     }
 
                     foreach ($lanhDaoSo as $data2) {
@@ -401,6 +406,10 @@ class DieuHanhVanBanDenController extends Controller
                             array_push($dataNguoiKy, $lanhDaoPhongBan);
                         }
                     }
+//                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+//                    foreach ($chiCuc as $data3) {
+//                        array_push($dataNguoiKy, $data3);
+//                    }
                     foreach ($lanhDaoSo as $data2) {
                         array_push($dataNguoiKy, $data2);
                     }

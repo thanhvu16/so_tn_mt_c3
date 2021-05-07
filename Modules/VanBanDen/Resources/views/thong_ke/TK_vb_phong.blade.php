@@ -34,7 +34,7 @@
             <td colspan="7" style="text-align: center">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</td>
         </tr>
         <tr>
-            <td colspan="7" style="text-align: left">- Thời gian: Từ 01/01/2021 đến 31/12/2021</td>
+            <td colspan="7" style="text-align: left">- Thời gian: {{Request::get('tu_ngay')}} @if(Request::get('tu_ngay') && Request::get('den_ngay') ) đến @endif  {{Request::get('den_ngay')}}</td>
         </tr>
         <tr>
             <td colspan="7" style="text-align: left">- Đơn vị kết xuất báo cáo: {{auth::user()->donVi->ten_don_vi}}</td>

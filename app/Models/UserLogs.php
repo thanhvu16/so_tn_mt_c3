@@ -4,6 +4,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserLogs extends Model
 {
@@ -16,18 +17,25 @@ class UserLogs extends Model
     ];
     public static function saveUserLogs($action, $content)
     {
-        $user = auth::user()->id;
-        $content = json_encode($content);
-        $dataUserLogs = [
-            'user_id' => $user,
-            'content'=> $content,
-            'action'=> $action
+//        $user = auth::user()->id;
+        $user = auth::user();
+//        $content = json_encode($content);
+//        $dataUserLogs = [
+//            'user_id' => $user,
+//            'content'=> $content,
+//            'action'=> $action
+//
+//        ];
 
-        ];
+        $dataUserLogs = [$content];
 
-        $userLogs = new UserLogs();
-        $userLogs->fill($dataUserLogs);
-        $userLogs->save();
+        $userAction = $user->ho_ten."<br>".$action."<br>".now()."<br>";
+
+        Log::channel('userAction')->info($userAction, $dataUserLogs);
+
+        //$userLogs = new UserLogs();
+        //$userLogs->fill($dataUserLogs);
+//        $userLogs->save();
     }
 
     public function TenNguoiDung()

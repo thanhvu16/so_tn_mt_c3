@@ -12,7 +12,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <form action="{{ route('van-ban-den-don-vi.quan_trong') }}" method="get">
                             <div class="row">
                                 <div class="col-md-3">

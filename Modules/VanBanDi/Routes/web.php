@@ -59,3 +59,4 @@ Route::post('remove-van-ban-den', 'VanBanDiController@removeVanBanDen');
 Route::post('file-demo', 'GopYVanbanDiController@filedemo');
 Route::post('file-demo-ngoai', 'GopYVanbanDiController@filedemongoai');
 Route::get('nhap-van-ban-di', array('as' => 'nhapVanBanDi', 'uses' => 'VanBanDiController@nhapVanBanDiVanThuSo'));
+

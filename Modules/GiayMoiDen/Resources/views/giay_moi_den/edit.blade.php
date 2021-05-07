@@ -180,12 +180,12 @@
                                        value="{{isset($vanban) ? $vanban->chuc_vu : ''}}" required name="chuc_vu">
                             </div>
 
-                            <div class=" col-md-3 " >
-                                <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>
-                                <input class="form-control" value="{{isset($vanban) ? $vanban->han_xu_ly : ''}}"
-                                       name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">
-                                <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id" value="{{auth::user()->don_vi_id}}">
-                            </div>
+{{--                            <div class=" col-md-3 " >--}}
+{{--                                <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>--}}
+{{--                                <input class="form-control" value="{{isset($vanban) ? $vanban->han_xu_ly : ''}}"--}}
+{{--                                       name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">--}}
+{{--                                <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id" value="{{auth::user()->don_vi_id}}">--}}
+{{--                            </div>--}}
                             @hasanyrole('văn thư sở')
                             <div class="col-md-3" >
                                 <label for="vb_ngay_ban_hanh" class="col-form-label">Lãnh đạo tham mưu</label>

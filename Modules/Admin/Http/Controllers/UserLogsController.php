@@ -4,9 +4,11 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Models\UserLogs;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use File;
 
 class UserLogsController extends Controller
 {
@@ -48,8 +50,35 @@ class UserLogsController extends Controller
             ->whereYear('created_at', date("Y"))
             ->orderBy('id', 'DESC')->paginate(PER_PAGE);
 
-        return view('admin::Logs.index',compact('logs'));
+
+        $filePath = file(storage_path('logs/user_action_'.date('m_Y').'.log'));
+
+        $logCollection = [];
+        $newLogCollections = [];
+        // Loop through an array, show HTML source as HTML source; and line numbers too.
+        if ($filePath) {
+            foreach (array_reverse($filePath) as $line_num => $line) {
+                $explodeData = explode('.INFO: ', $line);
+                $logCollection[] = $explodeData[1];
+            }
+
+            if ($logCollection) {
+                foreach ($logCollection as $log) {
+                    $convertLog = explode('<br>', $log);
+                    $newLogCollections[] = [
+                        'user' => $convertLog[0],
+                        'action' => $convertLog[1],
+                        'date' => $convertLog[2],
+                        'content' => $convertLog[3],
+                    ];
+                }
+            }
+        }
+
+        return view('admin::Logs.index1',compact('logs', 'newLogCollections'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -78,14 +107,12 @@ class UserLogsController extends Controller
      */
     public function show($id, Request $request)
     {
+        $content = $request->get('content');
+
         if ($request->ajax()) {
-            $userLog = UserLogs::with('TenNguoiDung')->findOrFail($id);
+            $decode_content = json_decode($content, true);
 
-            if ($userLog) {
-                $userLog->decode_content = json_decode($userLog->content, true);
-            }
-
-            $returnHTML =  view('admin::Logs.show', compact('userLog'))->render();
+            $returnHTML =  view('admin::Logs.show', compact('decode_content'))->render();
 
             return response()->json(array('success' => true, 'html' => $returnHTML));
         }

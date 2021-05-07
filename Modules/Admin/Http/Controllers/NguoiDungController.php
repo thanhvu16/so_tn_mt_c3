@@ -91,7 +91,9 @@ class NguoiDungController extends Controller
             ->whereNull('deleted_at')
             ->orderBy('ten_chuc_vu', 'asc')
             ->get();
-        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')->orderBy('ten_don_vi', 'asc')
+        $danhSachDonVi = DonVi::select('id', 'ten_don_vi')
+            ->where('parent_id', DonVi::NO_PARENT_ID)
+            ->orderBy('ten_don_vi', 'asc')
             ->whereNull('deleted_at')
             ->get();
 

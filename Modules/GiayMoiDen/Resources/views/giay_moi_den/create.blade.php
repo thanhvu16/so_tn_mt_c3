@@ -16,8 +16,8 @@
                             <div class="form-group col-md-3">
                                 <label for="vb_so_den" class="col-form-label">Số đến giấy mời</label>
                                 <input type="text" name="vb_so_den" class="form-control soden" id="vb_so_den"
-                                       value="{{ $sodengiaymoi}}" readonly
-                                       style="font-weight: 800;color: #F44336;cursor: not-allowed;"
+                                       value="{{ $sodengiaymoi}}"
+                                       style="font-weight: 800;color: #F44336;"
                                        placeholder="Số đến văn bản">
                             </div>
                             <div class="form-group col-md-3" id="div_select_cqbh">
@@ -211,13 +211,13 @@
                                        value=""  name="chuc_vu">
                             </div>
 
-                            <div class=" col-md-3 " >
-                                <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>
-                                <input class="form-control" value=""
-                                       name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">
-                                <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id"
-                                       value="{{auth::user()->don_vi_id}}">
-                            </div>
+{{--                            <div class=" col-md-3 " >--}}
+{{--                                <label for="vb_han_xu_ly" class="col-form-label">Hạn xử lý</label>--}}
+{{--                                <input class="form-control" value=""--}}
+{{--                                       name="vb_han_xu_ly" id="vb_han_xu_ly" type="date">--}}
+{{--                                <input type="hidden" class="form-control" id="don_vi_id" name="don_vi_id"--}}
+{{--                                       value="{{auth::user()->don_vi_id}}">--}}
+{{--                            </div>--}}
                             @hasanyrole('văn thư sở')
                             @if (count($nguoi_dung) > 0)
                                 <div class="col-md-3" >

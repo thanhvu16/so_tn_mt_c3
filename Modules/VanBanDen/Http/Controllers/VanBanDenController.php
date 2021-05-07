@@ -37,9 +37,6 @@ class VanBanDenController extends Controller
      */
     public function index(Request $request)
     {
-//        $arayEcabinet=;
-//        $data = json_decode($arayEcabinet);
-//        dd($data);
         $donVi = auth::user()->donVi;
         $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');
@@ -53,17 +50,34 @@ class VanBanDenController extends Controller
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
+        $danhSachDonVi = null;
+        $searchDonVi = $request->get('don_vi_id') ?? null;
+        $arrVanBanDenId = null;
+        if (!empty($searchDonVi)) {
+            $donViChuTri = DonViChuTri::where('don_vi_id', $searchDonVi)
+                ->select('id', 'van_ban_den_id')
+                ->get();
+
+            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+        }
 
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
 
-            $ds_vanBanDen = VanBanDen::where([
-                'type' => 1])->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
+            $ds_vanBanDen = VanBanDen::where(['type' => 1])
+                ->where('so_van_ban_id', '!=', 100)
+                ->whereNull('deleted_at')
+                ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
+                    if (!empty($searchDonVi)) {
+                        return $query->whereIn('id', $arrVanBanDenId);
+                    }
+                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");
                     }
-                })->where(function ($query) use ($so_den) {
+                })
+                ->where(function ($query) use ($so_den) {
                     if (!empty($so_den)) {
                         return $query->where('so_den', 'LIKE', "%$so_den%");
                     }
@@ -112,6 +126,8 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+
+            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->get();
 
         } else {
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
@@ -120,6 +136,11 @@ class VanBanDenController extends Controller
                 'don_vi_id' => $donViId,
                 'type' => VanBanDen::TYPE_VB_DON_VI])
                 ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
+                ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
+                    if (!empty($searchDonVi)) {
+                        return $query->whereIn('parent_id', $arrVanBanDenId);
+                    }
+                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");
@@ -173,6 +194,8 @@ class VanBanDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+
+            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
         }
 
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
@@ -181,7 +204,8 @@ class VanBanDenController extends Controller
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
 
         return view('vanbanden::van_ban_den.index',
-            compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'ds_loaiVanBan'));
+            compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap',
+                'ds_mucBaoMat', 'ds_loaiVanBan', 'danhSachDonVi'));
     }
 
     /**
@@ -252,7 +276,7 @@ class VanBanDenController extends Controller
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
 
-        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan','date', 'loaivanban', 'soDen','sovanban', 'tieuChuan', 'users', 'hangiaiquyet'));
+        return view('vanbanden::van_ban_den.create', compact('domat', 'dokhan', 'date', 'loaivanban', 'soDen', 'sovanban', 'tieuChuan', 'users', 'hangiaiquyet'));
     }
 
     public function layhantruyensangview(Request $request)
@@ -349,8 +373,7 @@ class VanBanDenController extends Controller
 //                ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
 //            }
 //            $soDenvb = $soDenvb + 1;
-            if($request->chu_tri_phoi_hop == null)
-            {
+            if ($request->chu_tri_phoi_hop == null) {
                 $request->chu_tri_phoi_hop = 0;
             }
 
@@ -593,8 +616,7 @@ class VanBanDenController extends Controller
 
             }
             $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-            if($request->File)
-            {
+            if ($request->File) {
                 if (!File::exists($uploadPath)) {
                     File::makeDirectory($uploadPath, 0777, true, true);
                 }
@@ -615,8 +637,6 @@ class VanBanDenController extends Controller
             }
 
 
-
-
             DB::commit();
             return redirect()->back()->with('success', 'Thêm văn bản thành công !');
 
@@ -629,7 +649,7 @@ class VanBanDenController extends Controller
     public function hanXuLyvb(Request $request)
     {
 //        dd($request->all());
-        $ngaynhan =  formatYMD($request->ngay_nhan);
+        $ngaynhan = formatYMD($request->ngay_nhan);
 //        dd($ngaynhan);
 
         $tieuChuandata = TieuChuanVanBan::where('id', $request->tieu_chuan)->first();
@@ -719,7 +739,7 @@ class VanBanDenController extends Controller
     public function xoaFileDen($id)
     {
         $vanBanDi = FileVanBanDen::where('id', $id)->first();
-            $vanBanDi->delete();
+        $vanBanDi->delete();
         return redirect()->back()->with('success', 'Xóa file thành công !');
     }
 
@@ -834,8 +854,7 @@ class VanBanDenController extends Controller
         $vanbandv->save();
 
         $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-        if ($request->File)
-        {
+        if ($request->File) {
             if (!File::exists($uploadPath)) {
                 File::makeDirectory($uploadPath, 0777, true, true);
             }
@@ -1040,8 +1059,8 @@ class VanBanDenController extends Controller
         $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $date = date("d/m/Y");
 
-        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users','tieuChuan',
-            'soDen','ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
+        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan',
+            'soDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
             'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung'));
     }
 
@@ -1114,8 +1133,7 @@ class VanBanDenController extends Controller
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
         $soDenvb = $soDenvb + 1;
-        if($request->chu_tri_phoi_hop == null)
-        {
+        if ($request->chu_tri_phoi_hop == null) {
             $request->chu_tri_phoi_hop = 0;
         }
 
@@ -1269,8 +1287,7 @@ class VanBanDenController extends Controller
         $han_gq = $request->han_giai_quyet;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
         $giaymoicom = !empty($requestData['noi_dung_hop_con']) ? $requestData['noi_dung_hop_con'] : null;
-        if($request->chu_tri_phoi_hop == null)
-        {
+        if ($request->chu_tri_phoi_hop == null) {
             $request->chu_tri_phoi_hop = 0;
         }
         try {
@@ -1438,10 +1455,11 @@ class VanBanDenController extends Controller
     {
 
     }
+
     /*** neu khong co tham muu thi van ban gui len lanh dao so hoac (gui lanh dao chi cuc)**/
     public function updateTrinhTuNhanVanBan($thamMuuId, $vanBanDen, $user)
     {
-        if($user->hasRole(VAN_THU_HUYEN)) {
+        if ($user->hasRole(VAN_THU_HUYEN)) {
             $vanBanDen->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
             $vanBanDen->save();
 
@@ -1498,6 +1516,7 @@ class VanBanDenController extends Controller
     {
         return view('vanbanden::tai-lieu-tham-khao.tai-lieu-upload');
     }
+
     public function postTaiLieuThamKhao(Request $request)
     {
         $uploadPath = UPLOAD_FILE_TAI_LIEU;

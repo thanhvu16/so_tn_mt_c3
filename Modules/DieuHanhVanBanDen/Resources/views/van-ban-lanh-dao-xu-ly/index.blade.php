@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai')
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
@@ -197,15 +197,27 @@
                                             </label>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <p>Lãnh đạo dự họp:</p>
-                                                <input type="radio"
-                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                       class="radio-col-cyan chu-tich-du-hop"
-                                                       value="{{ $chuTich->id ?? null }}"
-                                                       form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
-                                                <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                ><i>GD</i></label>
+                                                @if (empty($checkThamMuuSo))
+                                                    <input type="radio"
+                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                           class="radio-col-cyan chu-tich-du-hop"
+                                                           value="{{ $chuTich->id ?? null }}"
+                                                           form="form-tham-muu" checked>
+                                                    <label
+                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                    ><i>GD</i></label>
+                                                @else
+                                                    <input type="radio"
+                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                           class="radio-col-cyan chu-tich-du-hop"
+                                                           value="{{ $chuTich->id ?? null }}"
+                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
+                                                    <label
+                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                    ><i>GD</i></label>
+                                                @endif
                                                 &nbsp;
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
@@ -321,6 +333,7 @@
 
             if (id) {
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
+                //checkedDuHop($this, '.pho-ct-du-hop');
                 let txtChiDao = txtChuTich + ', giao PGD ' + textPhoChuTich;
                 if (status == 2) {
                     $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển phó giám đốc ' + textPhoChuTich);
@@ -331,6 +344,7 @@
                 }
 
             } else {
+                //removeDuHop($this, '.pho-ct-du-hop');
                 $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
                 $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
@@ -525,6 +539,20 @@
         $('.chu-tich-du-hop').on('click', function () {
             $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
         });
+
+        // check du hop
+        function checkedDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', true);
+            if ($className === '.don-vi-du-hop') {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
+            } else {
+                $this.parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
+            }
+        }
+
+        function removeDuHop($this, $className) {
+            $this.parents('.tr-tham-muu').find($className).prop('checked', false);
+        }
 
     </script>
 @endsection

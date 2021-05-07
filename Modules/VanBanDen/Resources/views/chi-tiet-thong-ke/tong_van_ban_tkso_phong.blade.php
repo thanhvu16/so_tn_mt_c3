@@ -31,7 +31,7 @@
                                             hành: {{ date('d/m/Y', strtotime($vbDen->vanBanDen->ngay_ban_hanh)) }}</p>
                                         <p>- Ban hành: {{$vbDen->vanBanDen->co_quan_ban_hanh}}</p>
                                         <p>- Số đến: <span
-                                                class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>
+                                                class="font-bold" style="color: red">{{$vbDen->vanBanDen->so_den}}</span></p>
                                         {{--                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>--}}
                                     </td>
                                     <td style="text-align: justify">

@@ -35,8 +35,8 @@
 
                         </div>
                     </div>
-                    <div class="box-body">
-                        <table class="table table-bordered table-striped table-hover table-responsive">
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
                                 <th class="text-center">STT</th>
