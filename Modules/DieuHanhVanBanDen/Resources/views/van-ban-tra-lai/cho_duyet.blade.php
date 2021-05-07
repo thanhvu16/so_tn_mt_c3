@@ -10,7 +10,7 @@
                     </div>
                     <!-- /.box-header -->
                     @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB])
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>

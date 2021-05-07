@@ -252,12 +252,12 @@
                                             @endif
                                         @endif
                                         <div class="text-right">
-                                            @if ($vbDen->trinh_tu_nhan_van_ban == 10)
-                                                <span class="label label-danger">Đã hoàn thành</span>
+                                            @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                <span class="label label-success">Đã hoàn thành</span>
                                             @elseif($vbDen->trinh_tu_nhan_van_ban == null)
-                                                <span class="label label-success">chưa phân</span>
+                                                <span class="label label-danger">Chưa phân loại</span>
                                             @else
-                                                <span class="label label-warning">Đã phân</span>
+                                                <span class="label label-warning">Đang xử lý</span>
                                             @endif
                                         </div>
 

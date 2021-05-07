@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <form action="{{ route('phan-loai-van-ban.index') }}" method="get">
                             <div class="row">
                                 <div class="col-md-3">
