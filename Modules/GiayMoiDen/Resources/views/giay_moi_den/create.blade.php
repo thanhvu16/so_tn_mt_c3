@@ -25,7 +25,7 @@
                                         class="color-red">*</span></label>
                                 <input type="text" value=""
                                        class="form-control"
-                                       name="co_quan_ban_hanh_id" autofocus required>
+                                       name="co_quan_ban_hanh_id" tabindex="1" autofocus required>
 
                             </div>
                             <div class="form-group col-md-3">
@@ -33,7 +33,7 @@
                                 <input type="text" name="so_ky_hieu"
                                        value=""
                                        required
-                                       class="form-control file_insert tenfile"
+                                       class="form-control file_insert tenfile" tabindex="2"
                                        id="sokyhieu"
                                        placeholder="Số ký hiệu">
                             </div>
@@ -42,7 +42,7 @@
                             <div class="form-group col-md-3">
                                 <label for="ngay_ban_hanh" class="col-form-label">Ngày ban hành <span
                                         class="color-red">*</span></label>
-                                <input class="form-control vanbantrung"
+                                <input class="form-control vanbantrung" tabindex="3"
                                        id="vb_ngay_ban_hanh"
                                        value="" required type="date"
                                        name="ngay_ban_hanh">
@@ -59,7 +59,7 @@
 
                             <div class="form-group col-md-12">
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
-                                <textarea rows="3" class="form-control" placeholder="nội dung" name="vb_trich_yeu"
+                                <textarea rows="3" class="form-control" tabindex="4" placeholder="nội dung" name="vb_trich_yeu"
                                           required
                                           type="text"></textarea>
                             </div>
@@ -68,7 +68,7 @@
                                     <label>Giờ họp <span class="color-red">*</span></label>
 
                                     <div class="input-group">
-                                        <input type="text" name="gio_hop_chinh" class="form-control timepicker">
+                                        <input type="text" name="gio_hop_chinh" tabindex="5" class="form-control timepicker">
 
                                         <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -81,7 +81,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Ngày họp <span class="color-red">*</span></label>
-                                    <input type="date" required class="form-control ngaybanhanh2"
+                                    <input type="date" tabindex="6" required class="form-control ngaybanhanh2"
                                            value=""
                                            name="ngay_hop_chinh" placeholder="">
                                 </div>
@@ -91,7 +91,7 @@
                                     <label for="">Địa điểm <span class="color-red">*</span></label>
                                     <input type="text" required class="form-control"
                                            value=""
-                                           name="dia_diem_chinh" placeholder="Địa điểm">
+                                           name="dia_diem_chinh" tabindex="7" placeholder="Địa điểm">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -201,7 +201,7 @@
                             <div class="col-md-3" >
                                 <label for="sokyhieu" class="col-form-label">Người ký <span
                                         class="color-red">*</span></label>
-                                <input type="text" class="form-control "
+                                <input type="text" class="form-control " tabindex="8"
                                        value="" required
                                        name="nguoi_ky_id">
                             </div>
@@ -264,7 +264,7 @@
 
                                     <div class=" col-md-3 mt-4" style="margin-top: 35px">
                                         <button
-                                            class="btn btn-primary" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
+                                            class="btn btn-primary" tabindex="9" type="submit"><i class="fa fa-plus-square-o mr-1"></i>
                                             <span>Thêm mới</span></button>
                                     </div>
 

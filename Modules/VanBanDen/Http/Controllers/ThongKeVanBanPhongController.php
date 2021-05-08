@@ -354,7 +354,6 @@ class ThongKeVanBanPhongController extends Controller
             return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
 
 
-        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
     }
     public function chiTietChuaGiaiQuyetTrongHanVanBanphong($id,Request $request)
     {
