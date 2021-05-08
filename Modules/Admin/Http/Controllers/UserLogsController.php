@@ -51,12 +51,13 @@ class UserLogsController extends Controller
             ->orderBy('id', 'DESC')->paginate(PER_PAGE);
 
 
-        $filePath = file(storage_path('logs/user_action_'.date('m_Y').'.log'));
+        $checkFileExists = file_exists(storage_path('logs/user_action_'.date('m_Y').'.log'));
 
         $logCollection = [];
         $newLogCollections = [];
         // Loop through an array, show HTML source as HTML source; and line numbers too.
-        if ($filePath) {
+        if ($checkFileExists) {
+            $filePath = file(storage_path('logs/user_action_'.date('m_Y').'.log'));
             foreach (array_reverse($filePath) as $line_num => $line) {
                 $explodeData = explode('.INFO: ', $line);
                 $logCollection[] = $explodeData[1];

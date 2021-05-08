@@ -60,6 +60,7 @@ class VanBanDenController extends Controller
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
+        $trinhTuNhanVanBan = $request->get('trinh_tu_nhan_van_ban') ?? null;
 
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
@@ -123,6 +124,19 @@ class VanBanDenController extends Controller
                 ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
+                    }
+                })
+                ->where(function ($query) use ($trinhTuNhanVanBan) {
+                    if (!empty($trinhTuNhanVanBan)) {
+                        switch ($trinhTuNhanVanBan) {
+                            case 10:
+                                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+                            case 2:
+                                return $query->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN);
+                            case 1:
+                                return $query->whereNull('trinh_tu_nhan_van_ban');
+                        }
+
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
@@ -697,19 +711,14 @@ class VanBanDenController extends Controller
             $tachchuoi = explode("-", $tenchinhfile);
 //            $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = isset($tachchuoi[0]) ? (int)$tachchuoi[0] : null;
-            $yearsfile = isset($tachchuoi[1]) ? (int)$tachchuoi[1] : null;
-
-//            dd($yearsfile);
-
-//            dd($soVanBan);
-
-//            $sovanban = SoVanBan::where('ten_viet_tat', 'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($soVanBan != null) {
                 if ($user->hasRole(VAN_THU_HUYEN)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->get();
+//                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+//                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->get();
 
                 }
                 if ($vanban) {

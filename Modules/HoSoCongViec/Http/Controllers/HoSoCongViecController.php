@@ -61,6 +61,7 @@ class HoSoCongViecController extends Controller
     public function ds_van_ban_hs($id)
     {
         $ds_vb_hoso = DetailHoSoCV::where(['id_ho_so' => $id, 'trang_thai' => 1])->paginate(PER_PAGE);
+
         return view('hosocongviec::list_hscv.detail_hoso', compact('ds_vb_hoso', 'id'));
     }
 
@@ -85,34 +86,33 @@ class HoSoCongViecController extends Controller
             if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
                 ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
                 $van_ban = VanBanDen::where(['type' => 1])
-                ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
-                    if (!empty($trich_yeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
-                    }
-                })->where(function ($query) use ($so_ky_hieu) {
-                    if (!empty($so_ky_hieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
-                    }
-                })
+                    ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
+                        if (!empty($trich_yeu)) {
+                            return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
+                        }
+                    })->where(function ($query) use ($so_ky_hieu) {
+                        if (!empty($so_ky_hieu)) {
+                            return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+                        }
+                    })
                     ->where(function ($query) use ($noi_gui_den) {
                         if (!empty($noi_gui_den)) {
                             return $query->where('co_quan_ban_hanh_id', 'LIKE', "%$noi_gui_den%");
                         }
                     })->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } else
-            {
+            } else {
 //                if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
                 $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
                 $van_ban = VanBanDen::where(['don_vi_id' => $donViId, 'type' => VanBanDen::TYPE_VB_DON_VI])
                     ->whereNull('deleted_at')->where(function ($query) use ($trich_yeu) {
-                    if (!empty($trich_yeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
-                    }
-                })->where(function ($query) use ($so_ky_hieu) {
-                    if (!empty($so_ky_hieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
-                    }
-                })
+                        if (!empty($trich_yeu)) {
+                            return $query->where('trich_yeu', 'LIKE', "%$trich_yeu%");
+                        }
+                    })->where(function ($query) use ($so_ky_hieu) {
+                        if (!empty($so_ky_hieu)) {
+                            return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+                        }
+                    })
                     ->where(function ($query) use ($noi_gui_den) {
                         if (!empty($noi_gui_den)) {
                             return $query->where('co_quan_ban_hanh_id', 'LIKE', "%$noi_gui_den%");
@@ -138,8 +138,7 @@ class HoSoCongViecController extends Controller
                         }
                     })
                     ->orderBy('id', 'desc')->paginate(PER_PAGE);
-            } else
-            {
+            } else {
 
 //                if ($user->hasRole(CHUYEN_VIEN) || $user->hasRole(PHO_PHONG) || $user->hasRole(TRUONG_PHONG) || $user->hasRole(VAN_THU_DON_VI)) {
                 $van_ban = VanBanDi::where(['van_ban_huyen_ky' => auth::user()->don_vi_id])->where('so_di', '!=', null)->whereNull('deleted_at')
@@ -166,51 +165,59 @@ class HoSoCongViecController extends Controller
 
     public function luu_vao_detail(Request $request)
     {
-        $detail = DetailHoSoCV::where(['id_van_ban' => $request->id_van_ban, 'id_ho_so' => $request->id_ho_so, 'trang_thai' => 1])->first();
-        if ($detail == null) {
-            if ($request->loai_van_ban == 1) {
-                $vanbandendetail = VanBanDen::where('id', $request->id_van_ban)->first();
-                if ($vanbandendetail->vanBanDi != null) {
-                    $vanbandi = new DetailHoSoCV();
-                    $vanbandi->id_van_ban = $vanbandendetail->vanBanDi->id;
-                    $vanbandi->id_ho_so = $request->id_ho_so;
-                    $vanbandi->loai_van_ban = 2;
-                    $vanbandi->trang_thai = 1;
-                    $vanbandi->save();
-                }
-                $vanbanden = new DetailHoSoCV();
-                $vanbanden->id_van_ban = $request->id_van_ban;
-                $vanbanden->id_ho_so = $request->id_ho_so;
-                $vanbanden->loai_van_ban = 1;
-                $vanbanden->trang_thai = 1;
-                $vanbanden->save();
-                UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbanden);
-            } elseif ($request->loai_van_ban == 2) {
-                $layvanbandentuvanbandi = VanBanDi::where('id', $request->id_van_ban)->first();
-                if ($layvanbandentuvanbandi->van_ban_den_don_vi_id != null) {
+        $arrVanBanId = $request->id_van_ban;
+
+        foreach ($arrVanBanId as $vanBanId) {
+            $detail = DetailHoSoCV::where([
+                'id_van_ban' => $vanBanId,
+                'id_ho_so' => $request->id_ho_so,
+                'trang_thai' => 1])->first();
+
+            if ($detail == null) {
+                if ($request->loai_van_ban == 1) {
+                    $vanBanDenDetail = VanBanDen::find($vanBanId);
+
+                    if ($vanBanDenDetail->vanBanDi()) {
+                        $vanbandi = new DetailHoSoCV();
+                        $vanbandi->id_van_ban = $vanBanDenDetail->vanBanDi()->id;
+                        $vanbandi->id_ho_so = $request->id_ho_so;
+                        $vanbandi->loai_van_ban = 2;
+                        $vanbandi->trang_thai = 1;
+                        $vanbandi->save();
+                    }
                     $vanbanden = new DetailHoSoCV();
-                    $vanbanden->id_van_ban = $layvanbandentuvanbandi->van_ban_den_don_vi_id;
+                    $vanbanden->id_van_ban = $vanBanId;
                     $vanbanden->id_ho_so = $request->id_ho_so;
                     $vanbanden->loai_van_ban = 1;
                     $vanbanden->trang_thai = 1;
                     $vanbanden->save();
+                    UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbanden);
+
+                } elseif ($request->loai_van_ban == 2) {
+                    $layVanBanDenTuVanBanDi = VanBanDi::findOrFail($vanBanId);
+
+                    if ($layVanBanDenTuVanBanDi && $layVanBanDenTuVanBanDi->getListVanBanDen()) {
+                        foreach ($layVanBanDenTuVanBanDi->getListVanBanDen() as $vanBanDen) {
+                            $vanbanden = new DetailHoSoCV();
+                            $vanbanden->id_van_ban = $vanBanDen->id;
+                            $vanbanden->id_ho_so = $request->id_ho_so;
+                            $vanbanden->loai_van_ban = 1;
+                            $vanbanden->trang_thai = 1;
+                            $vanbanden->save();
+                        }
+                    }
+                    $vanbandi = new DetailHoSoCV();
+                    $vanbandi->id_van_ban = $vanBanId;
+                    $vanbandi->id_ho_so = $request->id_ho_so;
+                    $vanbandi->loai_van_ban = 2;
+                    $vanbandi->trang_thai = 1;
+                    $vanbandi->save();
+                    UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbandi);
                 }
-                $vanbandi = new DetailHoSoCV();
-                $vanbandi->id_van_ban = $request->id_van_ban;
-                $vanbandi->id_ho_so = $request->id_ho_so;
-                $vanbandi->loai_van_ban = 2;
-                $vanbandi->trang_thai = 1;
-                $vanbandi->save();
-                UserLogs::saveUserLogs(' Lưu văn bản vào hồ sơ ', $vanbandi);
             }
-
-
-            return redirect()->route('ds_van_ban_hs', $request->id_ho_so)->with('success', 'Lưu thành công văn bản !');
-        } else {
-            return redirect()->back()->with('error', 'Đã tồn tại văn bản !');
         }
 
-
+        return redirect()->route('ds_van_ban_hs', $request->id_ho_so)->with('success', 'Lưu thành công văn bản !');
     }
 
     public function delete_tai_lieu($id)

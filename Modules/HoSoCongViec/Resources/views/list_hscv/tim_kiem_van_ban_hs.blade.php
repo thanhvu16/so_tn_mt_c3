@@ -76,7 +76,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                             </button>
                                             <h4 class="modal-title"><i
-                                                    class="fa fa-folder-open-o"></i> Chọn văn bản tải vào thư mục</h4>
+                                                    class="fa fa-folder-open-o"></i> Chọn văn bản thêm vào thư mục</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">

@@ -116,16 +116,15 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-{{--                                            <div class="form-group col-md-3">--}}
-{{--                                                <label for="sokyhieu" class="col-form-label">Trạng thái văn bản</label>--}}
-{{--                                                <select class="form-control select2"--}}
-{{--                                                        name="trinh_tu_nhan_van_ban" id="so_van_ban_id">--}}
-{{--                                                    <option value="">-- Chọn trạng thái--</option>--}}
-{{--                                                    <option value="1">-- Đã phân --</option>--}}
-{{--                                                    <option value="2">-- Chưa phân --</option>--}}
-{{--                                                    <option value="3">-- Đã hoàn thành --</option>--}}
-{{--                                                </select>--}}
-{{--                                            </div>--}}
+                                            <div class="form-group col-md-3">
+                                                <label class="col-form-label">Trạng thái văn bản</label>
+                                                <select class="form-control select2" name="trinh_tu_nhan_van_ban">
+                                                    <option value="">-- Chọn trạng thái--</option>
+                                                    <option value="1" {{ Request::get('trinh_tu_nhan_van_ban') == 1 ? 'selected' : null }}>Chưa phân loại</option>
+                                                    <option value="2" {{ Request::get('trinh_tu_nhan_van_ban') == 2 ? 'selected' : null }}>Đang xử lý</option>
+                                                    <option value="10" {{ Request::get('trinh_tu_nhan_van_ban') == 10 ? 'selected' : null }}>Đã hoàn thành</option>
+                                                </select>
+                                            </div>
                                             <div class="form-group col-md-3" >
                                                 <label class="col-form-label">Năm</label>
                                                 <select name="year" class="form-control select2">
@@ -300,7 +299,7 @@
                        'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
                        'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
                        'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' => Request::get('year'),
-                       'don_vi_id' => Request::get('don_vi_id')])->render() !!}
+                       'don_vi_id' => Request::get('don_vi_id'), 'trinh_tu_nhan_van_ban' => Request::get('trinh_tu_nhan_van_ban')])->render() !!}
                             </div>
                         </div>
                     </div>
@@ -319,8 +318,8 @@
                                         <div class="row">
                                             <div class="form-group col-md-12">
                                                 <label for="sokyhieu" class="">Chọn tệp
-                                                    tin<br><small><i>(Đặt tên file theo định dạng: số đến + năm ban hành  (vd:
-                                                            16-2020.pdf))</i></small>
+                                                    tin<br><small><i>(Đặt tên file theo định dạng: số đến (vd:
+                                                            1672.pdf))</i></small>
                                                 </label>
 
                                                 <input type="file" multiple name="ten_file[]"
