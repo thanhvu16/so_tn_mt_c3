@@ -101,6 +101,15 @@
                                                                         @endif
                                                                     </select>
                                                                 </div>
+                                                                <div class="form-group col-md-3">
+                                                                    <label class="col-form-label">Trạng thái văn bản</label>
+                                                                    <select class="form-control select2" name="trinh_tu_nhan_van_ban">
+                                                                        <option value="">-- Chọn trạng thái--</option>
+                                                                        <option value="1" {{ Request::get('trinh_tu_nhan_van_ban') == 1 ? 'selected' : null }}>Chưa phân loại</option>
+                                                                        <option value="2" {{ Request::get('trinh_tu_nhan_van_ban') == 2 ? 'selected' : null }}>Đang xử lý</option>
+                                                                        <option value="10" {{ Request::get('trinh_tu_nhan_van_ban') == 10 ? 'selected' : null }}>Đã hoàn thành</option>
+                                                                    </select>
+                                                                </div>
                                                                 <div class="form-group col-md-3" >
                                                                     <label class="col-form-label">Năm</label>
                                                                     <select name="year" class="form-control select2">
@@ -229,12 +238,12 @@
                                             @endif
                                         @endif
                                             <div class="text-right">
-                                                @if ($vbDen->trinh_tu_nhan_van_ban == 10)
-                                                    <span class="label label-danger">Đã hoàn thành</span>
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <span class="label label-success">Đã hoàn thành</span>
                                                 @elseif($vbDen->trinh_tu_nhan_van_ban == null)
-                                                    <span class="label label-success">chưa phân</span>
+                                                    <span class="label label-danger">Chưa phân loại</span>
                                                 @else
-                                                    <span class="label label-warning">Đã phân</span>
+                                                    <span class="label label-warning">Đang xử lý</span>
                                                 @endif
                                             </div>
                                     </td>
@@ -278,7 +287,8 @@
                           ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
                           'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
                           'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
-                          'vb_trich_yeu' => Request::get('vb_trich_yeu'),'search' =>Request::get('search'), 'year' => Request::get('year'), 'don_vi_id' => Request::get('don_vi_id')])->render() !!}
+                          'vb_trich_yeu' => Request::get('vb_trich_yeu'),'search' =>Request::get('search'), 'year' => Request::get('year'), 'don_vi_id' => Request::get('don_vi_id')
+                          , 'trinh_tu_nhan_van_ban' => Request::get('trinh_tu_nhan_van_ban')])->render() !!}
                             </div>
                         </div>
                     </div>

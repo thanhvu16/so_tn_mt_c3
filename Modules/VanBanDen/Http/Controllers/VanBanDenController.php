@@ -60,6 +60,7 @@ class VanBanDenController extends Controller
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
+        $trinhTuNhanVanBan = $request->get('trinh_tu_nhan_van_ban') ?? null;
 
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
@@ -123,6 +124,19 @@ class VanBanDenController extends Controller
                 ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
+                    }
+                })
+                ->where(function ($query) use ($trinhTuNhanVanBan) {
+                    if (!empty($trinhTuNhanVanBan)) {
+                        switch ($trinhTuNhanVanBan) {
+                            case 10:
+                                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+                            case 2:
+                                return $query->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN);
+                            case 1:
+                                return $query->whereNull('trinh_tu_nhan_van_ban');
+                        }
+
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);

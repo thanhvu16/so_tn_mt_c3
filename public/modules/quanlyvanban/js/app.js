@@ -212,7 +212,7 @@ $('.lay_van_ban').on('click', function (e) {
     var vb_trich_yeu = $('[name=vb_trich_yeu]').val();
     var vb_so_ky_hieu = $('[name=vb_so_ky_hieu]').val();
     var loai_van_ban = $('[name=loai_van_ban]:checked').val();
-    console.log(loai_van_ban);
+    console.log(loai_van_ban, 123);
     e.preventDefault();
     $.ajax({
         beforeSend: showLoading(),
@@ -241,14 +241,15 @@ $('.lay_van_ban').on('click', function (e) {
                 return `<tr>
                     <td class="text-center">
                         <div class="custom-control custom-radio ">
-                            <input type="radio" id="luachon${item.id}" value="${item.id}"
-                                   name="id_van_ban"
+                            <input type="checkbox" id="luachon${item.id}" value="${item.id}"
+                                   name="id_van_ban[]"
                                    class="custom-control-input">
-                            <label class="custom-control-label" for="luachon${item.id}"></label>
                             <input name="loai_van_ban" value="${type}" class="hidden">
                         </div>
                     </td>
-                    <td>${item.trich_yeu}</td>
+                    <td>
+                         <label class="custom-control-label font-weight-normal" for="luachon${item.id}">${item.trich_yeu}</label>
+                    </td>
                 </tr>`;
             }));
             $('.data-append').html(dataAppend);
@@ -257,14 +258,16 @@ $('.lay_van_ban').on('click', function (e) {
                 return  `<tr>
                     <td class="text-center">
                         <div class="custom-control custom-radio ">
-                            <input type="radio" id="luachon${item.id}" value="${item.id}"
-                                   name="id_van_ban"
+                            <input type="checkbox" id="luachon${item.id}" value="${item.id}"
+                                   name="id_van_ban[]"
                                    class="custom-control-input">
                             <label class="custom-control-label" for="luachon${item.id}"></label>
                         </div>
                         <input name="loai_van_ban" value="${type}" class="hidden">
                     </td>
-                    <td>${item.trich_yeu}</td>
+                    <td>
+                        <label class="custom-control-label font-weight-normal" for="luachon${item.id}">${item.trich_yeu}</label>
+                    </td>
         </tr>`;
             }));
             $('.data-append').html(dataAppend2);
