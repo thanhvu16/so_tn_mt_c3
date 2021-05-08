@@ -187,30 +187,33 @@ class ThongKeVanBanChiCucController extends Controller
         $vanBanTrongHan = 0;
         $vanBanQuaHan = 0;
         $tongVanBanDonViKhongDieuHanh = 0;
+        $currentDate = date('Y-m-d');
         if ($type == DonVi::DIEU_HANH) {
             foreach ($danhSachVanBanDenChuaHoanThanh as $vanBanDen) {
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_DUNG_HAN) {
+                if ($vanBanDen->han_xu_ly >= $currentDate || $vanBanDen->han_xu_ly == null) {
                     $vanBanTrongHan += 1;
                 }
-                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_QUA_HAN) {
+                if ($vanBanDen->han_xu_ly < $currentDate && $vanBanDen->han_xu_ly != null) {
                     $vanBanQuaHan += 1;
                 }
             }
+            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
+
         } else {
             $arrVanBanDenId = $danhSachVanBanDenChuaHoanThanh->pluck('id')->toArray();
-            $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
+            $danhSachVanBanDenDonViChuaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+                ->whereHas('vanBanDen', function ($query) use ($currentDate) {
+                    return $query->where('han_xu_ly', '>=', $currentDate);
                 })
                 ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
+            $vanBanTrongHan = $danhSachVanBanDenDonViChuaHoanThanhTrongHan;
 
-            $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-                ->whereHas('vanBanDen', function ($query) {
-                    return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
+            $danhSachVanBanDenDonViChuaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+                ->whereHas('vanBanDen', function ($query) use ($currentDate) {
+                    return $query->where('han_xu_ly', '<', $currentDate);
                 })
                 ->where('don_vi_id', $donViId)->distinct()->count();
-            $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
+            $vanBanQuaHan = $danhSachVanBanDenDonViChuaHoanThanhQuaHan;
             $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
         }
 
@@ -396,7 +399,6 @@ class ThongKeVanBanChiCucController extends Controller
     {
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
-        $user = auth::user();
         $date = date('Y-m-d');
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
@@ -410,12 +412,7 @@ class ThongKeVanBanChiCucController extends Controller
 
         if($donVi->dieu_hanh == DonVi::DIEU_HANH )
         {
-            if($donVi->cap_xa == null)
-            {
-                $type = null;
-            } else{
-                $type = 2;
-            }
+
             $ds_vanBanDen= VanBanDen::
             whereNull('deleted_at')
 
@@ -494,15 +491,11 @@ class ThongKeVanBanChiCucController extends Controller
 
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
+        $date = date('Y-m-d');
 
         if($donVi->dieu_hanh == DonVi::DIEU_HANH )
         {
-            if($donVi->cap_xa == null)
-            {
-                $type = null;
-            } else{
-                $type = 2;
-            }
+
             $ds_vanBanDen= VanBanDen::
             whereNull('deleted_at')
                 ->where(function ($query) use ($donViId) {
@@ -510,19 +503,15 @@ class ThongKeVanBanChiCucController extends Controller
                         return $query->where('don_vi_id', $donViId);
                     }
                 })
-                ->where(function ($query) use ($type) {
-                    if (!empty($type)) {
-                        return $query->where('type', $type);
-                    }
+
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                        ->orWhereNull('trinh_tu_nhan_van_ban');
                 })
-//                ->orwhere('trinh_tu_nhan_van_ban',Null)
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_DUNG_HAN)
-
-
-
-
-//                ->orwhere('trinh_tu_nhan_van_ban',null)
+                ->where(function ($query) use ($date){
+                    return  $query->where('han_xu_ly', '>=',$date)
+                        ->orWhereNull('han_xu_ly');
+                })
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -543,9 +532,14 @@ class ThongKeVanBanChiCucController extends Controller
         }else{
             $ds_vanBanDen = VanBanDen::
             whereNull('deleted_at')
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-//                ->orwhere('trinh_tu_nhan_van_ban','==' ,null)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                        ->orWhereNull('trinh_tu_nhan_van_ban');
+                })
+                ->where(function ($query) use ($date){
+                    return  $query->where('han_xu_ly', '>=',$date)
+                        ->orWhereNull('han_xu_ly');
+                })
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
