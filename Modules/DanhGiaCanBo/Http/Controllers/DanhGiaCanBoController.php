@@ -29,6 +29,10 @@ class DanhGiaCanBoController extends Controller
         $donVi = $user->donVi;
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
         $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if (empty($donVi->cap_xa)) {
@@ -82,7 +86,7 @@ class DanhGiaCanBoController extends Controller
                 $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();

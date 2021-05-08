@@ -697,19 +697,14 @@ class VanBanDenController extends Controller
             $tachchuoi = explode("-", $tenchinhfile);
 //            $tenviettatso = strtoupper($tachchuoi[0]);
             $soden = isset($tachchuoi[0]) ? (int)$tachchuoi[0] : null;
-            $yearsfile = isset($tachchuoi[1]) ? (int)$tachchuoi[1] : null;
-
-//            dd($yearsfile);
-
-//            dd($soVanBan);
-
-//            $sovanban = SoVanBan::where('ten_viet_tat', 'LIKE', "%$tenviettatso%")->whereNull('deleted_at')->first();
             if ($soVanBan != null) {
                 if ($user->hasRole(VAN_THU_HUYEN)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->get();
+//                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'type' => 1])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
 
                 } elseif ($user->hasRole(VAN_THU_DON_VI)) {
-                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+//                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->whereYear('ngay_ban_hanh', '=', $yearsfile)->get();
+                    $vanban = VanBanDen::where(['so_van_ban_id' => $soVanBan->id, 'so_den' => $soden, 'don_vi_id' => auth::user()->donVi->parent_id])->get();
 
                 }
                 if ($vanban) {

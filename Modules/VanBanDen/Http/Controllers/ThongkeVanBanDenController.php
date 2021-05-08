@@ -167,12 +167,13 @@ class ThongkeVanBanDenController extends Controller
         $danhSachVanBanDenChuaHoanThanh = VanBanDen::whereNull('deleted_at')
             ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
-                    return $query->where('don_vi_id', $donViId);
+                    return $query->where('don_vi_id', $donViId) ;
                 }
             })
-            ->orwhere('trinh_tu_nhan_van_ban',Null)
-            ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-//            ->orwhere(['trinh_tu_nhan_van_ban' => null,'don_vi_id'=> $donViId])
+            ->where(function ($query){
+                return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                    ->orWhereNull('trinh_tu_nhan_van_ban');
+            })
 
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
@@ -562,7 +563,7 @@ class ThongkeVanBanDenController extends Controller
     {
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
-        $user = auth::user();
+        $date = date('Y-m-d');
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
@@ -575,12 +576,7 @@ class ThongkeVanBanDenController extends Controller
 
         if($donVi->dieu_hanh == DonVi::DIEU_HANH )
         {
-            if($donVi->cap_xa == null)
-            {
-                $type = null;
-            } else{
-                $type = 2;
-            }
+
             $ds_vanBanDen= VanBanDen::
             whereNull('deleted_at')
 
@@ -589,14 +585,11 @@ class ThongkeVanBanDenController extends Controller
                         return $query->where('don_vi_id', $donViId);
                     }
                 })
-                ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
-
-                ->where(function ($query) use ($type) {
-                    if (!empty($type)) {
-                        return $query->where('type', $type);
-                    }
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                        ->orWhereNull('trinh_tu_nhan_van_ban');
                 })
+                ->where('han_xu_ly', '>', $date)
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -617,8 +610,11 @@ class ThongkeVanBanDenController extends Controller
         }else{
             $ds_vanBanDen = VanBanDen::
             whereNull('deleted_at')
-                ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                        ->orWhereNull('trinh_tu_nhan_van_ban');
+                })
+                ->where('han_xu_ly', '>', $date)
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -650,6 +646,7 @@ class ThongkeVanBanDenController extends Controller
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
         $user = auth::user();
+        $date = date('Y-m-d');
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
@@ -662,12 +659,6 @@ class ThongkeVanBanDenController extends Controller
 
         if($donVi->dieu_hanh == DonVi::DIEU_HANH )
         {
-            if($donVi->cap_xa == null)
-            {
-                $type = null;
-            } else{
-                $type = 2;
-            }
             $ds_vanBanDen= VanBanDen::
             whereNull('deleted_at')
                 ->where(function ($query) use ($donViId) {
@@ -675,18 +666,11 @@ class ThongkeVanBanDenController extends Controller
                         return $query->where('don_vi_id', $donViId);
                     }
                 })
-                ->where(function ($query) use ($type) {
-                    if (!empty($type)) {
-                        return $query->where('type', $type);
-                    }
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                            ->orWhereNull('trinh_tu_nhan_van_ban');
                 })
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_DUNG_HAN)
-
-
-
-
-//                ->orwhere('trinh_tu_nhan_van_ban',null)
+                ->where('han_xu_ly', '<', $date)
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -707,9 +691,11 @@ class ThongkeVanBanDenController extends Controller
         }else{
             $ds_vanBanDen = VanBanDen::
             whereNull('deleted_at')
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
-                ->orwhere('trinh_tu_nhan_van_ban','==' ,null)
-                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
+                ->where(function ($query){
+                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+                        ->orWhereNull('trinh_tu_nhan_van_ban');
+                })
+                ->where('han_xu_ly', '<', $date)
                 ->where(function ($query) use ($tu_ngay, $den_ngay) {
                     if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 

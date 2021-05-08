@@ -78,7 +78,7 @@ class LanhDaoController extends Controller
                 $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
                 break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id',  $donVi->parent_id)->get();
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
