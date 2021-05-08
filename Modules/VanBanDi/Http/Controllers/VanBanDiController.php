@@ -56,6 +56,7 @@ class VanBanDiController extends Controller
         $nguoi_ky = $request->get('nguoiky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
+        $phatHanhVanBan = $request->get('phat_hanh_van_ban');
         $year = $request->get('year') ?? null;
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
