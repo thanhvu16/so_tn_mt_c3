@@ -219,16 +219,16 @@
                                         <div class="text-right " style="pointer-events: auto">
 
                                             @forelse($vbDi->filetrinhky as $filedata)
-                                                <a href="{{$filedata->getUrlFile()}}">[File trình ký]</a>
+                                                <a href="{{$filedata->getUrlFile()}}" target="popup" class="seen-new-window">[File trình ký]</a>
                                             @empty
                                             @endforelse
                                             @forelse($vbDi->filephieutrinh as $filedata)
-                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}"> [File phiếu
+                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}" target="popup" class="seen-new-window"> [File phiếu
                                                     trình]</a>
                                             @empty
                                             @endforelse
                                             @forelse($vbDi->filehoso as $filedata)
-                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}"> [File hồ
+                                                &nbsp; |<a href="{{$filedata->getUrlFile()}}" target="popup" class="seen-new-window"> [File hồ
                                                     sơ]</a>
                                             @empty
                                             @endforelse
@@ -303,6 +303,7 @@
                                                            accept=".xlsx,.xls,.doc, .docx,.txt,.pdf"/>
                                                     <input type="text" id="url-file" value="123" class="hidden"
                                                            name="txt_file[]">
+                                                    <input type="hidden" name="type" value="GM">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải
