@@ -22,23 +22,26 @@ class ThongKeVanBanChiCucController extends Controller
     {
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
+        $currentDonVi = auth::user()->donVi;
+        $donViId = $currentDonVi->parent_id != 0 ? $currentDonVi->parent_id : $currentDonVi->id;
+        $donViChiCuc = null;
+
         canPermission(AllPermission::thongKeVanBanChiCuc());
         $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
             ->where('cap_xa',1)
-            ->where('id',auth::user()->donVi->id)
-            ->orwhere('parent_id',auth::user()->donVi->id)
+            ->where('id', $donViId)
+            ->orwhere('parent_id', $donViId)
             ->get();
         foreach ($danhSachDonVi as $donVi)
         {
             $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay);
             if($donVi->parent_id == 0)
             {
-                $donViChiCuc = DonVi::where('id',auth::user()->don_vi_id)->first();
+                $donViChiCuc = DonVi::where('id', $donViId)->first();
             }
 
         }
 
-//        dd($donViChiCuc);
         $soDonvi = $danhSachDonVi->count();
 
         if ($request->get('type') == 'excel') {
