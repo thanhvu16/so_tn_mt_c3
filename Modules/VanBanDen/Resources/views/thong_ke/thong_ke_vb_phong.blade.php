@@ -101,17 +101,17 @@
 {{--                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</td>--}}
 {{--                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_dung_han'] }}</td>--}}
 {{--                                                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_qua_han'] }}</td>--}}
-                                                <td class="text-center" style="vertical-align: middle"> <a href="{{route('chiTietDaGiaiQuyetTrongHanVanBanphong',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                <td class="text-center" style="vertical-align: middle"> <a href="{{route('thong_ke_chi_tiet_van_ban',$donVidata->id.'?type=1&tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&arr_id='.$donVidata->vanBanDaGiaiQuyet['id_van_ban_trong_han']) }}">
                                                         {{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_trong_han'] }}</a></td>
                                                 <td style="vertical-align: middle;text-align: center">
-                                                    <a href="{{route('chiTietDaGiaiQuyetQuaHanVanBanphong',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                    <a href="{{route('thong_ke_chi_tiet_van_ban',$donVidata->id.'?type=2&tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&arr_id='.$donVidata->vanBanDaGiaiQuyet['id_van_ban_qua_han'])}}">
                                                         {{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</a>
                                                 </td>
-                                                <td style="vertical-align: middle;text-align: center"><a href="{{route('chiTietChuaGiaiQuyetTrongHanVanBanphong',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                <td style="vertical-align: middle;text-align: center"><a href="{{route('thong_ke_chi_tiet_van_ban',$donVidata->id.'?type=3&tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&arr_id='.$donVidata->vanBanChuaGiaiQuyet['id_van_ban_trong_han'])}}">
                                                         {{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_dung_han'] }}
                                                     </a></td>
                                                 <td style="vertical-align: middle;text-align: center">
-                                                    <a href="{{route('chiTietChuaGiaiQuyetQuaHanVanBanphong',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">
+                                                    <a href="{{route('thong_ke_chi_tiet_van_ban',$donVidata->id.'?type=4&tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&arr_id='.$donVidata->vanBanChuaGiaiQuyet['id_van_ban_qua_han'])}}">
                                                         {{ $donVidata->vanBanChuaGiaiQuyet['hoan_thanh_qua_han'] }}
                                                     </a></td>
                                             </tr>
