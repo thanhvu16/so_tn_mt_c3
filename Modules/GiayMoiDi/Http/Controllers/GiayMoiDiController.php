@@ -495,10 +495,12 @@ class GiayMoiDiController extends Controller
 
         if ($tenMailThem && count($tenMailThem) > 0) {
             foreach ($tenMailThem as $key => $data) {
-                $themDonVi = new MailNgoaiThanhPho();
-                $themDonVi->ten_don_vi = $data;
-                $themDonVi->email = $EmailThem[$key];
-                $themDonVi->save();
+                if (!empty($data)) {
+                    $themDonVi = new MailNgoaiThanhPho();
+                    $themDonVi->ten_don_vi = $data;
+                    $themDonVi->email = $EmailThem[$key];
+                    $themDonVi->save();
+                }
             }
         }
         $vanbandi = new VanBanDi();

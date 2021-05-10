@@ -66,7 +66,8 @@ Route::get('chi-tiet-da-giai-quyet-qua-han-phong/{id}', array('as' => 'chiTietDa
 Route::get('chi-tiet-chua-giai-quyet-trong-han-phong/{id}', array('as' => 'chiTietChuaGiaiQuyetTrongHanVanBanphong', 'uses' => 'ThongKeVanBanPhongController@chiTietChuaGiaiQuyetTrongHanVanBanphong'));
 Route::get('chi-tiet-chua-giai-quyet-qua-han-phong/{id}', array('as' => 'chiTietChuaGiaiQuyetQuaHanVanBanphong', 'uses' => 'ThongKeVanBanPhongController@chiTietChuaGiaiQuyetQuaHanVanBanphong'));
 
-
+//chi tiet van ban
+Route::get('chi-tiet-thong-ke-van-ban-trong-phong/{id}', 'ThongKeVanBanPhongController@show')->name('thong_ke_chi_tiet_van_ban');
 
 
 

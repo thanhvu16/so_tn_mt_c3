@@ -3,6 +3,7 @@
 namespace Modules\VanBanDen\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -105,7 +106,16 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
         canPermission(AllPermission::thongKeVanBanSo());
-        $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')->get();
+        $lanhDaoSo = User::role(CHU_TICH)->whereNull('deleted_at')->first();
+
+        $danhSachDonVi = DonVi::where(function ($query) use ($lanhDaoSo) {
+               if (!empty($lanhDaoSo)) {
+                   return $query->where('id', '!=', $lanhDaoSo->don_vi_id);
+               }
+            })
+            ->where('parent_id', DonVi::NO_PARENT_ID)
+            ->whereNull('deleted_at')
+            ->orderBy('ten_don_vi')->get();
 
         foreach ($danhSachDonVi as $donVi)
         {

@@ -1350,10 +1350,17 @@ class VanBanDiController extends Controller
     public function multiple_file_di(Request $request)
     {
         $user = auth::user();
-        $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
+        $type = $request->get('type') ?? null;
+        if ($type && $type == 'GM') {
+            $uploadPath = UPLOAD_FILE_GIAY_MOI_DI;
+        } else {
+            $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
+        }
+
         if (!File::exists($uploadPath)) {
             File::makeDirectory($uploadPath, 0777, true, true);
         }
+
         $multiFiles = !empty($request['ten_file']) ? $request['ten_file'] : null;
         if (empty($multiFiles) || count($multiFiles) == 0 || (count($multiFiles) > 19)) {
             return redirect()->back()->with('warning', 'Bạn phải chọn file hoặc phải chọn số lượng file nhỏ hơn 20 file   !');
@@ -1376,7 +1383,8 @@ class VanBanDiController extends Controller
             $tenchinhfile = strtolower($typeArray[0]);
             $extFile = $getFile->extension();
             $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DI . '/' . $fileName;
+
+            $urlFile = $uploadPath . '/' . $fileName;
             $tachchuoi = explode("-", $tenchinhfile);
             $tenviettatso = strtoupper($tachchuoi[0]);
             $sodi = (int)$tachchuoi[1];
@@ -1394,8 +1402,8 @@ class VanBanDiController extends Controller
                     $vanban = VanBanDi::where(['loai_van_ban_id' => $loaivanban->id, 'so_di' => $sodi, 'phong_phat_hanh' => auth::user()->donVi->parent_id])->first();
                 }
             }
-            if ($vanban) {
 
+            if ($vanban) {
                 $xoafiletrinhky = FileVanBanDi::where([
                     'trang_thai' => 2,
                     'file_chinh_gui_di' => 2,
