@@ -29,30 +29,93 @@ class ChiCucDanhGiaController extends Controller
         $donVi = $user->donVi;
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
         $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
+//        switch (auth::user()->roles->pluck('name')[0]) {
+//            case CHUYEN_VIEN:
+//                if (empty($donVi->cap_xa)) {
+//                    $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                } else {
+//                    $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                }
+//                break;
+//            case PHO_CHU_TICH:
+//                if (empty($donVi->cap_xa)) {
+//                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                } else {
+//                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+//                }
+//                break;
+//            case CHU_TICH:
+//                if (empty($donVi->cap_xa)) {
+//                    $nguoinhan = null;
+//                } else {
+//                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+//                }
+//                break;
+//            case TRUONG_BAN:
+//                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+//                break;
+//            case PHO_TRUONG_BAN:
+//                $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                break;
+//
+//        }
+
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                if (empty($donVi->cap_xa)) {
+                if ($donVi->parent_id == 0) {
                     $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+
                 } else {
                     $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 }
                 break;
+            case PHO_PHONG:
+                $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case TRUONG_PHONG:
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = $lanhDaoSo;
+                } else {
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                }
+                break;
             case PHO_CHU_TICH:
-                if (empty($donVi->cap_xa)) {
+                if ($donVi->parent_id == 0) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
-                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 }
                 break;
             case CHU_TICH:
-                if (empty($donVi->cap_xa)) {
+                if ($donVi->parent_id == 0) {
                     $nguoinhan = null;
                 } else {
                     $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
                 }
                 break;
+            case CHANH_VAN_PHONG:
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = $lanhDaoSo;
+                }
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
+                break;
+            case VAN_THU_DON_VI:
+                $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                break;
+            case VAN_THU_HUYEN:
+                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                    ->whereHas('donVi', function ($query) {
+                        return $query->whereNull('cap_xa');
+                    })->get();
+                break;
             case TRUONG_BAN:
-                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();;
                 break;
             case PHO_TRUONG_BAN:
                 $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
@@ -149,34 +212,99 @@ class ChiCucDanhGiaController extends Controller
 
         $thang = $request->get('thang');
         $month = Carbon::now()->format('m');
+        $user = auth::user();
+        $donVi = $user->donVi;
         $nguoinhan = null;
+//        switch (auth::user()->roles->pluck('name')[0]) {
+//            case CHUYEN_VIEN:
+//                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                break;
+//            case PHO_PHONG:
+//                $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                break;
+//            case TRUONG_PHONG:
+//                $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+//                break;
+//            case PHO_CHU_TICH:
+//                $nguoinhan = User::role([CHU_TICH])->get();
+//                break;
+//            case CHU_TICH:
+//                $nguoinhan = null;
+//                break;
+//            case CHANH_VAN_PHONG:
+//                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->get();
+//                break;
+//            case PHO_CHANH_VAN_PHONG:
+//                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
+//                break;
+//            case VAN_THU_DON_VI:
+//                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+//                break;
+//            case VAN_THU_HUYEN:
+//                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+//                break;
+//
+//        }
+
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+
+                } else {
+                    $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                }
                 break;
             case PHO_PHONG:
                 $nguoinhan = User::role([TRUONG_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case TRUONG_PHONG:
-                $nguoinhan = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = $lanhDaoSo;
+                } else {
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                }
                 break;
             case PHO_CHU_TICH:
-                $nguoinhan = User::role([CHU_TICH])->get();
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                }
                 break;
             case CHU_TICH:
-                $nguoinhan = null;
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = null;
+                } else {
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                }
                 break;
             case CHANH_VAN_PHONG:
-                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->get();
+                if ($donVi->parent_id == 0) {
+                    $nguoinhan = $lanhDaoSo;
+                }
                 break;
             case PHO_CHANH_VAN_PHONG:
-                $nguoinhan = User::role([QUYEN_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
-                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+                $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                    ->whereHas('donVi', function ($query) {
+                        return $query->whereNull('cap_xa');
+                    })->get();
+                break;
+            case TRUONG_BAN:
+                $nguoinhan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();;
+                break;
+            case PHO_TRUONG_BAN:
+                $nguoinhan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
 
         }
