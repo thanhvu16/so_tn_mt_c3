@@ -419,8 +419,8 @@ class VanBanDenPhoiHopController extends Controller
                     }
 
                     // save thanh phan du hop
-                    ThanhPhanDuHop::store($giayMoi, $vanBanDen, [$danhSachPhoChuTichIds[$vanBanDenId], $danhSachTruongPhongIds[$vanBanDenId],
-                        $danhSachPhoPhongIds[$vanBanDenId], $danhSachChuyenVienIds[$vanBanDenId]], null, auth::user()->don_vi_id);
+                    ThanhPhanDuHop::store($giayMoi, $vanBanDen, [!empty($danhSachPhoChuTichIds[$vanBanDenId]) ? $danhSachPhoChuTichIds[$vanBanDenId] : null, !empty($danhSachTruongPhongIds[$vanBanDenId]) ? $danhSachTruongPhongIds[$vanBanDenId] : null,
+                        !empty($danhSachPhoPhongIds[$vanBanDenId]) ? $danhSachPhoPhongIds[$vanBanDenId] : null, !empty($danhSachChuyenVienIds[$vanBanDenId]) ? $danhSachChuyenVienIds[$vanBanDenId] : null], null, auth::user()->don_vi_id);
 
                 }
 
