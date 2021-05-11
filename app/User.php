@@ -2,20 +2,19 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+use Auth;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasRoles;
+    use Notifiable, SoftDeletes, HasRoles, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -89,4 +88,43 @@ class User extends Authenticatable
     {
         return $this->belongsTo(DonVi::class, 'don_vi_id', 'id')->whereNull('cap_xa');
     }
+
+    public function getAvatar()
+    {
+        if (!empty($this->anh_dai_dien)) {
+
+            return asset($this->anh_dai_dien);
+        }
+    }
+
+    public function getChuKyChinh()
+    {
+        if (!empty($this->chu_ky_chinh)) {
+
+            return asset($this->chu_ky_chinh);
+        }
+    }
+
+    public function getChuKyNhay()
+    {
+        if (!empty($this->chu_ky_nhay)) {
+
+            return asset($this->chu_ky_nhay);
+        }
+    }
+
+    public function getRole()
+    {
+        $type = null;
+
+        if (auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && auth::user()->donVi->cap_xa == DonVi::CAP_XA) {
+           $type = DonVi::CAP_XA;
+        }
+
+        return [
+            'name' => auth::user()->roles->pluck('name')[0],
+            'type' => $type
+        ];
+    }
+
 }

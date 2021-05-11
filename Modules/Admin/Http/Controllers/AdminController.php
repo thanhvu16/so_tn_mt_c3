@@ -531,7 +531,7 @@ class AdminController extends Controller
                 }
 
                 // van ban xem de biet
-                if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG])) {
+                if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
 
                     $vanBanXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', $user->id)
                         ->whereMonth('created_at', $month)
@@ -619,7 +619,6 @@ class AdminController extends Controller
             $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
 
-
             if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, CHUYEN_VIEN, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
                 $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
@@ -631,9 +630,19 @@ class AdminController extends Controller
                 $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
             }
 
+            if ($donVi->cap_xa = DonVi::CAP_XA) {
+
+                $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+                    ->where('can_bo_nhan_id', $user->id)
+                    ->whereNotNull('vao_so_van_ban')
+                    ->whereNull('hoan_thanh')
+                    ->select('van_ban_den_id')
+                    ->get();
+
+                $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+            }
+
             $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
-                ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
                 ->where(function ($query) use ($currentDate) {
                     return $query->where('han_xu_ly', '<', $currentDate);
                 })
@@ -660,48 +669,48 @@ class AdminController extends Controller
 
         return view('admin::index',
             compact(
-            'vanBanPhoiHopChoPhanLoai',
-            'danhSachDuThao',
-            'danhSachVanBanDen',
-            'vanBanDenDonViChoVaoSo',
-            'vanBanDenTraLai',
-            'homThuCong',
-            'vanBanTuDonViGui',
-            'giayMoiDen',
-            'giayMoiDi',
-            'vanBanDi',
-            'vanBanDiChoSo',
-            'vanbandichoduyet',
-            'vanThuVanBanDiPiceCharts',
-            'vanThuVanBanDiCoLors',
-            'van_ban_di_tra_lai',
-            'vanThuVanBanDenCoLors',
-            'vanThuVanBanDenPiceCharts',
-            'gopy',
-            'duThaoPiceCharts',
-            'duThaoCoLors',
-            'hoSoCongViecPiceCharts',
-            'hoSoCongViecCoLors',
-            'vanBanChoXuLy',
-            'vanBanXinGiaHan',
-            'vanBanQuanTrong',
-            'vanBanXemDeBiet',
-            'duyetVanBanCapDuoiTrinh',
-            'donViPhoiHop',
-            'chuyenVienPhoiHop',
-            'vanBanChoPhanLoai',
-            'vanBanQuaHanDangXuLy',
-            'lichCongTac',
-            'congViecPhongBanPiceCharts',
-            'congViecPhongBanCoLors',
-            'congViecDonViChoXuLy',
-            'giaHanCongViecDonVi',
-            'congViecDonViHoanThanhChoDuyet',
-            'congViecDonViPhoiHopChoXuLy',
-            'congViecChuyenVienPhoiHopChoXuLy',
-            'congViecChuyenVienDaXuLy',
-            'thamDuCuocHop'
-        ));
+                'vanBanPhoiHopChoPhanLoai',
+                'danhSachDuThao',
+                'danhSachVanBanDen',
+                'vanBanDenDonViChoVaoSo',
+                'vanBanDenTraLai',
+                'homThuCong',
+                'vanBanTuDonViGui',
+                'giayMoiDen',
+                'giayMoiDi',
+                'vanBanDi',
+                'vanBanDiChoSo',
+                'vanbandichoduyet',
+                'vanThuVanBanDiPiceCharts',
+                'vanThuVanBanDiCoLors',
+                'van_ban_di_tra_lai',
+                'vanThuVanBanDenCoLors',
+                'vanThuVanBanDenPiceCharts',
+                'gopy',
+                'duThaoPiceCharts',
+                'duThaoCoLors',
+                'hoSoCongViecPiceCharts',
+                'hoSoCongViecCoLors',
+                'vanBanChoXuLy',
+                'vanBanXinGiaHan',
+                'vanBanQuanTrong',
+                'vanBanXemDeBiet',
+                'duyetVanBanCapDuoiTrinh',
+                'donViPhoiHop',
+                'chuyenVienPhoiHop',
+                'vanBanChoPhanLoai',
+                'vanBanQuaHanDangXuLy',
+                'lichCongTac',
+                'congViecPhongBanPiceCharts',
+                'congViecPhongBanCoLors',
+                'congViecDonViChoXuLy',
+                'giaHanCongViecDonVi',
+                'congViecDonViHoanThanhChoDuyet',
+                'congViecDonViPhoiHopChoXuLy',
+                'congViecChuyenVienPhoiHopChoXuLy',
+                'congViecChuyenVienDaXuLy',
+                'thamDuCuocHop'
+            ));
     }
 
     /**
