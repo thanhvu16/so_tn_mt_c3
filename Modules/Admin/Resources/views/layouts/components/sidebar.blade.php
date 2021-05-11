@@ -8,7 +8,7 @@
             </div>
             <div class="pull-left info">
                 <p>{{ auth::user()->ho_ten ?? 'N/A' }}</p>
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-user"></i> {{auth::user()->chucVu->ten_chuc_vu ?? ''}}</a>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->

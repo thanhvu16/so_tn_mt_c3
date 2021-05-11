@@ -374,19 +374,31 @@ class VanBanDiController extends Controller
                 break;
 
             case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+                    $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
-                    ->whereHas('donVi', function ($query) {
-                        return $query->whereNull('cap_xa');
-                    })
-                    ->get();
+                $ds_nguoiKy = $lanhDaoSo;
                 break;
 
             case TRUONG_BAN:
-                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case PHO_TRUONG_BAN:
@@ -445,7 +457,7 @@ class VanBanDiController extends Controller
                 $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
                 $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
@@ -603,19 +615,31 @@ class VanBanDiController extends Controller
                 break;
 
             case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
-                    ->whereHas('donVi', function ($query) {
-                        return $query->whereNull('cap_xa');
-                    })
-                    ->get();
+                $ds_nguoiKy = $lanhDaoSo;
                 break;
 
             case TRUONG_BAN:
-                $ds_nguoiKy = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case PHO_TRUONG_BAN:
@@ -1155,15 +1179,18 @@ class VanBanDiController extends Controller
                 break;
 
             case VAN_THU_DON_VI:
-                $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case VAN_THU_HUYEN:
-                $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
-                    ->whereHas('donVi', function ($query) {
-                        return $query->whereNull('cap_xa');
-                    })
-                    ->get();
+                $ds_nguoiKy = $lanhDaoSo;
                 break;
 
             case TRUONG_BAN:
@@ -1556,7 +1583,7 @@ class VanBanDiController extends Controller
                 $nguoinhan = User::role([CHANH_VAN_PHONG])->get();
                 break;
             case VAN_THU_DON_VI:
-                $nguoinhan = User::role([TRUONG_PHONG, PHO_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                $nguoinhan = User::role([TRUONG_BAN, PHO_TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 break;
             case VAN_THU_HUYEN:
                 $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
