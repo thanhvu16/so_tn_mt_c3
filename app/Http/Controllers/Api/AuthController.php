@@ -139,6 +139,14 @@ class AuthController extends Controller
             ]);
         }
 
+        if (auth::user()->hasRole(QUAN_TRI_HT)) {
+
+            return response()->json([
+                'status' => UNAUTHORIZED,
+                'message'   => 'Tài khoản này không được truy cập vào hệ thống !'
+            ]);
+        }
+
         $token = $this->createToken($user);
         $userInfo = $this->userRepository->getUserInfo($user);
 
