@@ -2,11 +2,13 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Common\AllPermission;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\SoVanBan;
+use App\Http\Requests\SoVanBanRequest;
 
 class SoVanBanController extends Controller
 {
@@ -16,31 +18,34 @@ class SoVanBanController extends Controller
      */
     public function index()
     {
+        canPermission(AllPermission::themSoVanBan());
         $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         return view('admin::So_van_ban.index', compact('donvi'));
     }
 
     public function danhsach(Request $request)
     {
+        canPermission(AllPermission::themSoVanBan());
+        $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
         $tendonvi = $request->get('ten_don_vi');
         $tenviettat = $request->get('ten_viet_tat');
-        $mahanhchinh = $request->get('ma_hanh_chinh');
+        $loaiso = $request->get('loai_so');
         $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')
             ->where(function ($query) use ($tendonvi) {
                 if (!empty($tendonvi)) {
-                    return $query->where('ten_don_vi', 'LIKE', "%$tendonvi%");
+                    return $query->where('ten_so_van_ban', 'LIKE', "%$tendonvi%");
                 }
             })->where(function ($query) use ($tenviettat) {
                 if (!empty($tenviettat)) {
                     return $query->where('ten_viet_tat', 'LIKE', "%$tenviettat%");
                 }
             })
-            ->where(function ($query) use ($mahanhchinh) {
-                if (!empty($mahanhchinh)) {
-                    return $query->where('ma_hanh_chinh', 'LIKE', "%$mahanhchinh%");
+            ->where(function ($query) use ($loaiso) {
+                if (!empty($loaiso)) {
+                    return $query->where('loai_so', 'LIKE', "%$loaiso%");
                 }
-            })->paginate(1);
-        return view('admin::So_van_ban.danh_sach', compact('ds_sovanban'));
+            })->paginate(PER_PAGE);
+        return view('admin::So_van_ban.danh_sach', compact('ds_sovanban','donvi'));
     }
 
     /**
@@ -57,13 +62,18 @@ class SoVanBanController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(SoVanBanRequest $request)
     {
+        canPermission(AllPermission::themSoVanBan());
         $sovanban = new SoVanBan();
         $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
         $sovanban->ten_viet_tat = $request->ten_viet_tat;
         $sovanban->loai_so = $request->loai_so;
-        $sovanban->so_don_vi = $request->don_vi;
+        if($request->loai_so == 4)
+        {
+            $sovanban->so_don_vi = $request->don_vi;
+            $sovanban->type = $request->ap_dung;
+        }
         $sovanban->mo_ta = $request->mo_ta;
         $sovanban->save();
         return redirect()->route('danhsachsovanban')->with('success', 'Thêm mới thành công !');
@@ -86,7 +96,10 @@ class SoVanBanController extends Controller
      */
     public function edit($id)
     {
-        return view('admin::edit');
+        canPermission(AllPermission::suaSoVanBan());
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $donvi = DonVi::wherenull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
+        return view('admin::So_van_ban.edit', compact('sovanban','donvi'));
     }
 
     /**
@@ -97,7 +110,19 @@ class SoVanBanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        canPermission(AllPermission::suaSoVanBan());
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $sovanban->ten_so_van_ban = $request->ten_so_van_ban;
+        $sovanban->ten_viet_tat = $request->ten_viet_tat;
+        $sovanban->loai_so = $request->loai_so;
+        if($request->loai_so == 4)
+        {
+            $sovanban->so_don_vi = $request->don_vi;
+            $sovanban->type = $request->ap_dung;
+        }
+        $sovanban->mo_ta = $request->mo_ta;
+        $sovanban->save();
+        return redirect()->route('danhsachsovanban')->with('success', 'Cập nhât thành công !');
     }
 
     /**
@@ -107,6 +132,9 @@ class SoVanBanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        canPermission(AllPermission::xoaSoVanBan());
+        $sovanban= SoVanBan::where('id', $id)->first();
+        $sovanban->delete();
+        return redirect()->route('danhsachsovanban')->with('success', 'Xóa thành công !');
     }
 }

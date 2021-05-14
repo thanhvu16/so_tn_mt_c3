@@ -8,7 +8,7 @@
             <ul class="nav nav-tabs">
                 <li class="">
                     <a href="{{ route('nguoi-dung.index') }}">
-                        <i class="fa fa-user"></i> Quản lý người dùng
+                        <i class="fa fa-user"></i> Danh sách người dùng
                     </a>
                 </li>
                 <li class="active">

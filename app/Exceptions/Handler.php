@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +51,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof AuthenticationException) {
+            return redirect('/');
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException($exception->getMessage(), $exception);
+        }
+
+        if ($exception instanceof TokenMismatchException) {
+
+            return redirect()->guest(route('login'))->with('warning', 'Thời gian đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
+        }
         return parent::render($request, $exception);
     }
 }

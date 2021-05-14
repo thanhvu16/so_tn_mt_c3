@@ -1,7 +1,10 @@
 /node_modules
 /public/hot
 /public/storage
+public/XMLOutput_N.sdk
 /public/uploads
+/public/emailFile_*
+/public/vanBanDiFile_*
 /storage/*.key
 /vendor
 .env
@@ -12,3 +15,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+.idea/codeStyles
+.idea/.*

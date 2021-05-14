@@ -1,0 +1,13 @@
+{
+    "name": "HoSoCongViec",
+    "alias": "hosocongviec",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\HoSoCongViec\\Providers\\HoSoCongViecServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

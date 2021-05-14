@@ -1,0 +1,13 @@
+{
+    "name": "BaoCaoThongKe",
+    "alias": "baocaothongke",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\BaoCaoThongKe\\Providers\\BaoCaoThongKeServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

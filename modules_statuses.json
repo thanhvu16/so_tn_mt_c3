@@ -1,3 +1,14 @@
 {
-    "Admin": true
+    "Admin": true,
+    "VanBanDen": true,
+    "VanBanDi": true,
+    "LayVanBanTuEmail": true,
+    "DieuHanhVanBanDen": true,
+    "GiayMoiDen": true,
+    "GiayMoiDi": true,
+    "HoSoCongViec": true,
+    "DanhGiaCanBo": true,
+    "CongViecDonVi": true,
+    "LichCongTac": true,
+    "BaoCaoThongKe": true
 }

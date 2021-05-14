@@ -99,6 +99,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'userAction' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/user_action_'.date('m_Y').'.log'),
+            'level' => 'debug',
+            'permission' => 0777,
+        ],
     ],
 
 ];

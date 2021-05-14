@@ -1,7 +1,7 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.18
+        <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+    <strong>Copyright &copy; {{ date('Y') }} <a href="/" class="text-blue color-blue">Văn phòng điện tử</a>.</strong> All rights
     reserved.
 </footer>

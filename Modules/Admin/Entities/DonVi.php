@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Entities;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,5 +21,29 @@ class DonVi extends Model
         'dieu_hanh'
 
     ];
+
+    const DIEU_HANH = 1;
+    const CAP_XA = 1;
+    const NO_PARENT_ID = 0;
+    const TRANG_THAI_HOAT_DONG = 1;
+    const STATUS_EMAIL_ACTIVE = 1;
+    const STATUS_EMAIL_INACTIVE = 2;
+    const TYPE_CHI_CUC = 2;
+    const TYPE_TRUNG_TAM = 1;
+
+    public function nhomDonVi()
+    {
+        return $this->belongsTo(NhomDonVi::class, 'nhom_don_vi', 'id');
+    }
+
+    public function getParent()
+    {
+        return $this->belongsTo(DonVi::class, 'parent_id', 'id')->select('id', 'ten_don_vi');
+    }
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'don_vi_id', 'id');
+    }
 }
 

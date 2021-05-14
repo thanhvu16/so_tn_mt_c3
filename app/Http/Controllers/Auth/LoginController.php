@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Modules\VanBanDen\Entities\TaiLieuThamKhao;
 
 class LoginController extends Controller
 {
@@ -41,7 +42,9 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('auth.components.login');
+        $file = TaiLieuThamKhao::orderBy('created_at','DESC')->first();
+
+        return view('auth.components.login',compact('file'));
     }
 
     public function username()
@@ -58,5 +61,14 @@ class LoginController extends Controller
             $this->username().'required'=> 'Vui lòng nhập tên đăng nhập',
             'password.required' => 'Vui lòng nhập mật khẩu.'
         ]);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->trang_thai == 2) {
+            auth()->logout();
+            return back()->with('warning', 'Tài khoản của bạn đã bị khóa vui lòng liên hệ Quản trị hệ thống để được trợ giúp.');
+        }
+        return redirect()->intended($this->redirectPath());
     }
 }
