@@ -112,8 +112,8 @@ class NguoiDungController extends Controller
         canPermission(AllPermission::themNguoiDung());
 
         $roles = Role::all();
-        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->get();
-        $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->get();
+        $danhSachChucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->whereNull('deleted_at')->get();
+        $danhSachDonVi = DonVi::orderBy('ten_don_vi', 'asc')->whereNull('deleted_at')->get();
 
         $permissions = Permission::whereIn('name', [AllPermission::thamMuu(), AllPermission::VanThuChuyenTrach()])->get();
 

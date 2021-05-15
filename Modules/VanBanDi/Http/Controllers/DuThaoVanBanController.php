@@ -1111,11 +1111,13 @@ class DuThaoVanBanController extends Controller
 
             if ($tenMailThem && count($tenMailThem) > 0) {
                 foreach ($tenMailThem as $key => $data) {
-                    $themDonVi = new MailNgoaiThanhPho();
-                    $themDonVi->ten_don_vi = $data;
-                    $themDonVi->email = $EmailThem[$key];
-                    $themDonVi->save();
-                    array_push($dataIdEmailNgoai, $themDonVi->id);
+                    if (!empty($data)) {
+                        $themDonVi = new MailNgoaiThanhPho();
+                        $themDonVi->ten_don_vi = $data;
+                        $themDonVi->email = $EmailThem[$key];
+                        $themDonVi->save();
+                        array_push($dataIdEmailNgoai, $themDonVi->id);
+                    }
                 }
             }
 
