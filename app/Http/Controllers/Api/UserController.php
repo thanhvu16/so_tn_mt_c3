@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserDevice;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -110,10 +111,37 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        $user = $request->user();
+        $userDevice = UserDevice::where('user_id', $user->id)->first();
+        if ($userDevice) {
+            $userDevice->delete();
+        }
+        $user->token()->revoke();
 
         return response()->json([
             'message' => 'Đăng xuất thành công',
         ]);
+    }
+
+    public function saveToken(Request $request, UserDevice $userDevice)
+    {
+        $request->validate($userDevice->rule());
+
+        try {
+            $userDevice->saveTokenDevice($request);
+
+            return response()->json([
+                'status' => SUCCESS,
+                'message' => 'Lưu token thành công.'
+            ]);
+
+        } catch (\Exception $ex) {
+            \Log::debug($ex->getMessage());
+            \Log::debug($ex->getTraceAsString());
+
+            return response()->json([
+                'message' => 'Lưu token thất bại',
+            ], SERVER_ERROR);
+        }
     }
 }

@@ -22,7 +22,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::post('login', 'AuthController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
-
+        Route::post('user/update-token-device', 'UserController@saveToken');
         Route::post('user/update', 'UserController@update');
         Route::post('user/update-avatar', 'UserController@updateAvatar');
         Route::post('user/change-password', 'UserController@changePassword');

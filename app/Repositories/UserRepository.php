@@ -30,7 +30,8 @@ class UserRepository extends BaseRepository
             'chu_ky_nhay' => $user->getChuKyNhay(),
             'quyen_han'   => $user->getRole(),
             'don_vi' => $user->donVi,
-            'chuc_vu' => $user->chucVu
+            'chuc_vu' => $user->chucVu,
+            'token' => !empty($user->userDevice) ? $user->userDevice->token : null
         ];
     }
 
