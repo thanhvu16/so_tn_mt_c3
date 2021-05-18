@@ -72,11 +72,11 @@
                             <thead>
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="{{ auth::user()->hasRole(CHU_TICH) ? '42' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="{{ auth::user()->hasRole(CHU_TICH) ? '40' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
                                 @unlessrole(CHU_TICH)
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 @endunlessrole
-                                <th width="15%" class="text-center">Ý kiến</th>
+                                <th width="22%" class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="15%" class="text-center">Tác vụ</th>
                             </tr>

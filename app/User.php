@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserDevice;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -125,6 +126,11 @@ class User extends Authenticatable
             'name' => auth::user()->roles->pluck('name')[0],
             'type' => $type
         ];
+    }
+
+    public function userDevice()
+    {
+        return $this->hasOne(UserDevice::class, 'user_id', 'id');
     }
 
 }

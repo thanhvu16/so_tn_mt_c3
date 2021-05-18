@@ -96,7 +96,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)
+{{--                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)--}}
                                             <p>
                                                 <a class="tra-lai-van-ban" data-toggle="modal"
                                                    data-target="#modal-tra-lai"
@@ -104,7 +104,7 @@
                                                     <span><i class="fa fa-reply"></i>Trả lại VB</span>
                                                 </a>
                                             </p>
-                                        @endif
+{{--                                        @endif--}}
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
 

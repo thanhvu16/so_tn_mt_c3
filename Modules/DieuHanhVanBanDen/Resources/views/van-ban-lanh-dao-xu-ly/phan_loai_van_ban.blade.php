@@ -32,8 +32,8 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
-                                <th class="text-center" width="22%">Ý kiến</th>
+                                <th width="42%" class="text-center">Trích yếu - Thông tin</th>
+                                <th class="text-center" width="24%">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
                             </tr>
                             </thead>
