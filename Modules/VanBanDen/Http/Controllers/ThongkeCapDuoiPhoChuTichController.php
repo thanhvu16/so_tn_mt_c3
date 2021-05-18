@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -70,30 +71,40 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
 
                 } else {
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
-                    $chiCuc = User::role([ CHUYEN_VIEN ,TRUONG_BAN,PHO_TRUONG_BAN])->where('cap_xa', 1)->get();
-                    foreach ($chiCuc as $data2) {
-                        array_push($dataNguoiDung, $data2);
+                    $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                    foreach ($layTatcaphong as $dataPhong) {
+                        $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
+                        foreach ($nguoiDungPhong as $data1) {
+                            array_push($dataNguoiDung, $data1);
+                        }
                     }
+
                     foreach ($chiCuc1 as $data4) {
                         array_push($dataNguoiDung, $data4);
                     }
-
                     $nguoiDung = $dataNguoiDung;
+
                 }
+
+
                 break;
             case CHU_TICH:
                 if ($donVi->parent_id == 0 && auth::user()->cap_xa == 1) {
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
-                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])->where('cap_xa', 1)->get();
-                    $phong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where('cap_xa', 1)->get();
+                    $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                    foreach ($layTatcaphong as $dataPhong) {
+                        $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
+                        foreach ($nguoiDungPhong as $data1) {
+                            array_push($dataNguoiDung, $data1);
+                        }
+                    }
+
+                    $chiCuc = User::role([PHO_CHU_TICH])->where('cap_xa', 1)->get();
                     foreach ($chiCuc as $data2) {
                         array_push($dataNguoiDung, $data2);
                     }
                     foreach ($chiCuc1 as $data4) {
                         array_push($dataNguoiDung, $data4);
-                    }
-                    foreach ($phong as $data3) {
-                        array_push($dataNguoiDung, $data3);
                     }
                     $nguoiDung = $dataNguoiDung;
                 }
@@ -210,21 +221,22 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
         if ($users->hasRole(CHUYEN_VIEN)) {
             $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
-
-        $donViChuTri = DonViChuTri::where('can_bo_nhan_id', $users->id)
+        $donViChuTri = DonViChuTri::where('can_bo_nhan_id',$users->id)
             ->whereNotNull('vao_so_van_ban')
             ->whereNull('hoan_thanh')
             ->select('id', 'van_ban_den_id', 'can_bo_nhan_id')
             ->orderBy('id', 'DESC')
             ->get()->unique('van_ban_den_id');
 
+
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+
         $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
             ->where('han_xu_ly', '<', $date)
-            ->where(function ($query) use ($trinhTuNhanVanBan) {
-                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
-            })
-            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+//            ->where(function ($query) use ($trinhTuNhanVanBan) {
+//                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+//            })
+//            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -243,10 +255,13 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
             ->get();
 
         $danhSachVanBanDenTrongHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
-            ->where('han_xu_ly', '>=', $date)
-            ->where(function ($query) use ($trinhTuNhanVanBan) {
-                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+            ->where(function ($query) use ($date){
+                return  $query->where('han_xu_ly', '>=',$date)
+                    ->orWhereNull('han_xu_ly');
             })
+//            ->where(function ($query) use ($trinhTuNhanVanBan) {
+//                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
                     return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
@@ -264,6 +279,7 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
             })
             ->select('id')
             ->get();
+
 
 
         return [
