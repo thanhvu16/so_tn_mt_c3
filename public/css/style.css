@@ -498,17 +498,21 @@ a.them-van-ban-den:hover {
     text-decoration: underline;
 }
 
-/*.select2-container--default .select2-selection--single {*/
-/*    border-radius: 1px !important;*/
-/*    height: 34px !important;*/
-/*}*/
+.select2-container--default .select2-selection--single {
+    height: auto !important;
+}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    /*white-space: pre-wrap !important;*/
+    white-space: pre-wrap !important;
     padding-left: 1px !important;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
-    /*white-space: normal !important;*/
+    white-space: normal !important;
     padding-left: 1px !important;
+    padding-right: 1px !important;
 }
 
+.select2-container .select2-search--inline .select2-search__field {
+    font-size: 86% !important;
+    margin-top: 6px !important;
+}

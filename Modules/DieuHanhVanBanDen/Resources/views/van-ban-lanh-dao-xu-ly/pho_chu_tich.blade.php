@@ -33,9 +33,9 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="42%" class="text-center">Trích yếu - Thông tin</th>
 {{--                                <th width="22%" class="text-center">Tóm tắt VB</th>--}}
-                                <th class="text-center" width="20%">Ý kiến</th>
+                                <th class="text-center" width="24%">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
                                 <th class="text-center" width="7%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">

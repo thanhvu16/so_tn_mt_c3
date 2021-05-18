@@ -243,6 +243,7 @@ class ThongKeVanBanPhongController extends Controller
 
         }
 
+
 //        dd($userId, $danhSachVanBanDenDonViDaHoanThanhTrongHan);
         $vanBanTrongHan = count($danhSachVanBanDenDonViDaHoanThanhTrongHan);
 
