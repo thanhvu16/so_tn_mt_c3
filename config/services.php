@@ -30,4 +30,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'firebase' => [
+        "apiKey" => "AIzaSyACt4uHahV9GiJ9RcaClgBTHbMdPPk4zEY",
+        "authDomain" => "sotnmt-app.firebaseapp.com",
+        "projectId" => "sotnmt-app",
+        "storageBucket" => "sotnmt-app.appspot.com",
+        "messagingSenderId" => "567958870918",
+        "appId" => "1:567958870918:web:e6083a98df80542a642a07",
+        "measurementId" => "G-S4HZQ498JH",
+    ],
+
 ];

@@ -256,27 +256,8 @@ class HomeRepository
     public function getDataLanhDaoSo($user, $trinhTuNhanVanBan)
     {
         $donVi = $user->donVi;
-        $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
-            ->whereNull('status')
-            ->whereNull('hoan_thanh')
-            ->get();
 
-        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
-
-            $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
-                ->select('id', 'van_ban_den_id')
-                ->whereNotNull('vao_so_van_ban')
-                ->whereNull('hoan_thanh')
-                ->select('id', 'van_ban_den_id')
-                ->get();
-        }
-
-        $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
-
-        $vanBanChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
-            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-            ->count();
+        $vanBanChoXuLy = $this->vanBanChoXuLy($user, $trinhTuNhanVanBan);
         $vanBanXinGiaHan = $this->getVanBanXinGiaHan($user);
         $vanBanQuanTrong = $this->getVanBanQuanTrong($user);
         $vanBanQuaHanDangXuLy = $this->getVanBanQuaHanDangXuLy($user, $trinhTuNhanVanBan);
@@ -491,6 +472,34 @@ class HomeRepository
         return GiaHanVanBan::where('can_bo_nhan_id', $user->id)
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
+    }
+
+    public function vanBanChoXuLy($user, $trinhTuNhanVanBan)
+    {
+        $donVi = $user->donVi;
+        $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $user->id)
+            ->whereNull('status')
+            ->whereNull('hoan_thanh')
+            ->get();
+
+        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+
+            $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+                ->where('can_bo_nhan_id', $user->id)
+                ->select('id', 'van_ban_den_id')
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->select('id', 'van_ban_den_id')
+                ->get();
+        }
+
+        $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        $vanBanChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
+            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
+            ->count();
+
+        return $vanBanChoXuLy;
     }
 
     public function getDataVanBanDonViPhoiHopChoXuLy($user)

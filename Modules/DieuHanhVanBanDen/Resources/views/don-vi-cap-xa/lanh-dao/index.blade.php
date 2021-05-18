@@ -35,11 +35,11 @@
                                 <th width="45%" class="text-center">Trích yếu - Thông tin</th>
                                 <th class="text-center" width="21%">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
-{{--                                @if (auth::user()->hasRole(PHO_CHU_TICH))--}}
-                                    <th class="text-center" width="7%">
-                                        <input id="check-all" type="checkbox" name="check_all" value="">
-                                    </th>
-{{--                                @endif--}}
+                                {{--                                @if (auth::user()->hasRole(PHO_CHU_TICH))--}}
+                                <th class="text-center" width="7%">
+                                    <input id="check-all" type="checkbox" name="check_all" value="">
+                                </th>
+                                {{--                                @endif--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -100,6 +100,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
+
                                         @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)
                                             <p>
                                                 <a class="tra-lai-van-ban" data-toggle="modal"
@@ -108,6 +109,16 @@
                                                     <span><i class="fa fa-reply"></i>Trả lại VB</span>
                                                 </a>
                                             </p>
+                                        @else
+                                            @if (auth::user()->hasRole(PHO_CHU_TICH))
+                                                <p>
+                                                    <a class="tra-lai-van-ban" data-toggle="modal"
+                                                       data-target="#modal-tra-lai"
+                                                       data-id="{{ $vanBanDen->id }}">
+                                                        <span><i class="fa fa-reply"></i>Trả lại VB</span>
+                                                    </a>
+                                                </p>
+                                            @endif
                                         @endif
 
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
@@ -126,7 +137,9 @@
                                                         placeholder="Chọn phó giám đốc"
                                                         form="form-tham-muu"
                                                     >
-                                                        <option value="">Chọn {{ isset($donVi) && $donVi->type == 2 ? 'phó chi cục trưởng ' : 'phó giám đốc ' }} chủ trì
+                                                        <option value="">
+                                                            Chọn {{ isset($donVi) && $donVi->type == 2 ? 'phó chi cục trưởng ' : 'phó giám đốc ' }}
+                                                            chủ trì
                                                         </option>
                                                         @forelse($danhSachPhoChuTich as $phoChuTich)
                                                             <option
@@ -240,18 +253,18 @@
                                             @endif
                                             @if ($vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI && !empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <p>Lãnh đạo dự họp:</p>
-                                                    @if (auth::user()->hasRole(CHU_TICH))
-                                                        <input type="radio"
-                                                               name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                               id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                               class="radio-col-cyan chu-tich-du-hop"
-                                                               value="{{ $chuTich->id ?? null }}"
-                                                               form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
-                                                        <label
-                                                            for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                        ><i>GD</i></label>
-                                                        &nbsp;
-                                                    @endif
+                                                @if (auth::user()->hasRole(CHU_TICH))
+                                                    <input type="radio"
+                                                           name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                           id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                           class="radio-col-cyan chu-tich-du-hop"
+                                                           value="{{ $chuTich->id ?? null }}"
+                                                           form="form-tham-muu" {{ !empty($vanBanDen->lichCongTacChuTich) ? 'checked' : null  }}>
+                                                    <label
+                                                        for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
+                                                    ><i>GD</i></label>
+                                                    &nbsp;
+                                                @endif
                                                 @if ($vanBanDen->lichCongTacPhoChuTich || auth::user()->hasRole(CHU_TICH))
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
@@ -296,21 +309,22 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->DonViCapXaPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
+                                                      rows="4">@if (!empty($vanBanDen->DonViCapXaPhoiHop))Chuyển đơn vị
+                                                phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
                                         </p>
                                     </td>
-{{--                                    @if (auth::user()->hasRole(PHO_CHU_TICH))--}}
-                                        <td class="text-center">
-                                            <label style="color: red; font-weight: 500 !important;"
-                                                   for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>
-                                            <input id="checkbox{{ $vanBanDen->id }}" type="checkbox"
-                                                   name="duyet[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->id }}"
-                                                   class="duyet sub-check">
-                                        </td>
-{{--                                    @endif--}}
+                                    {{--                                    @if (auth::user()->hasRole(PHO_CHU_TICH))--}}
+                                    <td class="text-center">
+                                        <label style="color: red; font-weight: 500 !important;"
+                                               for="checkbox{{ $vanBanDen->id }}"> Chọn duyệt:</label><br>
+                                        <input id="checkbox{{ $vanBanDen->id }}" type="checkbox"
+                                               name="duyet[{{ $vanBanDen->id }}]" value="{{ $vanBanDen->id }}"
+                                               class="duyet sub-check">
+                                    </td>
+                                    {{--                                    @endif--}}
                                 </tr>
                             @empty
                                 <td colspan="6" class="text-center">Không tìm

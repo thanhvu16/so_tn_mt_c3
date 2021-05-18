@@ -263,9 +263,21 @@ class VanBanTraLaiController extends Controller
                     case VanBanDen::PHO_CHU_TICH_XA_NHAN_VB:
                         // pho ct xa chuyen lai van ban cho chu tich xa
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
-                        $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
-                        $vanBanDen->save();
+
+                        // check can bo nhan la van thu hay chu tich xa
+                        if (!empty($vanThuDonVi) && $canBoNhan == $vanThuDonVi->id) {
+                            $canBoNhan = $vanThuDonVi->id ?? null;
+                            $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                            $chuyenNhanDonViChuTri->vao_so_van_ban = null;
+                            $chuyenNhanDonViChuTri->tra_lai = DonViChuTri::TRA_LAI;
+                            $chuyenNhanDonViChuTri->chuyen_tiep = null;
+                            $chuyenNhanDonViChuTri->save();
+                        } else {
+                            $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                            $vanBanDen->save();
+                        }
                         break;
 
                     case VanBanDen::CHU_TICH_XA_NHAN_VB:

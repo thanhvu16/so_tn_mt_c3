@@ -225,27 +225,56 @@ class VanBanDenDonViController extends Controller
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ? formatYMD($request->get('date')) : null;
 
-        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
-            if ($currentUser->hasRole(CHU_TICH)) {
-                $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
-            }
+        $trinhTuNhanVanBan = null;
+        if ($currentUser->hasRole(CHU_TICH)) {
+            $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
 
-            if ($currentUser->hasRole(PHO_CHU_TICH)) {
-                $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+            if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                $trinhTuNhanVanBan = VanBanDen::CHU_TICH_XA_NHAN_VB;
             }
+        }
 
-            if ($currentUser->hasRole(TRUONG_BAN)) {
-                $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
-            }
+        if ($currentUser->hasRole(PHO_CHU_TICH)) {
+            $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
-            if ($currentUser->hasRole(PHO_TRUONG_BAN)) {
-                $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
+            if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
             }
+        }
 
-            if ($currentUser->hasRole(CHUYEN_VIEN)) {
-                $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
-            }
+        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
+            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
+        }
+
+        if ($currentUser->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
+            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
+        }
+
+        if ($currentUser->hasRole(CHUYEN_VIEN)) {
+            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
+        }
+
+        $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
+            ->whereNull('status')
+            ->whereNull('hoan_thanh')
+            ->select('van_ban_den_id')
+            ->get();
+
+        $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+
+        if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, CHUYEN_VIEN, PHO_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
+
+            $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
+                ->where('can_bo_nhan_id', $currentUser->id)
+                ->whereNotNull('vao_so_van_ban')
+                ->whereNull('hoan_thanh')
+                ->get();
+
+            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+        }
+
+        if ($donVi->cap_xa = DonVi::CAP_XA) {
 
             $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
                 ->where('can_bo_nhan_id', $currentUser->id)
@@ -255,48 +284,6 @@ class VanBanDenDonViController extends Controller
                 ->get();
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-
-
-        } else {
-            $xuLyVanBanDen = XuLyVanBanDen::where('can_bo_nhan_id', $currentUser->id)
-                ->whereNull('status')
-                ->whereNull('hoan_thanh')
-                ->select('van_ban_den_id')
-                ->get();
-
-            $arrVanBanDenId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
-
-            if ($currentUser->hasRole(CHU_TICH)) {
-                $trinhTuNhanVanBan = VanBanDen::CHU_TICH_NHAN_VB;
-            }
-
-            if ($currentUser->hasRole(PHO_CHU_TICH)) {
-                $trinhTuNhanVanBan = VanBanDen::PHO_CHU_TICH_NHAN_VB;
-            }
-
-            if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-                $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
-            }
-
-            if ($currentUser->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-                $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
-            }
-
-            if ($currentUser->hasRole(CHUYEN_VIEN)) {
-                $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
-            }
-
-            if ($currentUser->hasRole(TRUONG_PHONG) || $currentUser->hasRole(CHANH_VAN_PHONG) || $currentUser->hasRole(CHUYEN_VIEN) ||
-                $currentUser->hasRole(PHO_PHONG) || $currentUser->hasRole(PHO_CHANH_VAN_PHONG)) {
-                $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
-                    ->where('can_bo_nhan_id', $currentUser->id)
-                    ->whereNotNull('vao_so_van_ban')
-                    ->whereNull('hoan_thanh')
-                    ->select('van_ban_den_id')
-                    ->get();
-
-                $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-            }
         }
 
         $danhSachVanBanDen = VanBanDen::with([
@@ -328,7 +315,7 @@ class VanBanDenDonViController extends Controller
                     return $query->where('created_at', "LIKE", $date);
                 }
             })
-            ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
+            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
             ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                 'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
