@@ -51,12 +51,11 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
                 $nguoiDung = $dataNguoiDung;
                 break;
             case PHO_CHU_TICH:
-
                 if ($donVi->parent_id == 0 && auth::user()->cap_xa == null) {
                     //phó giám đốc sở lấy tất cả TP,PP,CV,giám đôc TT,phó GD TT
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
                     $chiCuc = User::role([CHU_TICH , PHO_CHU_TICH , CHUYEN_VIEN ,TRUONG_BAN,PHO_TRUONG_BAN])->where('cap_xa', 1)->get();
-                    $phong = User::role([TRUONG_PHONG , PHO_PHONG , CHUYEN_VIEN])->where('cap_xa', 1)->get();
+                    $phong = User::role([TRUONG_PHONG , PHO_PHONG , CHUYEN_VIEN])->where('cap_xa', null)->get();
                     foreach ($chiCuc as $data2) {
                         array_push($dataNguoiDung, $data2);
                     }
@@ -148,6 +147,8 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
 
         }
         $soDonvi = count($nguoiDung);
+
+
 
         foreach ($nguoiDung as $dataNguoiDung) {
             $dataNguoiDung->vanBanDaGiaiQuyet = $this->VanBanDenHoanThanhCuaDonVi($dataNguoiDung->id, $tu_ngay, $den_ngay);

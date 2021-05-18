@@ -114,17 +114,17 @@ class DanhGiaCanBoController extends Controller
                 }
                 break;
             case PHO_CHU_TICH:
-                if ($donVi->parent_id == 0) {
+                if ($donVi->parent_id == 0 &&  auth::user()->cap_xa != 1) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 }
                 break;
             case CHU_TICH:
-                if ($donVi->parent_id == 0) {
+                if ($donVi->parent_id == 0 &&  auth::user()->cap_xa != 1) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->whereNull('cap_xa')->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
@@ -367,17 +367,17 @@ class DanhGiaCanBoController extends Controller
                 }
                 break;
             case PHO_CHU_TICH:
-                if ($donVi->parent_id == 0) {
+                if ($donVi->parent_id == 0 &&  auth::user()->cap_xa != 1) {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
                     $nguoinhan = User::role([CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                 }
                 break;
             case CHU_TICH:
-                if ($donVi->parent_id == 0) {
+                if ($donVi->parent_id == 0 &&  auth::user()->cap_xa != 1) {
                     $nguoinhan = null;
                 } else {
-                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                    $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->whereNull('cap_xa')->get();
                 }
                 break;
             case CHANH_VAN_PHONG:
