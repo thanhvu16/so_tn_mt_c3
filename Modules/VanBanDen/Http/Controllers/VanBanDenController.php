@@ -923,8 +923,11 @@ class VanBanDenController extends Controller
         canPermission(AllPermission::homThuCong());
         $noiguimail = $request->get('noiguimail') ?? null;
         $tinhtrang = $request->get('tinhtrang') ?? 1;
-        $mailDate = $request->get('mail_date') ?? null;
+        $mailDate = !empty($request->get('mail_date')) ? formatYMD($request->get('mail_date')) : null;
         $mailSubject = $request->get('mail_subject') ?? null;
+
+        $startDate = $mailDate.' 00:00:00';
+        $endDate = $mailDate.' 23:59:59';
 
         $getEmail = GetEmail::where(['mail_active' => $tinhtrang])
             ->where(function ($query) use ($noiguimail) {
@@ -932,9 +935,10 @@ class VanBanDenController extends Controller
                     return $query->where('noigui', $noiguimail);
                 }
             })
-            ->where(function ($query) use ($mailDate) {
+            ->where(function ($query) use ($mailDate, $startDate, $endDate) {
                 if (!empty($mailDate)) {
-                    return $query->where('mail_date', 'LIKE', "%".formatYMD($mailDate)."%");
+                    return $query->where('mail_date', '>', $startDate)
+                                    ->where('mail_date', '<', $endDate);
                 }
             })
             ->where(function ($query) use ($mailSubject) {
