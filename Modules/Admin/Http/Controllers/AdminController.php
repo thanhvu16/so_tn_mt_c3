@@ -646,6 +646,12 @@ class AdminController extends Controller
                 ->where(function ($query) use ($currentDate) {
                     return $query->where('han_xu_ly', '<', $currentDate);
                 })
+                ->where(function ($query) use ($user,$trinhTuNhanVanBan) {
+                    if($user->hasRole([CHUYEN_VIEN]))
+                    {
+                        return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
+                    }
+                })
                 ->count();
 
             array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));

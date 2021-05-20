@@ -131,6 +131,14 @@
                                         </tr>
                                         </tbody>
                                     </table>
+{{--                                    <div class="row">--}}
+{{--                                        <div class="col-md-6 mt-4" style="margin-top: 5px">--}}
+{{--                                            Tổng số đơn vị: <b></b>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-md-6 text-right">--}}
+{{--                                            {!! $nguoiDung->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                 </div>
                             </div>
                         </div>

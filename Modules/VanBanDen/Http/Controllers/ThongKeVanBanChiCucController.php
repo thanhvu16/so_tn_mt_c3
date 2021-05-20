@@ -20,6 +20,7 @@ class ThongKeVanBanChiCucController extends Controller
      */
     public function index(Request $request)
     {
+
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
         $currentDonVi = auth::user()->donVi;
@@ -29,20 +30,25 @@ class ThongKeVanBanChiCucController extends Controller
         $donViChiCuc = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
 
         canPermission(AllPermission::thongKeVanBanChiCuc());
-        $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
-            ->where('cap_xa',1)
-            ->where('id', $donViId)
-            ->orWhere('parent_id', $donViId)
-//            ->where('parent_id', $donViId)
-            ->get();
+
+        if($request->don_vi == null)
+        {
+            $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
+                ->where('cap_xa',1)
+                ->where('id', $donViId)
+                ->orWhere('parent_id', $donViId)
+                ->paginate(10);
+        }else{
+            $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
+                ->where('cap_xa',1)
+                ->where('id', $request->don_vi)
+                ->orWhere('parent_id', $request->don_vi)
+                ->paginate(10);
+        }
+
         foreach ($danhSachDonVi as $donVi)
         {
             $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay);
-//            if($donVi->parent_id == 0)
-//            {
-//                $donViChiCuc = DonVi::where('id', $donViId)->first();
-//            }
-
         }
 
         $soDonvi = $danhSachDonVi->count();
