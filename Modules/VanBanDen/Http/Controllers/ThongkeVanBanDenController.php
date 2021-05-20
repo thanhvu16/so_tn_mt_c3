@@ -103,6 +103,7 @@ class ThongkeVanBanDenController extends Controller
 
     public function thongkevbso(Request $request)
     {
+
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
         canPermission(AllPermission::thongKeVanBanSo());
@@ -115,7 +116,7 @@ class ThongkeVanBanDenController extends Controller
             })
             ->where('parent_id', DonVi::NO_PARENT_ID)
             ->whereNull('deleted_at')
-            ->orderBy('ten_don_vi')->get();
+            ->orderBy('ten_don_vi')->paginate(10);
 
         foreach ($danhSachDonVi as $donVi)
         {

@@ -643,6 +643,7 @@ class AdminController extends Controller
             }
 
             $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+                ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                 ->where(function ($query) use ($currentDate) {
                     return $query->where('han_xu_ly', '<', $currentDate);
                 })
