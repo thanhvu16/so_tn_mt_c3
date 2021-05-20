@@ -28,38 +28,12 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
         $user = auth::user();
         $donVi = $user->donVi;
 
-        switch (auth::user()->roles->pluck('name')[0]) {
-            case PHO_PHONG:
-                $chiCuc1 = User::where('id', auth::user()->id)->get();
-                $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chiCuc1 as $data4) {
-                    array_push($dataNguoiDung, $data4);
-                }
-                foreach ($phong as $data3) {
-                    array_push($dataNguoiDung, $data3);
-                }
-                $nguoiDung = $dataNguoiDung;
-                break;
-            case TRUONG_PHONG:
-                $chiCuc1 = User::where('id', auth::user()->id)->get();
-                $phong = User::role([ PHO_PHONG , CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chiCuc1 as $data4) {
-                    array_push($dataNguoiDung, $data4);
-                }
-                foreach ($phong as $data3) {
-                    array_push($dataNguoiDung, $data3);
-                }
-                $nguoiDung = $dataNguoiDung;
-                break;
-            case PHO_CHU_TICH:
-                if ($donVi->parent_id == 0 && auth::user()->cap_xa == null) {
-                    //phó giám đốc sở lấy tất cả TP,PP,CV,giám đôc TT,phó GD TT
+        if($request->phong == null)
+        {
+            switch (auth::user()->roles->pluck('name')[0]) {
+                case PHO_PHONG:
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
-                    $chiCuc = User::role([CHU_TICH , PHO_CHU_TICH , CHUYEN_VIEN ,TRUONG_BAN,PHO_TRUONG_BAN])->where('cap_xa', 1)->get();
-                    $phong = User::role([TRUONG_PHONG , PHO_PHONG , CHUYEN_VIEN])->where('cap_xa', null)->get();
-                    foreach ($chiCuc as $data2) {
-                        array_push($dataNguoiDung, $data2);
-                    }
+                    $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     foreach ($chiCuc1 as $data4) {
                         array_push($dataNguoiDung, $data4);
                     }
@@ -67,51 +41,79 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
                         array_push($dataNguoiDung, $data3);
                     }
                     $nguoiDung = $dataNguoiDung;
-
-
-                } else {
+                    break;
+                case TRUONG_PHONG:
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
-                    $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
-                    foreach ($layTatcaphong as $dataPhong) {
-                        $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
-                        foreach ($nguoiDungPhong as $data1) {
-                            array_push($dataNguoiDung, $data1);
-                        }
-                    }
-
+                    $phong = User::role([ PHO_PHONG , CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     foreach ($chiCuc1 as $data4) {
                         array_push($dataNguoiDung, $data4);
                     }
+                    foreach ($phong as $data3) {
+                        array_push($dataNguoiDung, $data3);
+                    }
                     $nguoiDung = $dataNguoiDung;
-
-                }
-
-
-                break;
-            case CHU_TICH:
-                if ($donVi->parent_id == 0 && auth::user()->cap_xa == 1) {
-                    $chiCuc1 = User::where('id', auth::user()->id)->get();
-                    $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
-                    foreach ($layTatcaphong as $dataPhong) {
-                        $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
-                        foreach ($nguoiDungPhong as $data1) {
-                            array_push($dataNguoiDung, $data1);
+                    break;
+                case PHO_CHU_TICH:
+                    if ($donVi->parent_id == 0 && auth::user()->cap_xa == null) {
+                        //phó giám đốc sở lấy tất cả TP,PP,CV,giám đôc TT,phó GD TT
+                        $chiCuc1 = User::where('id', auth::user()->id)->get();
+                        $chiCuc = User::role([CHU_TICH , PHO_CHU_TICH , CHUYEN_VIEN ,TRUONG_BAN,PHO_TRUONG_BAN])->where('cap_xa', 1)->get();
+                        $phong = User::role([TRUONG_PHONG , PHO_PHONG , CHUYEN_VIEN])->where('cap_xa', null)->get();
+                        foreach ($chiCuc as $data2) {
+                            array_push($dataNguoiDung, $data2);
                         }
-                    }
-
-                    $chiCuc = User::role([PHO_CHU_TICH])->where('cap_xa', 1)->get();
-                    foreach ($chiCuc as $data2) {
-                        array_push($dataNguoiDung, $data2);
-                    }
-                    foreach ($chiCuc1 as $data4) {
-                        array_push($dataNguoiDung, $data4);
-                    }
-                    $nguoiDung = $dataNguoiDung;
-                }
+                        foreach ($chiCuc1 as $data4) {
+                            array_push($dataNguoiDung, $data4);
+                        }
+                        foreach ($phong as $data3) {
+                            array_push($dataNguoiDung, $data3);
+                        }
+                        $nguoiDung = $dataNguoiDung;
 
 
-                break;
-            case CHANH_VAN_PHONG:
+                    } else {
+                        $chiCuc1 = User::where('id', auth::user()->id)->get();
+                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                        foreach ($layTatcaphong as $dataPhong) {
+                            $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
+                            foreach ($nguoiDungPhong as $data1) {
+                                array_push($dataNguoiDung, $data1);
+                            }
+                        }
+
+                        foreach ($chiCuc1 as $data4) {
+                            array_push($dataNguoiDung, $data4);
+                        }
+                        $nguoiDung = $dataNguoiDung;
+
+                    }
+
+
+                    break;
+                case CHU_TICH:
+                    if ($donVi->parent_id == 0 && auth::user()->cap_xa == 1) {
+                        $chiCuc1 = User::where('id', auth::user()->id)->get();
+                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                        foreach ($layTatcaphong as $dataPhong) {
+                            $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
+                            foreach ($nguoiDungPhong as $data1) {
+                                array_push($dataNguoiDung, $data1);
+                            }
+                        }
+
+                        $chiCuc = User::role([PHO_CHU_TICH])->where('cap_xa', 1)->get();
+                        foreach ($chiCuc as $data2) {
+                            array_push($dataNguoiDung, $data2);
+                        }
+                        foreach ($chiCuc1 as $data4) {
+                            array_push($dataNguoiDung, $data4);
+                        }
+                        $nguoiDung = $dataNguoiDung;
+                    }
+
+
+                    break;
+                case CHANH_VAN_PHONG:
                     $chiCuc1 = User::where('id', auth::user()->id)->get();
                     $phong = User::role([ PHO_CHANH_VAN_PHONG , CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
                     foreach ($chiCuc1 as $data4) {
@@ -121,43 +123,51 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
                         array_push($dataNguoiDung, $data3);
                     }
                     $nguoiDung = $dataNguoiDung;
-                break;
-            case PHO_CHANH_VAN_PHONG:
-                $chiCuc1 = User::where('id', auth::user()->id)->get();
-                $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chiCuc1 as $data4) {
-                    array_push($dataNguoiDung, $data4);
-                }
-                foreach ($phong as $data3) {
-                    array_push($dataNguoiDung, $data3);
-                }
-                $nguoiDung = $dataNguoiDung;
-                break;
-            case TRUONG_BAN:
-                $chiCuc1 = User::where('id', auth::user()->id)->get();
-                $phong = User::role([ PHO_TRUONG_BAN , CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chiCuc1 as $data4) {
-                    array_push($dataNguoiDung, $data4);
-                }
-                foreach ($phong as $data3) {
-                    array_push($dataNguoiDung, $data3);
-                }
-                $nguoiDung = $dataNguoiDung;
-                break;
-            case PHO_TRUONG_BAN:
-                $chiCuc1 = User::where('id', auth::user()->id)->get();
-                $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                foreach ($chiCuc1 as $data4) {
-                    array_push($dataNguoiDung, $data4);
-                }
-                foreach ($phong as $data3) {
-                    array_push($dataNguoiDung, $data3);
-                }
-                $nguoiDung = $dataNguoiDung;
-                break;
+                    break;
+                case PHO_CHANH_VAN_PHONG:
+                    $chiCuc1 = User::where('id', auth::user()->id)->get();
+                    $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    foreach ($chiCuc1 as $data4) {
+                        array_push($dataNguoiDung, $data4);
+                    }
+                    foreach ($phong as $data3) {
+                        array_push($dataNguoiDung, $data3);
+                    }
+                    $nguoiDung = $dataNguoiDung;
+                    break;
+                case TRUONG_BAN:
+                    $chiCuc1 = User::where('id', auth::user()->id)->get();
+                    $phong = User::role([ PHO_TRUONG_BAN , CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    foreach ($chiCuc1 as $data4) {
+                        array_push($dataNguoiDung, $data4);
+                    }
+                    foreach ($phong as $data3) {
+                        array_push($dataNguoiDung, $data3);
+                    }
+                    $nguoiDung = $dataNguoiDung;
+                    break;
+                case PHO_TRUONG_BAN:
+                    $chiCuc1 = User::where('id', auth::user()->id)->get();
+                    $phong = User::role([  CHUYEN_VIEN])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    foreach ($chiCuc1 as $data4) {
+                        array_push($dataNguoiDung, $data4);
+                    }
+                    foreach ($phong as $data3) {
+                        array_push($dataNguoiDung, $data3);
+                    }
+                    $nguoiDung = $dataNguoiDung;
+                    break;
 
+            }
+        }else{
+            $nguoiDung = User::where('don_vi_id', $request->phong)
+                ->whereNull('deleted_at')
+                ->get();
         }
+
+
         $soDonvi = count($nguoiDung);
+
 
 
 

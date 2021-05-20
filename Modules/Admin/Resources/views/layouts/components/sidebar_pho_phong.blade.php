@@ -77,7 +77,7 @@
         <li class="{{ Route::is('thongkephongthang') ? 'active' : '' }}"><a href="{{ route('thongkephongthang') }}"><i class="fa fa-circle-o"></i> Thống kê đánh giá phòng</a></li>
     </ul>
 </li>
-<li class="treeview {{ Route::is('bao_cao_thong_ke.index') || Route::is('thongkevbphong')  ? 'active menu-open' : '' }} ">
+<li class="treeview {{ Route::is('bao_cao_thong_ke.index') || Route::is('thongkevbphong')|| Route::is('thong-ke-cap-duoi-lanh-dao.index')  ? 'active menu-open' : '' }} ">
     <a href="#">
         <i class="fa fa-pie-chart"></i> <span>Báo cáo thống kê</span>
         <span class="pull-right-container">
@@ -89,5 +89,6 @@
         @can(\App\Common\AllPermission::thongKeVanBanChiCuc())
             <li class="{{ Route::is('thongkevbphong') ? 'active' : '' }}"><a href="{{ route('thongkevbphong') }}"><i class="fa fa-circle-o"></i>Thống kê văn bản phòng</a></li>
         @endcan
+        <li class="{{ Route::is('thong-ke-cap-duoi-lanh-dao.index') ? 'active' : '' }}"><a href="{{ route('thong-ke-cap-duoi-lanh-dao.index') }}"><i class="fa fa-circle-o"></i>Thống kê chi tiết cấp dưới</a></li>
     </ul>
 </li>

@@ -101,7 +101,14 @@
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-left"
-                                                    style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
+                                                    style="vertical-align: middle;font-weight: bold">
+                                                    @if($donVidata->parent_id != null)
+                                                        <a href="{{route('thong-ke-cap-duoi-lanh-dao.index','phong='.$donVidata->id)}}">{{ $donVidata->ten_don_vi  }}</a>
+                                                    @else
+                                                        {{ $donVidata->ten_don_vi  }}
+                                                    @endif
+
+                                                </td>
                                                 <td class="text-center so-luong-tong"
                                                     style="vertical-align: middle;color: red;font-weight: bold">{{ $donVidata->vanBanDaGiaiQuyet['tong'] }}
                                                     <input type="text" class="soVB hidden"
@@ -145,6 +152,14 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div class="row">
+                                        <div class="col-md-6 mt-4" style="margin-top: 5px">
+                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->total() }}</b>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            {!! $danhSachDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
