@@ -934,7 +934,7 @@ class VanBanDenController extends Controller
             })
             ->where(function ($query) use ($mailDate) {
                 if (!empty($mailDate)) {
-                    return $query->where('mail_date', formatYMD($mailDate));
+                    return $query->where('mail_date', 'LIKE', "%".formatYMD($mailDate)."%");
                 }
             })
             ->where(function ($query) use ($mailSubject) {
@@ -942,7 +942,7 @@ class VanBanDenController extends Controller
                     return $query->where('mail_subject', 'LIKE', "%$mailSubject%");
                 }
             })
-            ->orderBy('mail_date', 'DESC')->paginate(20);
+            ->orderBy('mail_date', 'DESC')->paginate(30);
 
         return view('vanbanden::van_ban_den.dsvanbandentumail', compact('getEmail'));
     }

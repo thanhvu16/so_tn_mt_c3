@@ -106,8 +106,7 @@
 
                                                 <td class="text-center">
                                                     @if($vbDen->mail_active == 1)
-                                                        <button type="button" class="btn btn-primary btn-sm">Chưa xem
-                                                        </button>
+                                                        <a href="{{route('vanbandentumail','id='.$vbDen->id.'&xml='.$vbDen->mail_attachment.'&pdf='.$vbDen->mail_pdf.'&doc='.$vbDen->mail_doc.'&xls='.$vbDen->mail_xls)}}" class="color-white btn btn-primary btn-sm">Chưa xem</a>
                                                     @endif
 
                                                     @if($vbDen->mail_active == 2)
