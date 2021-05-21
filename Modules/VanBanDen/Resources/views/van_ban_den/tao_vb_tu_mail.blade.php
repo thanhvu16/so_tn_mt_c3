@@ -88,7 +88,7 @@
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
                                         <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker"
-                                               value=" {{ !empty($data_xml) ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : '' }}"
+                                               value=" {{ !empty($data_xml->STRNGAYKY) ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : '' }}"
                                                name="ngay_ban_hanh" id="exampleInputEmail5"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">
@@ -101,7 +101,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">*</span></label>
                                     <textarea class="form-control" name="trich_yeu" rows="3"
-                                              required>{{empty($data_xml) ? $email->mail_subject:$data_xml->STRTRICHYEU}}</textarea>
+                                              required>{{ empty($data_xml) ? $email->mail_subject : $data_xml->STRTRICHYEU }}</textarea>
                                 </div>
                             </div>
                             <div class="row clearfix"></div>
