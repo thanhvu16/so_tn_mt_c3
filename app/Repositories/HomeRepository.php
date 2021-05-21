@@ -685,7 +685,7 @@ class HomeRepository
     public function vanBanChoVaoSo($user)
     {
         $vanBanDonViChuTri = DonViChuTri::where(function ($query) use ($user) {
-              if ($user->donVi->parent_id != 0) {
+              if (!empty($user->donVi) && $user->donVi->parent_id != 0) {
                   return $query->where('don_vi_id', $user->donVi->parent_id);
               }
             })
@@ -697,7 +697,7 @@ class HomeRepository
             ->count();
 
         $noiNhanVanBanDi = NoiNhanVanBanDi::where(function ($query) use ($user) {
-                if ($user->donVi->parent_id != 0) {
+                if (!empty($user->donVi) && $user->donVi->parent_id != 0) {
                     return $query->where('don_vi_id_nhan', $user->donVi->parent_id);
                 }
             })
@@ -705,7 +705,7 @@ class HomeRepository
             ->count();
 
         $vanBanDonViPhoiHop = DonViPhoiHop::where(function ($query) use ($user) {
-                if ($user->donVi->parent_id != 0) {
+                if (!empty($user->donVi) && $user->donVi->parent_id != 0) {
                     return $query->where('don_vi_id', $user->donVi->parent_id);
                 }
             })
