@@ -14,6 +14,7 @@ class UserRepository extends BaseRepository
     public function getUserInfo($user)
     {
         return [
+            'id' => $user->id,
             'username' => $user->username,
             'email' => $user->email,
             'ho_ten' => $user->ho_ten,

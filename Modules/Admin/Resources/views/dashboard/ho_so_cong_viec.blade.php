@@ -133,7 +133,8 @@
                                 class="btn br-10 btn-info btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanXemDeBiet }}</button>
                         </p>
                     </a>
-                    @if (auth::user()->donVi->cap_xa == \Modules\Admin\Entities\DonVi::CAP_XA)
+
+                    @if (auth::user()->cap_xa == \Modules\Admin\Entities\DonVi::CAP_XA)
                     <a class="text-title-item" href="{{ route('van-ban-den-phoi-hop.index') }}">
                         <p>VB đơn vị phối hợp chờ xử lý
                             <button
