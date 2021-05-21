@@ -988,7 +988,7 @@ class VanBanDenController extends Controller
             }
             $data_xml = simplexml_load_string($string);
 
-            $data_xml->STRNGAYKY = @date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYKY)));
+            $data_xml->STRNGAYKY = !empty($data_xml->STRNGAYKY) ? @date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYKY))) : null;
             if (isset($data_xml->STRNGAYHOP))
                 $data_xml->STRNGAYHOP = date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYHOP)));
             else
