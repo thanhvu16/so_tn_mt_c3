@@ -676,6 +676,9 @@ class HomeRepository
 
     public function vanBanDiChoSoCuaDonVi($user)
     {
+        if (empty($user->donVi)) {
+            return 0;
+        }
         return VanBanDi::where([
             'cho_cap_so' => 2,
             'phong_phat_hanh' => $user->donVi->parent_id
@@ -684,6 +687,10 @@ class HomeRepository
 
     public function vanBanChoVaoSo($user)
     {
+        if (empty($user->donVi)) {
+            return 0;
+        }
+
         $vanBanDonViChuTri = DonViChuTri::where(function ($query) use ($user) {
               if (!empty($user->donVi) && $user->donVi->parent_id != 0) {
                   return $query->where('don_vi_id', $user->donVi->parent_id);
@@ -728,6 +735,10 @@ class HomeRepository
     public function vanBanChoPhanLoaiDonVi($user)
     {
         $donVi = $user->donVi;
+        if ($donVi->parent_id == 0) {
+            return 0;
+        }
+
         $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->parent_id)
             ->whereNull('da_tham_muu')
             ->select('id', 'van_ban_den_id')
@@ -747,6 +758,9 @@ class HomeRepository
     public function vanBanPhoiHopChoPhanLoaiDonVi($user)
     {
         $donVi = $user->donVi;
+        if ($donVi->parent_id == 0) {
+            return 0;
+        }
         $vanBanPhoiHopChoPhanLoai = DonViPhoiHop::where('don_vi_id', $donVi->parent_id)
             ->where('can_bo_nhan_id', $user->id)
             ->whereNull('chuyen_tiep')
