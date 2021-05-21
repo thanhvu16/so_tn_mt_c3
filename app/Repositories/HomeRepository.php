@@ -98,7 +98,7 @@ class HomeRepository
     public function getDataVanThuSo($user, $lanhDaoSo)
     {
         $homThuCong = GetEmail::where(['mail_active' => ACTIVE])->count();
-        $vanBanDenTrongDonVi = NoiNhanVanBanDi::where('don_vi_id_nhan', $lanhDaoSo->don_vi_id)->whereIn('trang_thai', [2])->count();
+        $vanBanDenTrongDonVi = $this->vanBanDenTrongDonVi($lanhDaoSo);
         $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
             ->where('type', VanBanDen::TYPE_VB_HUYEN)
             ->whereNull('deleted_at')->count();
@@ -127,11 +127,7 @@ class HomeRepository
             ->where('so_di', '!=', null)->whereNull('deleted_at')
             ->count();
 
-        $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,
-            'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
-            ->orderBy('created_at', 'desc')
-            ->orwhere('truong_phong_ky', 2)
-            ->count();
+        $vanBanDiChoSo = $this->vanBanDiChoSo($lanhDaoSo);
 
         $arrVanBanDi = [
             'van_ban_di_cho_so' => $this->responseData($vanBanDiChoSo, route('vanbandichoso')),
@@ -151,28 +147,8 @@ class HomeRepository
     {
         $donVi = $user->donVi;
 
-        $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->donVi->parent_id])
-            ->whereNull('vao_so_van_ban')
-            ->whereNull('parent_id')
-            ->whereNull('tra_lai')
-            ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
-            ->whereNull('type')
-            ->count();
-
-        $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->donVi->parent_id])
-            ->whereIn('trang_thai', [2])
-            ->count();
-
-        $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->donVi->parent_id)
-            ->whereNull('vao_so_van_ban')
-            ->whereNull('parent_id')
-            ->whereNull('type')
-            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
-            ->count();
-
-        $vanBanChoVaoSo = $vanBanDonViChuTri + $noiNhanVanBanDi + $vanBanDonViPhoiHop;
-        $vanBanDenTraLai = VanBanTraLai::where('can_bo_nhan_id', $user->id)
-            ->whereNull('status')->count();
+        $vanBanChoVaoSo = $this->vanBanChoVaoSo($user);
+        $vanBanDenTraLai = $this->vanBanBiTraLai($user);
         $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
             ->where('type', VanBanDen::TYPE_VB_DON_VI)
             ->where('don_vi_id', $user->donVi->parent_id)
@@ -194,26 +170,10 @@ class HomeRepository
         if ($user->can(AllPermission::thamMuu())) {
             if ($donVi->parent_id != 0) {
                 //phân loại văn bản cấp chi cục
-                $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->parent_id)
-                    ->whereNull('da_tham_muu')
-                    ->select('id', 'van_ban_den_id')
-                    ->whereNotNull('vao_so_van_ban')
-                    ->whereNull('hoan_thanh')
-                    ->get();
-                $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-
-                $vanBanChoPhanLoai = VanBanDen::whereIn('id', $arrVanBanDenId)
-                    ->where('trinh_tu_nhan_van_ban', VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB)
-                    ->count();
+                $vanBanChoPhanLoai = $this->vanBanChoPhanLoaiDonVi($user);
 
                 //phan loai van ban don vi phoi hop
-                $vanBanPhoiHopChoPhanLoai = DonViPhoiHop::where('don_vi_id', $donVi->parent_id)
-                    ->where('can_bo_nhan_id', $user->id)
-                    ->whereNull('chuyen_tiep')
-                    ->where('active', DonViPhoiHop::ACTIVE)
-                    ->whereNull('hoan_thanh')
-                    ->whereNotNull('vao_so_van_ban')
-                    ->count();
+                $vanBanPhoiHopChoPhanLoai = $this->vanBanPhoiHopChoPhanLoaiDonVi($user);
 
                 $arrVanBanDen['van_ban_cho_phan_loai'] = $this->responseData($vanBanChoPhanLoai, route('phan-loai-van-ban.index'));
                 $arrVanBanDen['van_ban_phoi_hop_cho_phan_loai'] = $this->responseData($vanBanPhoiHopChoPhanLoai, route('phan-loai-van-ban-phoi-hop.index'));
@@ -234,10 +194,7 @@ class HomeRepository
             ->where('so_di', '!=', null)->whereNull('deleted_at')
             ->count();
 
-        $vanBanDiChoSo = VanBanDi::where([
-            'cho_cap_so' => 2,
-            'phong_phat_hanh' => auth::user()->donVi->parent_id
-        ])->count();
+        $vanBanDiChoSo = $this->vanBanDiChoSoCuaDonVi($user);
 
         $arrVanBanDi = [
             'van_ban_di_cho_so' => $this->responseData($vanBanDiChoSo, route('vanbandichoso')),
@@ -277,20 +234,7 @@ class HomeRepository
 
         if ($donVi->cap_xa == DonVi::CAP_XA) {
             //VB DON VI PHOI HOP
-            $chuyenTiep = null;
-
-            $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
-                ->where(function ($query) use ($chuyenTiep) {
-                    if (!empty($chuyenTiep)) {
-                        return $query->where('chuyen_tiep', $chuyenTiep);
-                    } else {
-                        return $query->whereNull('chuyen_tiep');
-                    }
-                })
-                ->whereNotNull('vao_so_van_ban')
-                ->whereNull('hoan_thanh')
-                ->count();
+            $donViPhoiHop = $this->donViPhoiHopChoXuLy($user);
 
             $arrVanBanDen['don_vi_phoi_hop_cho_xu_ly'] = $this->responseData($donViPhoiHop, route('van-ban-den-phoi-hop.index'));
         }
@@ -344,9 +288,7 @@ class HomeRepository
         // tham muu
         if ($user->hasRole(CHANH_VAN_PHONG) && $user->can(AllPermission::thamMuu())
             && $user->donVi->parent_id == DonVi::NO_PARENT_ID) {
-            $vanBanChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                ->whereNull('trinh_tu_nhan_van_ban')
-                ->count();
+            $vanBanChoPhanLoai = $this->vanBanChoPhanLoaiChanhVP($user);
             $arrVanBanDen['van_ban_cho_phan_loai'] = $vanBanChoPhanLoai;
         }
 
@@ -563,6 +505,7 @@ class HomeRepository
         }
 
         $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
             ->where(function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '<', $currentDate);
             })
@@ -713,6 +656,131 @@ class HomeRepository
         return CongViecDonViPhoiHop::where('can_bo_nhan_id', $user->id)
             ->whereNull('status')
             ->whereNull('type')->count();
+    }
+
+    public function vanBanDenTrongDonVi($lanhDaoSo)
+    {
+       return NoiNhanVanBanDi::where('don_vi_id_nhan', $lanhDaoSo->don_vi_id)->whereIn('trang_thai', [2])->count();
+    }
+
+    public function vanBanDiChoSo($lanhDaoSo)
+    {
+        $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,
+            'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
+            ->orderBy('created_at', 'desc')
+            ->orwhere('truong_phong_ky', 2)
+            ->get();
+
+        return $vanBanDiChoSo->count();
+    }
+
+    public function vanBanDiChoSoCuaDonVi($user)
+    {
+        return VanBanDi::where([
+            'cho_cap_so' => 2,
+            'phong_phat_hanh' => $user->donVi->parent_id
+        ])->count();
+    }
+
+    public function vanBanChoVaoSo($user)
+    {
+        $vanBanDonViChuTri = DonViChuTri::where(function ($query) use ($user) {
+              if ($user->donVi->parent_id != 0) {
+                  return $query->where('don_vi_id', $user->donVi->parent_id);
+              }
+            })
+            ->whereNull('vao_so_van_ban')
+            ->whereNull('parent_id')
+            ->whereNull('tra_lai')
+            ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
+            ->whereNull('type')
+            ->count();
+
+        $noiNhanVanBanDi = NoiNhanVanBanDi::where(function ($query) use ($user) {
+                if ($user->donVi->parent_id != 0) {
+                    return $query->where('don_vi_id_nhan', $user->donVi->parent_id);
+                }
+            })
+            ->whereIn('trang_thai', [2])
+            ->count();
+
+        $vanBanDonViPhoiHop = DonViPhoiHop::where(function ($query) use ($user) {
+                if ($user->donVi->parent_id != 0) {
+                    return $query->where('don_vi_id', $user->donVi->parent_id);
+                }
+            })
+            ->whereNull('vao_so_van_ban')
+            ->whereNull('parent_id')
+            ->whereNull('type')
+            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
+            ->count();
+
+        return $vanBanDonViChuTri + $noiNhanVanBanDi + $vanBanDonViPhoiHop;
+    }
+
+    public function vanBanBiTraLai($user)
+    {
+        return VanBanTraLai::where('can_bo_nhan_id', $user->id)
+            ->whereNull('status')->count();
+
+    }
+
+    public function vanBanChoPhanLoaiDonVi($user)
+    {
+        $donVi = $user->donVi;
+        $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->parent_id)
+            ->whereNull('da_tham_muu')
+            ->select('id', 'van_ban_den_id')
+            ->whereNotNull('vao_so_van_ban')
+            ->whereNull('hoan_thanh')
+            ->get();
+        $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+
+        $vanBanChoPhanLoai = VanBanDen::whereIn('id', $arrVanBanDenId)
+            ->where('trinh_tu_nhan_van_ban', VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB)
+            ->count();
+
+        return $vanBanChoPhanLoai;
+
+    }
+
+    public function vanBanPhoiHopChoPhanLoaiDonVi($user)
+    {
+        $donVi = $user->donVi;
+        $vanBanPhoiHopChoPhanLoai = DonViPhoiHop::where('don_vi_id', $donVi->parent_id)
+            ->where('can_bo_nhan_id', $user->id)
+            ->whereNull('chuyen_tiep')
+            ->where('active', DonViPhoiHop::ACTIVE)
+            ->whereNull('hoan_thanh')
+            ->whereNotNull('vao_so_van_ban')
+            ->count();
+
+        return $vanBanPhoiHopChoPhanLoai;
+    }
+
+    public function donViPhoiHopChoXuLy($user)
+    {
+        $chuyenTiep = null;
+
+        return DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
+            ->where('can_bo_nhan_id', $user->id)
+            ->where(function ($query) use ($chuyenTiep) {
+                if (!empty($chuyenTiep)) {
+                    return $query->where('chuyen_tiep', $chuyenTiep);
+                } else {
+                    return $query->whereNull('chuyen_tiep');
+                }
+            })
+            ->whereNotNull('vao_so_van_ban')
+            ->whereNull('hoan_thanh')
+            ->count();
+    }
+
+    public function vanBanChoPhanLoaiChanhVP($user)
+    {
+        return $vanBanChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
+            ->whereNull('trinh_tu_nhan_van_ban')
+            ->count();
     }
 
     public function responseData($data, $url)

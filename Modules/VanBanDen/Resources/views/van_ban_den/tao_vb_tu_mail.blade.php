@@ -77,7 +77,8 @@
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4"
                                            placeholder="Số ký hiệu"
-                                           value="{{empty($data_xml) ? '': $data_xml->STRKYHIEU}}" required>
+                                           value="{{ empty($data_xml) ? '' : strtoupper($data_xml->STRKYHIEU) }}"
+                                           required>
                                 </div>
                             </div>
 
@@ -104,9 +105,6 @@
                                 </div>
                             </div>
                             <div class="row clearfix"></div>
-
-
-
 
 
                             @if( $loaivb_email)
@@ -144,11 +142,11 @@
                                         </div>
                                     </div>
                                     {{--                                    <div class="col-md-3 text-right" style="margin-top: 40px">--}}
-{{--                                                                            <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
-{{--                                                                               href="#collapseExample"--}}
-{{--                                                                               aria-expanded="false" aria-controls="collapseExample"><i--}}
-{{--                                                                                    class="fa fa-plus"></i>--}}
-{{--                                                                            </a>--}}
+                                    {{--                                                                            <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
+                                    {{--                                                                               href="#collapseExample"--}}
+                                    {{--                                                                               aria-expanded="false" aria-controls="collapseExample"><i--}}
+                                    {{--                                                                                    class="fa fa-plus"></i>--}}
+                                    {{--                                                                            </a>--}}
                                     {{--                                        <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
                                     {{--                                    </div>--}}
 
@@ -246,8 +244,8 @@
 
                                 </div>
                                 <div class="input-group-btn text-right " style="margin-top: 10px">
-            <span class="btn btn-primary" onclick="noidungvanban('noi_dung[]')" type="button">
-                        <i class="fa fa-plus"></i> thêm nội dung</span>
+                                    <span class="btn btn-primary" onclick="noidungvanban('noi_dung[]')" type="button">
+                                    <i class="fa fa-plus"></i> thêm nội dung</span>
                                 </div>
                             </div>
 
@@ -256,7 +254,8 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Người ký <span style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="nguoi_ky" id="exampleInputEmail7"
-                                           placeholder="Người ký" value="{{ isset($data_xml) ? $data_xml->STRNGUOIKY : null  }}" required>
+                                           placeholder="Người ký"
+                                           value="{{ isset($data_xml) ? $data_xml->STRNGUOIKY : null  }}" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -324,12 +323,20 @@
                                     </select>
                                 </div>
                             </div>
-
-
+                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
+                                                style="color: red">*</span></label>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu" required>
+                                            @foreach($users as $nguoidung)
+                                                <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="row clearfix"></div>
-
-
-
 
                             <div class="row clearfix"></div>
 
@@ -353,8 +360,6 @@
                                     </label>
                                 </div>
                             </div>
-
-
                             <div class="col-md-3 mt-4">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i
@@ -383,20 +388,6 @@
                                         @endif
                                         <input type="hidden" name="id_vanban_tumail" value="{{$id}}">
                                     </div>
-                                    @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
-                                                        style="color: red">*</span></label>
-                                                <select class="form-control select2" name="lanh_dao_tham_muu" required>
-                                                    @foreach($users as $nguoidung)
-                                                        <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    @endif
-
 
                                 </div>
                             </div>

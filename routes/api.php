@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::get('quyen-han', 'ChucVuController@getRole');
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
+    Route::get('message', 'MessageController@index');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('user/update-token-device', 'UserController@saveToken');
