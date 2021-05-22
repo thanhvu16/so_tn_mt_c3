@@ -189,15 +189,27 @@
                                             </p>
                                             @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
                                                 <span>Gia hạn xử lý</span>
-                                                <div class="input-group date">
-                                                    <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                       value="{{ $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB ? !empty($vanBanDen->chuyenVien->han_xu_ly_moi) ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : null : !empty($vanBanDen->phoPhong->han_xu_ly_moi) ? formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) : null }}"
-                                                       class="form-control change-han-xu-ly datepicker"
-                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar-o"></i>
+                                                @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
+                                                    <div class="input-group date">
+                                                        <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{  !empty($vanBanDen->chuyenVien->han_xu_ly_moi) ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : null }}"
+                                                               class="form-control change-han-xu-ly datepicker"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @else
+                                                    <div class="input-group date">
+                                                        <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{  !empty($vanBanDen->phoPhong->han_xu_ly_moi) ? formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) : null }}"
+                                                               class="form-control change-han-xu-ly datepicker"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                                 <p>
                                                     <input
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"
