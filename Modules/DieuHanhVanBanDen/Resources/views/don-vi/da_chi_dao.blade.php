@@ -58,9 +58,9 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
-                                <th class="text-center" width="21%">Ý kiến</th>
-                                <th width="22%" class="text-center">Chỉ đạo</th>
+                                <th width="44%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="23%" class="text-center">Ý kiến</th>
+                                <th width="21%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
@@ -121,7 +121,7 @@
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                 <p>
                                                     <select name="pho_phong_id[{{ $vanBanDen->id }}]"
@@ -208,6 +208,7 @@
                                                         for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
                                                         VB cần trả lời
                                                     </label>
+                                                    <small><i>(có văn bản đi)</i></small>
                                                 </p>
                                             @endif
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))

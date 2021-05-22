@@ -360,3 +360,51 @@ $('.select-option-don-vi').on('change', function () {
         $('.select-phong-ban').html(' ');
     }
 });
+
+
+// dieu han van ban den
+let vanBanDenId = null;
+let arrVanBanDenId = [];
+
+$('.check-van-ban-can-tra-loi').on('click', function () {
+    let checkTraLai = $(this).data('tra-lai');
+    let vanBanDenId = $(this).data('id');
+    let phoPhong = $(this).closest('.dau-viec-chi-tiet').find('.pho-phong').val();
+    if (checkTraLai == 1) {
+        checkHasVanBanDenId(vanBanDenId);
+    }
+});
+
+function checkHasVanBanDenId(id) {
+    if (arrVanBanDenId.indexOf(id) === -1) {
+        arrVanBanDenId.push(id);
+    }
+
+    $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(arrVanBanDenId));
+
+    $('.btn-duyet-all').removeClass('disabled');
+}
+
+function removeVanBanDenId(id) {
+    let index = arrVanBanDenId.indexOf(id);
+
+    if (index > -1) {
+        arrVanBanDenId.splice(index, 1);
+    }
+    $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(arrVanBanDenId));
+}
+// chon all chuyen vien phoi hop
+$('.check-all-cv').on('click', function () {
+    let id = $(this).data('id');
+    let chuyenVienPhoiHopId = `#chuyen-vien-phoi-hop${id}`;
+    if($(this).is(':checked') ){
+        $(this).parent('p').find(chuyenVienPhoiHopId + "> option").prop("selected","selected");
+        $(this).parent('p').find(chuyenVienPhoiHopId).trigger("change");
+
+    }else{
+        $(this).parent('p').find(chuyenVienPhoiHopId + "> option").prop('selected', '');
+        $(this).parent('p').find(chuyenVienPhoiHopId).trigger("change");
+    }
+});
+
+
