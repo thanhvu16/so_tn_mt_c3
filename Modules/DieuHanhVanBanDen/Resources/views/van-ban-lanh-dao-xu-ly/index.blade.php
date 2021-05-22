@@ -386,8 +386,12 @@
                 $.ajax({
                     url: APP_URL + '/list-don-vi-phoi-hop/' + JSON.stringify(arrId),
                     type: 'GET',
+                    beforeSend: function () {
+                        showLoading();
+                    }
                 })
                     .done(function (response) {
+                        hideLoading();
                         var html = '<option value="">chọn đơn vị phối hợp</option>';
                         if (response.success) {
 
@@ -402,6 +406,7 @@
                         }
                     })
                     .fail(function (error) {
+                        hideLoading();
                         toastr['error'](error.message, 'Thông báo hệ thống');
                     });
             }
