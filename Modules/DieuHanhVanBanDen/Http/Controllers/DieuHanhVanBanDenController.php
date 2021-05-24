@@ -462,6 +462,8 @@ class DieuHanhVanBanDenController extends Controller
         $year = $request->get('year') ?? date('Y');
         $month = $request->get('month') ?? date('m');
         $defaultSelect = 'all';
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')->first();
 
         $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
         $trichYeu = $request->get('trich_yeu') ?? null;
@@ -484,31 +486,71 @@ class DieuHanhVanBanDenController extends Controller
 
         $arrVanBanDenId = $lanhDaoXemDeBiet->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
-            'xuLyVanBanDen' => function ($query) {
-                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
-            },
-            'donViChuTri' => function ($query) {
-                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
-            }
-        ])
-            ->whereIn('id', $arrVanBanDenId)
-            ->where(function ($query) use ($hanXuLy) {
-                if (!empty($hanXuLy)) {
-                    return $query->where('han_xu_ly', $hanXuLy);
+
+        if($request->type != null)
+        {
+            $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
                 }
-            })
-            ->where(function ($query) use ($trichYeu) {
-                if (!empty($trichYeu)) {
-                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+            ])
+                ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                    if (!empty($loaiVanBanGiayMoi)) {
+                        return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($hanXuLy) {
+                    if (!empty($hanXuLy)) {
+                        return $query->where('han_xu_ly', $hanXuLy);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                    }
+                })
+                ->where(function ($query) use ($soDen) {
+                    if (!empty($soDen)) {
+                        return $query->where('so_den', $soDen);
+                    }
+                })
+                ->paginate(PER_PAGE);
+        }else{
+            $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
                 }
-            })
-            ->where(function ($query) use ($soDen) {
-                if (!empty($soDen)) {
-                    return $query->where('so_den', $soDen);
-                }
-            })
-            ->paginate(PER_PAGE);
+            ])
+                ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                    if (!empty($loaiVanBanGiayMoi)) {
+                        return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($hanXuLy) {
+                    if (!empty($hanXuLy)) {
+                        return $query->where('han_xu_ly', $hanXuLy);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                    }
+                })
+                ->where(function ($query) use ($soDen) {
+                    if (!empty($soDen)) {
+                        return $query->where('so_den', $soDen);
+                    }
+                })
+                ->paginate(PER_PAGE);
+        }
 
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -533,36 +575,78 @@ class DieuHanhVanBanDenController extends Controller
         $hanXuLy = $request->get('han_xu_ly') ? formatYMD($request->get('han_xu_ly')) : null;
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soDen = $request->get('so_den') ?? null;
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')->first();
 
         $vanBanQuanTrong = VanBanQuanTrong::where('user_id', auth::user()->id)->orderBy('id', 'DESC')->get();
 
         $arrVanBanDenId = $vanBanQuanTrong->pluck('van_ban_den_id')->toArray();
 
-        $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
-            'xuLyVanBanDen' => function ($query) {
-                return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
-            },
-            'donViChuTri' => function ($query) {
-                return $query->select('van_ban_den_id', 'can_bo_nhan_id');
-            }
-        ])
-            ->whereIn('id', $arrVanBanDenId)
-            ->where(function ($query) use ($hanXuLy) {
-                if (!empty($hanXuLy)) {
-                    return $query->where('han_xu_ly', $hanXuLy);
+
+        if($request->type != null)
+        {
+            $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
                 }
-            })
-            ->where(function ($query) use ($trichYeu) {
-                if (!empty($trichYeu)) {
-                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+            ])
+                ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                    if (!empty($loaiVanBanGiayMoi)) {
+                        return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($hanXuLy) {
+                    if (!empty($hanXuLy)) {
+                        return $query->where('han_xu_ly', $hanXuLy);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                    }
+                })
+                ->where(function ($query) use ($soDen) {
+                    if (!empty($soDen)) {
+                        return $query->where('so_den', $soDen);
+                    }
+                })
+                ->paginate(PER_PAGE);
+        }else{
+            $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',
+                'xuLyVanBanDen' => function ($query) {
+                    return $query->select('id', 'van_ban_den_id', 'can_bo_nhan_id');
+                },
+                'donViChuTri' => function ($query) {
+                    return $query->select('van_ban_den_id', 'can_bo_nhan_id');
                 }
-            })
-            ->where(function ($query) use ($soDen) {
-                if (!empty($soDen)) {
-                    return $query->where('so_den', $soDen);
-                }
-            })
-            ->paginate(PER_PAGE);
+            ])
+                ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                    if (!empty($loaiVanBanGiayMoi)) {
+                        return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($hanXuLy) {
+                    if (!empty($hanXuLy)) {
+                        return $query->where('han_xu_ly', $hanXuLy);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where('trich_yeu', 'LIKE', "%$trichYeu");
+                    }
+                })
+                ->where(function ($query) use ($soDen) {
+                    if (!empty($soDen)) {
+                        return $query->where('so_den', $soDen);
+                    }
+                })
+                ->paginate(PER_PAGE);
+        }
 
         if (count($danhSachVanBanDen) > 0) {
             foreach ($danhSachVanBanDen as $vanBanDen) {

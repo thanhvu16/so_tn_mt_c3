@@ -34,12 +34,15 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="{{route('van-ban-den-phoi-hop.dang-xu-ly')}}" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('giay-moi-den-phoi-hop.dang-xu-ly')}}@else{{route('van-ban-den-phoi-hop.dang-xu-ly')}}@endif" method="get">
                                 <input type="hidden" name="chuyen_tiep" value="1">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
                                            name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
                                            placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3 form-group">
