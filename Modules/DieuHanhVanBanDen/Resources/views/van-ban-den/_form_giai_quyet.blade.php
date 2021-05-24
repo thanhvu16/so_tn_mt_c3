@@ -126,12 +126,12 @@
                 </label>
                 &nbsp;
                 &nbsp;
-                @if (empty($vanBanDen->van_ban_can_tra_loi))
+{{--                @if (empty($vanBanDen->van_ban_can_tra_loi))--}}
                     <label>
                         <input type="radio" name="status_action" id="van-ban-luu" value="2" {{ auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) ? 'checked' : null }}>
                         <b>Văn bản lưu</b>
                     </label>
-                @endif
+{{--                @endif--}}
 
                 <div class="row mt-2 truc-tiep-giai-quyet {{ auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) ? 'show' : 'hide'  }}">
                     <form action="{{ route('giai-quyet-van-ban.store') }}" method="post" enctype="multipart/form-data">
