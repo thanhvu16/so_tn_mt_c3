@@ -4,6 +4,7 @@ namespace Modules\DieuHanhVanBanDen\Entities;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Admin\Entities\LoaiVanBan;
 use Modules\VanBanDen\Entities\VanBanDen;
 
 class GiaHanVanBan extends Model
@@ -25,6 +26,17 @@ class GiaHanVanBan extends Model
     const STATUS_CHO_DUYET = 1;
     const STATUS_TRA_LAI = 2;
     const STATUS_DA_DUYET = 3;
+
+    public function giayMoiDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
+    }
+    public function vanBanDenDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+    }
 
     public function vanBanDen()
     {
