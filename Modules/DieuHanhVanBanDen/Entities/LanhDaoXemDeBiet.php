@@ -5,6 +5,8 @@ namespace Modules\DieuHanhVanBanDen\Entities;
 use App\Common\AllPermission;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Modules\Admin\Entities\LoaiVanBan;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class LanhDaoXemDeBiet extends Model
 {
@@ -16,6 +18,16 @@ class LanhDaoXemDeBiet extends Model
         'don_vi_id',
         'user_id'
     ];
+    public function giayMoiDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
+    }
+    public function vanBanDenDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+    }
 
     public static function saveLanhDaoXemDeBiet($arrLanhDaoId, $vanBanDenId, $type=null)
     {

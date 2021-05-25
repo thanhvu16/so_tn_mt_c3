@@ -70,6 +70,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
             if($request->type != null)
             {
+//                dd(1);
                 $danhSachVanBanDen = VanBanDen::with([
                     'donViCapXaChuTri',
                     'DonViCapXaPhoiHop' => function ($query) {
@@ -81,7 +82,6 @@ class VanBanLanhDaoXuLyController extends Controller
                             return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
                         }
                     })
-                    ->where('loai_van_ban_id',$loaiVanBanGiayMoi)
                     ->whereIn('id', $arrVanBanDenId)
                     ->where('trinh_tu_nhan_van_ban', $active)
                     ->paginate(PER_PAGE_10);
@@ -97,7 +97,6 @@ class VanBanLanhDaoXuLyController extends Controller
                             return $query->where('loai_van_ban_id','!=', $loaiVanBanGiayMoi->id);
                         }
                     })
-                    ->where('loai_van_ban_id',$loaiVanBanGiayMoi)
                     ->whereIn('id', $arrVanBanDenId)
                     ->where('trinh_tu_nhan_van_ban', $active)
                     ->paginate(PER_PAGE_10);
