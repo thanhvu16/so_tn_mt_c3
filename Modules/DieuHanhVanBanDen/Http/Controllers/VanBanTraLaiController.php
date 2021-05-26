@@ -186,7 +186,8 @@ class VanBanTraLaiController extends Controller
                         break;
 
                     case VanBanDen::TRUONG_PHONG_NHAN_VB:
-                        if ($donVi->cap_xa = DonVi::CAP_XA && $currentUser->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
+
+                        if ($donVi->cap_xa == DonVi::CAP_XA && $currentUser->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
                             // chuyen van ban len pho chu tich xa chuyen lai van ban
                             $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                             $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
@@ -196,6 +197,7 @@ class VanBanTraLaiController extends Controller
                                 ->where('don_vi_id', $currentUser->donVi->parent_id)
                                 ->select('id', 'ho_ten')
                                 ->first();
+
                             if (!empty($chuTichXa) && $chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
                                 $vanBanDen->save();
@@ -204,6 +206,7 @@ class VanBanTraLaiController extends Controller
                                 $vanBanDen->save();
                             }
                         } else {
+
                             if ($currentUser->hasRole([TRUONG_PHONG, TRUONG_BAN])) {
                                 // chuyen tra lai van thu neu don vi co dieu hanh
                                 if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
