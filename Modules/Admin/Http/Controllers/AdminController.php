@@ -486,7 +486,7 @@ class AdminController extends Controller
                 ->count();
 
             array_push($hoSoCongViecPiceCharts, array('VB đơn vị phối hợp chờ xử lý', $donViPhoiHop));
-            array_push($giayMoiPiceCharts, array('GM đơn vị phối hợp chờ xử lý', $donViPhoiHop));
+            array_push($giayMoiPiceCharts, array('GM đơn vị phối hợp chờ xử lý', $donViPhoiHopGM));
             array_push($hoSoCongViecCoLors, COLOR_PRIMARY);
             array_push($giayMoiCoLors, COLOR_PRIMARY);
 
