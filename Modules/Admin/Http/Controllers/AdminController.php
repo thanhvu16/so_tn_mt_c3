@@ -458,6 +458,7 @@ class AdminController extends Controller
 
             $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)
+                ->whereHas('vanBanDenDen')
                 ->where(function ($query) use ($chuyenTiep) {
                     if (!empty($chuyenTiep)) {
                         return $query->where('chuyen_tiep', $chuyenTiep);
@@ -471,6 +472,7 @@ class AdminController extends Controller
                 ->count();
             $donViPhoiHopGM = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)
+                ->whereHas('giayMoiDen')
                 ->where(function ($query) use ($chuyenTiep) {
                     if (!empty($chuyenTiep)) {
                         return $query->where('chuyen_tiep', $chuyenTiep);
