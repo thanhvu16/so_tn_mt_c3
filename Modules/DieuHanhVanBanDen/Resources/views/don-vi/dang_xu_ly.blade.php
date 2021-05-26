@@ -14,11 +14,14 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="{{route('van-ban-den-don-vi.dang_xu_ly')}}" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('giay-moi-den-don-vi.dang_xu_ly')}}@else{{route('van-ban-den-don-vi.dang_xu_ly')}}@endif" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
                                            name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
                                            placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3 form-group">

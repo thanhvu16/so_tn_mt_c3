@@ -424,10 +424,29 @@ class VanBanTraLaiController extends Controller
         } else {
 
             if ($user->hasRole([CHUYEN_VIEN, VAN_THU_DON_VI])) {
-                $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
-                    ->whereIn('id', $arrVanBanDenId)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(PER_PAGE);
+
+                if($request->type != null)
+                {
+                    $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
+                        ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                            if (!empty($loaiVanBanGiayMoi)) {
+                                return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                            }
+                        })
+                        ->whereIn('id', $arrVanBanDenId)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(PER_PAGE);
+                }else{
+                    $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
+                        ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                            if (!empty($loaiVanBanGiayMoi)) {
+                                return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
+                            }
+                        })
+                        ->whereIn('id', $arrVanBanDenId)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(PER_PAGE);
+                }
 
                 if ($danhSachVanBanDen) {
                     foreach ($danhSachVanBanDen as $vanBanDen) {

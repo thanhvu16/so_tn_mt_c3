@@ -5,6 +5,8 @@ namespace Modules\DieuHanhVanBanDen\Entities;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Modules\Admin\Entities\LoaiVanBan;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class ChuyenVienPhoiHop extends Model
 {
@@ -20,6 +22,17 @@ class ChuyenVienPhoiHop extends Model
     ];
 
     const CHUYEN_VIEN_GIAI_QUYET = 1;
+
+    public function giayMoiDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
+    }
+    public function vanBanDenDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+    }
 
     public static function savechuyenVienPhoiHop($arrChuyenVien, $vanBanDenDonViId, $donViId)
     {

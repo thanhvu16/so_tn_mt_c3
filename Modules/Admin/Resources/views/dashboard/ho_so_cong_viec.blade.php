@@ -16,7 +16,7 @@
                 <a class="text-title-item" href="{{ route('van-ban-lanh-dao-xu-ly.index') }}">
                     <p>VB chờ xử lý
                         <button
-                            class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoXuLy }}</button>
+                                class="btn br-10 btn-warning btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoXuLy }}</button>
                     </p>
                 </a>
                 @endif
