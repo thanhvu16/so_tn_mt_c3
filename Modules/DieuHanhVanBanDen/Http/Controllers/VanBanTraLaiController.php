@@ -196,7 +196,7 @@ class VanBanTraLaiController extends Controller
                                 ->where('don_vi_id', $currentUser->donVi->parent_id)
                                 ->select('id', 'ho_ten')
                                 ->first();
-                            if ($chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {
+                            if (!empty($chuTichXa) && $chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
                                 $vanBanDen->save();
                             } else {
