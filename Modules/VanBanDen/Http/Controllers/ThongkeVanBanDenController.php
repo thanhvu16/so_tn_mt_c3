@@ -106,6 +106,7 @@ class ThongkeVanBanDenController extends Controller
 
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
+        $vanThuNhap = auth::user()->id;
         canPermission(AllPermission::thongKeVanBanSo());
         $lanhDaoSo = User::role(CHU_TICH)->whereNull('deleted_at')->first();
 
@@ -116,11 +117,11 @@ class ThongkeVanBanDenController extends Controller
             })
             ->where('parent_id', DonVi::NO_PARENT_ID)
             ->whereNull('deleted_at')
-            ->orderBy('ten_don_vi')->paginate(10);
+            ->orderBy('thu_tu','asc')->paginate(10);
 
         foreach ($danhSachDonVi as $donVi)
         {
-            $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay);
+            $donVi->vanBanDaGiaiQuyet = $this->vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay,$vanThuNhap);
 
         }
         $soDonvi = $danhSachDonVi->count();
@@ -141,7 +142,7 @@ class ThongkeVanBanDenController extends Controller
         return view('vanbanden::thong_ke.thong_ke_vb_so',compact('danhSachDonVi'));
     }
 
-    public function vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay)
+    public function vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay,$vanThuNhap)
     {
         $donViId = null;
         $date = date('Y-m-d');
@@ -173,6 +174,8 @@ class ThongkeVanBanDenController extends Controller
                 }
             })
 
+            ->where('nguoi_tao',$vanThuNhap)
+
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
             ->get();
 
@@ -186,6 +189,7 @@ class ThongkeVanBanDenController extends Controller
                 return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
                     ->orWhereNull('trinh_tu_nhan_van_ban');
             })
+
 
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
@@ -203,8 +207,10 @@ class ThongkeVanBanDenController extends Controller
                 }
             })
 
-
+            ->where('nguoi_tao',$vanThuNhap)
             ->get();
+
+//        dd($danhSachVanBanDenChuaHoanThanh);
 
 
 
@@ -327,6 +333,7 @@ class ThongkeVanBanDenController extends Controller
         $donVi = DonVi::where('id',$id)->first();
         $user = auth::user();
         $type = null;
+        $vanThuNhap = auth::user()->id;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
 
@@ -371,6 +378,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
 
         }else{
@@ -391,6 +399,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
             $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
             $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
@@ -409,6 +418,7 @@ class ThongkeVanBanDenController extends Controller
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
         $user = auth::user();
+        $vanThuNhap = auth::user()->id;
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
@@ -456,6 +466,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
 
         }else{
@@ -478,6 +489,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
             $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
             $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
@@ -494,6 +506,7 @@ class ThongkeVanBanDenController extends Controller
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
         $user = auth::user();
+        $vanThuNhap = auth::user()->id;
         $type = null;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
@@ -541,6 +554,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
 
         }else{
@@ -563,6 +577,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
             $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
             $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
@@ -580,6 +595,7 @@ class ThongkeVanBanDenController extends Controller
         $donVi = DonVi::where('id',$id)->first();
         $date = date('Y-m-d');
         $type = null;
+        $vanThuNhap = auth::user()->id;
         if( $donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
 
@@ -620,6 +636,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
 
         }else{
@@ -645,6 +662,7 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
                 ->get();
             $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
             $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
