@@ -358,7 +358,7 @@ class VanBanDenDonViController extends Controller
             ])
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
-                        return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                        return $query->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
                     }
                 })
                 ->whereIn('id', $arrVanBanDenId)

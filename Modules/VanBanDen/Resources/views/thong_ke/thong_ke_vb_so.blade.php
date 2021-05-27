@@ -90,11 +90,12 @@
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-left" style="vertical-align: middle;font-weight: bold">
-                                                    @if($donVidata->cap_xa == 1 && $donVidata->dieu_hanh == 1   )
-                                                    <a href="{{route('thongkevbchicuc','don_vi='.$donVidata->id)}}">{{ $donVidata->ten_don_vi  }}</a>
-                                                    @else
+{{--                                                    @if($donVidata->cap_xa == 1 && $donVidata->dieu_hanh == 1   )--}}
+{{--                                                    <a href="{{route('thongkevbchicuc','don_vi='.$donVidata->id)}}">{{ $donVidata->ten_don_vi  }}</a>--}}
+{{--                                                    @else--}}
+{{--                                                        {{ $donVidata->ten_don_vi  }}--}}
+{{--                                                    @endif--}}
                                                         {{ $donVidata->ten_don_vi  }}
-                                                    @endif
                                                 </td>
                                                 <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">
 {{--                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">--}}

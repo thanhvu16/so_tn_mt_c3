@@ -238,18 +238,12 @@
                             <div class="col-md-3 mt-4">
 
                                 <div class="form-group">
-                                    <div class="icheckbox_flat-green" aria-checked="true" aria-disabled="false"
-                                         style="position: relative;">
-                                        <input type="checkbox" class="flat-red" value="1" name="chu_tri_phoi_hop"
-                                               style="position: absolute; opacity: 0;" id="giao-so-chu-tri">
-                                        <ins class="iCheck-helper"
-                                             style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
-                                        </ins>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="giao-so-chu-tri"  value="1" name="chu_tri_phoi_hop"> Giao sở chủ trì
+                                        </label>
                                     </div>
 
-                                    <label for="giao-so-chu-tri">
-                                        Giao sở chủ trì
-                                    </label>
                                 </div>
 
                             </div>
