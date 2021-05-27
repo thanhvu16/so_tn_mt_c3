@@ -189,6 +189,17 @@ class DonViPhoiHop extends Model
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
     }
 
+    public function giayMoiDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
+    }
+    public function vanBanDenDen()
+    {
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+    }
+
     public static function luuDonViPhoiHopCapXa($arrDonViId, $vanBanDenId, $phoChuTichId)
     {
         if (!empty($arrDonViId) && count($arrDonViId) > 0) {

@@ -4,23 +4,22 @@ define('PER_PAGE', 20);
 define('PER_PAGE_10', 10);
 define('LOAI_VAN_BAN_DI', 1000);
 define('UPLOAD_USER', 'uploads/nguoi-dung');
-define('UPLOAD_FILE_VAN_BAN_DEN', 'uploads/van-ban-den-'.date('Y'));
-define('UPLOAD_FILE_VAN_BAN_DI', 'uploads/van-ban-di-'.date('Y'));
-define('UPLOAD_FILE_GIAY_MOI_DI', 'uploads/giay-moi-di-'.date('Y'));
+define('UPLOAD_FILE_VAN_BAN_DEN', 'uploads/van-ban-den-' . date('Y'));
+define('UPLOAD_FILE_VAN_BAN_DI', 'uploads/van-ban-di-' . date('Y'));
+define('UPLOAD_FILE_GIAY_MOI_DI', 'uploads/giay-moi-di-' . date('Y'));
 define('UPLOAD_FILE_TAI_LIEU', 'uploads/tai-lieu-huong-dan');
 define('UPLOAD_FILE_CUOC_HOP', 'uploads/cuoc-hop');
-define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den-'.date('Y'));
+define('UPLOAD_FILE_GIAY_MOI_DEN', 'uploads/giay-moi-den-' . date('Y'));
 define('FILE_Y_KIEN_GOP_Y', 'uploads/gop-y');
-define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet-'.date('Y'));
-define('UPLOAD_FILE_VAN_BAN_DEN_TRA_LAI', 'uploads/van-ban-den/tra-lai-'.date('Y'));
-define('THU_MUC_CONG_VIEC_DON_VI', 'uploads/cong_viec_don_vi'.'_'.date('Y'));
-define('THU_MUC_FILE_PHOI_HOP', 'uploads/phoi-hop-cong-viec'.'_'.date('Y'));
+define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet-' . date('Y'));
+define('UPLOAD_FILE_VAN_BAN_DEN_TRA_LAI', 'uploads/van-ban-den/tra-lai-' . date('Y'));
+define('THU_MUC_CONG_VIEC_DON_VI', 'uploads/cong_viec_don_vi' . '_' . date('Y'));
+define('THU_MUC_FILE_PHOI_HOP', 'uploads/phoi-hop-cong-viec' . '_' . date('Y'));
 define('ACTIVE', 1);
 define('INACTIVE', 2);
 
 define('TITLE_APP', 'SỞ TÀI NGUYÊN VÀ MÔI TRƯỜNG HÀ NỘI');
 define('LANH_DAO_UY_BAN', '%Ban giám đốc sở%');
-
 
 
 //rold_id
@@ -72,3 +71,19 @@ define('COLOR_BLUE_DARK', '#4937de');
 define('COLOR_PINTEREST', '#cb2027');
 define('COLOR_YELLOW', '#f1df07');
 define('COLOR_GREEN_LIGHT', '#0fd0b5');
+
+//api code
+define('TOKEN_TYPE', 'Bearer');
+define('SUCCESS', 200);
+define('FOUND', 302);
+define('SEE_OTHER', 303);
+define('BAD_REQUEST', 400);
+define('UNAUTHORIZED', 401);
+define('FORBIDDEN', 403);
+define('NOT_FOUND', 404);
+define('METHOD_NOT_ALLOWED', 405);
+define('SERVER_ERROR', 500);
+define('ERROR_VALIDATE', 422);
+
+CONST USER_TOKEN = 'eyQiLCJhbGciOiJIU1NiJ9';
+CONST API_VERSION = 1;

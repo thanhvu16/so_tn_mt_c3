@@ -30,10 +30,10 @@
                             </thead>
                             <tbody>
                             @forelse($vanbandichoso as $key=>$data)
-
+                                <form method="post" id="choso"
+                                      action="{{route('Capsovanbandi',$data->id)}}">
                                     <tr>
-                                        <form method="post" id="choso"
-                                               action="{{route('Capsovanbandi',$data->id)}}">
+
                                             @csrf
                                         <td
                                             class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
@@ -60,7 +60,7 @@
                                             </td>
                                             <td>
                                                 <select class="form-control show-tick dropdown-search" name="sovanban_id"
-                                                        required>
+                                                        >
                                                     <option value="">-- Chọn sổ văn bản --</option>
                                                     @foreach ($ds_soVanBan as $sovb)
                                                         <option value="{{$sovb->id}}"
@@ -141,17 +141,19 @@
                                                         class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
                                                         role="button"
                                                         title="Xóa">
-                                                        <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                                        <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>xoài xanh
                                                     </button>
                                                     <input type="text" class="hidden" value="{{$data->id}}" name="id_vb">
                                                 </form>
 
                                                 @endrole
                                             </td>
-                                        </form>
 
 
                                     </tr>
+
+                                </form>
+
 
                             @empty
                                 <td colspan="9" class="text-center">Không tìm thấy dữ liệu.</td>

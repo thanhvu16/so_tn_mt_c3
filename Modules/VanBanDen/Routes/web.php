@@ -15,6 +15,8 @@
 Route::resource('van-ban-den', 'VanBanDenController');
 Route::resource('in-so-van-ban-den', 'ThongkeVanBanDenController');
 Route::resource('don-vi-nhan-van-ban-den', 'DonViNhanVanBanDenController');
+Route::resource('thong-ke-lanh-dao', 'ThongKeCapDuoiController');
+Route::resource('thong-ke-cap-duoi-lanh-dao', 'ThongkeCapDuoiPhoChuTichController');
 Route::post('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));
 Route::post('upload-multiple', array('as' => 'multiple_file', 'uses' => 'VanBanDenController@multiple_file'));
 Route::post('luuGiayMoiMail', array('as' => 'luuGiayMoiMail', 'uses' => 'VanBanDenController@luuGiayMoiMail'));

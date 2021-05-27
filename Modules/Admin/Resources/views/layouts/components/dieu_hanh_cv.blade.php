@@ -70,3 +70,75 @@
         </li>
     </ul>
 </li>
+<li class="treeview {{ Route::is('giay_moi_den_don_vi_index') || Route::is('giay_moi_don_vi.da_chi_dao')
+ || Route::is('giaHanGiayMoi') || route::is('giay-moi-den-hoan-thanh.cho-duyet') || Route::is('giay_moi_den_chuyen_vien.index')
+ || Route::is('giay-moi-den-hoan-thanh.index') || Route::is('giay_moi_den_chuyen_vien.da_xu_ly') || Route::is('giay-moi-den-phoi-hop.index')
+  || Route::is('giay-moi-den-phoi-hop.dang-xu-ly') || Route::is('giay-moi-den-phoi-hop.da-xu-ly') || Route::is('giay-moi-den-don-vi.dang_xu_ly')
+   || Route::is('giay-moi-den-don-vi.xem_de_biet') || Route::is('duyet-giay-moi-cap-duoi-trinh') || Route::is('giay_moi_tra_lai.cho_duyet') ? 'active menu-open' : '' }}">
+    <a href="#">
+        <i class="fa fa-th" aria-hidden="true"></i> <span>Xử lý giấy mời đến</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('giay_moi_den_don_vi_index','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay_moi_den_don_vi_index','type=1') }}"><i class="fa fa-circle-o"></i>GM chờ xử lý</a>
+        </li>
+        <li class="{{ Route::is('giay_moi_tra_lai.cho_duyet','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay_moi_tra_lai.cho_duyet','type=1') }}"><i class="fa fa-circle-o"></i>GM đã gửi trả lại</a>
+        </li>
+        @hasanyrole('trưởng phòng|phó trưởng phòng|tp đơn vị cấp 2|phó tp đơn vị cấp 2|chánh văn phòng|phó chánh văn phòng')
+        <li class="{{ Route::is('giay_moi_don_vi.da_chi_dao','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay_moi_don_vi.da_chi_dao','type=1') }}"><i class="fa fa-circle-o"></i>GM đã chỉ đạo</a>
+        </li>
+        <li class="{{ Route::is('giaHanGiayMoi','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giaHanGiayMoi','type=1') }}"><i class="fa fa-circle-o"></i>GM xin gia hạn</a>
+        </li>
+        @endrole
+        @hasanyrole('phó trưởng phòng|phó tp đơn vị cấp 2')
+        <li class="{{ Route::is('giay-moi-den-don-vi.xem_de_biet','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-don-vi.xem_de_biet','type=1') }}"><i class="fa fa-circle-o"></i>GM chỉ đạo, giám sát</a>
+        </li>
+        @endrole
+        <li class="{{ Route::is('giay-moi-den-don-vi.dang_xu_ly','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-don-vi.dang_xu_ly','type=1') }}"><i class="fa fa-circle-o"></i>GM đang xử lý</a>
+        </li>
+        <hr class="hr-line">
+        @hasanyrole('trưởng phòng|tp đơn vị cấp 2|chánh văn phòng|phó trưởng phòng|phó tp đơn vị cấp 2|phó chánh văn phòng')
+        <li class="{{ Route::is('duyet-giay-moi-cap-duoi-trinh','type=1') ? 'active' : '' }}"><a
+                href="{{ route('duyet-giay-moi-cap-duoi-trinh','type=1') }}"><i class="fa fa-circle-o"></i>Duyệt GM cấp dưới trình</a>
+        </li>
+        @endrole
+
+        @hasanyrole('phó trưởng phòng|phó tp đơn vị cấp 2|phó chánh văn phòng|chuyên viên')
+        <li class="{{ Route::is('giay-moi-den-hoan-thanh.cho-duyet','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-hoan-thanh.cho-duyet','type=1') }}"><i class="fa fa-circle-o"></i>GM hoàn thành chờ duyệt</a>
+        </li>
+        @endrole
+
+        <li class="{{ Route::is('giay-moi-den-hoan-thanh.index','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-hoan-thanh.index','type=1') }}"><i class="fa fa-circle-o"></i>GM hoàn thành</a>
+        </li>
+        @role('chuyên viên')
+        <hr class="hr-line">
+        <li class="{{ Route::is('giay_moi_den_chuyen_vien.index','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay_moi_den_chuyen_vien.index','type=1') }}"><i class="fa fa-circle-o"></i>GM đến chuyên viên PH</a>
+        </li>
+
+        <li class="{{ Route::is('giay_moi_den_chuyen_vien.da_xu_ly','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay_moi_den_chuyen_vien.da_xu_ly', 'status=1'.'&type=1') }}"><i class="fa fa-circle-o"></i>GM chuyên viên PH hoàn thành</a>
+        </li>
+        @endrole
+        <hr class="hr-line">
+        <li class="{{ Route::is('giay-moi-den-phoi-hop.index','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-phoi-hop.index','type=1') }}"><i class="fa fa-circle-o"></i>GM đơn vị phối hợp chờ xử lý</a>
+        </li>
+        <li class="{{ Route::is('giay-moi-den-phoi-hop.dang-xu-ly','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-phoi-hop.dang-xu-ly', 'chuyen_tiep=1'.'&type=1') }}"><i class="fa fa-circle-o"></i>GM đơn vị phối hợp đang xử lý</a>
+        </li>
+        <li class="{{ Route::is('giay-moi-den-phoi-hop.da-xu-ly','type=1') ? 'active' : '' }}"><a
+                href="{{ route('giay-moi-den-phoi-hop.da-xu-ly','type=1') }}"><i class="fa fa-circle-o"></i>GM đơn vị phối hợp đã xử lý</a>
+        </li>
+    </ul>
+</li>

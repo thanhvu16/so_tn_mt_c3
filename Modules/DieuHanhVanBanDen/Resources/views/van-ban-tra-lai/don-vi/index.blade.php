@@ -198,6 +198,7 @@
                                                         for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
                                                         VB cần trả lời
                                                     </label>
+                                                    <small><i>(có văn bản đi)</i></small>
                                                 </p>
                                             @endif
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))

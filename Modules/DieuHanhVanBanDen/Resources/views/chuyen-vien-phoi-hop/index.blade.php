@@ -23,6 +23,9 @@
                                     <label for="so-den" class="col-form-label">Tìm theo số đến</label>
                                     <input type="text" class="form-control" placeholder="Nhập số đến"
                                            name="so_den" value="{{ Request::get('so_den') ?? null }}">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
+                                           placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="han-xu-ly" class="col-form-label">Tìm theo hạn xử lý</label>

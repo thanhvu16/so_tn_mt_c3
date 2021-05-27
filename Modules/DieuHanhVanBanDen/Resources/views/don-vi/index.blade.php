@@ -96,7 +96,7 @@
                                                 - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
                                                 )</p>
                                         @endif
-                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)
+{{--                                        @if ((!empty($vanBanDen->parent_id) && $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_DON_VI) || $vanBanDen->type == \Modules\VanBanDen\Entities\VanBanDen::TYPE_VB_HUYEN)--}}
                                             <p>
                                                 <a class="tra-lai-van-ban" data-toggle="modal"
                                                    data-target="#modal-tra-lai"
@@ -104,7 +104,7 @@
                                                     <span><i class="fa fa-reply"></i>Trả lại VB</span>
                                                 </a>
                                             </p>
-                                        @endif
+{{--                                        @endif--}}
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
 
@@ -162,6 +162,8 @@
                                                     @empty
                                                     @endforelse
                                                 </select>
+                                                <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-id="{{ $vanBanDen->id }}" class="check-all-cv">
+                                                <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả cv phối hợp</label>
                                             </p>
                                             <p>
                                                 <select
@@ -194,11 +196,15 @@
                                                         type="checkbox"
                                                         name="van_ban_tra_loi[{{ $vanBanDen->id }}]"
                                                         value="1"
+                                                        data-id="{{ $vanBanDen->id }}"
+                                                        data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
+                                                        class="check-van-ban-can-tra-loi"
                                                         form="form-tham-muu" {{ $vanBanDen->van_ban_can_tra_loi == 1 ? 'checked' : null }}>
                                                     <label
                                                         for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
                                                         VB cần trả lời
                                                     </label>
+                                                    <small><i>(có văn bản đi)</i></small>
                                                 </p>
                                             @endif
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
@@ -363,6 +369,10 @@
                 $.ajax({
                     url: APP_URL + '/list-can-bo-phoi-hop/' + JSON.stringify(arrId),
                     type: 'GET',
+                    beforeSend: function() {
+                        // setting a timeout
+                        showLoading();
+                    },
                 })
                     .done(function (response) {
                         var html = '<option value="">chọn chuyên viên phối hợp</option>';
@@ -376,8 +386,10 @@
                         } else {
                             $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-phoi-hop').html(html);
                         }
+                        hideLoading();
                     })
                     .fail(function (error) {
+                        hideLoading();
                         toastr['error'](error.message, 'Thông báo hệ thống');
                     });
             }

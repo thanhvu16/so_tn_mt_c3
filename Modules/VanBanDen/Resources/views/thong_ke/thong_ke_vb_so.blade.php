@@ -89,7 +89,14 @@
                                         @forelse ($danhSachDonVi as $key=>$donVidata)
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
-                                                <td class="text-left" style="vertical-align: middle;font-weight: bold">{{ $donVidata->ten_don_vi  }}</td>
+                                                <td class="text-left" style="vertical-align: middle;font-weight: bold">
+{{--                                                    @if($donVidata->cap_xa == 1 && $donVidata->dieu_hanh == 1   )--}}
+{{--                                                    <a href="{{route('thongkevbchicuc','don_vi='.$donVidata->id)}}">{{ $donVidata->ten_don_vi  }}</a>--}}
+{{--                                                    @else--}}
+{{--                                                        {{ $donVidata->ten_don_vi  }}--}}
+{{--                                                    @endif--}}
+                                                        {{ $donVidata->ten_don_vi  }}
+                                                </td>
                                                 <td class="text-center so-luong-tong" style="vertical-align: middle;color: red;font-weight: bold">
 {{--                                                    <a href="{{route('chiTietTongVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay'))}}">--}}
                                                         {{ $donVidata->vanBanDaGiaiQuyet['tong'] }}
@@ -126,6 +133,14 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div class="row">
+                                        <div class="col-md-6 mt-4" style="margin-top: 5px">
+                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->total() }}</b>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            {!! $danhSachDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

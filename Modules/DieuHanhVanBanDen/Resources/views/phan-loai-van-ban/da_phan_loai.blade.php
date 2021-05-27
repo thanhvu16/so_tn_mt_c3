@@ -31,11 +31,14 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="{{route('phan-loai-van-ban.da_phan_loai')}}" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('phan-loai-giay-moi.da_phan_loai')}}@else{{route('phan-loai-van-ban.da_phan_loai')}}@endif" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
                                            name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
                                            placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3 form-group">
@@ -72,11 +75,11 @@
                             <thead>
                             <tr role="row">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="{{ auth::user()->hasRole(CHU_TICH) ? '42' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="{{ auth::user()->hasRole(CHU_TICH) ? '40' : '22' }}%" class="text-center">Trích yếu - Thông tin</th>
                                 @unlessrole(CHU_TICH)
                                 <th width="20%" class="text-center">Tóm tắt văn bản</th>
                                 @endunlessrole
-                                <th width="15%" class="text-center">Ý kiến</th>
+                                <th width="22%" class="text-center">Ý kiến</th>
                                 <th width="20%" class="text-center">Chỉ đạo</th>
                                 <th width="15%" class="text-center">Tác vụ</th>
                             </tr>
@@ -266,7 +269,7 @@
                                             <textarea name="don_vi_phoi_hop[{{ $vanBanDen->id }}]"
                                                       class="form-control {{ count($vanBanDen->checkDonViPhoiHop) > 0 ? 'show' : 'hide' }}"
                                                       form="form-tham-muu"
-                                                      rows="5">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->DonViCapXaPhoiHop as $donViPhoiHop)
+                                                      rows="5">@if (!empty($vanBanDen->checkDonViPhoiHop))Chuyển đơn vị phối hợp: @foreach($vanBanDen->checkDonViPhoiHop as $donViPhoiHop)
                                                     {{ $donViPhoiHop->donVi->ten_don_vi }} @endforeach
                                                 @endif
                                             </textarea>
@@ -341,213 +344,5 @@
     </section>
 @endsection
 @section('script')
-    <script type="text/javascript">
-        let vanBanDenDonViId = null;
-        let ArrVanBanDenDonViId = [];
-        let txtChuTich = null;
-
-        $('.chu-tich').on('change', function () {
-            let $this = $(this);
-            let id = $this.val();
-            vanBanDenDonViId = $this.data('id');
-
-            let textChuTich = $this.find("option:selected").text() + ' xem xét';
-            let txtChiDao = textChuTich;
-            let textPhoChuTich = $this.parents('.tr-tham-muu').find('.pho-chu-tich option:selected').text() + ' chỉ đạo';
-
-            if (textPhoChuTich) {
-                txtChiDao = textChuTich + ',giao PGD ' + textPhoChuTich;
-            }
-            if (id) {
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo giám đốc ' + txtChiDao);
-                checkVanBanDenId(vanBanDenDonViId);
-                txtChuTich = 'Kính báo cáo giám đốc ' + textChuTich;
-                $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val(id);
-                checkedDuHop($this, '.chu-tich-du-hop');
-            } else {
-                removeVanBanDenDonViId(vanBanDenDonViId);
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_chu_tich[${vanBanDenDonViId}]"]`).text('');
-                $this.parents('.tr-tham-muu').find('.chu-tich-du-hop').val();
-                removeDuHop($this, '.chu-tich-du-hop');
-            }
-
-            lanhDaoXemDeBiet($this, 'CT');
-        });
-
-        $('.pho-chu-tich').on('change', function () {
-            let $this = $(this);
-            let id = $this.val();
-            let textPhoChuTich = $this.find("option:selected").text() + ' chỉ đạo';
-            vanBanDenDonViId = $this.data('id');
-            let checkChuTich = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').val();
-            let textChuTich = $this.parents('.tr-tham-muu').find('.chu-tich option:selected').text() + ' xem xét';
-
-            if (id) {
-                let txtChiDao = 'Kính báo cáo giám đốc ' + textChuTich + ', giao PGD ' + textPhoChuTich;
-
-                // check empty chu tich
-                if (checkChuTich && checkChuTich.length > 0) {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính chuyển phó giám đốc ' + textPhoChuTich);
-                } else {
-                    $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).removeClass('hide').text('Kính báo cáo phó giám đốc ' + textPhoChuTich);
-                }
-
-                checkVanBanDenId(vanBanDenDonViId);
-                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text(txtChiDao);
-                $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val(id);
-                checkedDuHop($this, '.pho-ct-du-hop');
-            } else {
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).text('');
-                $this.parents('.tr-tham-muu').find(`textarea[name="noi_dung_pho_chu_tich[${vanBanDenDonViId}]"]`).addClass('hide');
-                removeVanBanDenDonViId(vanBanDenDonViId);
-                $this.parents('.tr-tham-muu').find('.pho-ct-du-hop').val();
-                $this.parents('.tr-tham-muu').find('.noi-dung-chu-tich').text('Kính báo cáo giám đốc ' + textChuTich);
-                removeDuHop($this, '.pho-ct-du-hop');
-            }
-            lanhDaoXemDeBiet($this, 'PCT');
-        });
-
-        $('.check-van-ban-quan-trong').on('click', function () {
-            vanBanDenDonViId = $(this).data('id');
-            checkVanBanDenId(vanBanDenDonViId);
-        });
-
-        $('.change-han-xu-ly').on('change', function () {
-            vanBanDenDonViId = $(this).data('id');
-            checkVanBanDenId(vanBanDenDonViId);
-        });
-
-
-        $('body').on('change', '.don-vi-chu-tri', function () {
-            let $this = $(this);
-            let arrId = $this.find("option:selected").map(function () {
-                return parseInt(this.value);
-            }).get();
-
-            let id = $(this).val();
-
-            vanBanDenDonViId = $this.data('id');
-
-            let donViChuTri = $(this).find("option:selected").map(function () {
-                return this.text;
-            }).get();
-
-            if (donViChuTri.length > 0 && id.length > 0) {
-                checkVanBanDenId(vanBanDenDonViId);
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị chủ trì: ' + donViChuTri.toString());
-                $this.parents('.tr-tham-muu').find('.don-vi-du-hop').val(id);
-                checkedDuHop($this, '.don-vi-du-hop');
-            } else {
-                removeVanBanDenDonViId(vanBanDenDonViId);
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_chu_tri[${vanBanDenDonViId}]"]`).addClass('hide');
-            }
-
-            if (arrId) {
-                //lấy danh sach cán bộ phối hơp
-                $.ajax({
-                    url: APP_URL + '/list-don-vi-phoi-hop/' + JSON.stringify(arrId),
-                    type: 'GET',
-                })
-                    .done(function (response) {
-                        var html = '<option value="">chọn đơn vị phối hợp</option>';
-                        if (response.success) {
-
-                            let selectAttributes = response.data.map((function (attribute) {
-                                return `<option value="${attribute.id}" >${attribute.ten_don_vi}</option>`;
-                            }));
-
-                            $this.parents('.dau-viec-chi-tiet').find('.don-vi-phoi-hop').html(selectAttributes);
-                            $this.parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).text(' ').addClass('hide');
-                        } else {
-                            $this.parents('.dau-viec-chi-tiet').find('.don-vi-phoi-hop').html(html);
-                        }
-                    })
-                    .fail(function (error) {
-                        toastr['error'](error.message, 'Thông báo hệ thống');
-                    });
-            }
-
-        });
-
-        $('body').on('change', '.don-vi-phoi-hop', function () {
-
-            let donViPhoiHop = $(this).find("option:selected").map(function () {
-                return this.text;
-            }).get();
-
-            vanBanDenDonViId = $(this).data('id');
-
-            if (donViPhoiHop.length > 0) {
-
-                checkVanBanDenId(vanBanDenDonViId);
-
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).removeClass('hide').text('Chuyển đơn vị phối hợp: ' + donViPhoiHop.join(', '));
-            } else {
-                removeVanBanDenDonViId(vanBanDenDonViId);
-                $(this).parents('.tr-tham-muu').find(`textarea[name="don_vi_phoi_hop[${vanBanDenDonViId}]"]`).addClass('hide');
-            }
-
-
-        });
-
-        function checkVanBanDenId(vanBanDenDonViId) {
-
-            if (ArrVanBanDenDonViId.indexOf(vanBanDenDonViId) === -1) {
-                ArrVanBanDenDonViId.push(vanBanDenDonViId);
-            }
-
-            $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(ArrVanBanDenDonViId));
-
-            $('.btn-duyet-all').removeClass('disabled');
-        }
-
-        function removeVanBanDenDonViId(vanBanDenDonViId) {
-            let index = ArrVanBanDenDonViId.indexOf(vanBanDenDonViId);
-
-            if (index > -1) {
-                ArrVanBanDenDonViId.splice(index, 1);
-            }
-            $('#form-tham-muu').find('input[name="van_ban_den_id"]').val(JSON.stringify(ArrVanBanDenDonViId));
-        }
-
-        $('.btn-submit').on('click', function () {
-            let id = $('#form-tham-muu').find('input[name="van_ban_den_id"]').val();
-            if (id.length == 0) {
-                toastr['warning']('Vui lòng chọn trước khi duyệt', 'Thông báo hệ thống');
-            } else {
-                $('#form-tham-muu').submit();
-            }
-        });
-
-        $('.btn-update').on('click', function () {
-            let vanBanDenDonViId = $(this).data('id');
-            checkVanBanDenId(vanBanDenDonViId);
-            if (confirm('Xác nhận gửi?')) {
-                $('#form-tham-muu').submit();
-            }
-        });
-
-        $('.don-vi-du-hop').on('click', function () {
-            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val(1);
-        });
-
-        $('.pho-ct-du-hop').on('click', function () {
-            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
-        });
-
-        $('.chu-tich-du-hop').on('click', function () {
-            $(this).parents('.tr-tham-muu').find('.check-don-vi-du-hop').val("");
-        });
-
-        // check du hop
-        function checkedDuHop($this, $className) {
-            $this.parents('.tr-tham-muu').find($className).prop('checked', true);
-        }
-
-        function removeDuHop($this, $className) {
-            $this.parents('.tr-tham-muu').find($className).prop('checked', false);
-        }
-
-    </script>
+    <script src="{{ asset('modules/xu_ly_van_ban_den/js/index.js') }}"></script>
 @endsection

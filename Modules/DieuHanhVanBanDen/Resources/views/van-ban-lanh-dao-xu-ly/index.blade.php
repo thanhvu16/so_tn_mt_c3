@@ -32,9 +32,9 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="42%" class="text-center">Trích yếu - Thông tin</th>
 {{--                                <th width="20%" class="text-center">Tóm tắt VB</th>--}}
-                                <th class="text-center" width="22%">Ý kiến</th>
+                                <th class="text-center" width="24%">Ý kiến</th>
                                 <th width="22%" class="text-center">Chỉ đạo</th>
                                 <th class="text-center" width="7%">
                                     <input id="check-all" type="checkbox" name="check_all" value="">
@@ -307,6 +307,7 @@
         </div>
     </section>
 @endsection
+
 @section('script')
     <script type="text/javascript">
         let status = '{{ $active }}';
@@ -386,8 +387,12 @@
                 $.ajax({
                     url: APP_URL + '/list-don-vi-phoi-hop/' + JSON.stringify(arrId),
                     type: 'GET',
+                    beforeSend: function () {
+                        showLoading();
+                    }
                 })
                     .done(function (response) {
+                        hideLoading();
                         var html = '<option value="">chọn đơn vị phối hợp</option>';
                         if (response.success) {
 
@@ -402,6 +407,7 @@
                         }
                     })
                     .fail(function (error) {
+                        hideLoading();
                         toastr['error'](error.message, 'Thông báo hệ thống');
                     });
             }

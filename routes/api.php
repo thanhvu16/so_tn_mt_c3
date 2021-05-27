@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
+    Route::get('don-vi', 'DonViController@index');
+    Route::get('chuc-vu', 'ChucVuController@index');
+    Route::get('quyen-han', 'ChucVuController@getRole');
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::get('message', 'MessageController@index');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('user/update-token-device', 'UserController@saveToken');
+        Route::post('user/update', 'UserController@update');
+        Route::post('user/update-avatar', 'UserController@updateAvatar');
+        Route::post('user/change-password', 'UserController@changePassword');
+        Route::post('user/logout', 'UserController@logout');
+
+        Route::get('home', 'HomeController@index');
+    });
 });

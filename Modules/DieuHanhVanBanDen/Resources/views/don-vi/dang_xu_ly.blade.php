@@ -14,11 +14,14 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="{{route('van-ban-den-don-vi.dang_xu_ly')}}" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('giay-moi-den-don-vi.dang_xu_ly')}}@else{{route('van-ban-den-don-vi.dang_xu_ly')}}@endif" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
                                            name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
                                            placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3 form-group">
@@ -68,7 +71,11 @@
                                     <td>
                                         @if ($vanBanDen->hasChild)
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
+                                                @if (!empty(Request::get('qua_han')))
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
+                                                @else
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->hasChild->trich_yeu }}</a>
+                                                @endif
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>
@@ -80,7 +87,11 @@
                                             </p>
                                         @else
                                             <p>
-                                                <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                @if (!empty(Request::get('qua_han')))
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                @else
+                                                    <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->trich_yeu }}</a>
+                                                @endif
                                                 <br>
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                     <i>

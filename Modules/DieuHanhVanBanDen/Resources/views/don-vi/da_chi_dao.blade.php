@@ -23,11 +23,14 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="{{route('van_ban_don_vi.da_chi_dao')}}" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('giay_moi_don_vi.da_chi_dao')}}@else{{route('van_ban_don_vi.da_chi_dao')}}@endif" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
                                            name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
                                            placeholder="Nhập trích yếu">
                                 </div>
                                 <div class="col-md-3 form-group">
@@ -58,9 +61,9 @@
                             <thead>
                             <tr role="row" class="text-center">
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="45%" class="text-center">Trích yếu - Thông tin</th>
-                                <th class="text-center" width="21%">Ý kiến</th>
-                                <th width="22%" class="text-center">Chỉ đạo</th>
+                                <th width="44%" class="text-center">Trích yếu - Thông tin</th>
+                                <th width="23%" class="text-center">Ý kiến</th>
+                                <th width="21%" class="text-center">Chỉ đạo</th>
                                 <th width="8%" class="text-center">Tác vụ</th>
                             </tr>
                             </thead>
@@ -121,7 +124,7 @@
                                         @include('dieuhanhvanbanden::van-ban-den.thong_tin')
                                     </td>
                                     <td>
-                                        <div class="dau-viec-chi-tiet">
+                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
                                             @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                 <p>
                                                     <select name="pho_phong_id[{{ $vanBanDen->id }}]"
@@ -189,15 +192,27 @@
                                             </p>
                                             @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
                                                 <span>Gia hạn xử lý</span>
-                                                <div class="input-group date">
-                                                    <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
-                                                       value="{{ $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB ? !empty($vanBanDen->chuyenVien->han_xu_ly_moi) ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : null : !empty($vanBanDen->phoPhong->han_xu_ly_moi) ? formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) : null }}"
-                                                       class="form-control change-han-xu-ly datepicker"
-                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar-o"></i>
+                                                @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB)
+                                                    <div class="input-group date">
+                                                        <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{  !empty($vanBanDen->chuyenVien->han_xu_ly_moi) ? formatDMY($vanBanDen->chuyenVien->han_xu_ly_moi) : null }}"
+                                                               class="form-control change-han-xu-ly datepicker"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @else
+                                                    <div class="input-group date">
+                                                        <input type="text" name="han_xu_ly[{{ $vanBanDen->id }}]"
+                                                               value="{{  !empty($vanBanDen->phoPhong->han_xu_ly_moi) ? formatDMY($vanBanDen->phoPhong->han_xu_ly_moi) : null }}"
+                                                               class="form-control change-han-xu-ly datepicker"
+                                                               form="form-tham-muu" data-id="{{ $vanBanDen->id }}" placeholder="dd/mm/yyyy">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                                 <p>
                                                     <input
                                                         id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"
@@ -208,6 +223,7 @@
                                                         for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
                                                         VB cần trả lời
                                                     </label>
+                                                    <small><i>(có văn bản đi)</i></small>
                                                 </p>
                                             @endif
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))

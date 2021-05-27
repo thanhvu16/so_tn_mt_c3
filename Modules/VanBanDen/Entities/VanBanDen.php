@@ -660,7 +660,7 @@ class VanBanDen extends Model
                 ->select('id', 'noi_dung', 'co_quan_ban_hanh', 'so_den', 'created_at', 'loai_van_ban_id',
                     'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'so_ky_hieu', 'so_van_ban_id', 'ngay_ban_hanh',
                     'nguoi_ky', 'tom_tat', 'do_khan_cap_id', 'do_bao_mat_id', 'noi_gui_den', 'ngay_hop',
-                    'gio_hop', 'noi_dung_hop', 'dia_diem')
+                    'gio_hop', 'noi_dung_hop', 'dia_diem', 'type')
                 ->orderBy('id', 'DESC')->first();
         }
 
@@ -675,7 +675,7 @@ class VanBanDen extends Model
             ->select('id', 'noi_dung', 'co_quan_ban_hanh', 'so_den', 'created_at', 'loai_van_ban_id',
                 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'so_ky_hieu', 'so_van_ban_id', 'ngay_ban_hanh',
                 'nguoi_ky', 'tom_tat', 'do_khan_cap_id', 'do_bao_mat_id', 'noi_gui_den', 'ngay_hop',
-                'gio_hop', 'noi_dung_hop', 'dia_diem')
+                'gio_hop', 'noi_dung_hop', 'dia_diem', 'type')
             ->orderBy('id', 'DESC')->first();
 
     }

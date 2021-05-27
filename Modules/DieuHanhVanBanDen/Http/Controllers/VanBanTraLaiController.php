@@ -186,7 +186,8 @@ class VanBanTraLaiController extends Controller
                         break;
 
                     case VanBanDen::TRUONG_PHONG_NHAN_VB:
-                        if ($donVi->cap_xa = DonVi::CAP_XA && $currentUser->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
+
+                        if ($donVi->cap_xa == DonVi::CAP_XA && $currentUser->hasRole([TRUONG_BAN, TRUONG_PHONG])) {
                             // chuyen van ban len pho chu tich xa chuyen lai van ban
                             $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                             $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
@@ -196,7 +197,8 @@ class VanBanTraLaiController extends Controller
                                 ->where('don_vi_id', $currentUser->donVi->parent_id)
                                 ->select('id', 'ho_ten')
                                 ->first();
-                            if ($chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {
+
+                            if (!empty($chuTichXa) && $chuyenNhanDonViChuTri->can_bo_chuyen_id == $chuTichXa->id) {
                                 $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
                                 $vanBanDen->save();
                             } else {
@@ -204,6 +206,7 @@ class VanBanTraLaiController extends Controller
                                 $vanBanDen->save();
                             }
                         } else {
+
                             if ($currentUser->hasRole([TRUONG_PHONG, TRUONG_BAN])) {
                                 // chuyen tra lai van thu neu don vi co dieu hanh
                                 if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
@@ -263,9 +266,21 @@ class VanBanTraLaiController extends Controller
                     case VanBanDen::PHO_CHU_TICH_XA_NHAN_VB:
                         // pho ct xa chuyen lai van ban cho chu tich xa
                         $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
-                        $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
-                        $vanBanDen->save();
+
+                        // check can bo nhan la van thu hay chu tich xa
+                        if (!empty($vanThuDonVi) && $canBoNhan == $vanThuDonVi->id) {
+                            $canBoNhan = $vanThuDonVi->id ?? null;
+                            $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+
+                            $chuyenNhanDonViChuTri->vao_so_van_ban = null;
+                            $chuyenNhanDonViChuTri->tra_lai = DonViChuTri::TRA_LAI;
+                            $chuyenNhanDonViChuTri->chuyen_tiep = null;
+                            $chuyenNhanDonViChuTri->save();
+                        } else {
+                            $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                            $vanBanDen->save();
+                        }
                         break;
 
                     case VanBanDen::CHU_TICH_XA_NHAN_VB:
@@ -412,10 +427,29 @@ class VanBanTraLaiController extends Controller
         } else {
 
             if ($user->hasRole([CHUYEN_VIEN, VAN_THU_DON_VI])) {
-                $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
-                    ->whereIn('id', $arrVanBanDenId)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(PER_PAGE);
+
+                if($request->type != null)
+                {
+                    $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
+                        ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                            if (!empty($loaiVanBanGiayMoi)) {
+                                return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                            }
+                        })
+                        ->whereIn('id', $arrVanBanDenId)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(PER_PAGE);
+                }else{
+                    $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
+                        ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                            if (!empty($loaiVanBanGiayMoi)) {
+                                return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
+                            }
+                        })
+                        ->whereIn('id', $arrVanBanDenId)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(PER_PAGE);
+                }
 
                 if ($danhSachVanBanDen) {
                     foreach ($danhSachVanBanDen as $vanBanDen) {

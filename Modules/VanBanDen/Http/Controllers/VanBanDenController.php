@@ -6,6 +6,7 @@ use App\Common\AllPermission;
 use App\Http\Controllers\Controller;
 use App\Models\QlvbVbDenDonVi as VbDenDonVi;
 use App\Models\UserLogs;
+use App\Repositories\HomeRepository;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -35,6 +36,14 @@ class VanBanDenController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    protected $homeRepository;
+
+    public function __construct(HomeRepository $homeRepository)
+    {
+        $this->homeRepository = $homeRepository;
+
+    }
+
     public function index(Request $request)
     {
         $donVi = auth::user()->donVi;
@@ -75,7 +84,7 @@ class VanBanDenController extends Controller
                 })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
                     }
                 })
                 ->where(function ($query) use ($so_den) {
@@ -452,6 +461,10 @@ class VanBanDenController extends Controller
                             if (empty($checkTonTaiData)) {
                                 XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
                             }
+                            // gửi thông báo đến chủ tịch / giám đốc sở
+                            //$title = 'Văn bản đến';
+                            //$vanBanChoXuLy = $this->homeRepository->vanBanChoXuLy();
+                            //$body = 0;
                         }
 
                         UserLogs::saveUserLogs('Tạo văn bản đến', $vanbandv);
@@ -910,8 +923,11 @@ class VanBanDenController extends Controller
         canPermission(AllPermission::homThuCong());
         $noiguimail = $request->get('noiguimail') ?? null;
         $tinhtrang = $request->get('tinhtrang') ?? 1;
-        $mailDate = $request->get('mail_date') ?? null;
+        $mailDate = !empty($request->get('mail_date')) ? formatYMD($request->get('mail_date')) : null;
         $mailSubject = $request->get('mail_subject') ?? null;
+
+        $startDate = $mailDate.' 00:00:00';
+        $endDate = $mailDate.' 23:59:59';
 
         $getEmail = GetEmail::where(['mail_active' => $tinhtrang])
             ->where(function ($query) use ($noiguimail) {
@@ -919,9 +935,10 @@ class VanBanDenController extends Controller
                     return $query->where('noigui', $noiguimail);
                 }
             })
-            ->where(function ($query) use ($mailDate) {
+            ->where(function ($query) use ($mailDate, $startDate, $endDate) {
                 if (!empty($mailDate)) {
-                    return $query->where('mail_date', formatYMD($mailDate));
+                    return $query->where('mail_date', '>', $startDate)
+                                    ->where('mail_date', '<', $endDate);
                 }
             })
             ->where(function ($query) use ($mailSubject) {
@@ -929,7 +946,7 @@ class VanBanDenController extends Controller
                     return $query->where('mail_subject', 'LIKE', "%$mailSubject%");
                 }
             })
-            ->orderBy('mail_date', 'DESC')->paginate(20);
+            ->orderBy('mail_date', 'DESC')->paginate(30);
 
         return view('vanbanden::van_ban_den.dsvanbandentumail', compact('getEmail'));
     }
@@ -971,7 +988,7 @@ class VanBanDenController extends Controller
             }
             $data_xml = simplexml_load_string($string);
 
-            $data_xml->STRNGAYKY = @date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYKY)));
+            $data_xml->STRNGAYKY = !empty($data_xml->STRNGAYKY) ? @date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYKY))) : null;
             if (isset($data_xml->STRNGAYHOP))
                 $data_xml->STRNGAYHOP = date('Y-m-d', strtotime(str_replace('/', '-', $data_xml->STRNGAYHOP)));
             else

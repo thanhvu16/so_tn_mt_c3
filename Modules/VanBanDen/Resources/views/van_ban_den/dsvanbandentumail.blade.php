@@ -69,12 +69,13 @@
                                                        name="mail_date" placeholder="dd/mm/yyyy">
                                             </div>
                                         </div>
+                                        <input type="hidden" name="tinhtrang" value="{{ Request::get('tinhtrang') }}">
                                         <div class="col-md-3">
                                             <label>&nbsp;</label><br>
                                             <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                             @if (!empty(Request::get('mail_subject')) ||
                                                         !empty(Request::get('mail_date')))
-                                                <a href="{{ route('dsvanbandentumail') }}" class="btn btn-success"><i
+                                                <a href="{{ !empty(Request::get('tinhtrang') && Request::get('tinhtrang') == 2) ? route('dsvanbandentumail', 'tinhtrang=2') : route('dsvanbandentumail') }}" class="btn btn-success"><i
                                                         class="fa fa-refresh"></i></a>
                                             @endif
                                         </div>
@@ -106,8 +107,7 @@
 
                                                 <td class="text-center">
                                                     @if($vbDen->mail_active == 1)
-                                                        <button type="button" class="btn btn-primary btn-sm">Chưa xem
-                                                        </button>
+                                                        <a href="{{route('vanbandentumail','id='.$vbDen->id.'&xml='.$vbDen->mail_attachment.'&pdf='.$vbDen->mail_pdf.'&doc='.$vbDen->mail_doc.'&xls='.$vbDen->mail_xls)}}" class="color-white btn btn-primary btn-sm">Chưa xem</a>
                                                     @endif
 
                                                     @if($vbDen->mail_active == 2)
