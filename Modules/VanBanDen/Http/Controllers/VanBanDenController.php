@@ -84,7 +84,7 @@ class VanBanDenController extends Controller
                 })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('vb_trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
                     }
                 })
                 ->where(function ($query) use ($so_den) {
