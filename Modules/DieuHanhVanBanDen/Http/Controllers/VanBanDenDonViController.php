@@ -382,8 +382,7 @@ class VanBanDenDonViController extends Controller
                         return $query->where('created_at', "LIKE", $date);
                     }
                 })
-                ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+                ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                 ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                     'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
                     'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban', 'created_at')
@@ -423,8 +422,7 @@ class VanBanDenDonViController extends Controller
                         return $query->where('created_at', "LIKE", $date);
                     }
                 })
-                ->where('trinh_tu_nhan_van_ban', '>', $trinhTuNhanVanBan)
-                ->where('trinh_tu_nhan_van_ban', '!=', VanBanDen::HOAN_THANH_VAN_BAN)
+                ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                 ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                     'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
                     'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban', 'created_at')
