@@ -60,7 +60,7 @@
                                             </td>
                                             <td>
                                                 <select class="form-control show-tick dropdown-search" name="sovanban_id"
-                                                        required>
+                                                        >
                                                     <option value="">-- Chọn sổ văn bản --</option>
                                                     @foreach ($ds_soVanBan as $sovb)
                                                         <option value="{{$sovb->id}}"

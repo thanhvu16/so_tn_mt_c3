@@ -108,11 +108,11 @@ class ThongkeVanBanDenController extends Controller
         $den_ngay = $request->get('den_ngay') ?? null;
         $vanThuNhap = auth::user()->id;
         canPermission(AllPermission::thongKeVanBanSo());
-        $lanhDaoSo = User::role(CHU_TICH)->whereNull('deleted_at')->first();
+        $vanPhongSo = DonVi::where('ten_don_vi','LIKE','%văn phòng sở%')->first();
 
-        $danhSachDonVi = DonVi::where(function ($query) use ($lanhDaoSo) {
-               if (!empty($lanhDaoSo)) {
-                   return $query->where('id', '!=', $lanhDaoSo->don_vi_id);
+        $danhSachDonVi = DonVi::where(function ($query) use ($vanPhongSo) {
+               if (!empty($vanPhongSo)) {
+                   return $query->where('id', '!=', $vanPhongSo->id);
                }
             })
             ->where('parent_id', DonVi::NO_PARENT_ID)
@@ -177,6 +177,7 @@ class ThongkeVanBanDenController extends Controller
             ->where('nguoi_tao',$vanThuNhap)
 
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->whereNull('deleted_at')
             ->get();
 
         $danhSachVanBanDenChuaHoanThanh = VanBanDen::whereNull('deleted_at')
@@ -208,6 +209,7 @@ class ThongkeVanBanDenController extends Controller
             })
 
             ->where('nguoi_tao',$vanThuNhap)
+            ->whereNull('deleted_at')
             ->get();
 
 //        dd($danhSachVanBanDenChuaHoanThanh);
@@ -676,6 +678,7 @@ class ThongkeVanBanDenController extends Controller
     }
     public function chiTietChuaGiaiQuyetTrongHanVanBanSo($id,Request $request)
     {
+        $vanThuNhap = auth::user()->id;
         $donViId = null;
         $donVi = DonVi::where('id',$id)->first();
         $user = auth::user();
@@ -722,6 +725,9 @@ class ThongkeVanBanDenController extends Controller
 
                     }
                 })
+                ->where('nguoi_tao',$vanThuNhap)
+                ->whereNull('deleted_at')
+
                 ->get();
 
         }else{
