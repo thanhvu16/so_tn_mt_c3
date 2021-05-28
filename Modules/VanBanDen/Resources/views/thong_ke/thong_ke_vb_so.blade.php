@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-md-12 collapse in" id="collapseExample" >
 {{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" >--}}
-                                    <div class="col-md-5 form-group mt-2">
+                                    <div class="col-md-3 form-group mt-2">
                                         <label>Tìm từ ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
@@ -45,7 +45,7 @@
                                                    name="tu_ngay" placeholder="dd/mm/yyyy">
                                         </div>
                                     </div>
-                                    <div class="col-md-5 form-group mt-2">
+                                    <div class="col-md-3 form-group mt-2">
                                         <label>Tìm đến ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
@@ -54,6 +54,17 @@
                                             <input type="text" class="form-control datepicker" value="{{Request::get('den_ngay')}}"
                                                    name="den_ngay" placeholder="dd/mm/yyyy">
                                         </div>
+                                    </div>
+                                    <div class="col-md-3 form-group mt-2">
+                                        <label>Tìm theo loại văn bản</label>
+                                        <select class="form-control select2" name="loai_van_ban_id" id="loai_van_ban_id">
+                                            <option value="">Chọn loại văn bản</option>
+                                            @foreach ($ds_loaiVanBan as $loaiVanBan)
+                                                <option value="{{ $loaiVanBan->id }}" {{ Request::get('loai_van_ban_id') == $loaiVanBan->id ? 'selected' : '' }}
+                                                >{{ $loaiVanBan->ten_loai_van_ban }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">
                                     </div>
                                     <div class="col-md-2" style="margin-top: 30px">
                                         <button type="submit" name="search" class="btn btn-primary"><i
@@ -65,12 +76,45 @@
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
                                     <h5 style="font-weight: bold">- Thời gian: {{Request::get('tu_ngay')}} @if(Request::get('tu_ngay') && Request::get('den_ngay') ) đến @endif  {{Request::get('den_ngay')}}<br><br>
-                                        - Đơn vị kết xuất báo cáo: Sở Tài nguyên và Môi trường
+                                        - Đơn vị kết xuất báo cáo: Văn phòng Sở
                                     </h5>
                                 </div>
                                 <div class="col-md-12" style="margin-top: 5px">
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle" colspan="2" width="5%"><h4>Báo cáo văn bản đến</h4></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-left" style="vertical-align: middle">Tổng số văn bản đến </td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDen}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanMoiNhan}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left" style="vertical-align: middle">Số văn bản đang xử lý</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDangXuLy}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left" style="vertical-align: middle">Số văn bản quá hạn đang xử lý</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDangXuLyQuaHan}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left" style="vertical-align: middle">Số văn bản đã hoàn thành</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDaHoanThanh}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="table table-bordered table-striped dataTable mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle" colspan="7" width="5%"><h4>Tổng hợp văn bản đến các đơn vị</h4></th>
+                                        </tr>
                                         <tr>
                                             <th class="text-center" style="vertical-align: middle" rowspan="2" width="5%">STT</th>
                                             <th class="text-center" style="vertical-align: middle" rowspan="2" width="">Đơn vị</th>
@@ -135,10 +179,10 @@
                                     </table>
                                     <div class="row">
                                         <div class="col-md-6 mt-4" style="margin-top: 5px">
-                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->total() }}</b>
+                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->count() }}</b>
                                         </div>
                                         <div class="col-md-6 text-right">
-                                            {!! $danhSachDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}
+{{--                                            {!! $danhSachDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}--}}
                                         </div>
                                     </div>
                                 </div>
@@ -180,6 +224,9 @@
             var sovanbanden = $('input[name="sovanbanden"]').val();
             var tu_ngay = $('input[name="tu_ngay"]').val();
             var den_ngay = $('input[name="den_ngay"]').val();
+            var loai_van_ban_id = $('input[name="loai_van_ban_id_1"]').val();
+
+            console.log(loai_van_ban_id);
             $.ajax({
                 beforeSend: showLoading(),
                 url: APP_URL + '/thong-ke-van-ban-so',
@@ -189,7 +236,8 @@
                     type: type,
                     sovanbanden: sovanbanden,
                     tu_ngay: tu_ngay,
-                    den_ngay: den_ngay
+                    den_ngay: den_ngay,
+                    loai_van_ban_id: loai_van_ban_id
 
 
                 }
