@@ -142,6 +142,38 @@ $('.check-so-den-vb').on('change', function () {
         });
 
 });
+$('.loai-van-ban-chanh-vp').on('change', function () {
+    let loai_van_ban = $(this).val();
+
+    $.ajax({
+        url: APP_URL + '/lay-nguoi-ky-chanh-vp',
+        type: 'POST',
+        beforeSend: showLoading(),
+        data: {
+            loai_van_ban: loai_van_ban,
+        },
+
+
+    })
+        .done(function (res) {
+            hideLoading();
+            console.log(res.ds_nguoi_Ky);
+
+            Object.keys(res.ds_nguoi_Ky).forEach(function(key) {
+                var $group = $('<optgroup label="' + key + '"></optgroup>');
+
+                res.ds_nguoi_Ky[key].forEach(function(obj) {
+                    $group.append('<option value="' + obj.id + '">' + obj.ho_ten + '</option>')
+                })
+
+                $('#nguoi_ky_app').append($group);
+            })
+
+
+
+        });
+
+});
 
 $('.tenfile').on('change', function () {
    let sokyhieu = $('[name=so_ky_hieu]').val()

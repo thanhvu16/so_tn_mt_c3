@@ -141,7 +141,7 @@
                                                         class="btn btn-action btn-color-red btn-icon btn-ligh btn-sm btn-remove-item"
                                                         role="button"
                                                         title="Xóa">
-                                                        <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>xoài xanh
+                                                        <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
                                                     </button>
                                                     <input type="text" class="hidden" value="{{$data->id}}" name="id_vb">
                                                 </form>
