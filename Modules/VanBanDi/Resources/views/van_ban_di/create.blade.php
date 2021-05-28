@@ -17,7 +17,7 @@
                             <input type="hidden" name="van_ban_den_id">
                             <div class="form-group col-md-3">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
-                                <select class="form-control show-tick " autofocus name="loaivanban_id" id="loaivanban_id" required>
+                                <select class="form-control show-tick loai-van-ban-chanh-vp" autofocus name="loaivanban_id" id="loaivanban_id" required>
                                     <option value="">-- Chọn Loại Văn Bản --</option>
                                     @foreach ($ds_loaiVanBan as $loaiVanBan)
                                         <option value="{{$loaiVanBan->id}}"
@@ -72,7 +72,7 @@
                             @endif
                             <div class="form-group col-md-3" >
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký <span class="color-red">*</span></label>
-                                <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" required>
+                                <select class="form-control show-tick  layidnguoiky" name="nguoiky_id" id="nguoi_ky_app" required>
                                     <option value="">-- Chọn Người Ký --</option>
                                     @if (!empty($ds_nguoiKy))
                                         @foreach ($ds_nguoiKy as $nguoiKy)

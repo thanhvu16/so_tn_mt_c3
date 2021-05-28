@@ -89,23 +89,26 @@
                                         <tbody>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Tổng số văn bản đến </td>
-                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDen}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    <a href="">{{$tongSoVanBanDen}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>
-                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanMoiNhan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    <a href="">{{$tongSoVanBanMoiNhan}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản đang xử lý</td>
-                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDangXuLy}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    <a href="">{{$tongSoVanBanDangXuLy}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản quá hạn đang xử lý</td>
-                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDangXuLyQuaHan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold"><a href="">{{$tongSoVanBanDangXuLyQuaHan}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản đã hoàn thành</td>
-                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDaHoanThanh}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold"><a href="">{{$tongSoVanBanDaHoanThanh}}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
