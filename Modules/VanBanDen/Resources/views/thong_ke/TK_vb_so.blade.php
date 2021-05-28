@@ -37,7 +37,7 @@
             <td colspan="7" style="text-align: left">- Thời gian: {{$tu_ngay}} @if($tu_ngay && $den_ngay ) đến @endif  {{$den_ngay}}</td>
         </tr>
         <tr>
-            <td colspan="7" style="text-align: left">- Đơn vị kết xuất báo cáo: Sở Tài nguyên và Môi trường</td>
+            <td colspan="7" style="text-align: left">- Đơn vị kết xuất báo cáo: Văn phòng sở</td>
         </tr>
         <tr>
             <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>STT</th>
