@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 20px">
                         <div class="row">
-                            <form action="@if(Request::get('type') == 1){{route('giay-moi-lanh-dao-xu-ly')}}@else{{route('van-ban-lanh-dao-xu-ly.index')}}@endif" method="get">
+                            <form action="@if(Request::get('type') == 1){{route('giayMoiLanhDaoXuLy')}}@else{{route('van-ban-lanh-dao-xu-ly.index')}}@endif" method="get">
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo trích yếu</label>
                                     <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
