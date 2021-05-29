@@ -148,7 +148,6 @@ $('.loai-van-ban-chanh-vp').on('change', function () {
     $.ajax({
         url: APP_URL + '/lay-nguoi-ky-chanh-vp',
         type: 'POST',
-        beforeSend: showLoading(),
         data: {
             loai_van_ban: loai_van_ban,
         },
@@ -156,18 +155,11 @@ $('.loai-van-ban-chanh-vp').on('change', function () {
 
     })
         .done(function (res) {
-            hideLoading();
-            console.log(res.ds_nguoi_Ky);
-
-            Object.keys(res.ds_nguoi_Ky).forEach(function(key) {
-                var $group = $('<optgroup label="' + key + '"></optgroup>');
-
-                res.ds_nguoi_Ky[key].forEach(function(obj) {
-                    $group.append('<option value="' + obj.id + '">' + obj.ho_ten + '</option>')
-                })
-
-                $('#nguoi_ky_app').append($group);
-            })
+                let selectAttributes = res.ds_nguoi_Ky.map((function (attribute) {
+                    return `<option value="${attribute.id}" >${attribute.ho_ten}</option>`;
+                }));
+                $('#nguoi_ky_app').html('');
+                $('#nguoi_ky_app').append(selectAttributes);
 
 
 

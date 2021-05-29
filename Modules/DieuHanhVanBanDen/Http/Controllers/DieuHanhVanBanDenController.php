@@ -238,7 +238,7 @@ class DieuHanhVanBanDenController extends Controller
             $date = Carbon::now()->format('Y-m-d');
             $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')
                 ->whereIn('loai_van_ban', [2, 3])
-                ->orderBy('ten_loai_van_ban', 'desc')->get();
+                ->orderBy('ten_loai_van_ban', 'asc')->get();
 
             $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
                 ->where(['don_vi_id' => auth::user()->don_vi_id])

@@ -119,8 +119,8 @@
                                             @else
                                                 <div class="col-md-12 form-group">
                                                     <div class="row">
-
-                                                        <select name="nguoi_nhan" id=""
+                                                        <input type="text" name="loaivanban_id" class="hidden" value="{{$vanban->vanbandi->loai_van_ban_id}}">
+                                                        <select name="nguoi_nhan" id="nguoi_ky_app"
                                                                 class="form-control select2-search select-nguoi-nhan-{{ $vanban->id }}">
 {{--                                                        @if($vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true || $vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true)--}}
                                                                 @if(!empty($vanban->vanbandi) && in_array($vanban->vanbandi->nguoi_ky, $idcuanguoinhan->toArray()))
@@ -207,6 +207,40 @@
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
     <script type="text/javascript">
+
+        $(document).ready(function () {
+            let loai_van_ban = $('[name=loaivanban_id]').val();
+            // let nguoi_ky_duthao = $('[name=nguoi_ky_duthao]').val();
+
+            $.ajax({
+                url: APP_URL + '/lay-nguoi-ky-chanh-vp-duyet',
+                type: 'POST',
+                data: {
+                    loai_van_ban: loai_van_ban,
+                },
+
+
+            })
+                .done(function (res) {
+                    let selectAttributes = res.ds_nguoi_Ky.map((function (attribute) {
+                        return `<option value="${attribute.id}" >${attribute.ho_ten}</option>`;
+                    }));
+                    $('#nguoi_ky_app').html('');
+                    $('#nguoi_ky_app').append(selectAttributes);
+                    // $(`#nguoi_ky_app option[value="${nguoi_ky_duthao}"]`).prop('selected', 'selected');
+
+
+
+                });
+
+        });
+
+
+
+
+
+
+
         let urlKyRuoi = "{{ route('van_ban.ky_dt_qua_sim') }}";
 
         function callback(rv) {
