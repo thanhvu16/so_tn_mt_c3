@@ -18,7 +18,7 @@
                             <input type="hidden" name="van_ban_den_id">
                             <div class="form-group col-md-3">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
-                                <select class="form-control show-tick " autofocus name="loaivanban_id" id="loaivanban_id" required>
+                                <select class="form-control show-tick loai-van-ban-chanh-vp" autofocus name="loaivanban_id" id="loaivanban_id" required>
                                     <option value="">-- Chọn Loại Văn Bản-</option>
                                     @foreach ($ds_loaiVanBan as $data)
                                         <option value="{{$data->id}}"    {{isset($vanbandi) && $vanbandi->loai_van_ban_id == $data->id    ? 'selected ': ''}}

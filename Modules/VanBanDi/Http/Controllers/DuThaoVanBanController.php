@@ -570,7 +570,7 @@ class DuThaoVanBanController extends Controller
         }
 
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
+            ->orderBy('ten_loai_van_ban', 'asc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('ten_don_vi', 'asc')->get();
         $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('parent_id', 0)

@@ -5,7 +5,7 @@
     <input type="hidden" name="van_ban_den_don_vi_id" value="{{ isset($vanBanDen) ? $vanBanDen->id : null }}">
     <div class=" col-md-3 form-group">
         <label for="exampleInputEmail2">Loại văn bản <span class="color-red">*</span></label>
-        <select class="form-control select2" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
+        <select class="form-control select2 loai-van-ban-chanh-vp" name="loai_van_ban_id" id="loai_van_ban_id" autofocus required>
             <option value="">Chọn loại văn bản</option>
             @foreach ($ds_loaiVanBan as $loaiVanBan)
                 <option value="{{ $loaiVanBan->id }}" >{{ $loaiVanBan->ten_loai_van_ban }}</option>
@@ -62,7 +62,7 @@
     </div>
     <div class="col-md-3   form-group">
         <label for="exampleInputEmail2">Người ký <span class="color-red">*</span></label>
-        <select class="form-control dropdown-search layidnguoiky select2"  name="nguoi_ky" required>
+        <select class="form-control dropdown-search layidnguoiky select2" id="nguoi_ky_app"  name="nguoi_ky" required>
             <option value="">--Chọn người ký--</option>
             @if ($ds_nguoiKy && count($ds_nguoiKy) > 0)
                 @foreach ($ds_nguoiKy as $nguoiky)
