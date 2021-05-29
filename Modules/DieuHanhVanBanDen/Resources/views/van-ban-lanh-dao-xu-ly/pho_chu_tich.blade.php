@@ -27,6 +27,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12" style="margin-top: 20px">
+                        <div class="row">
+                            <form action="@if(Request::get('type') == 1){{route('giayMoiLanhDaoXuLy')}}@else{{route('van-ban-lanh-dao-xu-ly.index')}}@endif" method="get">
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo trích yếu</label>
+                                    <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
+                                           name="trich_yeu"
+                                           placeholder="Nhập trích yếu">
+                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                           name="type"
+                                           placeholder="Nhập trích yếu">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo số đến</label>
+                                    <input type="text" class="form-control" value="{{Request::get('so_den')}}"
+                                           name="so_den"
+                                           placeholder="Nhập số đến">
+                                </div>
+{{--                                <div class="col-md-3 form-group">--}}
+{{--                                    <label>Tìm theo ngày</label>--}}
+{{--                                    <div class="input-group date">--}}
+{{--                                        <div class="input-group-addon">--}}
+{{--                                            <i class="fa fa-calendar-o"></i>--}}
+{{--                                        </div>--}}
+{{--                                        <input type="text" class="form-control datepicker" value="{{Request::get('date')}}"--}}
+{{--                                               name="date" placeholder="dd/mm/yyyy">--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+                                <div class="col-md-3">
+                                    <label>&nbsp;</label><br>
+                                    <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                    @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
+                                                !empty(Request::get('date')))
+                                        <a href="{{ route('phan-loai-van-ban.da_phan_loai') }}" class="btn btn-success"><i
+                                                class="fa fa-refresh"></i></a>
+                                    @endif
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
                     <div class="box-body table-responsive">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai')
                         <table class="table table-striped table-bordered table-hover data-row">

@@ -16,7 +16,7 @@
                             <input type="hidden" name="van_ban_den_don_vi_id" value="{{ isset($vanbanduthao) ? $vanbanduthao->van_ban_den_don_vi_id : null }}" >
                             <div class="form-group col-md-3" id="loaivanban">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản <span class="color-red">*</span></label>
-                                <select class="form-control show-tick dropdown-search" name="loaivanban_id"
+                                <select class="form-control show-tick dropdown-search loai-van-ban-chanh-vp" name="loaivanban_id"
                                         id="loaivanban_id" required>
                                     <option value="">-- Chọn Loại Văn Bản --</option>
                                     @foreach ($ds_loaiVanBan as $loaiVanBan)
@@ -81,7 +81,7 @@
                             {{--                                    </div>--}}
                             <div class="form-group col-md-3" >
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký <span class="color-red">*</span></label>
-                                <select class="form-control show-tick dropdown-search" name="nguoiky_id"
+                                <select class="form-control show-tick dropdown-search" name="nguoiky_id"  id="nguoi_ky_app"
                                         required>
                                     <option value="">-- Chọn Người Ký --</option>
                                     @foreach ($ds_nguoiKy as $nguoiKy)
@@ -89,6 +89,7 @@
                                             {{ isset($vanbanduthao) && $vanbanduthao->nguoi_ky == $nguoiKy->id ? 'selected' : '' }}>{{$nguoiKy->ho_ten}}</option>
                                     @endforeach
                                 </select>
+                                <input type="text" class="hidden" name="nguoi_ky_duthao" value="{{$vanbanduthao->nguoi_ky}}">
                             </div>
                             <div class="form-group col-md-3" >
                                 <label for="sokyhieu" class="col-form-label">Chức vụ <span class="color-red">*</span></label>
@@ -326,4 +327,32 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/quanlyvanban/js/app.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            let loai_van_ban = $('[name=loaivanban_id]').val();
+            let nguoi_ky_duthao = $('[name=nguoi_ky_duthao]').val();
+
+            $.ajax({
+                url: APP_URL + '/lay-nguoi-ky-chanh-vp',
+                type: 'POST',
+                data: {
+                    loai_van_ban: loai_van_ban,
+                },
+
+
+            })
+                .done(function (res) {
+                    let selectAttributes = res.ds_nguoi_Ky.map((function (attribute) {
+                        return `<option value="${attribute.id}" >${attribute.ho_ten}</option>`;
+                    }));
+                    $('#nguoi_ky_app').html('');
+                    $('#nguoi_ky_app').append(selectAttributes);
+                    $(`#nguoi_ky_app option[value="${nguoi_ky_duthao}"]`).prop('selected', 'selected');
+
+
+
+                });
+
+        });
+    </script>
 @endsection

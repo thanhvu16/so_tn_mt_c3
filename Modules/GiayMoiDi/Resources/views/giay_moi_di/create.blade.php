@@ -17,7 +17,7 @@
                             <input type="hidden" name="van_ban_den_id">
                             <div class="form-group col-md-3 hidden">
                                 <label for="linhvuc_id" class="col-form-label">Loại văn bản </label>
-                                <select class="form-control show-tick "  name="loaivanban_id" id="loaivanban_id" required>
+                                <select class="form-control show-tick loai-van-ban-chanh-vp"  name="loaivanban_id" id="loaivanban_id" required>
                                     <option value="{{ $giayMoi->id ?? null }}">{{ $giayMoi->ten_loai_van_ban ?? null }}</option>
                                 </select>
                             </div>

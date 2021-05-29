@@ -36,7 +36,7 @@
                                 <div class="col-md-12 collapse in" id="collapseExample" >
 {{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" >--}}
                                     <div class="col-md-3 form-group mt-2">
-                                        <label>Tìm từ ngày</label>
+                                        <label>Tìm theo ngày ban hành từ ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar-o"></i>
@@ -46,7 +46,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 form-group mt-2">
-                                        <label>Tìm đến ngày</label>
+                                        <label>Tìm theo ngày ban hành đến ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar-o"></i>
