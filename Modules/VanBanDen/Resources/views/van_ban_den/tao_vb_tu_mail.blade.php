@@ -108,8 +108,7 @@
                             <div class="row clearfix"></div>
 
 
-{{--                            @if( $loaivb_email)--}}
-{{--                                @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')--}}
+
                             <div class="giay-moi col-md-12 hidden">
                                 <div class="row">
                                     <div class="col-md-3" style="margin-top: 10px">
@@ -131,7 +130,7 @@
                                     <div class="col-md-3" style="margin-top: 10px">
                                         <div class="form-group">
                                             <label for="">Ngày họp <span style="color: red">*</span></label>
-                                            <input type="date" required class="form-control "
+                                            <input type="date"  class="form-control "
                                                    value="{{isset($data_xml->STRNGAYHOP) ? $data_xml->STRNGAYHOP : "20/03/2021"}}"
                                                    name="ngay_hop_chinh" placeholder="">
                                         </div>
@@ -139,37 +138,14 @@
                                     <div class="col-md-3" style="margin-top: 10px">
                                         <div class="form-group">
                                             <label for="">Địa điểm <span style="color: red">*</span></label>
-                                            <input type="text" required class="form-control"
+                                            <input type="text"  class="form-control"
                                                    value="{{isset($data_xml->STRDIADIEM)? $data_xml->STRDIADIEM : ''}}"
                                                    name="dia_diem_chinh" placeholder="Địa điểm">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-                                    {{--                                    <div class="col-md-3 text-right" style="margin-top: 40px">--}}
-                                    {{--                                                                            <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
-                                    {{--                                                                               href="#collapseExample"--}}
-                                    {{--                                                                               aria-expanded="false" aria-controls="collapseExample"><i--}}
-                                    {{--                                                                                    class="fa fa-plus"></i>--}}
-                                    {{--                                                                            </a>--}}
-                                    {{--                                        <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
-                                    {{--                                    </div>--}}
-
-
                                     <div class="row clearfix"></div>
-{{--                                @endif--}}
-{{--                            @endif--}}
-                            {{--                            <div class="col-md-12 text-right">--}}
-                            {{--                                <a class="btn btn-primary " role="button" data-toggle="collapse"--}}
-                            {{--                                   href="#collapseExample"--}}
-                            {{--                                   aria-expanded="false" aria-controls="collapseExample"><i--}}
-                            {{--                                        class="fa fa-plus"></i>--}}
-                            {{--                                </a>--}}
-                            {{--                                <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
-                            {{--                            </div>--}}
-
                             <div class="col-md-12 collapse "
                                  id="collapseExample">
                                 <div class="col-md-12 layout2 ">
