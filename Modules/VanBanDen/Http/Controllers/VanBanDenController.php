@@ -239,18 +239,17 @@ class VanBanDenController extends Controller
 
     public function checkGiayMoi(Request $request)
     {
-        $loaiVanBan = LoaiVanBan::where('id',$request->loai_van_ban)->first();
+        $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
         $nam = date("Y");
 
-        if($loaiVanBan->ten_loai_van_ban == 'Giấy mời')
-        {
+        if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
             $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
 
-        }else{
+        } else {
             $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
 
         }
@@ -270,16 +269,16 @@ class VanBanDenController extends Controller
         }
         $soDen = $soDenvb + 1;
 
-            return response()->json(
-                [
-                    'giayMoi' => $loaiVanBan->ten_loai_van_ban,
-                    'soDen'     =>$soDen
-                ]
-            );
-
+        return response()->json(
+            [
+                'giayMoi' => $loaiVanBan->ten_loai_van_ban,
+                'soDen' => $soDen
+            ]
+        );
 
 
     }
+
     public function create()
     {
         canPermission(AllPermission::themVanBanDen());
@@ -971,8 +970,8 @@ class VanBanDenController extends Controller
         $mailDate = !empty($request->get('mail_date')) ? formatYMD($request->get('mail_date')) : null;
         $mailSubject = $request->get('mail_subject') ?? null;
 
-        $startDate = $mailDate.' 00:00:00';
-        $endDate = $mailDate.' 23:59:59';
+        $startDate = $mailDate . ' 00:00:00';
+        $endDate = $mailDate . ' 23:59:59';
 
         $getEmail = GetEmail::where(['mail_active' => $tinhtrang])
             ->where(function ($query) use ($noiguimail) {
@@ -983,7 +982,7 @@ class VanBanDenController extends Controller
             ->where(function ($query) use ($mailDate, $startDate, $endDate) {
                 if (!empty($mailDate)) {
                     return $query->where('mail_date', '>', $startDate)
-                                    ->where('mail_date', '<', $endDate);
+                        ->where('mail_date', '<', $endDate);
                 }
             })
             ->where(function ($query) use ($mailSubject) {
@@ -1110,14 +1109,18 @@ class VanBanDenController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
-        if($loaivb_email->ten_loai_van_ban == 'Giấy mời')
-        {
-            $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
+        if ($loaivb_email != null) {
+            if ($loaivb_email->ten_loai_van_ban == 'Giấy mời') {
+                $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'Giấy mời')->first();
 
-        }else{
+            } else {
+                $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
+
+            }
+        } else {
             $soVanBan = SoVanBan::where('ten_so_van_ban', "LIKE", 'công văn')->first();
-
         }
+
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
@@ -1137,8 +1140,7 @@ class VanBanDenController extends Controller
         $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $date = date("d/m/Y");
 
-        if($data_xml->STRNGAYHOP == "1970-01-01")
-        {
+        if ($data_xml->STRNGAYHOP == "1970-01-01") {
             $data_xml->STRNGAYHOP = null;
 
         }
@@ -1178,8 +1180,8 @@ class VanBanDenController extends Controller
      */
     public function luuvanbantumail(Request $request)
     {
-        $loaiVanBan = LoaiVanBan::where('id',$request->loai_van_ban)->first();
-        if($loaiVanBan->ten_loai_van_ban != 'Giấy mời'){
+        $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
+        if ($loaiVanBan->ten_loai_van_ban != 'Giấy mời') {
             $requestData = $request->all();
             $user = auth::user();
             $nam = date("Y");
@@ -1326,7 +1328,7 @@ class VanBanDenController extends Controller
 
             return redirect()->route('dsvanbandentumail')->with('success', 'Thêm văn bản thành công ! !');
 
-        }else{
+        } else {
             $requestData = $request->all();
             $thamMuuId = !empty($request->lanh_dao_tham_muu) ?? null;
             $idvanbanden = [];
