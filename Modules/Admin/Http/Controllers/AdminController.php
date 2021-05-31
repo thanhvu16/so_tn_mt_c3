@@ -221,7 +221,7 @@ class AdminController extends Controller
                         ->where('active', DonViPhoiHop::ACTIVE)
                         ->whereNull('hoan_thanh')
                         ->whereNotNull('vao_so_van_ban')
-                        ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+//                        ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
                         ->count();
                     $giayMoiPhoiHopChoPhanLoai = DonViPhoiHop::where('don_vi_id', $donVi->parent_id)
                         ->whereHas('giayMoiDen')
@@ -230,7 +230,7 @@ class AdminController extends Controller
                         ->where('active', DonViPhoiHop::ACTIVE)
                         ->whereNull('hoan_thanh')
                         ->whereNotNull('vao_so_van_ban')
-                        ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
+//                        ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
                         ->count();
 
                     array_push($vanThuVanBanDenPiceCharts, array('VB phối hợp chờ phân loại', $vanBanPhoiHopChoPhanLoai));
