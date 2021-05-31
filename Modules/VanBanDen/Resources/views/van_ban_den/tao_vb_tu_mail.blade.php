@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Tạo Văn Bản Đến</h3>
+                        <h3 class="box-title " id="tenLoaiVanBan"></h3>
                     </div>
                     <div class="row" @if($data_trung) style="padding-top: 5px;padding-bottom: 5px;" @endif>
 
@@ -23,7 +23,7 @@
                         @endif
                     </div>
                     <form role="form"
-                          action="{{ isset($loaivb_email) && $loaivb_email->ten_loai_van_ban == 'Giấy mời' ? route('luuGiayMoiMail') : route('luuvanbantumail') }}"
+                          action="{{ route('luuvanbantumail') }}"
                           method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
@@ -32,13 +32,14 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại văn bản <span
                                             style="color: red">*</span></label>
-                                    <select class="form-control select2" autofocus name="loai_van_ban" required>
+                                    <select class="form-control select2 loaiVanBan" autofocus name="loai_van_ban" required>
                                         <option value="">-- Chọn loại văn bản --</option>
                                         @foreach($ds_loaiVanBan as $loaivanbands)
                                             <option value="{{ $loaivanbands->id }}"
                                                 {{ isset($loaivb_email) && $loaivb_email->id == $loaivanbands->id ? 'selected="selected"' : '' }}>{{ $loaivanbands->ten_loai_van_ban }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="text" name="giay_moi" value="{{$loaivb_email->ten_loai_van_ban}}" class="hidden">
                                 </div>
                             </div>
                             <div class="col-md-3 hidden">
@@ -107,8 +108,10 @@
                             <div class="row clearfix"></div>
 
 
-                            @if( $loaivb_email)
-                                @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')
+{{--                            @if( $loaivb_email)--}}
+{{--                                @if( $loaivb_email->ten_loai_van_ban == 'Giấy mời')--}}
+                            <div class="giay-moi col-md-12 hidden">
+                                <div class="row">
                                     <div class="col-md-3" style="margin-top: 10px">
                                         <div class="form-group">
                                             <label>Giờ họp <span class="color-red">*</span></label>
@@ -129,7 +132,7 @@
                                         <div class="form-group">
                                             <label for="">Ngày họp <span style="color: red">*</span></label>
                                             <input type="date" required class="form-control "
-                                                   value="{{isset($data_xml->STRNGAYHOP)? $data_xml->STRNGAYHOP : ''}}"
+                                                   value="{{isset($data_xml->STRNGAYHOP) ? $data_xml->STRNGAYHOP : "20/03/2021"}}"
                                                    name="ngay_hop_chinh" placeholder="">
                                         </div>
                                     </div>
@@ -141,6 +144,10 @@
                                                    name="dia_diem_chinh" placeholder="Địa điểm">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+
                                     {{--                                    <div class="col-md-3 text-right" style="margin-top: 40px">--}}
                                     {{--                                                                            <a class="btn btn-success btn-xs" role="button"  data-toggle="collapse"--}}
                                     {{--                                                                               href="#collapseExample"--}}
@@ -150,64 +157,10 @@
                                     {{--                                        <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
                                     {{--                                    </div>--}}
 
-                                    <div class="col-md-12 collapse" id="collapseExample">
-                                        <div class="col-md-12  gmoi layout3 ">
-                                            <div class="row" style="margin-top:-15px;margin-left: 0px;">
-                                                <hr style="border: 0.5px solid #3c8dbc">
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12" style="margin-top: 20px;margin-bottom: 20px">
-                                                    <label for="detail-job">Nội dung họp <span
-                                                            style="color: red">*</span></label>
-                                                    <textarea name="noi_dung_hop_con[]"
-                                                              placeholder="nhập nội dung công việc" rows="3"
-                                                              class="form-control no-resize noi-dung-chi-dao"
-                                                              aria-required="true">{{ old('noi_dung_hop', isset($vanban) ? $vanban->noi_dung_hop : '') }}</textarea>
-                                                </div>
-                                                <div class="col-md-4" style="margin-top: 10px">
-                                                    <div class="form-group">
-                                                        <label for="">Giờ họp</label>
-                                                        <div class="input-group">
-                                                            <input type="text" name="gio_hop_con[]" required
-                                                                   value="{{ isset($vanban) ? $vanban->gio_hop_con : '' }}"
-                                                                   class="form-control timepicker">
 
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-clock-o"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" style="margin-top: 10px">
-                                                    <div class="form-group">
-                                                        <label for="">Ngày họp</label>
-                                                        <input type="date" class="form-control"
-                                                               value="{{ isset($vanban) ? $vanban->ngay_hop_con : '' }}"
-                                                               name="ngay_hop_con[]" placeholder="Nhập ngày họp">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" style="margin-top: 10px">
-                                                    <div class="form-group">
-                                                        <label for="">Địa điểm</label>
-                                                        <input type="text"
-                                                               value="{{ isset($vanban) ? $vanban->dia_diem_con : '' }}"
-                                                               placeholder="Nhập địa điểm" class="form-control"
-                                                               name="dia_diem_con[]">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        {{--                                        <div class="input-group-btn text-right {{ isset($vanban) ? 'hidden' : '' }}">--}}
-                                        {{--                                            <a class="btn btn-primary btn-xs" role="button"--}}
-                                        {{--                                               aria-expanded="false" ><span class="btn btn-primary" onclick="themgiaymoi('noi_dung_hop_con[]')" type="button">--}}
-                                        {{--                                                <i class="fa fa-plus"></i> thêm nội dung</span>--}}
-                                        {{--                                            </a>--}}
-                                        {{--                                        </div>--}}
-                                    </div>
                                     <div class="row clearfix"></div>
-                                @endif
-                            @endif
+{{--                                @endif--}}
+{{--                            @endif--}}
                             {{--                            <div class="col-md-12 text-right">--}}
                             {{--                                <a class="btn btn-primary " role="button" data-toggle="collapse"--}}
                             {{--                                   href="#collapseExample"--}}
@@ -406,9 +359,22 @@
 
         $(document).ready(function () {
             var ngay_nhan = $('input[name="ngay_nhan"]').val();
+            var loai_van_ban = $('input[name="giay_moi"]').val();
             var tieu_chuan = $('.tieu-chuan').val();
 
-            console.log(ngay_nhan, tieu_chuan);
+
+
+
+            if(loai_van_ban == 'Giấy mời')
+            {
+                $('.giay-moi').removeClass('hidden');
+                document.getElementById("tenLoaiVanBan").innerHTML = "Tạo giấy mời đến";
+
+            }else{
+                document.getElementById("tenLoaiVanBan").innerHTML = "Tạo văn bản đến";
+
+
+            }
             $.ajax({
                 // beforeSend: showLoading(),
                 url: APP_URL + '/han-xu-ly-van-ban',
@@ -428,6 +394,39 @@
 
             });
         });
+
+        $('.loaiVanBan').on('change', function (e) {
+            var loai_van_ban = $('.loaiVanBan').val();
+            e.preventDefault();
+            $.ajax({
+                // beforeSend: showLoading(),
+                url: APP_URL + '/check-giay-moi',
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    loai_van_ban: loai_van_ban,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+
+            }).done(function (res) {
+                // hideLoading();
+                $("input[name='so_den']").val(res.soDen);
+                if(res.giayMoi == "Giấy mời")
+                {
+                    $('.giay-moi').removeClass('hidden');
+                    document.getElementById("tenLoaiVanBan").innerHTML = "Tạo giấy mời đến";
+                }else {
+                    $('.giay-moi').addClass('hidden');
+                    document.getElementById("tenLoaiVanBan").innerHTML = "Tạo văn bản đến";
+                }
+
+
+
+            });
+        });
+
+
 
         $('.lay_van_ban').on('change', function (e) {
             var tieu_chuan = $('[name=tieu_chuan]').val();
