@@ -123,6 +123,7 @@ class DonViPhoiHop extends Model
         $donViId = $donVi->id;
         $dieuHanh = $donVi->dieu_hanh;
         $daThamMuu = DonViChuTri::DA_THAM_MUU;
+        $active = DonViPhoiHop::ACTIVE;
 
         if (auth::user()->hasRole([VAN_THU_DON_VI])) {
             $nguoiDung = User::role(CHU_TICH)
@@ -138,6 +139,7 @@ class DonViPhoiHop extends Model
             if ($thamMuuChiCuc) {
                 $nguoiDung = $thamMuuChiCuc;
                 $daThamMuu = null;
+                $active = null;
             }
 
             $parentDonVi = DonVi::where('id', $donVi->parent_id)->first();
@@ -156,7 +158,8 @@ class DonViPhoiHop extends Model
             'vao_so_van_ban' =>  1,
             'type' => 1,
             'user_id' => auth::user()->id,
-            'da_tham_muu' => $daThamMuu
+            'da_tham_muu' => $daThamMuu,
+            'active' => $active
         ];
 
         $donViPhoiHop = new DonViPhoiHop();
