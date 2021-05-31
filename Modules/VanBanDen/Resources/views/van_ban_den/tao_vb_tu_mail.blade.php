@@ -39,7 +39,7 @@
                                                 {{ isset($loaivb_email) && $loaivb_email->id == $loaivanbands->id ? 'selected="selected"' : '' }}>{{ $loaivanbands->ten_loai_van_ban }}</option>
                                         @endforeach
                                     </select>
-                                    <input type="text" name="giay_moi" value="{{$loaivb_email->ten_loai_van_ban}}" class="hidden">
+                                    <input type="text" name="giay_moi" value="{{isset($loaivb_email) ? $loaivb_email->ten_loai_van_ban : ''}}" class="hidden">
                                 </div>
                             </div>
                             <div class="col-md-3 hidden">
