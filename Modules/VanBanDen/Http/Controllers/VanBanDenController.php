@@ -1180,6 +1180,7 @@ class VanBanDenController extends Controller
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $date = date("d/m/Y");
+        $ngayHopNull = null;
 
         if (!empty($data_xml->STRNGAYHOP)) {
             if ($data_xml->STRNGAYHOP == "1970-01-01") {
