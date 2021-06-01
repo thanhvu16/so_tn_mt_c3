@@ -117,6 +117,14 @@ class ThongkeVanBanDenController extends Controller
         canPermission(AllPermission::thongKeVanBanSo());
         $lanhDaoSo = User::role(CHU_TICH)->whereNull('deleted_at')->first();
 
+        $danhSachDonVisearch = DonVi::where(function ($query) use ($lanhDaoSo) {
+               if (!empty($lanhDaoSo)) {
+                   return $query->where('id', '!=', $lanhDaoSo->don_vi_id);
+               }
+            })
+            ->where('parent_id', DonVi::NO_PARENT_ID)
+            ->whereNull('deleted_at')
+            ->orderBy('thu_tu','asc')->get();
         $danhSachDonVi = DonVi::where(function ($query) use ($lanhDaoSo) {
                if (!empty($lanhDaoSo)) {
                    return $query->where('id', '!=', $lanhDaoSo->don_vi_id);
@@ -286,7 +294,7 @@ class ThongkeVanBanDenController extends Controller
                 }
             })->count();
         return view('vanbanden::thong_ke.thong_ke_vb_so',compact('danhSachDonVi','ds_loaiVanBan','tongSoVanBanDen','tongSoVanBanDangXuLy'
-            ,'tongSoVanBanDangXuLyQuaHan','tongSoVanBanDaHoanThanh','tongSoVanBanMoiNhan'));
+            ,'tongSoVanBanDangXuLyQuaHan','tongSoVanBanDaHoanThanh','tongSoVanBanMoiNhan','danhSachDonVisearch'));
     }
 
     public function vanBanGiaiQuyet($donVi,$tu_ngay,$den_ngay,$vanThuNhap,$loai_van_ban_id)
