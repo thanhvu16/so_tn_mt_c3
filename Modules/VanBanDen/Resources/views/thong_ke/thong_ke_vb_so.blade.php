@@ -55,9 +55,9 @@
                                                    name="den_ngay" placeholder="dd/mm/yyyy">
                                         </div>
                                     </div>
-                                    <div class="col-md-3 form-group mt-2">
+                                    <div class="col-md-2 form-group mt-2">
                                         <label>Tìm theo loại văn bản</label>
-                                        <select class="form-control select2" name="loai_van_ban_id" id="loai_van_ban_id">
+                                        <select class="form-control select2" name="loai_van_ban_id" >
                                             <option value="">Chọn loại văn bản</option>
                                             @foreach ($ds_loaiVanBan as $loaiVanBan)
                                                 <option value="{{ $loaiVanBan->id }}" {{ Request::get('loai_van_ban_id') == $loaiVanBan->id ? 'selected' : '' }}
@@ -66,7 +66,19 @@
                                         </select>
                                         <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">
                                     </div>
-                                    <div class="col-md-2" style="margin-top: 30px">
+                                    <div class="col-md-3 form-group mt-2">
+                                        <label>Tìm theo đơn vị xử lý chính</label>
+                                        <select class="form-control select2" name="don_vi_xu_ly_chinh" id="loai_van_ban_id">
+                                            <option value="">-- Chọn đơn vị xử lý chính --</option>
+                                            @foreach ($danhSachDonVi as $data)
+                                                <option value="{{ $data->id }}" {{ Request::get('don_vi_xu_ly_chinh') == $data->id ? 'selected' : '' }}
+                                                >{{ $data->ten_don_vi }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">
+                                        <input type="text" class="hidden" name="don_vi_xu_ly_chinh_1" value="{{Request::get('don_vi_xu_ly_chinh')}}">
+                                    </div>
+                                    <div class="col-md-1" style="margin-top: 30px">
                                         <button type="submit" name="search" class="btn btn-primary"><i
                                                 class="fa fa-search"></i> Tìm Kiếm</button>
                                     </div>
@@ -76,7 +88,7 @@
                                 <div class="col-md-12 ">
                                     <H4 style="text-align: center;font-weight: bold">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</H4><br>
                                     <h5 style="font-weight: bold">- Thời gian: {{Request::get('tu_ngay')}} @if(Request::get('tu_ngay') && Request::get('den_ngay') ) đến @endif  {{Request::get('den_ngay')}}<br><br>
-                                        - Đơn vị kết xuất báo cáo: Văn phòng Sở
+{{--                                        - Đơn vị kết xuất báo cáo: Văn phòng Sở--}}
                                     </h5>
                                 </div>
                                 <div class="col-md-12" style="margin-top: 5px">
@@ -133,6 +145,17 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold" class="text-center">*</td>
+                                            <td style="font-weight: bold">Tổng số</td>
+                                            <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>
+
+                                            </td>
+                                            <td class="" id="body1"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         @forelse ($danhSachDonVi as $key=>$donVidata)
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
@@ -167,17 +190,7 @@
                                         @empty
                                             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>
                                         @endforelse
-                                        <tr>
-                                            <td style="font-weight: bold" class="text-center">*</td>
-                                            <td style="font-weight: bold">Tổng số</td>
-                                            <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>
 
-                                            </td>
-                                            <td class="" id="body1"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
                                         </tbody>
                                     </table>
                                     <div class="row">
@@ -228,6 +241,7 @@
             var tu_ngay = $('input[name="tu_ngay"]').val();
             var den_ngay = $('input[name="den_ngay"]').val();
             var loai_van_ban_id = $('input[name="loai_van_ban_id_1"]').val();
+            var don_vi_xu_ly_chinh = $('input[name="don_vi_xu_ly_chinh_1"]').val();
 
             console.log(loai_van_ban_id);
             $.ajax({
@@ -240,7 +254,8 @@
                     sovanbanden: sovanbanden,
                     tu_ngay: tu_ngay,
                     den_ngay: den_ngay,
-                    loai_van_ban_id: loai_van_ban_id
+                    loai_van_ban_id: loai_van_ban_id,
+                    don_vi_xu_ly_chinh: don_vi_xu_ly_chinh
 
 
                 }

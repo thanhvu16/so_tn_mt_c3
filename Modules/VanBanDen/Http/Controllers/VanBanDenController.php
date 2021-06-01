@@ -3,11 +3,12 @@
 namespace Modules\VanBanDen\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Exports\thongKeVanBanDenExport;
 use App\Http\Controllers\Controller;
-use App\Models\QlvbVbDenDonVi as VbDenDonVi;
 use App\Models\UserLogs;
 use App\Repositories\HomeRepository;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
-use File, auth, DB;
+use File, auth, DB, Excel;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
@@ -61,8 +62,11 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
         $danhSachDonVi = null;
+        $danhSachDonViPhoiHop = null;
         $searchDonVi = $request->get('don_vi_id') ?? null;
+        $searchDonViPhoiHop = $request->get('don_vi_phoi_hop_id') ?? null;
         $arrVanBanDenId = null;
+        $arrVanBanDenId2 = null;
         if (!empty($searchDonVi)) {
             $donViChuTri = DonViChuTri::where('don_vi_id', $searchDonVi)
                 ->select('id', 'van_ban_den_id')
@@ -70,6 +74,15 @@ class VanBanDenController extends Controller
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
+        if (!empty($searchDonViPhoiHop)) {
+            $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $searchDonViPhoiHop)
+                ->select('id', 'van_ban_den_id')
+                ->get();
+
+            $arrVanBanDenId2 = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
+        }
+
+
         $trinhTuNhanVanBan = $request->get('trinh_tu_nhan_van_ban') ?? null;
 
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
@@ -81,6 +94,11 @@ class VanBanDenController extends Controller
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
                     if (!empty($searchDonVi)) {
                         return $query->whereIn('id', $arrVanBanDenId);
+                    }
+                })
+                ->where(function ($query) use ($searchDonViPhoiHop, $arrVanBanDenId2) {
+                    if (!empty($searchDonViPhoiHop)) {
+                        return $query->whereIn('id', $arrVanBanDenId2);
                     }
                 })
                 ->where(function ($query) use ($trichyeu) {
@@ -165,6 +183,11 @@ class VanBanDenController extends Controller
                         return $query->whereIn('parent_id', $arrVanBanDenId);
                     }
                 })
+                ->where(function ($query) use ($searchDonViPhoiHop, $arrVanBanDenId2) {
+                    if (!empty($searchDonViPhoiHop)) {
+                        return $query->whereIn('id', $arrVanBanDenId2);
+                    }
+                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
@@ -221,6 +244,24 @@ class VanBanDenController extends Controller
 
             $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
         }
+
+        if ($request->get('type') == 'excel') {
+            $month = Carbon::now()->format('m');
+            $year = Carbon::now()->format('Y');
+            $day = Carbon::now()->format('d');
+
+
+
+            $totalRecord = $ds_vanBanDen->count();
+            $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
+
+            return Excel::download(new thongKeVanBanDenExport($ds_vanBanDen, $totalRecord,
+                 $month, $year, $day),
+                $fileName);
+        }
+
+
+
 
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
         $ds_soVanBan = $ds_sovanban = SoVanBan::wherenull('deleted_at')->orderBy('ten_so_van_ban', 'asc')->get();
@@ -1140,9 +1181,13 @@ class VanBanDenController extends Controller
         $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
         $date = date("d/m/Y");
 
-        if ($data_xml->STRNGAYHOP == "1970-01-01") {
-            $data_xml->STRNGAYHOP = null;
+        if (!empty($data_xml->STRNGAYHOP)) {
+            if ($data_xml->STRNGAYHOP == "1970-01-01") {
+                $data_xml->STRNGAYHOP = null;
 
+            }
+        }else{
+            $data_xml->STRNGAYHOP = null;
         }
 
         return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan',

@@ -27,19 +27,30 @@
                                         style="font-size: 14px">Tìm kiếm văn bản</span>
                                 </a>
                             </div>
-                            @can('in sổ văn bản đơn vị')
-                            <div class="col-md-6 text-right">
-                                <a role="button" href="{{route('in-so-van-ban-den.index')}}"  class="btn btn-success ">
-                                    <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>
-                            </div>
-                                @endcan
+                                <div class="col-md-6 text-right">
+                                    {{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">--}}
+
+                                    <input type="hidden" name="type" form="tim_kiem" value="">
+
+                                    <button type="button" data-type="excel" form="tim_kiem"
+                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
+                                            class="fa fa-file-excel-o"></i> Xuất Excel
+                                    </button>
+                                </div>
+{{--                            @can('in sổ văn bản đơn vị')--}}
+{{--                           --}}
+{{--                            <div class="col-md-6 text-right">--}}
+{{--                                <a role="button" href="{{route('in-so-van-ban-den.index')}}"  class="btn btn-success ">--}}
+{{--                                    <span style="color: white;font-size: 14px"><i class="fa  fa-print"></i> In sổ</span></a>--}}
+{{--                            </div>--}}
+{{--                                @endcan--}}
                         </div>
                     </div>
                     <div class="col-md-12 mt-3">
                         <div class="row">
 
                             <div class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }} " id="collapseExample">
-                                <form action="{{route('van-ban-den.index')}}" method="get">
+                                <form action="{{route('van-ban-den.index')}}" id="tim_kiem" method="get" class="form-export">
                                         <div class="row">
                                             <div class="form-group col-md-3" id="loaivanban">
                                                 <label for="loai_van_ban_id" class="col-form-label">Loại văn bản</label>
@@ -106,13 +117,24 @@
                                                        class="form-control">
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label for="sokyhieu" class="col-form-label">Đơn vị chủ trì</label>
+                                                <label for="sokyhieu" class="col-form-label">Đơn vị xử lý chính</label>
                                                 <select class="form-control select2"
                                                         name="don_vi_id" id="so_van_ban_id">
-                                                    <option value="">-- Chọn đơn vị --</option>
+                                                    <option value="">-- Chọn đơn vị xử lý chính --</option>
                                                     @foreach ($danhSachDonVi as $donVi)
                                                         <option
                                                             value="{{ $donVi->id }}" {{ Request::get('don_vi_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="sokyhieu" class="col-form-label">Đơn vị phối hợp</label>
+                                                <select class="form-control select2"
+                                                        name="don_vi_phoi_hop_id">
+                                                    <option value="">-- Chọn đơn vị phối hợp --</option>
+                                                    @foreach ($danhSachDonVi as $donVi)
+                                                        <option
+                                                            value="{{ $donVi->id }}" {{ Request::get('don_vi_phoi_hop_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -295,7 +317,7 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')
-                       ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
+                       ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),'don_vi_phoi_hop_id' => Request::get('don_vi_phoi_hop_id'),
                        'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
                        'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
                        'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' => Request::get('year'),
@@ -359,7 +381,16 @@
             //     $(".alert").alert('close');
             // }, 2000);
         });
+        $('.btn-export-data').on('click', function () {
+            let type = $(this).data('type');
+            $('input[name="type"]').val(type);
+            $('.form-export').submit();
+            hideLoading();
+        });
+
+
     </script>
+
 @endsection
 
 
