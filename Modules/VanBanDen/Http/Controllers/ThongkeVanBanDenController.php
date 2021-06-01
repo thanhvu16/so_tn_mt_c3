@@ -113,6 +113,7 @@ class ThongkeVanBanDenController extends Controller
         $vanThuNhap = auth::user()->id;
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->get();
         $loai_van_ban_id = $request->get('loai_van_ban_id') ?? null;
+        $don_vi_xu_ly_chinh = $request->get('don_vi_xu_ly_chinh') ?? null;
         canPermission(AllPermission::thongKeVanBanSo());
         $lanhDaoSo = User::role(CHU_TICH)->whereNull('deleted_at')->first();
 
@@ -120,6 +121,11 @@ class ThongkeVanBanDenController extends Controller
                if (!empty($lanhDaoSo)) {
                    return $query->where('id', '!=', $lanhDaoSo->don_vi_id);
                }
+            })
+            ->where(function ($query) use ($don_vi_xu_ly_chinh) {
+                if (!empty($don_vi_xu_ly_chinh)) {
+                    return $query->where('id', $don_vi_xu_ly_chinh);
+                }
             })
             ->where('parent_id', DonVi::NO_PARENT_ID)
             ->whereNull('deleted_at')
