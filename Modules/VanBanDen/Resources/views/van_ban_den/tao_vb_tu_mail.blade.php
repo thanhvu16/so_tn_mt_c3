@@ -131,7 +131,7 @@
                                         <div class="form-group">
                                             <label for="">Ngày họp <span style="color: red">*</span></label>
                                             <input type="date"  class="form-control "
-                                                   value="{{isset($data_xml->STRNGAYHOP) ? $data_xml->STRNGAYHOP : "20/03/2021"}}"
+                                                   value="{{isset($data_xml) ? $data_xml->STRNGAYHOP : $ngayHopNull}}"
                                                    name="ngay_hop_chinh" placeholder="">
                                         </div>
                                     </div>

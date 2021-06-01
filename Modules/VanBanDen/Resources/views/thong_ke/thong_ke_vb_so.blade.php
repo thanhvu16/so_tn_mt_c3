@@ -70,7 +70,7 @@
                                         <label>Tìm theo đơn vị xử lý chính</label>
                                         <select class="form-control select2" name="don_vi_xu_ly_chinh" id="loai_van_ban_id">
                                             <option value="">-- Chọn đơn vị xử lý chính --</option>
-                                            @foreach ($danhSachDonVi as $data)
+                                            @foreach ($danhSachDonVisearch as $data)
                                                 <option value="{{ $data->id }}" {{ Request::get('don_vi_xu_ly_chinh') == $data->id ? 'selected' : '' }}
                                                 >{{ $data->ten_don_vi }}</option>
                                             @endforeach

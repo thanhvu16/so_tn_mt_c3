@@ -1187,12 +1187,16 @@ class VanBanDenController extends Controller
 
             }
         }else{
-            $data_xml->STRNGAYHOP = null;
+            if($data_xml == null)
+            {
+                $ngayHopNull = null;
+            }
+
         }
 
         return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan',
             'soDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
-            'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung'));
+            'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung','ngayHopNull'));
     }
 
     public function hanmail(Request $request)
