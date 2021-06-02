@@ -89,7 +89,7 @@
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
                                         <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker"
-                                               value=" {{ !empty($data_xml->STRNGAYKY) ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : '' }}"
+                                               value=" @if($data_xml){{!empty($data_xml->STRNGAYKY) && ($data_xml->STRNGAYKY > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : ''}}  @endif"
                                                name="ngay_ban_hanh" id="exampleInputEmail5"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">
