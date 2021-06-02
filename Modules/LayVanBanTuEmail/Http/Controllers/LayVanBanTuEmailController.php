@@ -44,7 +44,7 @@ class LayVanBanTuEmailController extends Controller
 
             set_time_limit(3000);
 //            if (\env('APP_ENV') == 'local') {
-                $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
+            $hostname = '{mail.thudo.gov.vn:995/pop3/ssl/novalidate-cert/notls}';
 //            } else {
 //                $hostname = '{mail.hanoi.gov.vn:993/imap/ssl/novalidate-cert/notls}';
 //            }
@@ -57,11 +57,12 @@ class LayVanBanTuEmailController extends Controller
                 ->select('id', 'mail_date')->first();
 
             /* try to connect */
-            //$date = '23 March 2021';
-            $date = null;
-            if ($maxDate) {
-                $date = date("j F Y", strtotime($maxDate->mail_date));
-            }
+            $date = '31 May 2021';
+
+//            $date = null;
+//            if ($maxDate) {
+//                $date = date("j F Y", strtotime($maxDate->mail_date));
+//            }
 
             $inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Email: ');
 
@@ -74,12 +75,13 @@ class LayVanBanTuEmailController extends Controller
             if ($emails) {
 
                 rsort($emails);
+
                 foreach ($emails as $key => $email_number) {
                     $header = imap_fetchheader($inbox, $email_number);
                     $to_header = explode("\n", imap_fetchheader($inbox, $email_number));
                     $cut_header = explode(' ', trim($to_header[5]));
 
-                    if (count($cut_header) == 7 || count($cut_header) == 6) {
+                    if (count($cut_header) == 7 || count($cut_header) == 6 || count($cut_header) == 8) {
                         if (!empty($cut_header[1])) {
                             //26 mar 2021 11:41:17 +0700
                             $date_header = $cut_header[1] . ' ' . $cut_header[2] . ' ' . $cut_header[3] . ' ' . $cut_header[4];
@@ -226,7 +228,7 @@ class LayVanBanTuEmailController extends Controller
                             $arr['mail_attachment2'] = '';
                             $arr['mail_attachment3'] = '';
 
-//                            imap_clearflag_full($inbox, $email_number, "\\Seen");
+                            //                            imap_clearflag_full($inbox, $email_number, "\\Seen");
                         }
                     }
                 }

@@ -88,7 +88,7 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                         $to_header = explode("\n", imap_fetchheader($inbox, $email_number));
                         $cut_header = explode(' ', trim($to_header[5]));
 
-                        if (count($cut_header) == 7 || count($cut_header) == 6) {
+                        if (count($cut_header) == 7 || count($cut_header) == 6 || count($cut_header) == 8) {
                             if (!empty($cut_header[1])) {
                                 //26 mar 2021 11:41:17 +0700
                                 $date_header = $cut_header[1] . ' ' . $cut_header[2] . ' ' . $cut_header[3] . ' ' . $cut_header[4];
