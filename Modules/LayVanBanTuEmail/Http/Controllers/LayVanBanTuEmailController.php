@@ -57,12 +57,12 @@ class LayVanBanTuEmailController extends Controller
                 ->select('id', 'mail_date')->first();
 
             /* try to connect */
-            $date = '31 May 2021';
+//            $date = '31 May 2021';
 
-//            $date = null;
-//            if ($maxDate) {
-//                $date = date("j F Y", strtotime($maxDate->mail_date));
-//            }
+            $date = null;
+            if ($maxDate) {
+                $date = date("j F Y", strtotime($maxDate->mail_date));
+            }
 
             $inbox = imap_open($hostname, $username, $password) or die('Cannot connect to Email: ');
 
