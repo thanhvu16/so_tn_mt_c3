@@ -8,32 +8,52 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách văn bản</h3>
                     </div>
+                    <div class="col-md-12 mt-1 ">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <form action method="GET" action="{{ route('van-ban-den.index') }}" class="form-export">
+                                    <input type="hidden" name="type"  value="">
+                                    <button type="button" data-type="excel"
+                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
+                                            class="fa fa-file-excel-o"></i> Xuất Excel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- /.box-header -->
 
 
                     <div class="box-body" >
+                        Tổng số văn bản: <b>{{ $ds_vanBanDen->count() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
                                 <th width="2%" class="text-center">STT</th>
-                                <th width="26%" class="text-center">Thông tin</th>
-                                <th width="44%" class="text-center">Trích yếu</th>
-                                <th width="21%" class="text-center">Đơn vị xử lý</th>
+                                <th width="5%" class="text-center">Số đến</th>
+                                <th width="14%" class="text-center">Thông tin</th>
+                                <th width="10%" class="text-center">Cơ quan ban hành</th>
+                                <th width="" class="text-center">Trích yếu</th>
+                                <th width="15%" class="text-center">Đơn vị xử lý chính</th>
+                                <th width="15%" class="text-center">Đơn vị phối hợp</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse ($ds_vanBanDen as $key=>$vbDen)
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
+                                    <td style="color: red;font-weight: bold">{{$vbDen->vanBanDen->so_den}}</td>
                                     <td>
                                         <p>- Số ký hiệu: {{$vbDen->vanBanDen->so_ky_hieu}}</p>
                                         <p>- Ngày ban
                                             hành: {{ date('d/m/Y', strtotime($vbDen->vanBanDen->ngay_ban_hanh)) }}</p>
-                                        <p>- Ban hành: {{$vbDen->vanBanDen->co_quan_ban_hanh}}</p>
-                                        <p>- Số đến: <span
-                                                class="font-bold" style="color: red">{{$vbDen->vanBanDen->so_den}}</span></p>
+
                                         {{--                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>--}}
                                     </td>
+                                    <td>{{$vbDen->vanBanDen->co_quan_ban_hanh}}</td>
                                     <td style="text-align: justify">
                                         @if ($vbDen->vanBanDen->loai_van_ban_don_vi == 1)
                                             <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->vanBanDen->parent_id ? $vbDen->vanBanDen->parent_id.'?status=1' : $vbDen->vanBanDen->id .'?status=1') }}" title="{{$vbDen->vanBanDen->trich_yeu}}">{{$vbDen->vanBanDen->trich_yeu}}</a><br>
@@ -103,6 +123,37 @@
                                             @endif
                                         @endif
                                     </td>
+                                    <td>
+                                        <!--vb den don vi-->
+                                        @if ($vbDen->vanBanDen->parent_id)
+                                            @foreach($vbDen->vanBanDen->getParent()->donViPhoiHop as $key => $chuyenNhanVanBanDonVi)
+                                                @if (count($vbDen->vanBanDen->getParent()->donViPhoiHop)-1 == $key)
+                                                    <p>
+                                                        {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                        <br>
+                                                        <i>(C/B xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                            )</i>
+                                                    </p>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                        <!--vb den huyen-->
+                                            @if($vbDen->vanBanDen->donViPhoiHop)
+                                                @foreach($vbDen->vanBanDen->donViPhoiHop as $key => $chuyenNhanVanBanDonVi)
+                                                    @if (count($vbDen->vanBanDen->donViPhoiHop)-1 == $key)
+                                                        <p>
+                                                            {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                            <br>
+                                                            <i>(C/B xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
+                                                                )</i>
+                                                        </p>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endif
+
+
+                                    </td>
 
 
 
@@ -117,7 +168,7 @@
                         </table>
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số văn bản: <b>{{ $ds_vanBanDen->count() }}</b>
+
                             </div>
                             <div class="col-md-6 text-right">
 {{--                                {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')--}}
@@ -138,7 +189,20 @@
 @endsection
 
 
+@section('script')
+    <script type="text/javascript">
 
+        $('.btn-export-data').on('click', function () {
+            let type = $(this).data('type');
+            $('input[name="type"]').val(type);
+            $('.form-export').submit();
+            hideLoading();
+        });
+
+
+    </script>
+
+@endsection
 
 
 
