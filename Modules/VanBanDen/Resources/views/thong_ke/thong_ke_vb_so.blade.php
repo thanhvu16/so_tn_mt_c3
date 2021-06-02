@@ -195,7 +195,7 @@
                                     </table>
                                     <div class="row">
                                         <div class="col-md-6 mt-4" style="margin-top: 5px">
-                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->count() }}</b>
+{{--                                            Tổng số đơn vị: <b>{{ $danhSachDonVi->count() }}</b>--}}
                                         </div>
                                         <div class="col-md-6 text-right">
 {{--                                            {!! $danhSachDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay')])->render() !!}--}}
