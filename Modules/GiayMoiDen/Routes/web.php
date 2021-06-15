@@ -25,3 +25,4 @@ Route::resource('giay-moi-den', 'GiayMoiDenController');
 Route::post('giay-moi-den/delete/{id}', ['as' =>'giaymoidelete' , 'uses' => 'GiayMoiDenController@destroy']);
 Route::match(['get', 'post'], 'layhantruyensangview', ['as' =>'hanview' , 'uses' => 'GiayMoiDenController@layhantruyensangview']);
 //Route::get('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));
+Route::get('nhap-giay-moi-di', array('as' => 'nhapGiayMoiDi', 'uses' => 'GiayMoiDenController@nhapGiayMoiDiVanThuSo'));

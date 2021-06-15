@@ -50,8 +50,11 @@ Route::match(['get', 'post','put'], 'cap-so-van-ban/{id}', ['as' =>'Capsovanband
 
 Route::post('ky-dien-tu-qua-sim', 'DuThaoVanBanController@kydientu')->name('van_ban.ky_dt_qua_sim');
 Route::post('luuVanBanDiSo', 'VanBanDiController@luuVanBanDiSo')->name('luuVanBanDiSo');
-Route::post('lay-nguoi-ky-chanh-vp', 'VanBanDiController@layNguoiKyChanhVp')->name('layNguoiKyChanhVp');
-Route::post('lay-nguoi-ky-chanh-vp-duyet', 'VanBanDiController@layNguoiKyChanhVpduyetvanban')->name('layNguoiKyChanhVpduyetvanban');
+
+Route::match(['get', 'post'], 'lay-nguoi-ky-chanh-vp', ['as' =>'layNguoiKyChanhVp', 'uses' => 'VanBanDiController@layNguoiKyChanhVp']);
+Route::match(['get', 'post'], 'lay-nguoi-ky-chanh-vp-duyet', ['as' =>'layNguoiKyChanhVpduyetvanban', 'uses' => 'VanBanDiController@layNguoiKyChanhVpduyetvanban']);
+
+
 
 // tim van ban de
 Route::resource('tim-kiem-van-ban-den', 'TimKiemVanBanDenController');
