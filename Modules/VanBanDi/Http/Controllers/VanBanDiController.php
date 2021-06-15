@@ -2266,6 +2266,7 @@ class VanBanDiController extends Controller
 
         }
         $soDi = $soDi + 1;
+
         $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
         $vanbandi->so_di = $soDi;
         $vanbandi->so_ky_hieu = $soKyHieu;

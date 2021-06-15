@@ -155,7 +155,7 @@
                                                 <option value="">-- Tất cả --</option>
                                                 @for($i = 2020; $i <= date('Y'); $i++)
                                                     <option
-                                                        value="{{ $i }}" {{ $i == Request::get('year') ? 'selected' : '' }}>
+                                                            value="{{ $i }}" {{ $i == Request::get('year') ? 'selected' : '' }}>
                                                         {{ $i }}</option>
                                                 @endfor
                                             </select>

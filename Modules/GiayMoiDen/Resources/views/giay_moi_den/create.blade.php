@@ -314,7 +314,7 @@
         });
         //
         // $(document).ready(function () {
-        //     var ngay_nhan = $('input[name="ngay_nhan"]').val();
+            //     var ngay_nhan = $('input[name="ngay_nhan"]').val();
         //     // var tieu_chuan = $('.tieu-chuan').val();
         //
         //     console.log(ngay_nhan, tieu_chuan );
