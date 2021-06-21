@@ -15,7 +15,7 @@ class VanBanDiVanBanDen extends Model
       'user_id'
     ];
 
-    public static function saveVanBanDiVanBanDen($vanBanDiId, $vanBanDenId)
+        public static function saveVanBanDiVanBanDen($vanBanDiId, $vanBanDenId)
     {
         // xoa van ban di
 //        VanBanDiVanBanDen::where([
