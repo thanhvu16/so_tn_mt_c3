@@ -218,7 +218,7 @@ let allSoKyHieu = [];
 $('body').on('change', 'input[name=check_all_van_ban_den]', function () {
 
     if ($(this).is(':checked', true)) {
-        $(this).closest('.main-data').find(".sub-check-ban-ban-den:not(:checked)").prop('checked', true);
+        $(this).closest('.main-data').find(".sub-check-ban-ban-den:not(:checked)").prop(    'checked', true);
 
         $(this).closest('.main-data').find('.sub-check-ban-ban-den:checked').each(function () {
             if (allVanBanDenId.indexOf($(this).val()) === -1) {

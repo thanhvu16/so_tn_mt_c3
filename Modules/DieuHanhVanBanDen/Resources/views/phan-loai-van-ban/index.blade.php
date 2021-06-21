@@ -111,8 +111,7 @@
                                                 (Cán bộ trả
                                                 lại: {{ $vanBanDen->vanBanTraLai->canBoChuyen->ho_ten  ?? '' }}
                                                 - {{ $vanBanDen->vanBanTraLai->canBoChuyen->donVi->ten_don_vi ?? null }}
-                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }}
-                                                )</p>
+                                                - {{ date('d/m/Y h:i:s', strtotime($vanBanDen->vanBanTraLai->created_at)) }})</p>
                                         @endif
                                     </td>
                                     <td>
@@ -298,4 +297,7 @@
 @endsection
 @section('script')
     <script src="{{ asset('modules/xu_ly_van_ban_den/js/index.js') }}"></script>
+    <script>
+
+    </script>
 @endsection
