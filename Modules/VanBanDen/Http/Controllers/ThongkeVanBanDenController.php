@@ -190,7 +190,7 @@ class ThongkeVanBanDenController extends Controller
 
                 }
             })->count();
-        $tongSoVanBanMoiNhan = VanBanDen::whereNull('deleted_at')->where('type', 1)->where('trinh_tu_nhan_van_ban', 1)
+        $tongSoVanBanMoiNhan = VanBanDen::whereNull('deleted_at')->where('type', 1)->whereIn('trinh_tu_nhan_van_ban', [1,null])
             ->where(function ($query) use ($loai_van_ban_id) {
                 if (!empty($loai_van_ban_id)) {
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
