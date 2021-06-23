@@ -366,7 +366,7 @@ class VanBanDenController extends Controller
         }
         $sovanban = $laysovanban;
 
-        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->orderBy('id', 'DESC')->get();
 
         $ngaynhan = date('Y-m-d');
         $songay = 10;
@@ -1179,7 +1179,7 @@ class VanBanDenController extends Controller
         }
         $soDen = $soDenvb + 1;
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
+        $users = User::permission(AllPermission::thamMuu())->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->orderBy('id', 'DESC')->get();
         $date = date("d/m/Y");
         $ngayHopNull = null;
 
