@@ -21,12 +21,7 @@
                     </a>
                 @endif
                 @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
-                    <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
-                        <p>GM chờ chờ phân loại
-                            <button
-                                class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $giayMoiChoPhanLoai }}</button>
-                        </p>
-                    </a>
+
                     @if (auth::user()->donVi->parent_id != 0)
                         <a class="text-title-item" href="{{ route('phan-loai-van-ban-phoi-hop.index') }}">
                             <p>GM phối hợp chờ chờ phân loại
@@ -151,4 +146,5 @@
         </div>
     </div>
 </div>
+<div class="row clearfix"></div>
 
