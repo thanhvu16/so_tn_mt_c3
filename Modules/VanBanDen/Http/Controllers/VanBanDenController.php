@@ -251,16 +251,13 @@ class VanBanDenController extends Controller
             $day = Carbon::now()->format('d');
 
 
-
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
             return Excel::download(new thongKeVanBanDenExport($ds_vanBanDen, $totalRecord,
-                 $month, $year, $day),
+                $month, $year, $day),
                 $fileName);
         }
-
-
 
 
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
@@ -1188,9 +1185,8 @@ class VanBanDenController extends Controller
                 $data_xml->STRNGAYHOP = null;
 
             }
-        }else{
-            if($data_xml == null)
-            {
+        } else {
+            if ($data_xml == null) {
                 $ngayHopNull = null;
             }
 
@@ -1198,7 +1194,7 @@ class VanBanDenController extends Controller
 
         return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan',
             'soDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
-            'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung','ngayHopNull'));
+            'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung', 'ngayHopNull'));
     }
 
     public function hanmail(Request $request)
@@ -1568,8 +1564,13 @@ class VanBanDenController extends Controller
     {
         $user = auth::user();
         $so_ky_hieu = $request->input('so_ky_hieu');
-        $ngay_ban_hanh = $request->input('ngay_ban_hanh');
-        $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngay_ban_hanh])->orderBy('id', 'desc')->take(5)->get();
+        $ngayBanHanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
+        $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngayBanHanh, 'loai_van_ban_id' => $request->loai_van_ban])
+            ->orderBy('id', 'desc')
+            ->take(5)->get();
+
+
+
         $ds_nguoiDung = User::orderBy('created_at', 'desc')->get(['id', 'ho_ten'])->toArray();
         $ds_nguoiDung = array_column($ds_nguoiDung, 'ho_ten', 'id');
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get(['id', 'ho_ten'])->toArray();

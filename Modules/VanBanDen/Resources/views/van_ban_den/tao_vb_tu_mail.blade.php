@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại văn bản <span
                                             style="color: red">*</span></label>
-                                    <select class="form-control select2 loaiVanBan" autofocus name="loai_van_ban" required>
+                                    <select class="form-control select2 loaiVanBan" id="loai-van-ban" autofocus name="loai_van_ban" required>
                                         <option value="">-- Chọn loại văn bản --</option>
                                         @foreach($ds_loaiVanBan as $loaivanbands)
                                             <option value="{{ $loaivanbands->id }}"
@@ -57,9 +57,9 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Số đến văn bản</label>
-                                    <input type="number" class="form-control " value="{{$soDen}}" name="so_den"
-                                           id="exampleInputEmail3"
-                                           placeholder="Số đến"
+                                    <input type="number" class="form-control " readonly value="{{$soDen}}" name="so_den"
+                                           id="so-den-vb"
+                                           placeholder="Số đến" required
                                            style="font-weight: 800;color: #F44336;cursor: not-allowed;">
                                 </div>
                             </div>
@@ -69,14 +69,14 @@
                                             style="color: red">*</span></label>
                                     <input type="text" class="form-control"
                                            value="{{empty($data_xml) ? '': $data_xml->STRNOIGUI}}"
-                                           name="co_quan_ban_hanh" id="exampleInputEmail6"
+                                           name="co_quan_ban_hanh" id="co-quan-ban-hanh"
                                            placeholder="Cơ quan ban hành" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4"
+                                    <input type="text" class="form-control" name="so_ky_hieu" id="so-ky-hieu-vb"
                                            placeholder="Số ký hiệu"
                                            value="{{ empty($data_xml) ? '' : strtoupper($data_xml->STRKYHIEU) }}"
                                            required>
@@ -90,7 +90,7 @@
                                     <div class="input-group date">
                                         <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker"
                                                value=" @if($data_xml){{!empty($data_xml->STRNGAYKY) && ($data_xml->STRNGAYKY > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : ''}}  @endif"
-                                               name="ngay_ban_hanh" id="exampleInputEmail5"
+                                               name="ngay_ban_hanh" id="ngay-ban-hanh-vb"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
@@ -101,7 +101,7 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Trích yếu <span style="color: red">*</span></label>
-                                    <textarea class="form-control" name="trich_yeu" rows="3"
+                                    <textarea class="form-control" name="trich_yeu" rows="3" id="trich-yeu"
                                               required>{{ empty($data_xml) ? $email->mail_subject : $data_xml->STRTRICHYEU }}</textarea>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Người ký <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="nguoi_ky" id="exampleInputEmail7"
+                                    <input type="text" class="form-control" name="nguoi_ky" id="nguoi-ky"
                                            placeholder="Người ký"
                                            value="{{ isset($data_xml) ? $data_xml->STRNGUOIKY : null  }}" required>
                                 </div>
@@ -286,7 +286,7 @@
                             </div>
                             <div class="col-md-3 mt-4">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary"><i
+                                    <button type="button" onclick="checktrung1()" class="btn btn-primary"><i
                                             class="fa fa-plus-square-o mr-1"></i> Thêm mới
                                     </button>
                                 </div>
@@ -370,6 +370,63 @@
 
             });
         });
+
+
+
+        function checktrung1()
+        {
+            var so_ky_hieu = $('[name=so_ky_hieu]').val();
+            var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
+            var loai_van_ban = $('#loai-van-ban').val();
+            // console.log(them_tiep);
+            // e.preventDefault();
+            $.ajax({
+                url: APP_URL + '/kiem_tra_trich_yeu',
+                type: 'POST',
+                beforeSend: showLoading(),
+                dataType: 'json',
+                data: {
+                    so_ky_hieu: so_ky_hieu,
+                    ngay_ban_hanh: ngay_ban_hanh,
+                    loai_van_ban: loai_van_ban,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+            }).done(function (res) {
+                // if (res.is_relate) {
+                //     hideLoading();
+                //     // document.getElementById("them-moi").submit();
+                //     // document.getElementById("them-moi").submit();
+                //     $('#moda-search').html(res.html);
+                //     $('#moda-search').modal('show');
+                // } else {
+                //     var co_quan_ban_hanh = document.getElementById("co-quan-ban-hanh");
+                //     var so_ky_hieu = document.getElementById("so-ky-hieu-vb");
+                //     var vb_so_den = document.getElementById("so-den-vb");
+                //     var vb_ngay_ban_hanh = document.getElementById("ngay-ban-hanh-vb");
+                //     var trichYeu = document.getElementById("trich-yeu");
+                //     var nguoiKy = document.getElementById("nguoi-ky");
+                //
+                //
+                //     var value1 = co_quan_ban_hanh.value;
+                //     var value2 = so_ky_hieu.value;
+                //     var value3 = vb_so_den.value;
+                //     var value4 = vb_ngay_ban_hanh.value;
+                //     var value5 = trichYeu.value;
+                //     var value6 = nguoiKy.value;
+                //
+                //     if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == "")  {
+                //         hideLoading();
+                //         alert("Bạn cần nhập đủ thông tin");
+                //         // so_van_ban_id.focus();
+                //         return false;
+                //     }else{
+                        document.getElementById("myform").submit();
+
+                //     }
+                // }
+
+            });
+        }
 
         $('.loaiVanBan').on('change', function (e) {
             var loai_van_ban = $('.loaiVanBan').val();
