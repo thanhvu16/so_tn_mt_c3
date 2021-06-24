@@ -136,6 +136,7 @@ class DonViChuTri extends Model
                 ->orderBy('id', 'DESC')
                 ->whereNull('deleted_at')->first();
 
+
 //            if (auth::user()->hasRole(PHO_CHU_TICH)) {
 //                $vanBanDen = VanBanDen::find($vanBanDenId);
 //                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
@@ -152,7 +153,7 @@ class DonViChuTri extends Model
                     return $query->whereIn('name', $roles);
                 })
                 ->select('id', 'don_vi_id')
-                ->orderBy('id', 'DESC')
+                ->orderBy('id', 'asc')
                 ->whereNull('deleted_at')->first();
         }
 
