@@ -44,7 +44,7 @@
                                     <label for="exampleInputEmail3">Số đến văn bản</label>
                                     <input type="number" class="form-control " value="{{$soDen}}" name="so_den"
                                            id="exampleInputEmail3"
-                                           placeholder="Số đến" readonly
+                                           placeholder="Số đến" readonly required
                                            style="font-weight: 800;color: #F44336;cursor: not-allowed;">
                                 </div>
                             </div>
@@ -218,7 +218,7 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
                                                 style="color: red">*</span></label>
-                                        <select class="form-control select2" name="lanh_dao_tham_muu" readonly required>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu" disabled required>
                                             @foreach($users as $nguoidung)
                                                 <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
                                             @endforeach
