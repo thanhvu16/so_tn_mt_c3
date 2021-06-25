@@ -190,7 +190,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Người nhập </label>
-                                    <input type="text" class="form-control" value="{{auth::user()->ho_ten}}"
+                                    <input type="text" class="form-control" name="nhap" value="{{auth::user()->ho_ten}}"
                                            placeholder="" disabled>
                                 </div>
                             </div>
@@ -253,11 +253,22 @@
                                 </div>
                             </div>
                             @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
+                                <div class="col-md-3 hidden">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
+                                                style="color: red">*</span></label>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu" disabled  required>
+                                            @foreach($users as $nguoidung)
+                                                <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
                                                 style="color: red">*</span></label>
-                                        <select class="form-control select2" name="lanh_dao_tham_muu" disabled required>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu"  required>
                                             @foreach($users as $nguoidung)
                                                 <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
                                             @endforeach
@@ -378,6 +389,7 @@
             var so_ky_hieu = $('[name=so_ky_hieu]').val();
             var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
             var loai_van_ban = $('#loai-van-ban').val();
+            console.log(loai_van_ban);
             // console.log(them_tiep);
             // e.preventDefault();
             $.ajax({
@@ -405,6 +417,7 @@
                     var vb_ngay_ban_hanh = document.getElementById("ngay-ban-hanh-vb");
                     var trichYeu = document.getElementById("trich-yeu");
                     var nguoiKy = document.getElementById("nguoi-ky");
+                    var loai_van_ban = document.getElementById("loai-van-ban");
 
 
                     var value1 = co_quan_ban_hanh.value;
@@ -413,8 +426,9 @@
                     var value4 = vb_ngay_ban_hanh.value;
                     var value5 = trichYeu.value;
                     var value6 = nguoiKy.value;
+                    var value7 = loai_van_ban.value;
 
-                    if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == "")  {
+                    if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == ""||  value7 == "")  {
                         hideLoading();
                         alert("Bạn cần nhập đủ thông tin");
                         // so_van_ban_id.focus();
