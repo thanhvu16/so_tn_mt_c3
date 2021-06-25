@@ -257,7 +257,7 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
                                                 style="color: red">*</span></label>
-                                        <select class="form-control select2" name="lanh_dao_tham_muu" readonly required>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu" disabled required>
                                             @foreach($users as $nguoidung)
                                                 <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
                                             @endforeach
@@ -392,34 +392,34 @@
                     _token: $('meta[name="csrf-token"]').attr('content'),
                 },
             }).done(function (res) {
-                // if (res.is_relate) {
-                //     hideLoading();
-                //     // document.getElementById("them-moi").submit();
-                //     // document.getElementById("them-moi").submit();
-                //     $('#moda-search').html(res.html);
-                //     $('#moda-search').modal('show');
-                // } else {
-                //     var co_quan_ban_hanh = document.getElementById("co-quan-ban-hanh");
-                //     var so_ky_hieu = document.getElementById("so-ky-hieu-vb");
-                //     var vb_so_den = document.getElementById("so-den-vb");
-                //     var vb_ngay_ban_hanh = document.getElementById("ngay-ban-hanh-vb");
-                //     var trichYeu = document.getElementById("trich-yeu");
-                //     var nguoiKy = document.getElementById("nguoi-ky");
-                //
-                //
-                //     var value1 = co_quan_ban_hanh.value;
-                //     var value2 = so_ky_hieu.value;
-                //     var value3 = vb_so_den.value;
-                //     var value4 = vb_ngay_ban_hanh.value;
-                //     var value5 = trichYeu.value;
-                //     var value6 = nguoiKy.value;
-                //
-                //     if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == "")  {
-                //         hideLoading();
-                //         alert("Bạn cần nhập đủ thông tin");
-                //         // so_van_ban_id.focus();
-                //         return false;
-                //     }else{
+                if (res.is_relate) {
+                    hideLoading();
+                    // document.getElementById("them-moi").submit();
+                    // document.getElementById("them-moi").submit();
+                    $('#moda-search').html(res.html);
+                    $('#moda-search').modal('show');
+                } else {
+                    var co_quan_ban_hanh = document.getElementById("co-quan-ban-hanh");
+                    var so_ky_hieu = document.getElementById("so-ky-hieu-vb");
+                    var vb_so_den = document.getElementById("so-den-vb");
+                    var vb_ngay_ban_hanh = document.getElementById("ngay-ban-hanh-vb");
+                    var trichYeu = document.getElementById("trich-yeu");
+                    var nguoiKy = document.getElementById("nguoi-ky");
+
+
+                    var value1 = co_quan_ban_hanh.value;
+                    var value2 = so_ky_hieu.value;
+                    var value3 = vb_so_den.value;
+                    var value4 = vb_ngay_ban_hanh.value;
+                    var value5 = trichYeu.value;
+                    var value6 = nguoiKy.value;
+
+                    if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == "")  {
+                        hideLoading();
+                        alert("Bạn cần nhập đủ thông tin");
+                        // so_van_ban_id.focus();
+                        return false;
+                    }else{
                         document.getElementById("myform").submit();
 
                 //     }
