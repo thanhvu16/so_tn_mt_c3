@@ -422,8 +422,8 @@
                     }else{
                         document.getElementById("myform").submit();
 
-                //     }
-                // }
+                    }
+                }
 
             });
         }
