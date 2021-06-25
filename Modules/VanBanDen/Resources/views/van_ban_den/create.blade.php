@@ -214,11 +214,22 @@
                                 </div>
                             </div>
                             @if(auth::user()->hasrole(QUYEN_VAN_THU_HUYEN) && count($users) > 0)
-                                <div class="col-md-3">
+                                <div class="col-md-3 hidden">
                                     <div class="form-group">
                                         <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
                                                 style="color: red">*</span></label>
                                         <select class="form-control select2" name="lanh_dao_tham_muu" disabled required>
+                                            @foreach($users as $nguoidung)
+                                                <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
+                                                style="color: red">*</span></label>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu"  required>
                                             @foreach($users as $nguoidung)
                                                 <option value="{{ $nguoidung->id }}">{{ $nguoidung->ho_ten }}</option>
                                             @endforeach

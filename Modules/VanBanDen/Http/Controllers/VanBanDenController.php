@@ -451,6 +451,7 @@ class VanBanDenController extends Controller
     public function store(Request $request)
     {
 
+
         $user = auth::user();
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;
@@ -1227,6 +1228,8 @@ class VanBanDenController extends Controller
      */
     public function luuvanbantumail(Request $request)
     {
+        dd($request->all());
+
         $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
         if ($loaiVanBan->ten_loai_van_ban != 'Giấy mời') {
             $requestData = $request->all();
