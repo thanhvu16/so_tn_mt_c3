@@ -122,7 +122,6 @@ class DonViChuTri extends Model
     public static function luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi)
     {
         $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
-
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             // chu tich cap xa nhan van ban
             $role = [CHU_TICH];
@@ -152,9 +151,10 @@ class DonViChuTri extends Model
                 ->whereHas('roles', function ($query) use ($roles) {
                     return $query->whereIn('name', $roles);
                 })
-                ->select('id', 'don_vi_id')
+//                ->select('id', 'don_vi_id')
                 ->orderBy('id', 'asc')
                 ->whereNull('deleted_at')->first();
+
         }
 
         $dataLuuDonViChuTri = [
