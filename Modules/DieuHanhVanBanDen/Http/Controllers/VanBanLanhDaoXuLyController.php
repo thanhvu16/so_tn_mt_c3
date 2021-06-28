@@ -790,7 +790,6 @@ class VanBanLanhDaoXuLyController extends Controller
                 foreach ($vanBanDenDonViIds as $vanBanDenId) {
                     $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
                     $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
-
                     if (isset($donVi)) {
                         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                             // chu tich cap xa nhan van ban
@@ -819,8 +818,10 @@ class VanBanLanhDaoXuLyController extends Controller
                                     return $query->whereIn('name', $roles);
                                 })
                                 ->select('id', 'don_vi_id')
-                                ->orderBy('id', 'DESC')
+                                ->orderBy('id', 'asc')
                                 ->whereNull('deleted_at')->first();
+
+//                            dd($nguoiDung);
 
                             //update trinh tu nhan van ban
                             $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
