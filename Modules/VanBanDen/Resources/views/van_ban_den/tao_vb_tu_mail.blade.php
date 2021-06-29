@@ -88,8 +88,8 @@
                                     <label for="exampleInputEmail4">Ngày ban hành <span
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
-                                        <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker"
-                                               value=" @if($data_xml){{!empty($data_xml->STRNGAYKY) && ($data_xml->STRNGAYKY > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : ''}}  @endif"
+                                        <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker "
+                                               value="@if($data_xml){{!empty($data_xml->STRNGAYKY) && ($data_xml->STRNGAYKY > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYKY)) : ''}}@endif"
                                                name="ngay_ban_hanh" id="ngay-ban-hanh-vb"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">
@@ -389,7 +389,7 @@
             var so_ky_hieu = $('[name=so_ky_hieu]').val();
             var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
             var loai_van_ban = $('#loai-van-ban').val();
-            console.log(loai_van_ban);
+            // console.log(loai_van_ban);
             // console.log(them_tiep);
             // e.preventDefault();
             $.ajax({
@@ -414,21 +414,21 @@
                     var co_quan_ban_hanh = document.getElementById("co-quan-ban-hanh");
                     var so_ky_hieu = document.getElementById("so-ky-hieu-vb");
                     var vb_so_den = document.getElementById("so-den-vb");
-                    var vb_ngay_ban_hanh = document.getElementById("ngay-ban-hanh-vb");
+                    var vb_ngay_ban_hanh = $('#ngay-ban-hanh-vb').val();
                     var trichYeu = document.getElementById("trich-yeu");
                     var nguoiKy = document.getElementById("nguoi-ky");
                     var loai_van_ban = document.getElementById("loai-van-ban");
 
-
+                    console.log(vb_ngay_ban_hanh);
                     var value1 = co_quan_ban_hanh.value;
                     var value2 = so_ky_hieu.value;
                     var value3 = vb_so_den.value;
-                    var value4 = vb_ngay_ban_hanh.value;
+                    // var value4 = vb_ngay_ban_hanh.value;
                     var value5 = trichYeu.value;
                     var value6 = nguoiKy.value;
                     var value7 = loai_van_ban.value;
 
-                    if( value1 == "" ||  value2 == ""||  value3 == ""||  value4 == ""||  value5 == ""||  value6 == ""||  value7 == "")  {
+                    if( value1 == "" ||  value2 == ""||  value3 == ""||  vb_ngay_ban_hanh == ""||  value5 == ""||  value6 == ""||  value7 == "")  {
                         hideLoading();
                         alert("Bạn cần nhập đủ thông tin");
                         // so_van_ban_id.focus();
