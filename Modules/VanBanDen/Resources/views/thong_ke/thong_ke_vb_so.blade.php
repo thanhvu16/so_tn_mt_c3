@@ -102,7 +102,7 @@
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Tổng số văn bản đến </td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
-                                                    <a href="">{{$tongSoVanBanDen}}</a></td>
+                                                    <a href="{{route('van-ban-den.index')}}">{{$tongSoVanBanDen}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>

@@ -82,7 +82,7 @@ class DonViPhoiHop extends Model
                         ->whereHas('roles', function ($query) use ($roles) {
                             return $query->whereIn('name', $roles);
                         })
-                        ->orderBy('id', 'DESC')
+                        ->orderBy('id', 'asc')
                         ->whereNull('deleted_at')->first();
 
                     $active = self::ACTIVE;
