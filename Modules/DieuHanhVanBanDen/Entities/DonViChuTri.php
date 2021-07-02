@@ -151,7 +151,7 @@ class DonViChuTri extends Model
                 ->whereHas('roles', function ($query) use ($roles) {
                     return $query->whereIn('name', $roles);
                 })
-//                ->select('id', 'don_vi_id')
+                ->select('id', 'don_vi_id')
                 ->orderBy('id', 'asc')
                 ->whereNull('deleted_at')->first();
 

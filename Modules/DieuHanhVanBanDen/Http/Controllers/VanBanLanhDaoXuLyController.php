@@ -237,25 +237,6 @@ class VanBanLanhDaoXuLyController extends Controller
                             return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
                         }
                     })
-//                    ->where(function ($query) use ($trichYeu) {
-//                        if (!empty($trichYeu)) {
-//                            return $query->where('trich_yeu', "LIKE", $trichYeu);
-//                        }
-//                    })
-//                    ->where(function ($query) use ($soDen) {
-//                        if (!empty($soDen)) {
-//                            return $query->where('so_den', $soDen);
-//                        }
-//                    })
-//                    ->where(function ($query) use ($date) {
-//                        if (!empty($date)) {
-//                            return $query->where('updated_at', "LIKE", $date);
-//                        }
-//                    })
-
-
-
-
 
                     ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
                         if (!empty($searchDonVi)) {
@@ -318,16 +299,6 @@ class VanBanLanhDaoXuLyController extends Controller
                             return $query->where('co_quan_ban_hanh', 'LIKE', "%". $coQuanBanHanh. "%");
                         }
                     })
-
-
-
-
-
-
-
-
-
-
 
                     ->whereIn('id', $arrIdVanBanDenDonVi)
                     ->where('trinh_tu_nhan_van_ban', $active)
