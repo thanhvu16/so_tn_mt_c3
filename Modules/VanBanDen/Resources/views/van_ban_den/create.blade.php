@@ -108,8 +108,8 @@
 
                             <div class="col-md-12 collapse "
                                  id="collapseExample">
-                                <div class="col-md-12 layout2 ">
-                                    <div class="row">
+                                    <div class="col-md-12 layout2 ">
+                                        <div class="row">
                                         <div class="col-md-12">
                                             <hr style="border: 0.5px solid #3c8dbc">
                                         </div>

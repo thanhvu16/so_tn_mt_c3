@@ -144,6 +144,7 @@
                 <b>Nội dung:</b> <i>{{ $vanBanDen->noi_dung }}</i>
             </p>
         @endif
+        <p class="text-initial">- Số ký hiệu: {{ $vanBanDen->so_ky_hieu ?? null }}</p>
         <p class="text-initial">- Cơ quan ban hành: {{ $vanBanDen->co_quan_ban_hanh ?? null }}</p>
         <p class="text-initial">- Số đến: <span class="color-red text-bold">{{ $vanBanDen->so_den ?? null }}</span></p>
         <p class="text-initial">- Ngày
