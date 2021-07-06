@@ -235,7 +235,7 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung ?? ''}}</span>@if($vbDen->noi_dung != null)
                                             <br>@endif
-                                                    @if($vbDen->han_xu_ly != null) (Hạn giải quyết: {{ date('d/m/Y', strtotime($vbDen->han_xu_ly)) }})<br>@endif
+                                                    @if($vbDen->han_xu_ly != null)<p style="color: red">(Hạn giải quyết: {{ date('d/m/Y', strtotime($vbDen->han_xu_ly)) }})</p>@endif
                                         <span style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span> -
                                         <span style="font-style: italic">Ngày nhập : {{ date('d/m/Y', strtotime($vbDen->ngay_nhan)) }}</span>
                                         <div class="text-right " style="pointer-events: auto">
