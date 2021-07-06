@@ -439,7 +439,6 @@ class PhanLoaiVanBanController extends Controller
             ->first();
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA || $donVi->parent_id != 0) {
-            dd(1);
             if ($user->hasRole(TRUONG_BAN|TRUONG_PHONG)) {
                 $active = VanBanDen::TRUONG_PHONG_NHAN_VB;
             }
