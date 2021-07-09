@@ -487,14 +487,15 @@ class ThongkeVanBanDenController extends Controller
             ->whereHas('vanBanDen', function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '>=', $currentDate);
             })
-            ->where('don_vi_id', $donViId)->distinct()->count();
+            ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
+
         $vanBanTrongHan = $danhSachVanBanDenDonViChuaHoanThanhTrongHan;
 
         $danhSachVanBanDenDonViChuaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '<', $currentDate);
             })
-            ->where('don_vi_id', $donViId)->distinct()->count();
+            ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanQuaHan = $danhSachVanBanDenDonViChuaHoanThanhQuaHan;
         $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
 

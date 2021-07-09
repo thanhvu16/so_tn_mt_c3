@@ -42,9 +42,9 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        $file = TaiLieuThamKhao::orderBy('created_at','DESC')->first();
+//        $file = TaiLieuThamKhao::orderBy('created_at','DESC')->first();
 
-        return view('auth.components.login',compact('file'));
+        return view('auth.components.login');
     }
 
     public function username()
