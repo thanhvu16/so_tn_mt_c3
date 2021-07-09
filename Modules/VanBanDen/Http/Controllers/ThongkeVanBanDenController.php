@@ -368,10 +368,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
                 }
             })
-            ->where(function ($query) {
-                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
-                    ->orWhereNull('trinh_tu_nhan_van_ban');
-            })
+//            ->where(function ($query) {
+//                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+//                    ->orWhereNull('trinh_tu_nhan_van_ban');
+//            })
+            ->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)->where('trinh_tu_nhan_van_ban', '>', VanBanDen::CHU_TICH_NHAN_VB)
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
