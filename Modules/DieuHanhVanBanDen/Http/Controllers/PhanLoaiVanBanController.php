@@ -395,7 +395,9 @@ class PhanLoaiVanBanController extends Controller
                         LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
                             $vanBanDenId);
                     }
-
+                    if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
+                        $vbquantrong = 1;
+                    }
                     DonViChuTri::where([
                         'van_ban_den_id' => $vanBanDenId,
                         'parent_don_vi_id' => null,
@@ -404,7 +406,7 @@ class PhanLoaiVanBanController extends Controller
 
                     if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])){
 
-                        DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi);
+                        DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi,$vbquantrong);
                     }
 
                     // luu don vi phoi hop
