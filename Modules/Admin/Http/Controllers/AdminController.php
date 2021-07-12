@@ -62,6 +62,7 @@ class AdminController extends Controller
         $year = date('Y');
         $vanBanChoPhanLoai = 0;
         $giayMoiChoPhanLoai = 0;
+        $giayMoiChoPhanLoai = 0;
         $vanBanPhoiHopChoPhanLoai = 0;
         $giayMoiPhoiHopChoPhanLoai = 0;
 
@@ -533,7 +534,6 @@ class AdminController extends Controller
                         ->whereNull('hoan_thanh')
                         ->get();
                     $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-
                     $vanBanChoPhanLoai = VanBanDen::whereIn('id', $arrVanBanDenId)
                         ->where('trinh_tu_nhan_van_ban', VanBanDen::THAM_MUU_CHI_CUC_NHAN_VB)
 //                        ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
@@ -569,9 +569,11 @@ class AdminController extends Controller
                     array_push($giayMoiCoLors, COLOR_GREEN_LIGHT);
 
                 } else {
+//                    dd(0);
+
                     $vanBanChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
                         ->whereNull('trinh_tu_nhan_van_ban')
-//                        ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+                        ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
                         ->count();
                     $giayMoiChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
                         ->whereNull('trinh_tu_nhan_van_ban')
@@ -581,7 +583,7 @@ class AdminController extends Controller
 
                 array_push($hoSoCongViecPiceCharts, array('VB chờ phân loại', $vanBanChoPhanLoai));
                 array_push($hoSoCongViecCoLors, COLOR_GREEN);
-//                array_push($giayMoiPiceCharts, array('GM chờ phân loại', $giayMoiChoPhanLoai));
+                array_push($giayMoiPiceCharts, array('GM chờ phân loại', $giayMoiChoPhanLoai));
                 array_push($giayMoiCoLors, COLOR_GREEN);
             }
 
