@@ -30,6 +30,7 @@ class DonViChuTri extends Model
         'vao_so_van_ban',
         'chuyen_tiep',
         'hoan_thanh',
+        'van_ban_quan_trong',
         'da_tham_muu'
     ];
 
@@ -119,7 +120,7 @@ class DonViChuTri extends Model
         return $this->belongsTo(DonVi::class, 'don_vi_id', 'id');
     }
 
-    public static function luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi)
+    public static function luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi,$vbquantrong)
     {
         $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
@@ -166,6 +167,7 @@ class DonViChuTri extends Model
             'user_id' => auth::user()->id,
             'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
             'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
+            'van_ban_quan_trong' => $vbquantrong,
             'da_chuyen_xuong_don_vi' => $chuyenVanBanXuongDonVi
         ];
 
