@@ -24,3 +24,21 @@
         @endif
     </ul>
 </li>
+<li class="treeview {{ Route::is('phan_loai_giay_moi') || Route::is('phan-loai-van-ban.da_phan_loai')
+ || Route::is('phan-loai-giay-moi.da_phan_loai')  ? 'active menu-open' : '' }}">
+    <a href="#">
+        <i class="fa fa-laptop" aria-hidden="true"></i> <span>Phân loại giấy mời</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('phan_loai_giay_moi') ? 'active' : '' }}"><a
+                href="{{route('phan_loai_giay_moi','type=1')}}"><i class="fa fa-circle-o"></i>Giấy mời chờ phân loại</a>
+        </li>
+        <li class="{{ Route::is('phan-loai-giay-moi.da_phan_loai') ? 'active' : '' }}"><a
+                href="{{route('phan-loai-giay-moi.da_phan_loai','type=1')}}"><i class="fa fa-circle-o"></i>Giấy mời đã phân loại</a>
+        </li>
+
+    </ul>
+</li>

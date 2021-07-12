@@ -22,6 +22,7 @@ class XuLyVanBanDen extends Model
         'lanh_dao_chi_dao',
         'quyen_gia_han',
         'hoan_thanh',
+        'van_ban_quan_trong',
         'user_id',
     ];
 
