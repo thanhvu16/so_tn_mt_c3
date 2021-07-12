@@ -281,6 +281,11 @@ class VanBanDen extends Model
     {
         return $this->hasMany(DonViChuTri::class, 'van_ban_den_id', 'id');
     }
+    public function donViChuTriVB()
+    {
+        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id');
+//        return $this->belongsTo(DonViChuTri::class, 'van_ban_den_id', 'id');
+    }
 
     public function donViPhoiHop()
     {
