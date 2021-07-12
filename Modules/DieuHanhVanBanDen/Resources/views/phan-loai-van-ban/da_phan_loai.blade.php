@@ -236,6 +236,18 @@
                                                     VB Quan trọng
                                                 </label>
                                             @endif
+
+                                                <div class="form-group">
+                                                    <label>
+                                                        <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;">
+                                                            <input type="checkbox"  {{ isset($vanBanDen->donViChuTriVB) && $vanBanDen->donViChuTriVB->van_ban_quan_trong == 1 ? 'checked' : null }}  class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}][]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;">
+                                                            <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                                        </div>
+                                                        &ensp;Văn bản quan trọng
+                                                    </label>
+                                                    <input type="hidden" name="sua_phan_loai" form="form-tham-muu" value="1">
+
+                                                </div>
                                         </div>
                                     </td>
                                     <td>
