@@ -10,7 +10,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title mt-2">Văn bản chờ phân loại</h3>
+                                <h3 class="box-title mt-2">@if(Request::get('type') == 1)Giấy mời chờ phân loại @else Văn bản chờ phân loại @endif</h3>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('phan-loai-van-ban.store') }}" method="post" id="form-tham-muu">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="box-body table-responsive">
-                        <form action="{{ route('phan-loai-van-ban.index') }}" method="get">
+                        <form action="@if(Request::get('type') == 1){{route('phan_loai_giay_moi')}}@else{{route('phan-loai-van-ban.index')}}@endif" method="get">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="so-den" class="col-form-label">Tìm theo số đến</label>
