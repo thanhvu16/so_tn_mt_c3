@@ -730,10 +730,10 @@ class VanBanLanhDaoXuLyController extends Controller
         if ($user->hasRole(AllPermission::phoChuTich())) {
             $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
-            $donViChuTri = DonViChuTri::where('can_bo_chuyen_id', $user->id)
+            $donViChuTri = DonViChuTri::where('van_ban_quan_trong', 1)
                 ->whereNull('hoan_thanh')
                 ->get();
-
+//            dd($donViChuTri);
             $arrIdVanBanDenDonVi = $donViChuTri->pluck('van_ban_den_id')->toArray();
             if($request->type != null)
             {
@@ -844,18 +844,23 @@ class VanBanLanhDaoXuLyController extends Controller
             ->whereNull('hoan_thanh')
             ->get();
 
-        $donViChuTri = DonViChuTri::where('can_bo_chuyen_id', $user->id)
+//        $donViChuTri = DonViChuTri::where('can_bo_chuyen_id', $user->id)
+//            ->select(['id', 'van_ban_den_id'])
+//            ->whereNull('hoan_thanh')
+//            ->get();
+        $donViChuTri = DonViChuTri::where('van_ban_quan_trong', 1)
             ->select(['id', 'van_ban_den_id'])
             ->whereNull('hoan_thanh')
             ->get();
+//        dd($donViChuTri);
 
         $idVanBanDonViChuTri = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
         $idVanBanLanhDaoId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
 
-        $arrIdVanBanDenDonVi = $idVanBanLanhDaoId;
-//        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
+//        $arrIdVanBanDenDonVi = $idVanBanLanhDaoId;
+        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
 
 //        dd($idVanBanLanhDaoId ,$idVanBanDonViChuTri, $arrIdVanBanDenDonVi);
 
