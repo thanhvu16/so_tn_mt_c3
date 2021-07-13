@@ -495,6 +495,7 @@ class VanBanTraLaiController extends Controller
                 ->whereHas('user')
                 ->where('parent_id', $user->don_vi_id)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -557,6 +558,7 @@ class VanBanTraLaiController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (count($danhSachVanBanDen) > 0) {

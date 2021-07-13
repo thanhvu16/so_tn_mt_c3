@@ -251,7 +251,7 @@ class DieuHanhVanBanDenController extends Controller
             $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
             $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id ?? null)->first();
             $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')
-                ->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+                ->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
             $dataNguoiKy = [];
             $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
                 ->whereHas('donVi', function ($query) {

@@ -89,6 +89,7 @@ class PhanLoaiVanBanController extends Controller
                 ->whereHas('user')
                 ->where('parent_id', $donVi->parent_id)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -196,6 +197,7 @@ class PhanLoaiVanBanController extends Controller
                 ->whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.index',
@@ -473,7 +475,7 @@ class PhanLoaiVanBanController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $tomTat = $request->get('tom_tat') ?? null;
         $coQuanBanHanh = $request->get('co_quan_ban_hanh') ?? null;
-        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi', 'asc')->get();
+        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
 
         $danhSachDonVi = null;
@@ -653,6 +655,7 @@ class PhanLoaiVanBanController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', $donViId)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -683,6 +686,7 @@ class PhanLoaiVanBanController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select(['id', 'ten_don_vi'])
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if ($user->hasRole(AllPermission::chuTich())) {

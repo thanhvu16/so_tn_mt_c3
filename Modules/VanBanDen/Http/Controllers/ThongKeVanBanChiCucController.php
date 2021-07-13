@@ -37,12 +37,14 @@ class ThongKeVanBanChiCucController extends Controller
                 ->where('cap_xa',1)
                 ->where('id', $donViId)
                 ->orWhere('parent_id', $donViId)
+                ->orderBy('thu_tu','asc')
                 ->paginate(10);
         }else{
             $danhSachDonVi = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi')
                 ->where('cap_xa',1)
                 ->where('id', $request->don_vi)
                 ->orWhere('parent_id', $request->don_vi)
+                ->orderBy('thu_tu','asc')
                 ->paginate(10);
         }
 

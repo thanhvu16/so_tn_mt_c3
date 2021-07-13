@@ -65,6 +65,7 @@ class PhanLoaiVanBanPhoiHopController extends Controller
             ->whereHas('user')
             ->where('parent_id', $donViId)
             ->select('id', 'ten_don_vi')
+            ->orderBy('thu_tu','asc')
             ->get();
 
         $chuTich = User::role(CHU_TICH)
