@@ -62,15 +62,19 @@ class VanBanDenController extends Controller
         $ngayketthuc = $request->get('end_date');
         $year = $request->get('year') ?? null;
         $danhSachDonVi = null;
+        $page = $request->get('page');
         $danhSachDonViPhoiHop = null;
         $searchDonVi = $request->get('don_vi_id') ?? null;
         $searchDonViPhoiHop = $request->get('don_vi_phoi_hop_id') ?? null;
         $arrVanBanDenId = null;
         $arrVanBanDenId2 = null;
+
+
         if (!empty($searchDonVi)) {
             $donViChuTri = DonViChuTri::where('don_vi_id', $searchDonVi)
                 ->select('id', 'van_ban_den_id')
-                ->get();
+                ->distinct('van_ban_den_id')
+                ->get('van_ban_den_id');
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
@@ -88,7 +92,7 @@ class VanBanDenController extends Controller
         if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
 
-            $ds_vanBanDen = VanBanDen::where(['type' => 1])
+            $ds_vanBanDen = VanBanDen::query()->where(['type' => 1])
                 ->where('so_van_ban_id', '!=', 100)
                 ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
@@ -167,13 +171,13 @@ class VanBanDenController extends Controller
 
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('created_at', 'desc')->paginate(PER_PAGE,$page);
 
-            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->get();
+            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
         } else {
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            $ds_vanBanDen = VanBanDen::
+            $ds_vanBanDen = VanBanDen::query()->
             where([
                 'don_vi_id' => $donViId,
                 'type' => VanBanDen::TYPE_VB_DON_VI])
@@ -240,7 +244,7 @@ class VanBanDenController extends Controller
                         return $query->whereYear('created_at', $year);
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('created_at', 'desc')->paginate(PER_PAGE,$page);
 
             $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
         }

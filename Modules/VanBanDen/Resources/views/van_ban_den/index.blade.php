@@ -44,6 +44,7 @@
                                         <input type="hidden" name="year"  value="{{Request::get('year') }}">
                                         <input type="hidden" name="don_vi_id" value="{{Request::get('don_vi_id') }}">
                                         <input type="hidden" name="trinh_tu_nhan_van_ban" value="{{Request::get('trinh_tu_nhan_van_ban') }}">
+                                        <input type="hidden" name="page" value="{{Request::get('page') }}">
 
                                         <button type="button" data-type="excel"
                                                 class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i

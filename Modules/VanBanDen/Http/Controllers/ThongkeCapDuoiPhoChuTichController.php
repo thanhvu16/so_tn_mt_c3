@@ -73,7 +73,7 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
 
                     } else {
                         $chiCuc1 = User::where('id', auth::user()->id)->get();
-                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->orderBy('thu_tu','asc')->get();
                         foreach ($layTatcaphong as $dataPhong) {
                             $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
                             foreach ($nguoiDungPhong as $data1) {
@@ -93,7 +93,7 @@ class ThongkeCapDuoiPhoChuTichController extends Controller
                 case CHU_TICH:
                     if ($donVi->parent_id == 0 && auth::user()->cap_xa == 1) {
                         $chiCuc1 = User::where('id', auth::user()->id)->get();
-                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->get();
+                        $layTatcaphong = DonVi::where('parent_id', $donVi->id)->orderBy('thu_tu','asc')->get();
                         foreach ($layTatcaphong as $dataPhong) {
                             $nguoiDungPhong = User::where('don_vi_id',$dataPhong->id)->get();
                             foreach ($nguoiDungPhong as $data1) {

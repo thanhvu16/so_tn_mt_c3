@@ -16,7 +16,14 @@
 {{--    </ul>--}}
 {{--</li>--}}
 {{--@endunless--}}
+@if(auth::user()->id == 10551)
+    <li class="{{ Route::is('vanBanQuanTrongGiamDoc') ? 'active' : '' }}">
+        <a href="{{route('vanBanQuanTrongGiamDoc')}}">
+            <i class="fa fa-file-text"></i> <span>Văn bản quan trọng</span>
+        </a>
 
+    </li>
+@endif
 <li class="treeview {{ Route::is('van-ban-den.index') || Route::is('van-ban-den.create') || Route::is('van-ban-den.edit')|| Route::is('vanBanDonViGuiSo') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đến</span>

@@ -28,7 +28,7 @@
 
 
                     <div class="box-body" >
-                        Tổng số văn bản: <b>{{ $ds_vanBanDen->count() }}</b>
+                        Tổng số văn bản: <b>{{ $danhSachVanBanDenDonVi->count() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
@@ -42,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse ($ds_vanBanDen as $key=>$vbDen)
+                            @forelse ($danhSachVanBanDenDonVi as $key=>$vbDen)
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
                                     <td style="color: red;font-weight: bold">{{$vbDen->vanBanDen->so_den}}</td>
