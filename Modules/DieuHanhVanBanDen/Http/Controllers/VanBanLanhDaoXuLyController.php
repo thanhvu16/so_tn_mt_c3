@@ -59,7 +59,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $tomTat = $request->get('tom_tat') ?? null;
         $coQuanBanHanh = $request->get('co_quan_ban_hanh') ?? null;
-        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi','asc')->get();
+        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
 
 
@@ -181,6 +181,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 ->whereHas('user')
                 ->where('parent_id', $user->don_vi_id)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -420,6 +421,7 @@ class VanBanLanhDaoXuLyController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select('id', 'ten_don_vi')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if (count($danhSachVanBanDen) > 0) {
@@ -673,7 +675,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $tomTat = $request->get('tom_tat') ?? null;
         $coQuanBanHanh = $request->get('co_quan_ban_hanh') ?? null;
-        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('ten_don_vi','asc')->get();
+        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
 
 
@@ -721,6 +723,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $danhSachDonVi = DonVi::whereNull('deleted_at')
             ->where('parent_id', DonVi::NO_PARENT_ID)
             ->select(['id', 'ten_don_vi'])
+            ->orderBy('thu_tu','asc')
             ->get();
 
         if ($user->hasRole(AllPermission::chuTich())) {
@@ -1027,6 +1030,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
                     ->where('parent_id', $donVi->id)
                     ->whereNull('deleted_at')
+                    ->orderBy('thu_tu','asc')
                     ->get();
             }
 
@@ -1034,6 +1038,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
                     ->where('parent_id', $donVi->parent_id)
                     ->whereNull('deleted_at')
+                    ->orderBy('thu_tu','asc')
                     ->get();
             }
 
@@ -1070,7 +1075,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 DB::beginTranSaction();
 
                 foreach ($vanBanDenDonViIds as $vanBanDenId) {
-                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->orderBy('thu_tu','asc')->first();
                     $vanBanDen = VanBanDen::findOrFail($vanBanDenId);
                     if (isset($donVi)) {
                         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {

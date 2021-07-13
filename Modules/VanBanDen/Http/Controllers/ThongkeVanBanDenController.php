@@ -352,6 +352,8 @@ class ThongkeVanBanDenController extends Controller
             ->whereNull('deleted_at')
             ->get();
 
+
+
         $danhSachVanBanDenChuaHoanThanh = VanBanDen::whereNull('deleted_at')
 //            ->where(function ($query) use ($donViId) {
 //                if (!empty($donViId)) {
@@ -391,6 +393,8 @@ class ThongkeVanBanDenController extends Controller
             ->where('type', 1)
             ->get();
 
+
+
 //        dd($danhSachVanBanDenChuaHoanThanh);
 
 //        dd($danhSachVanBanDenChuaHoanThanh);
@@ -426,30 +430,21 @@ class ThongkeVanBanDenController extends Controller
         $vanBanQuaHan = 0;
         $tongVanBanDonViKhongDieuHanh = 0;
 
-//        if ($type == DonVi::DIEU_HANH) {
-//            foreach ($danhSachVanBanDenDaHoanThanh as $vanBanDen) {
-//                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_DUNG_HAN) {
-//                    $vanBanTrongHan += 1;
-//                }
-//                if ($vanBanDen->hoan_thanh_dung_han == VanBanDen::HOAN_THANH_QUA_HAN) {
-//                    $vanBanQuaHan += 1;
-//                }
-//            }
-//        } else {
+
         $arrVanBanDenId = $danhSachVanBanDenDaHoanThanh->pluck('id')->toArray();
 
         $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) {
                 return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
             })
-            ->where('don_vi_id', $donViId)->distinct()->count();
+            ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
 
         $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) {
                 return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
             })
-            ->where('don_vi_id', $donViId)->distinct()->count();
+            ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
 
         $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
@@ -466,29 +461,16 @@ class ThongkeVanBanDenController extends Controller
     public function getVanBanDenchuaGiaiQuyet($danhSachVanBanDenChuaHoanThanh, $donViId, $type)
     {
 
-//        dd()
-        $vanBanTrongHan = 0;
-        $vanBanQuaHan = 0;
-        $tongVanBanDonViKhongDieuHanh = 0;
         $currentDate = date('Y-m-d');
-//        if ($type == DonVi::DIEU_HANH) {
-//            foreach ($danhSachVanBanDenChuaHoanThanh as $vanBanDen) {
-//                if ($vanBanDen->han_xu_ly >= $currentDate || $vanBanDen->han_xu_ly == null) {
-//                    $vanBanTrongHan += 1;
-//                }
-//                if ($vanBanDen->han_xu_ly < $currentDate && $vanBanDen->han_xu_ly != null) {
-//                    $vanBanQuaHan += 1;
-//                }
-//            }
-//            $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
-//
-//        } else {
+
         $arrVanBanDenId = $danhSachVanBanDenChuaHoanThanh->pluck('id')->toArray();
         $danhSachVanBanDenDonViChuaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '>=', $currentDate);
             })
             ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
+
+
 
         $vanBanTrongHan = $danhSachVanBanDenDonViChuaHoanThanhTrongHan;
 
@@ -500,9 +482,9 @@ class ThongkeVanBanDenController extends Controller
         $vanBanQuaHan = $danhSachVanBanDenDonViChuaHoanThanhQuaHan;
         $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
 
+//        dd($danhSachVanBanDenDonViChuaHoanThanhTrongHan,$danhSachVanBanDenDonViChuaHoanThanhQuaHan);
 
-//            dd($tongVanBanDonViKhongDieuHanh);
-//        }
+
 
 
         return [
@@ -528,45 +510,7 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
 
-//        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
-//        {
-//            if($donVi->cap_xa == null)
-//            {
-//                $type = null;
-//            } else{
-//                $type = 2;
-//            }
-//            $ds_vanBanDen= VanBanDen::
-//                whereNull('deleted_at')
-//                ->where(function ($query) use ($donViId) {
-//                    if (!empty($donViId)) {
-//                        return $query->where('don_vi_id', $donViId);
-//                    }
-//                })
-//                ->where(function ($query) use ($type) {
-//                    if (!empty($type)) {
-//                        return $query->where('type', $type);
-//                    }
-//                })
-//                ->where(function ($query) use ($tu_ngay, $den_ngay) {
-//                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-//
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-//                    }
-//                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-//
-//                    }
-//                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-//
-//                    }
-//                })
-//                ->where('nguoi_tao',$vanThuNhap)
-//                ->get();
-//
-//        }else{
+
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')
             ->first();
@@ -601,10 +545,6 @@ class ThongkeVanBanDenController extends Controller
             ->where('don_vi_id', $donVi->id)->distinct()->get();
         return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
 
-
-//        }
-
-//        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
     }
 
 
@@ -628,47 +568,6 @@ class ThongkeVanBanDenController extends Controller
         $den_ngay = $request->get('den_ngay') ?? null;
         $loaiVanBan = $request->get('loai_van_ban_id') ?? null;
 
-//        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
-//        {
-//            if($donVi->cap_xa == null)
-//            {
-//                $type = null;
-//            } else{
-//                $type = 2;
-//            }
-//            $ds_vanBanDen= VanBanDen::
-//            whereNull('deleted_at')
-//                ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
-//                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_DUNG_HAN)
-//                ->where(function ($query) use ($donViId) {
-//                    if (!empty($donViId)) {
-//                        return $query->where('don_vi_id', $donViId);
-//                    }
-//                })
-//                ->where(function ($query) use ($type) {
-//                    if (!empty($type)) {
-//                        return $query->where('type', $type);
-//                    }
-//                })
-//                ->where(function ($query) use ($tu_ngay, $den_ngay) {
-//                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-//
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-//                    }
-//                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-//
-//                    }
-//                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-//
-//                    }
-//                })
-//                ->where('nguoi_tao',$vanThuNhap)
-//                ->get();
-//
-//        }else{
         $ds_vanBanDen = VanBanDen::
         whereNull('deleted_at')
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
@@ -719,17 +618,13 @@ class ThongkeVanBanDenController extends Controller
         return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
 
 
-//        }
-//
-//        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
     }
 
     public function chiTietDaGiaiQuyetQuaHanVanBanSo($id, Request $request)
     {
         $donViId = null;
         $donVi = DonVi::where('id', $id)->first();
-        $user = auth::user();
-        $vanThuNhap = auth::user()->id;
+
         $type = null;
         if ($donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
@@ -744,47 +639,6 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
 
-//        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
-//        {
-//            if($donVi->cap_xa == null)
-//            {
-//                $type = null;
-//            } else{
-//                $type = 2;
-//            }
-//            $ds_vanBanDen= VanBanDen::
-//            whereNull('deleted_at')
-//                ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
-//                ->where('hoan_thanh_dung_han',  VanBanDen::HOAN_THANH_QUA_HAN)
-//                ->where(function ($query) use ($donViId) {
-//                    if (!empty($donViId)) {
-//                        return $query->where('don_vi_id', $donViId);
-//                    }
-//                })
-//                ->where(function ($query) use ($type) {
-//                    if (!empty($type)) {
-//                        return $query->where('type', $type);
-//                    }
-//                })
-//                ->where(function ($query) use ($tu_ngay, $den_ngay) {
-//                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-//
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-//                    }
-//                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-//
-//                    }
-//                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-//
-//                    }
-//                })
-//                ->where('nguoi_tao',$vanThuNhap)
-//                ->get();
-//
-//        }else{
         $ds_vanBanDen = VanBanDen::
         whereNull('deleted_at')
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
@@ -860,41 +714,7 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
 
-//        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
-//        {
-//
-//            $ds_vanBanDen= VanBanDen::
-//            whereNull('deleted_at')
-//
-//                ->where(function ($query) use ($donViId) {
-//                    if (!empty($donViId)) {
-//                        return $query->where('don_vi_id', $donViId);
-//                    }
-//                })
-//                ->where(function ($query){
-//                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
-//                        ->orWhereNull('trinh_tu_nhan_van_ban');
-//                })
-//                ->where('han_xu_ly', '<', $date)
-//                ->where(function ($query) use ($tu_ngay, $den_ngay) {
-//                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-//
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-//                    }
-//                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-//
-//                    }
-//                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-//
-//                    }
-//                })
-//                ->where('nguoi_tao',$vanThuNhap)
-//                ->get();
-//
-//        }else{
+
         $ds_vanBanDen = VanBanDen::
         whereNull('deleted_at')
             ->where(function ($query) {
@@ -930,8 +750,10 @@ class ThongkeVanBanDenController extends Controller
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
-        $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-            ->where('don_vi_id', $donVi->id)->distinct()->get();
+        $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+            ->where('don_vi_id', $donVi->id)
+            ->distinct('van_ban_den_id')
+            ->get('van_ban_den_id');
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -945,12 +767,9 @@ class ThongkeVanBanDenController extends Controller
                 $month, $year, $day),
                 $fileName);
         }
-        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('danhSachVanBanDenDonVi'));
 
 
-//        }
-//
-//        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
     }
 
     public function chiTietChuaGiaiQuyetTrongHanVanBanSo($id, Request $request)
@@ -961,6 +780,7 @@ class ThongkeVanBanDenController extends Controller
         $user = auth::user();
         $date = date('Y-m-d');
         $type = null;
+        $currentDate = date('Y-m-d');
         if ($donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
 
@@ -974,50 +794,12 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
 
-//        if($donVi->dieu_hanh == DonVi::DIEU_HANH )
-//        {
-//            $ds_vanBanDen= VanBanDen::
-//            whereNull('deleted_at')
-//                ->where(function ($query) use ($donViId) {
-//                    if (!empty($donViId)) {
-//                        return $query->where('don_vi_id', $donViId);
-//                    }
-//                })
-//                ->where(function ($query){
-//                    return  $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
-//                            ->orWhereNull('trinh_tu_nhan_van_ban');
-//                })
-//                ->where(function ($query) use ($date){
-//                    return  $query->where('han_xu_ly', '>=',$date)
-//                            ->orWhereNull('han_xu_ly');
-//                })
-//                ->where(function ($query) use ($tu_ngay, $den_ngay) {
-//                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-//
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-//                    }
-//                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-//
-//                    }
-//                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-//
-//                    }
-//                })
-//                ->where('nguoi_tao',$vanThuNhap)
-//                ->whereNull('deleted_at')
-//
-//                ->get();
-//
-//        }else{
-        $ds_vanBanDen = VanBanDen::
-        whereNull('deleted_at')
-            ->where(function ($query) {
-                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
-                    ->orWhereNull('trinh_tu_nhan_van_ban');
-            })
+        $ds_vanBanDen = VanBanDen::whereNull('deleted_at')
+//            ->where(function ($query) {
+//                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+//                    ->orWhereNull('trinh_tu_nhan_van_ban');
+//            })
+            ->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)->where('trinh_tu_nhan_van_ban', '>', VanBanDen::CHU_TICH_NHAN_VB)
             ->where('han_xu_ly', '>=', $date)
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
@@ -1047,8 +829,18 @@ class ThongkeVanBanDenController extends Controller
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
-        $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-            ->where('don_vi_id', $donVi->id)->distinct()->get();
+        $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+            ->whereHas('vanBanDen', function ($query) use ($currentDate) {
+                return $query->where('han_xu_ly', '>=', $currentDate);
+            })
+            ->where('don_vi_id', $donVi->id)
+            ->distinct('van_ban_den_id')
+            ->get('van_ban_den_id');
+
+
+
+
+
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -1062,13 +854,13 @@ class ThongkeVanBanDenController extends Controller
                 $month, $year, $day),
                 $fileName);
         }
-        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('danhSachVanBanDenDonVi'));
 
 
-//        }
-//
-//        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso',compact('ds_vanBanDen'));
+
     }
+
+
 
     /**
      * Show the form for creating a new resource.
