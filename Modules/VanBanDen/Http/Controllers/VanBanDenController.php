@@ -171,7 +171,7 @@ class VanBanDenController extends Controller
 
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE,$page);
+                ->orderBy('created_at', 'desc')->paginate(PER_PAGE,['*'],'page',$page);
 
             $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
