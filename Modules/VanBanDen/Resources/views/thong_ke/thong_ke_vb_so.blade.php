@@ -22,7 +22,6 @@
 {{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" class="form-export">--}}
 
                                         <input type="hidden" name="type" value="">
-                                        <input type="hidden" name="sovanbanden" value="">
                                         <button type="button" data-type="excel"
                                                 class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
                                                 class="fa fa-file-excel-o"></i> Xuất Excel
@@ -57,25 +56,25 @@
                                     </div>
                                     <div class="col-md-2 form-group mt-2">
                                         <label>Tìm theo loại văn bản</label>
-                                        <select class="form-control select2" name="loai_van_ban_id" >
+                                        <select class="form-control select2 loai-van-ban" name="loai_van_ban_id" >
                                             <option value="">Chọn loại văn bản</option>
                                             @foreach ($ds_loaiVanBan as $loaiVanBan)
                                                 <option value="{{ $loaiVanBan->id }}" {{ Request::get('loai_van_ban_id') == $loaiVanBan->id ? 'selected' : '' }}
                                                 >{{ $loaiVanBan->ten_loai_van_ban }}</option>
                                             @endforeach
                                         </select>
-                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">
+{{--                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">--}}
                                     </div>
                                     <div class="col-md-3 form-group mt-2">
                                         <label>Tìm theo đơn vị xử lý chính</label>
-                                        <select class="form-control select2" name="don_vi_xu_ly_chinh" id="loai_van_ban_id">
+                                        <select class="form-control select2 don-vi-xu-ly" name="don_vi_xu_ly_chinh" id="loai_van_ban_id">
                                             <option value="">-- Chọn đơn vị xử lý chính --</option>
                                             @foreach ($danhSachDonVisearch as $data)
                                                 <option value="{{ $data->id }}" {{ Request::get('don_vi_xu_ly_chinh') == $data->id ? 'selected' : '' }}
                                                 >{{ $data->ten_don_vi }}</option>
                                             @endforeach
                                         </select>
-                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">
+                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="">
                                         <input type="text" class="hidden" name="don_vi_xu_ly_chinh_1" value="{{Request::get('don_vi_xu_ly_chinh')}}">
                                     </div>
                                     <div class="col-md-1" style="margin-top: 30px">
@@ -102,7 +101,7 @@
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Tổng số văn bản đến </td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
-                                                    <a href="{{route('van-ban-den.index')}}">{{$tongSoVanBanDen}}</a></td>
+                                                    <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">{{$tongSoVanBanDen}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>
@@ -232,6 +231,17 @@
             $('input[name="type"]').val(type);
             $('.form-export').submit();
             hideLoading();
+        });
+        $('.loai-van-ban').on('change', function () {
+            let type = $(this).val();
+            $('input[name="loai_van_ban_id_1"]').val(type);
+
+        });
+
+        $('.don-vi-xu-ly').on('change', function () {
+            let type = $(this).val();
+            $('input[name="don_vi_xu_ly_chinh_1"]').val(type);
+
         });
 
         $('.print-data').on('click', function () {
