@@ -60,7 +60,7 @@ class VanBanDiController extends Controller
         $year = $request->get('year') ?? null;
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 //        $ds_vanBanDi = VanBanDi::where('loai_van_ban_giay_moi',1)->whereNull('deleted_at')
 
@@ -615,7 +615,7 @@ class VanBanDiController extends Controller
         $donVi = $user->donVi;
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
@@ -633,7 +633,7 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
 
         $nguoinhan = null;
@@ -850,7 +850,7 @@ class VanBanDiController extends Controller
         $donVi = $user->donVi;
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
@@ -868,8 +868,8 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
 
         $nguoinhan = null;
         $user = auth::user();
@@ -1428,8 +1428,8 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
 
         $ds_nguoiKy = null;
         $dataNguoiKy = [];

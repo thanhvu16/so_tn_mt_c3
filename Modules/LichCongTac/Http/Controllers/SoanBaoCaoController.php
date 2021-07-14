@@ -30,7 +30,7 @@ class SoanBaoCaoController extends Controller
      */
     public function create()
     {
-        $danhSachDonViChutri = DonVi::whereNull('deleted_at')->get();
+        $danhSachDonViChutri = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
         return view('lichcongtac::soan-bao-cao.create', compact('danhSachDonViChutri'));
     }

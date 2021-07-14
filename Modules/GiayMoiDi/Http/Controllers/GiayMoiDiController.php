@@ -45,7 +45,7 @@ class GiayMoiDiController extends Controller
         $ngaybanhanhstart = $request->get('vb_ngaybanhanh_start');
         $ngaybanhanhend = $request->get('vb_ngaybanhanh_end');
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $year = $request->get('year') ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
 
@@ -230,7 +230,7 @@ class GiayMoiDiController extends Controller
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
 
 
         $ds_nguoiKy = null;
@@ -453,9 +453,9 @@ class GiayMoiDiController extends Controller
         }
 
 
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
 
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->don_vi_id)->orderBy('id', 'desc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->don_vi_id)->orderBy('thu_tu','asc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
@@ -487,7 +487,7 @@ class GiayMoiDiController extends Controller
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->where('dieu_hanh', 1)->orderBy('thu_tu','asc')->get();
 
 
         $ds_nguoiKy = null;
@@ -671,9 +671,9 @@ class GiayMoiDiController extends Controller
         }
         $soDi = $soDi + 1;
 
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
 
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->don_vi_id)->orderBy('id', 'desc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->don_vi_id)->orderBy('thu_tu','asc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
 
@@ -906,8 +906,8 @@ class GiayMoiDiController extends Controller
     {
         canPermission(AllPermission::suaGiayMoiDi());
         $user = auth::user();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->donVi->parent_id)->orderBy('id', 'desc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->where('id', '!=', auth::user()->donVi->parent_id)->orderBy('thu_tu','asc')->get();
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
