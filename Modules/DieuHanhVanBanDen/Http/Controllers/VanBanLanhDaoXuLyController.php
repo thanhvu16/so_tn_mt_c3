@@ -1023,6 +1023,7 @@ class VanBanLanhDaoXuLyController extends Controller
             $danhSachDonViChutri = DonVi::whereNotIn('id', json_decode($id))
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->whereNull('deleted_at')
+                ->orderBy('thu_tu','asc')
                 ->get();
 
             if ($donVi->cap_xa == DonVi::CAP_XA) {

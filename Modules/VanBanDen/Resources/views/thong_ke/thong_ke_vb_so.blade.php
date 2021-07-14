@@ -94,32 +94,54 @@
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr>
-                                            <th class="text-center" style="vertical-align: middle" colspan="2" width="5%"><h4>Báo cáo văn bản đến</h4></th>
+                                            <th class="text-center" style="vertical-align: middle" colspan="4" ><h4>Báo cáo văn bản đến</h4></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle"  width="5%"><h4>Tiêu chí</h4></th>
+                                            <th class="text-center" style="vertical-align: middle"  width="5%"><h4>Văn bản đến</h4></th>
+                                            <th class="text-center" style="vertical-align: middle" width="5%"><h4>Giấy mời đến</h4></th>
+                                            <th class="text-center" style="vertical-align: middle"  width="5%"><h4>Tổng số</h4></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-left" style="vertical-align: middle">Tổng số văn bản đến </td>
+                                                <td class="text-left" style="vertical-align: middle">Tổng số văn bản  </td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">{{$tongSoVanBanDen}}</a></td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">{{$tongSoGiayMoiDen}}</a></td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">{{$allVanBanDen}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     {{$tongSoVanBanMoiNhan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    {{$tongSoGiayMoiMoiNhan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    {{$allVanBanMoiNhan}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản đang xử lý</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     {{$tongSoVanBanDangXuLy}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    {{$tongSoGiayMoiDangXuLy}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">
+                                                    {{$allVanBanDangXuLy}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản quá hạn đang xử lý</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDangXuLyQuaHan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoGiayMoiDangXuLyQuaHan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{ $allVanBanDangXuLyQuaHan}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản đã hoàn thành</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDaHoanThanh}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$tongSoVanBanDaHoanThanh}}</td>
+                                                <td class="text-center" style="vertical-align: middle;font-weight: bold">{{$allVanBanDaHoanThanh}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -146,7 +168,7 @@
                                         <tbody>
                                         <tr>
                                             <td style="font-weight: bold" class="text-center">*</td>
-                                            <td style="font-weight: bold">Tổng số</td>
+                                            <td style="font-weight: bold">Tổng số đang xử lý</td>
                                             <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>
 
                                             </td>

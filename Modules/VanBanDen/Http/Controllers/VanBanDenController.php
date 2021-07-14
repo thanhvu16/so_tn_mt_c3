@@ -257,7 +257,7 @@ class VanBanDenController extends Controller
                 })
                 ->orderBy('so_den', 'desc')->paginate(PER_PAGE,['*'],'page',$page);
 
-            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
+            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
         }
 
         if ($request->get('type') == 'excel') {

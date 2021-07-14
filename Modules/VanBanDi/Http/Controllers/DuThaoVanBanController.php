@@ -52,7 +52,7 @@ class DuThaoVanBanController extends Controller
         $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
         //$ds_nguoiKy = User::role([ TRUONG_PHONG,PHO_PHONG,CHU_TICH,PHO_CHU_TICH,TRUONG_PHONG,PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
         $user = auth::user();
         $donVi = $user->donVi;
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
@@ -572,10 +572,10 @@ class DuThaoVanBanController extends Controller
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
             ->orderBy('ten_loai_van_ban', 'asc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
-            ->orderBy('ten_don_vi', 'asc')->get();
+            ->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('parent_id', 0)
             ->orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('id', 'desc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
         $user = auth::user();
 
         $laysovanban = [];

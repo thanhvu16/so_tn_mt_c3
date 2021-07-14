@@ -125,7 +125,7 @@ class GiayMoiDenController extends Controller
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
 
-            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->get();
+            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->orderBy('thu_tu','asc')->whereNull('deleted_at')->get();
 
         } else {
 
@@ -190,7 +190,7 @@ class GiayMoiDenController extends Controller
                     }
                 })
                 ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
-            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
+            $danhSachDonVi = DonVi::where('parent_id', $donViId)->orderBy('thu_tu','asc')->whereNull('deleted_at')->get();
 
         }
 
