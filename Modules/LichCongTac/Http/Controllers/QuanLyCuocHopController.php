@@ -52,7 +52,7 @@ class QuanLyCuocHopController extends Controller
 //        }
         $nhom_don_vi = NhomDonVi::orderBy('ten_nhom_don_vi', 'asc')->get();
         $chucVu = ChucVu::orderBy('ten_chuc_vu', 'asc')->whereNull('deleted_at')->get();
-        $donvi = DonVi::orderBy('ten_don_vi', 'asc')->whereNull('deleted_at')->get();
+        $donvi = DonVi::orderBy('thu_tu','asc')->whereNull('deleted_at')->get();
         $cuocHopLienQuan = CuocHopLienQuan::where('id_lich_hop', $id)->whereNull('deleted_at')->get();
         $nguoi_chu_tri = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN, TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH])->get();
         $nguoi_upTaiLieu = ThanhPhanDuHop::where(['lich_cong_tac_id' => $id, 'trang_thai' => 1,'thanh_phan_moi'=>1])->get();
