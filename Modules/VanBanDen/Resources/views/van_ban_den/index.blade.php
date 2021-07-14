@@ -33,6 +33,7 @@
                                         <input type="hidden" name="loai_van_ban_id"  value="{{Request::get('loai_van_ban_id') }}">
                                         <input type="hidden" name="so_van_ban_id"  value="{{Request::get('so_van_ban_id') }}">
                                         <input type="hidden" name="vb_so_den" value="{{Request::get('vb_so_den') }}">
+                                        <input type="hidden" name="vb_so_den" value="{{Request::get('vb_so_den_end') }}">
                                         <input type="hidden" name="vb_so_ky_hieu"  value="{{Request::get('vb_so_ky_hieu') }}">
                                         <input type="hidden" name="don_vi_phoi_hop_id" value="{{Request::get('don_vi_phoi_hop_id') }}">
                                         <input type="hidden" name="start_date"  value="{{Request::get('start_date') }}">
@@ -90,10 +91,16 @@
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label for="vb_so_den" class="col-form-label">Số đến văn bản</label>
+                                                <label for="vb_so_den" class="col-form-label">Số đến từ</label>
                                                 <input type="text" name="vb_so_den" class="form-control soden" value="{{Request::get('vb_so_den')}}"
                                                        id="vb_so_den"
-                                                       placeholder="Số đến văn bản">
+                                                       placeholder="Số đến từ">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="vb_so_den_end" class="col-form-label">Đến số</label>
+                                                <input type="text" name="vb_so_den_end" class="form-control soden" value="{{Request::get('vb_so_den_end')}}"
+                                                       id="vb_so_den_end"
+                                                       placeholder="Đến số">
                                             </div>
                                             <div class="form-group col-md-3" >
                                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
