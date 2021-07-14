@@ -56,6 +56,7 @@ Route::get('chi-tiet-da-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietDaGia
 
 Route::get('chi-tiet-chua-giai-quyet-trong-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetTrongHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetTrongHanVanBanSo'));
 Route::get('chi-tiet-chua-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetQuaHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetQuaHanVanBanSo'));
+Route::get('tong-so-van-ban', array('as' => 'tongSoVanBanDen', 'uses' => 'ThongkeVanBanDenController@tongSoVanBanDen'));
 
 //thống kê chi tiết chi cuch
 Route::get('chi-tiet-da-giai-quyet-trong-han-chi-cuc/{id}', array('as' => 'chiTietDaGiaiQuyetTrongHanVanBanChiCuc', 'uses' => 'ThongKeVanBanChiCucController@chiTietDaGiaiQuyetTrongHanVanBanChiCuc'));

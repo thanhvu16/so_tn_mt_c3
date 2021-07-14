@@ -103,6 +103,70 @@ class ThongkeVanBanDenController extends Controller
         return view('vanbanden::thong_ke.index', compact('vanbanden', 'ds_vanBanDen', 'sovanban'));
     }
 
+    public function tongSoVanBanDen(Request $request)
+    {
+
+        $currentDate = date('Y-m-d');
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')
+            ->first();
+        $page = $request->get('page') ?? null;;
+
+        $loaiVanBan = $request->get('loai_van_ban_id') ?? null;
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
+
+        $ds_vanBanDen = VanBanDen::query()->whereNull('deleted_at')
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
+            ->where(function ($query) use ($loaiVanBan) {
+                if (!empty($loaiVanBan)) {
+                    return $query->where('loai_van_ban_id', $loaiVanBan);
+                }
+            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
+            ->where('type', 1)
+//            ->get();
+            ->paginate(PER_PAGE,['*'],'page',$page);
+
+
+
+
+
+        if ($request->get('type') == 'excel') {
+            $month = Carbon::now()->format('m');
+            $year = Carbon::now()->format('Y');
+            $day = Carbon::now()->format('d');
+
+
+            $totalRecord = $ds_vanBanDen->count();
+            $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
+
+            return Excel::download(new thongKeVanBanDenExport($ds_vanBanDen, $totalRecord,
+                $month, $year, $day),
+                $fileName);
+        }
+        return view('vanbanden::chi-tiet-thong-ke.chi_tiet_tong_so_van_ban', compact('ds_vanBanDen'));
+    }
+
 
     public function thongkevbso(Request $request)
     {
@@ -170,11 +234,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -196,11 +260,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query)  {
                     return $query->where('trinh_tu_nhan_van_ban', 1)->orWhereNull('trinh_tu_nhan_van_ban');
             })
@@ -225,11 +289,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -251,11 +315,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -277,11 +341,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -327,11 +391,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -365,11 +429,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
 //            ->where(function ($query) {
 //                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
 //                    ->orWhereNull('trinh_tu_nhan_van_ban');
@@ -533,11 +597,11 @@ class ThongkeVanBanDenController extends Controller
 
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
@@ -592,11 +656,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
@@ -663,11 +727,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
@@ -737,11 +801,11 @@ class ThongkeVanBanDenController extends Controller
 
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where(function ($query) use ($loaiVanBan) {
                 if (!empty($loaiVanBan)) {
                     return $query->where('loai_van_ban_id', $loaiVanBan);
@@ -821,11 +885,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-                if (!empty($loaiVanBanGiayMoi)) {
-                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-                }
-            })
+//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+//                if (!empty($loaiVanBanGiayMoi)) {
+//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+//                }
+//            })
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();

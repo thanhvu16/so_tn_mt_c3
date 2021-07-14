@@ -255,7 +255,7 @@ class VanBanDenController extends Controller
                         return $query->whereYear('created_at', $year);
                     }
                 })
-                ->orderBy('so_den', 'desc')->paginate(PER_PAGE,$page);
+                ->orderBy('so_den', 'desc')->paginate(PER_PAGE,['*'],'page',$page);
 
             $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->get();
         }
