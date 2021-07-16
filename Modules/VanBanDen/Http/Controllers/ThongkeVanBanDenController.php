@@ -111,7 +111,7 @@ class ThongkeVanBanDenController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')
             ->first();
-        $page = $request->get('page') ?? null;;
+        $page = $request->get('page') ?? 1;
 
         $loaiVanBan = $request->get('loai_van_ban_id') ?? null;
         $tu_ngay = $request->get('tu_ngay') ?? null;
