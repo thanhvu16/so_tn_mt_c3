@@ -167,7 +167,7 @@ class DonViChuTri extends Model
             'user_id' => auth::user()->id,
             'don_vi_co_dieu_hanh' => $donVi->dieu_hanh ?? null,
             'vao_so_van_ban' => !empty($donVi) && $donVi->dieu_hanh == 0 ? 1 : null,
-            'van_ban_quan_trong' => $vbquantrong,
+            'van_ban_quan_trong' => $vbquantrong ?? null,
             'da_chuyen_xuong_don_vi' => $chuyenVanBanXuongDonVi
         ];
 

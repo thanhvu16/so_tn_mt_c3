@@ -89,7 +89,7 @@ class PhanLoaiVanBanController extends Controller
                 ->whereHas('user')
                 ->where('parent_id', $donVi->parent_id)
                 ->select('id', 'ten_don_vi')
-                ->orderBy('thu_tu','asc')
+                ->orderBy('thu_tu', 'asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -197,7 +197,7 @@ class PhanLoaiVanBanController extends Controller
                 ->whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select('id', 'ten_don_vi')
-                ->orderBy('thu_tu','asc')
+                ->orderBy('thu_tu', 'asc')
                 ->get();
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.index',
@@ -222,7 +222,6 @@ class PhanLoaiVanBanController extends Controller
      */
     public function store(Request $request)
     {
-
         $currentUser = auth::user();
 
         $data = $request->all();
@@ -244,9 +243,7 @@ class PhanLoaiVanBanController extends Controller
         $vanBanQuanTrongIds = $data['van_ban_quan_trong'] ?? null;
         $textDonViChuTri = $data['don_vi_chu_tri'] ?? null;
         $donViDuHop = $data['don_vi_du_hop'] ?? null;
-
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             try {
                 DB::beginTransaction();
@@ -338,9 +335,7 @@ class PhanLoaiVanBanController extends Controller
 
                     if (!empty($arrChuTich[$vanBanDenId])) {
                         $quyenGiaHan = 1;
-                        if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
-                            $vbquantrong = 1;
-                        }
+
                         $dataXuLyVanBanDen = [
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
@@ -350,7 +345,6 @@ class PhanLoaiVanBanController extends Controller
                             'user_id' => $currentUser->id,
                             'tu_tham_muu' => XuLyVanBanDen::TU_THAM_MUU,
                             'lanh_dao_chi_dao' => $quyenGiaHan,
-                            'van_ban_quan_trong' => $vbquantrong,
                             'quyen_gia_han' => $quyenGiaHan
                         ];
 
@@ -379,9 +373,7 @@ class PhanLoaiVanBanController extends Controller
                         if (empty($arrChuTich[$vanBanDenId])) {
                             $quyenGiaHan = 1;
                         }
-                        if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
-                            $vbquantrong = 1;
-                        }
+
 
                         $dataXuLyVanBanDenPCT = [
                             'van_ban_den_id' => $vanBanDenId,
@@ -392,7 +384,6 @@ class PhanLoaiVanBanController extends Controller
                             'user_id' => $currentUser->id,
                             'tu_tham_muu' => XuLyVanBanDen::TU_THAM_MUU,
                             'lanh_dao_chi_dao' => $quyenGiaHan,
-                            'van_ban_quan_trong' => $vbquantrong,
                             'quyen_gia_han' => $quyenGiaHan
                         ];
 
@@ -419,9 +410,7 @@ class PhanLoaiVanBanController extends Controller
                         LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
                             $vanBanDenId);
                     }
-                    if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
-                        $vbquantrong = 1;
-                    }
+
                     DonViChuTri::where([
                         'van_ban_den_id' => $vanBanDenId,
                         'parent_don_vi_id' => null,
@@ -430,7 +419,8 @@ class PhanLoaiVanBanController extends Controller
 
                     if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
 
-                        DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi, $vbquantrong);
+                        DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi,
+                            !empty($vanBanQuanTrongIds[$vanBanDenId]) ? $vanBanQuanTrongIds[$vanBanDenId] : null);
                     }
 
                     // luu don vi phoi hop
@@ -475,7 +465,7 @@ class PhanLoaiVanBanController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $tomTat = $request->get('tom_tat') ?? null;
         $coQuanBanHanh = $request->get('co_quan_ban_hanh') ?? null;
-        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu', 'asc')->get();
 
 
         $danhSachDonVi = null;
@@ -655,7 +645,7 @@ class PhanLoaiVanBanController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', $donViId)
                 ->select('id', 'ten_don_vi')
-                ->orderBy('thu_tu','asc')
+                ->orderBy('thu_tu', 'asc')
                 ->get();
 
             if (!empty($danhSachVanBanDen)) {
@@ -686,7 +676,7 @@ class PhanLoaiVanBanController extends Controller
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', DonVi::NO_PARENT_ID)
                 ->select(['id', 'ten_don_vi'])
-                ->orderBy('thu_tu','asc')
+                ->orderBy('thu_tu', 'asc')
                 ->get();
 
             if ($user->hasRole(AllPermission::chuTich())) {

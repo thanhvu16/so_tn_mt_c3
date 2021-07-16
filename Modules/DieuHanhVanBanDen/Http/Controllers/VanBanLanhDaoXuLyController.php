@@ -618,7 +618,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
                         // don vi chu tri
                         if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
-                            DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $vanBanChuyenXuongDonVi);
+                            DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $vanBanChuyenXuongDonVi,null);
                             // lưu phòng chuẩn bị
                         }
 
@@ -675,6 +675,7 @@ class VanBanLanhDaoXuLyController extends Controller
         $trichYeu = $request->get('trich_yeu') ?? null;
         $tomTat = $request->get('tom_tat') ?? null;
         $coQuanBanHanh = $request->get('co_quan_ban_hanh') ?? null;
+        $searchQuanTrong = $request->get('van_ban_quan_trong_search') ?? null;
         $danhSachDonViXuLy = DonVi::whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
 
 
@@ -733,8 +734,12 @@ class VanBanLanhDaoXuLyController extends Controller
         if ($user->hasRole(AllPermission::phoChuTich())) {
             $active = VanBanDen::PHO_CHU_TICH_NHAN_VB;
 
-            $donViChuTri = DonViChuTri::where('van_ban_quan_trong', 1)
-                ->whereNull('hoan_thanh')
+            $donViChuTri = DonViChuTri::whereNull('hoan_thanh')
+                ->where(function ($query) use ($searchQuanTrong) {
+                    if (!empty($searchQuanTrong)) {
+                        return $query->where('van_ban_quan_trong', $searchQuanTrong);
+                    }
+                })
                 ->get();
 //            dd($donViChuTri);
             $arrIdVanBanDenDonVi = $donViChuTri->pluck('van_ban_den_id')->toArray();
@@ -851,19 +856,23 @@ class VanBanLanhDaoXuLyController extends Controller
 //            ->select(['id', 'van_ban_den_id'])
 //            ->whereNull('hoan_thanh')
 //            ->get();
-        $donViChuTri = DonViChuTri::where('van_ban_quan_trong', 1)
+        $donViChuTri = DonViChuTri::whereNull('hoan_thanh')
+//        where('van_ban_quan_trong', 1)
+            ->where(function ($query) use ($searchQuanTrong) {
+                if (!empty($searchQuanTrong)) {
+                    return $query->where('van_ban_quan_trong', $searchQuanTrong);
+                }
+            })
             ->select(['id', 'van_ban_den_id'])
-            ->whereNull('hoan_thanh')
             ->get();
-//        dd($donViChuTri);
 
         $idVanBanDonViChuTri = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
         $idVanBanLanhDaoId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
 
-//        $arrIdVanBanDenDonVi = $idVanBanLanhDaoId;
-        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
+        $arrIdVanBanDenDonVi = $idVanBanDonViChuTri;
+//        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
 
 //        dd($idVanBanLanhDaoId ,$idVanBanDonViChuTri, $arrIdVanBanDenDonVi);
 
