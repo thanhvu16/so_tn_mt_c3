@@ -111,7 +111,7 @@
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     {{$tongSoGiayMoiDen}}</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
-                                                    <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh').'&page=1')}}">{{$allVanBanDen}}</a></td>
+                                                    <a href="{{route('tongSoVanBanDen','tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">{{$allVanBanDen}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left" style="vertical-align: middle">Số văn bản mới nhận</td>
