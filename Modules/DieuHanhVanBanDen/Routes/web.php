@@ -15,6 +15,8 @@ Route::get('van-ban-quan-trong-giam-doc', 'VanBanLanhDaoXuLyController@vanBanQua
 
 Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 
+Route::resource('cap-nhat-lanh-dao', 'CapNhatQuyTrinhGiamDocController');
+
 
 Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonVi');
 Route::get('get-list-lanh-dao-xem-de-biet/{id}', 'DieuHanhVanBanDenController@getListLanhDao');

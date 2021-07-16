@@ -21,13 +21,9 @@
                                         style="font-size: 14px"> Tìm kiếm văn bản </span></button>
                             </div>
                             <div class="col-md-6">
-                                <form
-                                    action="{{ !empty($active) ? route('van-ban-lanh-dao-xu-ly.store') : route('phan-loai-van-ban.store') }}"
-                                    method="post" id="form-tham-muu">
+                                <form action="{{route('cap-nhat-lanh-dao.store')}}" method="post" id="form-tham-muu">
                                     @csrf
                                     <input type="hidden" name="van_ban_den_id" value="">
-                                    <input type="hidden" name="type" value="update">
-                                    <input type="hidden" name="active" value="{{ $active }}">
                                 </form>
                             </div>
                         </div>
@@ -47,11 +43,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <form action="@if(Request::get('type') == 1){{route('vanBanQuanTrongGiamDoc')}}@else{{route('vanBanQuanTrongGiamDoc')}}@endif" method="get">
-                                                    <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                                <form action="@if(Request::get('type') == 1){{route('vanBanQuanTrongGiamDoc')}}@else{{route('vanBanQuanTrongGiamDoc')}}@endif" id="search-vb" method="get">
+                                                    <input type="text" class="form-control hidden" form="search-vb" value="{{Request::get('type')}}"
                                                            name="type"
                                                            placeholder="Nhập trích yếu">
-                                                    @include('dieuhanhvanbanden::form_tim_kiem')
+                                                    @include('dieuhanhvanbanden::form_tim_kiem_lanh_dao')
                                                 </form>
                                             </div>
                                         </div>
@@ -226,14 +222,14 @@
                                                     </div>
                                                 </div>
 
-                                                <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"
-                                                       name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"
-                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}"
-                                                       {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">
-                                                <label for="van-ban-quan-trong{{ $vanBanDen->id }}"
-                                                       class="color-red font-weight-normal">
-                                                    VB Quan trọng
-                                                </label>
+{{--                                                <input id="van-ban-quan-trong{{ $vanBanDen->id }}" type="checkbox"--}}
+{{--                                                       name="van_ban_quan_trong[{{ $vanBanDen->id }}]" value="1"--}}
+{{--                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                       {{ $vanBanDen->vanBanQuanTrong ? 'checked' : null }} class="check-van-ban-quan-trong">--}}
+{{--                                                <label for="van-ban-quan-trong{{ $vanBanDen->id }}"--}}
+{{--                                                       class="color-red font-weight-normal">--}}
+{{--                                                    VB Quan trọng--}}
+{{--                                                </label>--}}
                                             @endif
                                         </div>
                                     </td>
@@ -305,7 +301,8 @@
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phòng dự họp</i></label>
                                             </div>
                                         @endif
-                                        @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)
+{{--                                        @if (isset($vanBanDen->checkLuuVetVanBanDen) && $vanBanDen->checkLuuVetVanBanDen->can_bo_chuyen_id == auth::user()->id)--}}
+                                            @if($vanBanDen->trinh_tu_nhan_van_ban < 10)
                                             <button
                                                 class="btn mt-1 waves-effect btn-sm btn-primary btn-update"
                                                 data-id="{{ $vanBanDen->id }}">Cập nhật
@@ -326,7 +323,11 @@
                                 Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                             </div>
                             <div class="col-md-6 text-right">
-                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['so_den_start' => Request::get('so_den_start'),'so_den_end' => Request::get('so_den_end'),'ngay_den_start' => Request::get('ngay_den_start'),
+                            'ngay_den_end' => Request::get('ngay_den_end'),'ngay_ban_hanh_start' => Request::get('ngay_ban_hanh_start'),'ngay_ban_hanh_end' => Request::get('ngay_ban_hanh_end'),'so_ky_hieu' => Request::get('so_ky_hieu'),
+                            'nguoi_ky' => Request::get('nguoi_ky'),'loai_van_ban_id' => Request::get('loai_van_ban_id'),'so_van_ban_id' => Request::get('so_van_ban_id'),'don_vi_id' => Request::get('don_vi_id'),
+                            'don_vi_phoi_hop_id' => Request::get('don_vi_phoi_hop_id'),'trich_yeu' => Request::get('trich_yeu'),'co_quan_ban_hanh' => Request::get('co_quan_ban_hanh'),'tom_tat' => Request::get('tom_tat'),
+                            'search' => Request::get('search')])->render() !!}
                             </div>
                         </div>
                     </div>

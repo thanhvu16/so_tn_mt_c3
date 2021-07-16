@@ -223,7 +223,11 @@ class VanBanTraLaiController extends Controller
                                     // chuyen len PCT hoac CT
                                     $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id;
                                     $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
-                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+                                    //xem lại phần này trưởng phòng trả lại
+                                    //đay là trả về phó chủ tịch
+//                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+                                    //đây là trả về tham mưu
+                                    $vanBanDen->trinh_tu_nhan_van_ban = null;
 
                                     if ($canBoNhan == $chuTich->id) {
                                         $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
