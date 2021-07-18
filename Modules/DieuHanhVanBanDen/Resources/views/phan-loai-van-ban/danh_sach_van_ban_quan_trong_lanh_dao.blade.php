@@ -12,9 +12,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <div class="row">
-                            <div class="col-md-3">
-                                <h3 class="box-title mt-2">Văn bản quan trọng được tham mưu</h3>
-                            </div>
+
                             <div class="col-md-4">
                                 <button class="btn btn-primary" onclick="showModal()"><i
                                         class="fa  fa-search"></i><span
