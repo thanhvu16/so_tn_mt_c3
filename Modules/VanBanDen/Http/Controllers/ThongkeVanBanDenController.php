@@ -755,14 +755,14 @@ class ThongkeVanBanDenController extends Controller
         $danhSachVanBanDenDonViDaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) {
                 return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
-            })
+            })->select('van_ban_den_id')
             ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanTrongHan = $danhSachVanBanDenDonViDaHoanThanhTrongHan;
 
         $danhSachVanBanDenDonViDaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) {
                 return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
-            })
+            })->select('van_ban_den_id')
             ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanQuaHan = $danhSachVanBanDenDonViDaHoanThanhQuaHan;
 
@@ -786,7 +786,7 @@ class ThongkeVanBanDenController extends Controller
         $danhSachVanBanDenDonViChuaHoanThanhTrongHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '>=', $currentDate);
-            })
+            })->select('van_ban_den_id')
             ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
 
 
@@ -796,7 +796,7 @@ class ThongkeVanBanDenController extends Controller
         $danhSachVanBanDenDonViChuaHoanThanhQuaHan = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->whereHas('vanBanDen', function ($query) use ($currentDate) {
                 return $query->where('han_xu_ly', '<', $currentDate);
-            })
+            })->select('van_ban_den_id')
             ->where('don_vi_id', $donViId)->distinct('van_ban_den_id')->count();
         $vanBanQuaHan = $danhSachVanBanDenDonViChuaHoanThanhQuaHan;
         $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
@@ -889,8 +889,6 @@ class ThongkeVanBanDenController extends Controller
 
         $ds_vanBanDen = VanBanDen::
         whereNull('deleted_at')
-            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
-            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN)
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -917,10 +915,19 @@ class ThongkeVanBanDenController extends Controller
 //                }
 //            })
             ->where('type', 1)
+            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->whereNull('deleted_at')
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
+
         $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-            ->where('don_vi_id', $donVi->id)->distinct()->get();
+            ->whereHas('vanBanDen', function ($query) {
+                return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
+            })->select('van_ban_den_id')
+            ->where('don_vi_id', $donVi->id)->distinct('van_ban_den_id')->get();
+
+
+
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -944,7 +951,6 @@ class ThongkeVanBanDenController extends Controller
         $donViId = null;
         $donVi = DonVi::where('id', $id)->first();
 
-        $type = null;
         if ($donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
 
@@ -958,10 +964,9 @@ class ThongkeVanBanDenController extends Controller
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
 
+
         $ds_vanBanDen = VanBanDen::
         whereNull('deleted_at')
-            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
-            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN)
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -988,10 +993,15 @@ class ThongkeVanBanDenController extends Controller
 //                }
 //            })
             ->where('type', 1)
+            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->whereNull('deleted_at')
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
         $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
-            ->where('don_vi_id', $donVi->id)->distinct()->get();
+            ->whereHas('vanBanDen', function ($query) {
+                return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
+            })
+            ->where('don_vi_id', $donVi->id)->select('van_ban_den_id')->distinct('van_ban_den_id')->get();
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -1001,7 +1011,7 @@ class ThongkeVanBanDenController extends Controller
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
-            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($ds_vanBanDen, $totalRecord,
+            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($danhSachVanBanDenDonVi, $totalRecord,
                 $month, $year, $day),
                 $fileName);
         }
