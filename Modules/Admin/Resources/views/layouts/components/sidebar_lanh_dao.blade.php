@@ -127,7 +127,7 @@
 @if(auth::user()->id == 15)
 <li class="{{ Route::is('vanBanQuanTrongGiamDoc') ? 'active' : '' }}">
     <a href="{{route('vanBanQuanTrongGiamDoc')}}">
-        <i class="fa fa-file-text"></i> <span>Văn bản quan trọng</span>
+        <i class="fa fa-file-text"></i> <span>Văn bản đã xử lý</span>
     </a>
 
 </li>
