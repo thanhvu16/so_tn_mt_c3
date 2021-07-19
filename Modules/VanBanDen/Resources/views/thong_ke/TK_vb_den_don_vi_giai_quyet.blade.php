@@ -52,11 +52,11 @@
         @forelse ($ds_vanBanDen as $key=>$data)
             <tr role="row" >
                 <td style='text-align: center;vertical-align: top;'>{{$key+1}}</td>
-                <td style="text-align: center;vertical-align: top;color: red">{{$data->vanBanDen->so_den}}</td>
-                <td style="text-align: left;vertical-align: top;">{{$data->vanBanDen->co_quan_ban_hanh}}</td>
+                <td style="text-align: center;vertical-align: top;color: red">{{$data->vanBanDen->so_den ?? ''}}</td>
+                <td style="text-align: left;vertical-align: top;">{{$data->vanBanDen->co_quan_ban_hanh ?? ''}}</td>
 
                 <td style='text-align: left;vertical-align: top;' >
-                    <p>- Số ký hiệu: {{$data->vanBanDen->so_ky_hieu}}</p>
+                    <p>- Số ký hiệu: {{$data->vanBanDen->so_ky_hieu ?? ''}}</p>
                     <p>- Ngày ban
                         hành: {{ date('d/m/Y', strtotime($data->vanBanDen->ngay_ban_hanh)) ?? '' }}</p>
                 </td>
