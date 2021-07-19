@@ -28,7 +28,6 @@ class thongKeVanBanSoExport implements FromView, ShouldAutoSize, WithEvents
 
     public function __construct($danhSachDonVi, $totalReCord,$tongSoVB,$tu_ngay,$den_ngay)
     {
-
         $this->danhSachDonVi = $danhSachDonVi;
         $this->totalReCord=$totalReCord + 6;
         $this->tongSoVB=$tongSoVB;

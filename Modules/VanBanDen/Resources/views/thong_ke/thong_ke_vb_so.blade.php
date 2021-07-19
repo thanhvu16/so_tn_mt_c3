@@ -76,6 +76,7 @@
                                         </select>
                                         <input type="text" class="hidden" name="loai_van_ban_id_1" value="">
                                         <input type="text" class="hidden" name="don_vi_xu_ly_chinh_1" value="{{Request::get('don_vi_xu_ly_chinh')}}">
+                                        <input type="text" class="hidden" name="sovanbanden" value="{{$allVanBanDen}}">
                                     </div>
                                     <div class="col-md-1" style="margin-top: 30px">
                                         <button type="submit" name="search" class="btn btn-primary"><i
