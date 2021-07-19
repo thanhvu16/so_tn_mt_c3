@@ -919,7 +919,7 @@ class ThongkeVanBanDenController extends Controller
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
-        $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+        $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->where('don_vi_id', $donVi->id)->distinct()->get();
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
@@ -934,7 +934,7 @@ class ThongkeVanBanDenController extends Controller
                 $month, $year, $day),
                 $fileName);
         }
-        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('danhSachVanBanDenDonVi'));
 
 
     }
@@ -990,7 +990,7 @@ class ThongkeVanBanDenController extends Controller
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
-        $ds_vanBanDen = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+        $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->where('don_vi_id', $donVi->id)->distinct()->get();
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
@@ -1005,7 +1005,7 @@ class ThongkeVanBanDenController extends Controller
                 $month, $year, $day),
                 $fileName);
         }
-        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('ds_vanBanDen'));
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('danhSachVanBanDenDonVi'));
 
 
 //        }
