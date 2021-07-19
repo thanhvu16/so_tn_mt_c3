@@ -66,6 +66,15 @@
         </tr>
         </thead>
         <tbody style='display: table-row-group;vertical-align: middle;border-color: inherit;'>
+        <tr>
+            <td style="font-weight: bold;vertical-align: middle;text-align: center" class="text-center">*</td>
+            <td style="font-weight: bold">Tổng số</td>
+            <td class="text-center" style="vertical-align: middle;text-align: center"><span class="tongSo text-center" style="color: red;font-weight: bold">{{$tongSoVB}}</span></td>
+            <td class="" id="body1"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
         @forelse ($danhSachDonVi as $key=>$donVidata)
             <tr role="row" class="odd">
                 <td class="text-center" style="vertical-align: middle;text-align: center"> {{$key+1}}</td>
@@ -79,15 +88,7 @@
         @empty
             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>
         @endforelse
-        <tr>
-            <td style="font-weight: bold;vertical-align: middle;text-align: center" class="text-center">*</td>
-            <td style="font-weight: bold">Tổng số</td>
-            <td class="text-center" style="vertical-align: middle;text-align: center"><span class="tongSo text-center" style="color: red;font-weight: bold">{{$tongSoVB}}</span></td>
-            <td class="" id="body1"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+
         </tbody>
     </table>
 
