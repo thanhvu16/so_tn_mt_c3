@@ -120,7 +120,7 @@
                                     </td>
                                     @endunlessrole
                                     <td>
-                                        <div class="dau-viec-chi-tiet" style="width: 95%;">
+                                        <div class="dau-viec-chi-tiet mb-2" style="width: 95%;">
                                             @if (empty($active))
                                                 <p>
                                                     <select name="chu_tich_id[{{ $vanBanDen->id }}]"
@@ -229,6 +229,16 @@
 {{--                                                    VB Quan trọng--}}
 {{--                                                </label>--}}
                                             @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label>
+                                                <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;">
+                                                    <input type="checkbox"  {{ isset($vanBanDen->donViChuTriVB) && $vanBanDen->donViChuTriVB->van_ban_quan_trong == 1 ? 'checked' : null }}  class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}][]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;">
+                                                    <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                                </div>
+                                                &ensp;Văn bản quan trọng
+                                            </label>
+
                                         </div>
                                     </td>
                                     <td>

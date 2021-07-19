@@ -69,14 +69,13 @@ class CapNhatQuyTrinhGiamDocController extends Controller
     public function ThemLaiThongTin($request)
     {
         $currentUser = auth::user();
-
         $data = $request->all();
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
 
         $arrChuTich = $data['chu_tich_id'] ?? null;
         $arrPhoChuTich = $data['pho_chu_tich_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
-        $tomTatVanBan = $data['tom_tat'] ?? null;
+        $tomTatVanBan = $data['don_vi_chu_tri'] ?? null;
         $noiDungChuTich = $data['noi_dung_chu_tich'] ?? null;
         $noiDungPhoChuTich = $data['noi_dung_pho_chu_tich'] ?? null;
         $canBoChiDao = null;
@@ -148,25 +147,24 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                 $chuyenVanBanXuongDonVi = null;
                 $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
                 if ($vanBanDen) {
-
                     $vanBanDen->tom_tat = $tomTatVanBan[$vanBanDenId];
                     $vanBanDen->save();
 
-                    if (!empty($arrChuTich[$vanBanDenId])) {
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
-                        $vanBanDen->save();
-                    }
-
-                    if (!empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
-                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
-                        $vanBanDen->save();
-                    }
-
-                    if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
+//                    if (!empty($arrChuTich[$vanBanDenId])) {
+//                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
+//                        $vanBanDen->save();
+//                    }
+//
+//                    if (!empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
+//                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+//                        $vanBanDen->save();
+//                    }
+//
+//                    if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
                         $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
                         $vanBanDen->save();
                         $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
-                    }
+//                    }
                 }
 
                 // check quyen gia han van ban
