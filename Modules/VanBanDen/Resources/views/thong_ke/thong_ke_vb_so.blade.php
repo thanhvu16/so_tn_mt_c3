@@ -106,7 +106,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-left" style="vertical-align: middle">Tổng số văn bản  </td>
+                                                <td class="text-left" style="vertical-align: middle">Tổng số đã giao  </td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     {{$tongSoVanBanDen}}</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
