@@ -325,7 +325,7 @@
                             'ngay_den_end' => Request::get('ngay_den_end'),'ngay_ban_hanh_start' => Request::get('ngay_ban_hanh_start'),'ngay_ban_hanh_end' => Request::get('ngay_ban_hanh_end'),'so_ky_hieu' => Request::get('so_ky_hieu'),
                             'nguoi_ky' => Request::get('nguoi_ky'),'loai_van_ban_id' => Request::get('loai_van_ban_id'),'so_van_ban_id' => Request::get('so_van_ban_id'),'don_vi_id' => Request::get('don_vi_id'),
                             'don_vi_phoi_hop_id' => Request::get('don_vi_phoi_hop_id'),'trich_yeu' => Request::get('trich_yeu'),'co_quan_ban_hanh' => Request::get('co_quan_ban_hanh'),'tom_tat' => Request::get('tom_tat'),
-                            'search' => Request::get('search')])->render() !!}
+                            'van_ban_quan_trong_search' => Request::get('van_ban_quan_trong_search')])->render() !!}
                             </div>
                         </div>
                     </div>
