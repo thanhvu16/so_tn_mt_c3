@@ -50,6 +50,7 @@
         </thead>
         <tbody>
         @forelse ($ds_vanBanDen as $key=>$data)
+            @if($data->vanBanDen)
             <tr role="row" >
                 <td style='text-align: center;vertical-align: top;'>{{$key+1}}</td>
                 <td style="text-align: center;vertical-align: top;color: red">{{$data->vanBanDen->so_den ?? ''}}</td>
@@ -93,6 +94,7 @@
                 </td>
                 <td style="vertical-align: top;">{{$data->vanBanDen->nguoiDung->ho_ten ?? ''}}</td>
             </tr>
+            @endif
         @empty
             <tr>
                 <td colspan="6" class="text-center">Không tìm thấy dữ
