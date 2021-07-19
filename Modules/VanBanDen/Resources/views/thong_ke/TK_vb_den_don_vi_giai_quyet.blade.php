@@ -57,7 +57,6 @@
                 <td style="text-align: left;vertical-align: top;">{{$data->vanBanDen->co_quan_ban_hanh ?? ''}}</td>
 
                 <td style='text-align: left;vertical-align: top;' >
-                    {{dd($data->vanBanDen)}}
                     <p>- Số ký hiệu: {{$data->vanBanDen->so_ky_hieu ?? ''}}</p>
                     <p>- Ngày ban
                         hành: {{ date('d/m/Y', strtotime($data->vanBanDen->ngay_ban_hanh)) ?? '' }}</p>
