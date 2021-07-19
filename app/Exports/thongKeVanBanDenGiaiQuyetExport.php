@@ -27,7 +27,6 @@ class thongKeVanBanDenGiaiQuyetExport implements FromView, ShouldAutoSize, WithE
 
     public function __construct($ds_vanBanDen,$totalReCord,$month,$year,$day)
     {
-
         $this->vanbanden = $ds_vanBanDen;
         $this->thang = $month;
         $this->nam = $year;

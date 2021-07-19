@@ -1082,7 +1082,7 @@ class ThongkeVanBanDenController extends Controller
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
-            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($ds_vanBanDen, $totalRecord,
+            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($danhSachVanBanDenDonVi, $totalRecord,
                 $month, $year, $day),
                 $fileName);
         }
