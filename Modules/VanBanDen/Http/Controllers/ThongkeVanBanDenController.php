@@ -951,7 +951,6 @@ class ThongkeVanBanDenController extends Controller
         $donViId = null;
         $donVi = DonVi::where('id', $id)->first();
 
-        $type = null;
         if ($donVi->dieu_hanh == DonVi::DIEU_HANH) {
             $donViId = $donVi->id;
 
