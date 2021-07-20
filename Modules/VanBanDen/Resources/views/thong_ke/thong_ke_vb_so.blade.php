@@ -106,7 +106,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-left" style="vertical-align: middle">Tổng số đã giao  </td>
+                                                <td class="text-left" style="vertical-align: middle">Tổng số  </td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
                                                     {{$tongSoVanBanDen}}</td>
                                                 <td class="text-center" style="vertical-align: middle;font-weight: bold">
@@ -169,7 +169,7 @@
                                         <tbody>
                                         <tr>
                                             <td style="font-weight: bold" class="text-center">*</td>
-                                            <td style="font-weight: bold">Tổng số đang xử lý</td>
+                                            <td style="font-weight: bold">Tổng số đã giao</td>
                                             <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>
 
                                             </td>
