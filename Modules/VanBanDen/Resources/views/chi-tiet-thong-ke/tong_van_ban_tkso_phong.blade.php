@@ -13,15 +13,15 @@
                             <div class="col-md-6">
 
                             </div>
-                            <div class="col-md-6 text-right">
-                                <form action method="GET" action="{{ route('van-ban-den.index') }}" class="form-export">
-                                    <input type="hidden" name="type"  value="">
-                                    <button type="button" data-type="excel"
-                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
-                                            class="fa fa-file-excel-o"></i> Xuất Excel
-                                    </button>
-                                </form>
-                            </div>
+{{--                            <div class="col-md-6 text-right">--}}
+{{--                                <form action method="GET" action="{{ route('van-ban-den.index') }}" class="form-export">--}}
+{{--                                    <input type="hidden" name="type"  value="">--}}
+{{--                                    <button type="button" data-type="excel"--}}
+{{--                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i--}}
+{{--                                            class="fa fa-file-excel-o"></i> Xuất Excel--}}
+{{--                                    </button>--}}
+{{--                                </form>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
                     <!-- /.box-header -->

@@ -43,26 +43,32 @@
     <table class="table table-bordered table-striped dataTable mb-0">
         <thead>
         <tr>
-            <td colspan="7" style="text-align: center">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</td>
+            <td colspan="8" style="text-align: center">BÁO CÁO THỐNG KÊ TỔNG HỢP SỐ LIỆU CHỈ ĐẠO VÀ GIẢI QUYẾT VĂN BẢN</td>
         </tr>
         <tr>
-            <td colspan="7" style="text-align: left">- Thời gian: {{$tu_ngay}} @if($tu_ngay && $den_ngay ) đến @endif  {{$den_ngay}}</td>
+            <td colspan="8" style="text-align: left">- Thời gian: {{$tu_ngay}} @if($tu_ngay && $den_ngay ) đến @endif  {{$den_ngay}}</td>
         </tr>
-{{--        <tr>--}}
-{{--            <td colspan="7" style="text-align: left">- Đơn vị kết xuất báo cáo: Văn phòng sở</td>--}}
-{{--        </tr>--}}
+
         <tr>
-            <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>STT</th>
-            <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: center;font-weight: bold;display: table-cell;vertical-align: middle;'>Đơn vị</th>
-            <th rowspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: middle;'>Tổng số văn bản</th>
-            <th colspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Số văn bản đã giải quyết</th>
-            <th colspan="2" style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Số văn bản chưa giải quyết</th>
+            <th style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;' rowspan="4" >STT</th>
+            <th style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: center;font-weight: bold;display: table-cell;vertical-align: middle;' rowspan="4" >Đơn vị</th>
+            <th style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: center;font-weight: bold;display: table-cell;vertical-align: middle;' rowspan="4" >Tổng số đã giao</th>
+
+        </tr>
+        <tr>
+            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: center;font-weight: bold;display: table-cell;vertical-align: middle;' colspan="4" >Văn bản đến</th>
+            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: center;font-weight: bold;display: table-cell;vertical-align: middle;' rowspan="3" >Giấy mời đến</th>
+
+        </tr>
+        <tr>
+            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;' colspan="2" >Số văn bản đã giải quyết</th>
+            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;' colspan="2" >Số văn bản chưa giải quyết</th>
         </tr>
         <tr>
             <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Trong hạn</th>
             <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Quá hạn</th>
-            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Trong hạn</th>
-            <th  style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Quá Hạn</th>
+            <th style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Trong hạn</th>
+            <th style='padding: 0.75rem;border: 1px solid #a4b7c1;text-align: inherit;font-weight: bold;display: table-cell;vertical-align: inherit;'>Quá Hạn </th>
         </tr>
         </thead>
         <tbody style='display: table-row-group;vertical-align: middle;border-color: inherit;'>
@@ -84,6 +90,7 @@
                 <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['giai_quyet_qua_han'] }}</td>
                 <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_trong_han'] }}</td>
                 <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_qua_han'] }}</td>
+                <td style="vertical-align: middle;text-align: center">{{ $donVidata->vanBanDaGiaiQuyet['giayMoi']}}</td>
             </tr>
         @empty
             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>

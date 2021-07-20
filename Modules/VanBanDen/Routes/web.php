@@ -54,6 +54,7 @@ Route::get('chi-tiet-tong-van-ban-so/{id}', array('as' => 'chiTietTongVanBanSo',
 Route::get('chi-tiet-da-giai-quyet-trong-han-so/{id}', array('as' => 'chiTietDaGiaiQuyetTrongHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietDaGiaiQuyetTrongHanVanBanSo'));
 Route::get('chi-tiet-da-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietDaGiaiQuyetQuaHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietDaGiaiQuyetQuaHanVanBanSo'));
 
+Route::get('chi-tiet-giay-moi/{id}', array('as' => 'chiTietgiayMoi', 'uses' => 'ThongkeVanBanDenController@chiTietgiayMoi'));
 Route::get('chi-tiet-chua-giai-quyet-trong-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetTrongHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetTrongHanVanBanSo'));
 Route::get('chi-tiet-chua-giai-quyet-qua-han-so/{id}', array('as' => 'chiTietChuaGiaiQuyetQuaHanVanBanSo', 'uses' => 'ThongkeVanBanDenController@chiTietChuaGiaiQuyetQuaHanVanBanSo'));
 Route::get('tong-so-van-ban', array('as' => 'tongSoVanBanDen', 'uses' => 'ThongkeVanBanDenController@tongSoVanBanDen'));

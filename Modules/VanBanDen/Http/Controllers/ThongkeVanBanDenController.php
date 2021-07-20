@@ -622,6 +622,7 @@ class ThongkeVanBanDenController extends Controller
 
     public function vanBanGiaiQuyet($donVi, $tu_ngay, $den_ngay, $vanThuNhap, $loai_van_ban_id)
     {
+
         $donViId = null;
         $date = date('Y-m-d');
         $type = null;
@@ -646,11 +647,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
@@ -684,11 +685,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loai_van_ban_id);
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
 //            ->where(function ($query) {
 //                return $query->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
 //                    ->orWhereNull('trinh_tu_nhan_van_ban');
@@ -713,6 +714,41 @@ class ThongkeVanBanDenController extends Controller
             ->get();
 
 
+        $tongSoGiayMoi = VanBanDen::whereNull('deleted_at')
+            ->where(function ($query) use ($loai_van_ban_id) {
+                if (!empty($loai_van_ban_id)) {
+                    return $query->where('loai_van_ban_id', $loai_van_ban_id);
+                }
+            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                }
+            })
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
+            ->where('type', 1)
+            ->get();
+        $arrGiayMoiDenId = $tongSoGiayMoi->pluck('id')->toArray();
+
+        $danhSachGiayMoi = DonViChuTri::whereIn('van_ban_den_id', $arrGiayMoiDenId)
+            ->select('van_ban_den_id')
+            ->where('don_vi_id', $donVi->id)->distinct('van_ban_den_id')->count();
+
+
 
 //        dd($danhSachVanBanDenChuaHoanThanh);
 
@@ -728,7 +764,7 @@ class ThongkeVanBanDenController extends Controller
 
 
 //        if (empty($type)) {
-        $tong = $vanBanDaGiaiQuyet['tong'] + $vanBanChuaGiaiQuyet['tong'];//        }
+        $tong = $vanBanDaGiaiQuyet['tong'] + $vanBanChuaGiaiQuyet['tong']+$danhSachGiayMoi;//        }
 
         ;
         return [
@@ -737,6 +773,7 @@ class ThongkeVanBanDenController extends Controller
             'giai_quyet_qua_han' => $vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
             'chua_giai_quyet_giai_quyet_trong_han' => $vanBanChuaGiaiQuyet['chua_giai_quyet_hoan_thanh_dung_han'],
             'chua_giai_quyet_giai_quyet_qua_han' => $vanBanChuaGiaiQuyet['chua_giai_quyet_hoan_thanh_qua_han'],
+            'giayMoi' => $danhSachGiayMoi,
 
 
         ];
@@ -909,11 +946,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
             ->where('type', 1)
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
             ->whereNull('deleted_at')
@@ -937,7 +974,7 @@ class ThongkeVanBanDenController extends Controller
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
-            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($ds_vanBanDen, $totalRecord,
+            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($danhSachVanBanDenDonVi, $totalRecord,
                 $month, $year, $day),
                 $fileName);
         }
@@ -987,11 +1024,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
             ->where('type', 1)
             ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
             ->whereNull('deleted_at')
@@ -1066,11 +1103,11 @@ class ThongkeVanBanDenController extends Controller
 
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
             ->where(function ($query) use ($loaiVanBan) {
                 if (!empty($loaiVanBan)) {
                     return $query->where('loai_van_ban_id', $loaiVanBan);
@@ -1150,11 +1187,11 @@ class ThongkeVanBanDenController extends Controller
                     return $query->where('loai_van_ban_id', $loaiVanBan);
                 }
             })
-//            ->where(function ($query) use ($loaiVanBanGiayMoi) {
-//                if (!empty($loaiVanBanGiayMoi)) {
-//                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
-//                }
-//            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
+                }
+            })
             ->where('type', 1)
             ->get();
         $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
@@ -1179,7 +1216,77 @@ class ThongkeVanBanDenController extends Controller
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
-            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($ds_vanBanDen, $totalRecord,
+            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($danhSachVanBanDenDonVi, $totalRecord,
+                $month, $year, $day),
+                $fileName);
+        }
+        return view('vanbanden::chi-tiet-thong-ke.tong_van_ban_tkso_phong', compact('danhSachVanBanDenDonVi'));
+
+
+
+    }
+
+    public function chiTietgiayMoi($id, Request $request)
+    {
+        $donVi = DonVi::where('id', $id)->first();
+
+        $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
+            ->select('id')
+            ->first();
+
+
+        $loaiVanBan = $request->get('loai_van_ban_id') ?? null;
+        $tu_ngay = $request->get('tu_ngay') ?? null;
+        $den_ngay = $request->get('den_ngay') ?? null;
+
+        $ds_vanBanDen = VanBanDen::whereNull('deleted_at')
+            ->where(function ($query) use ($tu_ngay, $den_ngay) {
+                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
+
+                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                }
+                if ($den_ngay == '' && $tu_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+
+                }
+                if ($tu_ngay == '' && $den_ngay != '') {
+                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+
+                }
+            })
+            ->where(function ($query) use ($loaiVanBan) {
+                if (!empty($loaiVanBan)) {
+                    return $query->where('loai_van_ban_id', $loaiVanBan);
+                }
+            })
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                }
+            })
+            ->where('type', 1)
+            ->get();
+        $arrVanBanDenId = $ds_vanBanDen->pluck('id')->toArray();
+        $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
+            ->where('don_vi_id', $donVi->id)
+            ->distinct('van_ban_den_id')
+            ->get('van_ban_den_id');
+
+
+
+
+
+        if ($request->get('type') == 'excel') {
+            $month = Carbon::now()->format('m');
+            $year = Carbon::now()->format('Y');
+            $day = Carbon::now()->format('d');
+
+
+            $totalRecord = $ds_vanBanDen->count();
+            $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
+
+            return Excel::download(new thongKeVanBanDenGiaiQuyetExport($danhSachVanBanDenDonVi, $totalRecord,
                 $month, $year, $day),
                 $fileName);
         }
