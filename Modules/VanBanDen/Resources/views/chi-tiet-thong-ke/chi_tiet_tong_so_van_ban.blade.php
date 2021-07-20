@@ -13,20 +13,20 @@
                             <div class="col-md-6">
 
                             </div>
-                            <div class="col-md-6 text-right">
-                                <form action method="GET" action="{{ route('tongSoVanBanDen') }}" class="form-export">
-                                    <input type="hidden" name="type"  value="">
-                                    <input type="hidden" name="tu_ngay"  value="{{Request::get('tu_ngay') }}">
-                                    <input type="hidden" name="den_ngay"  value="{{Request::get('den_ngay') }}">
-                                    <input type="hidden" name="loai_van_ban_id" value="{{Request::get('loai_van_ban_id') }}">
-                                    <input type="hidden" name="don_vi_xu_ly_chinh" value="{{Request::get('don_vi_xu_ly_chinh') }}">
-                                    <input type="hidden" name="page"  value="{{Request::get('page') }}">
-                                    <button type="button" data-type="excel"
-                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
-                                            class="fa fa-file-excel-o"></i> Xuất Excel
-                                    </button>
-                                </form>
-                            </div>
+{{--                            <div class="col-md-6 text-right">--}}
+{{--                                <form action method="GET" action="{{ route('tongSoVanBanDen') }}" class="form-export">--}}
+{{--                                    <input type="hidden" name="type"  value="">--}}
+{{--                                    <input type="hidden" name="tu_ngay"  value="{{Request::get('tu_ngay') }}">--}}
+{{--                                    <input type="hidden" name="den_ngay"  value="{{Request::get('den_ngay') }}">--}}
+{{--                                    <input type="hidden" name="loai_van_ban_id" value="{{Request::get('loai_van_ban_id') }}">--}}
+{{--                                    <input type="hidden" name="don_vi_xu_ly_chinh" value="{{Request::get('don_vi_xu_ly_chinh') }}">--}}
+{{--                                    <input type="hidden" name="page"  value="{{Request::get('page') }}">--}}
+{{--                                    <button type="button" data-type="excel"--}}
+{{--                                            class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i--}}
+{{--                                            class="fa fa-file-excel-o"></i> Xuất Excel--}}
+{{--                                    </button>--}}
+{{--                                </form>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
                     <!-- /.box-header -->

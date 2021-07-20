@@ -90,7 +90,7 @@
                 </span>
     </a>
     <ul class="treeview-menu">
-        <li class="{{ Route::is('bao_cao_thong_ke.index') ? 'active' : '' }}"><a href="{{ route('bao_cao_thong_ke.index') }}"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>
-        <li class="{{ Route::is('thongkevbso') ? 'active' : '' }}"><a href="{{ route('thongkevbso') }}"><i class="fa fa-circle-o"></i>Báo cáo thống kê</a></li>
+{{--        <li class="{{ Route::is('bao_cao_thong_ke.index') ? 'active' : '' }}"><a href="{{ route('bao_cao_thong_ke.index') }}"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>--}}
+        <li class="{{ Route::is('thongkevbso') ? 'active' : '' }}"><a href="{{ route('thongkevbso') }}"><i class="fa fa-circle-o"></i>Báo cáo thống kê VB đến</a></li>
     </ul>
 </li>

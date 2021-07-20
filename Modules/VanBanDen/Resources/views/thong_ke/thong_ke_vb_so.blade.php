@@ -150,12 +150,20 @@
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr>
-                                            <th class="text-center" style="vertical-align: middle" colspan="7" width="5%"><h4>Tổng hợp văn bản đến các đơn vị</h4></th>
+                                            <th class="text-center" style="vertical-align: middle" colspan="8" width="5%"><h4>Tổng hợp văn bản đến các đơn vị</h4></th>
                                         </tr>
                                         <tr>
-                                            <th class="text-center" style="vertical-align: middle" rowspan="2" width="5%">STT</th>
-                                            <th class="text-center" style="vertical-align: middle" rowspan="2" width="">Đơn vị</th>
-                                            <th class="text-center" style="vertical-align: middle" rowspan="2" width="10%">Tổng số văn bản</th>
+                                            <th class="text-center" style="vertical-align: middle" rowspan="4" width="5%">STT</th>
+                                            <th class="text-center" style="vertical-align: middle" rowspan="4" width="">Đơn vị</th>
+                                            <th class="text-center" style="vertical-align: middle" rowspan="4" width="10%">Tổng số đã giao</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle" colspan="4" >Văn bản đến</th>
+                                            <th class="text-center" style="vertical-align: middle" rowspan="3"  width="">Giấy mời đến</th>
+
+                                        </tr>
+                                        <tr>
                                             <th class="text-center" style="vertical-align: middle" colspan="2" width="20%">Số văn bản đã giải quyết</th>
                                             <th class="text-center" style="vertical-align: middle" colspan="2" width="20%">Số văn bản chưa giải quyết</th>
                                         </tr>
@@ -208,6 +216,11 @@
                                                     <a href="{{route('chiTietChuaGiaiQuyetQuaHanVanBanSo',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">
                                                         {{ $donVidata->vanBanDaGiaiQuyet['chua_giai_quyet_giai_quyet_qua_han'] }}
                                                     </a></td>
+                                                <td  style="vertical-align: middle;text-align: center">
+                                                    <a href="{{route('chiTietgiayMoi',$donVidata->id.'?tu_ngay='.Request::get('tu_ngay').'&den_ngay='.Request::get('den_ngay').'&loai_van_ban_id='.Request::get('loai_van_ban_id').'&don_vi_xu_ly_chinh='.Request::get('don_vi_xu_ly_chinh'))}}">
+                                                        {{ $donVidata->vanBanDaGiaiQuyet['giayMoi']}}
+                                                    </a>
+                                                   </td>
                                             </tr>
                                         @empty
                                             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>

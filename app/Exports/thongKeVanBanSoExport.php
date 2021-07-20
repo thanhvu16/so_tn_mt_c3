@@ -29,7 +29,7 @@ class thongKeVanBanSoExport implements FromView, ShouldAutoSize, WithEvents
     public function __construct($danhSachDonVi, $totalReCord,$tongSoVB,$tu_ngay,$den_ngay)
     {
         $this->danhSachDonVi = $danhSachDonVi;
-        $this->totalReCord=$totalReCord + 6;
+        $this->totalReCord=$totalReCord + 7;
         $this->tongSoVB=$tongSoVB;
         $this->tu_ngay=$tu_ngay;
         $this->den_ngay=$den_ngay;
@@ -58,7 +58,7 @@ class thongKeVanBanSoExport implements FromView, ShouldAutoSize, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
 
-                $cellRange = 'A1:G1'; // All headers
+                $cellRange = 'A1:H6'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->applyFromArray([
                     'font' => [
                         'name'      =>  'Times New Roman',
@@ -70,7 +70,7 @@ class thongKeVanBanSoExport implements FromView, ShouldAutoSize, WithEvents
                     ],
                 ]);
 
-                $event->sheet->getDelegate()->getStyle('A4:G5')
+                $event->sheet->getDelegate()->getStyle('A3:H6')
                     ->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()
                     ->setARGB('caeaef');
 
