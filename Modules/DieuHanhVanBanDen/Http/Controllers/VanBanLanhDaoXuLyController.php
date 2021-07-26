@@ -743,12 +743,13 @@ class VanBanLanhDaoXuLyController extends Controller
 //            ->whereNull('hoan_thanh')
 //            ->get();
         $donViChuTri = DonViChuTri::whereNull('hoan_thanh')
-//        where('van_ban_quan_trong', 1)
             ->where(function ($query) use ($searchQuanTrong) {
                 if (!empty($searchQuanTrong)) {
                     return $query->where('van_ban_quan_trong', $searchQuanTrong);
                 }
             })
+            ->where('can_bo_chuyen_id', 10551)
+
             ->select(['id', 'van_ban_den_id'])
             ->get();
 
@@ -758,6 +759,7 @@ class VanBanLanhDaoXuLyController extends Controller
 
 
         $arrIdVanBanDenDonVi = $idVanBanDonViChuTri;
+
 //        $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
 
 //        dd($idVanBanLanhDaoId ,$idVanBanDonViChuTri, $arrIdVanBanDenDonVi);
