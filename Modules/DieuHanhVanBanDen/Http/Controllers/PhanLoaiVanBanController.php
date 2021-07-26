@@ -811,6 +811,8 @@ class PhanLoaiVanBanController extends Controller
             $idVanBanLanhDaoId = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
             $arrIdVanBanDenDonVi = array_merge($idVanBanDonViChuTri, $idVanBanLanhDaoId);
+//            $arrIdVanBanDenDonVi = $idVanBanDonViChuTri;
+
 
             if ($request->type != null) {
                 $danhSachVanBanDen = VanBanDen::with([
