@@ -11,7 +11,7 @@
                         <h3 class="box-title">Dự thảo văn bản</h3>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>

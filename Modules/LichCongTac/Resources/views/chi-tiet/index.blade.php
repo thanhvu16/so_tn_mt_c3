@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Chi tiết cuộc họp</h3>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
 
                             <!-- Nav tabs -->
 

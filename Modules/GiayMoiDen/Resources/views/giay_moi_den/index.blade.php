@@ -148,7 +148,8 @@
                     <div class="col-md-6">
                         Tổng số giấy mời: <b>{{ $ds_vanBanDen->total() }}</b>
                     </div>
-                    <div class="box-body">
+                    <div class="row clearfix"></div>
+                    <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>

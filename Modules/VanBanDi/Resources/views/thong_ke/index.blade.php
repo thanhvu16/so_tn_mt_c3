@@ -46,7 +46,7 @@
 {{--                                        </button>--}}
                                     </form>
                                 </div>
-                                <div class="col-md-12" style="margin-top: 5px">
+                                <div class="col-md-12 table-responsive" style="margin-top: 5px">
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr>

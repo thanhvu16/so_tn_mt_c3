@@ -9,7 +9,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Công việc xin gia hạn</h3>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">

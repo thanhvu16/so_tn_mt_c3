@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Văn bản đi trả lại</h3>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr style="background-color: rgb(60, 141, 188); color: rgb(255, 255, 255);">

@@ -19,7 +19,7 @@
                         <div class="tab-pane active" id="home">
                             <div class="row">
                                 <div class="col-md-12" style="margin: 10px 0px;">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 table-responsive">
                                             <table id="" class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
