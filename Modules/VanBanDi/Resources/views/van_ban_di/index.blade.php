@@ -194,7 +194,7 @@
                                 <th width="26%" style="vertical-align: middle" class="text-center">Thông
                                     tin
                                 </th>
-                                <th width="38%" style="vertical-align: middle" class="text-center">Trích yếu
+                                <th  style="vertical-align: middle" class="text-center">Trích yếu
                                 </th>
                                 <th width="21%" style="vertical-align: middle" class="text-center">Nơi
                                     nhận
@@ -215,7 +215,8 @@
                                         <p>- Số đi: <span
                                                 class="font-bold color-red">{{$vbDi->so_di}}</span></p>
                                     </td>
-                                    <td style="text-align: justify"><a
+                                    <td   style="text-align: justify">
+                                        <a
                                             href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}"
                                             title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
@@ -227,7 +228,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {{--                                                    {{$vbDi->mailtrongtp}}--}}
+
                                         @if ($vbDi->donvinhanvbdi)
                                             @foreach($vbDi->donvinhanvbdi as $key=>$item)
                                                 <p>- {{ $item->laytendonvinhan->ten_don_vi }}</p>

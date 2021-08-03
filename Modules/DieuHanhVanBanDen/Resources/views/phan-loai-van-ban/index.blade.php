@@ -9,8 +9,15 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <h3 class="box-title mt-2">@if(Request::get('type') == 1)Giấy mời chờ phân loại @else Văn bản chờ phân loại @endif</h3>
+                            </div>
+                            <div class="col-md-4 text-left">
+                                <button type="button" onclick="showModal()"
+                                        class="btn btn-sm mt-1 btn-primary waves-effect waves-light  btn-sm mb-2"
+                                        data-original-title=""
+                                        title=""><i class="fa fa-search"></i> Tìm kiếm
+                                </button>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('phan-loai-van-ban.store') }}" method="post" id="form-tham-muu">
@@ -27,42 +34,65 @@
                         </div>
                     </div>
                     <div class="box-body table-responsive">
-                        <form action="@if(Request::get('type') == 1){{route('phan_loai_giay_moi')}}@else{{route('phan-loai-van-ban.index')}}@endif" method="get">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="so-den" class="col-form-label">Tìm theo số đến</label>
-                                    <input type="number" class="form-control" placeholder="Nhập số đến"
-                                           name="so_den" value="{{ Request::get('so_den') ?? null }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="han-xu-ly" class="col-form-label">Tìm theo ngày nhập</label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
+                        <div class="modal fade" id="myModal">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content ">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title"><i
+                                                class="fa fa-search"></i> Tìm kiếm nâng cao</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form action="@if(Request::get('type') == 1){{route('phan_loai_giay_moi')}}@else{{route('phan-loai-van-ban.index')}}@endif" method="get">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="so-den" class="col-form-label">Tìm theo số đến</label>
+                                                            <input type="number" class="form-control" placeholder="Nhập số đến"
+                                                                   name="so_den" value="{{ Request::get('so_den') ?? null }}">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="han-xu-ly" class="col-form-label">Tìm theo ngày nhập</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar-o"></i>
+                                                                </div>
+                                                                <input type="text" class="form-control pull-right datepicker" placeholder="dd/mm/yyyy"
+                                                                       name="ngay_den" value="{{ Request::get('ngay_den') ?? null }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="trich-yeu">Tìm theo trích yếu</label>
+                                                            <input type="text" name="trich_yeu" class="form-control" value="{{ Request::get('trich_yeu') ?? null }}" placeholder="nhập nội dung...">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="search" class="col-form-label">&nbsp;</label><br>
+                                                            <button type="submit" class="btn btn-primary">
+                                                                <i class="fa fa-search"></i> Tìm kiếm
+                                                            </button>
+                                                            @if(request('ngay_den') || request('trich_yeu') || request('so_den'))
+                                                                <a href="{{ route('phan-loai-van-ban.index') }}">
+                                                                    <button type="button" class="btn btn-success">
+                                                                        <i class="fa fa-refresh"></i>
+                                                                    </button>
+                                                                </a>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
                                         </div>
-                                        <input type="text" class="form-control pull-right datepicker" placeholder="dd/mm/yyyy"
-                                               name="ngay_den" value="{{ Request::get('ngay_den') ?? null }}">
+                                    </div>
+                                    <div class="modal-footer">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="trich-yeu">Tìm theo trích yếu</label>
-                                    <input type="text" name="trich_yeu" class="form-control" value="{{ Request::get('trich_yeu') ?? null }}" placeholder="nhập nội dung...">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="search" class="col-form-label">&nbsp;</label><br>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-search"></i> Tìm kiếm
-                                    </button>
-                                    @if(request('ngay_den') || request('trich_yeu') || request('so_den'))
-                                        <a href="{{ route('phan-loai-van-ban.index') }}">
-                                            <button type="button" class="btn btn-success">
-                                                <i class="fa fa-refresh"></i>
-                                            </button>
-                                        </a>
-                                    @endif
-                                </div>
                             </div>
-                        </form>
+                        </div>
                         <br>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
@@ -306,6 +336,9 @@
 @section('script')
     <script src="{{ asset('modules/xu_ly_van_ban_den/js/index.js') }}"></script>
     <script>
+        function showModal() {
+            $("#myModal").modal('show');
+        }
 
     </script>
 @endsection
