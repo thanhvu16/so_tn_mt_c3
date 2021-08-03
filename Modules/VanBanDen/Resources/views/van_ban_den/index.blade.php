@@ -203,7 +203,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body" >
+                    <div class="box-body table-responsive" >
                         Tổng số văn bản: <b style="font-size: 16px">{{ $ds_vanBanDen->total() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>

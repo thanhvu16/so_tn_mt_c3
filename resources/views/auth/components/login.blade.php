@@ -71,7 +71,7 @@
 
     <div class="logo">
         <a href="javascript:void(0);" class="text-center" style="margin-bottom: 11px">
-            <div class="text-center">
+            <div class="text-center" style="padding-top: 30px">
                 <img src="{{ asset('theme/image/logo-login-hanoi.svg') }}" style="vertical-align: middle" alt="" height="90">
             </div>
             <h4 style="font-weight: bold;font-family: Arial;"  class="text-center text-uppercase">{{ TITLE_APP }}</h4>

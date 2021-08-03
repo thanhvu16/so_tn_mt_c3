@@ -65,7 +65,7 @@
 
                         </div>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body table-responsive" style="display: block;overflow: scroll;">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr role="row">
