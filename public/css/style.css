@@ -380,7 +380,7 @@ img.brand-logo {
     font-size: 13px !important;
 }
 
-@media (max-width: 425px) {
+ @media (max-width: 425px) {
     .logo-customize {
         display: none;
     }
