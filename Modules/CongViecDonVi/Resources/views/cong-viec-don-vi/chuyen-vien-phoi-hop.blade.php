@@ -12,7 +12,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ isset($type) ? 'Công việc đã phối hợp xử lý' : 'Công việc chờ xử lý' }}</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body ">
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">

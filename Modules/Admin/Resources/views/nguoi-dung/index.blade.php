@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div class="box-body table-responsive">
+                        <div class="box-body">
                             <table class="table table-bordered table-striped table-hover table-responsive">
                                 <thead>
                                     <tr>

@@ -11,7 +11,7 @@
                     <form role="form" action="{{route('chuc-vu.store')}}" method="post" enctype="multipart/form-data"
                           id="myform">
                         @csrf
-                        <div class="box-body table-responsive">
+                        <div class="box-body">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên chức vụ</label>

@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Danh sách văn bản đi chờ số</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         @include('vanbandi::Du_thao_van_ban_di.error')
                         @include('vanbandi::Du_thao_van_ban_di.form_them_noi_nhan')
 

@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Quá trình xử lý văn bản</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         <div class="col-md-12">
                             <div class="form-group" style="padding-left:15px;">
                                 <label for="">Cán bộ trong phòng góp ý:</label>

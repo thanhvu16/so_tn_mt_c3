@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body ">
                         <div class="modal fade" id="myModal">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content ">

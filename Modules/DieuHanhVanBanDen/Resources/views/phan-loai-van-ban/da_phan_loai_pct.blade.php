@@ -61,7 +61,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr role="row">

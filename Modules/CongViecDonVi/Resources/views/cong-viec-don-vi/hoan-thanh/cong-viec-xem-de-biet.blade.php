@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Công việc xem để biết</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body ">
                         <table class="table table-striped table-bordered dataTable table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">

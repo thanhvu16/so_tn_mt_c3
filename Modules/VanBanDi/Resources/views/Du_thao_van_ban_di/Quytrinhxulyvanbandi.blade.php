@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Quá trình xử lý văn bản</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12 mt-2"></div>

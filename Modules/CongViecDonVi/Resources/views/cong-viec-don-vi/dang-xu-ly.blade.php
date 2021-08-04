@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Công việc đơn vị</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body ">
                         <div class="col-md-12">
                             <form action="{{ route('cong-viec-don-vi.store') }}" method="post"
                                   id="form-tham-muu">
