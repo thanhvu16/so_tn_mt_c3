@@ -171,7 +171,7 @@
                     </div>
 
 
-                    <div class="box-body">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr style="background-color: rgb(60, 141, 188); color: rgb(255, 255, 255);">

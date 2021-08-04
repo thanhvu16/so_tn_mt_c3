@@ -26,8 +26,8 @@
                             <div class="col-md-12">
 
                             </div>
-                            <div class="col-md-12">
-                                <div class="table-responsive">
+                            <div class="col-md-12" style=" width: 100%;overflow-x: auto;">
+
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr>
@@ -126,7 +126,7 @@
                                         @endforelse
                                         </tbody>
                                     </table>
-                                </div>
+
                             </div>
                         </div>
                     </div>

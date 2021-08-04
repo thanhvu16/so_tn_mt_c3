@@ -18,7 +18,7 @@
                                     </li>
 
                                 </ul>
-                                <div class="table-responsive">
+                                <div class="col-md-12" style=" width: 100%;overflow-x: auto;">
                                     <table class="table table-striped table-bordered dataTable table-hover data-row">
                                         <thead>
                                         <tr style="background-color: rgb(60, 141, 188); color: rgb(255, 255, 255);">

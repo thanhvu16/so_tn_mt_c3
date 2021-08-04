@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">

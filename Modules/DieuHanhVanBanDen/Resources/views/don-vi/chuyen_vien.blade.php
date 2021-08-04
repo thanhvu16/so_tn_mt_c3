@@ -21,7 +21,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => $trinhTuNhanVanBan])
                         @include('dieuhanhvanbanden::gia-han.modal_gia_han')
                         <table class="table table-striped table-bordered table-hover data-row">
