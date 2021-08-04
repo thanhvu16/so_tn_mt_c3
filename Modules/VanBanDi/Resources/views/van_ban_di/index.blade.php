@@ -186,7 +186,7 @@
                     </div>
 
 
-                    <div class="box-body">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>

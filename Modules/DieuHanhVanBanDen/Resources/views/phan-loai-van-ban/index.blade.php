@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body ">
+                    <div class="box-body " style=" width: 100%;overflow-x: auto;">
                         <div class="modal fade" id="myModal">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content ">

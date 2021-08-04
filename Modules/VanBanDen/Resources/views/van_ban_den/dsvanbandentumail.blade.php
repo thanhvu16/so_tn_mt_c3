@@ -82,8 +82,8 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="table-responsive">
+                            <div class="col-md-12" style=" width: 100%;overflow-x: auto;">
+
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr style="background-color: rgb(60, 141, 188); color: rgb(255, 255, 255);">
@@ -145,7 +145,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

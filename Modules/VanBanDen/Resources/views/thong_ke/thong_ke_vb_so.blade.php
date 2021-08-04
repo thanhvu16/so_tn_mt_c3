@@ -91,7 +91,7 @@
 {{--                                        - Đơn vị kết xuất báo cáo: Văn phòng Sở--}}
                                     </h5>
                                 </div>
-                                <div class="col-md-12" style="margin-top: 5px">
+                                <div class="col-md-12" style=" width: 100%;overflow-x: auto;margin-top: 5px">
                                     <table class="table table-bordered table-striped dataTable mb-0">
                                         <thead>
                                         <tr>

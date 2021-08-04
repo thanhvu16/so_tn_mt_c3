@@ -12,7 +12,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <form action="@if(Request::get('type') == 1){{route('giay-moi-den-don-vi.quan_trong')}}@else{{route('van-ban-den-don-vi.quan_trong')}}@endif" method="get">
                             <div class="row">
                                 <div class="col-md-3">
