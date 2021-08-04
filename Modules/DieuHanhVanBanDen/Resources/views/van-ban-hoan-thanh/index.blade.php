@@ -12,7 +12,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         <form action="@if(Request::get('type') == 1){{route('giay-moi-den-hoan-thanh.index')}}@else{{route('van-ban-den-hoan-thanh.index')}}@endif" method="get">
                             <div class="row">
                                 <div class="col-md-3">

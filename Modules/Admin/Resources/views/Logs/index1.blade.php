@@ -12,7 +12,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Nhật ký hoạt động</h3>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body">
                         <table id="table-log"
                                class="table table-bordered table-striped table-hover"
                                data-ordering-index="0">

@@ -52,7 +52,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="box-body table-responsive">
+                    <div class="box-body ">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => $trinhTuNhanVanBan])
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
