@@ -210,9 +210,9 @@
                             <tr>
                                 <th width="2%" style="vertical-align: middle" class="text-center">STT</th>
                                 <th width="5%" style="vertical-align: middle" class="text-center">Số đến</th>
-                                <th width="14%" style="vertical-align: middle" class="text-center">Thông tin</th>
+                                <th width="" style="vertical-align: middle" class="text-center">Thông tin</th>
                                 <th width="12%"  style="vertical-align: middle"class="text-center">Cơ quan ban hành</th>
-                                <th width="" style="vertical-align: middle" class="text-center">Trích yếu</th>
+                                <th width="40%" style="vertical-align: middle" class="text-center">Trích yếu</th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị xử lý chính</th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị phối hợp</th>
                                 <th width="5%" style="vertical-align: middle" class="text-center">Tác vụ</th>
