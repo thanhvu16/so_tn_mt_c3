@@ -748,7 +748,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where('van_ban_quan_trong', $searchQuanTrong);
                 }
             })
-            ->where('can_bo_chuyen_id', 10551)
+            ->whereIn('can_bo_chuyen_id', [10551,15])
 
             ->select(['id', 'van_ban_den_id'])
             ->get();
