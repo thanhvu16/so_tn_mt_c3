@@ -261,7 +261,7 @@ class VanBanDiController extends Controller
             'CONTENT' => '400'
         );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
-        $arayOffice['RQST']['MOBILELIST'] = '84819255456';
+        $arayOffice['RQST']['MOBILELIST'] = '84943518333';
         $arayOffice['RQST']['ISTELCOSUB'] = '0';
         $arayOffice['RQST']['AGENTID'] = '244';
         $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
