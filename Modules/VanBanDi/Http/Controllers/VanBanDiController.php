@@ -247,7 +247,7 @@ class VanBanDiController extends Controller
     {
         $arayOffice = array();
         $arayOffice['RQST']['name'] = 'send_sms_list';
-        $arayOffice['RQST']['REQID'] = "f4c96860-544e-43c5-91df-80f2bf91efbf";
+        $arayOffice['RQST']['REQID'] = "149355";
         $arayOffice['RQST']['LABELID'] = "149355";
         $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
         $arayOffice['RQST']['CONTRACTID'] = '13681';
