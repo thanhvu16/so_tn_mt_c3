@@ -243,6 +243,57 @@ class VanBanDiController extends Controller
 
     }
 
+    public function guiSMS()
+    {
+        $arayOffice = array();
+        $arayOffice['RQST']['name'] = 'send_sms_list';
+        $arayOffice['RQST']['REQID'] = "f4c96860-544e-43c5-91df-80f2bf91efbf";
+        $arayOffice['RQST']['LABELID'] = "149355";
+        $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
+        $arayOffice['RQST']['CONTRACTID'] = '13681';
+        $arayOffice['RQST']['TEMPLATEID'] = '786294';
+        $arayOffice['RQST']['PARAMS'][0] = array(
+//            'NUM' => '1',
+//            'CONTENT' => 'abc'
+            'NUM' => '',
+            'CONTENT' => ''
+        );
+        $arayOffice['RQST']['SCHEDULETIME'] = '';
+        $arayOffice['RQST']['MOBILELIST'] = '84819255456';
+        $arayOffice['RQST']['ISTELCOSUB'] = '0';
+        $arayOffice['RQST']['AGENTID'] = '244';
+        $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
+        $arayOffice['RQST']['APIPASS'] = 'aBc123@';
+        $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
+        $arayOffice['RQST']['DATACODING'] = '0';
+
+        $data = json_encode($arayOffice);
+        dd($data);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+                CURLOPT_URL => "http://113.185.0.35:8888/smsbn/api",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $data,
+                CURLOPT_HTTPHEADER => array(
+                    "Content-Type: application/json"
+                ))
+
+        );
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $data_xml = simplexml_load_string($response);
+        echo $response;
+        dd($data);
+
+    }
+
     public function layNguoiKyChanhVp(Request $request)
     {
         $loaiVanBan = LoaiVanBan::where('id',$request->loai_van_ban)->first();
