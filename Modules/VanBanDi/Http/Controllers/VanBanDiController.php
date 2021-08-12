@@ -268,7 +268,6 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['DATACODING'] = '0';
 
         $data = json_encode($arayOffice);
-        dd($data);
         $curl = curl_init();
         curl_setopt_array($curl, array(
                 CURLOPT_URL => "http://113.185.0.35:8888/smsbn/api",
@@ -290,7 +289,7 @@ class VanBanDiController extends Controller
         curl_close($curl);
         $data_xml = simplexml_load_string($response);
         echo $response;
-        dd($data);
+        dd($response,$data);
 
     }
 
