@@ -252,12 +252,12 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
         $arayOffice['RQST']['CONTRACTID'] = '13681';
         $arayOffice['RQST']['TEMPLATEID'] = '786294';
-        $arayOffice['RQST']['PARAMS'][0] = array(
-//            'NUM' => '1',
-//            'CONTENT' => 'abc'
-            'NUM' => '',
-            'CONTENT' => ''
-        );
+//        $arayOffice['RQST']['PARAMS'][0] = array(
+////            'NUM' => '1',
+////            'CONTENT' => 'abc'
+//            'NUM' => '',
+//            'CONTENT' => ''
+//        );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
         $arayOffice['RQST']['MOBILELIST'] = '84819255456';
         $arayOffice['RQST']['ISTELCOSUB'] = '0';
