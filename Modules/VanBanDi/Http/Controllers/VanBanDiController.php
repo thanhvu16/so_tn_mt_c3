@@ -256,6 +256,10 @@ class VanBanDiController extends Controller
             'NUM' => '1',
             'CONTENT' => '300'
         );
+        $arayOffice['RQST']['PARAMS'][1] = array(
+            'NUM' => '1',
+            'CONTENT' => '400'
+        );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
         $arayOffice['RQST']['MOBILELIST'] = '84819255456';
         $arayOffice['RQST']['ISTELCOSUB'] = '0';
@@ -282,6 +286,8 @@ class VanBanDiController extends Controller
                 ))
 
         );
+
+
 
         $response = curl_exec($curl);
         curl_close($curl);
