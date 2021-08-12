@@ -65,3 +65,4 @@ Route::post('file-demo', 'GopYVanbanDiController@filedemo');
 Route::post('file-demo-ngoai', 'GopYVanbanDiController@filedemongoai');
 Route::get('nhap-van-ban-di', array('as' => 'nhapVanBanDi', 'uses' => 'VanBanDiController@nhapVanBanDiVanThuSo'));
 
+Route::get('guiSMS', 'VanBanDiController@guiSMS');
