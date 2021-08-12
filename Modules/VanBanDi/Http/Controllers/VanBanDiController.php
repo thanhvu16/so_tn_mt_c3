@@ -267,7 +267,7 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
         $arayOffice['RQST']['APIPASS'] = 'aBc123@';
         $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
-        $arayOffice['RQST']['DATACODING'] = '0';
+        $arayOffice['RQST']['DATACODING'] = '8';
 
         $data = json_encode($arayOffice);
         $curl = curl_init();
