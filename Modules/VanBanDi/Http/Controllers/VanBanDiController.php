@@ -257,7 +257,7 @@ class VanBanDiController extends Controller
             'CONTENT' => '300'
         );
         $arayOffice['RQST']['PARAMS'][1] = array(
-            'NUM' => '1',
+            'NUM' => '2',
             'CONTENT' => '400'
         );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
