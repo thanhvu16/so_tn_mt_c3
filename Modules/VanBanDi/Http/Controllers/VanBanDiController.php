@@ -1889,8 +1889,8 @@ class VanBanDiController extends Controller
                 }
 
 //                gửi mail đến các đơn vị ngoài
-//                SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
-                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(3));
+                SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
+//                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(3));
             }
         }
 
