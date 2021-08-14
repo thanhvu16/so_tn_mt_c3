@@ -261,7 +261,7 @@ class VanBanDiController extends Controller
             'CONTENT' => '400'
         );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
-        $arayOffice['RQST']['MOBILELIST'] = '84943518333';
+        $arayOffice['RQST']['MOBILELIST'] = '84383574229';
         $arayOffice['RQST']['ISTELCOSUB'] = '0';
         $arayOffice['RQST']['AGENTID'] = '244';
         $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
@@ -269,31 +269,44 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
         $arayOffice['RQST']['DATACODING'] = '8';
 
-        $data = json_encode($arayOffice);
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-                CURLOPT_URL => "http://113.185.0.35:8888/smsbn/api",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => $data,
-                CURLOPT_HTTPHEADER => array(
-                    "Content-Type: application/json"
-                ))
-
-        );
-
-
-
+//        $data = json_encode($arayOffice);
+//        $curl = curl_init();
+//        curl_setopt_array($curl, array(
+//                CURLOPT_URL => "http://113.185.0.35:8888/smsbn/api",
+//                CURLOPT_RETURNTRANSFER => true,
+//                CURLOPT_ENCODING => "",
+//                CURLOPT_MAXREDIRS => 10,
+//                CURLOPT_TIMEOUT => 0,
+//                CURLOPT_FOLLOWLOCATION => true,
+//                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//                CURLOPT_CUSTOMREQUEST => "POST",
+//                CURLOPT_POSTFIELDS => $data,
+//                CURLOPT_HTTPHEADER => array(
+//                    "Content-Type: application/json"
+//                ))
+//
+//        );
+        $url='http://113.185.0.35:8888/smsbn/api';
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($arayOffice));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'X-RapidAPI-Host: kvstore.p.rapidapi.com',
+            'X-RapidAPI-Key: 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'Content-Type: application/json'
+        ]);
         $response = curl_exec($curl);
         curl_close($curl);
-//        $data_xml = simplexml_load_string($response);
-//        echo $response;
-        dd($response,$data);
+        echo $response . PHP_EOL;
+
+
+
+//        $response = curl_exec($curl);
+//        curl_close($curl);
+////        $data_xml = simplexml_load_string($response);
+////        echo $response;
+//        dd($response,$data);
 
     }
 
