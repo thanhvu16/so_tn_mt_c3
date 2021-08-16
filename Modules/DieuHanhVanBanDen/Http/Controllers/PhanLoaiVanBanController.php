@@ -125,6 +125,11 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
                         }
                     })
+                    ->where(function ($query) use ($trichYeu) {
+                        if (!empty($trichYeu)) {
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                        }
+                    })
                     ->whereNull('trinh_tu_nhan_van_ban')
                     ->where(function ($query) use ($ngayDen) {
                         if (!empty($ngayDen)) {
@@ -160,6 +165,11 @@ class PhanLoaiVanBanController extends Controller
                     ->where(function ($query) use ($ngayDen) {
                         if (!empty($ngayDen)) {
                             return $query->where('created_at', $ngayDen);
+                        }
+                    })
+                    ->where(function ($query) use ($trichYeu) {
+                        if (!empty($trichYeu)) {
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
                         }
                     })
                     ->where(function ($query) use ($soDen) {

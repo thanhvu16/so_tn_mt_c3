@@ -90,16 +90,31 @@ class VanBanDiController extends Controller
                         return $query->where('trich_yeu', 'LIKE', "%$don_vi_van_ban%");
                     }
                 })
+//                ->where(function ($query) use ($trichyeu) {
+//                    if (!empty($trichyeu)) {
+//                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+//                    }
+//                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
                     }
                 })
                 ->where(function ($query) use ($chucvu) {
                     if (!empty($chucvu)) {
-                        return $query->where('chuc_vu', 'LIKE', "%$chucvu%");
+                        return $query->where(DB::raw('lower(chuc_vu)'), 'LIKE', "%" . mb_strtolower($chucvu) . "%");
                     }
                 })
+                ->where(function ($query) use ($so_ky_hieu) {
+                    if (!empty($so_ky_hieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
+                    }
+                })
+//                ->where(function ($query) use ($chucvu) {
+//                    if (!empty($chucvu)) {
+//                        return $query->where('chuc_vu', 'LIKE', "%$chucvu%");
+//                    }
+//                })
                 ->where(function ($query) use ($nguoi_ky) {
                     if (!empty($nguoi_ky)) {
                         return $query->where('nguoi_ky', $nguoi_ky);
@@ -113,11 +128,12 @@ class VanBanDiController extends Controller
                         return $query->where('don_vi_soan_thao', $donvisoanthao);
                     }
                 })
-                ->where(function ($query) use ($so_ky_hieu) {
-                    if (!empty($so_ky_hieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
-                    }
-                })->where(function ($query) use ($so_van_ban) {
+//                ->where(function ($query) use ($so_ky_hieu) {
+//                    if (!empty($so_ky_hieu)) {
+//                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+//                    }
+//                })
+                ->where(function ($query) use ($so_van_ban) {
                     if (!empty($so_van_ban)) {
                         return $query->where('so_van_ban_id', "$so_van_ban");
                     }
@@ -183,16 +199,31 @@ class VanBanDiController extends Controller
                           return $query->where('trich_yeu', 'LIKE', "%$don_vi_van_ban%");
                       }*/
                 })
+//                ->where(function ($query) use ($trichyeu) {
+//                    if (!empty($trichyeu)) {
+//                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+//                    }
+//                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($so_ky_hieu) {
+                    if (!empty($so_ky_hieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
                     }
                 })
                 ->where(function ($query) use ($chucvu) {
                     if (!empty($chucvu)) {
-                        return $query->where('chuc_vu', 'LIKE', "%$chucvu%");
+                        return $query->where(DB::raw('lower(chuc_vu)'), 'LIKE', "%" . mb_strtolower($chucvu) . "%");
                     }
                 })
+//                ->where(function ($query) use ($chucvu) {
+//                    if (!empty($chucvu)) {
+//                        return $query->where('chuc_vu', 'LIKE', "%$chucvu%");
+//                    }
+//                })
                 ->where(function ($query) use ($nguoi_ky) {
                     if (!empty($nguoi_ky)) {
                         return $query->where('nguoi_ky', $nguoi_ky);
