@@ -269,7 +269,7 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
         $arayOffice['RQST']['DATACODING'] = '8';
 
-//        $data = json_encode($arayOffice);
+        $data = json_encode($arayOffice);
 //        $curl = curl_init();
 //        curl_setopt_array($curl, array(
 //                CURLOPT_URL => "http://113.185.0.35:8888/smsbn/api",
@@ -292,8 +292,6 @@ class VanBanDiController extends Controller
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($arayOffice));
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'X-RapidAPI-Host: kvstore.p.rapidapi.com',
-            'X-RapidAPI-Key: 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             'Content-Type: application/json'
         ]);
         $response = curl_exec($curl);
@@ -306,7 +304,7 @@ class VanBanDiController extends Controller
 //        curl_close($curl);
 ////        $data_xml = simplexml_load_string($response);
 ////        echo $response;
-//        dd($response,$data);
+        dd($response,$data);
 
     }
 
