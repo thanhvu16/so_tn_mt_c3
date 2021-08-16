@@ -286,7 +286,7 @@ class VanBanDiController extends Controller
 //                ))
 //
 //        );
-        $url='http://113.185.0.35:8888/smsbn/api';
+        $url='http://113.185.0.1331:8888/smsbn/api';
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
