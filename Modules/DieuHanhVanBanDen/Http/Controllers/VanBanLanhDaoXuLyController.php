@@ -803,16 +803,26 @@ class VanBanLanhDaoXuLyController extends Controller
                         return $query->whereBetween('ngay_ban_hanh', [$ngayBanHanhStart, $ngayBanHanhEnd]);
                     }
                 })
+//                ->where(function ($query) use ($soKyHieu) {
+//                    if (!empty($soKyHieu)) {
+//                        return $query->where('so_ky_hieu', 'LIKE', "%".$soKyHieu."%");
+//                    }
+//                })
                 ->where(function ($query) use ($soKyHieu) {
                     if (!empty($soKyHieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%".$soKyHieu."%");
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
                 ->where(function ($query) use ($nguoiKy) {
                     if (!empty($nguoiKy)) {
-                        return $query->where('nguoi_ky', 'LIKE', "%".$nguoiKy."%");
+                        return $query->where(DB::raw('lower(nguoi_ky)'), 'LIKE', "%" . mb_strtolower($nguoiKy) . "%");
                     }
                 })
+//                ->where(function ($query) use ($nguoiKy) {
+//                    if (!empty($nguoiKy)) {
+//                        return $query->where('nguoi_ky', 'LIKE', "%".$nguoiKy."%");
+//                    }
+//                })
                 ->where(function ($query) use ($loaiVanBanId) {
                     if (!empty($loaiVanBanId)) {
                         return $query->where('loai_van_ban_id', $loaiVanBanId);
@@ -825,19 +835,34 @@ class VanBanLanhDaoXuLyController extends Controller
                 })
                 ->where(function ($query) use ($trichYeu) {
                     if (!empty($trichYeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%". $trichYeu. "%");
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
                     }
                 })
                 ->where(function ($query) use ($tomTat) {
                     if (!empty($tomTat)) {
-                        return $query->where('tom_tat', 'LIKE', "%". $tomTat. "%");
+                        return $query->where(DB::raw('lower(tom_tat)'), 'LIKE', "%" . mb_strtolower($tomTat) . "%");
                     }
                 })
                 ->where(function ($query) use ($coQuanBanHanh) {
                     if (!empty($coQuanBanHanh)) {
-                        return $query->where('co_quan_ban_hanh', 'LIKE', "%". $coQuanBanHanh. "%");
+                        return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($coQuanBanHanh) . "%");
                     }
                 })
+//                ->where(function ($query) use ($trichYeu) {
+//                    if (!empty($trichYeu)) {
+//                        return $query->where('trich_yeu', 'LIKE', "%". $trichYeu. "%");
+//                    }
+//                })
+//                ->where(function ($query) use ($tomTat) {
+//                    if (!empty($tomTat)) {
+//                        return $query->where('tom_tat', 'LIKE', "%". $tomTat. "%");
+//                    }
+//                })
+//                ->where(function ($query) use ($coQuanBanHanh) {
+//                    if (!empty($coQuanBanHanh)) {
+//                        return $query->where('co_quan_ban_hanh', 'LIKE', "%". $coQuanBanHanh. "%");
+//                    }
+//                })
                 ->orderBy('updated_at', 'DESC')
                 ->paginate(PER_PAGE_10);
 

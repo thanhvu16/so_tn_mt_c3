@@ -74,18 +74,30 @@ class GiayMoiDenController extends Controller
                         return $query->whereIn('id', $arrVanBanDenId);
                     }
                 })
+
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
                     }
-                })->where(function ($query) use ($so_den) {
+                })
+//                ->where(function ($query) use ($trichyeu) {
+//                    if (!empty($trichyeu)) {
+//                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+//                    }
+//                })
+                ->where(function ($query) use ($so_den) {
                     if (!empty($so_den)) {
                         return $query->where('so_den', 'LIKE', "%$so_den%");
                     }
                 })
+//                ->where(function ($query) use ($co_quan_ban_hanh) {
+//                    if (!empty($co_quan_ban_hanh)) {
+//                        return $query->where('co_quan_ban_hanh', 'LIKE', "%$co_quan_ban_hanh%");
+//                    }
+//                })
                 ->where(function ($query) use ($co_quan_ban_hanh) {
                     if (!empty($co_quan_ban_hanh)) {
-                        return $query->where('co_quan_ban_hanh', 'LIKE', "%$co_quan_ban_hanh%");
+                        return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($co_quan_ban_hanh) . "%");
                     }
                 })
                 ->where(function ($query) use ($nguoi_ky) {
@@ -95,9 +107,15 @@ class GiayMoiDenController extends Controller
                 })
                 ->where(function ($query) use ($so_ky_hieu) {
                     if (!empty($so_ky_hieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
                     }
-                })->where(function ($query) use ($so_van_ban) {
+                })
+//                ->where(function ($query) use ($so_ky_hieu) {
+//                    if (!empty($so_ky_hieu)) {
+//                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+//                    }
+//                })
+                ->where(function ($query) use ($so_van_ban) {
                     if (!empty($so_van_ban)) {
                         return $query->where('so_van_ban_id', "$so_van_ban");
                     }
@@ -142,16 +160,17 @@ class GiayMoiDenController extends Controller
                 })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
-                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
                     }
-                })->where(function ($query) use ($so_den) {
+                })
+                ->where(function ($query) use ($so_den) {
                     if (!empty($so_den)) {
                         return $query->where('so_den', 'LIKE', "%$so_den%");
                     }
                 })
                 ->where(function ($query) use ($co_quan_ban_hanh) {
                     if (!empty($co_quan_ban_hanh)) {
-                        return $query->where('co_quan_ban_hanh', 'LIKE', "%$co_quan_ban_hanh%");
+                        return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($co_quan_ban_hanh) . "%");
                     }
                 })
                 ->where(function ($query) use ($nguoi_ky) {
@@ -161,9 +180,10 @@ class GiayMoiDenController extends Controller
                 })
                 ->where(function ($query) use ($so_ky_hieu) {
                     if (!empty($so_ky_hieu)) {
-                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
                     }
-                })->where(function ($query) use ($so_van_ban) {
+                })
+                ->where(function ($query) use ($so_van_ban) {
                     if (!empty($so_van_ban)) {
                         return $query->where('so_van_ban_id', "$so_van_ban");
                     }
