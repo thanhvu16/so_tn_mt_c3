@@ -282,15 +282,15 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['LABELID'] = "149355";
         $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
         $arayOffice['RQST']['CONTRACTID'] = '13681';
-        $arayOffice['RQST']['TEMPLATEID'] = '785860';
+        $arayOffice['RQST']['TEMPLATEID'] = '786298';
         $arayOffice['RQST']['PARAMS'][0] = array(
             'NUM' => '1',
-            'CONTENT' => '16498'
-        );
-        $arayOffice['RQST']['PARAMS'][1] = array(
-            'NUM' => '2',
             'CONTENT' => 've viec xin su dung tai nguyen'
         );
+//        $arayOffice['RQST']['PARAMS'][1] = array(
+//            'NUM' => '2',
+//            'CONTENT' => 've viec xin su dung tai nguyen'
+//        );
         $arayOffice['RQST']['SCHEDULETIME'] = '';
         $arayOffice['RQST']['MOBILELIST'] = '84383574229';
         $arayOffice['RQST']['ISTELCOSUB'] = '0';
@@ -298,7 +298,7 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
         $arayOffice['RQST']['APIPASS'] = 'aBc123@';
         $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
-        $arayOffice['RQST']['DATACODING'] = '8';
+        $arayOffice['RQST']['DATACODING'] = '0';
 
         $data = json_encode($arayOffice);
 //        $curl = curl_init();
