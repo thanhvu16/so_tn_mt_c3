@@ -47,6 +47,66 @@ class DonViPhoiHop extends Model
 
     const ACTIVE = 1;
 
+    public static function guiSMSArray($danhSachDonVi, $vanBanDenId)
+    {
+        if (!empty($danhSachDonVi) && count($danhSachDonVi) > 0) {
+            foreach ($danhSachDonVi as $donViId) {
+
+                $donVi = DonVi::where('id', $donViId)->whereNull('deleted_at')->first();
+
+                if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+
+
+                } else {
+                    $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                    $nguoiDung = User::where('trang_thai', ACTIVE)
+                        ->where('don_vi_id', $donViId)
+                        ->whereHas('roles', function ($query) use ($roles) {
+                            return $query->whereIn('name', $roles);
+                        })
+                        ->orderBy('id', 'asc')
+                        ->whereNull('deleted_at')->first();
+                    $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
+                    if ($nguoiDung ->so_dien_thoai != null) {
+                        $arayOffice = array();
+                        $arayOffice['RQST']['name'] = 'send_sms_list';
+                        $arayOffice['RQST']['REQID'] = "1234352";
+                        $arayOffice['RQST']['LABELID'] = "149355";
+                        $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
+                        $arayOffice['RQST']['CONTRACTID'] = '13681';
+                        $arayOffice['RQST']['TEMPLATEID'] = '786297';
+                        $arayOffice['RQST']['PARAMS'][0] = array(
+                            'NUM' => '1',
+                            'CONTENT' => $vanBanDenTY->trich_yeu
+                        );
+                        $arayOffice['RQST']['SCHEDULETIME'] = '';
+                        $arayOffice['RQST']['MOBILELIST'] = $nguoiDung ->so_dien_thoai;
+                        $arayOffice['RQST']['ISTELCOSUB'] = '0';
+                        $arayOffice['RQST']['AGENTID'] = '244';
+                        $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
+                        $arayOffice['RQST']['APIPASS'] = 'aBc123@';
+                        $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
+                        $arayOffice['RQST']['DATACODING'] = '0';
+
+                        $data = json_encode($arayOffice);
+                        $url = 'http://113.185.0.35:8888/smsbn/api';
+                        $curl = curl_init($url);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($curl, CURLOPT_POST, true);
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arayOffice));
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                            'Content-Type: application/json'
+                        ]);
+                        $response = curl_exec($curl);
+                        curl_close($curl);
+                    }
+
+                }
+
+            }
+        }
+    }
+
     public static function luuDonViPhoiHop($arrDonViId, $vanBanDenId)
     {
 
