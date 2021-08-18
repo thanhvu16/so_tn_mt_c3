@@ -119,7 +119,7 @@
                                             @else
                                                 <div class="col-md-12 form-group">
                                                     <div class="row">
-                                                        <input type="text" name="loaivanban_id" class="hidden" value="{{$vanban->vanbandi->loai_van_ban_id}}">
+                                                        <input type="text" name="loaivanban_id" class="hidden" value="{{$vanban->vanbandi->loai_van_ban_id ?? ''}}">
                                                         <select name="nguoi_nhan" id="nguoi_ky_app"
                                                                 class="form-control select2-search select-nguoi-nhan-{{ $vanban->id }}">
 {{--                                                        @if($vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true || $vanban->vanbandi->nguoidung2->hasRole(PHO_CHU_TICH) == true)--}}
