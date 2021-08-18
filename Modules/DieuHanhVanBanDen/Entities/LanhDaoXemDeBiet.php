@@ -3,6 +3,7 @@
 namespace Modules\DieuHanhVanBanDen\Entities;
 
 use App\Common\AllPermission;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Modules\Admin\Entities\LoaiVanBan;
