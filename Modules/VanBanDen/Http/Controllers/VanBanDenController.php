@@ -1563,7 +1563,7 @@ class VanBanDenController extends Controller
                             ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
                         $conVertTY = vn_to_str($trichyeu);
                         VanBanDen::guiSMSOnly($conVertTY,$nguoiDung->so_dien_thoai);
-
+                        dd(0);
                         $vanbandv = new VanBanDen();
                         $vanbandv->so_van_ban_id = $soVanBan->id;
                         $vanbandv->so_den = $soDenvb;
