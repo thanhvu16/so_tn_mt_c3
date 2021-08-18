@@ -141,6 +141,7 @@ class DonViChuTri extends Model
                 ->orderBy('id', 'asc')
                 ->whereNull('deleted_at')->first();
             $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
+            $conVertTY = vn_to_str($vanBanDenTY->trich_yeu);
             if ($nguoiDung ->so_dien_thoai != null) {
                 $arayOffice = array();
                 $arayOffice['RQST']['name'] = 'send_sms_list';
@@ -151,7 +152,7 @@ class DonViChuTri extends Model
                 $arayOffice['RQST']['TEMPLATEID'] = '786297';
                 $arayOffice['RQST']['PARAMS'][0] = array(
                     'NUM' => '1',
-                    'CONTENT' => $vanBanDenTY->trich_yeu
+                    'CONTENT' => $conVertTY
                 );
                 $arayOffice['RQST']['SCHEDULETIME'] = '';
                 $arayOffice['RQST']['MOBILELIST'] = $nguoiDung ->so_dien_thoai;

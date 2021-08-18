@@ -354,11 +354,12 @@ class PhanLoaiVanBanController extends Controller
                                 return $query->whereNull('cap_xa');
                             })->first();
                         $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
+                        $conVertTY = vn_to_str($vanBanDenTY->trich_yeu);
 
                         if(auth::user()->roles->pluck('name')[0] == CHU_TICH)
                         {
                             if ($donVi->parent_id == 0) {
-                                VanBanDen::guiSMSOnly($vanBanDenTY->trich_yeu,$lanhDaoSo->so_dien_thoai);
+                                VanBanDen::guiSMSOnly($conVertTY,$lanhDaoSo->so_dien_thoai);
                             }
                         }
 
