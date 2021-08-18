@@ -144,6 +144,7 @@ class VanBanDen extends Model
             ]);
             $response = curl_exec($curl);
             curl_close($curl);
+            echo $response . PHP_EOL;
         }
 
     }
