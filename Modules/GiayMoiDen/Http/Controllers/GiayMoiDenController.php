@@ -553,7 +553,8 @@ class GiayMoiDenController extends Controller
                         })
                         ->where('trang_thai', ACTIVE)
                         ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
-                    VanBanDen::guiSMSOnly($trichyeu,$nguoiDung->so_dien_thoai);
+                    $conVertTY = vn_to_str($trichyeu);
+                    VanBanDen::guiSMSOnly($conVertTY,$nguoiDung->so_dien_thoai);
                 }
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();
