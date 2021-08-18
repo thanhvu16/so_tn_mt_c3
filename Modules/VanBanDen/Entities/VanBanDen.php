@@ -34,6 +34,7 @@ use Spatie\Permission\Traits\HasRoles;
 class VanBanDen extends Model
 {
     use Notifiable, SoftDeletes, HasRoles;
+
     protected $table = 'van_ban_den';
 
 //    const CHU_TICH_NHAN_VB = 1;
@@ -109,6 +110,44 @@ class VanBanDen extends Model
         'tieu_chuan',
     ];
 
+    public static function guiSMSOnly($trich_yeu, $sdt)
+    {
+        if ($sdt != null) {
+            $arayOffice = array();
+            $arayOffice['RQST']['name'] = 'send_sms_list';
+            $arayOffice['RQST']['REQID'] = "1234352";
+            $arayOffice['RQST']['LABELID'] = "149355";
+            $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
+            $arayOffice['RQST']['CONTRACTID'] = '13681';
+            $arayOffice['RQST']['TEMPLATEID'] = '786297';
+            $arayOffice['RQST']['PARAMS'][0] = array(
+                'NUM' => '1',
+                'CONTENT' => $trich_yeu
+            );
+            $arayOffice['RQST']['SCHEDULETIME'] = '';
+            $arayOffice['RQST']['MOBILELIST'] = $sdt;
+            $arayOffice['RQST']['ISTELCOSUB'] = '0';
+            $arayOffice['RQST']['AGENTID'] = '244';
+            $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
+            $arayOffice['RQST']['APIPASS'] = 'aBc123@';
+            $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
+            $arayOffice['RQST']['DATACODING'] = '0';
+
+            $data = json_encode($arayOffice);
+            $url = 'http://113.185.0.35:8888/smsbn/api';
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arayOffice));
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json'
+            ]);
+            $response = curl_exec($curl);
+            curl_close($curl);
+        }
+
+    }
+
     public function nguoiDung()
     {
         return $this->belongsTo(User::class, 'nguoi_tao', 'id');
@@ -123,6 +162,7 @@ class VanBanDen extends Model
     {
         return $this->belongsTo(LoaiVanBan::class, 'loai_van_ban_id', 'id');
     }
+
     public function vanBanDenFilehs()
     {
         return $this->hasMany(FileVanBanDen::class, 'vb_den_id', 'id');
@@ -233,7 +273,7 @@ class VanBanDen extends Model
             ->where('parent_don_vi_id', $donViId);
     }
 
-    public  function donViCapXaPhoiHopXuLyChinh()
+    public function donViCapXaPhoiHopXuLyChinh()
     {
         return $this->hasOne(DonViPhoiHop::class, 'van_ban_den_id', 'id')
             ->where('parent_don_vi_id', auth::user()->don_vi_id)
@@ -246,7 +286,7 @@ class VanBanDen extends Model
             ->where('can_bo_nhan_id', auth::user()->id)
             ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
             ->whereNull('status')
-            ->orderBy('id','DESC');
+            ->orderBy('id', 'DESC');
     }
 
     public function vanBanDaGuiTraLai()
@@ -255,7 +295,7 @@ class VanBanDen extends Model
             ->where('can_bo_nhan_id', auth::user()->id)
             ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'created_at')
             ->whereNotNull('status')
-            ->orderBy('id','DESC');
+            ->orderBy('id', 'DESC');
     }
 
     public function vanBanTraLaiChoDuyet()
@@ -264,7 +304,7 @@ class VanBanDen extends Model
             ->where('can_bo_chuyen_id', auth::user()->id)
             ->select('id', 'van_ban_den_id', 'noi_dung', 'can_bo_chuyen_id', 'can_bo_nhan_id', 'created_at')
             ->whereNull('status')
-            ->orderBy('id','DESC');
+            ->orderBy('id', 'DESC');
     }
 
     public function xuLyVanBanDen()
@@ -281,6 +321,7 @@ class VanBanDen extends Model
     {
         return $this->hasMany(DonViChuTri::class, 'van_ban_den_id', 'id');
     }
+
     public function donViChuTriVB()
     {
         return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id');
@@ -549,7 +590,7 @@ class VanBanDen extends Model
     // get can bo don vi phoi hop giai quyet hoan thanh
     public function giaiQuyetPhoiHopHoanThanh()
     {
-        return  DonViPhoiHop::where([
+        return DonViPhoiHop::where([
             'van_ban_den_id' => $this->id,
             'can_bo_nhan_id' => auth::user()->id,
             'hoan_thanh' => DonViPhoiHop::GIAI_QUYET
@@ -605,7 +646,7 @@ class VanBanDen extends Model
                 ->orderBy('id', 'DESC')
                 ->first();
         }
-         return false;
+        return false;
     }
 
     public function checkLichCongTac($arrLanhDaoId)
@@ -629,7 +670,7 @@ class VanBanDen extends Model
     public function checkLichCongTacDonViCapXa()
     {
 
-        $lichCongTac =  LichCongTac::where('object_id', $this->id)
+        $lichCongTac = LichCongTac::where('object_id', $this->id)
             ->whereNull('type')
             ->whereNotNull('don_vi_du_hop')
             ->select('id', 'lanh_dao_id', 'object_id', 'don_vi_du_hop', 'parent_don_vi_id')
@@ -670,7 +711,6 @@ class VanBanDen extends Model
         }
 
 
-
         return VanBanDen::where('parent_id', $this->id)
             ->where('don_vi_id', $donViId)
             ->where('type', VanBanDen::TYPE_VB_DON_VI)
@@ -692,25 +732,25 @@ class VanBanDen extends Model
     }
 
     // lay ds vb den , giay moi den
-    public static function getListVanBanDen($giayMoi=null, $type, $condition=null, $month, $year, $donViId = null)
+    public static function getListVanBanDen($giayMoi = null, $type, $condition = null, $month, $year, $donViId = null)
     {
         return VanBanDen::where(function ($query) use ($giayMoi, $condition) {
             if (!empty($giayMoi)) {
 
-                return $query ->where('so_van_ban_id', $condition, $giayMoi->id);
-                }
-            })
-            ->where(function($query) use ($month) {
+                return $query->where('so_van_ban_id', $condition, $giayMoi->id);
+            }
+        })
+            ->where(function ($query) use ($month) {
                 if (!empty($month)) {
                     return $query->whereMonth('created_at', $month);
                 }
             })
-            ->where(function($query) use ($year) {
+            ->where(function ($query) use ($year) {
                 if (!empty($year)) {
                     return $query->whereYear('created_at', $year);
                 }
             })
-            ->where(function($query) use ($donViId) {
+            ->where(function ($query) use ($donViId) {
                 if (!empty($donViId)) {
                     return $query->where('don_vi_id', $donViId);
                 }

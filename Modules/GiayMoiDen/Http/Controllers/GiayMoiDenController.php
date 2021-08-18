@@ -546,6 +546,14 @@ class GiayMoiDenController extends Controller
                             XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
                         }
                     }
+                    $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
+                    $nguoiDung = User::where('don_vi_id', auth::user()->don_vi_id)
+                        ->whereHas('roles', function ($query) use ($role) {
+                            return $query->whereIn('name', $role);
+                        })
+                        ->where('trang_thai', ACTIVE)
+                        ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
+                    VanBanDen::guiSMSOnly($trichyeu,$nguoiDung->so_dien_thoai);
                 }
                 if ($request->id_file) {
                     $file = FileVanBanDi::where('id', $request->id_file)->first();

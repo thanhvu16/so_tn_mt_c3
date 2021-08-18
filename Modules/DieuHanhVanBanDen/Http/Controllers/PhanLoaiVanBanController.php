@@ -259,6 +259,7 @@ class PhanLoaiVanBanController extends Controller
                 DB::beginTransaction();
 
                 foreach ($vanBanDenIds as $vanBanDenId) {
+                    $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
                     $checkLogXuLyVanBanDen = LogXuLyVanBanDen::where([
                         'van_ban_den_id' => $vanBanDenId,
                         'can_bo_chuyen_id' => $currentUser->id
@@ -345,6 +346,22 @@ class PhanLoaiVanBanController extends Controller
 
                     if (!empty($arrChuTich[$vanBanDenId])) {
                         $quyenGiaHan = 1;
+                        $donVi = auth::user()->donVi;
+
+                        //gửi sms
+                        $lanhDaoSo = User::role([CHU_TICH])
+                            ->whereHas('donVi', function ($query) {
+                                return $query->whereNull('cap_xa');
+                            })->first();
+                        $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
+
+                        if(auth::user()->roles->pluck('name')[0] == CHU_TICH)
+                        {
+                            if ($donVi->parent_id == 0) {
+                                VanBanDen::guiSMSOnly($vanBanDenTY->trich_yeu,$lanhDaoSo->so_dien_thoai);
+                            }
+                        }
+
 
                         $dataXuLyVanBanDen = [
                             'van_ban_den_id' => $vanBanDenId,
@@ -376,7 +393,6 @@ class PhanLoaiVanBanController extends Controller
                         $this->luuLogXuLyVanBanDen($dataXuLyVanBanDen);
                         $quyenGiaHan = null;
                     }
-
                     //pho chu tich
                     if (!empty($arrPhoChuTich[$vanBanDenId])) {
 
@@ -429,9 +445,19 @@ class PhanLoaiVanBanController extends Controller
 
                     if (!empty($danhSachDonViChuTriIds) && !empty($danhSachDonViChuTriIds[$vanBanDenId])) {
 
+                        //gửi sms
+
+//                        VanBanDen::guiSMSOnly($vanBanDenTY->trich_yeu,$nguoiDung->so_dien_thoai);
+                        if($vanBanDenTY->loai_van_ban_id == $giayMoi->id)
+                        {
+                            DonViChuTri::guiSMSchuTri($vanBanDenId, $danhSachDonViChuTriIds);
+                        }
+
+
                         DonViChuTri::luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi,
                             !empty($vanBanQuanTrongIds[$vanBanDenId]) ? $vanBanQuanTrongIds[$vanBanDenId] : null);
                     }
+
 
                     // luu don vi phoi hop
                     DonViPhoiHop::where([
@@ -441,6 +467,11 @@ class PhanLoaiVanBanController extends Controller
                         'hoan_thanh' => null
                     ])->delete();
                     if (isset($danhSachDonViPhoiHopIds[$vanBanDenId])) {
+                        //gửi sms
+                        if($vanBanDenTY->loai_van_ban_id == $giayMoi->id) {
+                            DonViPhoiHop::guiSMSArray($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
+                        }
+
                         DonViPhoiHop::luuDonViPhoiHop($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId);
                     }
                 }
