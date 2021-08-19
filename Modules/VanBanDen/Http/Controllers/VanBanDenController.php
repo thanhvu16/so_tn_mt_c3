@@ -303,18 +303,29 @@ class VanBanDenController extends Controller
             $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
         }
 
+        $month = Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
+        $day = Carbon::now()->format('d');
         if ($request->get('type') == 'excel') {
-            $month = Carbon::now()->format('m');
-            $year = Carbon::now()->format('Y');
-            $day = Carbon::now()->format('d');
-
-
             $totalRecord = $ds_vanBanDen->count();
             $fileName = 'thong_ke_van_ban_den_' . date('d_m_Y') . '.xlsx';
 
             return Excel::download(new thongKeVanBanDenExport($ds_vanBanDen, $totalRecord,
                 $month, $year, $day),
                 $fileName);
+        }
+
+        if ($request->get('type') == 'word') {
+            $fileName = 'van_ban_den_' . date('d_m_Y') . '.doc';
+            $headers = array(
+                "Content-type" => "text/html",
+                "Content-Disposition" => "attachment;Filename=" . $fileName
+            );
+
+            $content = view('vanbanden::thong_ke.TK_vb_den_don_vi_chu_tri_word', compact('ds_vanBanDen', 'year', 'day', 'month'));
+
+            return \Response::make($content, 200, $headers);
+
         }
 
 

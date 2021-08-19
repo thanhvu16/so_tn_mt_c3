@@ -51,6 +51,10 @@
                                                 class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
                                                 class="fa fa-file-excel-o"></i> Xuất Excel
                                         </button>
+                                        <button type="button" data-type="word"
+                                                class="btn btn-info waves-effect waves-light btn-sm btn-export-data"><i
+                                                class="fa fa-file-word-o"></i> Xuất Word
+                                        </button>
                                     </form>
                                 </div>
 

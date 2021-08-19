@@ -2148,12 +2148,13 @@ class VanBanDiController extends Controller
                     $vanbanduthao->trang_thai = 0;
                     $vanbanduthao->save();
                 }
+                $vanbandi = VanBanDi::where('id', $request->id_van_ban)->first();
                 $nguoicu = Vanbandichoduyet::where('id', $request->id_vb_cho_duyet)->first();
                 $nguoidautiennhan = Vanbandichoduyet::where('van_ban_di_id', $nguoicu->van_ban_di_id)->OrderBy('created_at', 'asc')->first();
                 $canbonhan = new Vanbandichoduyet();
-                $canbonhan->van_ban_di_id = $nguoidautiennhan->van_ban_di_id;
+                $canbonhan->van_ban_di_id = $vanbandi->id;
                 $canbonhan->can_bo_chuyen_id = auth::user()->id;
-                $canbonhan->can_bo_nhan_id = $nguoidautiennhan->can_bo_chuyen_id;
+                $canbonhan->can_bo_nhan_id = $vanbandi->nguoi_tao;
                 $canbonhan->y_kien_gop_y = $request->noi_dung;
                 $canbonhan->trang_thai = 0;
                 $canbonhan->tra_lai = 1;
@@ -2220,6 +2221,7 @@ class VanBanDiController extends Controller
                 return redirect()->back()->with('success', 'Duyệt thành công !');
             } elseif ($tralai == 2) {
                 $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->id_van_ban)->get();
+                $vanbandi = VanBanDi::where('id', $request->id_van_ban)->first();
                 foreach ($vanbanduthao as $data) {
                     $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
                     $vanbanduthao->trang_thai = 0;
@@ -2228,9 +2230,9 @@ class VanBanDiController extends Controller
                 $nguoicu = Vanbandichoduyet::where('id', $request->id_vb_cho_duyet)->first();
                 $nguoidautiennhan = Vanbandichoduyet::where('van_ban_di_id', $nguoicu->van_ban_di_id)->OrderBy('van_ban_di_id', 'asc')->first();
                 $canbonhan = new Vanbandichoduyet();
-                $canbonhan->van_ban_di_id = $nguoidautiennhan->van_ban_di_id;
+                $canbonhan->van_ban_di_id = $vanbandi->id;
                 $canbonhan->can_bo_chuyen_id = auth::user()->id;
-                $canbonhan->can_bo_nhan_id = $nguoidautiennhan->can_bo_chuyen_id;
+                $canbonhan->can_bo_nhan_id = $vanbandi->nguoi_tao;
                 $canbonhan->y_kien_gop_y = $request->noi_dung;
                 $canbonhan->trang_thai = 0;
                 $canbonhan->tra_lai = 1;
@@ -2244,6 +2246,13 @@ class VanBanDiController extends Controller
                 UserLogs::saveUserLogs(' trả lại văn bản đi', $canbonhan);
                 return redirect()->back()->with('success', 'Trả lại thành công !');
             } elseif ($duyetlai == 3) {
+                $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->id_van_ban)->get();
+                foreach ($vanbanduthao as $data) {
+                    $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
+                    $vanbanduthao->tra_lai = null;
+                    $vanbanduthao->save();
+                }
+
                 $file = FileVanBanDi::where('van_ban_di_id', $request->id_van_ban)->get();
                 foreach ($file as $data) {
                     $file1 = FileVanBanDi::where('id', $data->id)->first();
