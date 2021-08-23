@@ -153,7 +153,7 @@ class VanBanDenController extends Controller
 //                })
                 ->where(function ($query) use ($so_ky_hieu) {
                     if (!empty($so_ky_hieu)) {
-                        return $query->where(DB::raw('lower(nguoi_ky)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
                     }
                 })
 //                ->where(function ($query) use ($so_ky_hieu) {
