@@ -352,6 +352,10 @@ class VanBanDenPhoiHopController extends Controller
                         ])->where('parent_don_vi_id', auth::user()->don_vi_id)->delete();
 
                         if (!empty($danhSachDonViPhoiHopIds[$vanBanDenId])) {
+                            if($danhSachPhoChuTichIds == null)
+                            {
+                                $danhSachPhoChuTichIds[$vanBanDenId] = null;
+                            }
                             DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
 
                             // luu vet van ban den
