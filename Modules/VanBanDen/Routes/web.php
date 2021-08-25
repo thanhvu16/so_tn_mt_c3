@@ -13,6 +13,7 @@
 
 
 Route::resource('van-ban-den', 'VanBanDenController');
+Route::resource('don-thu-khieu-lai', 'DonThuKhieuLaiController');
 Route::resource('in-so-van-ban-den', 'ThongkeVanBanDenController');
 Route::resource('don-vi-nhan-van-ban-den', 'DonViNhanVanBanDenController');
 Route::resource('thong-ke-lanh-dao', 'ThongKeCapDuoiController');
