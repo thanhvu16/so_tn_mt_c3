@@ -53,6 +53,7 @@ class VanBanDenController extends Controller
         $trichyeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
         $co_quan_ban_hanh = $request->get('co_quan_ban_hanh_id');
+        $donThu = LoaiVanBan::where('ten_loai_van_ban','Like','Đơn thư')->first();
 
         $so_den = $request->get('vb_so_den');
         $so_den_end = $request->get('vb_so_den_end');
@@ -95,6 +96,7 @@ class VanBanDenController extends Controller
 
             $ds_vanBanDen = VanBanDen::query()->where(['type' => 1])
                 ->where('so_van_ban_id', '!=', 100)
+                ->where('loai_van_ban_id', '!=',$donThu->id)
                 ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
                     if (!empty($searchDonVi)) {
@@ -213,7 +215,9 @@ class VanBanDenController extends Controller
             where([
                 'don_vi_id' => $donViId,
                 'type' => VanBanDen::TYPE_VB_DON_VI])
-                ->where('so_van_ban_id', '!=', 100)->whereNull('deleted_at')
+                ->where('so_van_ban_id', '!=', 100)
+                ->where('loai_van_ban_id', '!=',$donThu->id)
+                ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
                     if (!empty($searchDonVi)) {
                         return $query->whereIn('parent_id', $arrVanBanDenId);

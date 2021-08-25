@@ -357,7 +357,6 @@ class VanBanDenPhoiHopController extends Controller
                                 $danhSachPhoChuTichIds[$vanBanDenId] = null;
                             }
                             DonViPhoiHop::luuDonViPhoiHopCapXa($danhSachDonViPhoiHopIds[$vanBanDenId], $vanBanDenId, $danhSachPhoChuTichIds[$vanBanDenId]);
-
                             // luu vet van ban den
                             $this->luuLogXuLyVanBanDen($dataLuuDonViPhoiHop);
                         }

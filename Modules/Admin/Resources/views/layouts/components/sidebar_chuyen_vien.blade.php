@@ -97,6 +97,22 @@
                     class="fa fa-circle-o"></i>Văn bản đã tạo </a></li>
     </ul>
 </li>
+@if(auth::user()->id == 10538)
+<li class="treeview {{ Route::is('don-thu-khieu-lai.index') || Route::is('don-thu-khieu-lai.create') || Route::is('danhsachgopy') || Route::is('vanBanDiTaoChuaDuyet') ? 'active menu-open' : '' }} }} ">
+    <a href="#">
+        <i class="fa  fa-gavel"></i> <span>Đơn thư khiếu nại</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('don-thu-khieu-lai.create') ? 'active' : '' }}"><a href="{{ route('don-thu-khieu-lai.create') }}"><i
+                    class="fa fa-circle-o"></i>Nhập đơn thư khiếu nại</a></li>
+        <li class="{{ Route::is('don-thu-khieu-lai.index') ? 'active' : '' }}"><a
+                href="{{ route('don-thu-khieu-lai.index') }}"><i class="fa fa-circle-o"></i>D/s đơn thư khiếu nại</a></li>
+    </ul>
+</li>
+@endif
 <li class="treeview {{ Route::is('cong-viec-don-vi.index') || Route::is('cong-viec-don-vi.chuyen-vien-phoi-hop')||
  Route::is('cong-viec-don-vi.dang-xu-ly')|| Route::is('cong-viec-don-vi.da-xu-ly')|| Route::is('cong-viec-don-vi.chuyen-vien-da-phoi-hop') ||
  Route::is('cong-viec-don-vi-phoi-hop.index')|| Route::is('cong-viec-don-vi-phoi-hop.da-xu-ly') ||
