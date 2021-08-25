@@ -1,5 +1,5 @@
 @extends('admin::layouts.master')
-@section('page_title', 'Thêm văn bản đến')
+@section('page_title', 'Thêm văn đơn thư')
 @section('content')
     <section class="content">
         <div class="row">
@@ -86,59 +86,7 @@
                                     <textarea class="form-control" name="trich_yeu" rows="3" required></textarea>
                                 </div>
                             </div>
-
-
-
-
-
-
                             <div class="row clearfix"></div>
-
-
-
-
-                            {{--                            <div class="col-md-12 text-right">--}}
-                            {{--                                <a class="btn btn-primary " role="button" data-toggle="collapse"--}}
-                            {{--                                   href="#collapseExample"--}}
-                            {{--                                   aria-expanded="false" aria-controls="collapseExample"><i--}}
-                            {{--                                        class="fa fa-plus"></i>--}}
-                            {{--                                </a>--}}
-                            {{--                                <b class="text-danger"> Hiển thị thêm nội dung</b>--}}
-                            {{--                            </div>--}}
-
-                            <div class="col-md-12 collapse "
-                                 id="collapseExample">
-                                    <div class="col-md-12 layout2 ">
-                                        <div class="row">
-                                        <div class="col-md-12">
-                                            <hr style="border: 0.5px solid #3c8dbc">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <label for="noi_dung" class="col-form-label">Nội dung</label>
-                                            <textarea rows="3" class="form-control"
-                                                      name="noi_dung[]"></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="han_giai_quyet" class="col-form-label">Hạn giải quyết</label>
-                                            <div id="">
-                                                <input type="date" class="form-control"
-                                                       value="" name="han_giai_quyet[]">
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <div class="input-group-btn text-right " style="margin-top: 10px">
-            <span class="btn btn-primary" onclick="noidungvanban('noi_dung[]')" type="button">
-                        <i class="fa fa-plus"></i> thêm nội dung</span>
-                                </div>
-                            </div>
-
-
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
