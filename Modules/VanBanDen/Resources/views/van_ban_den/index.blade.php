@@ -307,10 +307,10 @@
                                         <div class="text-right">
                                             @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
                                                 <span class="label label-success">Đã hoàn thành</span>
-                                            @elseif($vbDen->trinh_tu_nhan_van_ban == 1)
+                                            @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
                                                 <span class="label label-danger">Chưa phân loại</span>
                                             @else
-                                                <span class="label label-warning">Đang xử lý</span>
+                                                <span class="label label-success">Đang xử lý</span>
                                             @endif
                                         </div>
 
