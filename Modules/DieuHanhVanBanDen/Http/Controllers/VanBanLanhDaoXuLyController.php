@@ -726,6 +726,7 @@ class VanBanLanhDaoXuLyController extends Controller
 //                        dd($arraySDT);
                         //gửi sms đi
                         if ($vanBanDen->loai_van_ban_id == $giayMoi->id) {
+                            array_push($arraySDT, '84934440299');
                             $conVertTY = vn_to_str($vanBanDen->trich_yeu);
                             if ($arraySDT && count($arraySDT) > 0) {
                                 foreach ($arraySDT as $sdt) {

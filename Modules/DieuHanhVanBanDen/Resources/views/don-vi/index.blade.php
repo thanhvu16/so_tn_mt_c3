@@ -167,7 +167,7 @@
                                             <p>
                                                 <select
                                                     name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"
-                                                    class="form-control select2 lanh-dao-xem-de-biet"
+                                                    class="form-control select2 lanh-dao-xem-de-biet select2-hidden-accessible"
                                                     multiple="multiple"
                                                     form="form-tham-muu"
                                                     data-placeholder="Chọn phó phòng xem để biết">

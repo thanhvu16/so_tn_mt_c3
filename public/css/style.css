@@ -517,3 +517,9 @@ a.them-van-ban-den:hover {
     font-size: 86% !important;
     margin-top: 6px !important;
 }
+.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark{
+    position: absolute;
+    display: inline-block;
+    left: 5px; //changed from right:15
+    margin-top: 5px;
+}
