@@ -192,7 +192,7 @@
                                                 <p>
                                                     <select
                                                         name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"
-                                                        class="form-control lanh-dao-xem-de-biet select2"
+                                                        class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
                                                         multiple="multiple"
                                                         form="form-tham-muu"
                                                         data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
@@ -228,7 +228,7 @@
                                                 <select
                                                     name="don_vi_phoi_hop_id[{{ $vanBanDen->id }}][]"
                                                     id="don-vi-phoi-hop-{{ $vanBanDen->id }}"
-                                                    class="form-control select2 don-vi-phoi-hop"
+                                                    class="form-control select2 don-vi-phoi-hop select2-hidden-accessible"
                                                     multiple
                                                     data-placeholder=" Chọn đơn vị phối hợp"
                                                     data-id="{{ $vanBanDen->id }}"

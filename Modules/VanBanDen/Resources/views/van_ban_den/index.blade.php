@@ -145,7 +145,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="sokyhieu" class="col-form-label">Đơn vị xử lý chính</label>
-                                                <select class="form-control select2"
+                                                <select class="form-control select2 show-tick"
                                                         name="don_vi_id" id="don_vi_id">
                                                     <option value="">-- Chọn đơn vị xử lý chính --</option>
                                                     @foreach ($danhSachDonVi as $donVi)

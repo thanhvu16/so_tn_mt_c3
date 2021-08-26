@@ -103,7 +103,7 @@
                             <div class="form-group col-md-12 ">
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nội bộ </label>
                                 <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
-                                        class="form-control select2"
+                                        class="form-control select2 select2-hidden-accessible"
                                         multiple
                                         data-placeholder=" Chọn đơn vị nhận ...">
                                     @foreach ($ds_DonVi_nhan as $donVi)

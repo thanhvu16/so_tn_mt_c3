@@ -158,7 +158,7 @@
                                                 <select
                                                     name="don_vi_phoi_hop_id[{{ $vanBanDen->id }}][]"
                                                     id="don-vi-phoi-hop-{{ $vanBanDen->id }}"
-                                                    class="form-control select2 don-vi-phoi-hop"
+                                                    class="form-control select2 don-vi-phoi-hop select2-hidden-accessible"
                                                     multiple
                                                     data-placeholder=" Chọn đơn vị phối hợp"
                                                     data-id="{{ $vanBanDen->id }}"
