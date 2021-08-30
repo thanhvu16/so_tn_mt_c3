@@ -19,8 +19,10 @@
                     <div class="col-md-12 mt-1 ">
                         <div class="row">
                             <div class="col-md-6">
+                                @if(auth::user()->hasRole([VAN_THU_HUYEN, VAN_THU_DON_VI]))
                                 <a role="button" onclick="showModal()" class="btn btn-primary ">
                                     <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
+                                @endif
                                 <a class=" btn btn-primary" data-toggle="collapse"
                                    href="#collapseExample"
                                    aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
@@ -28,6 +30,7 @@
                                 </a>
                             </div>
                                 <div class="col-md-6 text-right">
+                                    @if(auth::user()->hasRole([VAN_THU_HUYEN, VAN_THU_DON_VI]))
                                     <form action method="GET" action="{{ route('van-ban-den.index') }}" class="form-export">
                                         <input type="hidden" name="type"  value="">
                                         <input type="hidden" name="loai_van_ban_id"  value="{{Request::get('loai_van_ban_id') }}">
@@ -56,6 +59,7 @@
                                                 class="fa fa-file-word-o"></i> Xuất Word
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
 
 {{--                            @can('in sổ văn bản đơn vị')--}}
@@ -225,10 +229,10 @@
                             <tbody>
                             @forelse ($ds_vanBanDen as $key=>$vbDen)
                                 <tr >
-                                    <td class="text-center">{{$key+1}}</td>
+                                    <td class="text-center">{{$key+1}} </td>
                                     <td style="color: red;font-weight: bold">{{$vbDen->so_den}}</td>
                                     <td>
-                                    <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
+                                    <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}  {{$vbDen->trinh_tu_nhan_van_ban}}</p>
                                     <p>- Ngày ban
                                             hành: {{ date('d/m/Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
 {{--                                    <p>- Số đến: <span--}}
@@ -238,9 +242,43 @@
                                     <td>{{$vbDen->co_quan_ban_hanh}}</td>
                                     <td style="text-align: justify">
                                         @if ($vbDen->loai_van_ban_don_vi == 1)
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                            @if ($vbDen->parent_id)
+
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @else
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @endif
+                                            @else
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: red">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @else
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @endif
+                                            @endif
                                         @else
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}">{{$vbDen->trich_yeu}}</a><br>
+                                            @if ($vbDen->parent_id)
+
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+
+                                                @else
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+
+                                                @endif
+                                            @else
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+
+                                                @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
+                                                    <a   href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: red">{{$vbDen->trich_yeu}}</span></a><br>
+
+                                                @else
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                @endif
+                                            @endif
                                         @endif
 
                                         @if($vbDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
@@ -305,12 +343,20 @@
                                             @endif
                                         @endif
                                         <div class="text-right">
-                                            @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                                                <span class="label label-success">Đã hoàn thành</span>
-                                            @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
-                                                <span class="label label-danger">Chưa phân loại</span>
+                                            @if ($vbDen->parent_id)
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <span class="label label-primary">Đã hoàn thành</span>
+                                                @else
+                                                    <span class="label label-default">Đang xử lý</span>
+                                                @endif
                                             @else
-                                                <span class="label label-success">Đang xử lý</span>
+                                                @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
+                                                    <span class="label label-success">Đã hoàn thành</span>
+                                                @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
+                                                    <span class="label label-danger">Chưa phân loại</span>
+                                                @else
+                                                    <span class="label label-default">Đang xử lý</span>
+                                                @endif
                                             @endif
                                         </div>
 

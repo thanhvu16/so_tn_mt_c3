@@ -523,3 +523,23 @@ a.them-van-ban-den:hover {
     left: 5px; //changed from right:15
     margin-top: 5px;
 }
+
+a.color-black:hover {
+    color: #158af1 !important;
+}
+table tbody td a {
+    color: #0052CC !important;
+
+    transition:all 0.1s linear;
+    display:inline;
+    padding-bottom: 5px;
+    background: linear-gradient(to right, rgb(0, 110, 255) 0%, rgb(238, 99, 6) 98%);
+    background-size:0px 1px;
+    background-repeat: no-repeat;
+    background-position:left 85%;
+}
+table tbody td a:hover{
+    cursor: pointer;
+    color: #413cea !important;
+    background-size:100% 1px;
+}
