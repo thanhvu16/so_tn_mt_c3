@@ -87,6 +87,7 @@ class DonViNhanVanBanDenController extends Controller
             ->whereNull('type')
             ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
             ->get();
+//        dd($vanBanHuyenChuyenDonViPhoiHop);
 //        dd($vanbanhuyenxuongdonvi  , $vanBanHuyenChuyenDonViPhoiHop);
         $countphoihop = count($donvinhan) + count($vanbanhuyenxuongdonvi);
         $tong = count($donvinhan) + count($vanbanhuyenxuongdonvi) + count($vanBanHuyenChuyenDonViPhoiHop);
