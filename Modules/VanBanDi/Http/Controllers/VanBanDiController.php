@@ -282,7 +282,7 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['LABELID'] = "149355";
         $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
         $arayOffice['RQST']['CONTRACTID'] = '13681';
-        $arayOffice['RQST']['TEMPLATEID'] = '786293';
+        $arayOffice['RQST']['TEMPLATEID'] = '791767';
 //        $arayOffice['RQST']['PARAMS'][0] = array(
 //            'NUM' => '1',
 //            'CONTENT' => 've viec xin su dung tai nguyen'
