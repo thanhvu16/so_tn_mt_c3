@@ -160,7 +160,7 @@ class DonViChuTri extends Model
             $arayOffice['RQST']['LABELID'] = "149355";
             $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
             $arayOffice['RQST']['CONTRACTID'] = '13681';
-            $arayOffice['RQST']['TEMPLATEID'] = '786297';
+            $arayOffice['RQST']['TEMPLATEID'] = '791767';
             $arayOffice['RQST']['PARAMS'][0] = array(
                 'NUM' => '1',
                 'CONTENT' => $conVertTY
