@@ -72,6 +72,9 @@
                         </div>
                     </div>
                     <div class="box-body">
+                        <form action="{{route('loai_van_ban.dataSort')}}" name="Sapxep"
+                              method="post">
+                            @csrf
                         <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
@@ -84,12 +87,18 @@
                                 <th width="8%" style="vertical-align: middle" class="text-center">Mã PB trong SKH</th>
                                 <th width="8%" style="vertical-align: middle" class="text-center">Mã ĐV trong SKH</th>
                                 <th width="8%" style="vertical-align: middle" class="text-center">Mô tả</th>
+                                <th width="10%">Thứ tự
+                                    <button name="sapxep_btn" type="submit"
+                                            class="btn btn-primary waves-effect btn-sm">Sắp xếp
+                                    </button>
+                                </th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị riêng</th>
                                 <th width="7%" style="vertical-align: middle" class="text-center">Tác Vụ</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($ds_loaivanban as $key=>$loaivanban)
+
                                 <tr>
                                     <td class="text-center" style="vertical-align: middle">{{$key+1}}</td>
                                     <td class="text-center"
@@ -110,7 +119,14 @@
                                     <td class="text-center"
                                         style="vertical-align: middle">{{ $loaivanban->ma_don_vi == 1 ? 'Có' : 'Không' }}</td>
                                     <td class="text-center" style="vertical-align: middle">{{$loaivanban->mo_ta}}</td>
-
+                                    <td>
+                                        <input type="hidden" class="form-control"
+                                               name="sovanban_id[]"
+                                               value="{{$loaivanban->id}}">
+                                        <input type="text" style="width:40%"
+                                               class="form-control" name="a_sapXep[]"
+                                               value="{{$loaivanban->thu_tu}}">
+                                    </td>
                                     <td class="text-center"
                                         style="vertical-align: middle">{{$loaivanban->donvi->ten_don_vi ?? ''}}</td>
                                     <td class="text-center">
@@ -144,6 +160,8 @@
 
                             </tbody>
                         </table>
+                        </form>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="col-md-6" style="margin-top: 5px">

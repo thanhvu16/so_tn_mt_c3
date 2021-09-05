@@ -47,7 +47,7 @@ class DuThaoVanBanController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         $donvikhongdieuhanh = DonVi::where('dieu_hanh', '!=', 1)->whereNull('deleted_at')->get();
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
+            ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = null;
@@ -389,7 +389,7 @@ class DuThaoVanBanController extends Controller
     public function laythongtinduthaocu($id)
     {
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
+            ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = User::role([TRUONG_PHONG, PHO_PHONG, CHU_TICH, PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG])->orderBy('username', 'desc')->whereNull('deleted_at')->get();
@@ -570,7 +570,7 @@ class DuThaoVanBanController extends Controller
         }
 
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'asc')->get();
+            ->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = Donvi::whereNull('deleted_at')->where('parent_id', 0)
@@ -684,7 +684,7 @@ class DuThaoVanBanController extends Controller
     {
         canPermission(AllPermission::suaDuThao());
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
+            ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::role([TRUONG_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
         $ds_nguoiKy = User::orderBy('username', 'desc')->whereNull('deleted_at')->get();

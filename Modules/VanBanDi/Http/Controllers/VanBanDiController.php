@@ -59,7 +59,7 @@ class VanBanDiController extends Controller
         $phatHanhVanBan = $request->get('phat_hanh_van_ban');
         $year = $request->get('year') ?? null;
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 //        $ds_vanBanDi = VanBanDi::where('loai_van_ban_giay_moi',1)->whereNull('deleted_at')

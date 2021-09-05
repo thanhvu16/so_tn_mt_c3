@@ -1182,7 +1182,7 @@ class VanBanDenController extends Controller
         }
 
         $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
-            ->orderBy('ten_loai_van_ban', 'desc')->get();
+            ->orderBy('thu_tu', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')
             ->orderBy('ten_loai_van_ban', 'asc')->get();
         $user = auth::user();
@@ -1662,7 +1662,7 @@ class VanBanDenController extends Controller
         $ds_nguoiDung = array_column($ds_nguoiDung, 'ho_ten', 'id');
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get(['id', 'ho_ten'])->toArray();
         $ds_nguoiKy = array_column($ds_nguoiKy, 'ho_ten', 'id');
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get(['id', 'ten_loai_van_ban'])->toArray();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get(['id', 'ten_loai_van_ban'])->toArray();
         $ds_loaiVanBan = array_column($ds_loaiVanBan, 'ten_loai_van_ban', 'id');
         $returnHTML = $data->isNotEmpty() ? view('vanbanden::van_ban_den.check_trung_van_ban',
             compact('data', 'ds_nguoiDung', 'ds_nguoiKy', 'ds_loaiVanBan'))->render() : '';

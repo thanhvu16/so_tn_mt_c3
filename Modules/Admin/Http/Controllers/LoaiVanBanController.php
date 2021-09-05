@@ -52,6 +52,19 @@ class LoaiVanBanController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
+
+    public function dataSort(Request $request)
+    {
+
+        $dataSort = $request->all();
+
+        for($i=0;$i<count($dataSort['sovanban_id']); $i++){
+            LoaiVanBan::where('id',$dataSort['sovanban_id'][$i])->update(['thu_tu' => $dataSort['a_sapXep'][$i]]);
+        }
+        return redirect()->route('danhsachloaivanban')
+            ->with('success','Đã sắp xếp lại thứ tự!');
+
+    }
     public function create()
     {
         return view('admin::create');

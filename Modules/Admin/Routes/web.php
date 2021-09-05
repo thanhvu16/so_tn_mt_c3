@@ -37,6 +37,7 @@ Route::post('so-van-ban/delete/{id}', array('as' => 'xoasovanban', 'uses' => 'So
 Route::get('danh-sach-loai-van-ban', 'LoaiVanBanController@danhsach')->name('danhsachloaivanban');
 Route::resource('loai-van-ban', 'LoaiVanBanController')->except('show');
 Route::post('loai-van-ban/delete/{id}', array('as' => 'xoaloaivanban', 'uses' => 'LoaiVanBanController@destroy'));
+Route::post('loai-van-ban/dataSort', ['as' => 'loai_van_ban.dataSort', 'uses' => 'LoaiVanBanController@dataSort']);
 //Độ khẩn cấp
 Route::get('danh-sach-do-khan-cap', 'DoKhanController@danhsach')->name('danhsachdokhancap');
 Route::resource('do-khan-cap', 'DoKhanController')->except('show');
