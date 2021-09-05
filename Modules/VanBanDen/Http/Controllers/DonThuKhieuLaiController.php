@@ -286,6 +286,7 @@ class DonThuKhieuLaiController extends Controller
             $vanbandv->so_den = $soDenvb;
             $vanbandv->so_ky_hieu = $request->so_ky_hieu;
             $vanbandv->thong_tin_cong_dan = $request->thong_tin_cong_dan;
+            $vanbandv->dia_diem_khieu_nai = $request->dia_diem_khieu_nai;
             $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
             $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
             $vanbandv->trich_yeu = $request->trich_yeu;

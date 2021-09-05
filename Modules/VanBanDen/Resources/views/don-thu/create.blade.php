@@ -134,6 +134,14 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="dia_diem_khieu_nai">Địa điểm khiếu nại <span style="color: red">*</span></label>
+                                    <input type="text" class="form-control" name="dia_diem_khieu_nai"
+                                           id="dia_diem_khieu_nai"
+                                           placeholder="Địa điểm khiếu nại.." required>
+                                </div>
+                            </div>
                             @if( count($users) > 0)
                                 <div class="col-md-3 ">
                                     <div class="form-group">
