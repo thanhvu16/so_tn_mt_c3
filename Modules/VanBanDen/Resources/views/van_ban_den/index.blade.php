@@ -245,38 +245,38 @@
                                             @if ($vbDen->parent_id)
 
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @else
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @endif
                                             @else
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: red">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: red;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @else
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id.'?status=1' : $vbDen->id .'?status=1') }}" title="{{$vbDen->trich_yeu}}"><span style="color: black;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @endif
                                             @endif
                                         @else
                                             @if ($vbDen->parent_id)
 
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
 
                                                 @else
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
 
                                                 @endif
                                             @else
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: blue;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
 
                                                 @elseif($vbDen->trinh_tu_nhan_van_ban == 1 || $vbDen->trinh_tu_nhan_van_ban == null )
-                                                    <a   href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: red">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a   href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: red;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
 
                                                 @else
-                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black">{{$vbDen->trich_yeu}}</span></a><br>
+                                                    <a  href="{{ route('van_ban_den_chi_tiet.show', $vbDen->parent_id ? $vbDen->parent_id : $vbDen->id) }}" title="{{$vbDen->trich_yeu}}"><span style="color: black;font-weight: bold">{{$vbDen->trich_yeu}}</span></a><br>
                                                 @endif
                                             @endif
                                         @endif
