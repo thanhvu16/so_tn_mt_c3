@@ -129,7 +129,11 @@
     <a href="{{route('vanBanQuanTrongGiamDoc')}}">
         <i class="fa fa-file-text"></i> <span>Văn bản đã xử lý</span>
     </a>
-
+</li>
+<li class="{{ Route::is('giayMoiQuanTrongGiamDoc') ? 'active' : '' }}">
+    <a href="{{route('giayMoiQuanTrongGiamDoc')}}">
+        <i class="fa fa-file-text"></i> <span>Giấy mời đã xử lý</span>
+    </a>
 </li>
 @else
 

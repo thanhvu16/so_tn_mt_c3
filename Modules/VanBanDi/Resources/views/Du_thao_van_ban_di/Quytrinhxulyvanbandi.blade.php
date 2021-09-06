@@ -254,7 +254,7 @@
                                     @foreach($vanbandi->mailngoaitp as $key => $item)
                                         @if (!empty($item))
                                             <tr>
-                                                <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 }}</td>
+                                                <td class="text-center"> {{ count($vanbandi->donvinhanvbdi)+1 + $key }}</td>
                                                 <td> {{ $item->laytendonvingoai->ten_don_vi ?? null }}</td>
                                             </tr>
                                         @endif

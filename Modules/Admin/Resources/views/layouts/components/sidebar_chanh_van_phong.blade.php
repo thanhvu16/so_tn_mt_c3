@@ -21,6 +21,12 @@
         <a href="{{route('vanBanQuanTrongGiamDoc')}}">
             <i class="fa fa-file-text"></i> <span>Văn bản đã xử lý</span>
         </a>
+    </li>
+    <li class="{{ Route::is('giayMoiQuanTrongGiamDoc') ? 'active' : '' }}">
+        <a href="{{route('giayMoiQuanTrongGiamDoc')}}">
+            <i class="fa fa-file-text"></i> <span>Giấy mời đã xử lý</span>
+        </a>
+    </li>
 @else
 
     <li class="treeview {{ Route::is('van-ban-den.index') || Route::is('van-ban-den.create') || Route::is('van-ban-den.edit')|| Route::is('vanBanDonViGuiSo') ? 'active menu-open' : '' }} }} ">
