@@ -199,6 +199,7 @@
                                 <th width="21%" style="vertical-align: middle" class="text-center">Nơi
                                     nhận
                                 </th>
+                                <th width="6%" style="vertical-align: middle" class="text-center">Trạng thái</th>
                                 <th width="6%" style="vertical-align: middle" class="text-center">Tác vụ
                                 </th>
                             </tr>
@@ -217,7 +218,7 @@
                                     </td>
                                     <td   style="text-align: justify">
                                         <a
-                                            href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}"
+                                            href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}" style="font-weight: bold"
                                             title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
                                             @forelse($vbDi->filechinh as $filedata)
@@ -228,7 +229,7 @@
                                         </div>
                                     </td>
                                     <td>
-
+                                        <div style="max-height:120px;  overflow:auto">
                                         @if ($vbDi->donvinhanvbdi)
                                             @foreach($vbDi->donvinhanvbdi as $key=>$item)
                                                 <p>- {{ $item->laytendonvinhan->ten_don_vi }}</p>
@@ -239,10 +240,14 @@
                                                 <p>- {{$item->laytendonvingoai->ten_don_vi ?? ''}}</p>
                                             @endforeach
                                         @endif
+                                        </div>
+
+                                    </td>
+                                    <td style="vertical-align: middle;">
                                         @if ($vbDi->phat_hanh_van_ban == \Modules\VanBanDi\Entities\VanBanDi::CHO_PHAT_HANH)
-                                            <span class="label label-warning">Chờ phát hành</span>
+                                            <span class="label label-warning" style="font-size: 14px">Chờ phát hành</span>
                                         @else
-                                            <span class="label label-success">Đã phát hành</span>
+                                            <span class="label label-success" style="font-size: 14px">Đã phát hành</span>
                                         @endif
                                     </td>
                                     <td class="text-center">

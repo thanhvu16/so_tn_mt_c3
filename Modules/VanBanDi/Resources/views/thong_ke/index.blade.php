@@ -55,7 +55,7 @@
                                             </th>
                                             <th class="text-center" width="10%">Số ký hiệu
                                             </th>
-                                            <th class="text-center" width="10%">Loại văn bản</th>
+                                            <th class="text-center" width="15%">Người ký</th>
 
                                             <th class="text-center" width="">Trích yếu
                                             </th>
@@ -69,11 +69,12 @@
                                                 <td class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                                 <td class="text-center" style="vertical-align: middle">{{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh))}}</td>
                                                 <td class="text-center" style="vertical-align: middle">{{$vbDi->so_ky_hieu}}</td>
-                                                <td style="vertical-align: middle;text-align: center">{{$vbDi->loaivanban->ten_loai_van_ban ?? ''}}</td>
+                                                <td style="vertical-align: middle;text-align: center">{{$vbDi->nguoidung2->ho_ten ?? ''}}</td>
                                                 <td ><a
                                                         href="{{route('Quytrinhxulyvanbandi',$vbDi->id)}}"
                                                         title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a></td>
-                                                <td class="text-left" style="vertical-align: middle">
+                                                <td class="text-left" style="vertical-align: middle" >
+                                                    <div style="max-height:120px;  overflow:auto">
                                                         @forelse($vbDi->donvinhanvbdi as $key=>$item)
                                                             <p>
                                                                 - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
@@ -86,6 +87,7 @@
                                                             </p>
                                                         @empty
                                                         @endforelse
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @empty
