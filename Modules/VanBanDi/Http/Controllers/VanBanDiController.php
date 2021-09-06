@@ -706,7 +706,7 @@ class VanBanDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
 
@@ -941,7 +941,7 @@ class VanBanDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
 
@@ -1501,7 +1501,7 @@ class VanBanDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
 

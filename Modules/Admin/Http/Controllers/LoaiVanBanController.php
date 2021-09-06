@@ -44,7 +44,7 @@ class LoaiVanBanController extends Controller
                 if (!empty($loaiapdung)) {
                     return $query->where('loai_van_ban', 'LIKE', "%$loaiapdung%");
                 }
-            })->paginate(PER_PAGE);
+            })->orderBy('thu_tu', 'asc')->paginate(PER_PAGE);
         return view('admin::Loai_van_ban.danh_sach', compact('ds_loaivanban','donvi'));
     }
 
