@@ -2303,7 +2303,6 @@ class VanBanDiController extends Controller
 
     public function Capsovanbandi(Request $request)
     {
-
         $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
 //        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
 //        $vanbandiduyet->cho_cap_so = 3;
