@@ -56,8 +56,8 @@
     </a>
     <ul class="treeview-menu">
         <li class="{{ Route::is('van-ban-di.index') ? 'active' : '' }}"><a href="{{ route('van-ban-di.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
-        <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i class="fa fa-circle-o"></i>Thêm mới trình lãnh đạo</a></li>
-        <li class="{{ Route::is('nhapVanBanDi') ? 'active' : '' }}"><a href="{{ route('nhapVanBanDi') }}"><i class="fa fa-circle-o"></i>Thêm mới trực tiếp</a></li>
+{{--        <li class="{{ Route::is('van-ban-di.create') ? 'active' : '' }}"><a href="{{ route('van-ban-di.create') }}"><i class="fa fa-circle-o"></i>Thêm mới trình lãnh đạo</a></li>--}}
+        <li class="{{ Route::is('nhapVanBanDi') ? 'active' : '' }}"><a href="{{ route('nhapVanBanDi') }}"><i class="fa fa-circle-o"></i>Thêm mới văn bản</a></li>
         <li class="{{ Route::is('vanbandichoso') ? 'active' : '' }}"><a href="{{ route('vanbandichoso') }}"><i class="fa fa-circle-o"></i> Danh sách chờ số</a></li>
     </ul>
 </li>
