@@ -30,7 +30,7 @@ class LoaiVanBanController extends Controller
         $tenloaivanban = $request->get('ten_loai_van_ban');
         $tenviettat = $request->get('ten_viet_tat');
         $loaiapdung = $request->get('loai_ap_dung');
-        $ds_loaivanban = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')
+        $ds_loaivanban = LoaiVanBan::wherenull('deleted_at')
             ->where(function ($query) use ($tenloaivanban) {
                 if (!empty($tenloaivanban)) {
                     return $query->where('ten_loai_van_ban', 'LIKE', "%$tenloaivanban%");
