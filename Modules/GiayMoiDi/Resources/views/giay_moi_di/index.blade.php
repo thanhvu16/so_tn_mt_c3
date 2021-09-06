@@ -235,13 +235,14 @@
                                         </div>
                                     </td>
                                     <td class="visible-lg">
-
+                                        <div style="max-height:120px;  overflow:auto">
                                         @forelse($vbDi->donvinhanvbdi as $key=>$item)
                                             <p>
                                                 - {{$item->laytendonvinhan->ten_don_vi ?? ''}}
                                             </p>
                                         @empty
                                         @endforelse
+                                        </div>
 
                                         <br>
                                     </td>

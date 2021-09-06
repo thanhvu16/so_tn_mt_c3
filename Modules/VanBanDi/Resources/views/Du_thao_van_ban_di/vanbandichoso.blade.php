@@ -61,7 +61,7 @@
                                             <td>
                                                 <select class="form-control show-tick dropdown-search" name="sovanban_id"
                                                         >
-                                                    <option value="">-- Chọn sổ văn bản --</option>
+{{--                                                    <option value="">-- Chọn sổ văn bản --</option>--}}
                                                     @foreach ($ds_soVanBan as $sovb)
                                                         <option value="{{$sovb->id}}"
                                                             {{ isset($vanbanduthao) && $vanbanduthao->so_van_ban_id == $sovb->id ? 'selected' : '' }}>{{$sovb->ten_so_van_ban}}</option>
