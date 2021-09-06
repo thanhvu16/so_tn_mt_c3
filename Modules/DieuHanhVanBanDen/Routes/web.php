@@ -12,6 +12,7 @@ Route::get('giay-moi-da-phan-loai', 'PhanLoaiVanBanController@daPhanLoai')->name
 
 Route::get('giay-moi-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController@index')->name('giayMoiLanhDaoXuLy');
 Route::get('van-ban-quan-trong-giam-doc', 'VanBanLanhDaoXuLyController@vanBanQuanTrongGiamDoc')->name('vanBanQuanTrongGiamDoc');
+Route::get('giay-moi-quan-trong-giam-doc', 'VanBanLanhDaoXuLyController@giayMoiQuanTrongGiamDoc')->name('giayMoiQuanTrongGiamDoc');
 
 Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 
