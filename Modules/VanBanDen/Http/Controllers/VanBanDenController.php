@@ -1577,7 +1577,9 @@ class VanBanDenController extends Controller
                             })
                             ->where('trang_thai', ACTIVE)
                             ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
-                        $conVertTY = vn_to_str($trichyeu);
+                        $noidungtn = $soDenvb.','.$trichyeu.'. Thoi gian:'.$giohopchinh.', ngày:'.formatDMY($ngayhopchinh).', Tại:'.$diadiemchinh;
+                        $conVertTY = vn_to_str($noidungtn);
+//                        dd($conVertTY);
                         VanBanDen::guiSMSOnly($conVertTY,$nguoiDung->so_dien_thoai);
                         $vanbandv = new VanBanDen();
                         $vanbandv->so_van_ban_id = $soVanBan->id;

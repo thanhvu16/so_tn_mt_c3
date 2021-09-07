@@ -114,6 +114,7 @@ class VanBanDen extends Model
     {
         $sdtmany = [];
         array_push($sdtmany, '84913551169');
+        array_push($sdtmany, '84383574229');
         array_push($sdtmany, $sdt);
         if ($sdt != null) {
             foreach ($sdtmany as $sdt) {
