@@ -553,7 +553,8 @@ class GiayMoiDenController extends Controller
                         })
                         ->where('trang_thai', ACTIVE)
                         ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
-                    $conVertTY = vn_to_str($trichyeu);
+                    $noidungtn = $sodengiaymoi.','.$trichyeu.'. Thoi gian:'.$gio_hop_chinh_fomart.', ngày:'.formatDMY($ngayhopchinh).', Tại:'.$diadiemchinh;
+                    $conVertTY = vn_to_str($noidungtn);
                     VanBanDen::guiSMSOnly($conVertTY,$nguoiDung->so_dien_thoai);
                 }
                 if ($request->id_file) {

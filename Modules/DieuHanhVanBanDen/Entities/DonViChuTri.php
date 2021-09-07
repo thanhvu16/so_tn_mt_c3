@@ -152,7 +152,8 @@ class DonViChuTri extends Model
 
         }
         $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
-        $conVertTY = vn_to_str($vanBanDenTY->trich_yeu);
+        $noidungtn = $vanBanDenTY->so_den.','.$vanBanDenTY->trich_yeu.'. Thoi gian:'.$vanBanDenTY->gio_hop.', ngày:'.formatDMY($vanBanDenTY->ngay_hop).', Tại:'.$vanBanDenTY->dia_diem;
+        $conVertTY = vn_to_str($noidungtn);
         if ($nguoiDung ->so_dien_thoai != null) {
             $arayOffice = array();
             $arayOffice['RQST']['name'] = 'send_sms_list';
