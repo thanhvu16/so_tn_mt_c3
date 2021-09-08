@@ -84,21 +84,7 @@
                             </div>
 
 
-                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
-                                                style="color: red">(*)</span></label>
-                                        <select class="form-control select2" name="lanh_dao_tham_muu" required>
-                                            <option value="">-- Chọn lãnh đạo tham mưu --</option>
-                                            @foreach($users as $nguoidung)
-                                                <option
-                                                    value="{{ $nguoidung->id }}" {{ $van_ban_den->lanh_dao_tham_muu == $nguoidung->id ? 'selected' : '' }}>{{ $nguoidung->ho_ten }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            @endif
+
 
                             <div class="col-md-9">
                                 <div class="form-group">
@@ -189,6 +175,21 @@
                         <i class="fa fa-plus"></i> thêm nội dung</span>
                                 </div>
                             </div>
+                            @if(auth::user()->role_id == QUYEN_VAN_THU_HUYEN && count($users) > 0)
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail4">Lãnh đạo tham mưu <span
+                                                style="color: red">(*)</span></label>
+                                        <select class="form-control select2" name="lanh_dao_tham_muu" required>
+                                            <option value="">-- Chọn lãnh đạo tham mưu --</option>
+                                            @foreach($users as $nguoidung)
+                                                <option
+                                                    value="{{ $nguoidung->id }}" {{ $van_ban_den->lanh_dao_tham_muu == $nguoidung->id ? 'selected' : '' }}>{{ $nguoidung->ho_ten }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Độ khẩn</label>
@@ -201,6 +202,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Độ Mật</label>
@@ -219,7 +221,15 @@
                                 <input type="file" class="form-control han-xu-ly" name="File" value="">
                             </div>
                             <div class="row clearfix"></div>
-
+                            <div class="col-md-3 ">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"  {{ isset($van_ban_den) && $van_ban_den->chu_tri_phoi_hop == 1 ? 'checked' : '' }} id="giao-so-chu-tri"  value="1" name="chu_tri_phoi_hop"> Giao sở chủ trì
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
                                     <label for="">File văn bản:
@@ -232,7 +242,8 @@
                                         @endforelse</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 text-right">
+
+                            <div class="col-md-3 text-right">
                                 <div class="form-group">
                                     <button
                                         class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>
