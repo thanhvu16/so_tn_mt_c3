@@ -160,8 +160,9 @@ class AdminController extends Controller
 //                    ->orderBy('created_at', 'desc')
 //                    ->orwhere('truong_phong_ky', 2)
 //                    ->count();
-                $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2])
-                    ->where(function ($query) use ($lanhDaoSo){
+                $vanBanDiChoSo = VanBanDi::
+//                where(['cho_cap_so' => 2])
+                    where(function ($query) use ($lanhDaoSo){
                         return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id)
                             ->orWhere('truong_phong_ky', 2);
                     })
