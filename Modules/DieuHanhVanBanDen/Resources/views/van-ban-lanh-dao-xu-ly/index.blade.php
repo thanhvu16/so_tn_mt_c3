@@ -99,6 +99,7 @@
                     </div>
                     <div class="box-body " style=" width: 100%;overflow-x: auto;">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai')
+                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -121,7 +122,9 @@
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
-                                            <a href="{{ route('van_ban_den_chi_tiet.show',  $vanBanDen->id.'?xuly=true') }}">{{ $vanBanDen->trich_yeu }}</a>
+                                            <a href="{{ route('van_ban_den_chi_tiet.show',  $vanBanDen->id.'?xuly=true') }}">
+                                                @if($vanBanDen->ngay_nhan == date('Y-m-d'))<span style="color: #c000ff;font-weight: bold">{{ $vanBanDen->trich_yeu }}</span> @else <span>{{ $vanBanDen->trich_yeu }}</span> @endif
+                                            </a>
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
@@ -356,7 +359,7 @@
                         <div class="clearfix">
                             <div class="row">
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+
                                 </div>
                                 <div class="col-md-6">
                                     <button type="button"

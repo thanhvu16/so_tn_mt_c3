@@ -13,6 +13,7 @@
                         </div>
                     </div>
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
+                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -118,7 +119,7 @@
 
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $danhSachVanBanDen->render() !!}

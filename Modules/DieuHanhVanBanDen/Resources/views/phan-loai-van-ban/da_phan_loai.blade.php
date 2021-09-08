@@ -65,7 +65,8 @@
 
                         </div>
                     </div>
-                    <div class="box-body" style=" width: 100%;overflow-x: auto;" ">
+                    <div class="box-body" style=" width: 100%;overflow-x: auto;" >
+                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr role="row">
@@ -336,7 +337,7 @@
 
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}

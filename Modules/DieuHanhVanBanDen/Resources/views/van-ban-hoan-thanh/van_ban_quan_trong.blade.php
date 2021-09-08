@@ -53,6 +53,7 @@
                             </div>
                         </form>
                         <br>
+                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -160,7 +161,7 @@
                         </table>
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+
                             </div>
                             <div class="col-md-6 text-right">
                                 {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
