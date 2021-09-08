@@ -172,7 +172,7 @@
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
                                     <td>
-                                        <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}</p>
+                                        <p>- Số ký hiệu: <span style="text-transform: uppercase">{{$vbDen->so_ky_hieu}}</span></p>
                                         <p>- Ngày ban
                                             hành: {{ date('d/m/Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
                                         <p>- Ban hành: {{$vbDen->co_quan_ban_hanh}}</p>

@@ -232,7 +232,7 @@
                                     <td class="text-center">{{$key+1}} </td>
                                     <td style="color: red;font-weight: bold">{{$vbDen->so_den}}</td>
                                     <td>
-                                    <p>- Số ký hiệu: {{$vbDen->so_ky_hieu}}  {{$vbDen->trinh_tu_nhan_van_ban}}</p>
+                                    <p>- Số ký hiệu: <span style="text-transform: uppercase">{{$vbDen->so_ky_hieu}}</span></p>
                                     <p>- Ngày ban
                                             hành: {{ date('d/m/Y', strtotime($vbDen->ngay_ban_hanh)) }}</p>
 {{--                                    <p>- Số đến: <span--}}
