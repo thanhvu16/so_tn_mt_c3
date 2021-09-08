@@ -11,6 +11,7 @@
                     <!-- /.box-header -->
                     @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB])
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
+                        Tổng số văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
@@ -136,7 +137,6 @@
                         </table>
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $danhSachVanBanDen->render() !!}

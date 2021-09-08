@@ -94,6 +94,7 @@
                             </div>
                         </div>
                         <br>
+                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr role="row">
@@ -113,7 +114,8 @@
                                     <td class="text-center">{{ $order++ }}</td>
                                     <td>
                                         <p>
-                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">{{ $vanBanDen->trich_yeu }}</a>
+                                            <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">
+                                                @if($vanBanDen->ngay_nhan == date('Y-m-d'))<span style="color: #c000ff;font-weight: bold">{{ $vanBanDen->trich_yeu }}</span> @else <span>{{ $vanBanDen->trich_yeu }}</span> @endif</a>
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
                                                 <i>
@@ -309,7 +311,7 @@
                         <div class="clearfix">
                             <div class="row">
                                 <div class="col-md-6" style="margin-top: 5px">
-                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+
                                 </div>
                                 <div class="col-md-6">
                                     <button type="button"
