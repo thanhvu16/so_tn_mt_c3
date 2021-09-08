@@ -980,7 +980,9 @@ class VanBanDenController extends Controller
                 return $query->whereNull('cap_xa');
             })->first();
 
-
+        if ($request->chu_tri_phoi_hop == null) {
+            $request->chu_tri_phoi_hop = 0;
+        }
         if ($request->so_den != $vanbandv->so_den) {
             $vanbandv->so_den = $request->so_den;
         }
@@ -1012,6 +1014,7 @@ class VanBanDenController extends Controller
         $vanbandv->co_quan_ban_hanh = $request->co_quan_ban_hanh;
         $vanbandv->trich_yeu = $request->trich_yeu;
         $vanbandv->nguoi_ky = $request->nguoi_ky;
+        $vanbandv->chu_tri_phoi_hop = $request->chu_tri_phoi_hop;
         $vanbandv->han_xu_ly = !empty($request->han_xu_ly) ? formatYMD($request->han_xu_ly) : null;
         $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
         $vanbandv->do_khan_cap_id = $request->do_khan;
