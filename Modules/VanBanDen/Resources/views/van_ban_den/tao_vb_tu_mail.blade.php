@@ -76,7 +76,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="so_ky_hieu" id="so-ky-hieu-vb"
+                                    <input type="text" class="form-control" name="so_ky_hieu" id="so-ky-hieu-vb" style="text-transform: uppercase "
                                            placeholder="Số ký hiệu"
                                            value="{{ empty($data_xml) ? '' : strtoupper($data_xml->STRKYHIEU) }}"
                                            required>

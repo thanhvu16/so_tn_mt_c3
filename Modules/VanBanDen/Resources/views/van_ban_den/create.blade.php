@@ -60,7 +60,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Số ký hiệu <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4"
+                                    <input type="text" class="form-control" name="so_ky_hieu" id="exampleInputEmail4" style="text-transform: uppercase "
                                            placeholder="Số ký hiệu" required>
                                 </div>
                             </div>

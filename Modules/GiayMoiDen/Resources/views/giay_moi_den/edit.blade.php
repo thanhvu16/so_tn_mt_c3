@@ -31,7 +31,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" name="vb_so_ky_hieu"
+                                <input type="text" name="vb_so_ky_hieu" style="text-transform: uppercase "
                                        value="{{ old('vb_so_ky_hieu', isset($vanban) ? $vanban->so_ky_hieu : '') }}" required
                                        class="form-control file_insert"
                                        id="sokyhieu"

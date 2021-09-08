@@ -31,7 +31,7 @@
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu <span class="color-red">*</span></label>
                                 <input type="text" name="so_ky_hieu"
-                                       value=""
+                                       value="" style="text-transform: uppercase "
                                        required
                                        class="form-control file_insert tenfile" tabindex="2"
                                        id="sokyhieu"
