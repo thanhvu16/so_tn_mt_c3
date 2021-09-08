@@ -63,7 +63,7 @@
                                     <label for="exampleInputEmail4">Số ký hiệu <span
                                             style="color: red">(*)</span></label>
                                     <input type="text" class="form-control" value="{{$van_ban_den->so_ky_hieu}}"
-                                           name="so_ky_hieu" id="exampleInputEmail4"
+                                           name="so_ky_hieu" id="exampleInputEmail4" style="text-transform: uppercase "
                                            placeholder="Số ký hiệu" required>
                                 </div>
                             </div>
