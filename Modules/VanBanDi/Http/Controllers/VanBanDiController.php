@@ -2060,11 +2060,11 @@ class VanBanDiController extends Controller
             $vanbandichoso = VanBanDi::
 //            where(['cho_cap_so' => 2])
                 where(function ($query) use ($lanhDaoSo){
-                    return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id)
-                        ->orWhere('truong_phong_ky', 2);
+                    return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
+//                        ->orWhere('truong_phong_ky', 2);
                 })
+                ->where('truong_phong_ky', 2)
                 ->orderBy('created_at', 'desc')
-//                ->orwhere('truong_phong_ky', 2)
                 ->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2])
