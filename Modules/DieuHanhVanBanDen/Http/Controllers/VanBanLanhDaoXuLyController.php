@@ -705,7 +705,7 @@ class VanBanLanhDaoXuLyController extends Controller
                                             })
                                             ->orderBy('id', 'asc')
                                             ->whereNull('deleted_at')->first();
-                                        if ($nguoiDung1->so_dien_thoai) {
+                                        if ($nguoiDung2->so_dien_thoai) {
                                             array_push($arraySDT, $nguoiDung2->so_dien_thoai);
                                         }
                                     }
