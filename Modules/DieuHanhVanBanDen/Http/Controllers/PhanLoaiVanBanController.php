@@ -502,6 +502,7 @@ class PhanLoaiVanBanController extends Controller
         $ngayBanHanhStart = !empty($request->get('ngay_ban_hanh_start')) ? formatYMD($request->get('ngay_ban_hanh_start')) : null;
         $ngayBanHanhEnd = !empty($request->get('ngay_ban_hanh_end')) ? formatYMD($request->get('ngay_ban_hanh_end')) : null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
+//        dd($soKyHieu);
         $nguoiKy = $request->get('nguoi_ky') ?? null;
         $loaiVanBanId = $request->get('loai_van_ban_id') ?? null;
         $soVanBanId = $request->get('so_van_ban_id') ?? null;
@@ -626,7 +627,12 @@ class PhanLoaiVanBanController extends Controller
                     ->whereIn('id', $arrVanBanDenId)
                     ->where(function ($query) use ($trichYeu) {
                         if (!empty($trichYeu)) {
-                            return $query->where('trich_yeu', "LIKE", $trichYeu);
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                        }
+                    })
+                    ->where(function ($query) use ($soKyHieu) {
+                        if (!empty($soKyHieu)) {
+                            return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                         }
                     })
                     ->where(function ($query) use ($soDen) {
@@ -656,7 +662,12 @@ class PhanLoaiVanBanController extends Controller
                     ->whereIn('id', $arrVanBanDenId)
                     ->where(function ($query) use ($trichYeu) {
                         if (!empty($trichYeu)) {
-                            return $query->where('trich_yeu', "LIKE", $trichYeu);
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                        }
+                    })
+                    ->where(function ($query) use ($soKyHieu) {
+                        if (!empty($soKyHieu)) {
+                            return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                         }
                     })
                     ->where(function ($query) use ($soDen) {

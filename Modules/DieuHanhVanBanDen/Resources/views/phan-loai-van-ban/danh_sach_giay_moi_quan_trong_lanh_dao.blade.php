@@ -68,8 +68,8 @@
 
                             </div>
                             <div class="col-md-6 text-right" >
+                                    Tổng số giấy mời trong ngày : <b>{{ $tongSoGiayMoiTrongNgay }}</b>
 
-                                    Tổng số văn bản trong ngày: <b>{{ $tongSoVanBanTrongNgay  }}</b>
                             </div>
                         </div>
 

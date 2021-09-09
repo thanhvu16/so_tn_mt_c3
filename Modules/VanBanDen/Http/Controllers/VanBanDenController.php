@@ -503,7 +503,7 @@ class VanBanDenController extends Controller
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => auth::user()->donVi->parent_id,
-                'so_van_ban_id' => $request->soVanBanId,
+//                'so_van_ban_id' => $request->soVanBanId,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }

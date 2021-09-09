@@ -27,6 +27,46 @@
                         </div>
                     </div>
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
+                        <div class="col-md-12" style="margin-top: 20px">
+                            <div class="row">
+                                <form action="{{route('van-ban-den-don-vi.index')}}" method="get">
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo trích yếu</label>
+                                        <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
+                                               name="trich_yeu"
+                                               placeholder="Nhập trích yếu">
+                                        <input type="text" class="form-control hidden" value="{{Request::get('type')}}"
+                                               name="type"
+                                               placeholder="Nhập trích yếu">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo nơi gửi</label>
+                                        <input type="text" class="form-control" value="{{Request::get('co_quan_ban_hanh')}}"
+                                               name="co_quan_ban_hanh"
+                                               placeholder="Nhập tên nơi gửi">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo ngày</label>
+                                        <input type="date" class="form-control" value="{{Request::get('date')}}"
+                                               name="date">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Tìm theo số ký hiệu</label>
+                                        <input type="text" class="form-control" value="{{Request::get('so_ky_hieu')}}"
+                                               name="so_ky_hieu"
+                                               placeholder="Nhập số ký hiệu..">
+                                    </div>
+                                    <div class="col-md-12 text-right">
+                                        {{--                                    <label>&nbsp;</label><br>--}}
+                                        <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
+                                        @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
+                                                    !empty(Request::get('date')))
+                                            <a href="{{ route('van-ban-den-don-vi.index') }}" class="btn btn-success"><i class="fa fa-refresh"></i></a>
+                                        @endif
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => $trinhTuNhanVanBan])
                         Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                         <table class="table table-striped table-bordered table-hover data-row">
