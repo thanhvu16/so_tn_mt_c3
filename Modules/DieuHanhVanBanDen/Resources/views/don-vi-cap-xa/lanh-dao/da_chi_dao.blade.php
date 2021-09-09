@@ -35,8 +35,8 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Tìm theo số đến</label>
-                                    <input type="text" class="form-control" value="{{Request::get('so_den')}}"
-                                           name="so_den"
+                                    <input type="text" class="form-control" value="{{Request::get('so_den_start')}}"
+                                           name="so_den_start"
                                            placeholder="Nhập số đến">
                                 </div>
                                 <div class="col-md-3 form-group">
@@ -44,8 +44,14 @@
                                     <input type="date" class="form-control" value="{{Request::get('date')}}"
                                            name="date">
                                 </div>
-                                <div class="col-md-3">
-                                    <label>&nbsp;</label><br>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo số ký hiệu</label>
+                                    <input type="text" class="form-control" value="{{Request::get('so_ky_hieu')}}"
+                                           name="so_ky_hieu"
+                                           placeholder="Nhập số ký hiệu..">
+                                </div>
+                                <div class="col-md-12 text-right">
+{{--                                    <label>&nbsp;</label><br>--}}
                                     <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                     @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
                                                 !empty(Request::get('date')))

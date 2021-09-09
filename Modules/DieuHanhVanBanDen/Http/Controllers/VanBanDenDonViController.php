@@ -49,6 +49,12 @@ class VanBanDenDonViController extends Controller
             $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
         }
 
+        $trichYeu = $request->get('trich_yeu') ?? null;
+        $soDenStart = $request->get('so_den_start') ?? null;
+        $soKyHieu = $request->get('so_ky_hieu') ?? null;
+        $date = $request->get('date') ?? null;
+        $noiGui = $request->get('co_quan_ban_hanh') ?? null;
+
         $donViChuTri = DonViChuTri::where('don_vi_id', $currentUser->don_vi_id)
             ->where('can_bo_nhan_id', $currentUser->id)
             ->whereNotNull('vao_so_van_ban')
@@ -60,6 +66,7 @@ class VanBanDenDonViController extends Controller
             ->select('id')->first();
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+//        dd()
 
         if($request->type != null)
         {
@@ -69,6 +76,26 @@ class VanBanDenDonViController extends Controller
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->where(function ($query) use ($soDenStart) {
+                    if (!empty($soDenStart)) {
+                        return $query->where('so_den', $soDenStart);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($soKyHieu) {
+                    if (!empty($soKyHieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+                        return $query->where('updated_at', "LIKE", $date);
                     }
                 })
                 ->whereIn('id', $arrVanBanDenId)
@@ -81,6 +108,26 @@ class VanBanDenDonViController extends Controller
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->where(function ($query) use ($trichYeu) {
+                    if (!empty($trichYeu)) {
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($noiGui) {
+                    if (!empty($noiGui)) {
+                        return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($noiGui) . "%");
+                    }
+                })
+                ->where(function ($query) use ($soKyHieu) {
+                    if (!empty($soKyHieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+                        return $query->where('updated_at', "LIKE", $date);
                     }
                 })
                 ->whereIn('id', $arrVanBanDenId)

@@ -34,6 +34,7 @@ class VanBanDenPhoiHopController extends Controller
         $currentUser = auth::user();
         $donVi = $currentUser->donVi;
         $trichYeu = $request->get('trich_yeu') ?? null;
+
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')

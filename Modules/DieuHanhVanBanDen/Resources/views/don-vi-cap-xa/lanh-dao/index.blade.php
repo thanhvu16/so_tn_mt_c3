@@ -44,6 +44,12 @@
                                            name="so_den"
                                            placeholder="Nhập số đến">
                                 </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo số ký hiệu</label>
+                                    <input type="text" class="form-control" value="{{Request::get('so_ky_hieu')}}"
+                                           name="so_ky_hieu"
+                                           placeholder="Nhập số ký hiệu..">
+                                </div>
 {{--                                <div class="col-md-3 form-group">--}}
 {{--                                    <label>Tìm theo ngày</label>--}}
 {{--                                    <div class="input-group date">--}}
