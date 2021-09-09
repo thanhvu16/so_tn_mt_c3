@@ -965,7 +965,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             })
 
-            ->orderBy('ngay_nhan', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(PER_PAGE_10);
 
 
@@ -988,6 +988,14 @@ class VanBanLanhDaoXuLyController extends Controller
         }
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
+
+        $donViChuTri2 = DonViChuTri::whereNull('hoan_thanh')
+            ->where('van_ban_quan_trong', $searchQuanTrong)
+            ->whereIn('can_bo_chuyen_id', [10551, 15])
+            ->select(['id', 'van_ban_den_id'])
+            ->get();
+
+        $idVanBanDonViChuTri2 = $donViChuTri2->pluck('van_ban_den_id')->toArray();
         $tongSoVanBanTrongNgay = VanBanDen::with([
             'lanhDaoXemDeBiet' => function ($query) {
                 $query->select(['van_ban_den_id', 'lanh_dao_id']);
@@ -998,7 +1006,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             })
             ->where('ngay_nhan',date('Y-m-d'))
-            ->whereIn('id', $arrIdVanBanDenDonVi)
+            ->whereIn('id', $idVanBanDonViChuTri2)
             ->orderBy('ngay_nhan', 'DESC')
             ->count();
         $danhSachLoaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('ten_loai_van_ban', 'asc')->get();
@@ -1210,7 +1218,7 @@ class VanBanLanhDaoXuLyController extends Controller
             })
             ->where('ngay_nhan',date('Y-m-d'))
             ->whereIn('id', $arrIdVanBanDenDonVi)
-            ->orderBy('ngay_nhan', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->count();
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;

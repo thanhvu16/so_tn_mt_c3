@@ -63,13 +63,9 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
-
-                            </div>
-                            <div class="col-md-6 text-right" >
-
-                                    Tổng số văn bản trong ngày: <b>{{ $tongSoVanBanTrongNgay  }}</b>
+                            <div class="col-md-12">
+                                Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b> <br>
+                                <span style="color: #c000ff;font-weight: bold">Tổng số văn bản quan trọng xử lý trong ngày: <b>{{ $tongSoVanBanTrongNgay  }}</b></span>
                             </div>
                         </div>
 
