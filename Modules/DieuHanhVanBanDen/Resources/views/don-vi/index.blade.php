@@ -277,6 +277,13 @@
                                         </div>
                                     </td>
                                     <td>
+                                        @if($vanBanDen->lanhDaoChiDao)
+                                            @foreach($vanBanDen->lanhDaoDaChiDao as $data)
+                                            <span style="color: red;font-weight: bold">{{$data->lanhDao->chucVu->ten_chuc_vu ?? ''}} {{$data->lanhDao->ho_ten ?? ''}} chỉ đạo: {{$data->y_kien}}</span> <br>
+                                            @endforeach
+                                        @endif
+
+
                                         @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                             <p>
                                                 {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}

@@ -19,6 +19,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
+use Modules\DieuHanhVanBanDen\Entities\LanhDaoChiDao;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyet;
@@ -228,6 +229,15 @@ class VanBanDen extends Model
     public function lanhDaoXemDeBiet()
     {
         return $this->hasMany(LanhDaoXemDeBiet::class, 'van_ban_den_id', 'id');
+    }
+
+    public function lanhDaoChiDao()
+    {
+        return $this->hasMany(LanhDaoChiDao::class, 'van_ban_den_id', 'id');
+    }
+    public function lanhDaoDaChiDao()
+    {
+        return $this->hasMany(LanhDaoChiDao::class, 'van_ban_den_id', 'id')->where('trang_thai',1);
     }
 
     public function checkQuyenGiaHan($userId = null)

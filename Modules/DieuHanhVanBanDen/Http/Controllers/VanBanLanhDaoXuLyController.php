@@ -990,13 +990,25 @@ class VanBanLanhDaoXuLyController extends Controller
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
 
         $donViChuTri2 = DonViChuTri::whereNull('hoan_thanh')
-            ->where('van_ban_quan_trong', $searchQuanTrong)
+            ->where('van_ban_quan_trong', 1)
             ->whereIn('can_bo_chuyen_id', [10551, 15])
             ->select(['id', 'van_ban_den_id'])
             ->get();
 
         $idVanBanDonViChuTri2 = $donViChuTri2->pluck('van_ban_den_id')->toArray();
         $tongSoVanBanTrongNgay = VanBanDen::with([
+            'lanhDaoXemDeBiet' => function ($query) {
+                $query->select(['van_ban_den_id', 'lanh_dao_id']);
+            }])
+            ->where(function ($query) use ($loaiVanBanGiayMoi) {
+                if (!empty($loaiVanBanGiayMoi)) {
+                    return $query->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+                }
+            })
+            ->where('ngay_nhan',date('Y-m-d'))
+            ->orderBy('ngay_nhan', 'DESC')
+            ->count();
+        $tongSoVanBanQuanTrongNgay = VanBanDen::with([
             'lanhDaoXemDeBiet' => function ($query) {
                 $query->select(['van_ban_den_id', 'lanh_dao_id']);
             }])
@@ -1014,7 +1026,7 @@ class VanBanLanhDaoXuLyController extends Controller
         return view('dieuhanhvanbanden::phan-loai-van-ban.danh_sach_van_ban_quan_trong_lanh_dao',
             compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',
                 'danhSachPhoChuTich', 'chuTich', 'active', 'danhSachDonVi', 'danhSachDonViXuLy', 'danhSachLoaiVanBan',
-                'danhSachSoVanBan','tongSoVanBanTrongNgay'));
+                'danhSachSoVanBan','tongSoVanBanTrongNgay','tongSoVanBanQuanTrongNgay'));
     }
     public function giayMoiQuanTrongGiamDoc(Request $request)
     {

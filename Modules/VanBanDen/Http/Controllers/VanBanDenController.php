@@ -1657,7 +1657,7 @@ class VanBanDenController extends Controller
         $user = auth::user();
         $so_ky_hieu = $request->input('so_ky_hieu');
         $ngayBanHanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
-        $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngayBanHanh, 'loai_van_ban_id' => $request->loai_van_ban])
+        $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngayBanHanh])
             ->orderBy('id', 'desc')
             ->take(5)->get();
 

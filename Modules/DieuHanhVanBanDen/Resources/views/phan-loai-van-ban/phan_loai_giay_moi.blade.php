@@ -148,43 +148,13 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
-{{--                                            <p>--}}
-{{--                                                <select name="chu_tich_id[{{ $vanBanDen->id }}]"--}}
-{{--                                                        id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"--}}
-{{--                                                        data-id="{{ $vanBanDen->id }}"--}}
-{{--                                                        class="form-control select2 chu-tich"--}}
-{{--                                                        placeholder="Chọn giám đốc chủ trì"--}}
-{{--                                                        data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"--}}
-{{--                                                        form="form-tham-muu">--}}
-{{--                                                    <option value="">Chọn giám đốc chủ trì</option>--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>--}}
-{{--                                                </select>--}}
-{{--                                            </p>--}}
-{{--                                            <p>--}}
-{{--                                                <select--}}
-{{--                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"--}}
-{{--                                                    id="pho-chu-tich-{{ $vanBanDen->id }}"--}}
-{{--                                                    class="form-control pho-chu-tich select2"--}}
-{{--                                                    data-id="{{ $vanBanDen->id }}"--}}
-{{--                                                    placeholder="Chọn phó giám đốc"--}}
-{{--                                                    form="form-tham-muu"--}}
-{{--                                                    data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"--}}
-{{--                                                >--}}
-{{--                                                    <option value="">Chọn phó giám đốc chủ trì--}}
-{{--                                                    </option>--}}
-{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
-{{--                                                        <option--}}
-{{--                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>--}}
-{{--                                                    @empty--}}
-{{--                                                    @endforelse--}}
-{{--                                                </select>--}}
-{{--                                            </p>--}}
-
                                             <p>
-                                                <select name="giam_doc_id[{{ $vanBanDen->id }}]"
-                                                        class="form-control select2 "
+                                                <select name="chu_tich_id[{{ $vanBanDen->id }}]"
+                                                        id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
+                                                        data-id="{{ $vanBanDen->id }}"
+                                                        class="form-control select2 chu-tich"
                                                         placeholder="Chọn giám đốc chủ trì"
+                                                        data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
                                                     <option value="">Chọn giám đốc chủ trì</option>
                                                     <option
@@ -193,13 +163,15 @@
                                             </p>
                                             <p>
                                                 <select
-                                                    name="lanh_dao_chi_dao[{{ $vanBanDen->id }}][]"
-                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
-                                                    multiple="multiple"
+                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
+                                                    id="pho-chu-tich-{{ $vanBanDen->id }}"
+                                                    class="form-control pho-chu-tich select2"
+                                                    data-id="{{ $vanBanDen->id }}"
+                                                    placeholder="Chọn phó giám đốc"
                                                     form="form-tham-muu"
-                                                    data-placeholder="Chọn các phó giám đốc"
+                                                    data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                 >
-                                                    <option value="">Chọn phó giám đốc
+                                                    <option value="">Chọn phó giám đốc chủ trì
                                                     </option>
                                                     @forelse($danhSachPhoChuTich as $phoChuTich)
                                                         <option
@@ -208,25 +180,25 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-{{--                                            <p>--}}
-{{--                                                <select--}}
-{{--                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"--}}
-{{--                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"--}}
-{{--                                                    multiple="multiple"--}}
-{{--                                                    form="form-tham-muu"--}}
-{{--                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"--}}
-{{--                                                >--}}
-{{--                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát--}}
-{{--                                                    </option>--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>--}}
-{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
-{{--                                                        <option--}}
-{{--                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>--}}
-{{--                                                    @empty--}}
-{{--                                                    @endforelse--}}
-{{--                                                </select>--}}
-{{--                                            </p>--}}
+                                            <p>
+                                                <select
+                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"
+                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
+                                                    multiple="multiple"
+                                                    form="form-tham-muu"
+                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
+                                                >
+                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát
+                                                    </option>
+                                                    <option
+                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>
+                                                    @forelse($danhSachPhoChuTich as $phoChuTich)
+                                                        <option
+                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </p>
                                             <p>
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"
@@ -266,7 +238,7 @@
                                         <div class="form-group">
                                             <label>
                                                 <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                                               &ensp;Văn bản quan trọng
+                                                &ensp;Văn bản quan trọng
                                             </label>
 
                                         </div>

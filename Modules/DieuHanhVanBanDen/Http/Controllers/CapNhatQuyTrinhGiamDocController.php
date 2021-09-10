@@ -13,6 +13,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
+use Modules\DieuHanhVanBanDen\Entities\LanhDaoChiDao;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
@@ -88,6 +89,8 @@ class CapNhatQuyTrinhGiamDocController extends Controller
         $vanBanQuanTrongIds = $data['van_ban_quan_trong'] ?? null;
         $textDonViChuTri = $data['don_vi_chu_tri'] ?? null;
         $donViDuHop = $data['don_vi_du_hop'] ?? null;
+        $arrLanhDaoChiDao = $data['lanh_dao_chi_dao'] ?? null;
+        $giamDocChiDao = $data['giam_doc_id'] ?? null;
 
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
 
@@ -261,6 +264,14 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                     LanhDaoXemDeBiet::saveLanhDaoXemDeBiet($arrLanhDaoXemDeBiet[$vanBanDenId],
                         $vanBanDenId);
                 }
+                if (!empty($arrLanhDaoChiDao[$vanBanDenId])) {
+                    LanhDaoChiDao::saveLanhDaoChiDao($arrLanhDaoChiDao[$vanBanDenId],
+                        $vanBanDenId);
+                }
+                if (!empty($giamDocChiDao[$vanBanDenId])) {
+                    LanhDaoChiDao::saveGiamDocChiDao($giamDocChiDao[$vanBanDenId],
+                        $vanBanDenId);
+                }
                 if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
                     $vbquantrong = 1;
                 }
@@ -317,8 +328,10 @@ class CapNhatQuyTrinhGiamDocController extends Controller
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             foreach ($vanBanDenIds as $vanBanDenId) {
+                //xóa chỉ đạo lãnh đạo
+                LanhDaoChiDao::where(['van_ban_den_id' => $vanBanDenId])->delete();
                 //Xóa log Xử lý văn bản đến
-                LogXuLyVanBanDen::where(['van_ban_den_id' => $vanBanDenId,])->delete();
+                LogXuLyVanBanDen::where(['van_ban_den_id' => $vanBanDenId])->delete();
                 //Xóa đơn vị chủ trì
                 DonViChuTri::where('van_ban_den_id', $vanBanDenId)->delete();
                 //Xóa đơn vị phối hợp

@@ -10,9 +10,9 @@
         <li class="{{ Route::is('phan-loai-van-ban.index') ? 'active' : '' }}"><a
                 href="{{route('phan-loai-van-ban.index')}}"><i class="fa fa-circle-o"></i>Văn bản chờ phân loại</a>
         </li>
-        <li class="{{ Route::is('phan-loai-van-ban.da_phan_loai') ? 'active' : '' }}"><a
-                href="{{route('phan-loai-van-ban.da_phan_loai')}}"><i class="fa fa-circle-o"></i>Văn bản đã phân loại</a>
-        </li>
+{{--        <li class="{{ Route::is('phan-loai-van-ban.da_phan_loai') ? 'active' : '' }}"><a--}}
+{{--                href="{{route('phan-loai-van-ban.da_phan_loai')}}"><i class="fa fa-circle-o"></i>Văn bản đã phân loại</a>--}}
+{{--        </li>--}}
         @if (isset(auth::user()->donVi) && auth::user()->donVi->parent_id != 0)
             <hr class="hr-line">
             <li class="{{ Route::is('phan-loai-van-ban-phoi-hop.index') ? 'active' : '' }}"><a
@@ -36,9 +36,9 @@
         <li class="{{ Route::is('phan_loai_giay_moi') ? 'active' : '' }}"><a
                 href="{{route('phan_loai_giay_moi','type=1')}}"><i class="fa fa-circle-o"></i>Giấy mời chờ phân loại</a>
         </li>
-        <li class="{{ Route::is('phan-loai-giay-moi.da_phan_loai') ? 'active' : '' }}"><a
-                href="{{route('phan-loai-giay-moi.da_phan_loai','type=1')}}"><i class="fa fa-circle-o"></i>Giấy mời đã phân loại</a>
-        </li>
+{{--        <li class="{{ Route::is('phan-loai-giay-moi.da_phan_loai') ? 'active' : '' }}"><a--}}
+{{--                href="{{route('phan-loai-giay-moi.da_phan_loai','type=1')}}"><i class="fa fa-circle-o"></i>Giấy mời đã phân loại</a>--}}
+{{--        </li>--}}
 
     </ul>
 </li>

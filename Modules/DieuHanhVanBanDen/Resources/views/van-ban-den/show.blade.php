@@ -238,6 +238,7 @@
                 @endif
                 @include('dieuhanhvanbanden::van-ban-den.log_xu_ly_van_ban_den', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDen ])
                 @include('dieuhanhvanbanden::van-ban-den.log_tra_lai_van_ban', ['xuLyVanBanDen' => $vanBanDen->xuLyVanBanDenTraLai ])
+                @include('dieuhanhvanbanden::van-ban-den.log_lanh_dao_chi_dao', ['lanhDaoChiDao' => $vanBanDen->lanhDaoDaChiDao ])
                 @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_chu_tri', ['chuyenNhanVanBanDonViChuTri' => $vanBanDen->donViChuTri ])
                 @include('dieuhanhvanbanden::van-ban-den.log_chuyen_don_vi_phoi_hop', ['chuyenNhanVanBanDonViPhoiHop' => $vanBanDen->donViPhoiHop ])
                 @include('dieuhanhvanbanden::van-ban-den.log_gia_han_van_ban', ['giaHanVanBanDonVi' => $vanBanDen->giaHanVanBan ])
