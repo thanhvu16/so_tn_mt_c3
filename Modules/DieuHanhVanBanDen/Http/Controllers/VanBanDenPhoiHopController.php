@@ -269,7 +269,6 @@ class VanBanDenPhoiHopController extends Controller
         $textnoidungPhoPhong = $data['noi_dung_pho_phong'] ?? null;
         $textNoiDungChuyenVien = $data['noi_dung_chuyen_vien'] ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-
         // them moi
         $textDonViPhoiHop = $data['don_vi_phoi_hop'] ?? null;
         $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
@@ -334,7 +333,6 @@ class VanBanDenPhoiHopController extends Controller
                         $chuyenNhanVanBanPhoChuTich->fill($dataChuyenNhanVanBanDonVi);
                         $chuyenNhanVanBanPhoChuTich->save();
                     }
-
                     // luu don vi chu tri tu cap xa
                     if ($currentUser->hasRole([CHU_TICH, PHO_CHU_TICH]) || $currentUser->can(AllPermission::thamMuu())) {
                         //data don vi phoi hop
@@ -342,7 +340,7 @@ class VanBanDenPhoiHopController extends Controller
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
                             'can_bo_nhan_id' => $nguoiDung->id ?? null,
-                            'noi_dung' => $textDonViPhoiHop[$vanBanDenId],
+                            'noi_dung' => $textDonViPhoiHop[$vanBanDenId] ?? null,
                             'don_vi_phoi_hop_id' => isset($danhSachDonViPhoiHopIds[$vanBanDenId]) ? \GuzzleHttp\json_encode($danhSachDonViPhoiHopIds[$vanBanDenId]) : null,
                             'user_id' => $currentUser->id
                         ];

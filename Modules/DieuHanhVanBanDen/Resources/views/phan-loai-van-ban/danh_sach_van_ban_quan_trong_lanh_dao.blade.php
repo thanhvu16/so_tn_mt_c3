@@ -65,7 +65,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b> <br>
-                                <span style="color: #c000ff;font-weight: bold">Tổng số văn bản xử lý trong ngày: <b>{{ $tongSoVanBanTrongNgay  }}</b></span>
+                                <span style="color: #c000ff;font-weight: bold">Tổng số văn bản xử lý trong ngày: <b>{{ $tongSoVanBanTrongNgay  }}</b></span><br>
+                                <span style="color: #c000ff;font-weight: bold">Tổng số văn bản quan trọng xử lý trong ngày: <b>{{ $tongSoVanBanQuanTrongNgay  }}</b></span>
                             </div>
                         </div>
 
@@ -134,62 +135,89 @@
                                     @endunlessrole
                                     <td>
                                         <div class="dau-viec-chi-tiet mb-2" style="width: 95%;">
-                                            @if (empty($active))
+{{--                                            @if (empty($active))--}}
+{{--                                                <p>--}}
+{{--                                                    <select name="chu_tich_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                            id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"--}}
+{{--                                                            data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                            class="form-control select2 chu-tich"--}}
+{{--                                                            placeholder="Chọn giám đốc chủ trì"--}}
+{{--                                                            data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                            form="form-tham-muu">--}}
+{{--                                                        <option value="">Chọn giám đốc chủ trì</option>--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>--}}
+{{--                                                    </select>--}}
+{{--                                                </p>--}}
+{{--                                            @endif--}}
+{{--                                            <p>--}}
+{{--                                                <select--}}
+{{--                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                    id="pho-chu-tich-{{ $vanBanDen->id }}"--}}
+{{--                                                    class="form-control pho-chu-tich select2"--}}
+{{--                                                    data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                    placeholder="Chọn phó giám đốc"--}}
+{{--                                                    form="form-tham-muu"--}}
+{{--                                                >--}}
+{{--                                                    <option value="">Chọn phó giám đốc chủ trì--}}
+{{--                                                    </option>--}}
+{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>--}}
+{{--                                                    @empty--}}
+{{--                                                    @endforelse--}}
+{{--                                                </select>--}}
+{{--                                            </p>--}}
+{{--                                            <p>--}}
+{{--                                                <select--}}
+{{--                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"--}}
+{{--                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"--}}
+{{--                                                    multiple="multiple"--}}
+{{--                                                    form="form-tham-muu"--}}
+{{--                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"--}}
+{{--                                                >--}}
+{{--                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát--}}
+{{--                                                    </option>--}}
+{{--                                                    @if(!in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan))--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $chuTich->ho_ten ?? null }}</option>--}}
+{{--                                                    @endif--}}
+{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
+{{--                                                        @if (!in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan))--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>--}}
+{{--                                                        @endif--}}
+{{--                                                    @empty--}}
+{{--                                                    @endforelse--}}
+{{--                                                </select>--}}
+{{--                                            </p>--}}
                                                 <p>
-                                                    <select name="chu_tich_id[{{ $vanBanDen->id }}]"
-                                                            id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
-                                                            data-id="{{ $vanBanDen->id }}"
-                                                            class="form-control select2 chu-tich"
+                                                    <select name="giam_doc_id[{{ $vanBanDen->id }}]"
+                                                            class="form-control select2 "
                                                             placeholder="Chọn giám đốc chủ trì"
-                                                            data-id="{{ $vanBanDen->id }}"
                                                             form="form-tham-muu">
                                                         <option value="">Chọn giám đốc chủ trì</option>
                                                         <option
-                                                            value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $chuTich->ho_ten ?? null }}</option>
+                                                            value="{{ $chuTich->id ?? null }}"{{ in_array($chuTich->id, $vanBanDen->lanhDaoChiDao->pluck('lanh_dao_id')->toArray()) ? 'selected' : ''}}>{{ $chuTich->ho_ten ?? null }}</option>--}}>{{ $chuTich->ho_ten ?? null }}</option>
                                                     </select>
                                                 </p>
-                                            @endif
-                                            <p>
-                                                <select
-                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
-                                                    id="pho-chu-tich-{{ $vanBanDen->id }}"
-                                                    class="form-control pho-chu-tich select2"
-                                                    data-id="{{ $vanBanDen->id }}"
-                                                    placeholder="Chọn phó giám đốc"
-                                                    form="form-tham-muu"
-                                                >
-                                                    <option value="">Chọn phó giám đốc chủ trì
-                                                    </option>
-                                                    @forelse($danhSachPhoChuTich as $phoChuTich)
-                                                        <option
-                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan) ? 'selected' : null  }}>{{ $phoChuTich->ho_ten }}</option>
-                                                    @empty
-                                                    @endforelse
-                                                </select>
-                                            </p>
-                                            <p>
-                                                <select
-                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"
-                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
-                                                    multiple="multiple"
-                                                    form="form-tham-muu"
-                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
-                                                >
-                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát
-                                                    </option>
-                                                    @if(!in_array($chuTich->id, $vanBanDen->arr_can_bo_nhan))
-                                                    <option
-                                                        value="{{ $chuTich->id ?? null }}" {{ in_array($chuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $chuTich->ho_ten ?? null }}</option>
-                                                    @endif
-                                                    @forelse($danhSachPhoChuTich as $phoChuTich)
-                                                        @if (!in_array($phoChuTich->id, $vanBanDen->arr_can_bo_nhan))
-                                                        <option
-                                                            value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoXemDeBiet->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
-                                                        @endif
-                                                    @empty
-                                                    @endforelse
-                                                </select>
-                                            </p>
+                                                <p>
+                                                    <select
+                                                        name="lanh_dao_chi_dao[{{ $vanBanDen->id }}][]"
+                                                        class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
+                                                        multiple="multiple"
+                                                        form="form-tham-muu"
+                                                        data-placeholder="Chọn lãnh đạo chỉ đạo"
+                                                    >
+                                                        <option value="">Chọn lãnh đạo góp ý
+                                                        </option>
+                                                        @forelse($danhSachPhoChuTich as $phoChuTich)
+                                                            <option
+                                                                value="{{ $phoChuTich->id }}" {{ in_array($phoChuTich->id, $vanBanDen->lanhDaoChiDao->pluck('lanh_dao_id')->toArray()) ? 'selected' : '' }}>{{ $phoChuTich->ho_ten }}</option>
+                                                        @empty
+                                                        @endforelse
+                                                    </select>
+                                                </p>
                                             <p>
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"

@@ -9,6 +9,8 @@
         <div class="col-md-6 col-sm-12">
             <p class="text-initial">- Số đến: <span
                     class="color-red text-bold">{{ $vanBanDen->hasChild->so_den ?? null }}</span></p>
+            <p class="text-initial">- Số ký hiệu: <span
+                    class=" text-bold">{{ $vanBanDen->so_ky_hieu ?? null }}</span></p>
             <p class="text-initial"> - Ngày ban
                 hành: {{  !empty($vanBanDen->hasChild->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->hasChild->ngay_ban_hanh)) : null }}</p>
             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->hasChild->loai_van_ban_id == $loaiVanBanGiayMoi->id)
@@ -79,6 +81,8 @@
         <div class="col-md-6 col-sm-12">
             <p class="text-initial">- Số đến: <span
                     class="color-red text-bold">{{ $vanBanDen->so_den ?? null }}</span></p>
+            <p class="text-initial">- Số ký hiệu: <span
+                    class="text-bold">{{ $vanBanDen->so_ky_hieu ?? null }}</span></p>
             <p class="text-initial"> - Ngày ban
                 hành: {{  !empty($vanBanDen->ngay_ban_hanh) ? date('d/m/Y', strtotime($vanBanDen->ngay_ban_hanh)) : null }}</p>
             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)

@@ -2,7 +2,7 @@
 
 Route::resource('phan-loai-van-ban', 'PhanLoaiVanBanController');
 
-Route::get('phan-loai-giay-moi', 'PhanLoaiVanBanController@index')->name('phan_loai_giay_moi');
+Route::get('phan-loai-giay-moi', 'PhanLoaiVanBanController@phanLoaiGiayMoi')->name('phan_loai_giay_moi');
 Route::get('van-ban-den-chi-tiet/{id}', 'DieuHanhVanBanDenController@show')->name('van_ban_den_chi_tiet.show');
 
 Route::get('van-ban-da-phan-loai', 'PhanLoaiVanBanController@daPhanLoai')->name('phan-loai-van-ban.da_phan_loai');
@@ -100,3 +100,5 @@ Route::post('remove-file/{id}', 'DieuHanhVanBanDenController@removeFile');
 
 Route::resource('phan-loai-van-ban-phoi-hop', 'PhanLoaiVanBanPhoiHopController');
 Route::get('van-ban-phoi-hop-da-phan-loai', 'PhanLoaiVanBanPhoiHopController@index')->name('van-ban-phoi-hop.da_phan_loai');
+
+Route::resource('lanh-dao-chi-dao', 'LanhDaoChiDaoController');

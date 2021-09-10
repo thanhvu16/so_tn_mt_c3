@@ -338,7 +338,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if (auth::user()->hasRole(CHU_TICH))
+                                        @if($vanBanDen->lanhDaoChiDao)
+                                            @foreach($vanBanDen->lanhDaoDaChiDao as $data)
+                                                <span style="color: red;font-weight: bold">{{$data->lanhDao->chucVu->ten_chuc_vu ?? ''}} {{$data->lanhDao->ho_ten ?? ''}} chỉ đạo: {{$data->y_kien}}</span> <br>
+                                            @endforeach
+                                        @endif
+
+                                    @if (auth::user()->hasRole(CHU_TICH))
                                             <p>
                                                 <textarea
                                                     name="noi_dung_pho_chu_tich[{{ $vanBanDen->id }}]"
