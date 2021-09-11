@@ -12,6 +12,14 @@
         <div class="clearfix"></div>
         <div class="panel-body">
             <div class="col-md-7 pl-1">
+                @if( auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && auth::user()->donVi->cap_xa == null)
+                <a class="text-title-item" href="{{ route('lanh-dao-chi-dao.index') }}">
+                    <p>VB xin ý kiến
+                        <button
+                                class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $vanBanChoYKien }}</button>
+                    </p>
+                </a>
+                @endif
                 @if( auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                 <a class="text-title-item" href="{{ route('van-ban-lanh-dao-xu-ly.index') }}">
                     <p>VB chờ xử lý
