@@ -22,6 +22,7 @@ use Modules\CongViecDonVi\Entities\GiaiQuyetCongViecDonVi;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
+use Modules\DieuHanhVanBanDen\Entities\LanhDaoChiDao;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
@@ -341,6 +342,7 @@ class AdminController extends Controller
         $vanBanXemDeBiet = 0;
         $giayMoiXemDeBiet = 0;
         $vanBanChoXuLy = 0;
+        $vanBanChoYKien = 0;
         $giayMoiChoXuLy = 0;
         $vanBanXinGiaHan = 0;
         $giayMoiXinGiaHan = 0;
@@ -424,11 +426,17 @@ class AdminController extends Controller
 
         $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
+        $vanBanChoYKien = LanhDaoChiDao::where('lanh_dao_id', auth::user()->id)
+            ->whereNull('trang_thai')
+            ->count();
+        array_push($hoSoCongViecPiceCharts, array('Văn bản chờ ý kiến', $vanBanChoYKien));
+        array_push($hoSoCongViecCoLors, COLOR_GREEN);
 
         $vanBanChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
             ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
             ->count();
+
         $giayMoiChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
             ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->where('loai_van_ban_id', $loaiVanBanGiayMoi->id)
@@ -901,6 +909,7 @@ class AdminController extends Controller
                 'chuyenVienPhoiHopGM',
                 'donViPhoiHopGM',
                 'giayMoiQuanTrong',
+                'vanBanChoYKien',
                 'giayMoiQuaHanDangXuLy',
                 'giayMoiChoPhanLoai',
                 'giayMoiPhoiHopChoPhanLoai'
