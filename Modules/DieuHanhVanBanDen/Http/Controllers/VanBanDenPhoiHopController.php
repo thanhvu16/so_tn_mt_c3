@@ -600,6 +600,7 @@ class VanBanDenPhoiHopController extends Controller
 
     public function chuyenVienPhoiHop(Request $request)
     {
+
         $currentUser = auth::user();
         $status = $request->get('status') ?? null;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
