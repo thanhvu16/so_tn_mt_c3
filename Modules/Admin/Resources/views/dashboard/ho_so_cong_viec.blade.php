@@ -12,7 +12,7 @@
         <div class="clearfix"></div>
         <div class="panel-body">
             <div class="col-md-7 pl-1">
-                @if( auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]) && auth::user()->donVi->cap_xa == null)
+                @if(auth::user()->id == 15 || auth::user()->id = 16|| auth::user()->id = 105|| auth::user()->id = 48)
                 <a class="text-title-item" href="{{ route('lanh-dao-chi-dao.index') }}">
                     <p>VB xin ý kiến
                         <button
