@@ -23,6 +23,7 @@ use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use Auth, DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class VanBanLanhDaoXuLyController extends Controller
 {
@@ -988,14 +989,27 @@ class VanBanLanhDaoXuLyController extends Controller
         }
 
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
+        $ngayDenStart = date('Y-m-d');
+        $ngayDenEnd = date('Y-m-d');
 
         $donViChuTri2 = DonViChuTri::whereNull('hoan_thanh')
             ->where('van_ban_quan_trong', 1)
             ->whereIn('can_bo_chuyen_id', [10551, 15])
+            ->whereDate('created_at',$ngayDenStart)
             ->select(['id', 'van_ban_den_id'])
+            ->orderBy('created_at','asc')
+            ->get();
+        $xuLyTrongNgay = DonViChuTri::whereNull('hoan_thanh')
+            ->whereIn('can_bo_chuyen_id', [10551, 15])
+            ->whereDate('created_at',$ngayDenStart)
+            ->select(['id', 'van_ban_den_id'])
+            ->orderBy('created_at','asc')
             ->get();
 
+
+
         $idVanBanDonViChuTri2 = $donViChuTri2->pluck('van_ban_den_id')->toArray();
+        $xuLyTrongNgayXL = $xuLyTrongNgay->pluck('van_ban_den_id')->toArray();
         $tongSoVanBanTrongNgay = VanBanDen::with([
             'lanhDaoXemDeBiet' => function ($query) {
                 $query->select(['van_ban_den_id', 'lanh_dao_id']);
@@ -1005,7 +1019,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
                 }
             })
-            ->where('ngay_nhan',date('Y-m-d'))
+            ->whereIn('id', $xuLyTrongNgayXL)
             ->orderBy('ngay_nhan', 'DESC')
             ->count();
         $tongSoVanBanQuanTrongNgay = VanBanDen::with([
@@ -1017,7 +1031,6 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
                 }
             })
-            ->where('ngay_nhan',date('Y-m-d'))
             ->whereIn('id', $idVanBanDonViChuTri2)
             ->orderBy('ngay_nhan', 'DESC')
             ->count();
