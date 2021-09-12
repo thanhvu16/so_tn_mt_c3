@@ -94,7 +94,7 @@
                                     <td>
                                         <p>
                                             <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}">
-                                                @if($vanBanDen->ngay_nhan == date('Y-m-d'))<span style="color: #c000ff;font-weight: bold">{{ $vanBanDen->trich_yeu }}</span> @else <span>{{ $vanBanDen->trich_yeu }}</span> @endif
+                                                @if(date_format($vanBanDen->layvanbanxulyngay->created_at, 'Y-m-d') == date('Y-m-d'))<span style="color: #c000ff;font-weight: bold">{{ $vanBanDen->trich_yeu }}</span> @else <span>{{ $vanBanDen->trich_yeu }}</span> @endif
                                             </a>
                                             <br>
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)

@@ -338,6 +338,10 @@ class VanBanDen extends Model
     {
         return $this->hasMany(DonViChuTri::class, 'van_ban_den_id', 'id');
     }
+    public function layvanbanxulyngay()
+    {
+        return $this->hasOne(DonViChuTri::class, 'van_ban_den_id', 'id')->orderBy('created_at','asc');
+    }
 
     public function donViChuTriVB()
     {
