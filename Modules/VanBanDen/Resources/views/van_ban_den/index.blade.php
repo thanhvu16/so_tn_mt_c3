@@ -343,6 +343,7 @@
                                             @endif
                                         @endif
                                         <div class="text-right">
+                                            @hasanyrole('văn thư sở')
                                             @if ($vbDen->parent_id)
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
                                                     <span class="label label-primary">Đã hoàn thành</span>
@@ -358,6 +359,7 @@
                                                     <span class="label label-default">Đang xử lý</span>
                                                 @endif
                                             @endif
+                                            @endrole
                                         </div>
 
                                     </td>

@@ -53,7 +53,7 @@ class VanBanDenController extends Controller
         $trichyeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
         $co_quan_ban_hanh = $request->get('co_quan_ban_hanh_id');
-        $donThu = LoaiVanBan::where('ten_loai_van_ban','Like','Đơn thư')->first();
+        $donThu = LoaiVanBan::where('ten_loai_van_ban', 'Like', 'Đơn thư')->first();
 
         $so_den = $request->get('vb_so_den');
         $so_den_end = $request->get('vb_so_den_end');
@@ -95,7 +95,7 @@ class VanBanDenController extends Controller
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
             $ds_vanBanDen = VanBanDen::query()->where(['type' => 1])
                 ->where('so_van_ban_id', '!=', 100)
-                ->where('loai_van_ban_id', '!=',$donThu->id)
+                ->where('loai_van_ban_id', '!=', $donThu->id)
                 ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
                     if (!empty($searchDonVi)) {
@@ -204,9 +204,9 @@ class VanBanDenController extends Controller
 
                     }
                 })
-                ->orderBy('so_den', 'desc')->paginate(PER_PAGE,['*'],'page',$page);
+                ->orderBy('so_den', 'desc')->paginate(PER_PAGE, ['*'], 'page', $page);
 
-            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
+            $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->whereNull('deleted_at')->orderBy('thu_tu', 'asc')->get();
 
         } else {
 
@@ -215,7 +215,7 @@ class VanBanDenController extends Controller
             where(['don_vi_id' => $donViId,
                 'type' => VanBanDen::TYPE_VB_DON_VI])
                 ->where('so_van_ban_id', '!=', 100)
-                ->where('loai_van_ban_id', '!=',$donThu->id)
+                ->where('loai_van_ban_id', '!=', $donThu->id)
                 ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
                     if (!empty($searchDonVi)) {
@@ -303,9 +303,9 @@ class VanBanDenController extends Controller
                 })
                 ->orderBy('so_den', 'desc')
 //                ->get();
-                ->paginate(PER_PAGE,['*'],'page',$page);
+                ->paginate(PER_PAGE, ['*'], 'page', $page);
 
-            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->orderBy('thu_tu','asc')->get();
+            $danhSachDonVi = DonVi::where('parent_id', $donViId)->whereNull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         }
 
         $month = Carbon::now()->format('m');
@@ -524,12 +524,12 @@ class VanBanDenController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = auth::user();
         $nam = date("Y");
         $han_gq = $request->han_giai_quyet;
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         $thamMuuId = !empty($request->lanh_dao_tham_muu) ?? null;
+        $filevanban = !empty($request['File']) ? $request['File'] : null;
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
@@ -799,24 +799,26 @@ class VanBanDenController extends Controller
 
             }
             $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-            if ($request->File) {
-                if (!File::exists($uploadPath)) {
-                    File::makeDirectory($uploadPath, 0777, true, true);
+            if ($filevanban && count($filevanban) > 0) {
+                foreach ($filevanban as $key => $getFile) {
+                    if (!File::exists($uploadPath)) {
+                        File::makeDirectory($uploadPath, 0777, true, true);
+                    }
+                    $typeArray = explode('.', $getFile->getClientOriginalName());
+                    $tenchinhfile = strtolower($typeArray[0]);
+                    $extFile = $getFile->extension();
+                    $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                    $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+                    $getFile->move($uploadPath, $fileName);
+                    $vbDenFile = new FileVanBanDen();
+                    $vbDenFile->ten_file = $tenchinhfile;
+                    $vbDenFile->duong_dan = $urlFile;
+                    $vbDenFile->duoi_file = $extFile;
+                    $vbDenFile->vb_den_id = $vanbandv->id;
+                    $vbDenFile->nguoi_dung_id = auth::user()->id;
+                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                    $vbDenFile->save();
                 }
-                $typeArray = explode('.', $request->File->getClientOriginalName());
-                $tenchinhfile = strtolower($typeArray[0]);
-                $extFile = $request->File->extension();
-                $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-                $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
-                $request->File->move($uploadPath, $fileName);
-                $vbDenFile = new FileVanBanDen();
-                $vbDenFile->ten_file = $tenchinhfile;
-                $vbDenFile->duong_dan = $urlFile;
-                $vbDenFile->duoi_file = $extFile;
-                $vbDenFile->vb_den_id = $vanbandv->id;
-                $vbDenFile->nguoi_dung_id = auth::user()->id;
-                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                $vbDenFile->save();
             }
 
 
@@ -1579,11 +1581,11 @@ class VanBanDenController extends Controller
                                 return $query->whereIn('name', $role);
                             })
                             ->where('trang_thai', ACTIVE)
-                            ->whereNull('deleted_at')->orderBy('created_at','desc')->first();
-                        $noidungtn = $soDenvb.','.$trichyeu.'. Thoi gian:'.$giohopchinh.', ngày:'.formatDMY($ngayhopchinh).', Tại:'.$diadiemchinh;
+                            ->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
+                        $noidungtn = $soDenvb . ',' . $trichyeu . '. Thoi gian:' . $giohopchinh . ', ngày:' . formatDMY($ngayhopchinh) . ', Tại:' . $diadiemchinh;
                         $conVertTY = vn_to_str($noidungtn);
 //                        dd($conVertTY);
-                        VanBanDen::guiSMSOnly($conVertTY,$nguoiDung->so_dien_thoai);
+                        VanBanDen::guiSMSOnly($conVertTY, $nguoiDung->so_dien_thoai);
                         $vanbandv = new VanBanDen();
                         $vanbandv->so_van_ban_id = $soVanBan->id;
                         $vanbandv->so_den = $soDenvb;
@@ -1633,7 +1635,7 @@ class VanBanDenController extends Controller
 
                 DB::commit();
 
-                return redirect()->back()
+                return redirect()->route('giay-moi-den.index')
                     ->with('success', 'Thêm văn bản thành công !');
 
             } catch (\Exception $e) {
@@ -1660,7 +1662,6 @@ class VanBanDenController extends Controller
         $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'ngay_ban_hanh' => $ngayBanHanh])
             ->orderBy('id', 'desc')
             ->take(5)->get();
-
 
 
         $ds_nguoiDung = User::orderBy('created_at', 'desc')->get(['id', 'ho_ten'])->toArray();

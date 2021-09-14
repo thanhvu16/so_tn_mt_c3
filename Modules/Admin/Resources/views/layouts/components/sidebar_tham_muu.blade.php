@@ -1,3 +1,4 @@
+@if(auth::user()->id == 10551)
 <li class="treeview {{ Route::is('phan-loai-van-ban.index') || Route::is('phan-loai-van-ban.da_phan_loai')
  || Route::is('phan-loai-van-ban-phoi-hop.index') || Route::is('van-ban-phoi-hop.da_phan_loai') ? 'active menu-open' : '' }}">
     <a href="#">
@@ -24,6 +25,7 @@
         @endif
     </ul>
 </li>
+@endif
 <li class="treeview {{ Route::is('phan_loai_giay_moi') || Route::is('phan-loai-van-ban.da_phan_loai')
  || Route::is('phan-loai-giay-moi.da_phan_loai')  ? 'active menu-open' : '' }}">
     <a href="#">
