@@ -324,7 +324,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'ngay_den'  => Request::get('ngay_den'), 'trich_yeu' => Request::get('trich_yeu')])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'),'type'  => Request::get('type'), 'ngay_den'  => Request::get('ngay_den'), 'trich_yeu' => Request::get('trich_yeu')])->render() !!}
                             </div>
                         </div>
                     </div>

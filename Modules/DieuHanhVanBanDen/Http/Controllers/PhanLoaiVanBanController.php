@@ -301,6 +301,7 @@ class PhanLoaiVanBanController extends Controller
         } else {
             //tham muu cap so
             if ($request->type != null) {
+//                dd(1);
                 $danhSachVanBanDen = VanBanDen::
 //                where('lanh_dao_tham_muu', $user->id)->
                 with([
