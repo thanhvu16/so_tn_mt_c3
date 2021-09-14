@@ -28,7 +28,7 @@
                     </p>
                 </a>
                 @endif
-                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()) && auth::user()->id == 10551)
                     <a class="text-title-item" href="{{ route('phan-loai-van-ban.index') }}">
                         <p>Văn bản chờ phân loại
                             <button

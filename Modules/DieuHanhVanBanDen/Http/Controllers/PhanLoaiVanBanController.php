@@ -114,8 +114,10 @@ class PhanLoaiVanBanController extends Controller
         } else {
             //tham muu cap so
             if ($request->type != null) {
-                $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                    ->with([
+//                dd(1)
+                $danhSachVanBanDen = VanBanDen::
+                where('lanh_dao_tham_muu', $user->id)->
+                with([
                         'vanBanDenFile' => function ($query) {
                             return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
                         }
@@ -150,8 +152,9 @@ class PhanLoaiVanBanController extends Controller
                     ->paginate(PER_PAGE_10);
 
             } else {
-                $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                    ->with([
+                $danhSachVanBanDen = VanBanDen::
+                where('lanh_dao_tham_muu', $user->id)->
+                with([
                         'vanBanDenFile' => function ($query) {
                             return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
                         }
@@ -298,8 +301,9 @@ class PhanLoaiVanBanController extends Controller
         } else {
             //tham muu cap so
             if ($request->type != null) {
-                $danhSachVanBanDen = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                    ->with([
+                $danhSachVanBanDen = VanBanDen::
+//                where('lanh_dao_tham_muu', $user->id)->
+                with([
                         'vanBanDenFile' => function ($query) {
                             return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
                         }
@@ -394,10 +398,14 @@ class PhanLoaiVanBanController extends Controller
                 ->select('id', 'ten_don_vi')
                 ->orderBy('thu_tu', 'asc')
                 ->get();
+            $active = null;
+            if ($user->hasRole(AllPermission::chuTich())) {
+                $active = VanBanDen::CHU_TICH_NHAN_VB;
+            }
 
             return view('dieuhanhvanbanden::phan-loai-van-ban.phan_loai_giay_moi',
                 compact('order', 'danhSachVanBanDen', 'loaiVanBanGiayMoi',
-                    'danhSachPhoChuTich', 'chuTich', 'danhSachDonVi'));
+                    'danhSachPhoChuTich', 'chuTich', 'danhSachDonVi','active'));
         }
     }
 

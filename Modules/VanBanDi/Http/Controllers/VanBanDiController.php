@@ -2063,7 +2063,7 @@ class VanBanDiController extends Controller
                     return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
 //                        ->orWhere('truong_phong_ky', 2);
                 })
-                ->where('truong_phong_ky', 2)
+//                ->where('truong_phong_ky', 2)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {

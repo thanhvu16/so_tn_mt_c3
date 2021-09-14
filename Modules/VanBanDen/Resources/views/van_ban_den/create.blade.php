@@ -243,7 +243,7 @@
 
                             <div class="col-md-3">
                                 <label for="exampleInputEmail4">File</label>
-                                <input type="file" class="form-control han-xu-ly" name="File" value="">
+                                <input type="file" class="form-control han-xu-ly" multiple name="File[]" value="">
                             </div>
 
                             <div class="col-md-3 mt-4">
