@@ -587,7 +587,7 @@ class AdminController extends Controller
                         ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
                         ->count();
                     $giayMoiChoPhanLoai = VanBanDen::
-//                    where('lanh_dao_tham_muu', $user->id)->
+                    where('lanh_dao_tham_muu', $user->id)->
                     whereNull('trinh_tu_nhan_van_ban')
                         ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
                         ->count();
@@ -687,7 +687,7 @@ class AdminController extends Controller
             ->count();
 
         if ($user->hasRole([CHU_TICH])) {
-            $giayMoiChoPhanLoai = VanBanDen::
+            $giayMoiChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', 10551)->
             whereNull('trinh_tu_nhan_van_ban')
                 ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
                 ->count();

@@ -303,7 +303,7 @@ class PhanLoaiVanBanController extends Controller
             if ($request->type != null) {
 //                dd(1);
                 $danhSachVanBanDen = VanBanDen::
-//                where('lanh_dao_tham_muu', $user->id)->
+                where('lanh_dao_tham_muu', 10551)->
                 with([
                         'vanBanDenFile' => function ($query) {
                             return $query->select('id', 'vb_den_id', 'ten_file', 'duong_dan');
