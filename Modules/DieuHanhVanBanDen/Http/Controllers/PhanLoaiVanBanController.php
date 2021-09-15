@@ -336,6 +336,7 @@ class PhanLoaiVanBanController extends Controller
                             return $query->where('created_at', $ngayDen);
                         }
                     })
+                    ->orderBy('created_at','desc')
                     ->paginate(PER_PAGE_10);
 
             } else {
@@ -550,7 +551,8 @@ class PhanLoaiVanBanController extends Controller
                                 return $query->whereNull('cap_xa');
                             })->first();
                         $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
-                        $conVertTY = vn_to_str($vanBanDenTY->trich_yeu);
+                        $noidungtn = $vanBanDenTY->so_den . ',' . $vanBanDenTY->trich_yeu . '. Thoi gian:' . $vanBanDenTY->gio_hop . ', ngày:' . formatDMY($vanBanDenTY->ngay_hop) . ', Tại:' . $vanBanDenTY->dia_diem;
+                        $conVertTY = vn_to_str($noidungtn);
 
                         if(auth::user()->roles->pluck('name')[0] == CHU_TICH)
                         {
