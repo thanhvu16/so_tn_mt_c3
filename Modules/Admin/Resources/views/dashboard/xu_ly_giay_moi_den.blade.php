@@ -13,7 +13,7 @@
         <div class="panel-body">
             <div class="col-md-7 pl-1">
                 @if (auth::user()->can(\App\Common\AllPermission::thamMuu()) )
-                    @if(auth::user()->id == 15 && auth::user()->id == 10551)
+                    @if(auth::user()->id == 15 || auth::user()->id == 10551)
                     <a class="text-title-item" href="{{ route('phan_loai_giay_moi','type=1') }}">
                         <p>Giấy mời chờ phân loại
                             <button
