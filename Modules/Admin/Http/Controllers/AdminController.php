@@ -536,7 +536,6 @@ class AdminController extends Controller
 
             // PHAN LOAI VAN BAN (Chanh Van Phong)
             if ($user->can(AllPermission::thamMuu())) {
-
                 if ($donVi->parent_id != 0) {
                     //phân loại văn bản cấp chi cục
                     $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->parent_id)
@@ -581,14 +580,15 @@ class AdminController extends Controller
                     array_push($giayMoiCoLors, COLOR_GREEN_LIGHT);
 
                 } else {
-//                    dd(0);
 
-                    $vanBanChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                        ->whereNull('trinh_tu_nhan_van_ban')
+                    $vanBanChoPhanLoai = VanBanDen::
+                    where('lanh_dao_tham_muu', $user->id)->
+                        whereNull('trinh_tu_nhan_van_ban')
                         ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
                         ->count();
-                    $giayMoiChoPhanLoai = VanBanDen::where('lanh_dao_tham_muu', $user->id)
-                        ->whereNull('trinh_tu_nhan_van_ban')
+                    $giayMoiChoPhanLoai = VanBanDen::
+//                    where('lanh_dao_tham_muu', $user->id)->
+                    whereNull('trinh_tu_nhan_van_ban')
                         ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
                         ->count();
                 }
@@ -598,7 +598,6 @@ class AdminController extends Controller
                 array_push($giayMoiPiceCharts, array('GM chờ phân loại', $giayMoiChoPhanLoai));
                 array_push($giayMoiCoLors, COLOR_GREEN);
             }
-
             // CONG VIEC DON VI
             $congViecDonViChoXuLy = ChuyenNhanCongViecDonVi::where('can_bo_nhan_id', $user->id)
                 ->whereNull('type')
@@ -687,6 +686,14 @@ class AdminController extends Controller
             ->where('status', GiaHanVanBan::STATUS_CHO_DUYET)
             ->count();
 
+        if ($user->hasRole([CHU_TICH])) {
+            $giayMoiChoPhanLoai = VanBanDen::
+            whereNull('trinh_tu_nhan_van_ban')
+                ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
+                ->count();
+            array_push($hoSoCongViecPiceCharts, array('VB chờ phân loại', $vanBanChoPhanLoai));
+            array_push($hoSoCongViecCoLors, COLOR_GREEN);
+        }
         if ($user->hasRole([CHU_TICH, PHO_CHU_TICH, TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
             $vanBanQuanTrong = VanBanQuanTrong::where('user_id', $user->id)
@@ -857,7 +864,6 @@ class AdminController extends Controller
         array_push($hoSoCongViecCoLors, COLOR_LIGHT_PINK);
         array_push($giayMoiPiceCharts, array('Tham dự cuộc họp', $thamDuCuocHop));
         array_push($giayMoiCoLors, COLOR_LIGHT_PINK);
-
 
         return view('admin::index',
             compact(

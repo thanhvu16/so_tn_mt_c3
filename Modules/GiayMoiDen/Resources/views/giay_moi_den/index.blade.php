@@ -187,12 +187,12 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung_hop ?? ''}}</span>@if($vbDen->noi_dung_hop != null)
                                             <br>@endif
-                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  ngày {{ date('d/m/Y', strtotime($vbDen->ngay_hop_phu)) }} ,tại {{$vbDen->dia_diem_phu}})
+                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  @if($vbDen->ngay_hop_phu)ngày {{ date('d/m/Y', strtotime($vbDen->ngay_hop_phu)) }} @endif ,tại {{$vbDen->dia_diem_phu}})
                                         @if($vbDen->han_xu_ly == null)@else | (Hạn xử
                                         lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})@endif<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span> -
-                                        <span style="font-style: italic">Ngày nhập : {{ date('d/m/Y', strtotime($vbDen->ngay_nhan)) }}</span>
+                                        @if($vbDen->ngay_nhan)<span style="font-style: italic">- Ngày nhập : {{ date('d/m/Y', strtotime($vbDen->ngay_nhan)) }}</span>@endif
 
 
                                         <div class="text-right">
@@ -214,6 +214,7 @@
 
                                     </td>
                                     <td>
+
                                         @if ($vbDen->parent_id)
                                             @foreach($vbDen->getParent()->donViChuTri as $key => $chuyenNhanVanBanDonVi)
                                                 @if (count($vbDen->getParent()->donViChuTri)-1 == $key)
@@ -240,6 +241,7 @@
                                                 @endforeach
                                             @endif
                                         @endif
+                                            @hasanyrole('văn thư sở')
                                             <div class="text-right">
                                                 @if ($vbDen->trinh_tu_nhan_van_ban == \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)
                                                     <span class="label label-success">Đã hoàn thành</span>
@@ -249,6 +251,7 @@
                                                     <span class="label label-warning">Đang xử lý</span>
                                                 @endif
                                             </div>
+                                            @endrole
                                     </td>
 
                                     <td class="text-center" style="vertical-align: middle">
