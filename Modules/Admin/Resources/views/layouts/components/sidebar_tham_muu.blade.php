@@ -26,6 +26,7 @@
     </ul>
 </li>
 @endif
+@if(auth::user()->id == 15 && auth::user()->id == 10551)
 <li class="treeview {{ Route::is('phan_loai_giay_moi') || Route::is('phan-loai-van-ban.da_phan_loai')
  || Route::is('phan-loai-giay-moi.da_phan_loai')  ? 'active menu-open' : '' }}">
     <a href="#">
@@ -44,3 +45,4 @@
 
     </ul>
 </li>
+@endif

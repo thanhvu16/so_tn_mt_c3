@@ -12,13 +12,15 @@
         <div class="clearfix"></div>
         <div class="panel-body">
             <div class="col-md-7 pl-1">
-                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()))
+                @if (auth::user()->can(\App\Common\AllPermission::thamMuu()) )
+                    @if(auth::user()->id == 15 && auth::user()->id == 10551)
                     <a class="text-title-item" href="{{ route('phan_loai_giay_moi','type=1') }}">
                         <p>Giấy mời chờ phân loại
                             <button
                                 class="btn br-10 btn-success btn-circle waves-effect waves-light btn-sm pull-right count-item">{{ $giayMoiChoPhanLoai }}</button>
                         </p>
                     </a>
+                    @endif
                 @endif
                 @if( auth::user()->hasRole([CHU_TICH, PHO_CHU_TICH]))
                     <a class="text-title-item" href="{{ route('giayMoiLanhDaoXuLy','type=1') }}">
