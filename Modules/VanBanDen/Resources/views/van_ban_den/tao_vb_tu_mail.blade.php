@@ -389,6 +389,7 @@
             var so_ky_hieu = $('[name=so_ky_hieu]').val();
             var ngay_ban_hanh = $('[name=ngay_ban_hanh]').val();
             var loai_van_ban = $('#loai-van-ban').val();
+            var co_quan_ban_hanh = $('#co-quan-ban-hanh').val();
             // console.log(loai_van_ban);
             // console.log(them_tiep);
             // e.preventDefault();
@@ -401,6 +402,7 @@
                     so_ky_hieu: so_ky_hieu,
                     ngay_ban_hanh: ngay_ban_hanh,
                     loai_van_ban: loai_van_ban,
+                    co_quan_ban_hanh: co_quan_ban_hanh,
                     _token: $('meta[name="csrf-token"]').attr('content'),
                 },
             }).done(function (res) {

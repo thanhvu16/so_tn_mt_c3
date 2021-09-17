@@ -1658,15 +1658,17 @@ class VanBanDenController extends Controller
     {
         $user = auth::user();
         $so_ky_hieu = $request->input('so_ky_hieu');
+        $co_quan_ban_hanh = $request->co_quan_ban_hanh;
         $ngayBanHanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
 
         if ($user->hasRole(VAN_THU_HUYEN))
         {
-            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 1,])
+            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 1,'co_quan_ban_hanh'=>$co_quan_ban_hanh])
                 ->orderBy('id', 'desc')
                 ->take(5)->get();
         }elseif($user->hasRole(VAN_THU_DON_VI)){
-            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 2,])
+            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 2,'don_vi_id' => auth::user()->donVi->parent_id])
+
                 ->orderBy('id', 'desc')
                 ->take(5)->get();
         }
