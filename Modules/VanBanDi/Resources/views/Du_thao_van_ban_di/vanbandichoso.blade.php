@@ -92,7 +92,7 @@
                                             @endforelse
                                             @forelse($data->mailngoaitp as $key=>$item)
                                                 <p>
-                                                    - {{$item->laytendonvingoai->ten_don_vi}}
+                                                    - {{$item->laytendonvingoai->ten_don_vi ?? ''}}
                                                 </p>
                                             @empty
                                             @endforelse

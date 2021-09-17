@@ -85,6 +85,7 @@ class PhanLoaiVanBanController extends Controller
                 ->select('id', 'ho_ten')
                 ->first();
 
+
             // sua o day
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->whereHas('user')
@@ -777,7 +778,7 @@ class PhanLoaiVanBanController extends Controller
 
             $parentDonVi = null;
 
-            if ($user->can(AllPermission::thamMuu())) {
+            if ($user->can(AllPermission::thamMuu()) && (auth::user()->id == 15 || auth::user()->id == 10551)) {
 
                 $donViChuTri = DonViChuTri::where(function ($query) use ($donVi) {
                     return $query->where('don_vi_id', $donVi->parent_id)
@@ -900,6 +901,8 @@ class PhanLoaiVanBanController extends Controller
                 ->where('don_vi_id', $donViId)
                 ->select('id', 'ho_ten')
                 ->first();
+//            dd($donViId);
+
 
             $danhSachDonVi = DonVi::whereNull('deleted_at')
                 ->where('parent_id', $donViId)
