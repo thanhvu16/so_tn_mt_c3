@@ -249,6 +249,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                         ->first();
 
                     if (empty($checkTonTaiData)) {
+
                         $xuLyVanBanDen = new XuLyVanBanDen();
                         $xuLyVanBanDen->fill($dataXuLyVanBanDenPCT);
                         $xuLyVanBanDen->save();
@@ -256,6 +257,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
 
                     // luu vet van ban den
                     $this->luuLogXuLyVanBanDen($dataXuLyVanBanDenPCT);
+
                     $quyenGiaHan = null;
                 }
 
@@ -300,6 +302,13 @@ class CapNhatQuyTrinhGiamDocController extends Controller
 
 
         }
+    }
+
+    public function luuLogXuLyVanBanDen($dataXuLyVanBanDen)
+    {
+        $luuVetVanBanDen = new LogXuLyVanBanDen();
+        $luuVetVanBanDen->fill($dataXuLyVanBanDen);
+        $luuVetVanBanDen->save();
     }
 
     /**
