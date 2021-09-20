@@ -34,6 +34,7 @@
                                 <th width="" class="text-center">Trích yếu</th>
                                 <th width="10%" class="text-center">File</th>
                                 <th width="15%" class="text-center">Đơn vị gửi đến</th>
+                                <th width="15%" class="text-center">Cơ quan ban hành</th>
                                 <th width="7%" class="text-center">Trạng thái</th>
                             </tr>
                             </thead>
@@ -62,6 +63,7 @@
                                     <td class="text-center" style="vertical-align: middle">
                                         {{$vbDen->donvigui->ten_don_vi ?? ''}}
                                     </td>
+                                    <td></td>
                                     <td>@if($vbDen->trang_thai == 1 || $vbDen->trang_thai == 2)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
 
 
@@ -110,9 +112,12 @@
                                         </div>
                                     </td>
 
+
                                     <td>
                                         <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
+                                    <td>{{$vbDen2->vanBanDen->co_quan_ban_hanh ?? ''}}</td>
+
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>
                             @empty
@@ -159,6 +164,7 @@
                                     <td>
                                         <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
+                                    <td></td>
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>
                             @empty

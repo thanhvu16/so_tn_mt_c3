@@ -283,7 +283,8 @@ class DonViChuTri extends Model
             'han_xu_ly_moi' => isset($hanXuLyMoi) ? $hanXuLyMoi : $donViChuTri->han_xu_ly_moi ?? null,
             'da_chuyen_xuong_don_vi' => $donViChuTri->da_chuyen_xuong_don_vi ?? null,
             'user_id' => auth::user()->id,
-            'parent_don_vi_id' => auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id,
+//            'parent_don_vi_id' => auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id,
+            'parent_don_vi_id' =>  auth::user()->don_vi_id,
         ];
 
         $donViChuTri = new DonViChuTri();

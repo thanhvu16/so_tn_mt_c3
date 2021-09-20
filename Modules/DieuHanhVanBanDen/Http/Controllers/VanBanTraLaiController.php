@@ -105,7 +105,9 @@ class VanBanTraLaiController extends Controller
                     ->where('van_ban_den_id', $vanBanDenId)
                     ->whereNotNull('vao_so_van_ban')
                     ->whereNull('hoan_thanh')
+                    ->orderBy('created_at','desc')
                     ->first();
+
 
                 if ($currentUser->hasRole(VAN_THU_DON_VI)) {
                     // van thu gui tra lai van ban tu van ban cho vao so
@@ -206,12 +208,20 @@ class VanBanTraLaiController extends Controller
                                 $vanBanDen->save();
                             }
                         } else {
-
                             if ($currentUser->hasRole([TRUONG_PHONG, TRUONG_BAN])) {
                                 // chuyen tra lai van thu neu don vi co dieu hanh
                                 if ($chuyenNhanDonViChuTri->don_vi_co_dieu_hanh == DonViChuTri::DON_VI_CO_DIEU_HANH) {
+                                    $nguoiChuyen = User::where('id',$chuyenNhanDonViChuTri->can_bo_chuyen_id)->first();
+                                    if($nguoiChuyen->hasRole([ PHO_CHU_TICH]))
+                                    {
+                                        $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id ?? null;
+                                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_XA_NHAN_VB;
+                                    }elseif($nguoiChuyen->hasRole([ CHU_TICH])){
+                                        $canBoNhan = $chuyenNhanDonViChuTri->can_bo_chuyen_id ?? null;
+                                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                                    }
+                                    $vanBanDen->save();
 
-                                    $canBoNhan = $vanThuDonVi->id ?? null;
                                     $dataVanBanTraLai['can_bo_nhan_id'] = $canBoNhan;
 
                                     $chuyenNhanDonViChuTri->vao_so_van_ban = null;
