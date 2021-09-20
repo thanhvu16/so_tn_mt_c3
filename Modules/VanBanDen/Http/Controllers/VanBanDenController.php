@@ -233,9 +233,24 @@ class VanBanDenController extends Controller
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
                     }
                 })
-                ->where(function ($query) use ($so_den) {
-                    if (!empty($so_den)) {
-                        return $query->where('so_den', "%$so_den%");
+//                ->where(function ($query) use ($so_den) {
+//                    if (!empty($so_den)) {
+//                        return $query->where('so_den', "$so_den");
+//                    }
+//                })
+                ->where(function ($query) use ($so_den, $so_den_end) {
+                    if ($so_den != '' && $so_den_end != '' && $so_den <= $so_den_end) {
+
+                        return $query->where('so_den', '>=', $so_den)
+                            ->where('so_den', '<=', $so_den_end);
+                    }
+                    if ($so_den_end == '' && $so_den != '') {
+                        return $query->where('so_den', $so_den);
+
+                    }
+                    if ($so_den == '' && $so_den_end != '') {
+                        return $query->where('so_den', $so_den_end);
+
                     }
                 })
                 ->where(function ($query) use ($co_quan_ban_hanh) {
