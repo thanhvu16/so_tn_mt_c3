@@ -511,6 +511,8 @@ class VanBanDenDonViController extends Controller
         $currentUser = auth::user();
         $donVi = $currentUser->donVi;
 
+//        $currentUser->can(AllPermission::thamMuu()) ? $currentUser->donVi->parent_id : $currentUser->don_vi_id,
+
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
         $danhSachPhoChuTichIds = $data['pho_chu_tich_id'] ?? null;
         $danhSachChuTichIds = $data['chu_tich_id'] ?? null;
@@ -687,7 +689,8 @@ class VanBanDenDonViController extends Controller
                             'van_ban_den_id' => $vanBanDenId,
                             'can_bo_chuyen_id' => $currentUser->id,
                             'can_bo_nhan_id' => $danhSachPhoChuTichIds[$vanBanDenId],
-                            'don_vi_id' => $currentUser->can(AllPermission::thamMuu()) ? $currentUser->donVi->parent_id : $currentUser->don_vi_id,
+//                            'don_vi_id' => $currentUser->can(AllPermission::thamMuu()) ? $currentUser->donVi->parent_id : $currentUser->don_vi_id,
+                            'don_vi_id' => $currentUser->don_vi_id,
                             'parent_id' => $donViChuTri ? $donViChuTri->id : null,
                             'noi_dung' => $textnoidungPhoChuTich[$vanBanDenId],
                             'don_vi_co_dieu_hanh' => $donViChuTri->don_vi_co_dieu_hanh,

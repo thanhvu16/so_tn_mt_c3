@@ -483,7 +483,6 @@ class VanBanLanhDaoXuLyController extends Controller
      */
     public function store(Request $request)
     {
-
         $currentUser = auth::user();
 
         $data = $request->all();
