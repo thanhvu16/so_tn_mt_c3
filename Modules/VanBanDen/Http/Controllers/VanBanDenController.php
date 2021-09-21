@@ -1664,7 +1664,7 @@ class VanBanDenController extends Controller
                 ->take(5)->get();
         }elseif($user->hasRole(VAN_THU_DON_VI)){
             $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 2,'don_vi_id' => auth::user()->donVi->parent_id])
-
+                ->whereNull('deleted_at')
                 ->orderBy('id', 'desc')
                 ->take(5)->get();
         }
