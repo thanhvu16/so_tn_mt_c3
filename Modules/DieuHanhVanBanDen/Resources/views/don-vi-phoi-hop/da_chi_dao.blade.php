@@ -56,8 +56,13 @@
                                     <input type="date" class="form-control" value="{{Request::get('date')}}"
                                            name="date">
                                 </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Tìm theo số ký hiệu</label>
+                                    <input type="text" class="form-control" value="{{Request::get('so_ky_hieu')}}"
+                                           name="so_ky_hieu"
+                                           placeholder="Nhập số ký hiệu..">
+                                </div>
                                 <div class="col-md-3">
-                                    <label>&nbsp;</label><br>
                                     <button type="submit" name="search" class="btn btn-primary">Tìm Kiếm</button>
                                     @if (!empty(Request::get('trich_yeu')) || !empty(Request::get('so_den')) ||
                                                 !empty(Request::get('date')))
@@ -253,7 +258,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date'), 'chuyen_tiep' => 1])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'so_ky_hieu' => Request::get('so_ky_hieu'), 'date' => Request::get('date'), 'chuyen_tiep' => 1])->render() !!}
                             </div>
                         </div>
                     </div>

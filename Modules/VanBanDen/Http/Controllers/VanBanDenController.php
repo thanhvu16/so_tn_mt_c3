@@ -410,13 +410,13 @@ class VanBanDenController extends Controller
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
-                'so_van_ban_id' => $soVanBan->id,
+//                'so_van_ban_id' => $soVanBan->id,
                 'type' => 1
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => auth::user()->donVi->parent_id,
-                'so_van_ban_id' => $soVanBan->id,
+//                'so_van_ban_id' => $soVanBan->id,
                 'type' => 2
             ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
         }
