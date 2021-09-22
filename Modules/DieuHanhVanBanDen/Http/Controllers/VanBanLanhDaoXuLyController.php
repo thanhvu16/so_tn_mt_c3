@@ -131,7 +131,6 @@ class VanBanLanhDaoXuLyController extends Controller
 //                ->whereNull('chuyen_tiep')
                 ->select('id', 'van_ban_den_id')
                 ->get();
-
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 //dd($arrVanBanDenId);
 
@@ -156,8 +155,6 @@ class VanBanLanhDaoXuLyController extends Controller
                         }else{
                             return $query->where('so_den',$timSoDen);
                         }
-                    }else{
-                        return $query->where('so_den',0);
                     }
                 })
                 ->where(function ($query) use ($trichYeu) {
