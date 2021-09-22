@@ -12,6 +12,7 @@ use Modules\Admin\Entities\DonVi;
 use Modules\LayVanBanTuEmail\Entities\EmailDonVi;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Auth;
+use Modules\VanBanDen\Entities\EmailFile;
 
 class LayVanBanTuEmailController extends Controller
 {
@@ -222,6 +223,11 @@ class LayVanBanTuEmailController extends Controller
                                 $getEmail = new GetEmail();
                                 $getEmail->fill($data);
                                 $getEmail->save();
+
+                                $fullPdf = new EmailFile();
+                                $fullPdf->email_id = $getEmail->id;
+                                $fullPdf->duong_dan = $arr['mail_attachment1'];
+                                $fullPdf->save();
                             }
                             $arr['mail_attachment'] = '';
                             $arr['mail_attachment1'] = '';
