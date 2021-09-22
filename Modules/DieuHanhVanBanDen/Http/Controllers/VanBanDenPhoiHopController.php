@@ -34,6 +34,7 @@ class VanBanDenPhoiHopController extends Controller
         $currentUser = auth::user();
         $donVi = $currentUser->donVi;
         $trichYeu = $request->get('trich_yeu') ?? null;
+        $soKyHieu = $request->get('so_ky_hieu') ?? null;
 
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
@@ -120,7 +121,12 @@ class VanBanDenPhoiHopController extends Controller
                 })
                 ->where(function ($query) use ($trichYeu) {
                     if (!empty($trichYeu)) {
-                        return $query->where('trich_yeu', "LIKE", $trichYeu);
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($soKyHieu) {
+                    if (!empty($soKyHieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
                 ->where(function ($query) use ($soDen) {
@@ -151,7 +157,12 @@ class VanBanDenPhoiHopController extends Controller
                 })
                 ->where(function ($query) use ($trichYeu) {
                     if (!empty($trichYeu)) {
-                        return $query->where('trich_yeu', "LIKE", $trichYeu);
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($soKyHieu) {
+                    if (!empty($soKyHieu)) {
+                        return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
                 ->where(function ($query) use ($soDen) {

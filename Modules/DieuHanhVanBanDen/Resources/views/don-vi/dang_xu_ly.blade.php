@@ -51,6 +51,12 @@
                                                                    placeholder="Nhập số đến">
                                                         </div>
                                                         <div class="col-md-3 form-group">
+                                                            <label>Tìm theo số ký hiệu</label>
+                                                            <input type="text" class="form-control" value="{{Request::get('so_ky_hieu')}}"
+                                                                   name="so_ky_hieu"
+                                                                   placeholder="Nhập số ký hiệu..">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
                                                             <label>Tìm theo ngày</label>
                                                             <div class="input-group date">
                                                                 <input type="text" class="form-control datepicker" value="{{Request::get('date')}}"
@@ -171,7 +177,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date'), 'qua_han' => Request::get('qua_han')])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['trich_yeu' => Request::get('trich_yeu'),'so_ky_hieu' => Request::get('so_ky_hieu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date'), 'qua_han' => Request::get('qua_han')])->render() !!}
                             </div>
                         </div>
                     </div>

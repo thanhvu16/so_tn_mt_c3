@@ -110,23 +110,23 @@ class VanBanLanhDaoXuLyController extends Controller
 
             // tim kiem so den
             $arrIdVanBanTimKiem = null;
+            $timSoDen = 1;
             if (!empty($soDen)) {
                 $vanBanDen = VanBanDen::where('so_den', $soDen)->where('type', VanBanDen::TYPE_VB_DON_VI)
                     ->where('don_vi_id', $donVi->id)
-                    ->select('id', 'parent_id')->get();
-                $arrIdVanBanTimKiem = $vanBanDen->pluck('parent_id')->toArray();
-            }
+                    ->select('id', 'parent_id','so_den')->first();
+//                $arrIdVanBanTimKiem = $vanBanDen->pluck('id')->toArray();
+                if($vanBanDen)
+                {
+                    $timSoDen = $vanBanDen->so_den;
+                }
 
+            }
 
             // chu tich xa nhan van ban
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)
                 ->whereNotNull('vao_so_van_ban')
-                ->where(function ($query) use ($arrIdVanBanTimKiem) {
-                    if (!empty($arrIdVanBanTimKiem)) {
-                        return $query->whereIn('van_ban_den_id', $arrIdVanBanTimKiem);
-                    }
-                })
                 ->whereNull('hoan_thanh')
 //                ->whereNull('chuyen_tiep')
                 ->select('id', 'van_ban_den_id')
@@ -146,6 +146,18 @@ class VanBanLanhDaoXuLyController extends Controller
                         return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id ?? null);
                     } else {
                         return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id ?? null);
+                    }
+                })
+                ->where(function ($query) use ($timSoDen,$soDen) {
+                    if (!empty($soDen)) {
+                        if($timSoDen == 1)
+                        {
+                            return $query->where('so_den',1);
+                        }else{
+                            return $query->where('so_den',$timSoDen);
+                        }
+                    }else{
+                        return $query->where('so_den',0);
                     }
                 })
                 ->where(function ($query) use ($trichYeu) {
