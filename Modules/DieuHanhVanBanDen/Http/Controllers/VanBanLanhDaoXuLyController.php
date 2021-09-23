@@ -1058,6 +1058,8 @@ class VanBanLanhDaoXuLyController extends Controller
         $ngayDenEnd = !empty($request->get('ngay_den_end')) ? formatYMD($request->get('ngay_den_end')) : null;
         $ngayBanHanhStart = !empty($request->get('ngay_ban_hanh_start')) ? formatYMD($request->get('ngay_ban_hanh_start')) : null;
         $ngayBanHanhEnd = !empty($request->get('ngay_ban_hanh_end')) ? formatYMD($request->get('ngay_ban_hanh_end')) : null;
+        $ngayHopStart = !empty($request->get('ngay_hop_start')) ? formatYMD($request->get('ngay_hop_start')) : null;
+        $ngayHopEnd = !empty($request->get('ngay_hop_end')) ? formatYMD($request->get('ngay_hop_end')) : null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $nguoiKy = $request->get('nguoi_ky') ?? null;
         $loaiVanBanId = $request->get('loai_van_ban_id') ?? null;
@@ -1134,6 +1136,7 @@ class VanBanLanhDaoXuLyController extends Controller
             })
             ->whereIn('can_bo_chuyen_id', [10551, 15])
             ->select(['id', 'van_ban_den_id'])
+            ->orderBy('created_at','desc')
             ->get();
 
         $idVanBanDonViChuTri = $donViChuTri->pluck('van_ban_den_id')->toArray();
@@ -1183,6 +1186,11 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->whereBetween('ngay_ban_hanh', [$ngayBanHanhStart, $ngayBanHanhEnd]);
                 }
             })
+            ->where(function ($query) use ($ngayHopStart, $ngayHopEnd) {
+                if (!empty($ngayHopStart)) {
+                    return $query->whereBetween('ngay_hop', [$ngayHopStart, $ngayHopEnd]);
+                }
+            })
             ->where(function ($query) use ($soKyHieu) {
                 if (!empty($soKyHieu)) {
                     return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
@@ -1218,7 +1226,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($coQuanBanHanh) . "%");
                 }
             })
-            ->orderBy('ngay_nhan', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->paginate(PER_PAGE_10);
 
 
