@@ -41,11 +41,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <form action="@if(Request::get('type') == 1){{route('vanBanQuanTrongGiamDoc')}}@else{{route('vanBanQuanTrongGiamDoc')}}@endif" id="search-vb" method="get">
+                                                <form action="{{route('giayMoiQuanTrongGiamDoc')}}" id="search-vb" method="get">
                                                     <input type="text" class="form-control hidden" form="search-vb" value="{{Request::get('type')}}"
                                                            name="type"
                                                            placeholder="Nhập trích yếu">
-                                                    @include('dieuhanhvanbanden::form_tim_kiem_lanh_dao')
+                                                    @include('dieuhanhvanbanden::form_tim_kiem_giay_moi')
                                                 </form>
                                             </div>
                                         </div>
