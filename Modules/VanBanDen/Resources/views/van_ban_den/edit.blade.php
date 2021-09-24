@@ -126,7 +126,7 @@
                                     <div class="input-group date">
                                         <input type="text" class="form-control datepicker"
                                                value="{{ !empty($van_ban_den->han_xu_ly) ? formatDMY($van_ban_den->han_xu_ly) : null }}"
-                                               name="han_xu_ly" placeholder="Hạn xử lý" required>
+                                               name="han_xu_ly" placeholder="Hạn xử lý" >
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </div>
