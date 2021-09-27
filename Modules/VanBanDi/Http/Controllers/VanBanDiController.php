@@ -2064,6 +2064,7 @@ class VanBanDiController extends Controller
 //                        ->orWhere('truong_phong_ky', 2);
                 })
 //                ->where('truong_phong_ky', 2)
+                    ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
@@ -2073,6 +2074,7 @@ class VanBanDiController extends Controller
 //                        ->orWhere('truong_phong_ky', 2);
                 })
 //                ->orwhere('truong_phong_ky', 2)
+                ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
