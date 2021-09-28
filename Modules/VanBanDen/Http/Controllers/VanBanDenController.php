@@ -174,15 +174,15 @@ class VanBanDenController extends Controller
                 ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
                     if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
 
-                        return $query->where('ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau)
+                            ->where('ngay_nhan', '<=', $ngayketthuc);
                     }
                     if ($ngayketthuc == '' && $ngaybatdau != '') {
-                        return $query->where('ngay_ban_hanh', $ngaybatdau);
+                        return $query->where('ngay_nhan', $ngaybatdau);
 
                     }
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
-                        return $query->where('ngay_ban_hanh', $ngayketthuc);
+                        return $query->where('ngay_nhan', $ngayketthuc);
 
                     }
                 })
