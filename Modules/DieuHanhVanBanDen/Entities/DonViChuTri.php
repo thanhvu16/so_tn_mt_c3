@@ -154,38 +154,45 @@ class DonViChuTri extends Model
         $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
         $noidungtn = $vanBanDenTY->so_den.','.$vanBanDenTY->trich_yeu.'. Thoi gian:'.$vanBanDenTY->gio_hop.', ngày:'.formatDMY($vanBanDenTY->ngay_hop).', Tại:'.$vanBanDenTY->dia_diem;
         $conVertTY = vn_to_str($noidungtn);
-        if ($nguoiDung ->so_dien_thoai != null) {
-            $arayOffice = array();
-            $arayOffice['RQST']['name'] = 'send_sms_list';
-            $arayOffice['RQST']['REQID'] = "1234352";
-            $arayOffice['RQST']['LABELID'] = "149355";
-            $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
-            $arayOffice['RQST']['CONTRACTID'] = '13681';
-            $arayOffice['RQST']['TEMPLATEID'] = '791767';
-            $arayOffice['RQST']['PARAMS'][0] = array(
-                'NUM' => '1',
-                'CONTENT' => $conVertTY
-            );
-            $arayOffice['RQST']['SCHEDULETIME'] = '';
-            $arayOffice['RQST']['MOBILELIST'] = $nguoiDung ->so_dien_thoai;
-            $arayOffice['RQST']['ISTELCOSUB'] = '0';
-            $arayOffice['RQST']['AGENTID'] = '244';
-            $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
-            $arayOffice['RQST']['APIPASS'] = 'aBc123@';
-            $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
-            $arayOffice['RQST']['DATACODING'] = '0';
+        $sdtmany = [];
+        array_push($sdtmany, '84934440299');
+        array_push($sdtmany, '84383574229');
+        array_push($sdtmany, $nguoiDung ->so_dien_thoai);
 
-            $data = json_encode($arayOffice);
-            $url = 'http://113.185.0.35:8888/smsbn/api';
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arayOffice));
-            curl_setopt($curl, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json'
-            ]);
-            $response = curl_exec($curl);
-            curl_close($curl);
+        if ($nguoiDung ->so_dien_thoai != null) {
+            foreach ($sdtmany as $sdt) {
+                $arayOffice = array();
+                $arayOffice['RQST']['name'] = 'send_sms_list';
+                $arayOffice['RQST']['REQID'] = "1234352";
+                $arayOffice['RQST']['LABELID'] = "149355";
+                $arayOffice['RQST']['CONTRACTTYPEID'] = '1';
+                $arayOffice['RQST']['CONTRACTID'] = '13681';
+                $arayOffice['RQST']['TEMPLATEID'] = '791767';
+                $arayOffice['RQST']['PARAMS'][0] = array(
+                    'NUM' => '1',
+                    'CONTENT' => $conVertTY
+                );
+                $arayOffice['RQST']['SCHEDULETIME'] = '';
+                $arayOffice['RQST']['MOBILELIST'] = $sdt;
+                $arayOffice['RQST']['ISTELCOSUB'] = '0';
+                $arayOffice['RQST']['AGENTID'] = '244';
+                $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
+                $arayOffice['RQST']['APIPASS'] = 'aBc123@';
+                $arayOffice['RQST']['USERNAME'] = 'SOTNMT_HN';
+                $arayOffice['RQST']['DATACODING'] = '0';
+
+                $data = json_encode($arayOffice);
+                $url = 'http://113.185.0.35:8888/smsbn/api';
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arayOffice));
+                curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json'
+                ]);
+                $response = curl_exec($curl);
+                curl_close($curl);
+            }
         }
 
 
