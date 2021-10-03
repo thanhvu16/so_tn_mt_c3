@@ -1226,7 +1226,7 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($coQuanBanHanh) . "%");
                 }
             })
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(PER_PAGE_10);
 
 

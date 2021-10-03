@@ -424,6 +424,7 @@ class PhanLoaiVanBanController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
+     *
      * @return Renderable
      */
     public function store(Request $request)
@@ -431,6 +432,7 @@ class PhanLoaiVanBanController extends Controller
         $currentUser = auth::user();
 
         $data = $request->all();
+//        dd($data);
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
 
         $arrChuTich = $data['chu_tich_id'] ?? null;
@@ -446,6 +448,8 @@ class PhanLoaiVanBanController extends Controller
         $type = $request->get('type') ?? null;
         $statusTraiLai = $request->get('van_ban_tra_lai') ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
+        $phoGiamDocDuHop = $data['pho_chu_tich_du_hop_id'] ?? null;
+        $GiamDocDuHop = $data['chu_tich_du_hop'] ?? null;
         $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
         $danhSachDonViPhoiHopIds = $data['don_vi_phoi_hop_id'] ?? null;
         $vanBanQuanTrongIds = $data['van_ban_quan_trong'] ?? null;
@@ -539,9 +543,14 @@ class PhanLoaiVanBanController extends Controller
                         if (!empty($lanhDaoDuHopId[$vanBanDenId])) {
                             LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId]);
                         }
+                        if (!empty($phoGiamDocDuHop[$vanBanDenId][0])) {
+                            LichCongTac::taoLichHopPhoChuTich($vanBanDenId, $phoGiamDocDuHop[$vanBanDenId]);
+                        }
+                        if (!empty($GiamDocDuHop[$vanBanDenId][0])) {
+                            LichCongTac::taoLichHopPhoChuTich($vanBanDenId, $GiamDocDuHop[$vanBanDenId]);
+                        }
                     }
                     //chu tich
-
                     if (!empty($arrChuTich[$vanBanDenId])) {
                         $quyenGiaHan = 1;
                         $donVi = auth::user()->donVi;

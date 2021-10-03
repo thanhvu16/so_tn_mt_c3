@@ -148,26 +148,58 @@
                                     </td>
                                     <td>
                                         <div class="dau-viec-chi-tiet" style="width: 95%;">
+{{--                                            <p>--}}
+{{--                                                <select name="chu_tich_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                        id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"--}}
+{{--                                                        data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                        class="form-control select2 chu-tich"--}}
+{{--                                                        placeholder="Chọn giám đốc chủ trì"--}}
+{{--                                                        data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"--}}
+{{--                                                        form="form-tham-muu">--}}
+{{--                                                    <option value="">Chọn giám đốc chủ trì</option>--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>--}}
+{{--                                                </select>--}}
+{{--                                            </p>--}}
                                             <p>
-                                                <select name="chu_tich_id[{{ $vanBanDen->id }}]"
+                                                <select name="chu_tich_du_hop[{{ $vanBanDen->id }}][]"
                                                         id="lanh-dao-chu-tri-{{ $vanBanDen->id }}"
                                                         data-id="{{ $vanBanDen->id }}"
-                                                        class="form-control select2 chu-tich"
-                                                        placeholder="Chọn giám đốc chủ trì"
+                                                        class="form-control select2 "
+                                                        placeholder="Chọn giám đốc dự họp"
                                                         data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                         form="form-tham-muu">
-                                                    <option value="">Chọn giám đốc chủ trì</option>
+                                                    <option value="">Chọn giám đốc dự họp</option>
                                                     <option
                                                         value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>
                                                 </select>
                                             </p>
+{{--                                            <p>--}}
+{{--                                                <select--}}
+{{--                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                    id="pho-chu-tich-{{ $vanBanDen->id }}"--}}
+{{--                                         `           class="form-control pho-chu-tich select2"--}}
+{{--                                                    data-id="{{ $vanBanDen->id }}"--}}
+{{--                                                    placeholder="Chọn phó giám đốc"--}}
+{{--                                                    form="form-tham-muu"--}}
+{{--                                                    data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"--}}
+{{--                                                >--}}
+{{--                                                    <option value="">Chọn phó giám đốc chủ trì--}}
+{{--                                                    </option>--}}
+{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>--}}
+{{--                                                    @empty--}}
+{{--                                                    @endforelse--}}
+{{--                                                </select>--}}
+{{--                                            </p>--}}
                                             <p>
                                                 <select
-                                                    name="pho_chu_tich_id[{{ $vanBanDen->id }}]"
+                                                    name="pho_chu_tich_du_hop_id[{{ $vanBanDen->id }}][]"
                                                     id="pho-chu-tich-{{ $vanBanDen->id }}"
-                                                    class="form-control pho-chu-tich select2"
-                                                    data-id="{{ $vanBanDen->id }}"
-                                                    placeholder="Chọn phó giám đốc"
+                                                    class="form-control  select2"
+                                                    data-id="{{ $vanBanDen->id }}" multiple
+                                                    data-placeholder="Chọn phó giám đốc dự họp"
                                                     form="form-tham-muu"
                                                     data-tra-lai="{{ !empty($vanBanDen->vanBanTraLai) ? 1 : null }}"
                                                 >
@@ -180,25 +212,25 @@
                                                     @endforelse
                                                 </select>
                                             </p>
-                                            <p>
-                                                <select
-                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"
-                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"
-                                                    multiple="multiple"
-                                                    form="form-tham-muu"
-                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"
-                                                >
-                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát
-                                                    </option>
-                                                    <option
-                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>
-                                                    @forelse($danhSachPhoChuTich as $phoChuTich)
-                                                        <option
-                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>
-                                                    @empty
-                                                    @endforelse
-                                                </select>
-                                            </p>
+{{--                                            <p>--}}
+{{--                                                <select--}}
+{{--                                                    name="lanh_dao_xem_de_biet[{{ $vanBanDen->id }}][]"--}}
+{{--                                                    class="form-control lanh-dao-xem-de-biet select2 select2-hidden-accessible"--}}
+{{--                                                    multiple="multiple"--}}
+{{--                                                    form="form-tham-muu"--}}
+{{--                                                    data-placeholder="Chọn lãnh đạo chỉ đạo, giám sát"--}}
+{{--                                                >--}}
+{{--                                                    <option value="">Chọn lãnh đạo chỉ đạo, giám sát--}}
+{{--                                                    </option>--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{ $chuTich->id ?? null }}">{{ $chuTich->ho_ten ?? null }}</option>--}}
+{{--                                                    @forelse($danhSachPhoChuTich as $phoChuTich)--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $phoChuTich->id }}">{{ $phoChuTich->ho_ten }}</option>--}}
+{{--                                                    @empty--}}
+{{--                                                    @endforelse--}}
+{{--                                                </select>--}}
+{{--                                            </p>--}}
                                             <p>
                                                 <select name="don_vi_chu_tri_id[{{ $vanBanDen->id }}]"
                                                         id="don-vi-chu-tri-{{ $vanBanDen->id }}"
@@ -271,24 +303,24 @@
                                     </td>
                                     <td>
                                         @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
-                                            <div class="radio-info form-check-inline">
-                                                <input type="radio"
-                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"
-                                                       class="radio-col-cyan chu-tich-du-hop" value=""
-                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
-                                                <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"><i>GD</i></label>
-                                            </div>
-                                            <div class=" radio-info form-check-inline">
-                                                <input type="radio"
-                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
-                                                       class="radio-col-cyan pho-ct-du-hop" value=""
-                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">
-                                                <label
-                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"><i>PGD</i></label>
-                                            </div>
+{{--                                            <div class="radio-info form-check-inline">--}}
+{{--                                                <input type="radio"--}}
+{{--                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"--}}
+{{--                                                       class="radio-col-cyan chu-tich-du-hop" value=""--}}
+{{--                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">--}}
+{{--                                                <label--}}
+{{--                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.1' }}"><i>GD</i></label>--}}
+{{--                                            </div>--}}
+{{--                                            <div class=" radio-info form-check-inline">--}}
+{{--                                                <input type="radio"--}}
+{{--                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"--}}
+{{--                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"--}}
+{{--                                                       class="radio-col-cyan pho-ct-du-hop" value=""--}}
+{{--                                                       form="form-tham-muu" data-id="{{ $vanBanDen->id }}">--}}
+{{--                                                <label--}}
+{{--                                                    for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"><i>PGD</i></label>--}}
+{{--                                            </div>--}}
                                             <div class=" radio-info form-check-inline">
                                                 <input type="radio"
                                                        name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"

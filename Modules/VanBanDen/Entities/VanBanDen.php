@@ -166,6 +166,12 @@ class VanBanDen extends Model
     {
         return $this->hasMany(FileVanBanDen::class, 'vb_den_id', 'id')->whereNull('deleted_at');
     }
+    public function lanhDaoDuHop($id)
+    {
+        $lichCT = LichCongTac::where('object_id',$id)->get();
+        $idLanhDao = $lichCT->pluck('lanh_dao_id')->toArray();
+        return $idLanhDao;
+    }
 
     public function loaiVanBan()
     {

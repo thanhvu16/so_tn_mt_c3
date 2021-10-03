@@ -17,10 +17,12 @@ Route::get('giay-moi-quan-trong-giam-doc', 'VanBanLanhDaoXuLyController@giayMoiQ
 Route::resource('van-ban-lanh-dao-xu-ly', 'VanBanLanhDaoXuLyController');
 
 Route::resource('cap-nhat-lanh-dao', 'CapNhatQuyTrinhGiamDocController');
+Route::post('cap-nhat-giay-moi-lanh-dao', 'CapNhatQuyTrinhGiamDocController@capNhatGiayMoi')->name('capNhatGiayMoi');
 
 
 Route::get('list-don-vi-phoi-hop/{id}', 'VanBanLanhDaoXuLyController@getListDonVi');
 Route::get('get-list-lanh-dao-xem-de-biet/{id}', 'DieuHanhVanBanDenController@getListLanhDao');
+
 
 Route::post('save-don-vi-chu-tri', 'VanBanLanhDaoXuLyController@saveDonViChuTri')->name('van-ban-lanh-dao.save_don_vi_chu_tri');
 
