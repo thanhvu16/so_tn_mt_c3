@@ -722,6 +722,8 @@ class VanBanDiController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->get();
+        $phongThanhTra = User::role([TRUONG_PHONG, PHO_PHONG])
+            ->where('don_vi_id', 12)->whereNull('deleted_at')->get();
 
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:

@@ -197,7 +197,7 @@ class LichCongTac extends Model
         }
 
         //thêm file giấy mời vào quản lý cuộc họp$vanBanDenId
-        $fileVanBanDen = FileVanBanDen::where('vb_den_id',$vanBanDenId)->first();
+        $fileVanBanDen = FileVanBanDen::where('vb_den_id', $vanBanDenId)->first();
         if (!empty($fileVanBanDen)) {
             $filecuochop = new FileCuocHop();
             $filecuochop->ten_file = $fileVanBanDen->ten_file;
@@ -208,6 +208,39 @@ class LichCongTac extends Model
             $filecuochop->trang_thai = 1;
             $filecuochop->save();
         }
+    }
+
+    public static function taoLichHopPhoChuTich($vanBanDenId, $phoGiamDocDuHop)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        foreach ($phoGiamDocDuHop as $lanhDaoId) {
+            $dataLichCongTac = array(
+                'object_id' => $vanBanDen->id,
+                'lanh_dao_id' => $lanhDaoId,
+                'ngay' => $vanBanDen->ngay_hop,
+                'gio' => $vanBanDen->gio_hop,
+                'tuan' => $tuan,
+                'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+                'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+                'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+                'user_id' => $currentUser->id,
+                'don_vi_du_hop' => null,
+                'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null,
+                'trang_thai' => 1
+            );
+            //check lich cong tac
+//            $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->whereNull('type')->first();
+//            if (empty($lichCongTac)) {
+            $lichCongTac = new LichCongTac();
+//            }
+            $lichCongTac->fill($dataLichCongTac);
+            $lichCongTac->save();
+        }
+
+
     }
 
     public function listThanhPhanDuHop()
@@ -348,6 +381,7 @@ class LichCongTac extends Model
             return $soluong;
         }
     }
+
     public function sLcuocHopCoTaiLieucham($id)
     {
         $soluong = null;

@@ -177,7 +177,7 @@
                             <div class="col-md-3" >
                                 <label for="sokyhieu" class="col-form-label">Chức vụ <span class="color-red">*</span></label>
                                 <input type="text" class="form-control " placeholder="nhập chức vụ"
-                                       value="{{isset($vanban) ? $vanban->chuc_vu : ''}}" required name="chuc_vu">
+                                       value="{{isset($vanban) ? $vanban->chuc_vu : ''}}"  name="chuc_vu">
                             </div>
 
 {{--                            <div class=" col-md-3 " >--}}
