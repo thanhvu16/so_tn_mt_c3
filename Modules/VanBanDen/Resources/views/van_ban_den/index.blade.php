@@ -328,12 +328,18 @@
                                                 @endif
                                             @endforeach
                                         @else
+
                                         <!--vb den huyen-->
                                             @if($vbDen->donViChuTri)
                                                 @foreach($vbDen->donViChuTri as $key => $chuyenNhanVanBanDonVi)
                                                     @if (count($vbDen->donViChuTri)-1 == $key)
                                                         <p>
+                                                            @if($chuyenNhanVanBanDonVi->donVi)
+                                                                <p style="font-weight: bold;">
+                                                                    {{$chuyenNhanVanBanDonVi->donVi->getParent->ten_don_vi ?? null}}
+                                                                </p>
                                                             {{ $chuyenNhanVanBanDonVi->donVi->ten_don_vi ?? null }}
+                                                            @endif
                                                             <br>
                                                             <i>(C/B xử lý: {{$chuyenNhanVanBanDonVi->canBoNhan->ho_ten ?? null }}
                                                                 )</i>

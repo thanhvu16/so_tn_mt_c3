@@ -60,7 +60,7 @@ class VanBanDiController extends Controller
         $year = $request->get('year') ?? null;
         $ds_soVanBan = SoVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 //        $ds_vanBanDi = VanBanDi::where('loai_van_ban_giay_moi',1)->whereNull('deleted_at')
 
@@ -180,8 +180,6 @@ class VanBanDiController extends Controller
 //                })
 
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
-
-
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
@@ -301,11 +299,11 @@ class VanBanDiController extends Controller
         $arayOffice['RQST']['DATACODING'] = '0';
 
         $data = json_encode($arayOffice);
-        $url='http://113.185.0.35:8888/smsbn/api';
+        $url = 'http://113.185.0.35:8888/smsbn/api';
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($arayOffice));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arayOffice));
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
         ]);
@@ -313,94 +311,66 @@ class VanBanDiController extends Controller
         curl_close($curl);
         echo $response . PHP_EOL;
 
-        dd($response,$data);
+        dd($response, $data);
 
     }
 
     public function layNguoiKyChanhVp(Request $request)
     {
-        $loaiVanBan = LoaiVanBan::where('id',$request->loai_van_ban)->first();
-        $loaiVanBanThongBaoTraLai = LoaiVanBan::where('ten_loai_van_ban', 'LIKE','%Thông báo - TL hồ sơ%')->first();
+        $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
+        $loaiVanBanThongBaoTraLai = LoaiVanBan::where('ten_loai_van_ban', 'LIKE', '%Thông báo - TL hồ sơ%')->first();
 
-            $ds_nguoiKy = null;
-            $dataNguoiKy = [];
-            $user = auth::user();
-            $donVi = $user->donVi;
-            $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
-                ->whereHas('donVi', function ($query) {
-                    return $query->whereNull('cap_xa');
-                })->get();
+        $ds_nguoiKy = null;
+        $dataNguoiKy = [];
+        $user = auth::user();
+        $donVi = $user->donVi;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
 
-            switch (auth::user()->roles->pluck('name')[0]) {
-                case CHUYEN_VIEN:
-                    if ($donVi->parent_id == 0) {
-                        if ($donVi->dieu_hanh == 1) {
-                            $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])
-                                ->where('don_vi_id', auth::user()->don_vi_id)->get();
-                        } else {
-                            $truongpho = null;
-                        }
-
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
-                            $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-
-                            if ($chanhVanPhongtp != null) {
-                                foreach ($chanhVanPhongtp as $data3) {
-                                    array_push($dataNguoiKy, $data3);
-                                }
-
-                            }
-                        }
-                        if ($truongpho != null) {
-                            foreach ($truongpho as $data2) {
-                                array_push($dataNguoiKy, $data2);
-                            }
-
-                        }
-
-                        foreach ($lanhDaoSo as $data2) {
-                            array_push($dataNguoiKy, $data2);
-                        }
-                        $ds_nguoiKy = $dataNguoiKy;
-                    } else {
-                        $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
-
-                        foreach ($lanhDaoSo as $data2) {
-                            array_push($dataNguoiKy, $data2);
-                        }
-                        foreach ($chiCuc as $data3) {
-                            array_push($dataNguoiKy, $data3);
-                        }
-
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
-                            $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-
-                            if ($chanhVanPhongtp != null) {
-                                foreach ($chanhVanPhongtp as $data3) {
-                                    array_push($dataNguoiKy, $data3);
-                                }
-
-                            }
-                        }
-
-                        $ds_nguoiKy = $dataNguoiKy;
-                    }
-                    break;
-                case PHO_PHONG:
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                if ($donVi->parent_id == 0) {
                     if ($donVi->dieu_hanh == 1) {
-                        $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])
+                        $truongpho = User::role([TRUONG_PHONG, PHO_PHONG])
                             ->where('don_vi_id', auth::user()->don_vi_id)->get();
                     } else {
                         $truongpho = null;
                     }
 
+                    if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                        $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+
+                        if ($chanhVanPhongtp != null) {
+                            foreach ($chanhVanPhongtp as $data3) {
+                                array_push($dataNguoiKy, $data3);
+                            }
+
+                        }
+                    }
                     if ($truongpho != null) {
                         foreach ($truongpho as $data2) {
                             array_push($dataNguoiKy, $data2);
                         }
 
                     }
-                    if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    $ds_nguoiKy = $dataNguoiKy;
+                } else {
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                    if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
                         $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
 
                         if ($chanhVanPhongtp != null) {
@@ -411,83 +381,46 @@ class VanBanDiController extends Controller
                         }
                     }
 
-                    foreach ($lanhDaoSo as $data2) {
+                    $ds_nguoiKy = $dataNguoiKy;
+                }
+                break;
+            case PHO_PHONG:
+                if ($donVi->dieu_hanh == 1) {
+                    $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])
+                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $truongpho = null;
+                }
+
+                if ($truongpho != null) {
+                    foreach ($truongpho as $data2) {
                         array_push($dataNguoiKy, $data2);
                     }
-                    $ds_nguoiKy = $dataNguoiKy;
-                    break;
-                case TRUONG_PHONG:
-                    if ($donVi->parent_id == 0) {
+
+                }
+                if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+
+                    if ($chanhVanPhongtp != null) {
+                        foreach ($chanhVanPhongtp as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                    }
+                }
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+            case TRUONG_PHONG:
+                if ($donVi->parent_id == 0) {
 //                        $ds_nguoiKy = $lanhDaoSo;
-                        foreach ($lanhDaoSo as $data2) {
-                            array_push($dataNguoiKy, $data2);
-                        }
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
-                            $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-
-                            if ($chanhVanPhongtp != null) {
-                                foreach ($chanhVanPhongtp as $data3) {
-                                    array_push($dataNguoiKy, $data3);
-                                }
-
-                            }
-                        }
-                        $ds_nguoiKy = $dataNguoiKy;
-                    } else {
-                        $ds_nguoiKy1 = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
-                        foreach ($ds_nguoiKy1 as $data2) {
-                            array_push($dataNguoiKy, $data2);
-                        }
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
-                            $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-
-                            if ($chanhVanPhongtp != null) {
-                                foreach ($chanhVanPhongtp as $data3) {
-                                    array_push($dataNguoiKy, $data3);
-                                }
-
-                            }
-                        }
-                        $ds_nguoiKy = $dataNguoiKy;
-                    }
-                    break;
-                case PHO_CHU_TICH:
-                    if ($donVi->parent_id == 0) {
-                        $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
-                    } else {
-                        $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
-                    }
-                    break;
-                case CHU_TICH:
-                    if ($donVi->parent_id == 0) {
-                        $ds_nguoiKy = null;
-                    } else {
-                        $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->get();
-                    }
-                    break;
-                case CHANH_VAN_PHONG:
-                    $ds_nguoiKy = $lanhDaoSo;
-                    break;
-                case PHO_CHANH_VAN_PHONG:
-                    $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
-                    foreach ($chanhVanPhong as $data) {
-                        array_push($dataNguoiKy, $data);
-                    }
-                    foreach ($lanhDaoSo as $item) {
-                        array_push($dataNguoiKy, $item);
-                    }
-                    $ds_nguoiKy = $dataNguoiKy;
-                    break;
-
-                case VAN_THU_DON_VI:
-                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
                     foreach ($lanhDaoSo as $data2) {
                         array_push($dataNguoiKy, $data2);
                     }
-                    foreach ($chiCuc as $data3) {
-                        array_push($dataNguoiKy, $data3);
-                    }
-                    if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
                         $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
 
                         if ($chanhVanPhongtp != null) {
@@ -498,46 +431,12 @@ class VanBanDiController extends Controller
                         }
                     }
                     $ds_nguoiKy = $dataNguoiKy;
-                    break;
-
-                case VAN_THU_HUYEN:
-                    $ds_nguoiKy = $lanhDaoSo;
-                    break;
-
-                case TRUONG_BAN:
-                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
-
-                    foreach ($lanhDaoSo as $data2) {
+                } else {
+                    $ds_nguoiKy1 = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                    foreach ($ds_nguoiKy1 as $data2) {
                         array_push($dataNguoiKy, $data2);
                     }
-                    foreach ($chiCuc as $data3) {
-                        array_push($dataNguoiKy, $data3);
-                    }
-                    if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
-                        $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
-
-                        if ($chanhVanPhongtp != null) {
-                            foreach ($chanhVanPhongtp as $data3) {
-                                array_push($dataNguoiKy, $data3);
-                            }
-
-                        }
-                    }
-
-                    $ds_nguoiKy = $dataNguoiKy;
-                    break;
-
-                case PHO_TRUONG_BAN:
-                    $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
-                    array_push($dataNguoiKy, $truongBan);
-
-                    $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
-                    if ($danhSachLanhDaoPhongBan) {
-                        foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
-                            array_push($dataNguoiKy, $lanhDaoPhongBan);
-                        }
-                    }
-                    if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
                         $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
 
                         if ($chanhVanPhongtp != null) {
@@ -548,32 +447,131 @@ class VanBanDiController extends Controller
                         }
                     }
                     $ds_nguoiKy = $dataNguoiKy;
-                    break;
+                }
+                break;
+            case PHO_CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+                }
+                break;
+            case CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = null;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                }
+                break;
+            case CHANH_VAN_PHONG:
+                $ds_nguoiKy = $lanhDaoSo;
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                foreach ($chanhVanPhong as $data) {
+                    array_push($dataNguoiKy, $data);
+                }
+                foreach ($lanhDaoSo as $item) {
+                    array_push($dataNguoiKy, $item);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
 
-            }
-            return response()->json(
-                [
-                    'ds_nguoi_Ky' => $ds_nguoiKy
-                ]
-            );
+            case VAN_THU_DON_VI:
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+
+                    if ($chanhVanPhongtp != null) {
+                        foreach ($chanhVanPhongtp as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                    }
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case VAN_THU_HUYEN:
+                $ds_nguoiKy = $lanhDaoSo;
+                break;
+
+            case TRUONG_BAN:
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+
+                    if ($chanhVanPhongtp != null) {
+                        foreach ($chanhVanPhongtp as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                    }
+                }
+
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case PHO_TRUONG_BAN:
+                $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                array_push($dataNguoiKy, $truongBan);
+
+                $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                if ($danhSachLanhDaoPhongBan) {
+                    foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
+                        array_push($dataNguoiKy, $lanhDaoPhongBan);
+                    }
+                }
+                if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                    $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
+
+                    if ($chanhVanPhongtp != null) {
+                        foreach ($chanhVanPhongtp as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                    }
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+        }
+        return response()->json(
+            [
+                'ds_nguoi_Ky' => $ds_nguoiKy
+            ]
+        );
 
 
     }
+
     public function layNguoiKyChanhVpduyetvanban(Request $request)
     {
-        $loaiVanBan = LoaiVanBan::where('id',$request->loai_van_ban)->first();
-        $loaiVanBanThongBaoTraLai = LoaiVanBan::where('ten_loai_van_ban', 'LIKE','%Thông báo - TL hồ sơ%')->first();
+        $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
+        $loaiVanBanThongBaoTraLai = LoaiVanBan::where('ten_loai_van_ban', 'LIKE', '%Thông báo - TL hồ sơ%')->first();
 
-            $nguoinhan = null;
-            $dataNguoiNhan = [];
-            $user = auth::user();
-            $donVi = $user->donVi;
-            $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
-                ->whereHas('donVi', function ($query) {
-                    return $query->whereNull('cap_xa');
-                })->get();
-        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id)
-        {
+        $nguoinhan = null;
+        $dataNguoiNhan = [];
+        $user = auth::user();
+        $donVi = $user->donVi;
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
+        if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
             switch (auth::user()->roles->pluck('name')[0]) {
                 case CHUYEN_VIEN:
                     if ($donVi->parent_id == 0) {
@@ -592,7 +590,7 @@ class VanBanDiController extends Controller
                         foreach ($lanhDaoSo as $data2) {
                             array_push($dataNguoiNhan, $data2);
                         }
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                        if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
                             $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
 
                             if ($chanhVanPhongtp != null) {
@@ -602,7 +600,7 @@ class VanBanDiController extends Controller
 
                             }
                         }
-                        $nguoinhan=$dataNguoiNhan;
+                        $nguoinhan = $dataNguoiNhan;
                     } else {
                         $nguoinhan = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
                     }
@@ -619,13 +617,12 @@ class VanBanDiController extends Controller
                         $nguoinhan = null;
                     } else {
                         $nguoinhan1 = User::role([CHU_TICH, PHO_CHU_TICH])->where('cap_xa', null)->whereNull('deleted_at')->get();
-                        if($nguoinhan1)
-                        {
+                        if ($nguoinhan1) {
                             foreach ($lanhDaoSo as $data2) {
                                 array_push($dataNguoiNhan, $data2);
                             }
                         }
-                        if($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
+                        if ($loaiVanBan->id == $loaiVanBanThongBaoTraLai->id) {
                             $chanhVanPhongtp = User::role([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->get();
 
                             if ($chanhVanPhongtp != null) {
@@ -636,7 +633,7 @@ class VanBanDiController extends Controller
                             }
                         }
 
-                        $nguoinhan=$dataNguoiNhan;
+                        $nguoinhan = $dataNguoiNhan;
                     }
                     break;
                 case CHANH_VAN_PHONG:
@@ -673,9 +670,7 @@ class VanBanDiController extends Controller
         }
 
 
-
     }
-
 
 
     /**
@@ -689,7 +684,7 @@ class VanBanDiController extends Controller
         $donVi = $user->donVi;
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->where('dieu_hanh', 1)->get();
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
@@ -707,7 +702,7 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->orderBy('thu_tu', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('id', 'desc')->get();
 
         $nguoinhan = null;
@@ -815,14 +810,14 @@ class VanBanDiController extends Controller
                 break;
 
             case VAN_THU_DON_VI:
-                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
-                    }
-                    foreach ($chiCuc as $data3) {
-                        array_push($dataNguoiKy, $data3);
-                    }
-                    $ds_nguoiKy = $dataNguoiKy;
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
                 break;
 
             case VAN_THU_HUYEN:
@@ -926,7 +921,7 @@ class VanBanDiController extends Controller
         $donVi = $user->donVi;
         $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
         $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
-        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->where('dieu_hanh', 1)->get();
+        $ds_DonVi_phatHanh = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->where('dieu_hanh', 1)->get();
         $emailSoBanNganh = MailTrongThanhPho::where('mail_group', 1)->orderBy('ten_don_vi', 'asc')->get();
         $emailQuanHuyen = MailTrongThanhPho::where('mail_group', 2)->orderBy('ten_don_vi', 'asc')->get();
         $emailTrucThuoc = MailTrongThanhPho::where('mail_group', 3)->orderBy('ten_don_vi', 'asc')->get();
@@ -944,8 +939,8 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu', 'asc')->get();
 
         $nguoinhan = null;
         $user = auth::user();
@@ -962,8 +957,6 @@ class VanBanDiController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->first();
-
-
 
 
         switch (auth::user()->roles->pluck('name')[0]) {
@@ -1099,7 +1092,7 @@ class VanBanDiController extends Controller
         }
         return view('vanbandi::van_ban_di.van_thu_so_nhap', compact('ds_nguoiKy',
             'ds_soVanBan', 'ds_loaiVanBan', 'ds_doKhanCap', 'ds_DonVi_phatHanh', 'ds_mucBaoMat', 'ds_DonVi', 'nguoinhan', 'ds_DonVi_nhan',
-            'emailtrongthanhpho', 'emailngoaithanhpho', 'emailQuanHuyen', 'donViSo','emailSoBanNganh', 'emailTrucThuoc'));
+            'emailtrongthanhpho', 'emailngoaithanhpho', 'emailQuanHuyen', 'donViSo', 'emailSoBanNganh', 'emailTrucThuoc'));
     }
 
     /**
@@ -1122,7 +1115,7 @@ class VanBanDiController extends Controller
         $loaiVanBan = $request->loai_van_ban;
 
 
-        $loaiVanBanNhap = LoaiVanBan::where('id',$loaiVanBan)->first();
+        $loaiVanBanNhap = LoaiVanBan::where('id', $loaiVanBan)->first();
 
 
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
@@ -1142,8 +1135,8 @@ class VanBanDiController extends Controller
 
         $soDi = $soDivb + 1;
         $stnmt = '-STNMT';
-        $loai=$loaiVanBanNhap->ten_viet_tat;
-        $donVi= auth::user()->donVi->ten_viet_tat;
+        $loai = $loaiVanBanNhap->ten_viet_tat;
+        $donVi = auth::user()->donVi->ten_viet_tat;
 
         $soKyHieu = "$soDi/$loai$stnmt-$donVi";
 
@@ -1165,7 +1158,7 @@ class VanBanDiController extends Controller
         $EmailThem = $request->email_them;
         $nguoiky = User::where('id', $request->nguoiky_id)->first();
         $uploadPath = UPLOAD_FILE_VAN_BAN_DI;
-        $file= !empty($request['file']) ? $request['file'] : null;
+        $file = !empty($request['file']) ? $request['file'] : null;
         $dataIdEmailNgoai = [];
         $donViSo = User::role([CHU_TICH, PHO_CHU_TICH])
             ->whereHas('donVi', function ($query) {
@@ -1272,6 +1265,7 @@ class VanBanDiController extends Controller
         return redirect()->route('van-ban-di.index')
             ->with('success', 'Thêm văn bản đi thành công !');
     }
+
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -1504,8 +1498,8 @@ class VanBanDiController extends Controller
         }
         $ds_soVanBan = $laysovanban;
         $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
-        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu','asc')->get();
-        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu','asc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu', 'asc')->get();
 
         $ds_nguoiKy = null;
         $dataNguoiKy = [];
@@ -1771,8 +1765,7 @@ class VanBanDiController extends Controller
             }
             $donVi = auth::user()->donVi;
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
-            if($request->File)
-            {
+            if ($request->File) {
                 $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
                 if (!File::exists($uploadPath)) {
                     File::makeDirectory($uploadPath, 0777, true, true);
@@ -2061,18 +2054,18 @@ class VanBanDiController extends Controller
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $vanbandichoso = VanBanDi::
 //            where(['cho_cap_so' => 2])
-                where(function ($query) use ($lanhDaoSo){
-                    return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
+            where(function ($query) use ($lanhDaoSo) {
+                return $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
 //                        ->orWhere('truong_phong_ky', 2);
-                })
+            })
 //                ->where('truong_phong_ky', 2)
-                    ->whereNull('so_di')
+                ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2])
-                ->where(function ($query){
-                    return  $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
+                ->where(function ($query) {
+                    return $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
 //                        ->orWhere('truong_phong_ky', 2);
                 })
 //                ->orwhere('truong_phong_ky', 2)
@@ -2180,8 +2173,7 @@ class VanBanDiController extends Controller
 
                 $vanbandi = VanBanDi::where('id', $nguoicu->van_ban_di_id)->first();
                 //ĐÂY Là văn bản của huyện do đơn vị soạn thảo
-                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->dieu_hanh == 0 && $vanbandi->donViSoanThaoVB->parent_id == 0  )
-                {
+                if ($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->dieu_hanh == 0 && $vanbandi->donViSoanThaoVB->parent_id == 0) {
 //                    dd(1);
                     if (auth::user()->hasRole(TRUONG_PHONG)) {
                         $vanbandi->truong_phong_ky = 2;
@@ -2189,8 +2181,7 @@ class VanBanDiController extends Controller
                     }
                 }
                 //ĐÂY Là văn bản của huyện do chi cục soạn thảo
-                if($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->parent_id != 0  )
-                {
+                if ($vanbandi->donViPhatHanh->cap_xa == null && $vanbandi->donViSoanThaoVB->parent_id != 0) {
 //                    dd(2);
                     $user = auth::user();
                     switch (auth::user()->roles->pluck('name')[0]) {
@@ -2203,21 +2194,15 @@ class VanBanDiController extends Controller
                     }
                 }
                 //Đây là văn bản của chi cục do phòng soạn thảo
-                if($vanbandi->donViPhatHanh->cap_xa == 1 && $vanbandi->donViSoanThaoVB->parent_id != 0  )
-                {
+                if ($vanbandi->donViPhatHanh->cap_xa == 1 && $vanbandi->donViSoanThaoVB->parent_id != 0) {
 //                    dd(3);
                     switch (auth::user()->roles->pluck('name')[0]) {
                         case TRUONG_BAN:
-                                $vanbandi->truong_phong_ky = 2;
-                                $vanbandi->save();
+                            $vanbandi->truong_phong_ky = 2;
+                            $vanbandi->save();
                             break;
                     }
                 }
-
-
-
-
-
 
 
                 UserLogs::saveUserLogs(' Duyệt văn bản đi', $canbonhan);
@@ -2314,26 +2299,88 @@ class VanBanDiController extends Controller
 //        $vanbandiduyet->save();
         $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
         $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
+        $soVanBan = SoVanBan::where('id', $request->sovanban_id)->first();
+
+
         $user = auth::user();
         $ma_don_vi_ht = $user->donVi->ten_viet_tat ?? '';
         $nam_truoc_skh = null;
         $ma_van_ban = null;
         $ma_phong_ban = null;
         $ma_don_vi = null;
-        if ($loaiVanBan->nam_truoc_skh == 1) {
-            $nam_truoc_skh = $nam_sodi;
-            $nam_truoc_skh = "$nam_truoc_skh";
-        }
-        if ($loaiVanBan->ma_van_ban == 1) {
-            $ma_van_ban = $loaiVanBan->ten_viet_tat;
-            $ma_van_ban = "/$ma_van_ban";
-        }
-        if ($loaiVanBan->ma_phong_ban == 1) {
-            $ma_phong_ban = null;
-        }
-        if ($loaiVanBan->ma_don_vi == 1) {
-            $ma_don_vi = $ma_don_vi_ht;
-            $ma_don_vi = "-$ma_don_vi";
+        $maPhong = null;
+        $SoKyHieu = null;
+//        if ($loaiVanBan->nam_truoc_skh == 1) {
+//            $nam_truoc_skh = $nam_sodi;
+//            $nam_truoc_skh = "$nam_truoc_skh";
+//        }
+//        if ($loaiVanBan->ma_van_ban == 1) {
+//            $ma_van_ban = $loaiVanBan->ten_viet_tat;
+//            $ma_van_ban = "/$ma_van_ban";
+//        }
+//        if ($loaiVanBan->ma_phong_ban == 1) {
+//            $ma_phong_ban = null;
+//        }
+//        if ($loaiVanBan->ma_don_vi == 1) {
+//            $ma_don_vi = $ma_don_vi_ht;
+//            $ma_don_vi = "-$ma_don_vi";
+//        }
+        $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
+        switch ($donVi->ten_don_vi) {
+            case 'Phòng Tài Nguyên nước':
+                $maPhong = 'TNN';
+                break;
+            case 'Thanh tra Sở':
+                $maPhong = 'TTr';
+                break;
+
+            case 'Phòng Đo đạc, Bản đồ và Viễn thám':
+                $maPhong = 'ĐĐBĐVT';
+                break;
+            case 'Văn phòng Sở':
+                $maPhong = 'VP';
+                break;
+            case 'Phòng Khí tượng Thủy văn và Biến đổi khí hậu':
+                $maPhong = 'KTTVBĐKH';
+                break;
+            case 'Phòng Đăng ký thống kê đất đai':
+                $maPhong = 'ĐKTK';
+                break;
+            case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
+                $maPhong = 'QHKHSDĐ';
+                break;
+            case 'Phòng Kinh tế đất':
+                $maPhong = 'KTĐ';
+                break;
+            case 'Phòng Hành chính Tổng hợp':
+                $maPhong = 'HCTH';
+                break;
+            case 'Phòng Kế hoạch Tài chính':
+                $maPhong = 'KHTC';
+                break;
+            case 'Phòng khoáng sản':
+                $maPhong = 'KS';
+                break;
+            case 'Chi cục Bảo vệ môi trường Hà Nội':
+                $maPhong = 'CCBVMT';
+                break;
+            case 'Văn phòng đăng ký đất đai Hà Nội':
+                $maPhong = 'VPĐKĐĐ';
+                break;
+            case 'Trung tâm Kỹ thuật Tài Nguyên và môi trường Hà Nội':
+                $maPhong = 'TTKTTNMT';
+                break;
+            case 'Trung tâm Phát triển quỹ đất Hà Nội':
+                $maPhong = 'TTPTQĐ';
+                break;
+            case 'Trung tâm công nghệ thông tin Tài Nguyên môi trường Hà Nội':
+                $maPhong = 'TTCNTT';
+                break;
+            case 'Ban quản lý dự án HSĐC':
+                $maPhong = 'BQLDATTHSĐC';
+                break;
+
+
         }
 
         $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
@@ -2354,9 +2401,69 @@ class VanBanDiController extends Controller
         }
         $soDi = $soDi + 1;
 
-        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
+        switch ($soVanBan->ten_so_van_ban) {
+            case 'Công văn':
+                if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                    $SoKyHieu = "$soDi/STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                    $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                    $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
+                    $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
+                    $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
+                    $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
+                    $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
+                    $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
+                }
+                break;
+            case 'Quyết định':
+                if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                    $SoKyHieu = "$soDi/QĐ-STNMT-";
+                }
+                break;
+
+            case 'Thông báo':
+                if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
+                    $SoKyHieu = "$soDi/TB-STNMT-";
+                }
+                break;
+            case 'Giấy Mời':
+                if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                    $SoKyHieu = "$soDi/GM-STNMT-";
+                }
+                break;
+            case 'Cấp Phép':
+                if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
+                    $SoKyHieu = "$soDi/GP-STNMT-";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
+                    $SoKyHieu = "$soDi/GXN-STNMT-";
+                }
+                break;
+            case 'Thanh Tra':
+                if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                    $SoKyHieu = "$soDi/STNMT-";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                    $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                    $SoKyHieu = "$soDi/KH-";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                    $SoKyHieu = "$soDi/GM-";
+                } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                    $SoKyHieu = "$soDi/BC-";
+                }
+                break;
+
+
+        }
+
+//        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
         $vanbandi->so_di = $soDi;
-        $vanbandi->so_ky_hieu = $soKyHieu;
+        $vanbandi->so_ky_hieu = $SoKyHieu;
         $vanbandi->so_van_ban_id = $request->sovanban_id;
         $vanbandi->truong_phong_ky = 3;
         $vanbandi->save();
@@ -2448,6 +2555,7 @@ class VanBanDiController extends Controller
             'message' => 'Không tìm thấy dữ liệu.'
         ], 500);
     }
+
     public function xoaFileDi($id)
     {
         $vanBanDi = FileVanBanDi::where('id', $id)->first();
