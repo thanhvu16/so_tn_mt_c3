@@ -91,7 +91,7 @@ class VanBanDenController extends Controller
 
         $trinhTuNhanVanBan = $request->get('trinh_tu_nhan_van_ban') ?? null;
 
-        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
+        if ($user->hasRole(VAN_THU_HUYEN) || $user->hasRole(CHANH_VAN_PHONG)|| $user->hasRole(PHO_CHANH_VAN_PHONG) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) ||
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
             $ds_vanBanDen = VanBanDen::query()->where(['type' => 1])
                 ->where('so_van_ban_id', '!=', 100)
@@ -226,7 +226,6 @@ class VanBanDenController extends Controller
                         return $query->whereIn('id', $arrVanBanDenId2);
                     }
                 })
-
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
@@ -967,7 +966,7 @@ class VanBanDenController extends Controller
     {
         $noi_dung = !empty($request['noi_dung']) ? $request['noi_dung'] : null;
         $han_giai_quyet = !empty($request['han_giai_quyet']) ? $request['han_giai_quyet'] : null;
-
+        $filevanban = !empty($request['File']) ? $request['File'] : null;
         $vanbandv = VanBanDen::where('id', $id)->first();
         $checktrungsoden = VanBanDen::where(['so_van_ban_id' => $request->so_van_ban, 'id' => $vanbandv->id])->first();
         $vanbandv->loai_van_ban_id = $request->loai_van_ban;
@@ -1032,24 +1031,26 @@ class VanBanDenController extends Controller
         $vanbandv->save();
 
         $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
-        if ($request->File) {
-            if (!File::exists($uploadPath)) {
-                File::makeDirectory($uploadPath, 0777, true, true);
+        if ($filevanban && count($filevanban) > 0) {
+            foreach ($filevanban as $key => $getFile) {
+                if (!File::exists($uploadPath)) {
+                    File::makeDirectory($uploadPath, 0777, true, true);
+                }
+                $typeArray = explode('.', $getFile->getClientOriginalName());
+                $tenchinhfile = strtolower($typeArray[0]);
+                $extFile = $getFile->extension();
+                $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
+                $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+                $getFile->move($uploadPath, $fileName);
+                $vbDenFile = new FileVanBanDen();
+                $vbDenFile->ten_file = $tenchinhfile;
+                $vbDenFile->duong_dan = $urlFile;
+                $vbDenFile->duoi_file = $extFile;
+                $vbDenFile->vb_den_id = $vanbandv->id;
+                $vbDenFile->nguoi_dung_id = auth::user()->id;
+                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                $vbDenFile->save();
             }
-            $typeArray = explode('.', $request->File->getClientOriginalName());
-            $tenchinhfile = strtolower($typeArray[0]);
-            $extFile = $request->File->extension();
-            $fileName = date('Y_m_d') . '_' . Time() . '_' . $request->File->getClientOriginalName();
-            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
-            $request->File->move($uploadPath, $fileName);
-            $vbDenFile = new FileVanBanDen();
-            $vbDenFile->ten_file = $tenchinhfile;
-            $vbDenFile->duong_dan = $urlFile;
-            $vbDenFile->duoi_file = $extFile;
-            $vbDenFile->vb_den_id = $vanbandv->id;
-            $vbDenFile->nguoi_dung_id = auth::user()->id;
-            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-            $vbDenFile->save();
         }
 
         UserLogs::saveUserLogs('Cập nhật văn bản đến', $vanbandv);
@@ -1656,13 +1657,12 @@ class VanBanDenController extends Controller
         $co_quan_ban_hanh = $request->co_quan_ban_hanh;
         $ngayBanHanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
 
-        if ($user->hasRole(VAN_THU_HUYEN))
-        {
-            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 1,'co_quan_ban_hanh'=>$co_quan_ban_hanh])
+        if ($user->hasRole(VAN_THU_HUYEN)) {
+            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'type' => 1, 'co_quan_ban_hanh' => $co_quan_ban_hanh])
                 ->orderBy('id', 'desc')
                 ->take(5)->get();
-        }elseif($user->hasRole(VAN_THU_DON_VI)){
-            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu,'type' => 2,'don_vi_id' => auth::user()->donVi->parent_id])
+        } elseif ($user->hasRole(VAN_THU_DON_VI)) {
+            $data = VanBanDen::where(['so_ky_hieu' => $so_ky_hieu, 'type' => 2, 'don_vi_id' => auth::user()->donVi->parent_id])
                 ->whereNull('deleted_at')
                 ->orderBy('id', 'desc')
                 ->take(5)->get();

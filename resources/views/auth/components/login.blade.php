@@ -7,6 +7,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">--}}
     <link rel="stylesheet" href="{{ url('theme/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ url('theme/bower_components/font-awesome/css/font-awesome.min.css') }}">
@@ -105,21 +106,31 @@
                 @enderror
             </div>
             <div class="row">
-                <div class="col-xs-7">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox"  type="checkbox" name="remember"
-                                   id="remember" {{ old('remember') ? 'checked' : '' }}> Duy trì đăng nhập
-                        </label>
+                <div class="col-xs-5">
+                </div>
+                    <div class="col-xs-7 mt-2 text-right">
                     </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5">
+{{--                    <div class="checkbox icheck">--}}
+{{--                        <label>--}}
+{{--                            <input type="checkbox"  type="checkbox" name="remember"--}}
+{{--                                   id="remember" {{ old('remember') ? 'checked' : '' }}> Duy trì đăng nhập--}}
+{{--                        </label>--}}
+{{--                    </div>--}}
+                    @if (Route::has('password.request'))
+
+                    <a href="{{ route('password.request') }}">Quên mật khẩu</a><br>
+                    @endif
+
+
                 </div>
                 <!-- /.col -->
-                @if (Route::has('password.request'))
-                    <div class="col-xs-5 mt-2 text-right">
-                        <a href="{{ route('password.request') }}">Quên mật khẩu</a><br>
+                    <div class="col-xs-7 text-right">
+                        <a id="loginSSOloginSSO" style="cursor: pointer;font-weight: bold;color: red"><i class="fa fa-refresh fa-spin"></i> Đăng nhập bằng sso</a><br>
 
                     </div>
-                @endif
 
 {{--                <div class="col-xs-offset-3">--}}
 
@@ -127,13 +138,14 @@
 {{--                </div>--}}
                 <!-- /.col -->
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-xs-6" style="float:none;margin: auto">
                     <button class="btn btn-block bg-light-blue waves-effect" type="submit">
                         {{--                            <i class="fa fa-arrow-circle-right"></i>--}}
                         ĐĂNG NHẬP
                         <i class="fa fa-arrow-circle-right" style="font-size: 18px; margin-left: 5px;"></i>
                     </button>
+
                 </div>
             </div>
         </form>
@@ -157,8 +169,11 @@
 <!-- iCheck -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
+{{--<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>--}}
 
 <script type="text/javascript">
+    import da from "../../../../public/theme/bower_components/moment/src/locale/da";
+
     $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -199,6 +214,33 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    // $(document).ready(function(){
+    //     SSO.init();
+    //     if (!SSO.isAuthen(login)) {
+    //         $("#loginSSO").off('click').on('click', function () {
+    //             SSO.login();
+    //         })
+    //     }
+    // })
+    //
+    // function login() {
+    //     showLoading();
+    //     $.ajax({
+    //         url: "home/LoginForSSO",
+    //         method: "POST",
+    //         data: { UserName: SSO.data.userName },
+    //         success: function (response) {
+    //             console.log(SSO.data.userName);
+    //             hideLoading();
+    //             if (response.status) {
+    //                 window.location.href = "/Home/Index"
+    //             }
+    //         }
+    //     })
+    // }
+
+
 </script>
 </body>
 </html>

@@ -64,7 +64,7 @@ class GiayMoiDenController extends Controller
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
 
-        if ($user->hasRole(VAN_THU_HUYEN) || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
+        if ($user->hasRole(VAN_THU_HUYEN)|| $user->hasRole(CHANH_VAN_PHONG)|| $user->hasRole(PHO_CHANH_VAN_PHONG)  || ($user->hasRole(CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA) || ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
             $ds_vanBanDen = VanBanDen::where([
                 'type' => 1,
                 'so_van_ban_id' => 100
