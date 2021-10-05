@@ -134,7 +134,7 @@
                                                 @hasanyrole('văn thư đơn vị|văn thư sở')
                                                 <form method="Get" action="{{route('vanbandidelete',$data->id)}}">
                                                     @csrf
-                                                    <a href="{{route('van-ban-di.edit',$data->id)}}"
+                                                    <a href="{{route('suavbdids','id='.$data->id)}}"
                                                        class="fa fa-edit" role="button"
                                                        title="Sửa">
                                                         <i class="fas fa-file-signature"></i>
