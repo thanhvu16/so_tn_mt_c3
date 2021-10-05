@@ -163,7 +163,7 @@ class VanBanDiController extends Controller
                         return $query->where('phat_hanh_van_ban', $phatHanhVanBan);
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('so_di', 'desc')->paginate(PER_PAGE);
         } else {
 
 
@@ -264,7 +264,7 @@ class VanBanDiController extends Controller
                         return $query->whereYear('created_at', $year);
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('so_di', 'desc')->paginate(PER_PAGE);
         }
 
 
