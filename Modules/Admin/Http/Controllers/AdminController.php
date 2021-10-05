@@ -156,18 +156,11 @@ class AdminController extends Controller
                 })->first();
 
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-//                $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2,
-//                    'phong_phat_hanh' => $lanhDaoSo->don_vi_id])
-//                    ->orderBy('created_at', 'desc')
-//                    ->orwhere('truong_phong_ky', 2)
-//                    ->count();
                 $vanBanDiChoSo = VanBanDi::
-//                where(['cho_cap_so' => 2])
                     where(function ($query) use ($lanhDaoSo){
                         return  $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
-//                            ->orWhere('truong_phong_ky', 2);
                     })
-//                    ->where('truong_phong_ky', 2)
+                    ->whereNull('so_di')
                     ->orderBy('created_at', 'desc')
                     ->count();
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {

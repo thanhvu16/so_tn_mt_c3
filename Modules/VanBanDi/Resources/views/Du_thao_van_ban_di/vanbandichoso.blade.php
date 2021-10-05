@@ -11,7 +11,7 @@
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         @include('vanbandi::Du_thao_van_ban_di.error')
                         @include('vanbandi::Du_thao_van_ban_di.form_them_noi_nhan')
-
+                        Tổng số văn bản: <b>{{ $vanbandichoso->total() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
@@ -45,6 +45,8 @@
 
                                             <p
                                                 style="font-style: italic">- Người ký: {{$data->nguoidung2->ho_ten ?? ''}}</p>
+                                            <p
+                                                style="font-style: italic">- Đơn vị soạn thảo: {{$data->donViSoanThaoVB->ten_don_vi ?? ''}}</p>
                                             <p style="font-style: italic">- Ngày nhập: {{date('d/m/Y', strtotime($data->ngay_ban_hanh))}}
                                                            </p>
 
@@ -161,6 +163,14 @@
 
                             </tbody>
                         </table>
+                        <div class="row">
+                            <div class="col-md-6" style="margin-top: 5px">
+
+                            </div>
+                            <div class="col-md-6 text-right">
+                                {!! $vanbandichoso->appends(['loaivanban_id' => Request::get('loaivanban_id')])->render() !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

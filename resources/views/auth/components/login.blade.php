@@ -169,7 +169,34 @@
 <!-- iCheck -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
-{{--<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>--}}
+<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
+<script>
+    $(document).ready(function(){
+        SSO.init();
+        if (!SSO.isAuthen(login)) {
+            $("#loginSSO").off('click').on('click', function () {
+                console.log(1);
+                SSO.login();
+            })
+        }
+    })
+
+    function login() {
+        showLoading();
+        $.ajax({
+            url: "home/LoginForSSO",
+            method: "POST",
+            data: { UserName: SSO.data.userName },
+            success: function (response) {
+                console.log(SSO.data.userName);
+                hideLoading();
+                if (response.status) {
+                    window.location.href = "/Home/Index"
+                }
+            }
+        })
+    }
+</script>
 
 <script type="text/javascript">
     import da from "../../../../public/theme/bower_components/moment/src/locale/da";
@@ -215,30 +242,7 @@
         "hideMethod": "fadeOut"
     }
 
-    // $(document).ready(function(){
-    //     SSO.init();
-    //     if (!SSO.isAuthen(login)) {
-    //         $("#loginSSO").off('click').on('click', function () {
-    //             SSO.login();
-    //         })
-    //     }
-    // })
-    //
-    // function login() {
-    //     showLoading();
-    //     $.ajax({
-    //         url: "home/LoginForSSO",
-    //         method: "POST",
-    //         data: { UserName: SSO.data.userName },
-    //         success: function (response) {
-    //             console.log(SSO.data.userName);
-    //             hideLoading();
-    //             if (response.status) {
-    //                 window.location.href = "/Home/Index"
-    //             }
-    //         }
-    //     })
-    // }
+
 
 
 </script>
