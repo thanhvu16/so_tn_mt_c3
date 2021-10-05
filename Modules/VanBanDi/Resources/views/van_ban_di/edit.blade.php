@@ -161,7 +161,7 @@
                                 <div class="row">
                                     @if ($vanbandi->listVanBanDen)
                                         @foreach($vanbandi->listVanBanDen as $vanBanDen)
-                                            <div class="col-md-3 chi-tiet-vb-den">
+                                            <div class="col-md-6 chi-tiet-vb-den">
                                                 <p>
                                                     số ký hiệu: <a href="{{ route('van_ban_den_chi_tiet.show', $vanBanDen->id) }}" target="_blank">{{ $vanBanDen->so_ky_hieu }}</a>
                                                     <i class="fa fa-trash rm-van-ban-den" data-id="{{ $vanBanDen->id }}" data-van-ban-di="{{ $vanbandi->id }}"></i>
@@ -184,8 +184,17 @@
                                         @endforelse</label>
                                 </div>
                             </div>
+                            <div class="row clearfix"></div>
+                            @if(Request::get('sua') == 1)
+                            <div class="form-group col-md-3">
+                                <label for="sokyhieu" class="col-form-label">Số đi <span class="color-red">*</span></label>
+                                <input type="number" name="so_di"  class="form-control"
+                                       value="{{$vanbandi->so_di}}" style="color: red;font-size: 16px;font-weight: bold"
+                                       autocomplete="off" required>
+                            </div>
+                            @endif
 
-                            <div class="form-group col-md-12 text-center">
+                            <div class=" col-md-12 text-center">
                                 <button
                                     class="btn btn-danger" type="submit"><i class="fa fa-check mr-1"></i>
                                     <span>Cập nhật</span></button>

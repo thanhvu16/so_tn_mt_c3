@@ -1477,10 +1477,11 @@ class VanBanDiController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id, Request $request)
+    public function suavbdids( Request $request)
     {
 
         canPermission(AllPermission::suaVanBanDi());
+        $id = $request->get('id');
         $vanbandi = VanBanDi::where('id', $id)->first();
         $donVi = auth::user()->donVi;
 
@@ -1692,6 +1693,7 @@ class VanBanDiController extends Controller
             $vanbandi->loai_van_ban_id = $request->loaivanban_id;
             $vanbandi->do_khan_cap_id = $request->dokhan_id;
             $vanbandi->chuc_vu = $request->chuc_vu;
+            $vanbandi->so_di = $request->so_di;
             $vanbandi->van_ban_den_id = !empty($vanBanDenId) ? array_merge($vanBanDenId, $arrVanBanDenId) : null;
             $vanbandi->do_bao_mat_id = $request->dobaomat_id;
             if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
@@ -2387,7 +2389,7 @@ class VanBanDiController extends Controller
         $vanbandi->cho_cap_so = 3;
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDi = VanBanDi::where([
-                'so_van_ban_id' => $vanbandi->so_van_ban_id,
+                'so_van_ban_id' => $request->sovanban_id,
                 'don_vi_soan_thao' => null
             ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
