@@ -2061,7 +2061,7 @@ class VanBanDiController extends Controller
 //                ->where('truong_phong_ky', 2)
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(PER_PAGE);
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2])
                 ->where(function ($query) {
@@ -2071,7 +2071,7 @@ class VanBanDiController extends Controller
 //                ->orwhere('truong_phong_ky', 2)
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(PER_PAGE);
         }
         $laysovanban = [];
         $sovanbanchung = SoVanBan::whereIn('loai_so', [2, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
@@ -2387,7 +2387,7 @@ class VanBanDiController extends Controller
         $vanbandi->cho_cap_so = 3;
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
             $soDi = VanBanDi::where([
-                'loai_van_ban_id' => $vanbandi->loai_van_ban_id,
+                'so_van_ban_id' => $vanbandi->so_van_ban_id,
                 'don_vi_soan_thao' => null
             ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
@@ -2400,9 +2400,8 @@ class VanBanDiController extends Controller
 
         }
         $soDi = $soDi + 1;
-
         switch ($soVanBan->ten_so_van_ban) {
-            case 'Công văn':
+            case 'Công Văn':
                 if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
                     $SoKyHieu = "$soDi/STNMT-$maPhong";
                 } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
