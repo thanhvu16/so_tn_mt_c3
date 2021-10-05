@@ -191,15 +191,13 @@
                             <thead>
                             <tr>
                                 <th width="2%" style="vertical-align: middle" class="text-center">STT</th>
-                                <th width="26%" style="vertical-align: middle" class="text-center">Thông
-                                    tin
-                                </th>
-                                <th  style="vertical-align: middle" class="text-center">Trích yếu
-                                </th>
-                                <th width="21%" style="vertical-align: middle" class="text-center">Nơi
-                                    nhận
-                                </th>
-                                <th width="6%" style="vertical-align: middle" class="text-center">Trạng thái</th>
+                                <th width="6%" style="vertical-align: middle" class="text-center">Số đi</th>
+                                <th width="10%" style="vertical-align: middle" class="text-center">Ngày phát hành</th>
+                                <th width="12%" style="vertical-align: middle" class="text-center">Đơn vị phát hành</th>
+                                <th width="10%" style="vertical-align: middle" class="text-center">Số ký hiệu</th>
+                                <th  style="vertical-align: middle" class="text-center">Trích yếu</th>
+                                <th width="15%" style="vertical-align: middle" class="text-center">Đơn vị nhận</th>
+                                <th width="12%" style="vertical-align: middle" class="text-center">Người ký</th>
                                 <th width="6%" style="vertical-align: middle" class="text-center">Tác vụ
                                 </th>
                             </tr>
@@ -208,24 +206,25 @@
                             @forelse ($ds_vanBanDi as $key=>$vbDi)
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
-                                    <td>
-                                        <p>- Số ký hiệu: {{$vbDi->so_ky_hieu}}</p>
-                                        <p>- Ngày ban
-                                            hành: {{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}</p>
-                                        <p>- Loại văn bản: {{$vbDi->loaivanban->ten_loai_van_ban ?? ''}}</p>
-                                        <p>- Số đi: <span
-                                                class="font-bold color-red">{{$vbDi->so_di}}</span></p>
-                                    </td>
-                                    <td   style="text-align: justify">
-                                        <a
-                                            href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}" style="font-weight: bold"
-                                            title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
+                                    <td class="text-left"><span class="font-bold color-red" style="font-weight: bold;font-size: 16px">{{$vbDi->so_di}}</span></td>
+                                    <td class="text-center">{{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}</td>
+                                    <td class="text-left">{{$vbDi->donViSoanThaoVB->ten_don_vi ?? ''}}</td>
+                                    <td class="text-left">{{$vbDi->so_ky_hieu}}</td>
+                                    <td style="text-align: justify">
+                                        <a href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}" style="font-weight: bold" title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
                                             @forelse($vbDi->filechinh as $filedata)
                                                 <a class="seen-new-window" target="popup"
                                                    href="{{$filedata->getUrlFile()}}">[File văn bản đi]</a>
                                             @empty
                                             @endforelse
+                                        </div>
+                                        <div class="text-right " style="pointer-events: auto">
+                                            @if ($vbDi->phat_hanh_van_ban == \Modules\VanBanDi\Entities\VanBanDi::CHO_PHAT_HANH)
+                                                <span class="label label-warning" style="font-size: 14px">Chờ phát hành</span>
+                                            @else
+                                                <span class="label label-success" style="font-size: 14px">Đã phát hành</span>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
@@ -242,14 +241,9 @@
                                         @endif
                                         </div>
 
+
                                     </td>
-                                    <td style="vertical-align: middle;">
-                                        @if ($vbDi->phat_hanh_van_ban == \Modules\VanBanDi\Entities\VanBanDi::CHO_PHAT_HANH)
-                                            <span class="label label-warning" style="font-size: 14px">Chờ phát hành</span>
-                                        @else
-                                            <span class="label label-success" style="font-size: 14px">Đã phát hành</span>
-                                        @endif
-                                    </td>
+                                    <td class="text-left">{{$vbDi->nguoidung2->ho_ten ?? ''}}</td>
                                     <td class="text-center">
                                         @if ($vbDi->phat_hanh_van_ban != \Modules\VanBanDi\Entities\VanBanDi::DA_PHAT_HANH)
                                             @hasanyrole('văn thư đơn vị|văn thư sở')
