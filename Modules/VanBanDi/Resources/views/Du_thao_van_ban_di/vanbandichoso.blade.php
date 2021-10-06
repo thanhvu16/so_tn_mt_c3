@@ -30,7 +30,7 @@
                             </thead>
                             <tbody>
                             @forelse($vanbandichoso as $key=>$data)
-                                <form method="post" id="choso"
+                                <form method="post" id="choso-{{$data->id}}"
                                       action="{{route('Capsovanbandi',$data->id)}}">
                                     <tr>
 
@@ -98,35 +98,12 @@
                                                 </p>
                                             @empty
                                             @endforelse
-{{--                                            --}}{{--                                                        </div>--}}
-{{--                                            <p>--}}
-{{--                                                <a class="them-noi-nhan" data-toggle="modal"--}}
-{{--                                                   data-target="#modal-them-noi-nhan"--}}
-{{--                                                   data-id="{{ $data->id }}">--}}
-{{--                                                    <span><i class="fa fa-plus-square-o"></i> Thêm nơi nhận</span>--}}
-{{--                                                </a>--}}
-{{--                                            </p>--}}
                                         </td>
                                             <td class="text-center" >
-                                                <button type="submit" form="choso"
+                                                <button type="submit" form="choso-{{$data->id}}"
                                                         class="btn btn-primary btn-sm btn-remove-item-duyet"><i
                                                         class="fa  fa-check-square-o"></i></button>
-                                                {{--                                            @if (isset($data->filetrinhky))--}}
 
-                                                {{--                                                @foreach($data->filetrinhky as $key => $filedata)--}}
-                                                {{--                                                    @if ($filedata->trang_thai ==2)--}}
-                                                {{--                                                        <br>--}}
-                                                {{--                                                        <button type="button"--}}
-                                                {{--                                                                onclick="exc_sign_issued('{{ $filedata->getUrlFile() }}',100,'{{ date('d-m-Y') }}',{{$data->id}});"--}}
-                                                {{--                                                                value="{{ $data->id }}"--}}
-                                                {{--                                                                type="button" class="btn btn-primary mt-2 "><i--}}
-                                                {{--                                                                class="fa fa-pencil-square-o"--}}
-                                                {{--                                                                aria-hidden="true"></i> Đóng dấu--}}
-                                                {{--                                                            phát hành--}}
-                                                {{--                                                        </button>--}}
-                                                {{--                                                    @endif--}}
-                                                {{--                                                @endforeach--}}
-                                                {{--                                            @endif--}}
                                             </td>
                                             <td class="text-center" >
 

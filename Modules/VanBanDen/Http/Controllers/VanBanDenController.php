@@ -62,6 +62,8 @@ class VanBanDenController extends Controller
         $nguoi_ky = $request->get('nguoi_ky_id');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
+        $ngaybanhanhbatdau = $request->get('ngay_ban_hanh_date');
+        $ngaybanhanhketthuc = $request->get('end_ngay_ban_hanh');
         $year = $request->get('year') ?? null;
         $danhSachDonVi = null;
         $page = $request->get('page');
@@ -186,6 +188,21 @@ class VanBanDenController extends Controller
 
                     }
                 })
+                ->where(function ($query) use ($ngaybanhanhbatdau, $ngaybanhanhketthuc) {
+                    if ($ngaybanhanhbatdau != '' && $ngaybanhanhketthuc != '' && $ngaybanhanhbatdau <= $ngaybanhanhketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybanhanhbatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngaybanhanhketthuc);
+                    }
+                    if ($ngaybanhanhketthuc == '' && $ngaybanhanhbatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhbatdau);
+
+                    }
+                    if ($ngaybanhanhbatdau == '' && $ngaybanhanhketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhketthuc);
+
+                    }
+                })
                 ->where(function ($query) use ($year) {
                     if (!empty($year)) {
                         return $query->whereYear('created_at', $year);
@@ -287,6 +304,21 @@ class VanBanDenController extends Controller
                     }
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
                         return $query->where('ngay_ban_hanh', $ngayketthuc);
+
+                    }
+                })
+                ->where(function ($query) use ($ngaybanhanhbatdau, $ngaybanhanhketthuc) {
+                    if ($ngaybanhanhbatdau != '' && $ngaybanhanhketthuc != '' && $ngaybanhanhbatdau <= $ngaybanhanhketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybanhanhbatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngaybanhanhketthuc);
+                    }
+                    if ($ngaybanhanhketthuc == '' && $ngaybanhanhbatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhbatdau);
+
+                    }
+                    if ($ngaybanhanhbatdau == '' && $ngaybanhanhketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhketthuc);
 
                     }
                 })

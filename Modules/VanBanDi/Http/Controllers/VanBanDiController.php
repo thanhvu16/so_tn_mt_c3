@@ -2293,7 +2293,7 @@ class VanBanDiController extends Controller
         }
     }
 
-    public function Capsovanbandi(Request $request)
+    public function Capsovanbandi(Request $request,$id)
     {
         $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
 //        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
@@ -2302,6 +2302,7 @@ class VanBanDiController extends Controller
         $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
         $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
         $soVanBan = SoVanBan::where('id', $request->sovanban_id)->first();
+
 
 
         $user = auth::user();
