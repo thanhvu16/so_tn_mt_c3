@@ -71,17 +71,44 @@
                                                                                name="start_date" placeholder="">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group col-md-3">
-                                                                    <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành</label>
-                                                                    <input class="form-control" id="vb_ngay_ban_hanh"
-                                                                           value="{{Request::get('vb_ngay_ban_hanh')}}" type="date"
-                                                                           name="vb_ngay_ban_hanh">
-                                                                </div>
+
                                                                 <div class="col-md-3" >
                                                                     <div class="form-group">
                                                                         <label for="">Họp đến ngày</label>
                                                                         <input type="date" class="form-control" value="{{Request::get('end_date')}}"
                                                                                name="end_date" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-3" >
+                                                                    <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành từ</label>
+                                                                    <div id="">
+                                                                        <input class="form-control "
+                                                                               value="{{Request::get('ngay_ban_hanh_date')}}" type="date"
+                                                                               name="ngay_ban_hanh_date">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-3" >
+                                                                    <label for="vb_ngay_ban_hanh" class="col-form-label"> đến ngày</label>
+                                                                    <div id="">
+                                                                        <input class="form-control " id="end_date"
+                                                                               value="{{Request::get('end_ngay_ban_hanh')}}" type="date"
+                                                                               name="end_ngay_ban_hanh">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-3" >
+                                                                    <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>
+                                                                    <div id="">
+                                                                        <input class="form-control " id="start_date1"
+                                                                               value="{{Request::get('start_date1')}}" type="date"
+                                                                               name="start_date1">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-3" >
+                                                                    <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>
+                                                                    <div id="">
+                                                                        <input class="form-control " id="end_date2"
+                                                                               value="{{Request::get('end_date1')}}" type="date"
+                                                                               name="end_date1">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group col-md-3" >
@@ -289,8 +316,8 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')
-                          ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),
-                          'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
+                          ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),'ngay_ban_hanh_date' => Request::get('ngay_ban_hanh_date'),'end_ngay_ban_hanh' => Request::get('end_ngay_ban_hanh'),
+                          'end_date' => Request::get('end_date'),'start_date1' => Request::get('start_date1'),'end_date1' => Request::get('end_date1'),'start_date' => Request::get('start_date'),
                           'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
                           'vb_trich_yeu' => Request::get('vb_trich_yeu'),'search' =>Request::get('search'), 'year' => Request::get('year'), 'don_vi_id' => Request::get('don_vi_id')
                           , 'trinh_tu_nhan_van_ban' => Request::get('trinh_tu_nhan_van_ban')])->render() !!}

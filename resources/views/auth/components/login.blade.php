@@ -128,7 +128,7 @@
                 </div>
                 <!-- /.col -->
                     <div class="col-xs-7 text-right">
-                        <a id="loginSSOloginSSO" style="cursor: pointer;font-weight: bold;color: red"><i class="fa fa-refresh fa-spin"></i> Đăng nhập bằng sso</a><br>
+                        <a id="loginSSO" style="cursor: pointer;font-weight: bold;color: red"><i class="fa fa-refresh fa-spin"></i> Đăng nhập bằng sso</a><br>
 
                     </div>
 
@@ -172,6 +172,7 @@
 <script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
 <script>
     $(document).ready(function(){
+        console.log(123);
         SSO.init();
         if (!SSO.isAuthen(login)) {
             $("#loginSSO").off('click').on('click', function () {

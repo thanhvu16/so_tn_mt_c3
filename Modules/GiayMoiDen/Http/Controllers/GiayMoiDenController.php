@@ -49,8 +49,12 @@ class GiayMoiDenController extends Controller
         $so_den = $request->get('vb_so_den');
         $so_van_ban = $request->get('so_van_ban_id');
         $nguoi_ky = $request->get('nguoi_ky_id');
+        $ngaybatdau1 = $request->get('start_date1');
+        $ngayketthuc1 = $request->get('end_date1');
         $ngaybatdau = $request->get('start_date');
         $ngayketthuc = $request->get('end_date');
+        $ngaybanhanhbatdau = $request->get('ngay_ban_hanh_date');
+        $ngaybanhanhketthuc = $request->get('end_ngay_ban_hanh');
         $year = $request->get('year') ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
         $danhSachDonVi = null;
@@ -80,21 +84,11 @@ class GiayMoiDenController extends Controller
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
                     }
                 })
-//                ->where(function ($query) use ($trichyeu) {
-//                    if (!empty($trichyeu)) {
-//                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
-//                    }
-//                })
                 ->where(function ($query) use ($so_den) {
                     if (!empty($so_den)) {
                         return $query->where('so_den', 'LIKE', "%$so_den%");
                     }
                 })
-//                ->where(function ($query) use ($co_quan_ban_hanh) {
-//                    if (!empty($co_quan_ban_hanh)) {
-//                        return $query->where('co_quan_ban_hanh', 'LIKE', "%$co_quan_ban_hanh%");
-//                    }
-//                })
                 ->where(function ($query) use ($co_quan_ban_hanh) {
                     if (!empty($co_quan_ban_hanh)) {
                         return $query->where(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($co_quan_ban_hanh) . "%");
@@ -110,30 +104,56 @@ class GiayMoiDenController extends Controller
                         return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($so_ky_hieu) . "%");
                     }
                 })
-//                ->where(function ($query) use ($so_ky_hieu) {
-//                    if (!empty($so_ky_hieu)) {
-//                        return $query->where('so_ky_hieu', 'LIKE', "%$so_ky_hieu%");
-//                    }
-//                })
                 ->where(function ($query) use ($so_van_ban) {
                     if (!empty($so_van_ban)) {
                         return $query->where('so_van_ban_id', "$so_van_ban");
                     }
                 })
+                ->where(function ($query) use ($ngaybanhanhbatdau, $ngaybanhanhketthuc) {
+                    if ($ngaybanhanhbatdau != '' && $ngaybanhanhketthuc != '' && $ngaybanhanhbatdau <= $ngaybanhanhketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybanhanhbatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngaybanhanhketthuc);
+                    }
+                    if ($ngaybanhanhketthuc == '' && $ngaybanhanhbatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhbatdau);
+
+                    }
+                    if ($ngaybanhanhbatdau == '' && $ngaybanhanhketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhketthuc);
+
+                    }
+                })
+                ->where(function ($query) use ($ngaybatdau1, $ngayketthuc1) {
+                    if ($ngaybatdau1 != '' && $ngayketthuc1 != '' && $ngaybatdau1 <= $ngayketthuc1) {
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau1)
+                            ->where('ngay_nhan', '<=', $ngayketthuc1);
+                    }
+                    if ($ngaybatdau1 == '' && $ngayketthuc1 != '') {
+                        $ngaybatdau = $ngayketthuc1;
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau)
+                            ->where('ngay_nhan', '<=', $ngayketthuc1);
+                    }
+                    if ($ngaybatdau1 != '' && $ngayketthuc1 == '') {
+                        $ngayketthuc = $ngaybatdau1;
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau1)
+                            ->where('ngay_nhan', '<=', $ngayketthuc);
+                    }
+                })
                 ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
                     if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
                         $ngaybatdau = $ngayketthuc;
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                     if ($ngaybatdau != '' && $ngayketthuc == '') {
                         $ngayketthuc = $ngaybatdau;
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                 })
                 ->where(function ($query) use ($year) {
@@ -188,20 +208,51 @@ class GiayMoiDenController extends Controller
                         return $query->where('so_van_ban_id', "$so_van_ban");
                     }
                 })
+                ->where(function ($query) use ($ngaybanhanhbatdau, $ngaybanhanhketthuc) {
+                    if ($ngaybanhanhbatdau != '' && $ngaybanhanhketthuc != '' && $ngaybanhanhbatdau <= $ngaybanhanhketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybanhanhbatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngaybanhanhketthuc);
+                    }
+                    if ($ngaybanhanhketthuc == '' && $ngaybanhanhbatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhbatdau);
+
+                    }
+                    if ($ngaybanhanhbatdau == '' && $ngaybanhanhketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybanhanhketthuc);
+
+                    }
+                })
+                ->where(function ($query) use ($ngaybatdau1, $ngayketthuc1) {
+                    if ($ngaybatdau1 != '' && $ngayketthuc1 != '' && $ngaybatdau1 <= $ngayketthuc1) {
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau1)
+                            ->where('ngay_nhan', '<=', $ngayketthuc1);
+                    }
+                    if ($ngaybatdau1 == '' && $ngayketthuc1 != '') {
+                        $ngaybatdau = $ngayketthuc1;
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau)
+                            ->where('ngay_nhan', '<=', $ngayketthuc1);
+                    }
+                    if ($ngaybatdau1 != '' && $ngayketthuc1 == '') {
+                        $ngayketthuc = $ngaybatdau1;
+                        return $query->where('ngay_nhan', '>=', $ngaybatdau1)
+                            ->where('ngay_nhan', '<=', $ngayketthuc);
+                    }
+                })
                 ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
                     if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                     if ($ngaybatdau == '' && $ngayketthuc != '') {
                         $ngaybatdau = $ngayketthuc;
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                     if ($ngaybatdau != '' && $ngayketthuc == '') {
                         $ngayketthuc = $ngaybatdau;
-                        return $query->where('vb_ngay_ban_hanh', '>=', $ngaybatdau)
-                            ->where('vb_ngay_ban_hanh', '<=', $ngayketthuc);
+                        return $query->where('ngay_hop', '>=', $ngaybatdau)
+                            ->where('ngay_hop', '<=', $ngayketthuc);
                     }
                 })
                 ->where(function ($query) use ($year) {
