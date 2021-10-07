@@ -19,6 +19,7 @@ Route::resource('in-so-van-ban-di', 'ThongkeVanBanDiController');
 
 Route::resource('van-ban-di', 'VanBanDiController');
 Route::get('sua-van-ban-di-ds', array('as' => 'suavbdids', 'uses' => 'VanBanDiController@suavbdids'));
+Route::get('sua-van-ban-di-va-cap-so', array('as' => 'suavbdivacapso', 'uses' => 'VanBanDiController@suavbdivacapso'));
 Route::get('danh-sach-du-thao', array('as' => 'Danhsachduthao', 'uses' => 'DuThaoVanBanController@Danhsachduthao'));
 Route::get('van-ban-di-ca-nhan-cho-duyet', array('as' => 'vanBanDiTaoChuaDuyet', 'uses' => 'VanBanDiController@vanBanDiTaoChuaDuyet'));
 Route::get('thong-tin-du-thao-cu/{id}', array('as' => 'laythongtinduthaocu', 'uses' => 'DuThaoVanBanController@laythongtinduthaocu'));

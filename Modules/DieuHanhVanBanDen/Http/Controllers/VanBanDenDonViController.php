@@ -668,7 +668,7 @@ class VanBanDenDonViController extends Controller
                         } else {
                             if (!empty($lanhDaoDuHopId) > 0 && !empty($lanhDaoDuHopId[$vanBanDenId])) {
                                 if ($currentUser->can(AllPermission::thamMuu())) {
-                                    LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop[$vanBanDenId], $danhSachDonViChuTriIds[$vanBanDenId], $chuyenTuDonVi = 1);
+                                    LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop ? $donViDuHop[$vanBanDenId] : null, $danhSachDonViChuTriIds ? $danhSachDonViChuTriIds[$vanBanDenId] : null, $chuyenTuDonVi = 1);
 
                                 } else {
                                     LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);

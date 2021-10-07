@@ -1670,6 +1670,200 @@ class VanBanDiController extends Controller
         return view('vanbandi::van_ban_di.edit', compact('vanbandi', 'ds_soVanBan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_doKhanCap',
             'ds_mucBaoMat', 'ds_nguoiKy', 'emailtrongthanhpho', 'emailngoaithanhpho', 'ds_DonVi_nhan', 'lay_emailtrongthanhpho', 'lay_emailngoaithanhpho', 'lay_noi_nhan_van_ban_di'));
     }
+    public function suavbdivacapso( Request $request)
+
+    {
+
+        canPermission(AllPermission::suaVanBanDi());
+        $id = $request->get('id');
+        $vanbandi = VanBanDi::where('id', $id)->first();
+        $donVi = auth::user()->donVi;
+
+        $user = auth::user();
+        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $laysovanban = [];
+        $sovanbanchung = SoVanBan::whereIn('loai_so', [2, 3])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sovanbanchung as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $sorieng = SoVanBan::where(['loai_so' => 4, 'so_don_vi' => $user->don_vi_id, 'type' => 2])->wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        foreach ($sorieng as $data2) {
+            array_push($laysovanban, $data2);
+        }
+        $ds_soVanBan = $laysovanban;
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
+        $ds_DonVi_nhan = DonVi::wherenull('deleted_at')->where('parent_id', 0)->orderBy('thu_tu', 'asc')->get();
+
+        $ds_nguoiKy = null;
+        $dataNguoiKy = [];
+        $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
+            ->whereHas('donVi', function ($query) {
+                return $query->whereNull('cap_xa');
+            })->get();
+
+        switch (auth::user()->roles->pluck('name')[0]) {
+            case CHUYEN_VIEN:
+                if ($donVi->parent_id == 0) {
+                    if ($donVi->dieu_hanh == 1) {
+                        $truongpho = User::role([TRUONG_PHONG, PHO_PHONG, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])
+                            ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                    } else {
+                        $truongpho = null;
+                    }
+
+                    if ($truongpho != null) {
+                        foreach ($truongpho as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+
+                    }
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    $ds_nguoiKy = $dataNguoiKy;
+                } else {
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                    $ds_nguoiKy = $dataNguoiKy;
+                }
+                break;
+            case PHO_PHONG:
+                if ($donVi->dieu_hanh == 1) {
+                    $truongpho = User::role([TRUONG_PHONG, CHANH_VAN_PHONG])
+                        ->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $truongpho = null;
+                }
+
+                if ($truongpho != null) {
+                    foreach ($truongpho as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+
+                }
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+            case TRUONG_PHONG:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = $lanhDaoSo;
+                } else {
+                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                    $ds_nguoiKy = $dataNguoiKy;
+                }
+                break;
+            case PHO_CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
+                } else {
+                    $chiCuc = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    foreach ($chiCuc as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                    $ds_nguoiKy = $dataNguoiKy;
+                }
+                break;
+            case CHU_TICH:
+                if ($donVi->parent_id == 0) {
+                    $ds_nguoiKy = null;
+                } else {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->get();
+                }
+                break;
+            case CHANH_VAN_PHONG:
+                $ds_nguoiKy = $lanhDaoSo;
+                break;
+            case PHO_CHANH_VAN_PHONG:
+                $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                foreach ($chanhVanPhong as $data) {
+                    array_push($dataNguoiKy, $data);
+                }
+                foreach ($lanhDaoSo as $item) {
+                    array_push($dataNguoiKy, $item);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case VAN_THU_DON_VI:
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case VAN_THU_HUYEN:
+                $ds_nguoiKy = $lanhDaoSo;
+                break;
+
+            case TRUONG_BAN:
+                $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
+                foreach ($chiCuc as $data3) {
+                    array_push($dataNguoiKy, $data3);
+                }
+
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+            case PHO_TRUONG_BAN:
+                $truongBan = User::role([TRUONG_BAN])->where('don_vi_id', auth::user()->don_vi_id)->first();
+                array_push($dataNguoiKy, $truongBan);
+
+                $danhSachLanhDaoPhongBan = User::role([PHO_CHU_TICH, CHU_TICH])->where('don_vi_id', $donVi->parent_id)->get();
+                if ($danhSachLanhDaoPhongBan) {
+                    foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
+                        array_push($dataNguoiKy, $lanhDaoPhongBan);
+                    }
+                }
+                $ds_nguoiKy = $dataNguoiKy;
+                break;
+
+        }
+
+        $emailtrongthanhpho = MailTrongThanhPho::orderBy('ten_don_vi', 'asc')->get();
+        $emailngoaithanhpho = MailNgoaiThanhPho::orderBy('ten_don_vi', 'asc')->get();
+
+        $lay_emailtrongthanhpho = NoiNhanMail::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
+        $lay_emailngoaithanhpho = NoiNhanMailNgoai::where(['van_ban_di_id' => $id])->whereIn('status', [1, 2])->get();
+        $lay_noi_nhan_van_ban_di = NoiNhanVanBanDi::where(['van_ban_di_id' => $id])->whereIn('trang_thai', [1, 2, 3])->get();
+        $vanbandi->listVanBanDen = $vanbandi->getListVanBanDen();
+
+        return view('vanbandi::van_ban_di.editvacapso', compact('vanbandi', 'ds_soVanBan', 'ds_loaiVanBan', 'ds_DonVi', 'ds_doKhanCap',
+            'ds_mucBaoMat', 'ds_nguoiKy', 'emailtrongthanhpho', 'emailngoaithanhpho', 'ds_DonVi_nhan', 'lay_emailtrongthanhpho', 'lay_emailngoaithanhpho', 'lay_noi_nhan_van_ban_di'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -2295,195 +2489,342 @@ class VanBanDiController extends Controller
 
     public function Capsovanbandi(Request $request,$id)
     {
-        $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
-//        $vanbandiduyet = Vanbandichoduyet::where(['van_ban_di_id' => $request->van_ban_di_id, 'cho_cap_so' => 1])->first();
-//        $vanbandiduyet->cho_cap_so = 3;
-//        $vanbandiduyet->save();
-        $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
-        $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
-        $soVanBan = SoVanBan::where('id', $request->sovanban_id)->first();
+        if($request->sua_cap_so == 1)
+        {
+            $nam_sodi = date('Y', strtotime($request->vb_ngaybanhanh));
+            $vanbandi = VanBanDi::where('id', $id)->first();
+            $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
+            $soVanBan = SoVanBan::where('id', $request->so_van_ban_id)->first();
 
 
 
-        $user = auth::user();
-        $ma_don_vi_ht = $user->donVi->ten_viet_tat ?? '';
-        $nam_truoc_skh = null;
-        $ma_van_ban = null;
-        $ma_phong_ban = null;
-        $ma_don_vi = null;
-        $maPhong = null;
-        $SoKyHieu = null;
-//        if ($loaiVanBan->nam_truoc_skh == 1) {
-//            $nam_truoc_skh = $nam_sodi;
-//            $nam_truoc_skh = "$nam_truoc_skh";
-//        }
-//        if ($loaiVanBan->ma_van_ban == 1) {
-//            $ma_van_ban = $loaiVanBan->ten_viet_tat;
-//            $ma_van_ban = "/$ma_van_ban";
-//        }
-//        if ($loaiVanBan->ma_phong_ban == 1) {
-//            $ma_phong_ban = null;
-//        }
-//        if ($loaiVanBan->ma_don_vi == 1) {
-//            $ma_don_vi = $ma_don_vi_ht;
-//            $ma_don_vi = "-$ma_don_vi";
-//        }
-        $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
-        switch ($donVi->ten_don_vi) {
-            case 'Phòng Tài Nguyên nước':
-                $maPhong = 'TNN';
-                break;
-            case 'Thanh tra Sở':
-                $maPhong = 'TTr';
-                break;
+            $user = auth::user();
+            $maPhong = null;
+            $SoKyHieu = null;
+            $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
+            switch ($donVi->ten_don_vi) {
+                case 'Phòng Tài Nguyên nước':
+                    $maPhong = 'TNN';
+                    break;
+                case 'Thanh tra Sở':
+                    $maPhong = 'TTr';
+                    break;
 
-            case 'Phòng Đo đạc, Bản đồ và Viễn thám':
-                $maPhong = 'ĐĐBĐVT';
-                break;
-            case 'Văn phòng Sở':
-                $maPhong = 'VP';
-                break;
-            case 'Phòng Khí tượng Thủy văn và Biến đổi khí hậu':
-                $maPhong = 'KTTVBĐKH';
-                break;
-            case 'Phòng Đăng ký thống kê đất đai':
-                $maPhong = 'ĐKTK';
-                break;
-            case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
-                $maPhong = 'QHKHSDĐ';
-                break;
-            case 'Phòng Kinh tế đất':
-                $maPhong = 'KTĐ';
-                break;
-            case 'Phòng Hành chính Tổng hợp':
-                $maPhong = 'HCTH';
-                break;
-            case 'Phòng Kế hoạch Tài chính':
-                $maPhong = 'KHTC';
-                break;
-            case 'Phòng khoáng sản':
-                $maPhong = 'KS';
-                break;
-            case 'Chi cục Bảo vệ môi trường Hà Nội':
-                $maPhong = 'CCBVMT';
-                break;
-            case 'Văn phòng đăng ký đất đai Hà Nội':
-                $maPhong = 'VPĐKĐĐ';
-                break;
-            case 'Trung tâm Kỹ thuật Tài Nguyên và môi trường Hà Nội':
-                $maPhong = 'TTKTTNMT';
-                break;
-            case 'Trung tâm Phát triển quỹ đất Hà Nội':
-                $maPhong = 'TTPTQĐ';
-                break;
-            case 'Trung tâm công nghệ thông tin Tài Nguyên môi trường Hà Nội':
-                $maPhong = 'TTCNTT';
-                break;
-            case 'Ban quản lý dự án HSĐC':
-                $maPhong = 'BQLDATTHSĐC';
-                break;
+                case 'Phòng Đo đạc, Bản đồ và Viễn thám':
+                    $maPhong = 'ĐĐBĐVT';
+                    break;
+                case 'Văn phòng Sở':
+                    $maPhong = 'VP';
+                    break;
+                case 'Phòng Khí tượng Thủy văn và Biến đổi khí hậu':
+                    $maPhong = 'KTTVBĐKH';
+                    break;
+                case 'Phòng Đăng ký thống kê đất đai':
+                    $maPhong = 'ĐKTK';
+                    break;
+                case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
+                    $maPhong = 'QHKHSDĐ';
+                    break;
+                case 'Phòng Kinh tế đất':
+                    $maPhong = 'KTĐ';
+                    break;
+                case 'Phòng Hành chính Tổng hợp':
+                    $maPhong = 'HCTH';
+                    break;
+                case 'Phòng Kế hoạch Tài chính':
+                    $maPhong = 'KHTC';
+                    break;
+                case 'Phòng khoáng sản':
+                    $maPhong = 'KS';
+                    break;
+                case 'Chi cục Bảo vệ môi trường Hà Nội':
+                    $maPhong = 'CCBVMT';
+                    break;
+                case 'Văn phòng đăng ký đất đai Hà Nội':
+                    $maPhong = 'VPĐKĐĐ';
+                    break;
+                case 'Trung tâm Kỹ thuật Tài Nguyên và môi trường Hà Nội':
+                    $maPhong = 'TTKTTNMT';
+                    break;
+                case 'Trung tâm Phát triển quỹ đất Hà Nội':
+                    $maPhong = 'TTPTQĐ';
+                    break;
+                case 'Trung tâm công nghệ thông tin Tài Nguyên môi trường Hà Nội':
+                    $maPhong = 'TTCNTT';
+                    break;
+                case 'Ban quản lý dự án HSĐC':
+                    $maPhong = 'BQLDATTHSĐC';
+                    break;
 
 
-        }
+            }
 
-        $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
-        $vanbandi->cho_cap_so = 3;
-        if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-            $soDi = VanBanDi::where([
-                'so_van_ban_id' => $request->sovanban_id,
-                'don_vi_soan_thao' => null
-            ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
-
-
-        } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $soDi = VanBanDi::where([
-                'loai_van_ban_id' => $vanbandi->loai_van_ban_id,
-                'phong_phat_hanh' => auth::user()->donVi->parent_id
-            ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
-
-        }
-        $soDi = $soDi + 1;
-        switch ($soVanBan->ten_so_van_ban) {
-            case 'Công Văn':
-                if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                    $SoKyHieu = "$soDi/STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                    $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                    $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
-                    $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
-                    $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
-                    $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
-                    $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
-                    $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
-                }
-                break;
-            case 'Quyết định':
-                if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                    $SoKyHieu = "$soDi/QĐ-STNMT-";
-                }
-                break;
-
-            case 'Thông báo':
-                if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
-                    $SoKyHieu = "$soDi/TB-STNMT-";
-                }
-                break;
-            case 'Giấy Mời':
-                if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                    $SoKyHieu = "$soDi/GM-STNMT-";
-                }
-                break;
-            case 'Cấp Phép':
-                if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
-                    $SoKyHieu = "$soDi/GP-STNMT-";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
-                    $SoKyHieu = "$soDi/GXN-STNMT-";
-                }
-                break;
-            case 'Thanh Tra':
-                if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                    $SoKyHieu = "$soDi/STNMT-";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                    $SoKyHieu = "$soDi/QĐ-XPVPHC-";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                    $SoKyHieu = "$soDi/KH-";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                    $SoKyHieu = "$soDi/GM-";
-                } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                    $SoKyHieu = "$soDi/BC-";
-                }
-                break;
+            $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
+            $vanbandi->cho_cap_so = 3;
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                $soDi = VanBanDi::where([
+                    'so_van_ban_id' => $request->so_van_ban_id,
+                    'don_vi_soan_thao' => null
+                ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
 
-        }
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $soDi = VanBanDi::where([
+                    'loai_van_ban_id' => $vanbandi->loaivanban_id,
+                    'phong_phat_hanh' => auth::user()->donVi->parent_id
+                ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
+
+            }
+            $soDi = $soDi + 1;
+            switch ($soVanBan->ten_so_van_ban) {
+                case 'Công Văn':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                        $SoKyHieu = "$soDi/STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                        $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                        $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
+                        $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
+                        $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
+                        $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
+                        $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
+                        $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
+                    }
+                    break;
+                case 'Quyết định':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                        $SoKyHieu = "$soDi/QĐ-STNMT-";
+                    }
+                    break;
+
+                case 'Thông báo':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
+                        $SoKyHieu = "$soDi/TB-STNMT-";
+                    }
+                    break;
+                case 'Giấy Mời':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                        $SoKyHieu = "$soDi/GM-STNMT-";
+                    }
+                    break;
+                case 'Cấp Phép':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
+                        $SoKyHieu = "$soDi/GP-STNMT-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
+                        $SoKyHieu = "$soDi/GXN-STNMT-";
+                    }
+                    break;
+                case 'Thanh Tra':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                        $SoKyHieu = "$soDi/STNMT-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                        $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                        $SoKyHieu = "$soDi/KH-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                        $SoKyHieu = "$soDi/GM-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                        $SoKyHieu = "$soDi/BC-";
+                    }
+                    break;
+
+
+            }
+
+            $vanbandi->so_di = $soDi;
+            $vanbandi->so_ky_hieu = $SoKyHieu;
+            $vanbandi->so_van_ban_id = $request->so_van_ban_id;
+            $vanbandi->truong_phong_ky = 3;
+            $vanbandi->save();
+
+            $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $id)->get();
+            foreach ($vanbanduthao as $data) {
+                $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
+                $vanbanduthao->trang_thai = 10;
+                $vanbanduthao->save();
+            }
+            $vanbandiupdate = Vanbandichoduyet::where('van_ban_di_id', $id)->orderBy('created_at', 'desc')->first();
+            $vanbandiupdate->cho_cap_so = 1;
+            $vanbandiupdate->save();
+
+            $this->updateVanBanDen($vanbandi);
+
+            UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
+            return redirect()->route('van-ban-di.index')->with(['capso' => "$soDi"]);
+        }else{
+            $nam_sodi = date('Y', strtotime($request->ngay_ban_hanh));
+            $vanbandi = VanBanDi::where('id', $request->van_ban_di_id)->first();
+            $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
+            $soVanBan = SoVanBan::where('id', $request->sovanban_id)->first();
+
+
+
+            $user = auth::user();
+            $maPhong = null;
+            $SoKyHieu = null;
+            $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
+            switch ($donVi->ten_don_vi) {
+                case 'Phòng Tài Nguyên nước':
+                    $maPhong = 'TNN';
+                    break;
+                case 'Thanh tra Sở':
+                    $maPhong = 'TTr';
+                    break;
+
+                case 'Phòng Đo đạc, Bản đồ và Viễn thám':
+                    $maPhong = 'ĐĐBĐVT';
+                    break;
+                case 'Văn phòng Sở':
+                    $maPhong = 'VP';
+                    break;
+                case 'Phòng Khí tượng Thủy văn và Biến đổi khí hậu':
+                    $maPhong = 'KTTVBĐKH';
+                    break;
+                case 'Phòng Đăng ký thống kê đất đai':
+                    $maPhong = 'ĐKTK';
+                    break;
+                case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
+                    $maPhong = 'QHKHSDĐ';
+                    break;
+                case 'Phòng Kinh tế đất':
+                    $maPhong = 'KTĐ';
+                    break;
+                case 'Phòng Hành chính Tổng hợp':
+                    $maPhong = 'HCTH';
+                    break;
+                case 'Phòng Kế hoạch Tài chính':
+                    $maPhong = 'KHTC';
+                    break;
+                case 'Phòng khoáng sản':
+                    $maPhong = 'KS';
+                    break;
+                case 'Chi cục Bảo vệ môi trường Hà Nội':
+                    $maPhong = 'CCBVMT';
+                    break;
+                case 'Văn phòng đăng ký đất đai Hà Nội':
+                    $maPhong = 'VPĐKĐĐ';
+                    break;
+                case 'Trung tâm Kỹ thuật Tài Nguyên và môi trường Hà Nội':
+                    $maPhong = 'TTKTTNMT';
+                    break;
+                case 'Trung tâm Phát triển quỹ đất Hà Nội':
+                    $maPhong = 'TTPTQĐ';
+                    break;
+                case 'Trung tâm công nghệ thông tin Tài Nguyên môi trường Hà Nội':
+                    $maPhong = 'TTCNTT';
+                    break;
+                case 'Ban quản lý dự án HSĐC':
+                    $maPhong = 'BQLDATTHSĐC';
+                    break;
+
+
+            }
+
+            $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
+            $vanbandi->cho_cap_so = 3;
+            if (auth::user()->hasRole(VAN_THU_HUYEN)) {
+                $soDi = VanBanDi::where([
+                    'so_van_ban_id' => $request->sovanban_id,
+                    'don_vi_soan_thao' => null
+                ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
+
+
+            } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
+                $soDi = VanBanDi::where([
+                    'loai_van_ban_id' => $vanbandi->loai_van_ban_id,
+                    'phong_phat_hanh' => auth::user()->donVi->parent_id
+                ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
+
+            }
+            $soDi = $soDi + 1;
+            switch ($soVanBan->ten_so_van_ban) {
+                case 'Công Văn':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                        $SoKyHieu = "$soDi/STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                        $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                        $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
+                        $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
+                        $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
+                        $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
+                        $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
+                        $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
+                    }
+                    break;
+                case 'Quyết định':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                        $SoKyHieu = "$soDi/QĐ-STNMT-";
+                    }
+                    break;
+
+                case 'Thông báo':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
+                        $SoKyHieu = "$soDi/TB-STNMT-";
+                    }
+                    break;
+                case 'Giấy Mời':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                        $SoKyHieu = "$soDi/GM-STNMT-";
+                    }
+                    break;
+                case 'Cấp Phép':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
+                        $SoKyHieu = "$soDi/GP-STNMT-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
+                        $SoKyHieu = "$soDi/GXN-STNMT-";
+                    }
+                    break;
+                case 'Thanh Tra':
+                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                        $SoKyHieu = "$soDi/STNMT-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                        $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                        $SoKyHieu = "$soDi/KH-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                        $SoKyHieu = "$soDi/GM-";
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                        $SoKyHieu = "$soDi/BC-";
+                    }
+                    break;
+
+
+            }
 
 //        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
-        $vanbandi->so_di = $soDi;
-        $vanbandi->so_ky_hieu = $SoKyHieu;
-        $vanbandi->so_van_ban_id = $request->sovanban_id;
-        $vanbandi->truong_phong_ky = 3;
-        $vanbandi->save();
+            $vanbandi->so_di = $soDi;
+            $vanbandi->so_ky_hieu = $SoKyHieu;
+            $vanbandi->so_van_ban_id = $request->sovanban_id;
+            $vanbandi->truong_phong_ky = 3;
+            $vanbandi->save();
 
-        $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->get();
-        foreach ($vanbanduthao as $data) {
-            $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
-            $vanbanduthao->trang_thai = 10;
-            $vanbanduthao->save();
+            $vanbanduthao = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->get();
+            foreach ($vanbanduthao as $data) {
+                $vanbanduthao = Vanbandichoduyet::where('id', $data->id)->first();
+                $vanbanduthao->trang_thai = 10;
+                $vanbanduthao->save();
+            }
+            $vanbandiupdate = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->orderBy('created_at', 'desc')->first();
+            $vanbandiupdate->cho_cap_so = 1;
+            $vanbandiupdate->save();
+
+            $this->updateVanBanDen($vanbandi);
+
+            UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
+            return redirect()->back()->with(['capso' => "$soDi"]);
         }
-        $vanbandiupdate = Vanbandichoduyet::where('van_ban_di_id', $request->van_ban_di_id)->orderBy('created_at', 'desc')->first();
-        $vanbandiupdate->cho_cap_so = 1;
-        $vanbandiupdate->save();
 
-        $this->updateVanBanDen($vanbandi);
-
-        UserLogs::saveUserLogs(' Cấp số văn bản đi', $vanbandi);
-        return redirect()->back()->with(['capso' => "$soDi"]);
 //        SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, $vanbandi->id)->delay(now()->addMinutes(5));
 
 //        return response()->json([

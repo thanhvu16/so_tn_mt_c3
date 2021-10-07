@@ -187,6 +187,7 @@
 
 
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
+                        @include('vanbandi::Du_thao_van_ban_di.error')
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
