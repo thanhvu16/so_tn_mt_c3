@@ -61,7 +61,7 @@
                                                 </p>
                                             </td>
                                             <td>
-                                                <select class="form-control show-tick dropdown-search" name="sovanban_id"
+                                                <select class="form-control show-tick select2 dropdown-search" name="sovanban_id"
                                                         >
 {{--                                                    <option value="">-- Chọn sổ văn bản --</option>--}}
                                                     @foreach ($ds_soVanBan as $sovb)
@@ -111,7 +111,7 @@
                                                 @hasanyrole('văn thư đơn vị|văn thư sở')
                                                 <form method="Get" action="{{route('vanbandidelete',$data->id)}}">
                                                     @csrf
-                                                    <a href="{{route('suavbdids','id='.$data->id)}}"
+                                                    <a href="{{route('suavbdivacapso','id='.$data->id)}}"
                                                        class="fa fa-edit" role="button"
                                                        title="Sửa">
                                                         <i class="fas fa-file-signature"></i>
