@@ -2495,6 +2495,7 @@ class VanBanDiController extends Controller
             $vanbandi = VanBanDi::where('id', $id)->first();
             $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
             $soVanBan = SoVanBan::where('id', $request->so_van_ban_id)->first();
+            $this->update($request,$id);
 
 
 
