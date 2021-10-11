@@ -86,7 +86,10 @@ Route::post('post-upload-tai-lieu-tham-khao', array('as' => 'postTaiLieuThamKhao
 
 
 Route::post('han-xu-ly-van-ban', array('as' => 'hanXuLyvb', 'uses' => 'VanBanDenController@hanXuLyvb'));
+
 Route::post('han-xu-ly-giay-moi', array('as' => 'hanXuLygb', 'uses' => 'VanBanDenController@hanXuLygb'));
+
+Route::post('thong-tin-dang-nhap', array('as' => 'thongTindn', 'uses' => 'VanBanDenController@thongTindn'));
 
 
 
