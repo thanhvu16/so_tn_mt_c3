@@ -65,6 +65,8 @@ Route::post('delete-backup/{fileName}', 'AdminController@deleteBackup')->name('b
 
 Route::get('get-list-phong-ban/{id}', 'DonViController@getListPhongBan');
 
+Route::get('update-passwword', 'NguoiDungController@password');
+
 // switch user
 Route::post('switch-user', 'NguoiDungController@switchOtherUser')->name('user.switch_user');
 Route::get('stop-switch-user', 'NguoiDungController@stopSwitchUser')->name('user.stop_switch_user');
