@@ -191,7 +191,9 @@ class NguoiDungController extends Controller
         $user->fill($data);
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
+            $user->pass = $data['password'];
         }
+
         $user->save();
         UserLogs::saveUserLogs('Tạo mới người dùng', $user);
 
@@ -371,6 +373,7 @@ class NguoiDungController extends Controller
 
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
+            $user->pass = $data['password'];
             $user->save();
         }
 
@@ -389,6 +392,21 @@ class NguoiDungController extends Controller
         }
 
         return redirect()->back()->with('success', 'Cập nhật thành công.');
+
+    }
+
+    public function password()
+    {
+        $pass = User::all();
+        foreach ($pass as $data)
+        {
+            $user = User::where('id',$data->id)->first();
+            $user->password = Hash::make('123456');
+            $user->pass = '123456';
+            $user->save();
+        }
+
+        dd('thành công');
 
     }
 

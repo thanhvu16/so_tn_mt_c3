@@ -106,6 +106,7 @@
     var APP_URL = {!! json_encode(url('/')) !!}
 
     $("#sso-logout").off('click').on('click', function () {
+        SSO.init();
         SSO.logout();
     })
 
