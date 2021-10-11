@@ -14,7 +14,7 @@ class AddColumPass extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->addColumn('pass')->nullable();
+            $table->string('pass')->nullable();
         });
     }
 
