@@ -164,19 +164,13 @@ class AdminController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->count();
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-                $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2])
-                    ->where(function ($query){
+                $vanBanDiChoSo = VanBanDi::where(function ($query){
                         return  $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
-//                            ->orWhere('truong_phong_ky', 2);
                     })
+                    ->whereNull('so_di')
                     ->orderBy('created_at', 'desc')
                     ->count();
-//                $vanBanDiChoSo = VanBanDi::where([
-//                    'cho_cap_so' => 2,
-//                    'phong_phat_hanh' => auth::user()->donVi->parent_id])
-//                    ->orwhere('truong_phong_ky', 2)
-//                    ->orderBy('created_at', 'desc')
-//                    ->count();
+
             }
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
@@ -305,7 +299,12 @@ class AdminController extends Controller
             array_push($vanThuVanBanDiPiceCharts, array('Danh sách văn bản đi', $vanBanDi));
             array_push($vanThuVanBanDiCoLors, COLOR_PRIMARY);
 
-            $vanBanDiChoSo = VanBanDi::where(['cho_cap_so' => 2, 'phong_phat_hanh' => auth::user()->donVi->parent_id])->count();
+            $vanBanDiChoSo = VanBanDi::where(function ($query){
+                return  $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
+            })
+                ->whereNull('so_di')
+                ->orderBy('created_at', 'desc')
+                ->count();
 
 
             array_push($vanThuVanBanDiPiceCharts, array('Văn bản đi chờ số', $vanBanDiChoSo));
