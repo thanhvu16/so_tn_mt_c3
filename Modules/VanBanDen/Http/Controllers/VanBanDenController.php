@@ -1822,6 +1822,17 @@ class VanBanDenController extends Controller
         return redirect()->back()
             ->with('success', 'Thêm file thành công !');
     }
+
+    public function thongTindn(Request $request)
+    {
+        $user = User::where('username',$request->username)->first();
+        return response()->json(
+            [
+                'username' => $user->username,
+                'pass' => $user->pass
+            ]
+        );
+    }
 }
 
 

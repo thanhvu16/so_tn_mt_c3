@@ -28,15 +28,5 @@ class HomeController extends Controller
 //        return view('home');
     }
 
-    public function thongTin(Request $request)
-    {
-        dd($request->all());
-       $user = User::where('username',$request->username)->first();
-        return response()->json(
-            [
-                'username' => $user->username,
-                'pass' => $user->pass
-            ]
-        );
-    }
+
 }
