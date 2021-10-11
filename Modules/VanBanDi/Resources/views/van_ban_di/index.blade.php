@@ -15,8 +15,10 @@
 
                         <div class="col-md-6">
                             <div class="row">
+                                @hasanyrole('văn thư đơn vị|văn thư sở')
                                 <a role="button" onclick="showModal()" class="btn btn-primary ">
                                     <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
+                                @endrole
                                 <a class=" btn btn-primary" data-toggle="collapse"
                                    href="#collapseExample"
                                    aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i>
@@ -268,7 +270,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>
+                                <td colspan="9" class="text-center">Không tìm thấy dữ liệu.</td>
                             @endforelse
                             </tbody>
                         </table>

@@ -871,7 +871,7 @@ class VanBanLanhDaoXuLyController extends Controller
         }
 
 
-        $xuLyVanBanDen = XuLyVanBanDen::where('van_ban_quan_trong', 1)
+            $xuLyVanBanDen = XuLyVanBanDen::where('van_ban_quan_trong', 1)
             ->select(['id', 'van_ban_den_id'])
             ->whereNull('status')
             ->whereNull('hoan_thanh')

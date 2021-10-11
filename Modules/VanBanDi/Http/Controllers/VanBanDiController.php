@@ -173,35 +173,22 @@ class VanBanDiController extends Controller
             $donViId = $donVi->parent_id != 0 ? $donVi->parent_id : $donVi->id;
 
             $ds_vanBanDi = VanBanDi::where(['loai_van_ban_giay_moi' => 1, 'phong_phat_hanh' => $donViId])
-                ->orwhere('van_ban_huyen_ky', $donViId)
-//                ->where(function ($query) use ($donViId){
-//                    return  $query->where('phong_phat_hanh',$donViId)
-//                        ->orWhere('van_ban_huyen_ky', $donViId);
-//                })
-
                 ->where('so_di', '!=', null)->whereNull('deleted_at')
                 ->where(function ($query) use ($don_vi_van_ban) {
                     if ($don_vi_van_ban == 2) {
                         //văn bản huyện
                         if (!empty($don_vi_van_ban)) {
-                            return $query->where('phong_phat_hanh', auth::user()->donVi->parent_id)/*->where('don_vi_soan_thao', '!=', auth::user()->don_vi_id)*/ ;
+                            return $query->where('phong_phat_hanh', auth::user()->donVi->parent_id) ;
                         }
-                    } /*else {
-                        //văn bản đơn vị
-                        if (!empty($don_vi_van_ban)) {
-                            return $query->where('van_ban_huyen_ky', auth::user()->don_vi_id)->where('phong_phat_hanh', '!=',auth::user()->donVi->parent_id);
-                        }
-                    }*/
-
-                    /*  if (!empty($don_vi_van_ban)) {
-                          return $query->where('trich_yeu', 'LIKE', "%$don_vi_van_ban%");
-                      }*/
+                    }
                 })
-//                ->where(function ($query) use ($trichyeu) {
-//                    if (!empty($trichyeu)) {
-//                        return $query->where('trich_yeu', 'LIKE', "%$trichyeu%");
-//                    }
-//                })
+
+                ->where(function ($query) use ($donViId) {
+                    if (!empty($donViId)) {
+                        return $query->where('so_di', '!=', null)
+                            ->orwhere('van_ban_huyen_ky',$donViId);
+                    }
+                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
@@ -2248,23 +2235,16 @@ class VanBanDiController extends Controller
                 return $query->whereNull('cap_xa');
             })->first();
         if (auth::user()->hasRole(VAN_THU_HUYEN)) {
-            $vanbandichoso = VanBanDi::
-//            where(['cho_cap_so' => 2])
-            where(function ($query) use ($lanhDaoSo) {
+            $vanbandichoso = VanBanDi::where(function ($query) use ($lanhDaoSo) {
                 return $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
-//                        ->orWhere('truong_phong_ky', 2);
             })
-//                ->where('truong_phong_ky', 2)
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->paginate(PER_PAGE);
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
-            $vanbandichoso = VanBanDi::where(['cho_cap_so' => 2])
-                ->where(function ($query) {
+            $vanbandichoso = VanBanDi::where(function ($query) {
                     return $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
-//                        ->orWhere('truong_phong_ky', 2);
                 })
-//                ->orwhere('truong_phong_ky', 2)
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->paginate(PER_PAGE);
@@ -2571,7 +2551,7 @@ class VanBanDiController extends Controller
 
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $soDi = VanBanDi::where([
-                    'loai_van_ban_id' => $vanbandi->loaivanban_id,
+                    'so_van_ban_id' => $request->so_van_ban_id,
                     'phong_phat_hanh' => auth::user()->donVi->parent_id
                 ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
@@ -2737,7 +2717,7 @@ class VanBanDiController extends Controller
 
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $soDi = VanBanDi::where([
-                    'loai_van_ban_id' => $vanbandi->loai_van_ban_id,
+                    'so_van_ban_id' => $request->so_van_ban_id,
                     'phong_phat_hanh' => auth::user()->donVi->parent_id
                 ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
