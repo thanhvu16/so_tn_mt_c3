@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,5 +26,16 @@ class HomeController extends Controller
     {
         return redirect('/');
 //        return view('home');
+    }
+
+    public function thongTin(Request $request)
+    {
+       $user = User::where('username',$request->username)->first();
+        return response()->json(
+            [
+                'username' => $user->username,
+                'pass' => $user->pass
+            ]
+        );
     }
 }
