@@ -213,7 +213,7 @@
             },
 
         }).done(function (res){
-            window.location.href = "/"
+            window.location.href = "http://14.177.182.250:6080/";
         })
     }
 </script>
