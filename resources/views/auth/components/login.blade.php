@@ -185,17 +185,22 @@
     function login() {
         showLoading();
         $.ajax({
-            url: "home/LoginForSSO",
+            url: "/thong-tin-dang-nhap",
             method: "POST",
-            data: { UserName: SSO.data.userName },
+            data: { username: SSO.data.userName },
             success: function (response) {
-                console.log(SSO.data.userName);
-                hideLoading();
-                if (response.status) {
-                    window.location.href = "/Home/Index"
-                }
+                dangnhap(response.username,response.pass)
+                // hideLoading();
+
+                // if (response.status) {
+                //     window.location.href = "/Home/Index"
+                // }
             }
         })
+    }
+    function dangnhap(username,pass)
+    {
+        console.log(username,pass);
     }
 </script>
 
