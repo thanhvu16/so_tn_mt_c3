@@ -109,6 +109,7 @@
         debugger;
         console.log(SSO.logout());
         SSO.logout();
+        debugger;
     })
 
     $.ajaxSetup({

@@ -219,7 +219,6 @@
 </script>
 
 <script type="text/javascript">
-    import da from "../../../../public/theme/bower_components/moment/src/locale/da";
 
     $(function () {
         $('input').iCheck({
