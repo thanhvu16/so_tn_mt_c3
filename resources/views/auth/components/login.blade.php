@@ -190,26 +190,22 @@
             url: APP_URL + '/thong-tin-dang-nhap',
             type:'POST',
             dataType:'json',
-            // beforeSend: showLoading(),
             data:{
                 username: SSO.data.userName,
                 _token: $('meta[name="csrf-token"]').attr('content'),
             },
 
         }).done(function (res){
-            console.log(16);
             dangnhap(res.username,res.pass)
         })
 
     }
     function dangnhap(username,pass)
     {
-        console.log(username,pass);
         $.ajax({
             url: APP_URL + '/login',
             type:'POST',
             dataType:'json',
-            // beforeSend: showLoading(),
             data:{
                 username: username,
                 password: pass,

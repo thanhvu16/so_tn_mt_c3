@@ -105,6 +105,11 @@
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
 
+    $("#sso-logout").off('click').on('click', function () {
+        SSO.init();
+        SSO.logout();
+    })
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

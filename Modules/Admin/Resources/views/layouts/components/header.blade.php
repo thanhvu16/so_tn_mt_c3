@@ -59,7 +59,7 @@
                                 @endif
                             </div>
                             <div class="pull-right">
-                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
+                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat" id="sso-logout" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
