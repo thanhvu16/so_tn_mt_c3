@@ -107,6 +107,7 @@
 
     $("#sso-logout").off('click').on('click', function () {
         debugger;
+        console.log(SSO.logout());
         SSO.logout();
     })
 
