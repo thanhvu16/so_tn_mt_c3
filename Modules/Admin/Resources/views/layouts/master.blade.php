@@ -102,6 +102,7 @@
 
 <script src="{{ url('theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('theme/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
 
@@ -152,6 +153,7 @@
     }
 </script>
 <script src="{{ url('js/script.js') }}"></script>
+
 
 @yield('script')
 </body>
