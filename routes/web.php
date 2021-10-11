@@ -20,4 +20,4 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/thong-tin-dang-nhap', 'HomeController@thongTin')->name('home');
+Route::post('/thong-tin-dang-nhap', 'HomeController@thongTin')->name('home');

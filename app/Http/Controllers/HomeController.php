@@ -30,7 +30,7 @@ class HomeController extends Controller
 
     public function thongTin(Request $request)
     {
-//        dd($request->all());
+        dd($request->all());
        $user = User::where('username',$request->username)->first();
         return response()->json(
             [
