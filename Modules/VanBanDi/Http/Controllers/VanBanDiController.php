@@ -2717,7 +2717,7 @@ class VanBanDiController extends Controller
 
             } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
                 $soDi = VanBanDi::where([
-                    'so_van_ban_id' => $request->so_van_ban_id,
+                    'so_van_ban_id' => $request->sovanban_id,
                     'phong_phat_hanh' => auth::user()->donVi->parent_id
                 ])->whereNull('deleted_at')->whereYear('ngay_ban_hanh', '=', $nam_sodi)->max('so_di');
 
