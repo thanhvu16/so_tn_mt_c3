@@ -172,31 +172,45 @@
 <script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
 <script>
     $(document).ready(function(){
-        console.log(123);
         SSO.init();
         if (!SSO.isAuthen(login)) {
             $("#loginSSO").off('click').on('click', function () {
-                console.log(1);
                 SSO.login();
             })
         }
     })
 
     function login() {
-        showLoading();
         $.ajax({
-            url: "/thong-tin-dang-nhap",
-            method: "POST",
-            data: { username: SSO.data.userName },
-            success: function (response) {
-                dangnhap(response.username,response.pass)
-                // hideLoading();
+            url: APP_URL + '/thong-tin-dang-nhap',
+            type:'POST',
+            dataType:'json',
+            // beforeSend: showLoading(),
+            data:{
+                username: SSO.data.userName,
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            },
 
-                // if (response.status) {
-                //     window.location.href = "/Home/Index"
-                // }
-            }
-        })
+        }).done(function (res){
+            console.log(16);
+            dangnhap(res.username,res.pass)
+        }).fail(function (error) {
+            console.log(23);
+            dangnhap(error.username,error.pass)
+        });
+        // $.ajax({
+        //     url: "/thong-tin-dang-nhap",
+        //     method: "POST",
+        //     data: { username: SSO.data.userName },
+        //     success: function (response) {
+        //         dangnhap(response.username,response.pass)
+        //         // hideLoading();
+        //
+        //         // if (response.status) {
+        //         //     window.location.href = "/Home/Index"
+        //         // }
+        //     }
+        // })
     }
     function dangnhap(username,pass)
     {
