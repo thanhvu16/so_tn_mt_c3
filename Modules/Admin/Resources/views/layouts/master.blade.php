@@ -105,10 +105,11 @@
 <script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
+    $(document).ready(function() {
+        SSO.isAuthen();
+    })
 
     $("#sso-logout").off('click').on('click', function () {
-        debugger;
-        console.log(SSO.logout());
         SSO.logout();
         debugger;
     })
