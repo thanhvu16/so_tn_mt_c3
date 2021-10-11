@@ -171,6 +171,8 @@
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
 <script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
 <script>
+    var APP_URL = <?php echo json_encode(url('/')); ?>
+
     $(document).ready(function(){
         SSO.init();
         if (!SSO.isAuthen(login)) {
