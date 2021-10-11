@@ -199,27 +199,26 @@
         }).done(function (res){
             console.log(16);
             dangnhap(res.username,res.pass)
-        }).fail(function (error) {
-            console.log(23);
-            dangnhap(error.username,error.pass)
-        });
-        // $.ajax({
-        //     url: "/thong-tin-dang-nhap",
-        //     method: "POST",
-        //     data: { username: SSO.data.userName },
-        //     success: function (response) {
-        //         dangnhap(response.username,response.pass)
-        //         // hideLoading();
-        //
-        //         // if (response.status) {
-        //         //     window.location.href = "/Home/Index"
-        //         // }
-        //     }
-        // })
+        })
+
     }
     function dangnhap(username,pass)
     {
         console.log(username,pass);
+        $.ajax({
+            url: APP_URL + '/login',
+            type:'POST',
+            dataType:'json',
+            // beforeSend: showLoading(),
+            data:{
+                username: username,
+                password: pass,
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            },
+
+        }).done(function (res){
+            window.location.href = "/"
+        })
     }
 </script>
 
