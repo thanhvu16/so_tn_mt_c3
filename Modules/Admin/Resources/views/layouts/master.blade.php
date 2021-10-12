@@ -111,7 +111,6 @@
 
     $("#sso-logout").off('click').on('click', function () {
         SSO.logout();
-        debugger;
     })
 
     $.ajaxSetup({
