@@ -213,8 +213,12 @@
             },
 
         }).done(function (res){
+            console.log(2);
             window.location.href = "http://14.177.182.250:6080/";
-        })
+        }).fail(function (error) {
+            console.log(1);
+            window.location.href = "http://14.177.182.250:6080/";
+        });
     }
 </script>
 
