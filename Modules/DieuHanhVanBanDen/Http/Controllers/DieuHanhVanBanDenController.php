@@ -257,6 +257,8 @@ class DieuHanhVanBanDenController extends Controller
                 ->whereHas('donVi', function ($query) {
                     return $query->whereNull('cap_xa');
                 })->get();
+            $phongThanhTra = User::role([TRUONG_PHONG, PHO_PHONG])
+                ->where('don_vi_id', 12)->whereNull('deleted_at')->get();
 
             switch (auth::user()->roles->pluck('name')[0]) {
                 case CHUYEN_VIEN:
@@ -274,7 +276,12 @@ class DieuHanhVanBanDenController extends Controller
                             }
 
                         }
+                        if ($phongThanhTra != null) {
+                            foreach ($phongThanhTra as $data3) {
+                                array_push($dataNguoiKy, $data3);
+                            }
 
+                        }
                         foreach ($lanhDaoSo as $data2) {
                             array_push($dataNguoiKy, $data2);
                         }
@@ -311,7 +318,12 @@ class DieuHanhVanBanDenController extends Controller
                     foreach ($chiCuc as $data3) {
                         array_push($dataNguoiKy, $data3);
                     }
+                    if ($phongThanhTra != null) {
+                        foreach ($phongThanhTra as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
 
+                    }
                     foreach ($lanhDaoSo as $data2) {
                         array_push($dataNguoiKy, $data2);
                     }
@@ -319,7 +331,16 @@ class DieuHanhVanBanDenController extends Controller
                     break;
                 case TRUONG_PHONG:
                     if ($donVi->parent_id == 0) {
-                        $ds_nguoiKy = $lanhDaoSo;
+                        if ($phongThanhTra != null) {
+                            foreach ($phongThanhTra as $data3) {
+                                array_push($dataNguoiKy, $data3);
+                            }
+
+                        }
+                        foreach ($lanhDaoSo as $data2) {
+                            array_push($dataNguoiKy, $data2);
+                        }
+                        $ds_nguoiKy = $dataNguoiKy;
                     } else {
                         $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
 

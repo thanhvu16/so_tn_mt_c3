@@ -71,7 +71,7 @@
                                     <label for="exampleInputEmail4">Ngày ban hành <span
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
-                                        <input type="text" class="form-control vanbantrung ngay-ban-hanh datepicker"
+                                        <input type="text" class="form-control  datepicker"
                                                name="ngay_ban_hanh" id="ngay-ban-hanh-vb"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">

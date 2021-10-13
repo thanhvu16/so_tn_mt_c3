@@ -118,10 +118,17 @@ class VanBanLanhDaoXuLyController extends Controller
 //                $arrIdVanBanTimKiem = $vanBanDen->pluck('id')->toArray();
                 if($vanBanDen)
                 {
-                    $timSoDen = $vanBanDen->so_den;
+                    if($vanBanDen->parent_id)
+                    {
+                        $timSoDen = $vanBanDen->parent_id;
+
+                    }else{
+                        $timSoDen = $vanBanDen->id;
+                    }
                 }
 
             }
+//            dd($vanBanDen);
 
             // chu tich xa nhan van ban
             $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
@@ -149,12 +156,7 @@ class VanBanLanhDaoXuLyController extends Controller
                 })
                 ->where(function ($query) use ($timSoDen,$soDen) {
                     if (!empty($soDen)) {
-                        if($timSoDen == 1)
-                        {
-                            return $query->where('so_den',1);
-                        }else{
-                            return $query->where('so_den',$timSoDen);
-                        }
+                        return $query->where('id',$timSoDen);
                     }
                 })
                 ->where(function ($query) use ($trichYeu) {
