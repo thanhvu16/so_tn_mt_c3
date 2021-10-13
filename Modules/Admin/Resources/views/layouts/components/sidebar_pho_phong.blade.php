@@ -1,3 +1,30 @@
+
+@if (auth::user()->hasRole([PHO_PHONG]) && auth::user()->donVi->parent_id == 0)
+    <li class="treeview {{ Route::is('vanBanDonVi')  ? 'active menu-open' : '' }} }} ">
+        <a href="#">
+            <i class="fa fa-file-text"></i> <span>Văn bản đến đơn vi</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Route::is('vanBanDonVi') ? 'active' : '' }}"><a href="{{ route('vanBanDonVi') }}"><i
+                        class="fa fa-circle-o"></i>Danh sách</a></li>
+        </ul>
+    </li>
+    <li class="treeview {{ Route::is('giayMoiDonVi')  ? 'active menu-open' : '' }} }} ">
+        <a href="#">
+            <i class="fa  fa-hospital-o"></i> <span>Giấy mời đến đơn vi</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Route::is('giayMoiDonVi') ? 'active' : '' }}"><a href="{{ route('giayMoiDonVi') }}"><i
+                        class="fa fa-circle-o"></i>Danh sách</a></li>
+        </ul>
+    </li>
+@endif
 <li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet')
 || Route::is('vb_di_tra_lai') || Route::is('danhsachgopy') || Route::is('vb_di_da_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
