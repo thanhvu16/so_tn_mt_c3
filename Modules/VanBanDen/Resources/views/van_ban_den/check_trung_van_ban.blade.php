@@ -35,6 +35,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <button class="btn btn-primary" form="myform" type="submit">Tiếp tục thêm</button>
                     <!-- pagination -->
                     <div id="modal-pagination">
 

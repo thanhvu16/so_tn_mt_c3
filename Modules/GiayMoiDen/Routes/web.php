@@ -26,3 +26,4 @@ Route::post('giay-moi-den/delete/{id}', ['as' =>'giaymoidelete' , 'uses' => 'Gia
 Route::match(['get', 'post'], 'layhantruyensangview', ['as' =>'hanview' , 'uses' => 'GiayMoiDenController@layhantruyensangview']);
 //Route::get('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));
 Route::get('nhap-giay-moi-di', array('as' => 'nhapGiayMoiDi', 'uses' => 'GiayMoiDenController@nhapGiayMoiDiVanThuSo'));
+Route::get('giay-moi-don-vi', array('as' => 'giayMoiDonVi', 'uses' => 'GiayMoiDenController@giayMoiDonVi'));
