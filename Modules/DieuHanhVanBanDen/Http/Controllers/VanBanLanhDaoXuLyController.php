@@ -914,7 +914,9 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id);
                 }
             })
-            ->whereIn('id', $arrIdVanBanDenDonVi)
+//            ->whereIn('id', $arrIdVanBanDenDonVi)
+            ->whereHas('searchDonViChuTriQT')
+
             ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
                 if (!empty($searchDonVi)) {
                     return $query->whereIn('id', $arrVanBanDenIdChuTri);
@@ -1162,7 +1164,8 @@ class VanBanLanhDaoXuLyController extends Controller
                     return $query->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
                 }
             })
-            ->whereIn('id', $arrIdVanBanDenDonVi)
+//            ->whereIn('id', $arrIdVanBanDenDonVi)
+            ->whereHas('searchDonViChuTriQT')
             ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
                 if (!empty($searchDonVi)) {
                     return $query->whereIn('id', $arrVanBanDenIdChuTri);
@@ -1260,7 +1263,8 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             })
             ->where('ngay_nhan',date('Y-m-d'))
-            ->whereIn('id', $arrIdVanBanDenDonVi)
+//            ->whereIn('id', $arrIdVanBanDenDonVi)
+            ->whereHas('searchDonViChuTriQT')
             ->orderBy('created_at', 'DESC')
             ->count();
 
