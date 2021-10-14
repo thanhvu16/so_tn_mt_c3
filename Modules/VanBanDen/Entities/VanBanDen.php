@@ -812,4 +812,8 @@ class VanBanDen extends Model
     {
         return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
     }
+    public function searchDonViChuTriQT()
+    {
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id')->whereIn('can_bo_chuyen_id', [10551, 15]);
+    }
 }
