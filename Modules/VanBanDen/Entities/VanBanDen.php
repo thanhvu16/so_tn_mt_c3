@@ -807,4 +807,9 @@ class VanBanDen extends Model
             ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'can_bo_chuyen_id'])
             ->get();
     }
+
+    public function searchDonViChuTri()
+    {
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
 }

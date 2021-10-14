@@ -62,8 +62,9 @@ class GiayMoiDenController extends Controller
         $arrVanBanDenId = null;
         if (!empty($searchDonVi)) {
             $donViChuTri = DonViChuTri::where('don_vi_id', $searchDonVi)
-                ->select('id', 'van_ban_den_id')
-                ->get();
+                ->groupBy('van_ban_den_id')
+                ->get('van_ban_den_id');
+//                ->get();
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
         }
@@ -73,9 +74,11 @@ class GiayMoiDenController extends Controller
                 'type' => 1,
                 'so_van_ban_id' => 100
             ])
-                ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
+                ->where(function ($query) use ($searchDonVi) {
                     if (!empty($searchDonVi)) {
-                        return $query->whereIn('id', $arrVanBanDenId);
+                        return $query->whereHas('searchDonViChuTri', function ($q) use($searchDonVi) {
+                            return $q->where('don_vi_id', $searchDonVi);
+                        });
                     }
                 })
                 ->where(function ($query) use ($trichyeu) {
@@ -1039,11 +1042,12 @@ class GiayMoiDenController extends Controller
         $year = $request->get('year') ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
         $danhSachDonVi = null;
-        $searchDonVi = $request->get('don_vi_id') ?? null;
+        $searchDonVi =  $donVi->id;
         $arrVanBanDenId = null;
             $donViChuTri = DonViChuTri::where('don_vi_id', $donVi->id)
-                ->select('id', 'van_ban_den_id')
-                ->get();
+                ->groupBy('van_ban_den_id')
+                ->get('van_ban_den_id');
+
 
             $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
@@ -1051,7 +1055,13 @@ class GiayMoiDenController extends Controller
                 'type' => 1,
                 'so_van_ban_id' => 100
             ])
-                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($searchDonVi) {
+                    if (!empty($searchDonVi)) {
+                        return $query->whereHas('searchDonViChuTri', function ($q) use($searchDonVi) {
+                            return $q->where('don_vi_id', $searchDonVi);
+                        });
+                    }
+                })
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");

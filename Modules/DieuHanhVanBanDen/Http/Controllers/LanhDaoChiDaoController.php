@@ -64,9 +64,11 @@ class LanhDaoChiDaoController extends Controller
 
 
         $danhSachVanBan = VanBanDen::whereNull('deleted_at')
-            ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
+            ->where(function ($query) use ($searchDonVi) {
                 if (!empty($searchDonVi)) {
-                    return $query->whereIn('id', $arrVanBanDenIdChuTri);
+                    return $query->whereHas('searchDonViChuTri', function ($q) use($searchDonVi) {
+                        return $q->where('don_vi_id', $searchDonVi);
+                    });
                 }
             })
             ->where(function ($query) use ($searchDonViPhoiHop, $arrVanBanDenIdPhoiHop) {
@@ -129,8 +131,9 @@ class LanhDaoChiDaoController extends Controller
         $arrVanBanDen = $danhSachVanBan->pluck('id')->toArray();
 
         $danhSachVanBanDen = LanhDaoChiDao::where('lanh_dao_id', auth::user()->id)
+            ->whereHas('vanBanDenID')
             ->whereNull('trang_thai')
-            ->whereIn('van_ban_den_id', $arrVanBanDen)
+//            ->whereIn('van_ban_den_id', $arrVanBanDen)
             ->paginate(PER_PAGE_10);
         $order = ($danhSachVanBanDen->currentPage() - 1) * PER_PAGE_10 + 1;
         return view('dieuhanhvanbanden::lanh-dao-chi-dao.index', compact('danhSachVanBanDen', 'loaiVanBanGiayMoi', 'order', 'danhSachLoaiVanBan',
