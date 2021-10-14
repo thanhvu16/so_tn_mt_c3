@@ -64,4 +64,9 @@ class LanhDaoChiDao extends Model
         }
     }
 
+    public function vanBanDenID()
+    {
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
+
 }
