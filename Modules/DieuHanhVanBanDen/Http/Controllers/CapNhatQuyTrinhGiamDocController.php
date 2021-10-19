@@ -318,7 +318,8 @@ class CapNhatQuyTrinhGiamDocController extends Controller
 
 
         }
-    }  public function ThemLaiThongTinGiayMoi($request)
+    }
+    public function ThemLaiThongTinGiayMoi($request)
     {
         $currentUser = auth::user();
         $data = $request->all();

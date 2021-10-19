@@ -90,7 +90,7 @@ class VanBanDenController extends Controller
             ($user->hasRole(PHO_CHU_TICH) && $donVi->cap_xa != DonVi::CAP_XA)) {
             $ds_vanBanDen = VanBanDen::query()->where(['type' => 1])
                 ->where('so_van_ban_id', '!=', 100)
-                ->where('loai_van_ban_id', '!=', $donThu->id)
+//                ->where('loai_van_ban_id', '!=', $donThu->id)
                 ->whereNull('deleted_at')
                 ->where(function ($query) use ($searchDonVi) {
                     if (!empty($searchDonVi)) {
