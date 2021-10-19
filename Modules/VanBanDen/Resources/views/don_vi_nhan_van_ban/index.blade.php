@@ -88,6 +88,7 @@
                                                      Hạn giải quyết: {{ !empty($vbDen2->vanBanDen->han_giai_quyet) ? date('d/m/Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) : '' }} -
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
+                                        <br><span>Thời gian nhận:  {{!empty($vbDen2->updated_at) ? date_format($vbDen2->updated_at, 'd-m-Y H:i:s') : ''}}</span>
 
 
                                         <p class="mt-2">

@@ -165,33 +165,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                 // active van ban den
                 $chuyenVanBanXuongDonVi = null;
                 $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
-                if ($vanBanDen) {
-                    $vanBanDen->tom_tat = $tomTatVanBan[$vanBanDenId];
-                    $vanBanDen->save();
 
-//                    if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
-                        $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
-                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
-
-                        }else{
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
-
-                        }
-
-                        $vanBanDen->save();
-                        $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
-//                    }elseif (empty($arrChuTich[$vanBanDenId]) && !empty($arrPhoChuTich[$vanBanDenId]) )
-//                    {
-//                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
-//                        $vanBanDen->save();
-//                        $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
-//                    }else{
-//                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
-//                        $vanBanDen->save();
-//                        $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
-//                    }
-                }
 
                 // check quyen gia han van ban
                 $quyenGiaHan = null;
@@ -299,6 +273,25 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                 }
                 if (!empty($vanBanQuanTrongIds[$vanBanDenId])) {
                     $vbquantrong = 1;
+                }
+
+
+                if ($vanBanDen) {
+                    $vanBanDen->tom_tat = $tomTatVanBan[$vanBanDenId];
+                    $vanBanDen->save();
+
+                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+                    if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+
+                    }else{
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+
+                    }
+
+                    $vanBanDen->save();
+                    $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
+
                 }
                 DonViChuTri::where([
                     'van_ban_den_id' => $vanBanDenId,
