@@ -66,8 +66,9 @@ class DonViNhanVanBanDenController extends Controller
             ->whereNull('type')
             ->whereNull('tra_lai')
             ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
-            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
+            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id','updated_at')
             ->get();
+
 
         $donvinhancount = count($donvinhan);
         // don vi phoi hop

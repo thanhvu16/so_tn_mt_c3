@@ -915,7 +915,11 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             })
 //            ->whereIn('id', $arrIdVanBanDenDonVi)
-            ->whereHas('searchDonViChuTriQT')
+            ->whereHas('searchDonViChuTriQT', function ($query) use($searchQuanTrong) {
+                if (!empty($searchQuanTrong)) {
+                    return $query->where('van_ban_quan_trong', $searchQuanTrong);
+                }
+            })
 
             ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
                 if (!empty($searchDonVi)) {
@@ -1165,7 +1169,11 @@ class VanBanLanhDaoXuLyController extends Controller
                 }
             })
 //            ->whereIn('id', $arrIdVanBanDenDonVi)
-            ->whereHas('searchDonViChuTriQT')
+            ->whereHas('searchDonViChuTriQT', function ($query) use($searchQuanTrong) {
+                if (!empty($searchQuanTrong)) {
+                    return $query->where('van_ban_quan_trong', $searchQuanTrong);
+                }
+            })
             ->where(function ($query) use ($searchDonVi, $arrVanBanDenIdChuTri) {
                 if (!empty($searchDonVi)) {
                     return $query->whereIn('id', $arrVanBanDenIdChuTri);

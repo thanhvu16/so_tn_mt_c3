@@ -283,7 +283,7 @@
 
                                     <td class="text-center" style="vertical-align: middle">
                                         @hasanyrole('văn thư đơn vị|văn thư sở')
-                                        @if(auth::user()->id == $vbDen->nguoi_tao)
+{{--                                        @if(auth::user()->id == $vbDen->nguoi_tao)--}}
                                             <form method="POST" action="{{route('giaymoidelete',$vbDen->id)}}">
                                                 @csrf
                                                 <a href="{{route('giay-moi-den.edit',$vbDen->id)}}"
@@ -299,9 +299,9 @@
                                                 </button>
                                                 <input type="text" class="hidden" value="{{$vbDen->id}}" name="id_vb">
                                             </form>
-                                        @else
-                                            -
-                                        @endif
+{{--                                        @else--}}
+{{--                                            ---}}
+{{--                                        @endif--}}
                                         @endrole
                                     </td>
 
