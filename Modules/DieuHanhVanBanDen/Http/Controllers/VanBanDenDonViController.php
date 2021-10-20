@@ -146,13 +146,24 @@ class VanBanDenDonViController extends Controller
             ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')->get();
+        if($currentUser->bo_phan_mot_cua == 1)
+        {
+            $danhSachChuyenVien = User::role(CHUYEN_VIEN)
+                ->where('don_vi_id', $currentUser->don_vi_id)
+                ->where('parent_bo_phan_mot_cua',$currentUser->id)
+                ->where('trang_thai', ACTIVE)
+                ->select('id', 'ho_ten')
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')->get();
+        }else{
+            $danhSachChuyenVien = User::role(CHUYEN_VIEN)
+                ->where('don_vi_id', $currentUser->don_vi_id)
+                ->where('trang_thai', ACTIVE)
+                ->select('id', 'ho_ten')
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'DESC')->get();
+        }
 
-        $danhSachChuyenVien = User::role(CHUYEN_VIEN)
-            ->where('don_vi_id', $currentUser->don_vi_id)
-            ->where('trang_thai', ACTIVE)
-            ->select('id', 'ho_ten')
-            ->whereNull('deleted_at')
-            ->orderBy('id', 'DESC')->get();
 
         if (!empty($danhSachVanBanDen)) {
             foreach ($danhSachVanBanDen as $vanBanDen) {
@@ -954,13 +965,33 @@ class VanBanDenDonViController extends Controller
 
             $donVi = $currentUser->donVi;
 
-            $danhSachNguoiDung = User::role(CHUYEN_VIEN)
-                ->where('don_vi_id', $currentUser->don_vi_id)
-                ->whereNotIn('id', json_decode($id))
-                ->where('trang_thai', ACTIVE)
-                ->whereNull('deleted_at')
-                ->select(['id', 'ho_ten'])
-                ->get();
+//            $danhSachNguoiDung = User::role(CHUYEN_VIEN)
+//                ->where('don_vi_id', $currentUser->don_vi_id)
+//                ->whereNotIn('id', json_decode($id))
+//                ->where('trang_thai', ACTIVE)
+//                ->whereNull('deleted_at')
+//                ->select(['id', 'ho_ten'])
+//                ->get();
+            if($currentUser->bo_phan_mot_cua == 1)
+            {
+
+                $danhSachNguoiDung = User::role(CHUYEN_VIEN)
+                    ->where('don_vi_id', $currentUser->don_vi_id)
+                    ->where('parent_bo_phan_mot_cua',$currentUser->id)
+                    ->whereNotIn('id', json_decode($id))
+                    ->where('trang_thai', ACTIVE)
+                    ->whereNull('deleted_at')
+                    ->select(['id', 'ho_ten'])
+                    ->get();
+            }else{
+                $danhSachNguoiDung = User::role(CHUYEN_VIEN)
+                    ->where('don_vi_id', $currentUser->don_vi_id)
+                    ->whereNotIn('id', json_decode($id))
+                    ->where('trang_thai', ACTIVE)
+                    ->whereNull('deleted_at')
+                    ->select(['id', 'ho_ten'])
+                    ->get();
+            }
 
             return response()->json([
                 'success' => true,
