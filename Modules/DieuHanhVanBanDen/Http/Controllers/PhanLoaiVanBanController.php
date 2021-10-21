@@ -518,22 +518,30 @@ class PhanLoaiVanBanController extends Controller
 
                         $vanBanDen->tom_tat = $tomTatVanBan[$vanBanDenId];
                         $vanBanDen->save();
+                        $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
 
-                        if (!empty($arrChuTich[$vanBanDenId])) {
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
-                            $vanBanDen->save();
-                        }
-
-                        if (!empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
-                            $vanBanDen->save();
-                        }
-
-                        if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
+                        }else{
                             $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
-                            $vanBanDen->save();
-                            $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
+
                         }
+
+//                        if (!empty($arrChuTich[$vanBanDenId])) {
+//                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_NHAN_VB;
+//                            $vanBanDen->save();
+//                        }
+//
+//                        if (!empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
+//                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
+//                            $vanBanDen->save();
+//                        }
+//
+//                        if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
+//                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+//                            $vanBanDen->save();
+//                            $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
+//                        }
                     }
 
                     // check quyen gia han van ban
