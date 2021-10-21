@@ -526,6 +526,7 @@ class PhanLoaiVanBanController extends Controller
                             $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
 
                         }
+                        $vanBanDen->save();
                         $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
 
 //                        if (!empty($arrChuTich[$vanBanDenId])) {
