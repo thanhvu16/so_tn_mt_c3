@@ -123,7 +123,7 @@
                     class="fa fa-circle-o"></i>Văn bản đã tạo </a></li>
     </ul>
 </li>
-@if(auth::user()->id == 10538)
+@if(auth::user()->id == 10538 || auth::user()->id==30599 )
 <li class="treeview {{ Route::is('don-thu-khieu-lai.index') || Route::is('don-thu-khieu-lai.create') || Route::is('danhsachgopy') || Route::is('vanBanDiTaoChuaDuyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa  fa-gavel"></i> <span>Đơn thư khiếu nại</span>
