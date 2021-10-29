@@ -6,6 +6,7 @@ use App\Common\AllPermission;
 use App\Models\UserLogs;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DoKhan;
@@ -404,16 +405,20 @@ class DonViNhanVanBanDenController extends Controller
                         }
                     }
                 }
-                $filegiaymoi = FileVanBanDen::where('vb_den_id',$layvanbandi->van_ban_den_id)->first();
-                if ($filegiaymoi != null) {
-                    $vbDenFile = new FileVanBanDen();
-                    $vbDenFile->ten_file = $filegiaymoi->ten_file;
-                    $vbDenFile->duong_dan = $filegiaymoi->duong_dan;
-                    $vbDenFile->duoi_file = $filegiaymoi->duoi_file;
-                    $vbDenFile->vb_den_id = $vanbandv->id;
-                    $vbDenFile->nguoi_dung_id = $filegiaymoi->nguoi_dung_id;
-                    $vbDenFile->don_vi_id = $filegiaymoi->don_vi_id;
-                    $vbDenFile->save();
+                $filegiaymoi = FileVanBanDen::where('vb_den_id',$layvanbandi->van_ban_den_id)->whereNull('deleted_at')->get();
+                if ($filegiaymoi && count($filegiaymoi) > 0) {
+                    foreach ($filegiaymoi as $data )
+                    {
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $data->ten_file;
+                        $vbDenFile->duong_dan = $data->duong_dan;
+                        $vbDenFile->duoi_file = $data->duoi_file;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = $data->nguoi_dung_id;
+                        $vbDenFile->don_vi_id = $data->don_vi_id;
+                        $vbDenFile->save();
+                    }
+
                 }
 
             }
