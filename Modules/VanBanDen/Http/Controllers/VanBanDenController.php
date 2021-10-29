@@ -228,9 +228,16 @@ class VanBanDenController extends Controller
                 ->where('so_van_ban_id', '!=', 100)
 //                ->where('loai_van_ban_id', '!=', $donThu->id)
                 ->whereNull('deleted_at')
-                ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
+//                ->where(function ($query) use ($searchDonVi, $arrVanBanDenId) {
+//                    if (!empty($searchDonVi)) {
+//                        return $query->whereIn('parent_id', $arrVanBanDenId);
+//                    }
+//                })
+                ->where(function ($query) use ($searchDonVi) {
                     if (!empty($searchDonVi)) {
-                        return $query->whereIn('parent_id', $arrVanBanDenId);
+                        return $query->whereHas('searchDonViChuTri', function ($q) use($searchDonVi) {
+                            return $q->where('don_vi_id', $searchDonVi);
+                        });
                     }
                 })
                 ->where(function ($query) use ($searchDonViPhoiHop, $arrVanBanDenId2) {
