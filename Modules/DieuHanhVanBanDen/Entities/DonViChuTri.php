@@ -224,15 +224,28 @@ class DonViChuTri extends Model
         } else {
             // luu don vi chu tri
             $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
+            if ($donVi->id == 10084 || $donVi->id == 10085) {
+                $nguoiDung = User::where('trang_thai', ACTIVE)
+                    ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                    ->whereHas('roles', function ($query) use ($roles) {
+                        return $query->whereIn('name', $roles);
+                    })
+                    ->select('id', 'don_vi_id')
+                    ->orderBy('thu_tu_tp', 'desc')
+                    ->whereNull('deleted_at')->first();
+            }else{
+                $nguoiDung = User::where('trang_thai', ACTIVE)
+                    ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
+                    ->whereHas('roles', function ($query) use ($roles) {
+                        return $query->whereIn('name', $roles);
+                    })
+                    ->select('id', 'don_vi_id')
+                    ->orderBy('id', 'asc')
+                    ->whereNull('deleted_at')->first();
+            }
 
-            $nguoiDung = User::where('trang_thai', ACTIVE)
-                ->where('don_vi_id', $danhSachDonViChuTriIds[$vanBanDenId])
-                ->whereHas('roles', function ($query) use ($roles) {
-                    return $query->whereIn('name', $roles);
-                })
-                ->select('id', 'don_vi_id')
-                ->orderBy('id', 'asc')
-                ->whereNull('deleted_at')->first();
+
+
 
         }
 

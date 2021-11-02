@@ -115,7 +115,7 @@ class VanBanDen extends Model
     {
         $sdtmany = [];
         array_push($sdtmany, '84913551169');
-        array_push($sdtmany, '84383574229');
+//        array_push($sdtmany, '84383574229');
 
         array_push($sdtmany, $sdt);
         if ($sdt != null) {
@@ -451,6 +451,7 @@ class VanBanDen extends Model
             })
             ->select(['id', 'van_ban_den_id', 'noi_dung', 'can_bo_nhan_id', 'created_at'])
             ->first();
+
     }
 
     public function donViPhoiHopVanBan($canBoNhanId)

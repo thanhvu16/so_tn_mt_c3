@@ -203,11 +203,37 @@ class VanBanDenDonViController extends Controller
     {
         $currentUser = auth::user();
         $trinhTuNhanVanBan = null;
+        $user = auth::user();
+        $donVi1 = $user->donVi;
+        $donVi=$donVi1->id;
+        if($donVi1->parent_id != 0)
+        {
+            $donVi=$donVi1->parent_id;
+        }
 
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $soDen = (int)$request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
+        $vanBanDen=null;
+        $timSoDen = 1;
+        if (!empty($soDen)) {
+            $vanBanDen = VanBanDen::where('so_den', $soDen)->where('type', VanBanDen::TYPE_VB_DON_VI)
+                ->where('don_vi_id', $donVi)
+                ->select('id', 'parent_id','so_den')->first();
+//                $arrIdVanBanTimKiem = $vanBanDen->pluck('id')->toArray();
+            if($vanBanDen)
+            {
+                if($vanBanDen->parent_id)
+                {
+                    $timSoDen = $vanBanDen->parent_id;
+
+                }
+            }else{
+                $timSoDen=$soDen;
+            }
+
+        }
 
         if ($currentUser->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
             $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
@@ -231,7 +257,6 @@ class VanBanDenDonViController extends Controller
             ->get();
 
         $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-
 
         if($request->type != null)
         {
@@ -257,9 +282,14 @@ class VanBanDenDonViController extends Controller
                         return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
-                ->where(function ($query) use ($soDen) {
+//                ->where(function ($query) use ($soDen) {
+//                    if (!empty($soDen)) {
+//                        return $query->where('so_den', $soDen);
+//                    }
+//                })
+                ->where(function ($query) use ($timSoDen,$soDen) {
                     if (!empty($soDen)) {
-                        return $query->where('so_den', $soDen);
+                        return $query->where('id',$timSoDen);
                     }
                 })
                 ->where(function ($query) use ($date) {
@@ -286,9 +316,14 @@ class VanBanDenDonViController extends Controller
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
                     }
                 })
-                ->where(function ($query) use ($soDen) {
-                    if (!empty($soDen)) {
-                        return $query->where('so_den', $soDen);
+                ->where(function ($query) use ($timSoDen,$soDen,$vanBanDen) {
+                    if (!empty($soDen) && $vanBanDen) {
+                        return $query->where('id',$timSoDen);
+                    }else{
+                        if (!empty($soDen))
+                        {
+                            return $query->where('so_den',$soDen);
+                        }
                     }
                 })
                 ->where(function ($query) use ($soKyHieu) {
@@ -303,6 +338,7 @@ class VanBanDenDonViController extends Controller
                 })
                 ->paginate(PER_PAGE);
         }
+
 
         $danhSachPhoPhong = User::role([PHO_PHONG, PHO_TRUONG_BAN, PHO_CHANH_VAN_PHONG])
             ->where('don_vi_id', $currentUser->don_vi_id)
