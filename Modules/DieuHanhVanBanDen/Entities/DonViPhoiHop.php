@@ -147,13 +147,26 @@ class DonViPhoiHop extends Model
 
                 } else {
                     $roles = [TRUONG_PHONG, CHANH_VAN_PHONG];
-                    $nguoiDung = User::where('trang_thai', ACTIVE)
-                        ->where('don_vi_id', $donViId)
-                        ->whereHas('roles', function ($query) use ($roles) {
-                            return $query->whereIn('name', $roles);
-                        })
-                        ->orderBy('id', 'asc')
-                        ->whereNull('deleted_at')->first();
+
+
+                    if ($donVi->id == 10084 || $donVi->id == 10085) {
+                        $nguoiDung = User::where('trang_thai', ACTIVE)
+                            ->where('don_vi_id', $donViId)
+                            ->whereHas('roles', function ($query) use ($roles) {
+                                return $query->whereIn('name', $roles);
+                            })
+                            ->orderBy('thu_tu_tp', 'desc')
+                            ->whereNull('deleted_at')->first();
+
+                    }else{
+                        $nguoiDung = User::where('trang_thai', ACTIVE)
+                            ->where('don_vi_id', $donViId)
+                            ->whereHas('roles', function ($query) use ($roles) {
+                                return $query->whereIn('name', $roles);
+                            })
+                            ->orderBy('id', 'asc')
+                            ->whereNull('deleted_at')->first();
+                    }
 
                     $active = self::ACTIVE;
                 }

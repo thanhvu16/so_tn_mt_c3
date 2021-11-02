@@ -46,22 +46,32 @@ class GiaiQuyetVanBanController extends Controller
         $data = $request->all();
         $currentUser = auth::user();
         $donVi = $currentUser->donVi;
-
         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN];
         $rolePhoPhong = [PHO_CHANH_VAN_PHONG, PHO_PHONG, PHO_TRUONG_BAN];
 
-        $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
-            ->whereHas('roles', function ($query) use ($roles) {
-                return $query->whereIn('name', $roles);
-            })
-            ->where('trang_thai',ACTIVE)
-            ->whereNull('deleted_at')->first();
+        if ($donVi->id == 10084 || $donVi->id == 10085) {
+            $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->where('trang_thai', ACTIVE)
+                ->orderBy('thu_tu_tp', 'desc')
+                ->whereNull('deleted_at')->first();
+        } else {
+            $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+                ->whereHas('roles', function ($query) use ($roles) {
+                    return $query->whereIn('name', $roles);
+                })
+                ->where('trang_thai', ACTIVE)
+                ->whereNull('deleted_at')->first();
+        }
+
 
         $phoPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
             ->whereHas('roles', function ($query) use ($rolePhoPhong) {
                 return $query->whereIn('name', $rolePhoPhong);
             })
-            ->where('trang_thai',ACTIVE)
+            ->where('trang_thai', ACTIVE)
             ->whereNull('deleted_at')->get();
 
         $vanBanDenDonVi = VanBanDen::where('id', $data['van_ban_den_id'])->first();
@@ -133,15 +143,14 @@ class GiaiQuyetVanBanController extends Controller
                 //update chuyen nhan vb don vi
                 DonViChuTri::where('van_ban_den_id', $vanBanDenDonVi->id)
                     ->update(['hoan_thanh' => DonViChuTri::HOAN_THANH_VB]);
-
                 return redirect()->back()->with('success', 'Hoành thành văn bản.');
             }
         } else {
-
             // luu giai quyet vb
             $canBoDuyetId = $chuyenNhanVanBanDonVi->can_bo_chuyen_id;
 
-            if (in_array($currentUser->id , $phoPhongDonVi->pluck('id')->toArray())) {
+
+            if (in_array($currentUser->id, $phoPhongDonVi->pluck('id')->toArray())) {
                 $canBoDuyetId = $truongPhongDonVi->id;
             }
 
@@ -230,11 +239,11 @@ class GiaiQuyetVanBanController extends Controller
 
             // luu giai quyet vb
             $dataGiaiQuyetVanBan = [
-              'van_ban_den_id' => $vanBanDenDonVi->id,
-              'noi_dung' => $data['noi_dung'] ?? null,
-              'user_id' => $currentUser->id,
-              'can_bo_duyet_id' => $currentUser->id,
-              'status' => GiaiQuyetVanBan::STATUS_DA_DUYET
+                'van_ban_den_id' => $vanBanDenDonVi->id,
+                'noi_dung' => $data['noi_dung'] ?? null,
+                'user_id' => $currentUser->id,
+                'can_bo_duyet_id' => $currentUser->id,
+                'status' => GiaiQuyetVanBan::STATUS_DA_DUYET
             ];
 
 

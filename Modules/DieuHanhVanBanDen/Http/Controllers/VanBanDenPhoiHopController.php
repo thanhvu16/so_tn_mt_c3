@@ -73,6 +73,8 @@ class VanBanDenPhoiHopController extends Controller
             ->get();
 
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
+        dd($arrVanBanDenId);
+
 
         $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];
         $danhSachPhoPhong = User::where('don_vi_id', $currentUser->don_vi_id)

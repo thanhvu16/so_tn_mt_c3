@@ -385,12 +385,22 @@ class VanBanDenHoanThanhController extends Controller
 //                        }
                     } else {
                         $roles = [TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN];
-                        $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
-                            ->whereHas('roles', function ($query) use ($roles) {
-                                return $query->whereIn('name', $roles);
-                            })
-                            ->where('trang_thai', ACTIVE)
-                            ->whereNull('deleted_at')->first();
+                        if ($donVi->id == 10084 || $donVi->id == 10085) {
+                            $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+                                ->whereHas('roles', function ($query) use ($roles) {
+                                    return $query->whereIn('name', $roles);
+                                })
+                                ->orderBy('thu_tu_tp', 'desc')
+                                ->where('trang_thai', ACTIVE)
+                                ->whereNull('deleted_at')->first();
+                        }else{
+                            $truongPhongDonVi = User::where('don_vi_id', $currentUser->don_vi_id)
+                                ->whereHas('roles', function ($query) use ($roles) {
+                                    return $query->whereIn('name', $roles);
+                                })
+                                ->where('trang_thai', ACTIVE)
+                                ->whereNull('deleted_at')->first();
+                        }
 
                         // gửi duyệt trưởng phòng
                         $giaiQuyet = new GiaiQuyetVanBan();
