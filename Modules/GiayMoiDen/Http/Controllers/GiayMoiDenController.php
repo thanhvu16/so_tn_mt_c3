@@ -43,7 +43,7 @@ class GiayMoiDenController extends Controller
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->orderBy('id', 'DESC')->get();
 
         //search
-        $trichyeu = $request->get('trich_yeu');
+        $trichyeu = $request->get('vb_trich_yeu');
         $so_ky_hieu = $request->get('vb_so_ky_hieu');
         $co_quan_ban_hanh = $request->get('co_quan_ban_hanh_id');
         $so_den = $request->get('vb_so_den');
