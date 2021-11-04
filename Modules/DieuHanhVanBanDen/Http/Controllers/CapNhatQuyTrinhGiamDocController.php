@@ -17,6 +17,7 @@ use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoChiDao;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
 use Modules\DieuHanhVanBanDen\Entities\LogXuLyVanBanDen;
+use Modules\DieuHanhVanBanDen\Entities\LuuVet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
@@ -67,6 +68,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
         }
         return redirect()->back()->with('success', 'Cập nhật thành công');
     }
+
     public function capNhatGiayMoi(Request $request)
     {
         try {
@@ -284,7 +286,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                     if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
                         $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
 
-                    }else{
+                    } else {
                         $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
 
                     }
@@ -319,6 +321,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
 
         }
     }
+
     public function ThemLaiThongTinGiayMoi($request)
     {
         $currentUser = auth::user();
@@ -408,17 +411,17 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                     $vanBanDen->save();
 
 //                    if (empty($arrPhoChuTich[$vanBanDenId]) && empty($arrChuTich[$vanBanDenId])) {
-                        $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
-                        if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
+                    $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
+                    if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::CHU_TICH_XA_NHAN_VB;
 
-                        }else{
-                            $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+                    } else {
+                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
 
-                        }
+                    }
 
-                        $vanBanDen->save();
-                        $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
+                    $vanBanDen->save();
+                    $chuyenVanBanXuongDonVi = DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI;
 //                    }elseif (empty($arrChuTich[$vanBanDenId]) && !empty($arrPhoChuTich[$vanBanDenId]) )
 //                    {
 //                        $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::PHO_CHU_TICH_NHAN_VB;
@@ -604,6 +607,14 @@ class CapNhatQuyTrinhGiamDocController extends Controller
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             foreach ($vanBanDenIds as $vanBanDenId) {
+                //Lưu lại vết phòng cũ
+                $phongCu = DonViChuTri::where('van_ban_den_id', $vanBanDenId)->first();
+                $luuVet = new LuuVet();
+                $luuVet->phong_cu = $phongCu->don_vi_id;
+                $luuVet->nguoi_phan_lai = auth::user()->id;
+                $luuVet->van_ban_den_id = $phongCu->van_ban_den_id;
+                $luuVet->save();
+
                 //xóa chỉ đạo lãnh đạo
                 LanhDaoChiDao::where(['van_ban_den_id' => $vanBanDenId])->delete();
                 //Xóa log Xử lý văn bản đến
@@ -640,6 +651,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
             }
         }
     }
+
     public function XoaThongTinGMCu($request)
     {
         $data = $request->all();
