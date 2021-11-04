@@ -57,6 +57,25 @@ class DonViChuTri extends Model
     {
         return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id');
     }
+    public function searchVanBanDen()
+    {
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')
+            ->where('loai_van_ban_id', '!=',100)
+            ->where('type', 1)
+            ->whereNull('deleted_at')
+            ->where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
+    public function searchVanBanDenChuaHoanThanh()
+    {
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')
+            ->where('loai_van_ban_id', '!=',100)
+            ->where('type', 1)
+            ->where('trinh_tu_nhan_van_ban', '<', VanBanDen::HOAN_THANH_VAN_BAN)
+            ->where('trinh_tu_nhan_van_ban', '>', VanBanDen::CHU_TICH_NHAN_VB)
+            ->select('id', 'don_vi_id', 'van_ban_den_id')
+            ->whereNull('deleted_at');
+    }
 
     public static function saveDonViChuTri($vanBanDenId)
     {
