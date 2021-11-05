@@ -287,9 +287,14 @@ class VanBanDenDonViController extends Controller
 //                        return $query->where('so_den', $soDen);
 //                    }
 //                })
-                ->where(function ($query) use ($timSoDen,$soDen) {
-                    if (!empty($soDen)) {
+                ->where(function ($query) use ($timSoDen,$soDen,$vanBanDen) {
+                    if (!empty($soDen) && $vanBanDen) {
                         return $query->where('id',$timSoDen);
+                    }else{
+                        if (!empty($soDen))
+                        {
+                            return $query->where('so_den',$soDen);
+                        }
                     }
                 })
                 ->where(function ($query) use ($date) {

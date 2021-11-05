@@ -163,7 +163,7 @@ class GiayMoiDenController extends Controller
                         return $query->whereYear('created_at', $year);
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('so_den', 'desc')->paginate(PER_PAGE);
 
             $danhSachDonVi = DonVi::where('parent_id', DonVi::NO_PARENT_ID)->orderBy('thu_tu', 'asc')->whereNull('deleted_at')->get();
 
@@ -262,7 +262,7 @@ class GiayMoiDenController extends Controller
                         return $query->whereYear('created_at', $year);
                     }
                 })
-                ->orderBy('created_at', 'desc')->paginate(PER_PAGE);
+                ->orderBy('so_den', 'desc')->paginate(PER_PAGE);
             $danhSachDonVi = DonVi::where('parent_id', $donViId)->orderBy('thu_tu', 'asc')->whereNull('deleted_at')->get();
 
         }
