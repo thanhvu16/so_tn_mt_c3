@@ -41,6 +41,25 @@ class VanBanDenPhoiHopController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
 
+        $vanBanDen=null;
+        $timSoDen = 1;
+        if (!empty($soDen)) {
+            $vanBanDen = VanBanDen::where('so_den', $soDen)->where('type', VanBanDen::TYPE_VB_DON_VI)
+                ->where('don_vi_id', $donVi->id)
+                ->select('id', 'parent_id','so_den')->first();
+//                $arrIdVanBanTimKiem = $vanBanDen->pluck('id')->toArray();
+            if($vanBanDen)
+            {
+                if($vanBanDen->parent_id)
+                {
+                    $timSoDen = $vanBanDen->parent_id;
+
+                }
+            }else{
+                $timSoDen=$soDen;
+            }
+
+        }
         $trinhTuNhanVanBan = null;
 
         $chuyenTiep = $request->get('chuyen_tiep') ?? null;
@@ -130,9 +149,19 @@ class VanBanDenPhoiHopController extends Controller
                         return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
-                ->where(function ($query) use ($soDen) {
-                    if (!empty($soDen)) {
-                        return $query->where('so_den', $soDen);
+//                ->where(function ($query) use ($soDen) {
+//                    if (!empty($soDen)) {
+//                        return $query->where('so_den', $soDen);
+//                    }
+//                })
+                ->where(function ($query) use ($timSoDen,$soDen,$vanBanDen) {
+                    if (!empty($soDen) && $vanBanDen) {
+                        return $query->where('id',$timSoDen);
+                    }else{
+                        if (!empty($soDen))
+                        {
+                            return $query->where('so_den',$soDen);
+                        }
                     }
                 })
                 ->where(function ($query) use ($date) {
@@ -166,9 +195,19 @@ class VanBanDenPhoiHopController extends Controller
                         return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                     }
                 })
-                ->where(function ($query) use ($soDen) {
-                    if (!empty($soDen)) {
-                        return $query->where('so_den', $soDen);
+//                ->where(function ($query) use ($soDen) {
+//                    if (!empty($soDen)) {
+//                        return $query->where('so_den', $soDen);
+//                    }
+//                })
+                ->where(function ($query) use ($timSoDen,$soDen,$vanBanDen) {
+                    if (!empty($soDen) && $vanBanDen) {
+                        return $query->where('id',$timSoDen);
+                    }else{
+                        if (!empty($soDen))
+                        {
+                            return $query->where('so_den',$soDen);
+                        }
                     }
                 })
                 ->where(function ($query) use ($date) {
