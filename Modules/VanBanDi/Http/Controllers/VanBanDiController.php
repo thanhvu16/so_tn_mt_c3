@@ -2270,6 +2270,7 @@ class VanBanDiController extends Controller
 
     public function vanbandichoso()
     {
+
         $date = Carbon::now()->format('Y-m-d');
         $user = auth::user();
         $lanhDaoSo = User::role([CHU_TICH, PHO_CHU_TICH])
@@ -2765,65 +2766,73 @@ class VanBanDiController extends Controller
 
             }
             $soDi = $soDi + 1;
-            switch ($soVanBan->ten_so_van_ban) {
-                case 'Công Văn':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                        $SoKyHieu = "$soDi/STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                        $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                        $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
-                        $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
-                        $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
-                        $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
-                        $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
-                        $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
-                    }
-                    break;
-                case 'Quyết định':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                        $SoKyHieu = "$soDi/QĐ-STNMT-";
-                    }
-                    break;
+            if(auth::user()->hasRole(VAN_THU_HUYEN))
+            {
+                switch ($soVanBan->ten_so_van_ban) {
+                    case 'Công Văn':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                            $SoKyHieu = "$soDi/STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                            $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                            $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
+                            $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Phiếu chuyển') {
+                            $SoKyHieu = "$soDi/PC-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy ủy quyền') {
+                            $SoKyHieu = "$soDi/GUQ-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận Thanh tra') {
+                            $SoKyHieu = "$soDi/KLTT-STNMT-$maPhong";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Kết luận kiểm tra') {
+                            $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
+                        }
+                        break;
+                    case 'Quyết định':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                            $SoKyHieu = "$soDi/QĐ-STNMT-";
+                        }
+                        break;
 
-                case 'Thông báo':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
-                        $SoKyHieu = "$soDi/TB-STNMT-";
-                    }
-                    break;
-                case 'Giấy Mời':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                        $SoKyHieu = "$soDi/GM-STNMT-";
-                    }
-                    break;
-                case 'Cấp Phép':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
-                        $SoKyHieu = "$soDi/GP-STNMT-";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
-                        $SoKyHieu = "$soDi/GXN-STNMT-";
-                    }
-                    break;
-                case 'Thanh Tra':
-                    if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                        $SoKyHieu = "$soDi/STNMT-";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                        $SoKyHieu = "$soDi/QĐ-XPVPHC-";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                        $SoKyHieu = "$soDi/KH-";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                        $SoKyHieu = "$soDi/GM-";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                        $SoKyHieu = "$soDi/BC-";
-                    }
-                    break;
+                    case 'Thông báo':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
+                            $SoKyHieu = "$soDi/TB-STNMT-";
+                        }
+                        break;
+                    case 'Giấy Mời':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                            $SoKyHieu = "$soDi/GM-STNMT-";
+                        }
+                        break;
+                    case 'Cấp Phép':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
+                            $SoKyHieu = "$soDi/GP-STNMT-";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
+                            $SoKyHieu = "$soDi/GXN-STNMT-";
+                        }
+                        break;
+                    case 'Thanh Tra':
+                        if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
+                            $SoKyHieu = "$soDi/STNMT-";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
+                            $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
+                            $SoKyHieu = "$soDi/KH-";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
+                            $SoKyHieu = "$soDi/GM-";
+                        } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                            $SoKyHieu = "$soDi/BC-";
+                        }
+                        break;
 
 
+                }
+            }else{
+                $IDdonVi=auth::user()->donVi->parent_id;
+                $donVi = DonVi::where('id', $IDdonVi)->first();
+                $SoKyHieu="$soDi/$donVi->ten_viet_tat";
             }
+
 
 //        $soKyHieu = "$soDi/$nam_truoc_skh$ma_van_ban$ma_don_vi$ma_phong_ban";
             $vanbandi->so_di = $soDi;

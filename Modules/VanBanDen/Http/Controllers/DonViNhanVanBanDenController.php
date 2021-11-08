@@ -1006,8 +1006,8 @@ class DonViNhanVanBanDenController extends Controller
                 }
             }
         } elseif (auth::user()->role_id == QUYEN_VAN_THU_DON_VI) {
-
             if ($noi_dung && $noi_dung[0] != null) {
+
                 foreach ($noi_dung as $key => $data) {
                     $vanbandv = new VanBanDen();
                     $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
@@ -1057,6 +1057,8 @@ class DonViNhanVanBanDenController extends Controller
 
                 }
             } else {
+
+
                 $vanbandv = new VanBanDen();
                 $vanbandv->parent_id = $layvanbandi->van_ban_den_id ?? null;
                 $vanbandv->loai_van_ban_id = $request->loai_van_ban;
@@ -1080,9 +1082,8 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
 
-
                 if ($request->id_file) {
-                    $file = FileVanBanDen::where('id', $request->id_file)->get();
+                    $file = FileVanBanDen::where('vb_den_id', $request->id_file)->whereNull('deleted_at')->get();
                     if ($file && count($file) > 0) {
                         foreach ($file as $data1) {
                             $vbDenFile = new FileVanBanDen();
