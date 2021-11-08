@@ -166,6 +166,7 @@
                                 <span style="font-weight: bold">File văn bản :</span>
                                 <span>
                                     @if($van_ban_den->vanBanDen->vanBanDenFile)
+{{--                                        {{$van_ban_den->vanBanDen->vanBanDenFile}}--}}
                                         @forelse($van_ban_den->vanBanDen->vanBanDenFile as $key=>$item)
                                             <a href="{{$item->getUrlFile()}}" target="popup" class="seen-new-window">[file văn bản]</a>
                                             {{--                                                    @if($item->duoi_file == 'pdf')<i--}}
