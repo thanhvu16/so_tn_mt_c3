@@ -50,7 +50,6 @@ class DonViNhanVanBanDenController extends Controller
             ->paginate(PER_PAGE);
 
 
-
         $vanbanhuyenxuongdonvi = DonViChuTri::with('canBoChuyen')
             ->where(['don_vi_id' => $donViId])
             ->whereNull('vao_so_van_ban')
@@ -67,7 +66,7 @@ class DonViNhanVanBanDenController extends Controller
             ->whereNull('type')
             ->whereNull('tra_lai')
             ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
-            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id','updated_at')
+            ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id', 'updated_at')
             ->get();
 
 
@@ -405,10 +404,9 @@ class DonViNhanVanBanDenController extends Controller
                         }
                     }
                 }
-                $filegiaymoi = FileVanBanDen::where('vb_den_id',$layvanbandi->van_ban_den_id)->whereNull('deleted_at')->get();
+                $filegiaymoi = FileVanBanDen::where('vb_den_id', $layvanbandi->van_ban_den_id)->whereNull('deleted_at')->get();
                 if ($filegiaymoi && count($filegiaymoi) > 0) {
-                    foreach ($filegiaymoi as $data )
-                    {
+                    foreach ($filegiaymoi as $data) {
                         $vbDenFile = new FileVanBanDen();
                         $vbDenFile->ten_file = $data->ten_file;
                         $vbDenFile->duong_dan = $data->duong_dan;
@@ -422,8 +420,6 @@ class DonViNhanVanBanDenController extends Controller
                 }
 
             }
-
-
 
 
             if ($multiFiles && count($multiFiles) > 0) {
@@ -533,6 +529,7 @@ class DonViNhanVanBanDenController extends Controller
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
         return view('vanbanden::don_vi_nhan_van_ban.edit', compact('dokhan', 'domat', 'loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
     }
+
     public function vaoSoVanBanDonViGuiSo($id)
     {
         $user = auth::user();
@@ -559,7 +556,7 @@ class DonViNhanVanBanDenController extends Controller
 
         $hangiaiquyet = dateFromBusinessDays((int)$songay + $i, $ngaynhan);
         $tieuChuan = TieuChuanVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
-        return view('vanbanden::don_vi_nhan_van_ban.vao_so_van_ban_don_vi_gui_so', compact('dokhan', 'domat', 'tieuChuan','loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
+        return view('vanbanden::don_vi_nhan_van_ban.vao_so_van_ban_don_vi_gui_so', compact('dokhan', 'domat', 'tieuChuan', 'loaivanban', 'sovanban', 'users', 'id', 'hangiaiquyet', 'van_ban_den'));
     }
 
     public function thongtinvb($id)
@@ -614,6 +611,7 @@ class DonViNhanVanBanDenController extends Controller
                 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'nguoi_dung', 'phanbiet'));
 
     }
+
     public function thongtinvbsonhan($id)
     {
         $vanban = NoiNhanVanBanDi::where('id', $id)->first();
@@ -953,8 +951,7 @@ class DonViNhanVanBanDenController extends Controller
                     if ($request->id_file) {
                         $file = FileVanBanDen::where('id', $request->id_file)->whereNull('deleted_at')->get();
                         if ($file && count($file) > 0) {
-                            foreach ($file as $data1)
-                            {
+                            foreach ($file as $data1) {
                                 $vbDenFile = new FileVanBanDen();
                                 $vbDenFile->ten_file = $data1->ten_file;
                                 $vbDenFile->duong_dan = $data1->duong_dan;
@@ -991,17 +988,19 @@ class DonViNhanVanBanDenController extends Controller
                 $vanbandv->save();
                 UserLogs::saveUserLogs('Vào sổ văn bản đến', $vanbandv);
                 if ($request->id_file) {
-                    $file = FileVanBanDen::where('id', $request->id_file)->first();
-                    if ($file) {
-                        $vbDenFile = new FileVanBanDen();
-                        $vbDenFile->ten_file = $file->ten_file;
-                        $vbDenFile->duong_dan = $file->duong_dan;
-                        $vbDenFile->duoi_file = $file->duoi_file;
-                        $vbDenFile->vb_den_id = $vanbandv->id;
-                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                        $vbDenFile->save();
-                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
+                    $file = FileVanBanDen::where('id', $request->id_file)->get();
+                    if ($file && count($file) > 0) {
+                        foreach ($file as $data1) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $data1->ten_file;
+                            $vbDenFile->duong_dan = $data1->duong_dan;
+                            $vbDenFile->duoi_file = $data1->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
+                        }
                     }
 
                 }
@@ -1083,17 +1082,19 @@ class DonViNhanVanBanDenController extends Controller
 
 
                 if ($request->id_file) {
-                    $file = FileVanBanDen::where('id', $request->id_file)->first();
-                    if ($file) {
-                        $vbDenFile = new FileVanBanDen();
-                        $vbDenFile->ten_file = $file->ten_file;
-                        $vbDenFile->duong_dan = $file->duong_dan;
-                        $vbDenFile->duoi_file = $file->duoi_file;
-                        $vbDenFile->vb_den_id = $vanbandv->id;
-                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                        $vbDenFile->save();
-                        UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
+                    $file = FileVanBanDen::where('id', $request->id_file)->get();
+                    if ($file && count($file) > 0) {
+                        foreach ($file as $data1) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $data1->ten_file;
+                            $vbDenFile->duong_dan = $data1->duong_dan;
+                            $vbDenFile->duoi_file = $data1->duoi_file;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                            UserLogs::saveUserLogs('Upload file văn bản đến', $vbDenFile);
+                        }
                     }
 
                 }
