@@ -21,6 +21,10 @@ class LuuVet extends Model
     {
         return $this->belongsTo(DonVi::class, 'phong_cu', 'id');
     }
+    public function nguoiPhanLai()
+    {
+        return $this->belongsTo(User::class, 'nguoi_phan_lai', 'id');
+    }
 
 
 
