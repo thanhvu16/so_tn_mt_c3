@@ -170,56 +170,56 @@
 <!-- iCheck -->
 <script src="{{ url('theme/plugins/iCheck/icheck.min.js') }}"></script>
 <script src="{{ url('theme/plugins/toastr/toastr.min.js') }}"></script>
-<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>
+{{--<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>--}}
 <script>
     var APP_URL = <?php echo json_encode(url('/')); ?>
 
 
 
-    $(document).ready(function(){
-        SSO.init();
-        if (!SSO.isAuthen(login)) {
-            $("#loginSSO").off('click').on('click', function () {
-                SSO.login();
-            })
-        }
-    })
-
-    function login() {
-        $.ajax({
-            url: APP_URL + '/thong-tin-dang-nhap',
-            type:'POST',
-            dataType:'json',
-            data:{
-                username: SSO.data.userName,
-                _token: $('meta[name="csrf-token"]').attr('content'),
-            },
-
-        }).done(function (res){
-            dangnhap(res.username,res.pass)
-        })
-
-    }
-    function dangnhap(username,pass)
-    {
-        $.ajax({
-            url: APP_URL + '/login',
-            type:'POST',
-            dataType:'json',
-            data:{
-                username: username,
-                password: pass,
-                _token: $('meta[name="csrf-token"]').attr('content'),
-            },
-
-        }).done(function (res){
-            console.log(2);
-            window.location.href = "http://14.177.182.250:6080/";
-        }).fail(function (error) {
-            console.log(1);
-            window.location.href = "http://14.177.182.250:6080/";
-        });
-    }
+    // $(document).ready(function(){
+    //     SSO.init();
+    //     if (!SSO.isAuthen(login)) {
+    //         $("#loginSSO").off('click').on('click', function () {
+    //             SSO.login();
+    //         })
+    //     }
+    // })
+    //
+    // function login() {
+    //     $.ajax({
+    //         url: APP_URL + '/thong-tin-dang-nhap',
+    //         type:'POST',
+    //         dataType:'json',
+    //         data:{
+    //             username: SSO.data.userName,
+    //             _token: $('meta[name="csrf-token"]').attr('content'),
+    //         },
+    //
+    //     }).done(function (res){
+    //         dangnhap(res.username,res.pass)
+    //     })
+    //
+    // }
+    // function dangnhap(username,pass)
+    // {
+    //     $.ajax({
+    //         url: APP_URL + '/login',
+    //         type:'POST',
+    //         dataType:'json',
+    //         data:{
+    //             username: username,
+    //             password: pass,
+    //             _token: $('meta[name="csrf-token"]').attr('content'),
+    //         },
+    //
+    //     }).done(function (res){
+    //         console.log(2);
+    //         window.location.href = "http://14.177.182.250:6080/";
+    //     }).fail(function (error) {
+    //         console.log(1);
+    //         window.location.href = "http://14.177.182.250:6080/";
+    //     });
+    // }
 </script>
 
 <script type="text/javascript">
