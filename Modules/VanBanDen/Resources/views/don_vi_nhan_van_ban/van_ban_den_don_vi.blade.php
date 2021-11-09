@@ -177,7 +177,7 @@
                                             {{--                                                <i class="fa fa-file-excel-o"--}}
                                             {{--                                                   style="font-size:20px;color:green"></i> @endif--}}
                                             {{--                                                </a>@if(count($van_ban_den->vanBanDen->vanBanDenFile) == $key+1) @else &nbsp;|&nbsp; @endif--}}
-                                            <input type="text" value="{{$item->id}}" class="hidden" name="id_file">
+                                            <input type="text" value="{{$item->vb_den_id}}" class="hidden" name="id_file">
                                         @empty
                                         @endforelse
                                     @endif
