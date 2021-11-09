@@ -11,6 +11,7 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoXemDeBiet;
+use Modules\DieuHanhVanBanDen\Entities\LuuVet;
 use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyetFile;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -245,6 +246,7 @@ class DieuHanhVanBanDenController extends Controller
                 ->where('id', '!=', auth::user()->id)
                 ->whereNull('deleted_at')->get();
 
+
             $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
             $user = auth::user();
             $donVi = $user->donVi;
@@ -382,14 +384,18 @@ class DieuHanhVanBanDenController extends Controller
                     $ds_nguoiKy = $lanhDaoSo;
                     break;
                 case PHO_CHANH_VAN_PHONG:
-                    $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
-                    foreach ($chanhVanPhong as $data) {
-                        array_push($dataNguoiKy, $data);
-                    }
                     foreach ($lanhDaoSo as $item) {
                         array_push($dataNguoiKy, $item);
                     }
+                    $chanhVanPhong = User::role([CHANH_VAN_PHONG])->where('don_vi_id', auth::user()->don_vi_id)->first();
+//                    foreach ($chanhVanPhong as $data) {
+//                        array_push($dataNguoiKy, $data);
+//                    }
+                    array_push($dataNguoiKy, $chanhVanPhong);
+
                     $ds_nguoiKy = $dataNguoiKy;
+
+
                     break;
 
                 case VAN_THU_DON_VI:
@@ -443,8 +449,11 @@ class DieuHanhVanBanDenController extends Controller
             }
         }
 
+        $luuVetVanBanCu = LuuVet::where('van_ban_den_id',$id)->get();
+
         return view('dieuhanhvanbanden::van-ban-den.show',
-            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_DonVi_phatHanh', 'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date'));
+            compact('vanBanDen', 'loaiVanBanGiayMoi', 'ds_loaiVanBan', 'ds_DonVi_phatHanh',
+                'ds_nguoiKy', 'lanhdaotrongphong', 'lanhdaokhac', 'date','luuVetVanBanCu'));
     }
 
     /**
