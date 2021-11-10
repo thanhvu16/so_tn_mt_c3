@@ -81,7 +81,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="exampleInputEmail4">Hạn xử lý </label>
-                                    <input type="date" class="form-control" value="{{$hangiaiquyet}}" name="han_xu_ly" placeholder="Hạn xử lý" required>
+                                    <input type="date" class="form-control" value="{{$van_ban_den->vanBanDen->han_xu_ly ?? ''}}" name="han_xu_ly" placeholder="Hạn xử lý" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
