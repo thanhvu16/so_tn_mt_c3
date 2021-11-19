@@ -11,6 +11,82 @@
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         @include('vanbandi::Du_thao_van_ban_di.error')
                         @include('vanbandi::Du_thao_van_ban_di.form_them_noi_nhan')
+                        <div class="col-md-12 text-right">
+                            <a class=" btn btn-primary" data-toggle="collapse"
+                               href="#collapseExample"
+                               aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i>
+                                <span
+                                    style="font-size: 14px">Tìm kiếm văn bản</span>
+                            </a>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <div class="row">
+                                <form action="{{route('vanbandichoso')}}" id="search_vb" method="get">
+                                    <div
+                                        class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }}"
+                                        id="collapseExample">
+                                        <div class="row">
+
+                                            <div class="form-group col-md-3">
+                                                <label for="linhvuc_id" class="col-form-label">Đơn vị soạn thảo</label>
+                                                <select class="form-control select2 show-tick select2-search"
+                                                        name="donvisoanthao_id">
+                                                    <option value="">Chọn đơn vị</option>
+                                                    @foreach ($ds_DonVi as $donVi)
+                                                        <option
+                                                            value="{{ $donVi->id }}" {{Request::get('donvisoanthao_id') == $donVi->id ? 'selected' : ''}}
+                                                        >{{ $donVi->ten_don_vi }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <label for="sokyhieu" class="col-form-label">Nhập từ ngày</label>
+                                                <input type="date" name="start_date" class="form-control"
+                                                       value="{{Request::get('start_date')}}"
+                                                       autocomplete="off">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="sokyhieu" class="col-form-label">Nhập đến ngày</label>
+                                                <input type="date" name="end_date" id="vb_ngaybanhanh" class="form-control"
+                                                       value="{{Request::get('end_date')}}"
+                                                       autocomplete="off">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="co_quan_ban_hanh_id" class="col-form-label">Người ký</label>
+                                                <select class="form-control show-tick select2-search" name="nguoiky_id">
+                                                    <option value="">-- Chọn Người Ký --</option>
+                                                    @foreach ($ds_nguoiKy as $nguoiKy)
+                                                        <option
+                                                            value="{{ $nguoiKy->id }}" {{Request::get('nguoiky_id') == $nguoiKy->id ? 'selected' : ''}}
+                                                        >{{$nguoiKy->ho_ten}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="sokyhieu" class="col-form-label ">Trích yếu</label>
+                                                <textarea rows="3" name="vb_trichyeu" class="form-control no-resize"
+                                                          placeholder="Nhập nội dung trích yếu ..."
+                                                >{{Request::get('vb_trichyeu')}}</textarea>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <button class="btn btn-primary" value="1" name="search"><i
+                                                        class="fa  fa-search"></i> Tìm kiếm
+                                                </button>
+                                                @if(request('search'))
+                                                    <a href="{{ route('vanbandichoso') }}">
+                                                        <button type="button" class="btn btn-success">
+                                                            <i class="fa fa-refresh"></i>
+                                                        </button>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
                         Tổng số văn bản: <b>{{ $vanbandichoso->total() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>

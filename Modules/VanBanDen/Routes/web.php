@@ -46,6 +46,7 @@ Route::post('han-van-ban','VanBanDenController@layhantruyensangview')->name('lay
 //Route::get('xoa-van-ban-den/{id}','VanBanDenController@xoaFileDen')->name('xoaFileDen');
 Route::match(['get', 'post','put'], 'xoa-file-van-ban/{id}', ['as' =>'xoaFileDen', 'uses' => 'VanBanDenController@xoaFileDen']);
 
+Route::get('hanXuLYC', array('as' => 'hanXuLYC', 'uses' => 'VanBanDenController@hanXuLYC'));
 Route::get('thong-ke-van-ban-so', array('as' => 'thongkevbso', 'uses' => 'ThongkeVanBanDenController@thongkevbso'));
 Route::get('thong-ke-van-ban-chi-cuc', array('as' => 'thongkevbchicuc', 'uses' => 'ThongKeVanBanChiCucController@index'));
 Route::get('thong-ke-van-ban-phong', array('as' => 'thongkevbphong', 'uses' => 'ThongKeVanBanPhongController@index'));

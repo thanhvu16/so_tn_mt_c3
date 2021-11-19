@@ -2016,6 +2016,18 @@ class VanBanDenController extends Controller
                 compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap',
                     'ds_mucBaoMat', 'ds_loaiVanBan', 'danhSachDonVi'));
     }
+
+    public function hanXuLYC()
+    {
+        $vanbanDen = VanBanDen::where('type',2)->where('parent_id','!=',null)->get();
+        foreach ($vanbanDen as $data)
+        {
+            $vanbanDenChinh = VanBanDen::where('id',$data->parent_id)->first();
+            $vanbanPhu = VanBanDen::where('id',$data->id)->first();
+            $vanbanPhu->han_xu_ly = $vanbanDenChinh->han_xu_ly;
+            $vanbanPhu->save();
+        }
+    }
 }
 
 
