@@ -221,7 +221,8 @@
 
                             </div>
                             <div class="col-md-6 text-right">
-                                {!! $vanbandichoso->appends(['loaivanban_id' => Request::get('loaivanban_id')])->render() !!}
+                                {!! $vanbandichoso->appends(['loaivanban_id' => Request::get('loaivanban_id'),'nguoiky_id' => Request::get('nguoiky_id'),'vb_trichyeu' => Request::get('vb_trichyeu')
+                        ,'donvisoanthao_id' => Request::get('donvisoanthao_id'),'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date')])->render() !!}
                             </div>
                         </div>
                     </div>
