@@ -2268,8 +2268,22 @@ class VanBanDiController extends Controller
         return view('vanbandi::Duyet_van_ban_di.index', compact('vanbandichoduyet', 'nguoinhan', 'idcuanguoinhan'));
     }
 
-    public function vanbandichoso()
+    public function vanbandichoso(Request $request)
     {
+        $user = auth::user();
+
+        $trichyeu = $request->get('vb_trichyeu');
+        $donvisoanthao = $request->get('donvisoanthao_id');
+
+        $nguoi_ky = $request->get('nguoiky_id');
+        $ngaybatdau = $request->get('start_date');
+        $ngayketthuc = $request->get('end_date');
+        $phatHanhVanBan = $request->get('phat_hanh_van_ban');
+        $year = $request->get('year') ?? null;
+
+
+        $ds_DonVi = DonVi::wherenull('deleted_at')->orderBy('thu_tu', 'asc')->get();
+        $ds_nguoiKy = User::where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->get();
 
         $date = Carbon::now()->format('Y-m-d');
         $user = auth::user();
@@ -2281,12 +2295,72 @@ class VanBanDiController extends Controller
             $vanbandichoso = VanBanDi::where(function ($query) use ($lanhDaoSo) {
                 return $query->where('phong_phat_hanh', $lanhDaoSo->don_vi_id);
             })
+                ->where(function ($query) use ($trichyeu) {
+                    if (!empty($trichyeu)) {
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($nguoi_ky) {
+                    if (!empty($nguoi_ky)) {
+                        return $query->where('nguoi_ky', $nguoi_ky);
+                    }
+                })
+                ->where(function ($query) use ($donvisoanthao) {
+                    if (!empty($donvisoanthao)) {
+                        return $query->where('don_vi_soan_thao', $donvisoanthao);
+                    }
+                })
+                ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
+                    if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngayketthuc);
+                    }
+                    if ($ngayketthuc == '' && $ngaybatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybatdau);
+
+                    }
+                    if ($ngaybatdau == '' && $ngayketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngayketthuc);
+
+                    }
+                })
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
                 ->paginate(PER_PAGE);
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $vanbandichoso = VanBanDi::where(function ($query) {
                     return $query->where('phong_phat_hanh', auth::user()->donVi->parent_id);
+                })
+                ->where(function ($query) use ($trichyeu) {
+                    if (!empty($trichyeu)) {
+                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($nguoi_ky) {
+                    if (!empty($nguoi_ky)) {
+                        return $query->where('nguoi_ky', $nguoi_ky);
+                    }
+                })
+                ->where(function ($query) use ($donvisoanthao) {
+                    if (!empty($donvisoanthao)) {
+                        return $query->where('don_vi_soan_thao', $donvisoanthao);
+                    }
+                })
+                ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
+                    if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
+
+                        return $query->where('ngay_ban_hanh', '>=', $ngaybatdau)
+                            ->where('ngay_ban_hanh', '<=', $ngayketthuc);
+                    }
+                    if ($ngayketthuc == '' && $ngaybatdau != '') {
+                        return $query->where('ngay_ban_hanh', $ngaybatdau);
+
+                    }
+                    if ($ngaybatdau == '' && $ngayketthuc != '') {
+                        return $query->where('ngay_ban_hanh', $ngayketthuc);
+
+                    }
                 })
                 ->whereNull('so_di')
                 ->orderBy('created_at', 'desc')
@@ -2308,7 +2382,7 @@ class VanBanDiController extends Controller
 
 
         return view('vanbandi::Du_thao_van_ban_di.vanbandichoso',
-            compact('vanbandichoso', 'date', 'emailTrongThanhPho', 'emailNgoaiThanhPho', 'ds_soVanBan'));
+            compact('vanbandichoso', 'date', 'emailTrongThanhPho', 'emailNgoaiThanhPho','ds_DonVi','ds_nguoiKy','ds_soVanBan'));
     }
 //    public function vanbandichosothanhpho()
 //    {
@@ -2606,7 +2680,7 @@ class VanBanDiController extends Controller
                         $SoKyHieu = "$soDi/STNMT-$maPhong";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
                         $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
+                    } elseif ($loaiVanBan->ten_l9oai_van_ban == 'Báo cáo') {
                         $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
                         $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";
@@ -2712,7 +2786,7 @@ class VanBanDiController extends Controller
                 case 'Phòng Đăng ký thống kê đất đai':
                     $maPhong = 'ĐKTK';
                     break;
-                case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
+                case 'Phòng Quy hoạch-Kế hoạch sử dụng đất':
                     $maPhong = 'QHKHSDĐ';
                     break;
                 case 'Phòng Kinh tế đất':
@@ -2748,7 +2822,6 @@ class VanBanDiController extends Controller
 
 
             }
-
             $vanbandi->ngay_ban_hanh = $request->ngay_ban_hanh;
             $vanbandi->cho_cap_so = 3;
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
