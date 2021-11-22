@@ -813,6 +813,26 @@ class VanBanDen extends Model
     {
         return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
     }
+    public function hoanThanhVBTrongHan()
+    {
+        $user = auth::user();
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
+    public function hoanThanhVBQuaHan()
+    {
+        $user = auth::user();
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
+    public function vanBanDangXuLy()
+    {
+        $user = auth::user();
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')
+            ->where('can_bo_nhan_id', $user->id)
+            ->where('don_vi_id',$user->don_vi_id)
+            ->whereNotNull('vao_so_van_ban')
+            ->whereNull('hoan_thanh')
+            ->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
     public function searchDonViChuTriQT()
     {
         return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id')->whereIn('can_bo_chuyen_id', [10551, 15]);
