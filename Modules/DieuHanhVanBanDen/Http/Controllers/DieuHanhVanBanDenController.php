@@ -548,6 +548,7 @@ class DieuHanhVanBanDenController extends Controller
                         return $query->where('so_den', $soDen);
                     }
                 })
+//                ->get();
                 ->paginate(PER_PAGE);
         }else{
             $danhSachVanBanDen = VanBanDen::with(['vanBanDenFile',

@@ -652,14 +652,18 @@ class AdminController extends Controller
                         ->whereHas('vanBanDenDen')
                         ->whereMonth('created_at', $month)
                         ->whereYear('created_at', $year)
-                        ->orderBy('id', 'DESC')
+                        ->select('van_ban_den_id')
+                        ->distinct('van_ban_den_id')
                         ->count();
+
                     $giayMoiXemDeBiet = LanhDaoXemDeBiet::where('lanh_dao_id', $user->id)
                         ->whereHas('giayMoiDen')
                         ->whereMonth('created_at', $month)
                         ->whereYear('created_at', $year)
-                        ->orderBy('id', 'DESC')
+                        ->select('van_ban_den_id')
+                        ->distinct('van_ban_den_id')
                         ->count();
+
 
                     array_push($hoSoCongViecPiceCharts, array('VB xem để biết', $vanBanXemDeBiet));
                     array_push($giayMoiPiceCharts, array('GM xem để biết', $giayMoiXemDeBiet));
