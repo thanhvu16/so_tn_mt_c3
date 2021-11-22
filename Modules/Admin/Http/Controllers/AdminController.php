@@ -512,11 +512,11 @@ class AdminController extends Controller
 
                 $chuyenVienPhoiHop = ChuyenVienPhoiHop::where('can_bo_nhan_id', $user->id)
                     ->whereHas('vanBanDenDen')
-//                    ->whereNull('status')
+                    ->whereNull('status')
                     ->count();
                 $chuyenVienPhoiHopGM = ChuyenVienPhoiHop::where('can_bo_nhan_id', $user->id)
                     ->whereHas('giayMoiDen')
-//                    ->whereNull('status')
+                    ->whereNull('status')
                     ->count();
 
                 array_push($hoSoCongViecPiceCharts, array('VB chuyên viên phối hợp chờ xử lý', $chuyenVienPhoiHop));

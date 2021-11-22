@@ -21,6 +21,7 @@ class ThongKeVanBanPhongController extends Controller
      */
     public function index(Request $request)
     {
+
         $currentUser = auth::user();
         $tu_ngay = $request->get('tu_ngay') ?? null;
         $den_ngay = $request->get('den_ngay') ?? null;
@@ -55,7 +56,6 @@ class ThongKeVanBanPhongController extends Controller
                 ->whereNull('deleted_at')
                 ->get();
         }
-
 
         foreach ($nguoiDung as $dataNguoiDung) {
             $dataNguoiDung->vanBanDaGiaiQuyet = $this->VanBanDenHoanThanhCuaDonVi($dataNguoiDung->id, $tu_ngay, $den_ngay);
@@ -192,6 +192,7 @@ class ThongKeVanBanPhongController extends Controller
             })
 //            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN)
             ->get();
+        dd($danhSachVanBanDenDaHoanThanh);
 
 //        $arrIdVanBanDaHoanThanh = $danhSachVanBanDenDaHoanThanh->pluck('id')->toArray();
 
@@ -256,7 +257,7 @@ class ThongKeVanBanPhongController extends Controller
 
         $tongVanBanDonViKhongDieuHanh = $vanBanTrongHan + $vanBanQuaHan;
 
-
+        dd($vanBanTrongHan);
         return [
             'hoan_thanh_dung_han' => $vanBanTrongHan,
             'hoan_thanh_qua_han' => $vanBanQuaHan,

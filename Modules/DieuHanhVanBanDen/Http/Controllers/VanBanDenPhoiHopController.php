@@ -663,7 +663,6 @@ class VanBanDenPhoiHopController extends Controller
             })
             ->select('id', 'van_ban_den_id')
             ->get();
-
         $arrIdVanBanDen = $chuyenVienPhoiHop->pluck('van_ban_den_id')->toArray();
 
         if($request->type != null)
