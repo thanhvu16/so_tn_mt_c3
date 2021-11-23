@@ -206,7 +206,7 @@
                                     <div class="col-md-3 ">
                                         <label for="url-file" class="col-form-label">Chọn tệp</label>
                                         <div class="form-line input-group control-group">
-                                            <input type="file" id="url-file" name="ten_file[]" class="form-control">
+                                            <input type="file" id="url-file" name="ten_file[]" multiple class="form-control">
                                             <div class="input-group-btn">
                         <span class="btn btn-primary" onclick="multiUploadFilevanban('ten_file[]')" type="button">
                         <i class="fa fa-plus"></i> thêm file</span>

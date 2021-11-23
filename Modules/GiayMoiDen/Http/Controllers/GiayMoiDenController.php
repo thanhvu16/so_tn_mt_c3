@@ -974,8 +974,9 @@ class GiayMoiDenController extends Controller
 //                $fileid->save();
 //            }
             foreach ($multiFiles as $key => $getFile) {
+
                 $extFile = $getFile->extension();
-                $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;
+                $ten = $txtFiles[0].'.'. $extFile;
                 $vbDenFile = new FileVanBanDen();
                 $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFile->getClientOriginalName();
                 $urlFile = UPLOAD_FILE_GIAY_MOI_DEN . '/' . $fileName;
