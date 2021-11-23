@@ -1632,11 +1632,11 @@ class VanBanDenController extends Controller
                         $vanbandv->type = 1;
                         //họp chính
                         $vanbandv->gio_hop = $gio_hop_chinh_fomart;
-                        $vanbandv->ngay_hop = $ngayhopchinh;
+                        $vanbandv->ngay_hop = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                         $vanbandv->dia_diem = $diadiemchinh;
                         //nếu không tách nhỏ thì họp con sẽ là họp chính
                         $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
-                        $vanbandv->ngay_hop_phu = $ngayhopchinh;
+                        $vanbandv->ngay_hop_phu = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                         $vanbandv->dia_diem_phu = $diadiemchinh;
                         $vanbandv->ngay_ban_hanh = $ngaybanhanh;
                         $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;

@@ -127,12 +127,26 @@
                                             <!-- /.input group -->
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="margin-top: 10px">
+{{--                                    <div class="col-md-3" style="margin-top: 10px">--}}
+{{--                                        <div class="form-group">--}}
+{{--                                            <label for="">Ngày họp <span style="color: red">*</span></label>--}}
+{{--                                            <input type="date"  class="form-control "--}}
+{{--                                                   value=""--}}
+{{--                                                   name="ngay_hop_chinh" placeholder="">--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="">Ngày họp <span style="color: red">*</span></label>
-                                            <input type="date"  class="form-control "
-                                                   value="{{isset($data_xml) ? $data_xml->STRNGAYHOP : $ngayHopNull}}"
-                                                   name="ngay_hop_chinh" placeholder="">
+                                            <label for="ngay_hop_chinh">Ngày họp <span
+                                                    style="color: red">*</span></label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control  datepicker" value="@if($data_xml){{!empty($data_xml->STRNGAYHOP) && ($data_xml->STRNGAYHOP > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYHOP)) : ''}}@endif"
+                                                       name="ngay_hop_chinh" id="ngay_hop_chinh"
+                                                       placeholder="dd/mm/yyyy" required>
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3" style="margin-top: 10px">
