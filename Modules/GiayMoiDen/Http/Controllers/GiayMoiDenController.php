@@ -557,13 +557,13 @@ class GiayMoiDenController extends Controller
                     $vanbandv->type = 1;
                     //họp chính
                     $vanbandv->gio_hop = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop = $ngayhopchinh;
+                    $vanbandv->ngay_hop = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                     $vanbandv->dia_diem = $diadiemchinh;
                     //nếu không tách nhỏ thì họp con sẽ là họp chính
                     $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop_phu = $ngayhopchinh;
+                    $vanbandv->ngay_hop_phu = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                     $vanbandv->dia_diem_phu = $diadiemchinh;
-                    $vanbandv->ngay_ban_hanh = $ngaybanhanh;
+                    $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
@@ -727,13 +727,13 @@ class GiayMoiDenController extends Controller
                     $vanbandv->type = 2;
                     //họp chính
                     $vanbandv->gio_hop = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop = $ngayhopchinh;
+                    $vanbandv->ngay_hop = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                     $vanbandv->dia_diem = $diadiemchinh;
                     //nếu không tách nhỏ thì họp con sẽ là họp chính
                     $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop_phu = $ngayhopchinh;
+                    $vanbandv->ngay_hop_phu = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
                     $vanbandv->dia_diem_phu = $diadiemchinh;
-                    $vanbandv->ngay_ban_hanh = $ngaybanhanh;
+                    $vanbandv->ngay_ban_hanh =  !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->trinh_tu_nhan_van_ban = $trinhTuNhanVanBan;
                     $vanbandv->save();
@@ -967,12 +967,12 @@ class GiayMoiDenController extends Controller
         $vanbandv->save();
         UserLogs::saveUserLogs('Sửa giấy mời đến ', $vanbandv);
         if ($multiFiles && count($multiFiles) > 0) {
-            $vanbandenfile = FileVanBanDen::where('vb_den_id', $vanbandv->id)->get();
-            foreach ($vanbandenfile as $filevb) {
-                $fileid = FileVanBanDen::where('id', $filevb->id)->first();
-                $fileid->delete();
-                $fileid->save();
-            }
+//            $vanbandenfile = FileVanBanDen::where('vb_den_id', $vanbandv->id)->get();
+//            foreach ($vanbandenfile as $filevb) {
+//                $fileid = FileVanBanDen::where('id', $filevb->id)->first();
+//                $fileid->delete();
+//                $fileid->save();
+//            }
             foreach ($multiFiles as $key => $getFile) {
                 $extFile = $getFile->extension();
                 $ten = strSlugFileName(strtolower($txtFiles[$key]), '_') . '.' . $extFile;

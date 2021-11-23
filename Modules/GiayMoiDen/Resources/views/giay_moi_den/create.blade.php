@@ -39,13 +39,28 @@
                             </div>
 
 
+{{--                            <div class="form-group col-md-3">--}}
+{{--                                <label for="ngay_ban_hanh" class="col-form-label">Ngày ban hành <span--}}
+{{--                                        class="color-red">*</span></label>--}}
+{{--                                <input class="form-control vanbantrung" tabindex="3"--}}
+{{--                                       id="vb_ngay_ban_hanh"--}}
+{{--                                       value="" required type="date"--}}
+{{--                                       name="ngay_ban_hanh">--}}
+{{--                            </div>--}}
                             <div class="form-group col-md-3">
-                                <label for="ngay_ban_hanh" class="col-form-label">Ngày ban hành <span
-                                        class="color-red">*</span></label>
-                                <input class="form-control vanbantrung" tabindex="3"
-                                       id="vb_ngay_ban_hanh"
-                                       value="" required type="date"
-                                       name="ngay_ban_hanh">
+                                <div class="form-group">
+                                    <label for="vb_ngay_ban_hanh">Ngày ban hành <span
+                                            style="color: red">*</span></label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control vanbantrung datepicker "
+                                               value=""
+                                               name="ngay_ban_hanh" id="vb_ngay_ban_hanh"
+                                               placeholder="dd/mm/yyyy" required>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-3" hidden style="margin-top: 10px">
                                 <div class="form-group">
@@ -78,12 +93,26 @@
                                 </div>
                             </div>
 
+{{--                            <div class="col-md-3">--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label for="">Ngày họp <span class="color-red">*</span></label>--}}
+{{--                                    <input type="date" tabindex="6" required class="form-control ngaybanhanh2"--}}
+{{--                                           value=""--}}
+{{--                                           name="ngay_hop_chinh" placeholder="">--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="">Ngày họp <span class="color-red">*</span></label>
-                                    <input type="date" tabindex="6" required class="form-control ngaybanhanh2"
-                                           value=""
-                                           name="ngay_hop_chinh" placeholder="">
+                                    <label for="ngay_hop_chinh">Ngày họp <span
+                                            style="color: red">*</span></label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control ngaybanhanh2  datepicker" value=""
+                                               name="ngay_hop_chinh" id="ngay_hop_chinh"
+                                               placeholder="dd/mm/yyyy" required>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
