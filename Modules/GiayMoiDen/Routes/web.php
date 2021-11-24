@@ -27,3 +27,5 @@ Route::match(['get', 'post'], 'layhantruyensangview', ['as' =>'hanview' , 'uses'
 //Route::get('so-den', array('as' => 'soden', 'uses' => 'VanBanDenController@laysoden'));
 Route::get('nhap-giay-moi-di', array('as' => 'nhapGiayMoiDi', 'uses' => 'GiayMoiDenController@nhapGiayMoiDiVanThuSo'));
 Route::get('giay-moi-don-vi', array('as' => 'giayMoiDonVi', 'uses' => 'GiayMoiDenController@giayMoiDonVi'));
+Route::get('gui-tin-nhan-hoa-GM', 'GiayMoiDenController@guiTinHoanGM')->name('guiTinHoanGM');
+Route::post('hoan-hop', ['as' =>'hoanHOP' , 'uses' => 'GiayMoiDenController@hoanHOP']);

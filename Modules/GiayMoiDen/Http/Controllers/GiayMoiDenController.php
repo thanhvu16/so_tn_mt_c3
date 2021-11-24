@@ -19,6 +19,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\VanBanDen\Entities\FileVanBanDen;
+use Modules\VanBanDen\Entities\GiayMoiHoan;
 use Modules\VanBanDen\Entities\VanBanDen;
 use File, auth, DB;
 use Modules\VanBanDen\Entities\VanBanDenDonVi;
@@ -269,6 +270,29 @@ class GiayMoiDenController extends Controller
 
 
         return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen', 'danhSachDonVi'));
+    }
+
+    public function guiTinHoanGM()
+    {
+
+        return view('giaymoiden::giay_moi_den.hoanGMH');
+    }
+    public function hoanHOP(Request $request)
+    {
+        $nguoiDung = auth::user();
+        $trichyeu = $request->vb_trich_yeu;
+        $sodengiaymoi = $request->vb_so_den;
+        $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
+        $ngayhopchinh = $request->ngay_hop_chinh;
+        $diadiemchinh = $request->dia_diem_chinh;
+        $vanBanDen = VanBanDen::where('so_den',$sodengiaymoi)->where(['type' => 1])->where('so_van_ban_id', '!=', 100)->first();
+        $GiayMoi = new GiayMoiHoan();
+        $GiayMoi->van_ban_den_id = $vanBanDen ? $vanBanDen->id : null;
+        $GiayMoi->so_den = $sodengiaymoi;
+        $GiayMoi->save();
+        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . formatDMY($ngayhopchinh) . ', Tại:' . $diadiemchinh;
+        $conVertTY = vn_to_str($noidungtn);
+        VanBanDen::guiSMSHoanHop($conVertTY, $nguoiDung->so_dien_thoai);
     }
 
     public function layhantruyensangview(Request $request)
