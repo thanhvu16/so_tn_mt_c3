@@ -580,13 +580,19 @@ class GiayMoiDenController extends Controller
                     $vanbandv->chuc_vu = $chucvu;
                     $vanbandv->type = 1;
                     //họp chính
-                    $vanbandv->gio_hop = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
-                    $vanbandv->dia_diem = $diadiemchinh;
-                    //nếu không tách nhỏ thì họp con sẽ là họp chính
-                    $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
-                    $vanbandv->ngay_hop_phu = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
-                    $vanbandv->dia_diem_phu = $diadiemchinh;
+                    if($request->ngay_hop_chinh)
+                    {
+                        $vanbandv->gio_hop = $gio_hop_chinh_fomart;
+                        $vanbandv->ngay_hop = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
+                        $vanbandv->dia_diem = $diadiemchinh;
+
+                        //nếu không tách nhỏ thì họp con sẽ là họp chính
+                        $vanbandv->gio_hop_phu = $gio_hop_chinh_fomart;
+                        $vanbandv->ngay_hop_phu = !empty($request->ngay_hop_chinh) ? formatYMD($request->ngay_hop_chinh) : null;
+                        $vanbandv->dia_diem_phu = $diadiemchinh;
+                    }
+
+
                     $vanbandv->ngay_ban_hanh = !empty($request->ngay_ban_hanh) ? formatYMD($request->ngay_ban_hanh) : null;
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
@@ -630,7 +636,14 @@ class GiayMoiDenController extends Controller
                         })
                         ->where('trang_thai', ACTIVE)
                         ->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
-                    $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . formatDMY($ngayhopchinh) . ', Tại:' . $diadiemchinh;
+                    if($request->ngay_hop_chinh)
+                    {
+                        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . formatDMY($ngayhopchinh) . ', Tại:' . $diadiemchinh;
+
+                    }else{
+                        $noidungtn = $sodengiaymoi . ',' . $trichyeu;
+
+                    }
                     $conVertTY = vn_to_str($noidungtn);
                     VanBanDen::guiSMSOnly($conVertTY, $nguoiDung->so_dien_thoai);
                 }

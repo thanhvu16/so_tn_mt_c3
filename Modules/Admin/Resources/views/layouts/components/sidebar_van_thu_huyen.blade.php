@@ -31,7 +31,7 @@
     <ul class="treeview-menu">
         <li class="{{ Route::is('giay-moi-den.index') ? 'active' : '' }}"><a href="{{ route('giay-moi-den.index') }}"><i class="fa fa-circle-o"></i>Danh sách</a></li>
         <li class="{{ Route::is('giay-moi-den.create') ? 'active' : '' }}"><a href="{{ route('giay-moi-den.create') }}"><i class="fa fa-circle-o"></i>Thêm mới</a></li>
-        <li class="{{ Route::is('guiTinHoanGM') ? 'active' : '' }}"><a href="{{ route('guiTinHoanGM') }}"><i class="fa fa-circle-o"></i>Gửi tin nhắn hoãn họp</a></li>
+{{--        <li class="{{ Route::is('guiTinHoanGM') ? 'active' : '' }}"><a href="{{ route('guiTinHoanGM') }}"><i class="fa fa-circle-o"></i>Gửi tin nhắn hoãn họp</a></li>--}}
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
 </li>

@@ -108,7 +108,7 @@
                                     <div class="input-group date">
                                         <input type="text" class="form-control ngaybanhanh2  datepicker" value=""
                                                name="ngay_hop_chinh" id="ngay_hop_chinh"
-                                               placeholder="dd/mm/yyyy" required>
+                                               placeholder="dd/mm/yyyy" >
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </div>
@@ -118,7 +118,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Địa điểm <span class="color-red">*</span></label>
-                                    <input type="text" required class="form-control"
+                                    <input type="text"  class="form-control"
                                            value=""
                                            name="dia_diem_chinh" tabindex="7" placeholder="Địa điểm">
                                 </div>
