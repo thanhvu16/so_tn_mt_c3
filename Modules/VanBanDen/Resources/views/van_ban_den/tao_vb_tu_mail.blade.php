@@ -142,7 +142,7 @@
                                             <div class="input-group date">
                                                 <input type="text" class="form-control  datepicker" value="@if($data_xml){{!empty($data_xml->STRNGAYHOP) && ($data_xml->STRNGAYHOP > '1970/01/01') ? date('d/m/Y', strtotime($data_xml->STRNGAYHOP)) : ''}}@endif"
                                                        name="ngay_hop_chinh" id="ngay_hop_chinh"
-                                                       placeholder="dd/mm/yyyy" required>
+                                                       placeholder="dd/mm/yyyy" >
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar-o"></i>
                                                 </div>
