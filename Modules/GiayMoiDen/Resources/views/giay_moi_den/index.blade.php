@@ -214,8 +214,9 @@
                                         <span
                                             style="font-style: italic">{{$vbDen->noi_dung_hop ?? ''}}</span>@if($vbDen->noi_dung_hop != null)
                                             <br>@endif
-                                                       (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  @if($vbDen->ngay_hop_phu)ngày {{ date('d/m/Y', strtotime($vbDen->ngay_hop_phu)) }} @endif ,tại {{$vbDen->dia_diem_phu}})
-                                        @if($vbDen->han_xu_ly == null)@else | (Hạn xử
+                                        @if($vbDen->ngay_hop_chinh != null)
+                                   (Nội dung: {{$vbDen->noi_dung}}. Vào hồi {{date('H:i', strtotime($vbDen->gio_hop_phu))}}  @if($vbDen->ngay_hop_phu)ngày {{ date('d/m/Y', strtotime($vbDen->ngay_hop_phu)) }} @endif ,tại {{$vbDen->dia_diem_phu}}) |@endif
+                                        @if($vbDen->han_xu_ly == null)@else  (Hạn xử
                                         lý: {{ date('d-m-Y', strtotime($vbDen->han_xu_ly)) }})@endif<br>
                                         <span
                                             style="font-style: italic">Người nhập : {{$vbDen->nguoiDung->ho_ten ?? ''}}</span> -
