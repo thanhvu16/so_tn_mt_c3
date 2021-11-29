@@ -292,7 +292,8 @@ class VanBanDen extends Model
     }
     public function lanhDaoDaChiDao()
     {
-        return $this->hasMany(LanhDaoChiDao::class, 'van_ban_den_id', 'id')->where('trang_thai',1);
+        return $this->hasMany(LanhDaoChiDao::class, 'van_ban_den_id', 'id');
+//            ->where('trang_thai',1);
     }
 
     public function checkQuyenGiaHan($userId = null)

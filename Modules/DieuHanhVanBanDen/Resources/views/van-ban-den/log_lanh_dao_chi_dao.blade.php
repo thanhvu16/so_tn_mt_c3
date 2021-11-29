@@ -14,7 +14,7 @@
                         <th class="text-center" width="4%">STT</th>
                         <th class="text-center" width="15%">Lãnh đạo</th>
                         <th class="text-center">ý kiến</th>
-                        <th class="text-center" width="15%">Thời gian ý kiến</th>
+                        <th class="text-center" width="15%">Thời gian</th>
                     </tr>
                     </thead>
                     <tbody>
