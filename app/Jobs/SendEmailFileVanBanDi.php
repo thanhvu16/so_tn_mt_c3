@@ -211,7 +211,6 @@ class SendEmailFileVanBanDi implements ShouldQueue
         $STRTENDONVI_NG->appendChild($STRTENDONVI_NG_Text);
 
         $NOINHANVANBAN = $xml->createElement("NOINHANVANBAN");
-
         foreach ($vanBanDi->mailngoaitp as $key => $donViBenNgoai) {
 //            dd($donViBenNgoai->laytendonvingoai);
             $STRMADONVI_NN = $xml->createElement('STRMADONVI');

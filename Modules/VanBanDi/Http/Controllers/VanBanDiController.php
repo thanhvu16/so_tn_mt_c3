@@ -2129,7 +2129,18 @@ class VanBanDiController extends Controller
                 }
 
 //                gửi mail đến các đơn vị ngoài
-                SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
+                if(count($vanban->mailngoaitp) > 0)
+                {
+                    SendEmailFileVanBanDi::dispatchNow(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId);
+
+                }else{
+                    foreach ($vanban->vanBanDiFileDaKy as $file) {
+                        $file->trang_thai_gui = FileVanBanDi::TRANG_THAI_DA_GUI;
+                        $file->save();
+                    }
+                    $vanban->phat_hanh_van_ban = VanBanDi::DA_PHAT_HANH;
+                    $vanban->save();
+                }
 //                SendEmailFileVanBanDi::dispatch(VanBanDi::LOAI_VAN_BAN_DI, null, $donViId)->delay(now()->addMinutes(3));
             }
         }
