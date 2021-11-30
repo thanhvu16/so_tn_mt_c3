@@ -50,12 +50,23 @@ class GiayMoiDenController extends Controller
         $so_den = $request->get('vb_so_den');
         $so_van_ban = $request->get('so_van_ban_id');
         $nguoi_ky = $request->get('nguoi_ky_id');
-        $ngaybatdau1 = $request->get('start_date1');
-        $ngayketthuc1 = $request->get('end_date1');
-        $ngaybatdau = $request->get('start_date');
-        $ngayketthuc = $request->get('end_date');
-        $ngaybanhanhbatdau = $request->get('ngay_ban_hanh_date');
-        $ngaybanhanhketthuc = $request->get('end_ngay_ban_hanh');
+
+        $ngaybatdau1 = formatYMD($request->start_date1);
+        $ngayketthuc1 =  formatYMD($request->end_date1);
+
+        $ngaybatdau = formatYMD($request->start_date);
+        $ngayketthuc =  formatYMD($request->end_date);
+
+        $ngaybanhanhbatdau = formatYMD($request->ngay_ban_hanh_date);
+        $ngaybanhanhketthuc =  formatYMD($request->end_ngay_ban_hanh);
+
+
+//        $ngaybatdau1 = $request->get('start_date1');
+//        $ngayketthuc1 = $request->get('end_date1');
+//        $ngaybatdau = $request->get('start_date');
+//        $ngayketthuc = $request->get('end_date');
+//        $ngaybanhanhbatdau = $request->get('ngay_ban_hanh_date');
+//        $ngaybanhanhketthuc = $request->get('end_ngay_ban_hanh');
         $year = $request->get('year') ?? null;
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id', 'ten_loai_van_ban')->first();
         $danhSachDonVi = null;

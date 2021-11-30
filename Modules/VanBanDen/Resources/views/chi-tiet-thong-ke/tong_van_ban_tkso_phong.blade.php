@@ -28,7 +28,7 @@
 
 
                     <div class="box-body" >
-                        Tổng số văn bản: <b>{{ $danhSachVanBanDenDonVi->count() }}</b>
+                        Tổng số văn bản: <b style="font-size: 16px">{{ $danhSachVanBanDenDonVi->total() }}</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
@@ -168,14 +168,11 @@
                         </table>
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-
+{{--                                Tổng số văn bản: <b style="font-size: 16px">{{ $danhSachVanBanDenDonVi->total() }}</b>--}}
                             </div>
                             <div class="col-md-6 text-right">
-{{--                                {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'), 'vb_so_den' => Request::get('vb_so_den')--}}
-{{--                       ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),--}}
-{{--                       'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),--}}
-{{--                       'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),--}}
-{{--                       'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' =>Request::get('year')])->render() !!}--}}
+                                {!! $danhSachVanBanDenDonVi->appends(['tu_ngay' => Request::get('tu_ngay'),'den_ngay' => Request::get('den_ngay'), 'loai_van_ban_id' => Request::get('loai_van_ban_id')
+                       ,'don_vi_xu_ly_chinh' => Request::get('don_vi_xu_ly_chinh')])->render() !!}
                             </div>
                         </div>
                     </div>
