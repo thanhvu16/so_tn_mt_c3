@@ -210,6 +210,7 @@ class VanBanDen extends Model
         return $this->belongsTo(User::class, 'nguoi_tao', 'id');
     }
 
+
     public function vanBanDenFile()
     {
         return $this->hasMany(FileVanBanDen::class, 'vb_den_id', 'id')->whereNull('deleted_at');
