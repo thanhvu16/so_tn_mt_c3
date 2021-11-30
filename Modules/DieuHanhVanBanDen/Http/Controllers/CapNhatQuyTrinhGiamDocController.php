@@ -658,6 +658,13 @@ class CapNhatQuyTrinhGiamDocController extends Controller
         $vanBanDenIds = json_decode($data['van_ban_den_id']);
         if (isset($vanBanDenIds) && count($vanBanDenIds) > 0) {
             foreach ($vanBanDenIds as $vanBanDenId) {
+                //Lưu lại vết phòng cũ
+                $phongCu = DonViChuTri::where('van_ban_den_id', $vanBanDenId)->first();
+                $luuVet = new LuuVet();
+                $luuVet->phong_cu = $phongCu->don_vi_id;
+                $luuVet->nguoi_phan_lai = auth::user()->id;
+                $luuVet->van_ban_den_id = $phongCu->van_ban_den_id;
+                $luuVet->save();
                 //xóa thành phần dự họp
                 ThanhPhanDuHop::where(['object_id' => $vanBanDenId])->delete();
                 //xóa lịch công tác
