@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\NhomDonVi;
 use Modules\VanBanDen\Entities\VanBanDen;
@@ -42,7 +43,11 @@ if (!function_exists('getUrlFile')) {
     }
 }
 
-
+function hoTen($id)
+{
+    $hoTen = User::where('id',$id)->first();
+    return $hoTen->ho_ten;
+}
 if (!function_exists('getStatusLabel')) {
     function getStatusLabel($status)
     {
