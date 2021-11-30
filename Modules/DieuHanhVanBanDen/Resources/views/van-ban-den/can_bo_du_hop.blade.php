@@ -1,4 +1,4 @@
-@if (count($canBoDuHop) > 0)
+@if($vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id)
     <div class="col-md-12 mt-3">
         <div class="table-responsive box-panel">
             <h3>
@@ -16,7 +16,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($canBoDuHop as $key=>$data)
+                    @forelse($canBoDuHop as $key=>$data)
                     <tr>
                         <td class="text-center"><span class="color-red text-bold">{{ $key+1 }}</span></td>
                         <td class="text-center">{{  hoTen($data) }}
@@ -24,7 +24,8 @@
 
 
                     </tr>
-                    @endforeach
+                    @empty
+                    @endforelse
                     </tbody>
                 </table>
             </div>
