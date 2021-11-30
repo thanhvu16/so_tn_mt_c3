@@ -60,10 +60,12 @@ class VanBanDenController extends Controller
         $loai_van_ban = $request->get('loai_van_ban_id');
         $so_van_ban = $request->get('so_van_ban_id');
         $nguoi_ky = $request->get('nguoi_ky_id');
-        $ngaybatdau = $request->get('start_date');
-        $ngayketthuc = $request->get('end_date');
-        $ngaybanhanhbatdau = $request->get('ngay_ban_hanh_date');
-        $ngaybanhanhketthuc = $request->get('end_ngay_ban_hanh');
+
+        $ngaybatdau = formatYMD($request->start_date);
+        $ngayketthuc =  formatYMD($request->end_date);
+
+        $ngaybanhanhbatdau = formatYMD($request->ngay_ban_hanh_date);
+        $ngaybanhanhketthuc = formatYMD($request->end_ngay_ban_hanh);
         $year = $request->get('year') ?? null;
         $danhSachDonVi = null;
         $page = $request->get('page');

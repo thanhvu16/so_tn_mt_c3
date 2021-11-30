@@ -118,22 +118,48 @@
                                                        id="vb_so_ky_hieu"
                                                        placeholder="Số ký hiệu">
                                             </div>
-                                            <div class="form-group col-md-3" >
-                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>
-                                                <div id="">
-                                                    <input class="form-control " id="start_date"
-                                                           value="{{Request::get('start_date')}}" type="date"
-                                                           name="start_date">
+{{--                                            <div class="form-group col-md-3" >--}}
+{{--                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày nhập từ</label>--}}
+{{--                                                <div id="">--}}
+{{--                                                    <input class="form-control " id="start_date"--}}
+{{--                                                           value="{{Request::get('start_date')}}" type="date"--}}
+{{--                                                           name="start_date">--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+                                            <div class="form-group col-md-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail4">Ngày nhập từ</label>
+                                                    <div class="input-group date">
+                                                        <input type="text" class="form-control  datepicker"
+                                                               name="start_date" id="start_date" value="{{Request::get('start_date')}}"
+                                                               placeholder="dd/mm/yyyy" >
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-3" >
-                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>
-                                                <div id="">
-                                                    <input class="form-control " id="end_date"
-                                                           value="{{Request::get('end_date')}}" type="date"
-                                                           name="end_date">
+                                            <div class="form-group col-md-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail4">Nhập đến ngày</label>
+                                                    <div class="input-group date">
+                                                        <input type="text" class="form-control  datepicker"
+                                                               name="end_date" id="end_date" value="{{Request::get('end_date')}}"
+                                                               placeholder="dd/mm/yyyy" >
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+{{--                                            <div class="form-group col-md-3" >--}}
+{{--                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Nhập đến ngày</label>--}}
+{{--                                                <div id="">--}}
+{{--                                                    <input class="form-control " id="end_date"--}}
+{{--                                                           value="{{Request::get('end_date')}}" type="date"--}}
+{{--                                                           name="end_date">--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
                                             <div class="form-group col-md-3" >
                                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Cơ quan ban
                                                     hành</label>
@@ -141,6 +167,7 @@
                                                        value="{{Request::get('co_quan_ban_hanh_id')}}"
                                                        class="form-control">
                                             </div>
+                                            <div class="row clearfix"></div>
                                             <div class="form-group col-md-3" >
                                                 <label for="sokyhieu" class="col-form-label">Người ký</label>
                                                 <input type="text" value="{{Request::get('nguoi_ky_id')}}"
@@ -178,22 +205,48 @@
                                                     <option value="10" {{ Request::get('trinh_tu_nhan_van_ban') == 10 ? 'selected' : null }}>Đã hoàn thành</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-3" >
-                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành từ</label>
-                                                <div id="">
-                                                    <input class="form-control " id="start_date"
-                                                           value="{{Request::get('ngay_ban_hanh_date')}}" type="date"
-                                                           name="ngay_ban_hanh_date">
+{{--                                            <div class="form-group col-md-3" >--}}
+{{--                                                <label for="vb_ngay_ban_hanh" class="col-form-label">Ngày ban hành từ</label>--}}
+{{--                                                <div id="">--}}
+{{--                                                    <input class="form-control " id="start_date"--}}
+{{--                                                           value="{{Request::get('ngay_ban_hanh_date')}}" type="date"--}}
+{{--                                                           name="ngay_ban_hanh_date">--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+                                            <div class="form-group col-md-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail4">Ngày ban hành từ</label>
+                                                    <div class="input-group date">
+                                                        <input type="text" class="form-control  datepicker"
+                                                               name="ngay_ban_hanh_date" id="ngay_ban_hanh_date" value="{{Request::get('ngay_ban_hanh_date')}}"
+                                                               placeholder="dd/mm/yyyy" >
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-3" >
-                                                <label for="vb_ngay_ban_hanh" class="col-form-label"> đến ngày</label>
-                                                <div id="">
-                                                    <input class="form-control " id="end_date"
-                                                           value="{{Request::get('end_ngay_ban_hanh')}}" type="date"
-                                                           name="end_ngay_ban_hanh">
+                                            <div class="form-group col-md-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail4">đến ngày</label>
+                                                    <div class="input-group date">
+                                                        <input type="text" class="form-control  datepicker"
+                                                               name="end_ngay_ban_hanh" id="end_ngay_ban_hanh" value="{{Request::get('end_ngay_ban_hanh')}}"
+                                                               placeholder="dd/mm/yyyy" >
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+{{--                                            <div class="form-group col-md-3" >--}}
+{{--                                                <label for="vb_ngay_ban_hanh" class="col-form-label"> đến ngày</label>--}}
+{{--                                                <div id="">--}}
+{{--                                                    <input class="form-control " id="end_date"--}}
+{{--                                                           value="{{Request::get('end_ngay_ban_hanh')}}" type="date"--}}
+{{--                                                           name="end_ngay_ban_hanh">--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
                                             <div class="form-group col-md-3" >
                                                 <label class="col-form-label">Năm</label>
                                                 <select name="year" id="year" class="form-control select2">
