@@ -2,12 +2,12 @@
     <div class="col-md-12 mt-3">
         <div class="table-responsive box-panel">
             <h3>
-                <a data-toggle="collapse" href="#phong-chu-tri" class="color-black font-weight-bold">
+                <a data-toggle="collapse" href="#phong-chu-tri1" class="color-black font-weight-bold">
                     <i class="fa fa-link"></i> Lãnh đạo chỉ đạo:
                     <i class="fa fa-plus pull-right"></i>
                 </a>
             </h3>
-            <div id="phong-chu-tri" class="panel-collapse collapse">
+            <div id="phong-chu-tri1" class="panel-collapse collapse">
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row">

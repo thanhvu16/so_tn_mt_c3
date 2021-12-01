@@ -20,6 +20,7 @@ use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use File, auth, DB, Excel;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\LuuVet;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Modules\VanBanDen\Entities\FileVanBanDen;
@@ -378,6 +379,13 @@ class VanBanDenController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
+
+    public function vanBanChuyenPhong()
+    {
+        $vanBanChuyenPhong = LuuVet::where('phong_cu',auth::user()->don_vi_id)->paginate(PER_PAGE);;
+        return view('vanbanden::van_ban_den.phong_cu',
+            compact('vanBanChuyenPhong'));
+    }
 
     public function checkGiayMoi(Request $request)
     {

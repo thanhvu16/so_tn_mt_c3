@@ -2,12 +2,12 @@
     <div class="col-md-12 mt-3">
         <div class="table-responsive box-panel">
             <h3>
-                <a data-toggle="collapse" href="#log-van-ban-di" class="color-black font-weight-bold">
+                <a data-toggle="collapse" href="#log-van-ban-di1" class="color-black font-weight-bold">
                     <i class="fa fa-link"></i> Lưu vết phân văn bản:
                     <i class="fa fa-plus pull-right"></i>
                 </a>
             </h3>
-            <div id="log-van-ban-di" class="panel-collapse collapse">
+            <div id="log-van-ban-di1" class="panel-collapse collapse">
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
                     <tr role="row" class="text-center">

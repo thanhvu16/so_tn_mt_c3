@@ -138,6 +138,14 @@ Route::is('cong-viec-don-vi.dang-xu-ly') || Route::is('gia-han-cong-viec.index')
             </span>
     </a>
 </li>
+<li class="{{ Route::is('vanBanChuyenPhong') || Route::is('vanBanChuyenPhong') ? 'active' : '' }} ">
+    <a href="{{route('vanBanChuyenPhong')}}">
+        <i class="fa fa-folder"></i> <span>Văn bản chuyển đơn vị</span>
+        <span class="pull-right-container">
+
+            </span>
+    </a>
+</li>
 <li class="treeview {{ Route::is('danh-gia-can-bo-c2.index') || Route::is('captrendanhgiac2') || Route::is('thongkephongthang') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-users"></i> <span>Đánh giá cán bộ</span>
