@@ -404,19 +404,37 @@ class AdminController extends Controller
             ->whereNull('status')
             ->whereNull('hoan_thanh')
             ->get();
+        $vanBanChoXuLy = VanBanDen::whereHas('vanBanLanhDao')
+            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
+            ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+            ->count();
+
+        $giayMoiChoXuLy = VanBanDen::whereHas('vanBanLanhDao')
+            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
+            ->where('loai_van_ban_id', $loaiVanBanGiayMoi->id)
+            ->count();
 
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
 
-            $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
-                ->select('id', 'van_ban_den_id')
-                ->whereNotNull('vao_so_van_ban')
-                ->whereNull('hoan_thanh')
-                ->select('id', 'van_ban_den_id')
-                ->get();
+//            $xuLyVanBanDen = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+//                ->where('can_bo_nhan_id', $user->id)
+//                ->select('id', 'van_ban_den_id')
+//                ->whereNotNull('vao_so_van_ban')
+//                ->whereNull('hoan_thanh')
+//                ->select('id', 'van_ban_den_id')
+//                ->get();
+            $vanBanChoXuLy = VanBanDen::whereHas('vanBanCapXa')
+                ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
+                ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+                ->count();
+
+            $giayMoiChoXuLy = VanBanDen::whereHas('vanBanCapXa')
+                ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
+                ->where('loai_van_ban_id', $loaiVanBanGiayMoi->id)
+                ->count();
         }
 
-        $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
+//        $arrIdVanBanDenDonVi = $xuLyVanBanDen->pluck('van_ban_den_id')->toArray();
 
         $vanBanChoYKien = LanhDaoChiDao::where('lanh_dao_id', auth::user()->id)
             ->whereNull('trang_thai')
@@ -424,31 +442,23 @@ class AdminController extends Controller
         array_push($hoSoCongViecPiceCharts, array('Văn bản chờ ý kiến', $vanBanChoYKien));
         array_push($hoSoCongViecCoLors, COLOR_GREEN);
 
-        $vanBanChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
-            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-            ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
-            ->count();
 
-        $giayMoiChoXuLy = VanBanDen::whereIn('id', $arrIdVanBanDenDonVi)
-            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-            ->where('loai_van_ban_id', $loaiVanBanGiayMoi->id)
-            ->count();
 
         if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, PHO_PHONG, PHO_CHANH_VAN_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN])) {
 
-            $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
-                ->where('can_bo_nhan_id', $user->id)
-                ->whereNotNull('vao_so_van_ban')
-                ->whereNull('hoan_thanh')
-                ->get();
+//          *  $donViChuTri = DonViChuTri::where('don_vi_id', $user->don_vi_id)
+//                ->where('can_bo_nhan_id', $user->id)
+//                ->whereNotNull('vao_so_van_ban')
+//                ->whereNull('hoan_thanh')
+//                ->get();
+//
+//            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
 
-            $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
-
-            $vanBanChoXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            $vanBanChoXuLy = VanBanDen::whereHas('vanBanPhong')
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
                 ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
                 ->count();
-            $giayMoiChoXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
+            $giayMoiChoXuLy = VanBanDen::whereHas('vanBanPhong')
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
                 ->where('loai_van_ban_id', $loaiVanBanGiayMoi->id)
                 ->count();
@@ -810,6 +820,21 @@ class AdminController extends Controller
                     ->get();
 
                 $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+
+                $vanBanQuaHanDangXuLy = VanBanDen::whereHas('vanBanQuaHanPhong')
+                    ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+                    ->where(function ($query) use ($currentDate) {
+                        return $query->where('han_xu_ly', '<', $currentDate);
+                    })
+                    ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+                    ->count();
+                $giayMoiQuaHanDangXuLy = VanBanDen::whereHas('vanBanQuaHanPhong')
+                    ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+                    ->where(function ($query) use ($currentDate) {
+                        return $query->where('han_xu_ly', '<', $currentDate);
+                    })
+                    ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
+                    ->count();
             }
 
             if ($donVi->cap_xa = DonVi::CAP_XA) {
@@ -822,22 +847,24 @@ class AdminController extends Controller
                     ->get();
 
                 $arrVanBanDenId = $donViChuTri->pluck('van_ban_den_id')->toArray();
+
+                $vanBanQuaHanDangXuLy = VanBanDen::whereHas('vanBanQuaHanCapXa')
+                    ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+                    ->where(function ($query) use ($currentDate) {
+                        return $query->where('han_xu_ly', '<', $currentDate);
+                    })
+                    ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
+                    ->count();
+                $giayMoiQuaHanDangXuLy = VanBanDen::whereHas('vanBanQuaHanCapXa')
+                    ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+                    ->where(function ($query) use ($currentDate) {
+                        return $query->where('han_xu_ly', '<', $currentDate);
+                    })
+                    ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
+                    ->count();
             }
 
-            $vanBanQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
-                ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
-                ->where(function ($query) use ($currentDate) {
-                    return $query->where('han_xu_ly', '<', $currentDate);
-                })
-                ->where('loai_van_ban_id', '!=',$loaiVanBanGiayMoi->id)
-                ->count();
-            $giayMoiQuaHanDangXuLy = VanBanDen::whereIn('id', $arrVanBanDenId)
-                ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
-                ->where(function ($query) use ($currentDate) {
-                    return $query->where('han_xu_ly', '<', $currentDate);
-                })
-                ->where('loai_van_ban_id',$loaiVanBanGiayMoi->id)
-                ->count();
+
 
             array_push($hoSoCongViecPiceCharts, array('VB quá hạn đang xử lý', $vanBanQuaHanDangXuLy));
             array_push($hoSoCongViecCoLors, COLOR_YELLOW);

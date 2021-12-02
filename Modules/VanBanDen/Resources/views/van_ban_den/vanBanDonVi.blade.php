@@ -148,17 +148,17 @@
                                                        class="form-control">
                                             </div>
 
-                                            <div class="form-group col-md-3">
-                                                <label for="sokyhieu" class="col-form-label">Đơn vị phối hợp</label>
-                                                <select class="form-control select2" id="don_vi_phoi_hop_id"
-                                                        name="don_vi_phoi_hop_id">
-                                                    <option value="">-- Chọn đơn vị phối hợp --</option>
-                                                    @foreach ($danhSachDonVi as $donVi)
-                                                        <option
-                                                            value="{{ $donVi->id }}" {{ Request::get('don_vi_phoi_hop_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+{{--                                            <div class="form-group col-md-3">--}}
+{{--                                                <label for="sokyhieu" class="col-form-label">Đơn vị phối hợp</label>--}}
+{{--                                                <select class="form-control select2" id="don_vi_phoi_hop_id"--}}
+{{--                                                        name="don_vi_phoi_hop_id">--}}
+{{--                                                    <option value="">-- Chọn đơn vị phối hợp --</option>--}}
+{{--                                                    @foreach ($danhSachDonVi as $donVi)--}}
+{{--                                                        <option--}}
+{{--                                                            value="{{ $donVi->id }}" {{ Request::get('don_vi_phoi_hop_id') == $donVi->id ? 'selected' : '' }}>{{ $donVi->ten_don_vi }}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
                                             <div class="form-group col-md-3">
                                                 <label class="col-form-label">Trạng thái văn bản</label>
                                                 <select class="form-control select2"  id="trinh_tu_nhan_van_ban"  name="trinh_tu_nhan_van_ban">

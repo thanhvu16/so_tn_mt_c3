@@ -93,6 +93,7 @@ class GiayMoiDenController extends Controller
                         });
                     }
                 })
+
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
