@@ -1126,7 +1126,7 @@ class ThongkeVanBanDenController extends Controller
             ->whereHas('searchVanBanDen', function ($query) {
                 return $query->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN);
             })
-            ->select('van_ban_den_id')->distinct('van_ban_den_id')->get();
+            ->select('van_ban_den_id')->distinct('van_ban_den_id')->paginate(10);
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -1216,7 +1216,7 @@ class ThongkeVanBanDenController extends Controller
                 }
             })
             ->distinct('van_ban_den_id')
-            ->get('van_ban_den_id');
+            ->paginate(10);
         if ($request->get('type') == 'excel') {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
@@ -1307,7 +1307,7 @@ class ThongkeVanBanDenController extends Controller
                 }
             })
             ->distinct('van_ban_den_id')
-            ->get('van_ban_den_id');
+            ->paginate(10);
 
 
 
@@ -1379,7 +1379,7 @@ class ThongkeVanBanDenController extends Controller
         $danhSachVanBanDenDonVi = DonViChuTri::whereIn('van_ban_den_id', $arrVanBanDenId)
             ->where('don_vi_id', $donVi->id)
             ->distinct('van_ban_den_id')
-            ->get('van_ban_den_id');
+            ->paginate(10);
 
 
 
