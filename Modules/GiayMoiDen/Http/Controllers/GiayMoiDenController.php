@@ -42,6 +42,8 @@ class GiayMoiDenController extends Controller
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('id', 'desc')->get();
         $nguoi_dung = User::permission('tham mưu')->where(['trang_thai' => ACTIVE, 'don_vi_id' => $user->don_vi_id])->orderBy('id', 'DESC')->get();
+        $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
+        $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
 
         //search
         $trichyeu = $request->get('vb_trich_yeu');
@@ -50,6 +52,8 @@ class GiayMoiDenController extends Controller
         $so_den = $request->get('vb_so_den');
         $so_van_ban = $request->get('so_van_ban_id');
         $nguoi_ky = $request->get('nguoi_ky_id');
+        $do_khan = $request->get('do_khan');
+        $do_mat = $request->get('do_mat');
 
         $ngaybatdau1 = formatYMD($request->start_date1);
         $ngayketthuc1 =  formatYMD($request->end_date1);
@@ -155,6 +159,16 @@ class GiayMoiDenController extends Controller
                             ->where('ngay_nhan', '<=', $ngayketthuc);
                     }
                 })
+                ->where(function ($query) use ($do_khan) {
+                    if (!empty($do_khan)) {
+                        return $query->where('do_khan_cap_id', $do_khan);
+                    }
+                })
+                ->where(function ($query) use ($do_mat) {
+                    if (!empty($do_mat)) {
+                        return $query->where('do_bao_mat_id', $do_mat);
+                    }
+                })
                 ->where(function ($query) use ($ngaybatdau, $ngayketthuc) {
                     if ($ngaybatdau != '' && $ngayketthuc != '' && $ngaybatdau <= $ngayketthuc) {
                         return $query->where('ngay_hop', '>=', $ngaybatdau)
@@ -196,6 +210,16 @@ class GiayMoiDenController extends Controller
                 ->where(function ($query) use ($trichyeu) {
                     if (!empty($trichyeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichyeu) . "%");
+                    }
+                })
+                ->where(function ($query) use ($do_khan) {
+                    if (!empty($do_khan)) {
+                        return $query->where('do_khan_cap_id', $do_khan);
+                    }
+                })
+                ->where(function ($query) use ($do_mat) {
+                    if (!empty($do_mat)) {
+                        return $query->where('do_bao_mat_id', $do_mat);
                     }
                 })
                 ->where(function ($query) use ($so_den) {
@@ -281,7 +305,7 @@ class GiayMoiDenController extends Controller
         }
 
 
-        return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen', 'danhSachDonVi'));
+        return view('giaymoiden::giay_moi_den.index', compact('ds_vanBanDen', 'danhSachDonVi','ds_mucBaoMat','ds_doKhanCap'));
     }
 
     public function guiTinHoanGM()
@@ -590,6 +614,8 @@ class GiayMoiDenController extends Controller
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
                     $vanbandv->chuc_vu = $chucvu;
+                    $vanbandv->do_khan_cap_id = $request->do_khan;
+                    $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->type = 1;
                     //họp chính
                     if($request->ngay_hop_chinh)
@@ -773,6 +799,8 @@ class GiayMoiDenController extends Controller
                     $vanbandv->loai_van_ban_id = $loaivanban;
                     $vanbandv->trich_yeu = $trichyeu;
                     $vanbandv->chuc_vu = $chucvu;
+                    $vanbandv->do_khan_cap_id = $request->do_khan;
+                    $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->type = 2;
                     //họp chính
                     $vanbandv->gio_hop = $gio_hop_chinh_fomart;

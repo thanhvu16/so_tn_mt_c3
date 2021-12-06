@@ -53,7 +53,7 @@
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
                                         <input type="text" class="form-control vanbantrung datepicker "
-                                               value=""
+                                               value=""  tabindex="3"
                                                name="ngay_ban_hanh" id="vb_ngay_ban_hanh"
                                                placeholder="dd/mm/yyyy" required>
                                         <div class="input-group-addon">
@@ -107,7 +107,7 @@
                                             style="color: red">*</span></label>
                                     <div class="input-group date">
                                         <input type="text" class="form-control ngaybanhanh2  datepicker" value=""
-                                               name="ngay_hop_chinh" id="ngay_hop_chinh"
+                                               name="ngay_hop_chinh" id="ngay_hop_chinh" tabindex="6"
                                                placeholder="dd/mm/yyyy" >
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
@@ -238,6 +238,30 @@
                                 <label for="sokyhieu" class="col-form-label">Chức vụ </label>
                                 <input type="text" class="form-control " placeholder="nhập chức vụ"
                                        value=""  name="chuc_vu">
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Độ Mật</label>
+                                    <select class="form-control select2" name="do_mat">
+                                        {{--                                        <option value="">-- Chọn độ mật--</option>--}}
+                                        @foreach($ds_mucBaoMat as $domatds)
+                                            <option value="{{ $domatds->id }}">{{ $domatds->ten_muc_do }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Độ khẩn</label>
+                                    <select class="form-control select2" name="do_khan">
+                                        {{--                                        <option value="">-- Chọn độ khẩn --</option>--}}
+                                        @foreach($ds_doKhanCap as $dokhands)
+                                            <option value="{{ $dokhands->id }}">{{ $dokhands->ten_muc_do }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
 {{--                            <div class=" col-md-3 " >--}}

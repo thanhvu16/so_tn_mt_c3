@@ -227,6 +227,28 @@
                                                                         @endfor
                                                                     </select>
                                                                 </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleInputEmail4">Độ Mật</label>
+                                                                        <select class="form-control select2" name="do_mat">
+                                                                                                                    <option value="">-- Chọn độ mật--</option>
+                                                                            @foreach($ds_mucBaoMat as $domatds)
+                                                                                <option value="{{ $domatds->id }}">{{ $domatds->ten_muc_do }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleInputEmail4">Độ khẩn</label>
+                                                                        <select class="form-control select2" name="do_khan">
+                                                                                                                    <option value="">-- Chọn độ khẩn --</option>
+                                                                            @foreach($ds_doKhanCap as $dokhands)
+                                                                                <option value="{{ $dokhands->id }}">{{ $dokhands->ten_muc_do }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="form-group col-md-3">
                                                                     <label for="">&nbsp;</label>
                                                                     <br>
