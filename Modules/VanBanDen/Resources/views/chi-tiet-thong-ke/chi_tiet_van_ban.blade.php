@@ -135,7 +135,7 @@
                         </table>
                         <div class="row">
                             <div class="col-md-6" style="margin-top: 5px">
-                                Tổng số văn bản: <b>{{ $danhSachVanBanDen->count() }}</b>
+                                Tổng số văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
                             </div>
                             <div class="col-md-6 text-right">
                                 {!! $danhSachVanBanDen->appends(['type' => Request::get('type'),'tu_ngay' => Request::get('tu_ngay'),

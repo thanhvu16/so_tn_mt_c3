@@ -207,7 +207,7 @@ class ThongKeVanBanPhongController extends Controller
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')
             ->first();
-        $danhSachVanBanDenDaHoanThanhDungHan = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+        $danhSachVanBanDenDaHoanThanhDungHan1 = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
 //           ->wherehas('tkhoanThanhVBTrongHan')
             ->where(function ($query) use ($userId)  {
                     return $query->whereHas('tkhoanThanhVBTrongHan', function ($q) use($userId) {
@@ -236,10 +236,17 @@ class ThongKeVanBanPhongController extends Controller
             })
 //            ->where('type', 1)
             ->whereNull('deleted_at')
-            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN)
-            ->count();
+            ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_DUNG_HAN);
 
-        $danhSachVanBanDenDaHoanThanhQuaHan = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
+        $danhSachVanBanDenDaHoanThanhDungHanId=[];
+        $danhSachVanBanDenDaHoanThanhDungHanGet = $danhSachVanBanDenDaHoanThanhDungHan1->select('id')->get();
+        foreach ($danhSachVanBanDenDaHoanThanhDungHanGet as $IDD2)
+        {
+            array_push($danhSachVanBanDenDaHoanThanhDungHanId, $IDD2->id);
+        }
+        $danhSachVanBanDenDaHoanThanhDungHan = $danhSachVanBanDenDaHoanThanhDungHan1->count();
+
+        $danhSachVanBanDenDaHoanThanhQuaHan1 = VanBanDen::where('trinh_tu_nhan_van_ban', VanBanDen::HOAN_THANH_VAN_BAN)
             ->where(function ($query) use ($userId)  {
                 return $query->whereHas('hoanThanhVBQuaHan', function ($q) use($userId) {
                     return $q->where('can_bo_nhan_id', $userId);
@@ -266,8 +273,14 @@ class ThongKeVanBanPhongController extends Controller
                 }
             })
             ->where('hoan_thanh_dung_han', VanBanDen::HOAN_THANH_QUA_HAN)
-            ->whereNull('deleted_at')
-            ->count();
+            ->whereNull('deleted_at');
+        $danhSachVanBanDenDaHoanThanhQuaHanId=[];
+        $danhSachVanBanDenDaHoanThanhQuaHanGet = $danhSachVanBanDenDaHoanThanhQuaHan1->select('id')->get();
+        foreach ($danhSachVanBanDenDaHoanThanhQuaHanGet as $IDD)
+        {
+            array_push($danhSachVanBanDenDaHoanThanhQuaHanId, $IDD->id);
+        }
+        $danhSachVanBanDenDaHoanThanhQuaHan = $danhSachVanBanDenDaHoanThanhQuaHan1->count();
 
 //        $arrIdVanBanDaHoanThanh = $danhSachVanBanDenDaHoanThanh->pluck('id')->toArray();
 
@@ -278,8 +291,8 @@ class ThongKeVanBanPhongController extends Controller
             'tong' => $vanBanDaGiaiQuyet['hoan_thanh_dung_han'] + $vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
             'giai_quyet_trong_han' => $vanBanDaGiaiQuyet['hoan_thanh_dung_han'],
             'giai_quyet_qua_han' => $vanBanDaGiaiQuyet['hoan_thanh_qua_han'],
-            'id_van_ban_trong_han' => \GuzzleHttp\json_encode($vanBanDaGiaiQuyet['id_van_ban_trong_han']),
-            'id_van_ban_qua_han' => \GuzzleHttp\json_encode($vanBanDaGiaiQuyet['id_van_ban_qua_han'])
+            'id_van_ban_trong_han' => \GuzzleHttp\json_encode($danhSachVanBanDenDaHoanThanhDungHanId),
+            'id_van_ban_qua_han' => \GuzzleHttp\json_encode($danhSachVanBanDenDaHoanThanhQuaHanId)
         ];
 
     }
