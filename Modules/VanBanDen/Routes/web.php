@@ -84,6 +84,7 @@ Route::get('chi-tiet-thong-ke-van-ban-trong-phong/{id}', 'ThongKeVanBanPhongCont
 Route::get('upload-tai-lieu-tham-khao', array('as' => 'taiLieuThamKhao', 'uses' => 'VanBanDenController@taiLieuThamKhao'));
 Route::get('van-ban-chuyen-phong', array('as' => 'vanBanChuyenPhong', 'uses' => 'VanBanDenController@vanBanChuyenPhong'));
 Route::get('van-ban-don-vi', array('as' => 'vanBanDonVi', 'uses' => 'VanBanDenController@vanBanDonVi'));
+Route::get('capNhatVanBanTon', array('as' => 'capNhatVanBanTon', 'uses' => 'VanBanDenController@capNhatVanBanTon'));
 Route::post('post-upload-tai-lieu-tham-khao', array('as' => 'postTaiLieuThamKhao', 'uses' => 'VanBanDenController@postTaiLieuThamKhao'));
 
 
