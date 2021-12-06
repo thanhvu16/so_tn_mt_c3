@@ -123,15 +123,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
@@ -241,15 +241,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -268,15 +268,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -295,15 +295,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -320,15 +320,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -350,15 +350,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -380,15 +380,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -404,15 +404,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -433,15 +433,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -462,15 +462,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -491,15 +491,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -520,15 +520,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -549,15 +549,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -579,15 +579,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -607,15 +607,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -635,15 +635,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })->count();
@@ -690,15 +690,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
@@ -734,15 +734,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
@@ -765,15 +765,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
@@ -936,15 +936,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
@@ -990,15 +990,15 @@ class ThongkeVanBanDenController extends Controller
 //            ->where(function ($query) use ($tu_ngay, $den_ngay) {
 //                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 //
-//                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+//                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
 //                }
 //                if ($den_ngay == '' && $tu_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 //
 //                }
 //                if ($tu_ngay == '' && $den_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 //
 //                }
 //            })
@@ -1024,15 +1024,15 @@ class ThongkeVanBanDenController extends Controller
 //
 //                    if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 //
-//                        return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                            ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+//                        return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+//                            ->where('ngay_nhan', '<=', formatYMD($den_ngay));
 //                    }
 //                    if ($den_ngay == '' && $tu_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+//                        return $query->where('ngay_nhan', formatYMD($tu_ngay));
 //
 //                    }
 //                    if ($tu_ngay == '' && $den_ngay != '') {
-//                        return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+//                        return $query->where('ngay_nhan', formatYMD($den_ngay));
 //
 //                    }
 ////                    ->where(function ($query) use ($loaiVanBan) {
@@ -1095,15 +1095,15 @@ class ThongkeVanBanDenController extends Controller
 //            ->where(function ($query) use ($tu_ngay, $den_ngay) {
 //                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 //
-//                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+//                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
 //                }
 //                if ($den_ngay == '' && $tu_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 //
 //                }
 //                if ($tu_ngay == '' && $den_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 //
 //                }
 //            })
@@ -1181,15 +1181,15 @@ class ThongkeVanBanDenController extends Controller
 //            ->where(function ($query) use ($tu_ngay, $den_ngay) {
 //                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 //
-//                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+//                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
 //                }
 //                if ($den_ngay == '' && $tu_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 //
 //                }
 //                if ($tu_ngay == '' && $den_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 //
 //                }
 //            })
@@ -1270,15 +1270,15 @@ class ThongkeVanBanDenController extends Controller
 //            ->where(function ($query) use ($tu_ngay, $den_ngay) {
 //                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 //
-//                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-//                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+//                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
 //                }
 //                if ($den_ngay == '' && $tu_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 //
 //                }
 //                if ($tu_ngay == '' && $den_ngay != '') {
-//                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+//                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 //
 //                }
 //            })
@@ -1351,15 +1351,15 @@ class ThongkeVanBanDenController extends Controller
             ->where(function ($query) use ($tu_ngay, $den_ngay) {
                 if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
 
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', '>=', formatYMD($tu_ngay))
+                        ->where('ngay_nhan', '<=', formatYMD($den_ngay));
                 }
                 if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
+                    return $query->where('ngay_nhan', formatYMD($tu_ngay));
 
                 }
                 if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
+                    return $query->where('ngay_nhan', formatYMD($den_ngay));
 
                 }
             })
