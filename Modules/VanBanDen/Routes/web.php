@@ -85,6 +85,7 @@ Route::get('upload-tai-lieu-tham-khao', array('as' => 'taiLieuThamKhao', 'uses' 
 Route::get('van-ban-chuyen-phong', array('as' => 'vanBanChuyenPhong', 'uses' => 'VanBanDenController@vanBanChuyenPhong'));
 Route::get('van-ban-don-vi', array('as' => 'vanBanDonVi', 'uses' => 'VanBanDenController@vanBanDonVi'));
 Route::get('capNhatVanBanTonPhoPhong', array('as' => 'capNhatVanBanTonPhoPhong', 'uses' => 'VanBanDenController@capNhatVanBanTonPhoPhong'));
+Route::get('capNhatVanBanTonTruongPhong', array('as' => 'capNhatVanBanTonTruongPhong', 'uses' => 'VanBanDenController@capNhatVanBanTonTruongPhong'));
 Route::get('capNhatVanBanTonChuyenVien', array('as' => 'capNhatVanBanTonChuyenVien', 'uses' => 'VanBanDenController@capNhatVanBanTonChuyenVien'));
 Route::post('post-upload-tai-lieu-tham-khao', array('as' => 'postTaiLieuThamKhao', 'uses' => 'VanBanDenController@postTaiLieuThamKhao'));
 
