@@ -118,17 +118,17 @@
                                         @empty
                                             <td colspan="6" class="text-center">Không tìm thấy dữ liệu.</td>
                                         @endforelse
-                                        <tr>
-                                            <td style="font-weight: bold" class="text-center">*</td>
-                                            <td style="font-weight: bold">Tổng số</td>
-                                            <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>
+{{--                                        <tr>--}}
+{{--                                            <td style="font-weight: bold" class="text-center">*</td>--}}
+{{--                                            <td style="font-weight: bold">Tổng số</td>--}}
+{{--                                            <td class="text-center"><span class="tongSo text-center" style="color: red;font-weight: bold"></span>--}}
 
-                                            </td>
-                                            <td class="" id="body1"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+{{--                                            </td>--}}
+{{--                                            <td class="" id="body1"></td>--}}
+{{--                                            <td></td>--}}
+{{--                                            <td></td>--}}
+{{--                                            <td></td>--}}
+{{--                                        </tr>--}}
                                         </tbody>
                                     </table>
                                 </div>
