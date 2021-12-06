@@ -35,7 +35,7 @@
                                 <div class="col-md-12 collapse in" id="collapseExample" >
 {{--                                    <form action method="GET" action="{{ route('thongkevbso') }}" >--}}
                                     <div class="col-md-3 form-group mt-2">
-                                        <label>Tìm theo ngày ban hành từ ngày</label>
+                                        <label>Tìm theo ngày nhập từ ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar-o"></i>
@@ -45,7 +45,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 form-group mt-2">
-                                        <label>Tìm theo ngày ban hành đến ngày</label>
+                                        <label>Tìm theo ngày nhập đến ngày</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar-o"></i>
@@ -54,17 +54,17 @@
                                                    name="den_ngay" placeholder="dd/mm/yyyy">
                                         </div>
                                     </div>
-                                    <div class="col-md-2 form-group mt-2">
-                                        <label>Tìm theo loại văn bản</label>
-                                        <select class="form-control select2 loai-van-ban" name="loai_van_ban_id" >
-                                            <option value="">Chọn loại văn bản</option>
-                                            @foreach ($ds_loaiVanBan as $loaiVanBan)
-                                                <option value="{{ $loaiVanBan->id }}" {{ Request::get('loai_van_ban_id') == $loaiVanBan->id ? 'selected' : '' }}
-                                                >{{ $loaiVanBan->ten_loai_van_ban }}</option>
-                                            @endforeach
-                                        </select>
+{{--                                    <div class="col-md-2 form-group mt-2">--}}
+{{--                                        <label>Tìm theo loại văn bản</label>--}}
+{{--                                        <select class="form-control select2 loai-van-ban" name="loai_van_ban_id" >--}}
+{{--                                            <option value="">Chọn loại văn bản</option>--}}
+{{--                                            @foreach ($ds_loaiVanBan as $loaiVanBan)--}}
+{{--                                                <option value="{{ $loaiVanBan->id }}" {{ Request::get('loai_van_ban_id') == $loaiVanBan->id ? 'selected' : '' }}--}}
+{{--                                                >{{ $loaiVanBan->ten_loai_van_ban }}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
 {{--                                        <input type="text" class="hidden" name="loai_van_ban_id_1" value="{{Request::get('loai_van_ban_id')}}">--}}
-                                    </div>
+{{--                                    </div>--}}
                                     <div class="col-md-3 form-group mt-2">
                                         <label>Tìm theo đơn vị xử lý chính</label>
                                         <select class="form-control select2 don-vi-xu-ly" name="don_vi_xu_ly_chinh" id="loai_van_ban_id">
