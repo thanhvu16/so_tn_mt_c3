@@ -1846,22 +1846,14 @@ class VanBanDenController extends Controller
         );
     }
 
-    public function capNhatVanBanTon($user, $tu_ngay, $den_ngay)
+    public function capNhatVanBanTon( )
     {
+
+        $user= auth::user();
         $date = date('Y-m-d');
-        $trinhTuNhanVanBan = 0;
+        $trinhTuNhanVanBan = 4;
 
-        if ($user->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG, TRUONG_BAN])) {
-            $trinhTuNhanVanBan = VanBanDen::TRUONG_PHONG_NHAN_VB;
-        }
 
-        if ($user->hasRole([PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN])) {
-            $trinhTuNhanVanBan = VanBanDen::PHO_PHONG_NHAN_VB;
-        }
-
-        if ($user->hasRole(CHUYEN_VIEN)) {
-            $trinhTuNhanVanBan = VanBanDen::CHUYEN_VIEN_NHAN_VB;
-        }
 
 
 
@@ -1871,30 +1863,12 @@ class VanBanDenController extends Controller
         $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::where(function ($query) use ($user) {
             if (!empty($user)) {
                 return $query->whereHas('vanBanDangXuLy', function ($q) use($user) {
-                    return $q->where('can_bo_nhan_id', $user->id);
+                    return $q->where('can_bo_nhan_id', 126);
                 });
             }
         })
             ->where('han_xu_ly', '<', $date)
-//            ->where(function ($query) use ($trinhTuNhanVanBan) {
-//                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
-//            })
-            ->where('trinh_tu_nhan_van_ban', 4)
-            ->where(function ($query) use ($tu_ngay, $den_ngay) {
-                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-                }
-                if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-
-                }
-                if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-
-                }
-            })
+            ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
             ->where(function ($query) use ($loaiVanBanGiayMoi) {
                 if (!empty($loaiVanBanGiayMoi)) {
                     return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
@@ -1902,12 +1876,12 @@ class VanBanDenController extends Controller
             })
             ->select('id')
             ->get();
-//        foreach ($danhSachVanBanDenQuaHanDangXuLy as $data)
-//        {
-//            $vaBanDenID = VanBanDen::where('id',$data->id)->first();
-//            $vaBanDenID->trinh_tu_nhan_van_ban = 6;
-//            $vaBanDenID->save();
-//        }
+        foreach ($danhSachVanBanDenQuaHanDangXuLy as $data)
+        {
+            $vaBanDenID = VanBanDen::where('id',$data->id)->first();
+            $vaBanDenID->trinh_tu_nhan_van_ban = 6;
+            $vaBanDenID->save();
+        }
 
 //        dd($danhSachVanBanDenQuaHanDangXuLy);
 
@@ -1917,28 +1891,13 @@ class VanBanDenController extends Controller
         $danhSachVanBanDenTrongHanDangXuLy = VanBanDen::where(function ($query) use ($user) {
             if (!empty($user)) {
                 return $query->whereHas('vanBanDangXuLy', function ($q) use($user) {
-                    return $q->where('can_bo_nhan_id', $user->id);
+                    return $q->where('can_bo_nhan_id', 126);
                 });
             }
         })
             ->where('han_xu_ly', '>=', $date)
             ->where(function ($query) use ($trinhTuNhanVanBan) {
-                return $query->where('trinh_tu_nhan_van_ban', 4);
-            })
-            ->where(function ($query) use ($tu_ngay, $den_ngay) {
-                if ($tu_ngay != '' && $den_ngay != '' && $tu_ngay <= $den_ngay) {
-                    return $query->where('ngay_ban_hanh', '>=', formatYMD($tu_ngay))
-                        ->where('ngay_ban_hanh', '<=', formatYMD($den_ngay));
-                }
-                if ($den_ngay == '' && $tu_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($tu_ngay));
-
-                }
-                if ($tu_ngay == '' && $den_ngay != '') {
-                    return $query->where('ngay_ban_hanh', formatYMD($den_ngay));
-
-
-                }
+                return $query->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan);
             })
             ->where(function ($query) use ($loaiVanBanGiayMoi) {
                 if (!empty($loaiVanBanGiayMoi)) {
@@ -1947,13 +1906,13 @@ class VanBanDenController extends Controller
             })
             ->select('id')
             ->get();
-//                foreach ($danhSachVanBanDenTrongHanDangXuLy as $data)
-//        {
-//            $vaBanDenID = VanBanDen::where('id',$data->id)->first();
-//            $vaBanDenID->trinh_tu_nhan_van_ban = 6;
-//            $vaBanDenID->save();
-//        }
-//                dd($danhSachVanBanDenTrongHanDangXuLy);
+            foreach ($danhSachVanBanDenTrongHanDangXuLy as $data)
+            {
+                $vaBanDenID = VanBanDen::where('id',$data->id)->first();
+                $vaBanDenID->trinh_tu_nhan_van_ban = 6;
+                $vaBanDenID->save();
+            }
+                dd($danhSachVanBanDenTrongHanDangXuLy);
         return [
             'hoan_thanh_dung_han' => $danhSachVanBanDenTrongHanDangXuLy->count(),
             'hoan_thanh_qua_han' => $danhSachVanBanDenQuaHanDangXuLy->count(),
