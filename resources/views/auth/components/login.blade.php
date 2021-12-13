@@ -108,10 +108,17 @@
             <div class="row">
                 <div class="col-xs-5">
                 </div>
-                    <div class="col-xs-7 mt-2 text-right">
+                    <div class="col-xs-7 text-right">
+                            <select name="year" id="year" class="form-control select2">
+                                <option value="">-- Năm --</option>
+                                @for($i = 2021; $i <= 2021; $i++)
+                                    <option value="{{ $i }}" {{ $i == date('Y') ? 'selected' : '' }}>
+                                        {{ $i }}</option>
+                                @endfor
+                            </select>
                     </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-xs-5">
 {{--                    <div class="checkbox icheck">--}}
 {{--                        <label>--}}
