@@ -520,7 +520,6 @@ class GiayMoiDenController extends Controller
             $dia_diem_con = $request->dia_diem_con;
             $ngaybanhanh = $request->ngay_ban_hanh;
             $chucvu = $request->chuc_vu;
-
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
                 if ($giaymoicom && $giaymoicom[0] != null) {
                     foreach ($giaymoicom as $key => $data) {
@@ -618,6 +617,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->do_bao_mat_id = $request->do_mat;
                     $vanbandv->type = 1;
                     //họp chính
+
                     if($request->ngay_hop_chinh)
                     {
                         $vanbandv->gio_hop = $gio_hop_chinh_fomart;
@@ -674,9 +674,10 @@ class GiayMoiDenController extends Controller
                         })
                         ->where('trang_thai', ACTIVE)
                         ->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
+
                     if($request->ngay_hop_chinh)
                     {
-                        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . formatDMY($ngayhopchinh) . ', Tại:' . $diadiemchinh;
+                        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . $ngayhopchinh . ', Tại:' . $diadiemchinh;
 
                     }else{
                         $noidungtn = $sodengiaymoi . ',' . $trichyeu;
