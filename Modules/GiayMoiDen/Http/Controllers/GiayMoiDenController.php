@@ -683,7 +683,10 @@ class GiayMoiDenController extends Controller
                         $noidungtn = $sodengiaymoi . ',' . $trichyeu;
 
                     }
+
                     $conVertTY = vn_to_str($noidungtn);
+                    dd($conVertTY);
+
                     VanBanDen::guiSMSOnly($conVertTY, $nguoiDung->so_dien_thoai);
                 }
                 if ($request->id_file) {

@@ -55,6 +55,20 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
+//        \Session::put('year',  $request->year);
+//        if(\Session()->get('year') == 2021)
+//        {
+//            Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
+//            \Session::put('db_database',  'so_tai_nguyen_moi_truong');
+//
+//        }else{
+//            Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
+//            \Session::put('db_database',  'so_tai_nguyen_moi_truong'.$request->get('year'));
+//
+//        }
+//
+//                dd(\Session()->get('db_database'));
+
 //        $env = DotenvEditor::load();
 //        if ($request->get('year') == 2021) {
 //            $env->setKey('DB_DATABASE', 'so_tai_nguyen_moi_truong');
