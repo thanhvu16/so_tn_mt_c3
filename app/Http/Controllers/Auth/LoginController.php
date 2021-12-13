@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Modules\VanBanDen\Entities\TaiLieuThamKhao;
+use Illuminate\Support\Facades\Artisan;
+use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
 class LoginController extends Controller
 {
@@ -54,6 +55,16 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
+//        $env = DotenvEditor::load();
+//        if ($request->get('year') == 2021) {
+//            $env->setKey('DB_DATABASE', 'so_tai_nguyen_moi_truong');
+//        }else{
+//            $env->setKey('DB_DATABASE', 'so_tai_nguyen_moi_truong_'.$request->get('year'));
+//
+//        }
+//        $env->save();
+//        Artisan::call('config:clear');
+
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
@@ -69,6 +80,9 @@ class LoginController extends Controller
             auth()->logout();
             return back()->with('warning', 'Tài khoản của bạn đã bị khóa vui lòng liên hệ Quản trị hệ thống để được trợ giúp.');
         }
+
+
         return redirect()->intended($this->redirectPath());
+
     }
 }
