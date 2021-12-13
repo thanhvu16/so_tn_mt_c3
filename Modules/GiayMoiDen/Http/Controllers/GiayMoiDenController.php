@@ -635,7 +635,7 @@ class GiayMoiDenController extends Controller
                     $vanbandv->lanh_dao_tham_muu = $request->lanh_dao_tham_muu;
                     $vanbandv->ngay_nhan = !empty($request->ngay_nhan) ? formatYMD($request->ngay_nhan) : null;
                     $vanbandv->trinh_tu_nhan_van_ban = empty($thamMuuId) ? VanBanDen::CHU_TICH_NHAN_VB : null;
-                    $vanbandv->save();
+//                    $vanbandv->save();
                     array_push($idvanbanden, $vanbandv->id);
 
                     if (empty($thamMuuId)) {
@@ -663,9 +663,9 @@ class GiayMoiDenController extends Controller
                             ->whereNull('status')
                             ->first();
 
-                        if (empty($checkTonTaiData)) {
-                            XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
-                        }
+//                        if (empty($checkTonTaiData)) {
+//                            XuLyVanBanDen::luuXuLyVanBanDen($dataXuLyVanBanDen);
+//                        }
                     }
                     $role = [TRUONG_PHONG, CHANH_VAN_PHONG];
                     $nguoiDung = User::where('don_vi_id', auth::user()->don_vi_id)
