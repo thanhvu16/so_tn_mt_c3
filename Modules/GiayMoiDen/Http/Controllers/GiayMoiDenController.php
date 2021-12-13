@@ -674,10 +674,14 @@ class GiayMoiDenController extends Controller
                         })
                         ->where('trang_thai', ACTIVE)
                         ->whereNull('deleted_at')->orderBy('created_at', 'desc')->first();
-
+                    $NgayHopTN = formatDMY($vanbandv->ngay_hop) ;
+                    if($NgayHopTN == '01/01/1970')
+                    {
+                        $NgayHopTN='';
+                    }
                     if($request->ngay_hop_chinh)
                     {
-                        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . $ngayhopchinh . ', Tại:' . $diadiemchinh;
+                        $noidungtn = $sodengiaymoi . ',' . $trichyeu . '. Thoi gian:' . $gio_hop_chinh_fomart . ', ngày:' . $NgayHopTN . ', Tại:' . $diadiemchinh;
 
                     }else{
                         $noidungtn = $sodengiaymoi . ',' . $trichyeu;
