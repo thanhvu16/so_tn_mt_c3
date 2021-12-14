@@ -48,7 +48,7 @@
         {{--                    <li class="{{ Route::is('chuc-nang.index') ? 'active' : '' }}"><a href="{{ route('chuc-nang.index') }}"><i class="fa fa-circle-o"></i> Chức năng</a></li>--}}
     </ul>
 </li>
-<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('nhapVanBanDi') ||Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ? 'active menu-open' : '' }} }} ">
+<li class="treeview {{ Route::is('van-ban-di.index') || Route::is('in-so-van-ban-di.index')|| Route::is('nhapVanBanDi') ||Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') ? 'active menu-open' : '' }} }} ">
     <a href="#">
         <i class="fa fa-file-text"></i> <span>Văn bản đi</span>
         <span class="pull-right-container">
