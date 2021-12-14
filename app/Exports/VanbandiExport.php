@@ -25,9 +25,28 @@ class VanbandiExport implements FromView, ShouldAutoSize, WithEvents
 
     public function __construct($ds_vanBanDi, $totalReCord)
     {
-
         $this->ds_vanBanDi = $ds_vanBanDi;
         $this->totalReCord=$totalReCord + 2;
+        foreach ($ds_vanBanDi as $data)
+        {
+            $trichYeu= explode(' ', $data->trich_yeu);
+            $string = '';
+            for ($i=0 ; $i <count($trichYeu) ; $i++)
+            {
+                $string .= $trichYeu[$i].' ';
+
+                if($i%7 == 0 && $i>=7)
+                {
+                    $string .= '<br>';
+                }
+
+            }
+
+
+
+            $data->trich_yeu = $string;
+
+        }
     }
 
     /**

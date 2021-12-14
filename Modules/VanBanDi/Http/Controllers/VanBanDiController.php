@@ -2601,9 +2601,9 @@ class VanBanDiController extends Controller
         {
             $nam_sodi = date('Y', strtotime($request->vb_ngaybanhanh));
             $vanbandi = VanBanDi::where('id', $id)->first();
-            $loaiVanBan = LoaiVanBan::where('id', $vanbandi->loai_van_ban_id)->first();
+            $loaiVanBan = LoaiVanBan::where('id', $request->loaivanban_id)->first();
             $soVanBan = SoVanBan::where('id', $request->so_van_ban_id)->first();
-            $this->update($request,$id);
+//            $this->update($request,$id);
 
 
 
@@ -2667,7 +2667,6 @@ class VanBanDiController extends Controller
 
 
             }
-
             $vanbandi->ngay_ban_hanh = $request->vb_ngaybanhanh;
             $vanbandi->cho_cap_so = 3;
             if (auth::user()->hasRole(VAN_THU_HUYEN)) {
@@ -2705,46 +2704,45 @@ class VanBanDiController extends Controller
                         $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
                     }
                     break;
-                case 'Quyết định':
+                case 'Quyết Định':
                     if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                        $SoKyHieu = "$soDi/QĐ-STNMT-";
+                        $SoKyHieu = "$soDi/QĐ-STNMT";
                     }
                     break;
 
                 case 'Thông báo':
                     if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
-                        $SoKyHieu = "$soDi/TB-STNMT-";
+                        $SoKyHieu = "$soDi/TB-STNMT";
                     }
                     break;
                 case 'Giấy Mời':
                     if ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                        $SoKyHieu = "$soDi/GM-STNMT-";
+                        $SoKyHieu = "$soDi/GM-STNMT";
                     }
                     break;
                 case 'Cấp Phép':
                     if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
-                        $SoKyHieu = "$soDi/GP-STNMT-";
+                        $SoKyHieu = "$soDi/GP-STNMT";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
-                        $SoKyHieu = "$soDi/GXN-STNMT-";
+                        $SoKyHieu = "$soDi/GXN-STNMT";
                     }
                     break;
                 case 'Thanh Tra':
                     if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                        $SoKyHieu = "$soDi/STNMT-";
+                        $SoKyHieu = "$soDi/STNMT";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                        $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                        $SoKyHieu = "$soDi/QĐ-XPVPHC";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                        $SoKyHieu = "$soDi/KH-";
+                        $SoKyHieu = "$soDi/KH";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                        $SoKyHieu = "$soDi/GM-";
+                        $SoKyHieu = "$soDi/GM";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                        $SoKyHieu = "$soDi/BC-";
+                        $SoKyHieu = "$soDi/BC";
                     }
                     break;
 
 
             }
-
             $vanbandi->so_di = $soDi;
             $vanbandi->so_ky_hieu = $SoKyHieu;
             $vanbandi->so_van_ban_id = $request->so_van_ban_id;
@@ -2872,7 +2870,7 @@ class VanBanDiController extends Controller
                             $SoKyHieu = "$soDi/KLKT-STNMT-$maPhong";
                         }
                         break;
-                    case 'Quyết định':
+                    case 'Quyết Định':
                         if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
                             $SoKyHieu = "$soDi/QĐ-STNMT-";
                         }
