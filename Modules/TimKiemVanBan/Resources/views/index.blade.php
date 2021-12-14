@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="col-md-6">
                             <div class="row">
-                                <h3 class="box-title">Danh sách văn bản đến</h3>
+                                <h3 class="box-title">Danh sách tìm kiếm văn bản đến</h3>
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
@@ -19,10 +19,6 @@
                     <div class="col-md-12 mt-1 ">
                         <div class="row">
                             <div class="col-md-6">
-                                @if(auth::user()->hasRole([VAN_THU_HUYEN, VAN_THU_DON_VI]))
-                                <a role="button" onclick="showModal()" class="btn btn-primary ">
-                                    <span style="color: white;font-size: 14px"><i class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</span></a>
-                                @endif
                                 <a class=" btn btn-primary" data-toggle="collapse"
                                    href="#collapseExample"
                                    aria-expanded="false" aria-controls="collapseExample"> <i class="fa  fa-search"></i> <span
@@ -50,14 +46,14 @@
                                         <input type="hidden" name="trinh_tu_nhan_van_ban" value="{{Request::get('trinh_tu_nhan_van_ban') }}">
                                         <input type="hidden" name="page" value="{{Request::get('page') }}">
 
-                                        <button type="button" data-type="excel"
-                                                class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i
-                                                class="fa fa-file-excel-o"></i> Xuất Excel
-                                        </button>
-                                        <button type="button" data-type="word"
-                                                class="btn btn-info waves-effect waves-light btn-sm btn-export-data"><i
-                                                class="fa fa-file-word-o"></i> Xuất Word
-                                        </button>
+{{--                                        <button type="button" data-type="excel"--}}
+{{--                                                class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i--}}
+{{--                                                class="fa fa-file-excel-o"></i> Xuất Excel--}}
+{{--                                        </button>--}}
+{{--                                        <button type="button" data-type="word"--}}
+{{--                                                class="btn btn-info waves-effect waves-light btn-sm btn-export-data"><i--}}
+{{--                                                class="fa fa-file-word-o"></i> Xuất Word--}}
+{{--                                        </button>--}}
                                     </form>
                                     @endif
                                 </div>
@@ -75,7 +71,7 @@
                         <div class="row">
 
                             <div class="col-md-12 collapse {{ Request::get('search') == 1 || Request::get('year') ? 'in' : '' }} " id="collapseExample">
-                                <form action="{{route('van-ban-den.index')}}" id="tim_kiem" method="get" >
+                                <form action="{{route('tim-kiem-van-ban-den-full.index')}}" id="tim_kiem" method="get" >
                                         <div class="row">
                                             <div class="form-group col-md-3" id="loaivanban">
                                                 <label for="loai_van_ban_id" class="col-form-label">Loại văn bản</label>
@@ -256,6 +252,12 @@
                                                             {{ $i }}</option>
                                                     @endfor
                                                 </select>
+                                            </div>
+                                            <div class="form-group col-md-3" >
+                                                <label for="tu_khoa" class="col-form-label">Tìm kiếm văn bản đến </label>
+                                                <input type="text" value="{{Request::get('tu_khoa')}}"
+                                                       id="tu_khoa" name="tu_khoa" class="form-control"
+                                                       placeholder="Nhập từ khóa...">
                                             </div>
 
                                             <div class="form-group col-md-12" >
@@ -526,7 +528,7 @@
                             <div class="col-md-6 text-right">
                                 {!! $ds_vanBanDen->appends(['so_van_ban_id' => Request::get('so_van_ban_id'),'loai_van_ban_id' => Request::get('loai_van_ban_id'),'ngay_ban_hanh_date' => Request::get('ngay_ban_hanh_date'),'end_ngay_ban_hanh' => Request::get('end_ngay_ban_hanh'), 'vb_so_den' => Request::get('vb_so_den')
                        ,'vb_so_ky_hieu' => Request::get('vb_so_ky_hieu'),'don_vi_phoi_hop_id' => Request::get('don_vi_phoi_hop_id'),
-                       'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),
+                       'end_date' => Request::get('end_date'),'start_date' => Request::get('start_date'),'tu_khoa' => Request::get('tu_khoa'),
                        'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
                        'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' => Request::get('year'),
                        'don_vi_id' => Request::get('don_vi_id'), 'trinh_tu_nhan_van_ban' => Request::get('trinh_tu_nhan_van_ban')])->render() !!}
@@ -578,12 +580,6 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        if ($.browser.webkit) {
-            $("input").attr('autocomplete','off');
-        }
-        if (BrowserDetect.browser == "Chrome") {
-            jQuery('form').attr('autocomplete','off');
-        };
         function showModal() {
             console.log(1);
             $("#myModal").modal('show');

@@ -10,5 +10,6 @@
     "DanhGiaCanBo": true,
     "CongViecDonVi": true,
     "LichCongTac": true,
-    "BaoCaoThongKe": true
+    "BaoCaoThongKe": true,
+    "TimKiemVanBan": true
 }
