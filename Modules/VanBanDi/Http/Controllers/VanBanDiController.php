@@ -2611,7 +2611,7 @@ class VanBanDiController extends Controller
             $maPhong = null;
             $SoKyHieu = null;
             $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
-            if($donVi->parent_id != null)
+            if($donVi->parent_id != 0)
             {
                 $donVi = DonVi::where('id', $donVi->parent_id)->first();
             }
@@ -2780,7 +2780,7 @@ class VanBanDiController extends Controller
             $maPhong = null;
             $SoKyHieu = null;
             $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
-            if($donVi->parent_id != null)
+            if($donVi->parent_id != 0)
             {
                 $donVi = DonVi::where('id', $donVi->parent_id)->first();
             }
