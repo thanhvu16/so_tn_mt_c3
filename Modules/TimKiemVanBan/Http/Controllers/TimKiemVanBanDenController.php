@@ -73,7 +73,8 @@ class TimKiemVanBanDenController extends Controller
                     if (!empty($tuKhoa)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
                             ->orwhere(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
-                            ->orwhere(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%");;
+                            ->orwhere(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                            ->orwhere('so_den', $tuKhoa);
                     }
                 })
                 ->whereNull('deleted_at')
