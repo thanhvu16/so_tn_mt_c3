@@ -4,6 +4,36 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="row">
+                        <form action="{{route('tim-kiem-van-ban-den-full.index')}}" method="get">
+                        <div class="col-md-8">
+                            <label for="tu_khoa" class="col-form-label">Tìm kiếm văn bản đến </label>
+                            <input type="text" value="{{Request::get('tu_khoa')}}"
+                                   id="tu_khoa" name="tu_khoa" class="form-control"
+                                   placeholder="Nhập từ khóa...">
+                        </div>
+                        <div class="col-md-4 mt-4">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="tu_so" class="col-form-label">Tìm kiếm văn bản đi </label>
+                            <input type="text" value="{{Request::get('tu_so')}}"
+                                   id="tu_so" name="tu_so" class="form-control"
+                                   placeholder="Nhập từ khóa...">
+                        </div>
+                        <div class="col-md-4 mt-4">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2">
                 @unlessrole('văn thư sở|văn thư đơn vị')
                     @include('admin::dashboard.ho_so_cong_viec')
                     @include('admin::dashboard.xu_ly_giay_moi_den')
@@ -36,7 +66,9 @@
         google.charts.setOnLoadCallback(drawChartNhapVanBanDi);
         google.charts.setOnLoadCallback(drawChartCongViecPhongBan);
 
-
+        if ($.browser.webkit) {
+            $("input").attr('autocomplete','off');
+        }
         function drawChartHoSoCoViec() {
             let data = google.visualization.arrayToDataTable(<?php echo json_encode($hoSoCongViecPiceCharts,
                 JSON_NUMERIC_CHECK); ?>);

@@ -2690,7 +2690,7 @@ class VanBanDiController extends Controller
                         $SoKyHieu = "$soDi/STNMT-$maPhong";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
                         $SoKyHieu = "$soDi/KH-STNMT-$maPhong";
-                    } elseif ($loaiVanBan->ten_l9oai_van_ban == 'Báo cáo') {
+                    } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
                         $SoKyHieu = "$soDi/BC-STNMT-$maPhong";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Tờ trình') {
                         $SoKyHieu = "$soDi/TTr-STNMT-$maPhong";

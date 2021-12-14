@@ -1,0 +1,13 @@
+{
+    "name": "TimKiemVanBan",
+    "alias": "timkiemvanban",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\TimKiemVanBan\\Providers\\TimKiemVanBanServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
