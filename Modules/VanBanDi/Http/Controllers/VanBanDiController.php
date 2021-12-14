@@ -2611,6 +2611,11 @@ class VanBanDiController extends Controller
             $maPhong = null;
             $SoKyHieu = null;
             $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
+            if($donVi->parent_id != null)
+            {
+                $donVi = DonVi::where('id', $donVi->parent_id)->first();
+            }
+
             switch ($donVi->ten_don_vi) {
                 case 'Phòng Tài Nguyên nước':
                     $maPhong = 'TNN';
@@ -2775,6 +2780,10 @@ class VanBanDiController extends Controller
             $maPhong = null;
             $SoKyHieu = null;
             $donVi = DonVi::where('id', $vanbandi->van_ban_huyen_ky)->first();
+            if($donVi->parent_id != null)
+            {
+                $donVi = DonVi::where('id', $donVi->parent_id)->first();
+            }
             switch ($donVi->ten_don_vi) {
                 case 'Phòng Tài Nguyên nước':
                     $maPhong = 'TNN';
