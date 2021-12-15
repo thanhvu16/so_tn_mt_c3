@@ -17,6 +17,7 @@ Route::resource('nguoi-dung', 'NguoiDungController');
 Route::resource('nhat-ky-truy-cap', 'UserLogsController');
 Route::resource('Nhom-don-vi', 'NhomDonViController');
 Route::post('Nhom-don-vi/delete/{id}', array('as' => 'xoanhomdonvi', 'uses' => 'NhomDonViController@destroy'));
+Route::post('setDB', array('as' => 'setDB', 'uses' => 'AdminController@setDB'));
 //đơn vị
 Route::get('danh-sach-don-vi', 'DonViController@danhsach')->name('danhsachdonvi');
 Route::get('cau-hinh-email-don-vi', 'NguoiDungController@cauHinhEmailDonVi')->name('cau_hinh_emai_don_vi');

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
+//use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -53,21 +54,43 @@ class LoginController extends Controller
         return 'username';
     }
 
+    public static function layDBT()
+    {
+//        $db = \Session::get('tenDB');
+//        $db = session('tenDB');
+        $db = 'so_tai_nguyen_moi_truong';
+//        $db = Session::has('selected_database');
+//        $db = Session::all();
+//            dd($db);
+            return $db;
+    }
+
     protected function validateLogin(Request $request)
     {
 //        \Session::put('year',  $request->year);
-//        if(\Session()->get('year') == 2021)
+        if($request->year == 2021)
+        {
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong');
+            \Session::put('nam',  $request->year);
+
+        }else{
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong_'.$request->get('year'));
+            \Session::put('nam',  $request->year);
+
+        }
+//        if(Session::has('selected_database')
 //        {
-//            Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
-//            \Session::put('db_database',  'so_tai_nguyen_moi_truong');
-//
-//        }else{
-//            Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
-//            \Session::put('db_database',  'so_tai_nguyen_moi_truong'.$request->get('year'));
-//
+//        Config::set('database.default',Session::get('selected_database'));
+//        } else {
+//            return Redirect::to('database_choosing_page');
 //        }
+//        $db =\Session()->get('tenDB');
+        $db =  \Session::get('tenDB');
 //
-//                dd(\Session()->get('db_database'));
+////
+//                dd($db);
 
 //        $env = DotenvEditor::load();
 //        if ($request->get('year') == 2021) {
@@ -77,7 +100,7 @@ class LoginController extends Controller
 //
 //        }
 //        $env->save();
-//        Artisan::call('config:clear');
+        Artisan::call('config:clear');
 
         $request->validate([
             $this->username() => 'required|string',
