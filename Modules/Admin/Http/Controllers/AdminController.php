@@ -46,9 +46,34 @@ class AdminController extends Controller
      * @return Renderable
      */
 
+//    public static function layDBT()
+//    {
+//            $db = \Session()->get('tenDB');
+//            dd($db);
+//            return $db;
+//    }
+    public function setDB(Request $request)
+    {
+        if($request->year == 2021)
+        {
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong');
+            \Session::put('nam',  $request->year);
+
+        }else{
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong_'.$request->get('year'));
+            \Session::put('nam',  $request->year);
+
+        }
+        return redirect()->back();
+
+    }
 
     public function index()
     {
+//        dd( \Config::get('database.connections.sqlsrv.database'));
+//        dd( \Session()->get('tenDB'));
         $giayMoiPiceCharts = [];
         $giayMoiCoLors = [];
         $vanThuVanBanDiPiceCharts = [];

@@ -26,7 +26,7 @@ use Modules\DieuHanhVanBanDen\Entities\PhoiHopGiaiQuyet;
 use Modules\DieuHanhVanBanDen\Entities\VanBanQuanTrong;
 use Modules\DieuHanhVanBanDen\Entities\VanBanTraLai;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
-use Auth;
+use Auth,Symfony\Component\HttpFoundation\Session;
 use Modules\VanBanDi\Entities\DuThaoVanBan;
 use Modules\VanBanDi\Entities\Duthaovanbandi;
 use Modules\VanBanDi\Entities\VanBanDi;
@@ -49,6 +49,7 @@ class VanBanDen extends Model
 //    const HOAN_THANH_VAN_BAN = 7;
 
     const CHU_TICH_NHAN_VB = 1;
+    const DB = 'so_tai_nguyen_moi_truong';
     const PHO_CHU_TICH_NHAN_VB = 2;
     const THAM_MUU_CHI_CUC_NHAN_VB = 3;
     const CHU_TICH_XA_NHAN_VB = 4;
@@ -58,6 +59,7 @@ class VanBanDen extends Model
     const CHUYEN_VIEN_NHAN_VB = 8;
     const HOAN_THANH_CHO_DUYET = 9;
     const HOAN_THANH_VAN_BAN = 10;
+
 
 
     const VB_TRA_LOI = 1;
@@ -208,6 +210,13 @@ class VanBanDen extends Model
     public function nguoiDung()
     {
         return $this->belongsTo(User::class, 'nguoi_tao', 'id');
+    }
+    public static function laySession()
+    {
+        $db = 'so_tai_nguyen_moi_truong';
+//        $db = Session()->get('tenDB');
+//        dd($db);
+        return $db;
     }
 
 

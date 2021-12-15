@@ -109,11 +109,10 @@
                 <div class="col-xs-5">
                 </div>
                     <div class="col-xs-7 text-right">
-                            <select name="year" id="year" class="form-control select2">
-                                <option value="">-- Năm --</option>
-                                @for($i = 2021; $i <= 2021; $i++)
+                            <select name="year" id="year" class="form-control select2" >
+                                @for($i = 2021; $i <= 2022; $i++)
                                     <option value="{{ $i }}" {{ $i == date('Y') ? 'selected' : '' }}>
-                                        {{ $i }}</option>
+                                        Năm làm việc {{ $i }}</option>
                                 @endfor
                             </select>
                     </div>

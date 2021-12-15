@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 return [
 
@@ -18,6 +19,7 @@ return [
     'default' => env('DB_CONNECTION', 'mysql'),
 
     'default' => env('DB_CONNECTION', 'sqlsrv'),
+    'default_2022' => env('DB_CONNECTION', 'sqlsrv2'),
 
     /*
     |--------------------------------------------------------------------------
@@ -92,6 +94,23 @@ return [
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'forge'),
+//            'database' => \Modules\VanBanDen\Entities\VanBanDen::laySession(),
+//            'database' => \App\Http\Controllers\Auth\LoginController::layDBT(),
+//            'database' => session('db_database', config('database.connections.sqlsrv.database')),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+        'sqlsrv2' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'forge'),
+//            'database' => \Modules\VanBanDen\Entities\VanBanDen::laySession(),
+//            'database' => \App\Http\Controllers\Auth\LoginController::layDBT(),
 //            'database' => session('db_database', config('database.connections.sqlsrv.database')),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),

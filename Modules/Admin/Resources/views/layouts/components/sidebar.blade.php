@@ -11,6 +11,17 @@
                 <a href="#"><i class="fa fa-user"></i> {{auth::user()->chucVu->ten_chuc_vu ?? ''}}</a>
             </div>
         </div>
+        <div class="mt-2 mb-2">
+            <form action="{{route('setDB')}}" method="post" >
+                @csrf
+            <select name="year" id="year" class="form-control select2" onchange="this.form.submit()">
+                @for($i = 2021; $i <= 2022; $i++)
+                    <option value="{{ $i }}" {{ $i == Session::get('nam') ? 'selected' : '' }}>
+                        Năm làm việc {{ $i }}</option>
+                @endfor
+            </select>
+            </form>
+        </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENU CHỨC NĂNG</li>
