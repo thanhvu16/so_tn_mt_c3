@@ -22,7 +22,7 @@ class checkdatabase
      */
     public function handle($request, Closure $next)
     {
-//        dd(Config::get('database.connections.sqlsrv.host') == 127.0.0.1);
+//        dd(Config::get('database.connections.sqlsrv.host'));
         if(Config::get('database.connections.sqlsrv.host') != '127.0.0.1')
         {
             if(Session::has('tenDB')) {

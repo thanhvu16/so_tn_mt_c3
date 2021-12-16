@@ -169,6 +169,7 @@ class VanBanDenPhoiHopController extends Controller
                         return $query->where('updated_at', "LIKE", $date);
                     }
                 })
+                ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
                 ->whereIn('id', $arrVanBanDenId)
                 ->paginate(PER_PAGE);
         }else{
@@ -215,6 +216,7 @@ class VanBanDenPhoiHopController extends Controller
                         return $query->where('updated_at', "LIKE", $date);
                     }
                 })
+                ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
                 ->whereIn('id', $arrVanBanDenId)
                 ->paginate(PER_PAGE);
         }
