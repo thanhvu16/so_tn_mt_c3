@@ -319,10 +319,18 @@
                             <div class="form-group col-md-12">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="sokyhieu" class="col-form-label">File văn bản:</label>
+                                        <label for="sokyhieu" class="col-form-label">File văn bản: </label>
                                         &nbsp;&nbsp;
-                                        <a href="{{$url_pdf}}" target="popup" class="seen-new-window">[File_pdf]</a>
+{{--                                        <a href="{{$url_pdf}}" target="popup" class="seen-new-window">[File_pdf]</a>--}}
+                                        @if(layFilepdf(Request::get('id')))
+                                            @forelse(layFilepdf(Request::get('id')) as $key=>$item)
+                                                <a href="{{asset('public/emailFile_2021/'.$item->duong_dan)}}" target="popup" class="seen-new-window">[File_pdf]</a>&nbsp;
+                                            @empty
+                                            @endforelse
+                                        @endif
+
                                         <input type="hidden" name="file_pdf[]" value="{{$url_pdf}}">
+                                        <input type="hidden" name="file_pdf_nhieu" value="{{Request::get('id')}}">
 
                                         @if($url_doc)
                                             &nbsp;&nbsp;|&nbsp;&nbsp;
