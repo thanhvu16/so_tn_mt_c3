@@ -1194,6 +1194,7 @@ class VanBanDenController extends Controller
         $file_doc = $request->get('doc');
         $file_xls = $request->get('xls');
         $email = GetEmail::where('id', $id)->first();
+        $nam = $email->mail_date;
         $url_file = 'emailFile_' . substr($email->mail_date, 0, 4) . '/';
         $url_pdf = $url_file . $file_pdf;
         if (isset($file_doc))
@@ -1337,7 +1338,7 @@ class VanBanDenController extends Controller
 
         }
 
-        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan',
+        return view('vanbanden::van_ban_den.tao_vb_tu_mail', compact('data_xml', 'ds_loaiVanBan', 'users', 'tieuChuan','nam',
             'soDen', 'ds_soVanBan', 'ds_doKhanCap', 'ds_mucBaoMat', 'type', 'email', 'loaivb_email', 'hangiaiquyet', 'date',
             'url_pdf', 'url_doc', 'url_xls', 'id', 'data_trung', 'vb_so_den', 'nguoi_dung', 'ngayHopNull'));
     }
@@ -1509,7 +1510,7 @@ class VanBanDenController extends Controller
                         foreach ($vbemail as $key => $file1) {
                             $vbDenFile = new FileVanBanDen();
                             $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
-                            $vbDenFile->duong_dan = $file1->duong_dan;
+                            $vbDenFile->duong_dan = $request->thu_muc.$file1->duong_dan;
                             $vbDenFile->duoi_file = 'pdf';
                             $vbDenFile->vb_den_id = $vanbandv->id;
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
@@ -1709,7 +1710,7 @@ class VanBanDenController extends Controller
                             foreach ($vbemail as $key => $file1) {
                                 $vbDenFile = new FileVanBanDen();
                                 $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
-                                $vbDenFile->duong_dan = $file1->duong_dan;
+                                $vbDenFile->duong_dan = $request->thu_muc.$file1->duong_dan;
                                 $vbDenFile->duoi_file = 'pdf';
                                 $vbDenFile->vb_den_id = $vanbandv->id;
                                 $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
