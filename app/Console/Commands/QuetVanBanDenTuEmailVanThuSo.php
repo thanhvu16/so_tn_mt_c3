@@ -155,6 +155,7 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                 }
                                 $time = time();
                                 /* iterate through each attachment and save it */
+                                $file = [];
                                 foreach ($attachments as $attachment) {
                                     if ($attachment['is_attachment'] == 1) {
                                         $filename = iconv_mime_decode($attachment['name']);
@@ -172,6 +173,7 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                                 fclose($fp);
                                             }
                                             $arr['mail_attachment1'] = $key . '_' . strtotime($date_header) . '_' . $filename;
+                                            array_push($file,$arr['mail_attachment1']);
                                         }
 
                                         // download and save doc docx
@@ -260,10 +262,18 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                     $getEmail->fill($data);
                                     $getEmail->save();
 
-                                    $fullPdf = new EmailFile();
-                                    $fullPdf->email_id = $getEmail->id;
-                                    $fullPdf->duong_dan = $arr['mail_attachment1'];
-                                    $fullPdf->save();
+                                    if(count($file)>0)
+                                    {
+                                        foreach ($file as $fi)
+                                        {
+                                            $fullPdf = new EmailFile();
+                                            $fullPdf->email_id = $getEmail->id;
+                                            $fullPdf->duong_dan = $fi;
+                                            $fullPdf->save();
+                                        }
+                                    }
+
+
                                 }
                                 $arr['mail_attachment'] = '';
                                 $arr['mail_attachment1'] = '';
