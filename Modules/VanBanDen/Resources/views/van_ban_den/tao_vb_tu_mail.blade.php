@@ -324,7 +324,7 @@
 {{--                                        <a href="{{$url_pdf}}" target="popup" class="seen-new-window">[File_pdf]</a>--}}
                                         @if(layFilepdf(Request::get('id')))
                                             @forelse(layFilepdf(Request::get('id')) as $key=>$item)
-                                                <a href="{{asset('public/emailFile_2021/'.$item->duong_dan)}}" target="popup" class="seen-new-window">[File_pdf]</a>&nbsp;
+                                                <a href="{{asset('emailFile_2021/'.$item->duong_dan)}}" target="popup" class="seen-new-window">[File_pdf]</a>&nbsp;
                                             @empty
                                             @endforelse
                                         @endif
