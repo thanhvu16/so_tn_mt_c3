@@ -210,6 +210,31 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                             }
                                             $arr['mail_attachment'] = $key . '_' . strtotime($date_header) . '_' . $filename;
                                         }
+
+                                        if (!empty($arr['mail_attachment1'])) {
+                                            $emailDonVi = EmailDonVi::where('email', $arr['mail_from'])->first();
+                                            $noigui = $emailDonVi->mail_group ?? 4;
+                                            $data = array(
+                                                'mail_subject' => $arr['mail_subject'],
+                                                'mail_from' => $arr['mail_from'],
+                                                'mail_date' => $arr['mail_date'],
+                                                'mail_attachment' => $arr['mail_attachment'],
+                                                'mail_pdf' => $arr['mail_attachment1'],
+                                                'mail_doc' => $arr['mail_attachment2'],
+                                                'mail_xls' => $arr['mail_attachment3'],
+                                                'noigui' => $noigui,
+                                                'mail_active' => 1
+                                            );
+                                            $getEmail = new GetEmail();
+                                            $getEmail->fill($data);
+                                            $getEmail->save();
+
+                                            $fullPdf = new EmailFile();
+                                            $fullPdf->email_id = $getEmail->id;
+                                            $fullPdf->duong_dan = $arr['mail_attachment1'];
+                                            $fullPdf->save();
+
+                                        }
                                     }
 
                                 }
