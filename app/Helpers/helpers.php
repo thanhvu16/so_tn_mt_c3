@@ -80,6 +80,13 @@ function tenNhom($idnhom)
     return 0;
 
 }
+function layFilepdf($id)
+{
+    $file = \Modules\VanBanDen\Entities\EmailFile::where('email_id',$id)->get();
+
+    return $file;
+
+}
 
 function vn_to_str ($str){
 

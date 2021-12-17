@@ -23,6 +23,7 @@ use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\LuuVet;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
+use Modules\VanBanDen\Entities\EmailFile;
 use Modules\VanBanDen\Entities\FileVanBanDen;
 use Modules\VanBanDen\Entities\TaiLieuThamKhao;
 use Modules\VanBanDen\Entities\TieuChuanVanBan;
@@ -1501,17 +1502,35 @@ class VanBanDenController extends Controller
                 $vanbandv->nguoi_tao = auth::user()->id;
                 $vanbandv->save();
                 //upload file
-                if (!empty($request->get('file_pdf'))) {
-                    foreach ($requestData['file_pdf'] as $file) {
-                        $vbDenFile = new FileVanBanDen();
-                        $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                        $vbDenFile->duong_dan = $file;
-                        $vbDenFile->duoi_file = $this->filename_extension($file);
-                        $vbDenFile->vb_den_id = $vanbandv->id;
-                        $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                        $vbDenFile->save();
+
+                if (!empty($request->file_pdf_nhieu)) {
+                    $vbemail = EmailFile::where('email_id', $request->file_pdf_nhieu)->get();
+                    if (count($vbemail) > 0) {
+                        foreach ($vbemail as $key => $file1) {
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
+                            $vbDenFile->duong_dan = $file1->duong_dan;
+                            $vbDenFile->duoi_file = 'pdf';
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
+                        }
+                    }else{
+                        if (!empty($request->get('file_pdf'))) {
+                            foreach ($requestData['file_pdf'] as $file) {
+                                $vbDenFile = new FileVanBanDen();
+                                $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
+                                $vbDenFile->duong_dan = $file;
+                                $vbDenFile->duoi_file = $this->filename_extension($file);
+                                $vbDenFile->vb_den_id = $vanbandv->id;
+                                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                                $vbDenFile->save();
+                            }
+                        }
                     }
+
                 }
 
                 // update trinh tu nhan van ban
@@ -1683,17 +1702,35 @@ class VanBanDenController extends Controller
 
                     }
 
-                    if (!empty($request->get('file_pdf'))) {
-                        foreach ($requestData['file_pdf'] as $file) {
-                            $vbDenFile = new FileVanBanDen();
-                            $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                            $vbDenFile->duong_dan = $file;
-                            $vbDenFile->duoi_file = $this->filename_extension($file);
-                            $vbDenFile->vb_den_id = $vanbandv->id;
-                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                            $vbDenFile->save();
+
+                    if (!empty($request->file_pdf_nhieu)) {
+                        $vbemail = EmailFile::where('email_id', $request->file_pdf_nhieu)->get();
+                        if (count($vbemail) > 0) {
+                            foreach ($vbemail as $key => $file1) {
+                                $vbDenFile = new FileVanBanDen();
+                                $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
+                                $vbDenFile->duong_dan = $file1->duong_dan;
+                                $vbDenFile->duoi_file = 'pdf';
+                                $vbDenFile->vb_den_id = $vanbandv->id;
+                                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                                $vbDenFile->save();
+                            }
+                        } else {
+                            if (!empty($request->get('file_pdf'))) {
+                                foreach ($requestData['file_pdf'] as $file) {
+                                    $vbDenFile = new FileVanBanDen();
+                                    $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
+                                    $vbDenFile->duong_dan = $file;
+                                    $vbDenFile->duoi_file = $this->filename_extension($file);
+                                    $vbDenFile->vb_den_id = $vanbandv->id;
+                                    $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                                    $vbDenFile->save();
+                                }
+                            }
                         }
+
                     }
                 }
                 UserLogs::saveUserLogs('Tạo giấy mời đến ', $vanbandv);
@@ -1886,13 +1923,12 @@ class VanBanDenController extends Controller
         foreach ($userIDPhoPhong as $da) {
 
             $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::where(function ($query) use ($da) {
-                    return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
-                        return $q->where('can_bo_nhan_id', $da->id);
-                    });
+                return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
+                    return $q->where('can_bo_nhan_id', $da->id);
+                });
             })
                 ->where('han_xu_ly', '<', $date)
                 ->where('trinh_tu_nhan_van_ban', 6)
-
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
@@ -1937,6 +1973,7 @@ class VanBanDenController extends Controller
 
 
     }
+
     public function capNhatVanBanTonTruongPhong()
     {
 
@@ -1952,9 +1989,9 @@ class VanBanDenController extends Controller
         foreach ($userIDPhoPhong as $da) {
 
             $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::where(function ($query) use ($da) {
-                    return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
-                        return $q->where('can_bo_nhan_id', $da->id);
-                    });
+                return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
+                    return $q->where('can_bo_nhan_id', $da->id);
+                });
             })
                 ->where('han_xu_ly', '<', $date)
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
@@ -2005,6 +2042,7 @@ class VanBanDenController extends Controller
 
 
     }
+
     public function capNhatVanBanTonChuyenVien()
     {
 
@@ -2020,13 +2058,12 @@ class VanBanDenController extends Controller
         foreach ($userIDPhoPhong as $da) {
 
             $danhSachVanBanDenQuaHanDangXuLy = VanBanDen::where(function ($query) use ($da) {
-                    return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
-                        return $q->where('can_bo_nhan_id', $da->id);
-                    });
+                return $query->whereHas('vanBanDangXuLy', function ($q) use ($da) {
+                    return $q->where('can_bo_nhan_id', $da->id);
+                });
             })
                 ->where('han_xu_ly', '<', $date)
                 ->where('trinh_tu_nhan_van_ban', $trinhTuNhanVanBan)
-
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
