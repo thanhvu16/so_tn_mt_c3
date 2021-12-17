@@ -4,10 +4,12 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\DonVi;
 use Modules\LayVanBanTuEmail\Entities\EmailDonVi;
 use Modules\LayVanBanTuEmail\Entities\GetEmail;
 use Auth;
+use Modules\VanBanDen\Entities\EmailFile;
 
 class QuetVanBanDenTuEmailVanThuSo extends Command
 {
