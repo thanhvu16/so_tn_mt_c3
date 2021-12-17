@@ -1188,6 +1188,7 @@ class VanBanDenController extends Controller
     {
         $file_xml = $request->get('xml');
         $id = $request->get('id');
+        $conten_xml = null;
         $file_pdf = $request->get('pdf');
         $file_doc = $request->get('doc');
         $file_xls = $request->get('xls');
@@ -1202,7 +1203,8 @@ class VanBanDenController extends Controller
             $url_xls = $url_file . $file_xls;
         else
             $url_xls = '';
-        if (!empty($file_xml)) {
+        if (!empty($file_xml) && file_exists($url_file . $file_xml)) {
+
             $conten_xml = file_get_contents($url_file . $file_xml);
         }
         if (!empty($file_xml) && $conten_xml != '') {
