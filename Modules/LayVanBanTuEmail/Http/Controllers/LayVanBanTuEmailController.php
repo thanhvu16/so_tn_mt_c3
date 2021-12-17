@@ -6,6 +6,7 @@ namespace Modules\LayVanBanTuEmail\Http\Controllers;
 use App\User;
 use http\Env;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Admin\Entities\DonVi;
@@ -144,6 +145,32 @@ class LayVanBanTuEmailController extends Controller
                                     }
                                 }
                             }
+
+
+                            //toàn viết
+//                            if (count($attachments) > 0) {
+//                                $emailDonVi = EmailDonVi::where('email', $arr['mail_from'])->first();
+//                                $noigui = $emailDonVi->mail_group ?? 4;
+//                                $data = array(
+//                                    'mail_subject' => $arr['mail_subject'],
+//                                    'mail_from' => $arr['mail_from'],
+//                                    'mail_date' => $arr['mail_date'],
+//                                    'mail_attachment' => $arr['mail_attachment'],
+//                                    'mail_pdf' => $arr['mail_attachment1'],
+//                                    'mail_doc' => $arr['mail_attachment2'],
+//                                    'mail_xls' => $arr['mail_attachment3'],
+//                                    'noigui' => $noigui,
+//                                    'mail_active' => 1
+//                                );
+//                                $getEmail = new GetEmail();
+//                                $getEmail->fill($data);
+//                                $getEmail->save();
+//
+//                                EmailFile::saveAttmentFile($getEmail, $attachments, $key, $date_header);
+//
+//                            }
+
+
                             $time = time();
                             /* iterate through each attachment and save it */
                             foreach ($attachments as $attachment) {
@@ -163,6 +190,33 @@ class LayVanBanTuEmailController extends Controller
                                             fclose($fp);
                                         }
                                         $arr['mail_attachment1'] = $key . '_' . strtotime($date_header) . '_' . $filename;
+                                        // viết vào đây
+
+                                        if (!empty($arr['mail_attachment1'])) {
+                                            $emailDonVi = EmailDonVi::where('email', $arr['mail_from'])->first();
+                                            $noigui = $emailDonVi->mail_group ?? 4;
+                                            $data = array(
+                                                'mail_subject' => $arr['mail_subject'],
+                                                'mail_from' => $arr['mail_from'],
+                                                'mail_date' => $arr['mail_date'],
+                                                'mail_attachment' => $arr['mail_attachment'],
+                                                'mail_pdf' => $arr['mail_attachment1'],
+                                                'mail_doc' => $arr['mail_attachment2'],
+                                                'mail_xls' => $arr['mail_attachment3'],
+                                                'noigui' => $noigui,
+                                                'mail_active' => 1
+                                            );
+                                            $getEmail = new GetEmail();
+                                            $getEmail->fill($data);
+                                            $getEmail->save();
+
+                                            $fullPdf = new EmailFile();
+                                            $fullPdf->email_id = $getEmail->id;
+                                            $fullPdf->duong_dan = $arr['mail_attachment1'];
+                                            $fullPdf->save();
+
+                                        }
+
                                     }
 
                                     // download and save doc docx
@@ -224,10 +278,7 @@ class LayVanBanTuEmailController extends Controller
                                 $getEmail->fill($data);
                                 $getEmail->save();
 
-                                $fullPdf = new EmailFile();
-                                $fullPdf->email_id = $getEmail->id;
-                                $fullPdf->duong_dan = $arr['mail_attachment1'];
-                                $fullPdf->save();
+
                             }
                             $arr['mail_attachment'] = '';
                             $arr['mail_attachment1'] = '';
