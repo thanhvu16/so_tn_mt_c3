@@ -14,7 +14,7 @@ class AddColumeExtFileHomThuCong extends Migration
     public function up()
     {
         Schema::table('file_pdf_hom_thu_cong', function (Blueprint $table) {
-            $table->string('duoi_file')->nullable();
+            $table->string('duoi_file_pdf')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumeExtFileHomThuCong extends Migration
     public function down()
     {
         Schema::table('file_pdf_hom_thu_cong', function (Blueprint $table) {
-            $table->dropColumn('duoi_file');
+            $table->dropColumn('duoi_file_pdf');
         });
     }
 }
