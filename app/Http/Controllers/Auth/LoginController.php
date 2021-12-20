@@ -68,18 +68,18 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
 //        \Session::put('year',  $request->year);
-//        if($request->year == 2021 )
-//        {
+        if($request->year == 2021)
+        {
             \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
             \Session::put('tenDB',  'so_tai_nguyen_moi_truong');
             \Session::put('nam',  $request->year);
 
-//        }else{
-//            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
-//            \Session::put('tenDB',  'so_tai_nguyen_moi_truong_'.$request->get('year'));
-//            \Session::put('nam',  $request->year);
-//
-//        }
+        }else{
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong_'.$request->get('year'));
+            \Session::put('nam',  $request->year);
+
+        }
 //        if(Session::has('selected_database')
 //        {
 //        Config::set('database.default',Session::get('selected_database'));
