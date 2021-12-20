@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 use Modules\Admin\Entities\DonVi;
 
-class DonViRepository extends BaseRepository
+class zDonViRepository extends BaseRepository
 {
     public function model()
     {

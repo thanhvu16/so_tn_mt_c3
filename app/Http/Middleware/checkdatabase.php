@@ -28,7 +28,7 @@ class checkdatabase
             if(Session::has('tenDB')) {
                 Config::set('database.connections.sqlsrv', array(
                     'driver' => 'sqlsrv',
-                    'host' => env('DB_HOST'),
+                    'host' => '200.200.200.154',
                     'port' => env('DB_PORT'),
                     'database' => Session::get('tenDB'),
                     'username' => env('DB_USERNAME', 'forge'),
@@ -41,7 +41,7 @@ class checkdatabase
                 DB::reconnect('sqlsrv');
             }
         }
-
+//        dd(Config::get('database.connections.sqlsrv'));
 
         return $next($request);
     }

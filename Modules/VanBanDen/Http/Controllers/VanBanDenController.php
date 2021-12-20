@@ -45,6 +45,8 @@ class VanBanDenController extends Controller
     public function __construct(HomeRepository $homeRepository)
     {
         $this->homeRepository = $homeRepository;
+//        dd($homeRepository);
+
 
     }
 
@@ -613,6 +615,7 @@ class VanBanDenController extends Controller
                     'type' => 2
                 ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
             }
+
             $soDenvb = $soDenvb + 1;
             if ($request->chu_tri_phoi_hop == null) {
                 $request->chu_tri_phoi_hop = 0;
