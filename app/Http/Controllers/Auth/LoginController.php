@@ -71,11 +71,11 @@ class LoginController extends Controller
         if($request->year == 2021)
         {
             \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong');
-            \Session::put('tenDB',  'stnmt_taphuan');
+            \Session::put('tenDB',  'so_tai_nguyen_moi_truong');
             \Session::put('nam',  $request->year);
 
         }else{
-            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong'.$request->get('year'));
+            \Config::set('database.connections.sqlsrv.database', 'so_tai_nguyen_moi_truong_'.$request->get('year'));
             \Session::put('tenDB',  'so_tai_nguyen_moi_truong_'.$request->get('year'));
             \Session::put('nam',  $request->year);
 
@@ -90,7 +90,7 @@ class LoginController extends Controller
         $db =  \Session::get('tenDB');
 //
 ////
-                dd($db);
+//                dd($db);
 
 //        $env = DotenvEditor::load();
 //        if ($request->get('year') == 2021) {
