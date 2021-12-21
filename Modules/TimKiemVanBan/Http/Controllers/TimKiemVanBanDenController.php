@@ -71,10 +71,17 @@ class TimKiemVanBanDenController extends Controller
             $ds_vanBanDen = VanBanDen::query()
                 ->where(function ($query) use ($tuKhoa) {
                     if (!empty($tuKhoa)) {
-                        return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
-                            ->orwhere(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
-                            ->orwhere(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
-                            ->orwhere('so_den', $tuKhoa);
+                        if(is_numeric($tuKhoa))
+                        {
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                                ->orwhere(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                                ->orwhere(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                                ->orwhere('so_den', $tuKhoa);
+                        }else{
+                            return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                                ->orwhere(DB::raw('lower(co_quan_ban_hanh)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%")
+                                ->orwhere(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($tuKhoa) . "%");
+                        }
                     }
                 })
                 ->whereNull('deleted_at')

@@ -1518,7 +1518,7 @@ class VanBanDenController extends Controller
 
                 if (!empty($tbl_email->emailFile) && count($tbl_email->emailFile) > 0) {
                     foreach ($tbl_email->emailFile as $file) {
-                        if ($file->duoi_file != 'sdk' || $file->duoi_file != 'dat') {
+                        if ($file->duoi_file == 'pdf' || $file->duoi_file == 'docx'|| $file->duoi_file == 'doc') {
                             $vbDenFile = new FileVanBanDen();
                             $vbDenFile->ten_file = $file->duoi_file_pdf;
                             $vbDenFile->duong_dan = $file->duong_dan;
@@ -1703,7 +1703,7 @@ class VanBanDenController extends Controller
 
                     if (!empty($tbl_email->emailFile) && count($tbl_email->emailFile) > 0) {
                         foreach ($tbl_email->emailFile as $file) {
-                            if ($file->duoi_file != 'sdk' || $file->duoi_file != 'dat') {
+                            if ($file->duoi_file == 'pdf' || $file->duoi_file == 'docx'|| $file->duoi_file == 'doc') {
                                 $vbDenFile = new FileVanBanDen();
                                 $vbDenFile->ten_file = $file->duoi_file_pdf;
                                 $vbDenFile->duong_dan = $file->duong_dan;
