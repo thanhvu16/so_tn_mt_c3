@@ -46,7 +46,7 @@
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Ngày ban hành <span class="color-red">*</span></label>
                                 <input type="date" name="vb_ngaybanhanh" id="vb_ngaybanhanh" class="form-control"
-                                       value="{{$vanbandi->ngay_ban_hanh}}"
+                                       value="{{date('Y-m-d')}}"
                                        autocomplete="off" required>
                             </div>
                             @if(auth::user()->hasRole(VAN_THU_HUYEN))

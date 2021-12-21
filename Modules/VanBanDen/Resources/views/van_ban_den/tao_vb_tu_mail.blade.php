@@ -323,8 +323,8 @@
                                         &nbsp;&nbsp;
                                         @if($email->emailFile && count($email->emailFile) > 0)
                                             @foreach($email->emailFile as $emailFile)
-                                                @if ($emailFile->duoi_file != 'sdk')
-                                                <a href="{{asset($emailFile->duong_dan)}}" target="popup" class="seen-new-window">[{{ $emailFile->duoi_file_pdf }}]</a>&nbsp;
+                                                @if ($emailFile->duoi_file == 'pdf' || $emailFile->duoi_file == 'docx'|| $emailFile->duoi_file == 'doc')
+                                                <a href="{{asset($emailFile->duong_dan)}}" target="popup" class="seen-new-window">[{{ $emailFile->duoi_file_pdf }}]</a>&nbsp; &nbsp; ||
                                                 @endif
                                             @endforeach
                                         @endif

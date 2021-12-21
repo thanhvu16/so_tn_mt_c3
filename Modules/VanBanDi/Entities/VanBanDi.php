@@ -48,6 +48,18 @@ class VanBanDi extends Model
     {
         return $this->belongsTo(DonVi::class,'van_ban_huyen_ky');
     }
+
+    public function donViSoanThaoVBC($id)
+    {
+        $donVi = DonVi::where('id',$id)->first();
+        if($donVi->parent_id == 0)
+        {
+            return $donVi->ten_don_vi;
+        }else{
+            $donVi = DonVi::where('id',$donVi->parent_id)->first();
+            return $donVi->ten_don_vi;
+        }
+    }
     public function nguoitao()
     {
         return $this->belongsTo(User::class,'nguoi_tao');

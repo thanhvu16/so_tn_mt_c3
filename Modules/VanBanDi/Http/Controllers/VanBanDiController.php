@@ -2636,7 +2636,7 @@ class VanBanDiController extends Controller
                 case 'Phòng Đăng ký thống kê đất đai':
                     $maPhong = 'ĐKTK';
                     break;
-                case 'Phòng Quy hoạch - Kế hoạch sử dụng đất':
+                case 'Phòng Quy hoạch-Kế hoạch sử dụng đất':
                     $maPhong = 'QHKHSDĐ';
                     break;
                 case 'Phòng Kinh tế đất':
@@ -2742,7 +2742,7 @@ class VanBanDiController extends Controller
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
                         $SoKyHieu = "$soDi/GM";
                     } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                        $SoKyHieu = "$soDi/BC";
+                        $SoKyHieu = "$soDi/BC-TTr";
                     }
                     break;
 
@@ -2881,13 +2881,13 @@ class VanBanDiController extends Controller
                         break;
                     case 'Quyết Định':
                         if ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                            $SoKyHieu = "$soDi/QĐ-STNMT-";
+                            $SoKyHieu = "$soDi/QĐ-STNMT";
                         }
                         break;
 
                     case 'Thông báo':
                         if ($loaiVanBan->ten_loai_van_ban == 'Thông báo') {
-                            $SoKyHieu = "$soDi/TB-STNMT-";
+                            $SoKyHieu = "$soDi/TB-STNMT";
                         }
                         break;
                     case 'Giấy Mời':
@@ -2897,22 +2897,22 @@ class VanBanDiController extends Controller
                         break;
                     case 'Cấp Phép':
                         if ($loaiVanBan->ten_loai_van_ban == 'Giấy phép') {
-                            $SoKyHieu = "$soDi/GP-STNMT-";
+                            $SoKyHieu = "$soDi/GP-STNMT";
                         } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy xác nhận') {
-                            $SoKyHieu = "$soDi/GXN-STNMT-";
+                            $SoKyHieu = "$soDi/GXN-STNMT";
                         }
                         break;
                     case 'Thanh Tra':
                         if ($loaiVanBan->ten_loai_van_ban == 'Công văn') {
-                            $SoKyHieu = "$soDi/STNMT-";
+                            $SoKyHieu = "$soDi/STNMT";
                         } elseif ($loaiVanBan->ten_loai_van_ban == 'Quyết định') {
-                            $SoKyHieu = "$soDi/QĐ-XPVPHC-";
+                            $SoKyHieu = "$soDi/QĐ-XPVPHC";
                         } elseif ($loaiVanBan->ten_loai_van_ban == 'Kế hoạch') {
-                            $SoKyHieu = "$soDi/KH-";
+                            $SoKyHieu = "$soDi/KH";
                         } elseif ($loaiVanBan->ten_loai_van_ban == 'Giấy mời') {
-                            $SoKyHieu = "$soDi/GM-";
+                            $SoKyHieu = "$soDi/GM";
                         } elseif ($loaiVanBan->ten_loai_van_ban == 'Báo cáo') {
-                            $SoKyHieu = "$soDi/BC-";
+                            $SoKyHieu = "$soDi/BC-TTr";
                         }
                         break;
 

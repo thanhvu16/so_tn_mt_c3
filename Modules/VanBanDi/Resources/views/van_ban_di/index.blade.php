@@ -211,7 +211,7 @@
                                     <td class="text-center">{{$key+1}}</td>
                                     <td class="text-left"><span class="font-bold color-red" style="font-weight: bold;font-size: 16px">{{$vbDi->so_di}}</span></td>
                                     <td class="text-center">{{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}</td>
-                                    <td class="text-left">{{$vbDi->donViSoanThaoVB->ten_don_vi ?? ''}}</td>
+                                    <td class="text-left">{{$vbDi->donViSoanThaoVBC($vbDi->van_ban_huyen_ky) ?? ''}}</td>
                                     <td class="text-left">{{$vbDi->so_ky_hieu}}</td>
                                     <td style="text-align: justify">
                                         <a href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}" style="font-weight: bold" title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
