@@ -110,7 +110,17 @@
     })
 
     $("#sso-logout").off('click').on('click', function () {
-        SSO.logout();
+        // $.ajax({
+        //     url: APP_URL + '/logout',
+        //     type:'get',
+        //     dataType:'json',
+        // }).done(function (res){
+        //     console.log(2);
+        //     SSO.logout();
+        // }).fail(function (error) {
+        //     console.log(1);
+        //     SSO.logout();
+        // });
     })
 
     $.ajaxSetup({
