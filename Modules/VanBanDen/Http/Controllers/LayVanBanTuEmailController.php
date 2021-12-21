@@ -31,7 +31,6 @@ class LayVanBanTuEmailController extends Controller
         $inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Email: ');
 
         $emails = imap_search($inbox,'SINCE "'.$date.'"');
-        dd($emails);
 
 
 
@@ -115,6 +114,7 @@ class LayVanBanTuEmailController extends Controller
                         }
                     }
                     $time=time();
+                    $file = [];
                     /* iterate through each attachment and save it */
                     foreach($attachments as $attachment)
                     {
@@ -135,6 +135,7 @@ class LayVanBanTuEmailController extends Controller
                                 fclose($fp);
 
                                 $arr['mail_attachment1'] = $key.'_'.strtotime($date_header).'_'.$filename;
+                                array_push($file, $arr['mail_attachment1']);
                             }
 
                             // download and save doc docx
@@ -190,6 +191,14 @@ class LayVanBanTuEmailController extends Controller
                         $getEmail = new GetEmail();
                         $getEmail->fill($data);
                         $getEmail->save();
+                        if (count($file) > 0) {
+                            foreach ($file as $fi) {
+                                $fullPdf = new EmailFile();
+                                $fullPdf->email_id = $getEmail->id;
+                                $fullPdf->duong_dan = $fi;
+                                $fullPdf->save();
+                            }
+                        }
                     }
                     $arr['mail_attachment'] ='';
                     $arr['mail_attachment1']='';

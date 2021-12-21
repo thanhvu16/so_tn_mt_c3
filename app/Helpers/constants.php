@@ -15,6 +15,7 @@ define('UPLOAD_GIAI_QUYET_VAN_BAN_DEN', 'uploads/van-ban-den/giai-quyet-' . date
 define('UPLOAD_FILE_VAN_BAN_DEN_TRA_LAI', 'uploads/van-ban-den/tra-lai-' . date('Y'));
 define('THU_MUC_CONG_VIEC_DON_VI', 'uploads/cong_viec_don_vi' . '_' . date('Y'));
 define('THU_MUC_FILE_PHOI_HOP', 'uploads/phoi-hop-cong-viec' . '_' . date('Y'));
+define('THU_MUC_FILE_DIEN_TU', 'emailFile_' . date('Y').'/'.date('m'));
 define('ACTIVE', 1);
 define('INACTIVE', 2);
 
@@ -87,3 +88,4 @@ define('ERROR_VALIDATE', 422);
 
 CONST USER_TOKEN = 'eyQiLCJhbGciOiJIU1NiJ9';
 CONST API_VERSION = 1;
+

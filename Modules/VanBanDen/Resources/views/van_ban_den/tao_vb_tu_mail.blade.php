@@ -321,29 +321,36 @@
                                     <div class="col-md-3">
                                         <label for="sokyhieu" class="col-form-label">File văn bản: </label>
                                         &nbsp;&nbsp;
+                                        @if($email->emailFile && count($email->emailFile) > 0)
+                                            @foreach($email->emailFile as $emailFile)
+                                                @if ($emailFile->duoi_file != 'sdk')
+                                                <a href="{{asset($emailFile->duong_dan)}}" target="popup" class="seen-new-window">[{{ $emailFile->duoi_file_pdf }}]</a>&nbsp;
+                                                @endif
+                                            @endforeach
+                                        @endif
 {{--                                        <a href="{{$url_pdf}}" target="popup" class="seen-new-window">[File_pdf]</a>--}}
-                                        @if(layFilepdf(Request::get('id')))
-                                            @forelse(layFilepdf(Request::get('id')) as $key=>$item)
-                                                <a href="{{asset('emailFile_'.$nam.'/'.$item->duong_dan)}}" target="popup" class="seen-new-window">[File_pdf]</a>&nbsp;
-                                            @empty
-                                            @endforelse
-                                        @endif
+{{--                                        @if(layFilepdf(Request::get('id')))--}}
+{{--                                            @forelse(layFilepdf(Request::get('id')) as $key=>$item)--}}
+{{--                                                <a href="{{asset('emailFile_'.$nam.'/'.$item->duong_dan)}}" target="popup" class="seen-new-window">[File_pdf]</a>&nbsp;--}}
+{{--                                            @empty--}}
+{{--                                            @endforelse--}}
+{{--                                        @endif--}}
 
-                                        <input type="hidden" name="file_pdf[]" value="{{$url_pdf}}">
-                                        <input type="hidden" name="file_pdf_nhieu" value="{{Request::get('id')}}">
-                                        <input type="hidden" name="thu_muc" value="{{'emailFile_'.$nam.'/'}}">
+{{--                                        <input type="hidden" name="file_pdf[]" value="{{$url_pdf}}">--}}
+{{--                                        <input type="hidden" name="file_pdf_nhieu" value="{{Request::get('id')}}">--}}
+{{--                                        <input type="hidden" name="thu_muc" value="{{'emailFile_'.$nam.'/'}}">--}}
 
-                                        @if($url_doc)
-                                            &nbsp;&nbsp;|&nbsp;&nbsp;
-                                            <a href="{{$url_doc}}" target="popup"
-                                               class="seen-new-window">[File_docx]</a>
-                                            <input type="hidden" name="file_pdf[]" value="{{$url_doc}}">
-                                        @endif
-                                        @if($url_xls)
-                                            &nbsp;&nbsp;|&nbsp;&nbsp;
-                                            <a href="{{$url_xls}}" target="popup" class="seen-new-window">[File_xls]</a>
-                                            <input type="hidden" name="file_pdf[]" value="{{$url_xls}}">
-                                        @endif
+{{--                                        @if($url_doc)--}}
+{{--                                            &nbsp;&nbsp;|&nbsp;&nbsp;--}}
+{{--                                            <a href="{{$url_doc}}" target="popup"--}}
+{{--                                               class="seen-new-window">[File_docx]</a>--}}
+{{--                                            <input type="hidden" name="file_pdf[]" value="{{$url_doc}}">--}}
+{{--                                        @endif--}}
+{{--                                        @if($url_xls)--}}
+{{--                                            &nbsp;&nbsp;|&nbsp;&nbsp;--}}
+{{--                                            <a href="{{$url_xls}}" target="popup" class="seen-new-window">[File_xls]</a>--}}
+{{--                                            <input type="hidden" name="file_pdf[]" value="{{$url_xls}}">--}}
+{{--                                        @endif--}}
                                         <input type="hidden" name="id_vanban_tumail" value="{{$id}}">
                                     </div>
 

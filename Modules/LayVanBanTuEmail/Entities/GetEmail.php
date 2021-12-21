@@ -3,6 +3,7 @@
 namespace Modules\LayVanBanTuEmail\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\VanBanDen\Entities\EmailFile;
 
 class GetEmail extends Model
 {
@@ -22,4 +23,10 @@ class GetEmail extends Model
         'don_vi_id',
         'user_id'
     ];
+
+    public function emailFile()
+    {
+        return $this->hasMany(EmailFile::class, 'email_id', 'id');
+
+    }
 }

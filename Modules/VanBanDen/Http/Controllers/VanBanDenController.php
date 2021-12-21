@@ -1190,15 +1190,15 @@ class VanBanDenController extends Controller
 
     public function taovbdentumail(Request $request)
     {
-        $file_xml = $request->get('xml');
         $id = $request->get('id');
         $conten_xml = null;
         $file_pdf = $request->get('pdf');
         $file_doc = $request->get('doc');
         $file_xls = $request->get('xls');
-        $email = GetEmail::where('id', $id)->first();
+        $email = GetEmail::with('emailFile')->where('id', $id)->first();
         $nam = $email->mail_date;
         $url_file = 'emailFile_' . substr($email->mail_date, 0, 4) . '/';
+        $file_xml = $request->get('xml');
         $url_pdf = $url_file . $file_pdf;
         if (isset($file_doc))
             $url_doc = $url_file . $file_doc;
@@ -1208,10 +1208,16 @@ class VanBanDenController extends Controller
             $url_xls = $url_file . $file_xls;
         else
             $url_xls = '';
-        if (!empty($file_xml) && file_exists($url_file . $file_xml)) {
+        if(!empty($file_xml) && file_exists($file_xml)) {
+            $conten_xml = file_get_contents($file_xml);
+        } else {
+            if (!empty($file_xml) && file_exists($url_file . $file_xml)) {
 
-            $conten_xml = file_get_contents($url_file . $file_xml);
+                $conten_xml = file_get_contents($url_file . $file_xml);
+            }
         }
+
+
         if (!empty($file_xml) && $conten_xml != '') {
             $string = preg_replace('/[\x00-\x1F\x7F]/u', '', $conten_xml);
             if (empty($string)) {
@@ -1378,6 +1384,7 @@ class VanBanDenController extends Controller
     {
 
         $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
+        $tbl_email = null;
         if ($loaiVanBan->ten_loai_van_ban != 'Giấy mời') {
             $requestData = $request->all();
             $user = auth::user();
@@ -1391,7 +1398,7 @@ class VanBanDenController extends Controller
                 }
             } else {
                 //vb tu mail
-                $tbl_email = GetEmail::find($request->id_vanban_tumail);
+                $tbl_email = GetEmail::with('emailFile')->find($request->id_vanban_tumail);
                 $tbl_email->mail_active = 2;
                 $tbl_email->save();
             }
@@ -1461,16 +1468,18 @@ class VanBanDenController extends Controller
                     }
                     $vanbandv->save();
 
-                    if (!empty($request->get('file_pdf'))) {
-                        foreach ($requestData['file_pdf'] as $file) {
-                            $vbDenFile = new FileVanBanDen();
-                            $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                            $vbDenFile->duong_dan = $file;
-                            $vbDenFile->duoi_file = $this->filename_extension($file);
-                            $vbDenFile->vb_den_id = $vanbandv->id;
-                            $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                            $vbDenFile->save();
+                    if (!empty($tbl_email->emailFile) && count($tbl_email->emailFile) > 0) {
+                        foreach ($tbl_email->emailFile as $file) {
+                            if ($file->duoi_file != 'sdk' || $file->duoi_file != 'dat') {
+                                $vbDenFile = new FileVanBanDen();
+                                $vbDenFile->ten_file = $file->duoi_file_pdf;
+                                $vbDenFile->duong_dan = $file->duong_dan;
+                                $vbDenFile->duoi_file = $file->duoi_file;
+                                $vbDenFile->vb_den_id = $vanbandv->id;
+                                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
+                                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                                $vbDenFile->save();
+                            }
                         }
                     }
 
@@ -1507,34 +1516,19 @@ class VanBanDenController extends Controller
                 $vanbandv->save();
                 //upload file
 
-                if (!empty($request->file_pdf_nhieu)) {
-                    $vbemail = EmailFile::where('email_id', $request->file_pdf_nhieu)->get();
-                    if (count($vbemail) > 0) {
-                        foreach ($vbemail as $key => $file1) {
+                if (!empty($tbl_email->emailFile) && count($tbl_email->emailFile) > 0) {
+                    foreach ($tbl_email->emailFile as $file) {
+                        if ($file->duoi_file != 'sdk' || $file->duoi_file != 'dat') {
                             $vbDenFile = new FileVanBanDen();
-                            $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
-                            $vbDenFile->duong_dan = $request->thu_muc.$file1->duong_dan;
-                            $vbDenFile->duoi_file = 'pdf';
+                            $vbDenFile->ten_file = $file->duoi_file_pdf;
+                            $vbDenFile->duong_dan = $file->duong_dan;
+                            $vbDenFile->duoi_file = $file->duoi_file;
                             $vbDenFile->vb_den_id = $vanbandv->id;
                             $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
                         }
-                    }else{
-                        if (!empty($request->get('file_pdf'))) {
-                            foreach ($requestData['file_pdf'] as $file) {
-                                $vbDenFile = new FileVanBanDen();
-                                $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                                $vbDenFile->duong_dan = $file;
-                                $vbDenFile->duoi_file = $this->filename_extension($file);
-                                $vbDenFile->vb_den_id = $vanbandv->id;
-                                $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                                $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                                $vbDenFile->save();
-                            }
-                        }
                     }
-
                 }
 
                 // update trinh tu nhan van ban
@@ -1707,34 +1701,19 @@ class VanBanDenController extends Controller
                     }
 
 
-                    if (!empty($request->file_pdf_nhieu)) {
-                        $vbemail = EmailFile::where('email_id', $request->file_pdf_nhieu)->get();
-                        if (count($vbemail) > 0) {
-                            foreach ($vbemail as $key => $file1) {
+                    if (!empty($tbl_email->emailFile) && count($tbl_email->emailFile) > 0) {
+                        foreach ($tbl_email->emailFile as $file) {
+                            if ($file->duoi_file != 'sdk' || $file->duoi_file != 'dat') {
                                 $vbDenFile = new FileVanBanDen();
-                                $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $key . 'pdf';
-                                $vbDenFile->duong_dan = $request->thu_muc.$file1->duong_dan;
-                                $vbDenFile->duoi_file = 'pdf';
+                                $vbDenFile->ten_file = $file->duoi_file_pdf;
+                                $vbDenFile->duong_dan = $file->duong_dan;
+                                $vbDenFile->duoi_file = $file->duoi_file;
                                 $vbDenFile->vb_den_id = $vanbandv->id;
                                 $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
                                 $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                                 $vbDenFile->save();
                             }
-                        } else {
-                            if (!empty($request->get('file_pdf'))) {
-                                foreach ($requestData['file_pdf'] as $file) {
-                                    $vbDenFile = new FileVanBanDen();
-                                    $vbDenFile->ten_file = str_replace('/', '_', $request->vb_so_ky_hieu) . $this->filename_extension($file);
-                                    $vbDenFile->duong_dan = $file;
-                                    $vbDenFile->duoi_file = $this->filename_extension($file);
-                                    $vbDenFile->vb_den_id = $vanbandv->id;
-                                    $vbDenFile->nguoi_dung_id = $vanbandv->nguoi_tao;
-                                    $vbDenFile->don_vi_id = auth::user()->don_vi_id;
-                                    $vbDenFile->save();
-                                }
-                            }
                         }
-
                     }
                 }
                 UserLogs::saveUserLogs('Tạo giấy mời đến ', $vanbandv);

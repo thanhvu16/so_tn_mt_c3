@@ -153,130 +153,22 @@ class QuetVanBanDenTuEmailVanThuSo extends Command
                                         }
                                     }
                                 }
-                                $time = time();
-                                /* iterate through each attachment and save it */
-                                $file = [];
-                                foreach ($attachments as $attachment) {
-                                    if ($attachment['is_attachment'] == 1) {
-                                        $filename = iconv_mime_decode($attachment['name']);
-                                        $filename = str_replace(' ', '-', $filename);
-                                        if (empty($filename)) $filename = $time . ".dat";
-                                        if (is_dir(public_path('emailFile_' . date('Y'))) == false) {
-                                            mkdir(public_path('emailFile_' . date('Y')), 0777);
-                                        }
-                                        // download and save pdf
-                                        if ('pdf' === $this->filename_extension($filename) || 'PDF' === $this->filename_extension($filename)) {
-                                            //$filename = str_replace('.sdk','.xml',$filename);
-                                            $fp = @fopen("public/emailFile_" . date('Y') . "/" . $key . '_' . strtotime($date_header) . '_' . $filename, "w+");
-                                            if ($fp) {
-                                                fwrite($fp, $attachment['attachment']);
-                                                fclose($fp);
-                                            }
-                                            $arr['mail_attachment1'] = $key . '_' . strtotime($date_header) . '_' . $filename;
-                                            array_push($file, $arr['mail_attachment1']);
-                                        }
-
-                                        // download and save doc docx
-                                        if ('doc' === $this->filename_extension($filename) || 'DOC' === $this->filename_extension($filename) || 'DOCX' === $this->filename_extension($filename) || 'docx' === $this->filename_extension($filename)) {
-                                            $fp = @fopen("public/emailFile_" . date('Y') . "/" . $key . '_' . strtotime($date_header) . '_' . $filename, "w+");
-                                            if ($fp) {
-                                                fwrite($fp, $attachment['attachment']);
-                                                fclose($fp);
-                                            }
-
-                                            $arr['mail_attachment2'] = $key . '_' . strtotime($date_header) . '_' . $filename;
-                                        } else {
-                                            $arr['mail_attachment2'] = '';
-                                        }
-
-                                        // download and save xls xlsx
-                                        if ('xls' === $this->filename_extension($filename) || 'XLS' === $this->filename_extension($filename) || 'XLSX' === $this->filename_extension($filename) || 'xlsx' === $this->filename_extension($filename)) {
-                                            $fp = @fopen("public/emailFile_" . date('Y') . "/" . $key . '_' . strtotime($date_header) . '_' . $filename, "w+");
-                                            if ($fp) {
-                                                fwrite($fp, $attachment['attachment']);
-                                                fclose($fp);
-                                            }
-                                            $arr['mail_attachment3'] = $key . '_' . strtotime($date_header) . '_' . $filename;
-                                        } else {
-                                            $arr['mail_attachment3'] = '';
-                                        }
-
-
-                                        // download and save xml
-                                        if ('sdk' === $this->filename_extension($filename) || 'SDK' === $this->filename_extension($filename)) {
-                                            $filename = str_replace('.sdk', '.xml', $filename);
-                                            $fp = @fopen("public/emailFile_" . date('Y') . "/" . $key . '_' . strtotime($date_header) . '_' . $filename, "w+");
-
-                                            if ($fp) {
-                                                @fwrite($fp, mb_convert_encoding($attachment['attachment'], 'UTF-8', 'UCS-2LE,UTF-16LE,ASCII,JIS,UTF-8,EUC-JP,SJIS'));//UTF-16LE
-                                                //fwrite($fp,$attachment['attachment']);
-                                                fclose($fp);
-                                            }
-                                            $arr['mail_attachment'] = $key . '_' . strtotime($date_header) . '_' . $filename;
-                                        }
-
-//                                        if (!empty($arr['mail_attachment1'])) {
-//                                            $emailDonVi = EmailDonVi::where('email', $arr['mail_from'])->first();
-//                                            $noigui = $emailDonVi->mail_group ?? 4;
-//                                            $data = array(
-//                                                'mail_subject' => $arr['mail_subject'],
-//                                                'mail_from' => $arr['mail_from'],
-//                                                'mail_date' => $arr['mail_date'],
-//                                                'mail_attachment' => $arr['mail_attachment'],
-//                                                'mail_pdf' => $arr['mail_attachment1'],
-//                                                'mail_doc' => $arr['mail_attachment2'],
-//                                                'mail_xls' => $arr['mail_attachment3'],
-//                                                'noigui' => $noigui,
-//                                                'mail_active' => 1
-//                                            );
-//                                            $getEmail = new GetEmail();
-//                                            $getEmail->fill($data);
-//                                            $getEmail->save();
-//
-//                                            $fullPdf = new EmailFile();
-//                                            $fullPdf->email_id = $getEmail->id;
-//                                            $fullPdf->duong_dan = $arr['mail_attachment1'];
-//                                            $fullPdf->save();
-//
-//                                        }
-                                    }
-
-                                }
-                                if (!empty($arr['mail_attachment1'])) {
+                                if (count($attachments) > 0) {
                                     $emailDonVi = EmailDonVi::where('email', $arr['mail_from'])->first();
                                     $noigui = $emailDonVi->mail_group ?? 4;
                                     $data = array(
                                         'mail_subject' => $arr['mail_subject'],
                                         'mail_from' => $arr['mail_from'],
                                         'mail_date' => $arr['mail_date'],
-                                        'mail_attachment' => $arr['mail_attachment'] ?? null,
-                                        'mail_pdf' => $arr['mail_attachment1'] ?? null,
-                                        'mail_doc' => $arr['mail_attachment2'] ?? null,
-                                        'mail_xls' => $arr['mail_attachment3'] ?? null,
                                         'noigui' => $noigui,
-                                        'mail_active' => 1,
-                                        'don_vi_id' => $donViId,
-                                        'user_id' => $user->id
+                                        'mail_active' => 1
                                     );
                                     $getEmail = new GetEmail();
                                     $getEmail->fill($data);
                                     $getEmail->save();
-
-                                    if (count($file) > 0) {
-                                        foreach ($file as $fi) {
-                                            $fullPdf = new EmailFile();
-                                            $fullPdf->email_id = $getEmail->id;
-                                            $fullPdf->duong_dan = $fi;
-                                            $fullPdf->save();
-                                        }
-                                    }
-
-
+                                    EmailFile::saveAttmentFile($getEmail, $attachments, $key, $date_header);
                                 }
-                                $arr['mail_attachment'] = '';
-                                $arr['mail_attachment1'] = '';
-                                $arr['mail_attachment2'] = '';
-                                $arr['mail_attachment3'] = '';
+
                             }
                         }
                     }
