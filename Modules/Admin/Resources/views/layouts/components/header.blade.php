@@ -40,13 +40,17 @@
                                 {{ auth::user()->ho_ten }} ({{ auth::user()->chucVu->ten_viet_tat ?? 'N/A' }})
                                 - {{ auth::user()->donVi->ten_don_vi ?? '' }}
                                 <small>{{ date('d/m') }}. {{ date('Y') }}</small>
+
+
+                                <a style="cursor: pointer;color: white" onclick="doiMatKhau()"><i class="fa  fa-unlock"></i> Đổi mật khẩu sso</a>
+
                             </p>
                             <p>
-                               @if (auth::user()->can(\App\Common\AllPermission::VanThuChuyenTrach()))
-                                    <a href="" class="color-white swith-other-user" data-toggle="modal"
-                                       data-target="#modal-switch-user"><i class="fa fa-refresh"></i> chuyển qua tài khoản lãnh
-                                        đạo</a>
-                                @endif
+{{--                               @if (auth::user()->can(\App\Common\AllPermission::VanThuChuyenTrach()))--}}
+{{--                                    <a href="" class="color-white swith-other-user" data-toggle="modal"--}}
+{{--                                       data-target="#modal-switch-user"><i class="fa fa-refresh"></i> chuyển qua tài khoản lãnh--}}
+{{--                                        đạo</a>--}}
+{{--                                @endif--}}
                             </p>
                         </li>
                         <!-- Menu Footer-->
@@ -58,6 +62,7 @@
                                 @else
                                     <a href="{{ route('nguoi-dung.edit', auth::user()->id) }}"
                                        class="btn btn-default btn-flat">Thông tin</a>
+
                                 @endif
                             </div>
                             <div class="pull-right">

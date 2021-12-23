@@ -8,9 +8,10 @@
             </div>
             <div class="pull-left info">
                 <p>{{ auth::user()->ho_ten ?? 'N/A' }}</p>
-                <a href="#"><i class="fa fa-user"></i> {{auth::user()->chucVu->ten_chuc_vu ?? ''}}</a>
+                <a href="#"><i class="fa fa-user"></i> {{auth::user()->chucVu->ten_chuc_vu ?? ''}}</a><br>
             </div>
         </div>
+
         <div class="mt-2 mb-2">
             <form action="{{route('setDB')}}" method="post" >
                 @csrf

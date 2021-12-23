@@ -124,6 +124,8 @@ class LichCongTacController extends Controller
             ->orderBy('buoi', 'ASC')->get();
 
 
+
+
         if ($danhSachLichCongTac) {
             foreach ($danhSachLichCongTac as $lichCongTac) {
 
@@ -164,7 +166,7 @@ class LichCongTacController extends Controller
                 ->where('trang_thai', ACTIVE)
                 ->get();
         }
-
+//        dd($danhSachLichCongTac);
         return view('lichcongtac::index', compact('danhSachLichCongTac', 'year',
             'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));
     }

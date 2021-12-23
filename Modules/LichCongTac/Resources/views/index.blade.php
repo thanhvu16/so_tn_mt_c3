@@ -23,19 +23,19 @@
                                 </div>
                             @endcan
                             <form action="{{ route('lich-cong-tac.index') }}" method="get" class="form-row">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <select name="lanh_dao_id" class="form-control select2"
-                                                onchange="this.form.submit()">
-                                            <option value="">-- Lãnh đạo --</option>
-                                            @forelse($danhSachLanhDao as $lanhdao)
-                                                <option
-                                                    value="{{ $lanhdao->id }}" {{ !empty(Request::get('lanh_dao_id')) && Request::get('lanh_dao_id') == $lanhdao->id ? 'selected' :  null }}>{{ $lanhdao->ho_ten }}</option>
-                                            @empty
-                                            @endforelse
-                                        </select>
-                                    </div>
-                                </div>
+{{--                                <div class="col-md-2">--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <select name="lanh_dao_id" class="form-control select2"--}}
+{{--                                                onchange="this.form.submit()">--}}
+{{--                                            <option value="">-- Lãnh đạo --</option>--}}
+{{--                                            @forelse($danhSachLanhDao as $lanhdao)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{ $lanhdao->id }}" {{ !empty(Request::get('lanh_dao_id')) && Request::get('lanh_dao_id') == $lanhdao->id ? 'selected' :  null }}>{{ $lanhdao->ho_ten }}</option>--}}
+{{--                                            @empty--}}
+{{--                                            @endforelse--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div class="col-md-2 text-center">
                                     <div class="form-group">
                                         <a href="{{ route('lich-cong-tac.index','tuan='. date('W') ) }}"
@@ -84,6 +84,7 @@
                                 class="table table-striped table-bordered dataTable data-row table-lich-cong-tac">
                                 <thead>
                                 <tr class="background:#ccc;">
+                                    <th width="9%" class="text-center" style="vertical-align: middle;">Ngày</th>
                                     <th width="9%" class="text-center" style="vertical-align: middle;">Thời
                                         gian
                                     </th>
@@ -104,18 +105,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($ngayTuan as $ngayTrongTuan)
+                                @foreach($ngayTuan as $key=>$ngayTrongTuan)
                                     <tr>
                                         <td colspan="7" class="text-center bg-table-gray">
-                                            <b>{{ $ngayTrongTuan[0] }}
-                                                - {{ $ngayTrongTuan[1] }}</b></td>
+{{--                                            <b>{{ $ngayTrongTuan[0] }}--}}
+{{--                                                - {{ $ngayTrongTuan[1] }}</b>--}}
+                                            <b></b>
+                                        </td>
                                     </tr>
                                     @forelse($danhSachLichCongTac as $lichCongTac)
+
                                         @if ( $ngayTrongTuan[1] == date('d/m/Y', strtotime($lichCongTac->ngay)))
                                             @if ($lichCongTac->type == 1)
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
+
                                                     <td>
-                                                        <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
+                                                        <b>{!!   $lichCongTac->gio < '12:00' ? 'Buổi sáng' .'</br>' : 'Buổi chiều' .'</br>' !!}
                                                             - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b></td>
                                                     <td style="vertical-align: middle;">
                                                         <p class="text-bold">GM đi số:
@@ -188,6 +193,10 @@
                                             @elseif($lichCongTac->type == 2)
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
                                                     <td>
+                                                        <b>{{ $ngayTrongTuan[0] }}
+                                                            - {{ $ngayTrongTuan[1] }}</b>
+                                                    </td>
+                                                    <td>
                                                         <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
                                                             - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b>
                                                     </td>
@@ -240,10 +249,18 @@
                                                     </td>
                                                 </tr>
                                             @else
+
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
-                                                    <td>
-                                                        <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}
-                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b></td>
+                                                    <td class="text-center">
+                                                        <b>{{ $ngayTrongTuan[0] }} <br>
+                                                             {{ $ngayTrongTuan[1] }}</b>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <b>{!!   $lichCongTac->gio < '12:00' ? 'Buổi sáng' .'</br>' : 'Buổi chiều' .'</br>' !!}
+                                                             {{ date('H:i', strtotime($lichCongTac->gio)) }}</b>
+{{--                                                        <b>{{ $lichCongTac->gio < '12:00' ? 'Buổi sáng' : 'Buổi chiều' }}--}}
+{{--                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b>--}}
+                                                    </td>
                                                     <td style="vertical-align: middle;">
                                                         <p>
                                                             <b>Cơ quan ban

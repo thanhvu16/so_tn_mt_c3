@@ -135,6 +135,11 @@
         SSO.isAuthen();
     })
 
+    function doiMatKhau()
+    {
+        SSO.changePass();
+    }
+
 
     $("#sso-logout").off('click').on('click', function () {
         $.ajax({
@@ -143,10 +148,10 @@
             dataType:'json',
         }).done(function (res){
             console.log(2);
-            SSO.logout();
+            // SSO.logout();
         }).fail(function (error) {
             console.log(1);
-            SSO.logout();
+            // SSO.logout();
         });
     })
 

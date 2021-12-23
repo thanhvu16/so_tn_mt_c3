@@ -18,11 +18,29 @@
                                     <label class="control-label">Nội dung <label class="required">*</label></label>
                                     @if (isset($lichCongTac))
                                         @if ($lichCongTac->type == 1)
-                                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDi->noi_dung_hop) ? $lichCongTac->vanBanDi->noi_dung_hop : !empty($lichCongTac->vanBanDi->vb_trichyeu) ? $lichCongTac->vanBanDi->vb_trichyeu : null  }}</textarea>
+                                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">
+                                                @if($lichCongTac->vanBanDi)
+                                                    @if($lichCongTac->vanBanDi->noi_dung_hop)
+                                                       {{$lichCongTac->vanBanDi->noi_dung_hop}}
+                                                    @else
+                                                        {{$lichCongTac->vanBanDi->vb_trichyeu}}
+                                                    @endif
+                                                @endif
+{{--                                                {{ !empty($lichCongTac->vanBanDi->noi_dung_hop) ? $lichCongTac->vanBanDi->noi_dung_hop : !empty($lichCongTac->vanBanDi->vb_trichyeu) ? $lichCongTac->vanBanDi->vb_trichyeu : null  }}--}}
+                                            </textarea>
                                         @elseif($lichCongTac->type == 2)
                                             <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{  $lichCongTac->noi_dung }}</textarea>
                                         @else
-                                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ !empty($lichCongTac->vanBanDenDonVi->noi_dung_hop) ? $lichCongTac->vanBanDenDonVi->noi_dung_hop :  !empty($lichCongTac->vanBanDenDonVi->vb_trich_yeu) ? $lichCongTac->vanBanDenDonVi->vb_trich_yeu : null  }}</textarea>
+                                            <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">
+                                                @if($lichCongTac->vanBanDenDonVi)
+                                                    @if($lichCongTac->vanBanDenDonVi->noi_dung_hop)
+                                                        {{$lichCongTac->vanBanDenDonVi->noi_dung_hop}}
+                                                    @else
+                                                        {{$lichCongTac->vanBanDenDonVi->vb_trich_yeu}}
+                                                    @endif
+                                                @endif
+{{--                                                {{ !empty($lichCongTac->vanBanDenDonVi->noi_dung_hop) ? $lichCongTac->vanBanDenDonVi->noi_dung_hop :  !empty($lichCongTac->vanBanDenDonVi->vb_trich_yeu) ? $lichCongTac->vanBanDenDonVi->vb_trich_yeu : null  }}--}}
+                                            </textarea>
                                         @endif
                                     @else
                                         <textarea class="form-control" rows="3" required="" name="noi_dung" placeholder="Nội dung">{{ isset($lichCongTac) ? $lichCongTac->noi_dung : '' }}</textarea>
