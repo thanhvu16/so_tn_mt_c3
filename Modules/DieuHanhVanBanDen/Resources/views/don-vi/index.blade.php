@@ -206,8 +206,8 @@
                                                     @empty
                                                     @endforelse
                                                 </select>
-                                                <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-id="{{ $vanBanDen->id }}" class="check-all-cv">
-                                                <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả cv phối hợp</label>
+{{--                                                <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-id="{{ $vanBanDen->id }}" class="check-all-cv">--}}
+{{--                                                <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả cv phối hợp</label>--}}
                                             </p>
                                             <p>
                                                 <select

@@ -1987,7 +1987,7 @@ class VanBanDenController extends Controller
 //                })
                 ->select('id')
                 ->get();
-            dd($danhSachVanBanDenQuaHanDangXuLy->pluck('id'));
+//            dd($danhSachVanBanDenQuaHanDangXuLy->pluck('id'));
             foreach ($danhSachVanBanDenQuaHanDangXuLy as $data) {
                 $vaBanDenID = VanBanDen::where('id', $data->id)->first();
                 $vaBanDenID->trinh_tu_nhan_van_ban = 6;
@@ -2013,7 +2013,7 @@ class VanBanDenController extends Controller
 //                })
                 ->select('id')
                 ->get();
-            dd($danhSachVanBanDenTrongHanDangXuLy->pluck('id'));
+//            dd($danhSachVanBanDenTrongHanDangXuLy->pluck('id'));
 
             foreach ($danhSachVanBanDenTrongHanDangXuLy as $data) {
                 $vaBanDenID = VanBanDen::where('id', $data->id)->first();

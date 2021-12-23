@@ -91,6 +91,7 @@ class VanBanDenPhoiHopController extends Controller
             ->select('id', 'van_ban_den_id')
             ->get();
 
+
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
 
 

@@ -510,7 +510,9 @@ class AdminController extends Controller
 
             $donViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)
-                ->whereHas('vanBanDenDen')
+                ->whereHas('vanBanDenDen', function ($q)  {
+                    return $q->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN);
+                })
                 ->where(function ($query) use ($chuyenTiep) {
                     if (!empty($chuyenTiep)) {
                         return $query->where('chuyen_tiep', $chuyenTiep);
@@ -522,9 +524,13 @@ class AdminController extends Controller
                 ->whereNotNull('vao_so_van_ban')
                 ->whereNull('hoan_thanh')
                 ->count();
+
+
             $donViPhoiHopGM = DonViPhoiHop::where('don_vi_id', $user->don_vi_id)
                 ->where('can_bo_nhan_id', $user->id)
-                ->whereHas('giayMoiDen')
+                ->whereHas('giayMoiDen', function ($q)  {
+                    return $q->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN);
+                })
                 ->where(function ($query) use ($chuyenTiep) {
                     if (!empty($chuyenTiep)) {
                         return $query->where('chuyen_tiep', $chuyenTiep);

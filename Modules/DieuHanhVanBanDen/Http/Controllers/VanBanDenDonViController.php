@@ -272,7 +272,12 @@ class VanBanDenDonViController extends Controller
                         return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
                     }
                 })
-                ->whereIn('id', $arrVanBanDenId)
+//                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($currentUser)  {
+                    return $query->whereHas('vanBanDangXuLy', function ($q) use ($currentUser) {
+                        return $q->where('can_bo_chuyen_id', $currentUser->id);
+                    });
+                })
                 ->where(function ($query) use ($trichYeu) {
                     if (!empty($trichYeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
@@ -316,7 +321,12 @@ class VanBanDenDonViController extends Controller
                         return $query->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
                     }
                 })
-                ->whereIn('id', $arrVanBanDenId)
+//                ->whereIn('id', $arrVanBanDenId)
+                ->where(function ($query) use ($currentUser)  {
+                    return $query->whereHas('vanBanDangXuLy', function ($q) use ($currentUser) {
+                        return $q->where('can_bo_chuyen_id', $currentUser->id);
+                    });
+                })
                 ->where(function ($query) use ($trichYeu) {
                     if (!empty($trichYeu)) {
                         return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
