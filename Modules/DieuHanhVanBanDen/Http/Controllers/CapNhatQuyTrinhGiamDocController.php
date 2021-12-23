@@ -13,6 +13,7 @@ use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViChuTriCu;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
+use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHopCu;
 use Modules\DieuHanhVanBanDen\Entities\GiaHanVanBan;
 use Modules\DieuHanhVanBanDen\Entities\GiaiQuyetVanBan;
 use Modules\DieuHanhVanBanDen\Entities\LanhDaoChiDao;
@@ -644,7 +645,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                     foreach ($phongCu3 as $date)
                     {
                         $phongCu2 = DonViPhoiHop::where('id',$date->id)->first();
-                        $luuVetDonViChuTri = new DonViChuTriCu();
+                        $luuVetDonViChuTri = new DonViPhoiHopCu();
                         $luuVetDonViChuTri->van_ban_den_id=$phongCu2->van_ban_den_id;
                         $luuVetDonViChuTri->can_bo_chuyen_id=$phongCu2->can_bo_chuyen_id;
                         $luuVetDonViChuTri->can_bo_nhan_id=$phongCu2->can_bo_nhan_id;
