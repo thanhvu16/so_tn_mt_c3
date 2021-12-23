@@ -618,50 +618,55 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                 $luuVet->van_ban_den_id = $phongCu->van_ban_den_id;
                 $luuVet->save();
 
+                $dem = 0;
+                $kiemTra = DonViChuTriCu::where('van_ban_den_id', $vanBanDenId)->first();
+                if ($kiemTra) {
+                    $dem = $kiemTra->version + 1;
+                }
+
                 $luuVetDonViChuTri = new DonViChuTriCu();
-                $luuVetDonViChuTri->van_ban_den_id=$phongCu->van_ban_den_id;
-                $luuVetDonViChuTri->can_bo_chuyen_id=$phongCu->can_bo_chuyen_id;
-                $luuVetDonViChuTri->can_bo_nhan_id=$phongCu->can_bo_nhan_id;
-                $luuVetDonViChuTri->don_vi_id=$phongCu->don_vi_id;
-                $luuVetDonViChuTri->parent_id=$phongCu->parent_id;
-                $luuVetDonViChuTri->noi_dung=$phongCu->noi_dung;
-                $luuVetDonViChuTri->don_vi_co_dieu_hanh=$phongCu->don_vi_co_dieu_hanh;
-                $luuVetDonViChuTri->vao_so_van_ban=$phongCu->vao_so_van_ban;
-                $luuVetDonViChuTri->chuyen_tiep=$phongCu->chuyen_tiep;
-                $luuVetDonViChuTri->hoan_thanh=$phongCu->hoan_thanh;
-                $luuVetDonViChuTri->type=$phongCu->type;
-                $luuVetDonViChuTri->tra_lai=$phongCu->tra_lai;
-                $luuVetDonViChuTri->da_chuyen_xuong_don_vi=$phongCu->da_chuyen_xuong_don_vi;
-                $luuVetDonViChuTri->han_xu_ly_cu=$phongCu->han_xu_ly_cu;
-                $luuVetDonViChuTri->han_xu_ly_moi=$phongCu->han_xu_ly_moi;
-                $luuVetDonViChuTri->parent_don_vi_id=$phongCu->parent_don_vi_id;
-                $luuVetDonViChuTri->da_tham_muu=$phongCu->da_tham_muu;
-                $luuVetDonViChuTri->van_ban_quan_trong=$phongCu->van_ban_quan_trong;
-                $luuVetDonViChuTri->created_at=$phongCu->created_at;
-                $luuVetDonViChuTri->updated_at=$phongCu->updated_at;
+                $luuVetDonViChuTri->van_ban_den_id = $phongCu->van_ban_den_id;
+                $luuVetDonViChuTri->can_bo_chuyen_id = $phongCu->can_bo_chuyen_id;
+                $luuVetDonViChuTri->can_bo_nhan_id = $phongCu->can_bo_nhan_id;
+                $luuVetDonViChuTri->don_vi_id = $phongCu->don_vi_id;
+                $luuVetDonViChuTri->parent_id = $phongCu->parent_id;
+                $luuVetDonViChuTri->noi_dung = $phongCu->noi_dung;
+                $luuVetDonViChuTri->don_vi_co_dieu_hanh = $phongCu->don_vi_co_dieu_hanh;
+                $luuVetDonViChuTri->vao_so_van_ban = $phongCu->vao_so_van_ban;
+                $luuVetDonViChuTri->chuyen_tiep = $phongCu->chuyen_tiep;
+                $luuVetDonViChuTri->hoan_thanh = $phongCu->hoan_thanh;
+                $luuVetDonViChuTri->type = $phongCu->type;
+                $luuVetDonViChuTri->tra_lai = $phongCu->tra_lai;
+                $luuVetDonViChuTri->da_chuyen_xuong_don_vi = $phongCu->da_chuyen_xuong_don_vi;
+                $luuVetDonViChuTri->han_xu_ly_cu = $phongCu->han_xu_ly_cu;
+                $luuVetDonViChuTri->han_xu_ly_moi = $phongCu->han_xu_ly_moi;
+                $luuVetDonViChuTri->parent_don_vi_id = $phongCu->parent_don_vi_id;
+                $luuVetDonViChuTri->da_tham_muu = $phongCu->da_tham_muu;
+                $luuVetDonViChuTri->van_ban_quan_trong = $phongCu->van_ban_quan_trong;
+                $luuVetDonViChuTri->version = $dem;
+                $luuVetDonViChuTri->created_at = $phongCu->created_at;
+                $luuVetDonViChuTri->updated_at = $phongCu->updated_at;
                 $luuVetDonViChuTri->save();
-                if(count($phongCu3) > 0)
-                {
-                    foreach ($phongCu3 as $date)
-                    {
-                        $phongCu2 = DonViPhoiHop::where('id',$date->id)->first();
+                if (count($phongCu3) > 0) {
+                    foreach ($phongCu3 as $date) {
+                        $phongCu2 = DonViPhoiHop::where('id', $date->id)->first();
                         $luuVetDonViChuTri = new DonViPhoiHopCu();
-                        $luuVetDonViChuTri->van_ban_den_id=$phongCu2->van_ban_den_id;
-                        $luuVetDonViChuTri->can_bo_chuyen_id=$phongCu2->can_bo_chuyen_id;
-                        $luuVetDonViChuTri->can_bo_nhan_id=$phongCu2->can_bo_nhan_id;
-                        $luuVetDonViChuTri->don_vi_id=$phongCu2->don_vi_id;
-                        $luuVetDonViChuTri->parent_id=$phongCu2->parent_id;
-                        $luuVetDonViChuTri->noi_dung=$phongCu2->noi_dung;
-                        $luuVetDonViChuTri->don_vi_co_dieu_hanh=$phongCu2->don_vi_co_dieu_hanh;
-                        $luuVetDonViChuTri->vao_so_van_ban=$phongCu2->vao_so_van_ban;
-                        $luuVetDonViChuTri->chuyen_tiep=$phongCu2->chuyen_tiep;
-                        $luuVetDonViChuTri->hoan_thanh=$phongCu2->hoan_thanh;
-                        $luuVetDonViChuTri->type=$phongCu2->type;
-                        $luuVetDonViChuTri->parent_don_vi_id=$phongCu2->parent_don_vi_id;
-                        $luuVetDonViChuTri->active=$phongCu2->active;
-                        $luuVetDonViChuTri->da_tham_muu=$phongCu2->da_tham_muu;
-                        $luuVetDonViChuTri->created_at=$phongCu2->created_at;
-                        $luuVetDonViChuTri->updated_at=$phongCu2->updated_at;
+                        $luuVetDonViChuTri->van_ban_den_id = $phongCu2->van_ban_den_id;
+                        $luuVetDonViChuTri->can_bo_chuyen_id = $phongCu2->can_bo_chuyen_id;
+                        $luuVetDonViChuTri->can_bo_nhan_id = $phongCu2->can_bo_nhan_id;
+                        $luuVetDonViChuTri->don_vi_id = $phongCu2->don_vi_id;
+                        $luuVetDonViChuTri->parent_id = $phongCu2->parent_id;
+                        $luuVetDonViChuTri->noi_dung = $phongCu2->noi_dung;
+                        $luuVetDonViChuTri->don_vi_co_dieu_hanh = $phongCu2->don_vi_co_dieu_hanh;
+                        $luuVetDonViChuTri->vao_so_van_ban = $phongCu2->vao_so_van_ban;
+                        $luuVetDonViChuTri->chuyen_tiep = $phongCu2->chuyen_tiep;
+                        $luuVetDonViChuTri->hoan_thanh = $phongCu2->hoan_thanh;
+                        $luuVetDonViChuTri->type = $phongCu2->type;
+                        $luuVetDonViChuTri->parent_don_vi_id = $phongCu2->parent_don_vi_id;
+                        $luuVetDonViChuTri->active = $phongCu2->active;
+                        $luuVetDonViChuTri->da_tham_muu = $phongCu2->da_tham_muu;
+                        $luuVetDonViChuTri->created_at = $phongCu2->created_at;
+                        $luuVetDonViChuTri->updated_at = $phongCu2->updated_at;
                         $luuVetDonViChuTri->save();
                     }
 
