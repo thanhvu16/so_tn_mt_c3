@@ -13,7 +13,7 @@ use Auth;
 
 class DonViChuTriCu extends Model
 {
-    protected $table = 'luu_vet_trinh_tu_chuyen_cu';
+    protected $table = 'luu_vet_don_vi_phoi_hop_cu';
 
     protected $fillable = [
         'van_ban_den_id',

@@ -610,7 +610,7 @@ class CapNhatQuyTrinhGiamDocController extends Controller
             foreach ($vanBanDenIds as $vanBanDenId) {
                 //Lưu lại vết phòng cũ
                 $phongCu = DonViChuTri::where('van_ban_den_id', $vanBanDenId)->first();
-                $phongCu2 = DonViPhoiHop::where('van_ban_den_id', $vanBanDenId)->first();
+                $phongCu3 = DonViPhoiHop::where('van_ban_den_id', $vanBanDenId)->get();
                 $luuVet = new LuuVet();
                 $luuVet->phong_cu = $phongCu->don_vi_id;
                 $luuVet->nguoi_phan_lai = auth::user()->id;
@@ -639,25 +639,33 @@ class CapNhatQuyTrinhGiamDocController extends Controller
                 $luuVetDonViChuTri->created_at=$phongCu->created_at;
                 $luuVetDonViChuTri->updated_at=$phongCu->updated_at;
                 $luuVetDonViChuTri->save();
+                if(count($phongCu3) > 0)
+                {
+                    foreach ($phongCu3 as $date)
+                    {
+                        $phongCu2 = DonViPhoiHop::where('id',$date->id)->first();
+                        $luuVetDonViChuTri = new DonViChuTriCu();
+                        $luuVetDonViChuTri->van_ban_den_id=$phongCu2->van_ban_den_id;
+                        $luuVetDonViChuTri->can_bo_chuyen_id=$phongCu2->can_bo_chuyen_id;
+                        $luuVetDonViChuTri->can_bo_nhan_id=$phongCu2->can_bo_nhan_id;
+                        $luuVetDonViChuTri->don_vi_id=$phongCu2->don_vi_id;
+                        $luuVetDonViChuTri->parent_id=$phongCu2->parent_id;
+                        $luuVetDonViChuTri->noi_dung=$phongCu2->noi_dung;
+                        $luuVetDonViChuTri->don_vi_co_dieu_hanh=$phongCu2->don_vi_co_dieu_hanh;
+                        $luuVetDonViChuTri->vao_so_van_ban=$phongCu2->vao_so_van_ban;
+                        $luuVetDonViChuTri->chuyen_tiep=$phongCu2->chuyen_tiep;
+                        $luuVetDonViChuTri->hoan_thanh=$phongCu2->hoan_thanh;
+                        $luuVetDonViChuTri->type=$phongCu2->type;
+                        $luuVetDonViChuTri->parent_don_vi_id=$phongCu2->parent_don_vi_id;
+                        $luuVetDonViChuTri->active=$phongCu2->active;
+                        $luuVetDonViChuTri->da_tham_muu=$phongCu2->da_tham_muu;
+                        $luuVetDonViChuTri->created_at=$phongCu2->created_at;
+                        $luuVetDonViChuTri->updated_at=$phongCu2->updated_at;
+                        $luuVetDonViChuTri->save();
+                    }
 
-                $luuVetDonViChuTri = new DonViChuTriCu();
-                $luuVetDonViChuTri->van_ban_den_id=$phongCu2->van_ban_den_id;
-                $luuVetDonViChuTri->can_bo_chuyen_id=$phongCu2->can_bo_chuyen_id;
-                $luuVetDonViChuTri->can_bo_nhan_id=$phongCu2->can_bo_nhan_id;
-                $luuVetDonViChuTri->don_vi_id=$phongCu2->don_vi_id;
-                $luuVetDonViChuTri->parent_id=$phongCu2->parent_id;
-                $luuVetDonViChuTri->noi_dung=$phongCu2->noi_dung;
-                $luuVetDonViChuTri->don_vi_co_dieu_hanh=$phongCu2->don_vi_co_dieu_hanh;
-                $luuVetDonViChuTri->vao_so_van_ban=$phongCu2->vao_so_van_ban;
-                $luuVetDonViChuTri->chuyen_tiep=$phongCu2->chuyen_tiep;
-                $luuVetDonViChuTri->hoan_thanh=$phongCu2->hoan_thanh;
-                $luuVetDonViChuTri->type=$phongCu2->type;
-                $luuVetDonViChuTri->parent_don_vi_id=$phongCu2->parent_don_vi_id;
-                $luuVetDonViChuTri->active=$phongCu2->active;
-                $luuVetDonViChuTri->da_tham_muu=$phongCu2->da_tham_muu;
-                $luuVetDonViChuTri->created_at=$phongCu2->created_at;
-                $luuVetDonViChuTri->updated_at=$phongCu2->updated_at;
-                $luuVetDonViChuTri->save();
+                }
+
 
                 //xóa chỉ đạo lãnh đạo
                 LanhDaoChiDao::where(['van_ban_den_id' => $vanBanDenId])->delete();
