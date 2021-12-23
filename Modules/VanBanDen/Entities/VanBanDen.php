@@ -872,6 +872,18 @@ class VanBanDen extends Model
     {
         return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');
     }
+    public function searchDonViChuTriQuanTrong()
+    {
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')
+            ->where('van_ban_quan_trong',1)
+            ->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
+    public function searchDonViChuTriQuanTrongDV()
+    {
+        return $this->belongsTo(DonViChuTri::class, 'id', 'van_ban_den_id')
+            ->where('vb_quan_tron_don_vi',1)
+            ->select('id', 'don_vi_id', 'van_ban_den_id');
+    }
     public function searchDonViPhoiHop()
     {
         return $this->belongsTo(DonViPhoiHop::class, 'id', 'van_ban_den_id')->select('id', 'don_vi_id', 'van_ban_den_id');

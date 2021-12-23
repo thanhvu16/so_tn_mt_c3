@@ -31,6 +31,20 @@
                         class="fa fa-circle-o"></i>Danh sách</a></li>
         </ul>
     </li>
+    <li class="treeview {{ Route::is('vanBanLanhDaoSoqt') || Route::is('vanBanqt')  ? 'active menu-open' : '' }} }} ">
+        <a href="#">
+            <i class="fa fa-file-text"></i> <span>Văn bản quan trọng </span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Route::is('vanBanLanhDaoSoqt') ? 'active' : '' }}"><a href="{{ route('vanBanLanhDaoSoqt') }}"><i
+                        class="fa fa-circle-o"></i>VB quan trọng lãnh đạo sở</a></li>
+            <li class="{{ Route::is('vanBanqt') ? 'active' : '' }}"><a href="{{ route('vanBanqt') }}"><i
+                        class="fa fa-circle-o"></i>VB quan trọng đơn vị</a></li>
+        </ul>
+    </li>
     <li class="treeview {{ Route::is('giayMoiDonVi')  ? 'active menu-open' : '' }} }} ">
         <a href="#">
             <i class="fa  fa-hospital-o"></i> <span>Giấy mời đến đơn vi</span>

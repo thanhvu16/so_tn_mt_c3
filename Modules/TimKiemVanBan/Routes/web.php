@@ -17,3 +17,5 @@ Route::prefix('timkiemvanban')->group(function() {
 Route::resource('tim-kiem-van-ban-den-full', 'TimKiemVanBanDenController');
 //Route::get('tim-kiem-van-ban-den', array('as' => 'TimKiemVanBanDen', 'uses' => 'TimKiemVanBanDenController@index'));
 Route::get('tim-kiem-van-ban-di', array('as' => 'TimKiemVanBanDi', 'uses' => 'TimKiemVanBanDiController@index'));
+Route::get('van-ban-quan-trong-lanh-dao-so', array('as' => 'vanBanLanhDaoSoqt', 'uses' => 'VanBanQuanTrongController@index'));
+Route::get('van-ban-quan-trong-don-vi', array('as' => 'vanBanqt', 'uses' => 'VanBanQuanTrongController@vbDonVi'));

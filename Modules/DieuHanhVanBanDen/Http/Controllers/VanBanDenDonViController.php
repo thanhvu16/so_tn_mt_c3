@@ -717,6 +717,7 @@ class VanBanDenDonViController extends Controller
         $textDonViPhoiHop = $data['don_vi_phoi_hop'] ?? null;
         $dataVanBanQuanTrong = $data['van_ban_quan_trong'] ?? null;
         $donViDuHop = $data['don_vi_du_hop'] ?? null;
+        $vanBanQuanTrongDV = $data['van_ban_quan_trong'] ?? null;
 
         $giayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
         /** van ban da gui tra lai cho lanh dao cho duyet,
@@ -734,6 +735,12 @@ class VanBanDenDonViController extends Controller
                     $donViChuTri = DonViChuTri::where('van_ban_den_id', $vanBanDenId)
                         ->where('can_bo_nhan_id', $currentUser->id)
                         ->whereNull('hoan_thanh')->first();
+                    if ($vanBanQuanTrongDV) {
+                        if (!empty($vanBanQuanTrongDV[$vanBanDenId])) {
+                            $donViChuTri->vb_quan_tron_don_vi = $vanBanQuanTrongDV[$vanBanDenId];
+                            $donViChuTri->save();
+                        }
+                    }
 
                     // tham muu chi cuc gui van ban len cho giam doc so nhan van ban
                     if ($currentUser->can(AllPermission::thamMuu()) && $donVi->parent_id != 0) {

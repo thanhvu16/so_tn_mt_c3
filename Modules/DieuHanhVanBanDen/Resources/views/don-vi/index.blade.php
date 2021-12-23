@@ -274,7 +274,17 @@
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự
                                                         họp</i></label>
                                             @endif
+
                                         </div>
+                                        @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0)
+                                        <div class="form-group">
+                                            <label>
+                                                <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                                &ensp;Văn bản quan trọng
+                                            </label>
+
+                                        </div>
+                                        @endif
                                     </td>
                                     <td>
                                         @if($vanBanDen->lanhDaoChiDao)
