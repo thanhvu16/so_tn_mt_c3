@@ -98,6 +98,8 @@ Route::get('van-ban-trong', 'DieuHanhVanBanDenController@vanBanQuanTrong')->name
 
 Route::get('giay-moi-trong', 'DieuHanhVanBanDenController@vanBanQuanTrong')->name('giay-moi-den-don-vi.quan_trong');
 
+Route::get('update-da-xem', 'DieuHanhVanBanDenController@updateDaXem')->name('updateDaXem');
+
 Route::post('remove-file/{id}', 'DieuHanhVanBanDenController@removeFile');
 
 Route::resource('phan-loai-van-ban-phoi-hop', 'PhanLoaiVanBanPhoiHopController');

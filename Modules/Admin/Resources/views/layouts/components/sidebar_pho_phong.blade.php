@@ -25,6 +25,22 @@
         </ul>
     </li>
 @endif
+@if (auth::user()->hasRole([PHO_PHONG]) && auth::user()->donVi->parent_id == 0)
+<li class="treeview {{ Route::is('vanBanLanhDaoSoqt') || Route::is('vanBanqt')  ? 'active menu-open' : '' }} }} ">
+    <a href="#">
+        <i class="fa fa-file-text"></i> <span>Văn bản quan trọng </span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Route::is('vanBanLanhDaoSoqt') ? 'active' : '' }}"><a href="{{ route('vanBanLanhDaoSoqt') }}"><i
+                    class="fa fa-circle-o"></i>VB quan trọng lãnh đạo sở</a></li>
+        <li class="{{ Route::is('vanBanqt') ? 'active' : '' }}"><a href="{{ route('vanBanqt') }}"><i
+                    class="fa fa-circle-o"></i>VB quan trọng đơn vị</a></li>
+    </ul>
+</li>
+@endif
 <li class="treeview {{ Route::is('van-ban-di.index') || Route::is('van-ban-di.create') || Route::is('van-ban-di.edit') || Route::is('danh_sach_vb_di_cho_duyet')
 || Route::is('vb_di_tra_lai') || Route::is('danhsachgopy') || Route::is('vb_di_da_duyet') ? 'active menu-open' : '' }} }} ">
     <a href="#">

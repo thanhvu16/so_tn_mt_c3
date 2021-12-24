@@ -148,10 +148,10 @@
             dataType:'json',
         }).done(function (res){
             console.log(2);
-            // SSO.logout();
+            SSO.logout();
         }).fail(function (error) {
             console.log(1);
-            // SSO.logout();
+            SSO.logout();
         });
     })
 

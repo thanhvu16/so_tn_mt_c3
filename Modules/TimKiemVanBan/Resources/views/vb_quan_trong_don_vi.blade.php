@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="col-md-6">
                             <div class="row">
-                                <h3 class="box-title">Danh sách văn bản quan trọng  </h3>
+                                <h3 class="box-title">Danh sách văn bản quan trọng đơn vị </h3>
                             </div>
                         </div>
                         <div class="col-md-6 text-right">

@@ -28,6 +28,10 @@ class DieuHanhVanBanDenController extends Controller
     {
         return view('dieuhanhvanbanden::index');
     }
+    public function updateDaXem()
+    {
+
+    }
 
     /**
      * Show the form for creating a new resource.
