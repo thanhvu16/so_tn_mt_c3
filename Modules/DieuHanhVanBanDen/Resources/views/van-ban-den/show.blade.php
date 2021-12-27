@@ -249,6 +249,7 @@
                 @include('dieuhanhvanbanden::van-ban-den.log_du_thao_van_ban')
                 @include('dieuhanhvanbanden::van-ban-den.log_van_ban_di')
                 @include('dieuhanhvanbanden::van-ban-den.log_luu_vet')
+                @include('dieuhanhvanbanden::van-ban-den.log_da_xem', ['vanBanDaXem' => $vanBanDen->vanBanDaXem ])
 
             <!--giai quyet van ban-->
                 @if ($vanBanDen->trinh_tu_nhan_van_ban != \Modules\VanBanDen\Entities\VanBanDen::HOAN_THANH_VAN_BAN)

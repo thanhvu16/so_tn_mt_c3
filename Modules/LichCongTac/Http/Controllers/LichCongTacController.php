@@ -171,6 +171,134 @@ class LichCongTacController extends Controller
             'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));
     }
 
+
+
+
+    public function caPhong(Request $request)
+    {
+        $currentUser = Auth::user();
+
+        $tuan = $request->get('tuan');
+        $year = !empty($request->get('year')) ? $request->get('year') : date('Y');
+        $week = $tuan ? $tuan : date('W');
+
+        $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
+
+        $donViId = null;
+        $donViDuHop = null;
+
+        $ngayTuan = [
+            array('Thứ Hai', date('d/m/Y', strtotime($year . "W" . $week . 1))),
+            array('Thứ Ba', date('d/m/Y', strtotime($year . "W" . $week . 2))),
+            array('Thứ Tư', date('d/m/Y', strtotime($year . "W" . $week . 3))),
+            array('Thứ Năm', date('d/m/Y', strtotime($year . "W" . $week . 4))),
+            array('Thứ Sáu', date('d/m/Y', strtotime($year . "W" . $week . 5))),
+            array('Thứ Bảy', date('d/m/Y', strtotime($year . "W" . $week . 6))),
+            array('Chủ Nhật', date('d/m/Y', strtotime($year . "W" . $week . 7)))
+        ];
+        $start_date = strtotime($year . "W" . $week . 1);
+        $end_date = strtotime($year . "W" . $week . 7);
+
+        $ngaybd = date('Y-m-d', $start_date);
+        $ngaykt = date('Y-m-d', $end_date);
+
+        $totalWeekOfYear = max(date("W", strtotime($year . "-12-27")),
+            date("W", strtotime($year . "-12-29")),
+            date("W", strtotime($year . "-12-31")));
+//        dd($totalWeekOfYear);
+
+        $tuanTruoc = $week != 1 ? $week - 1 : 01;
+        $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
+
+        $tuanTruoc = $tuanTruoc < 10 ? '0' . $tuanTruoc : $tuanTruoc;
+        $tuanSau = $tuanSau < 10 ? '0' . $tuanSau : $tuanSau;
+        $roles = [CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
+
+        $donVi = $currentUser->donVi;
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->whereNull('deleted_at')->first();
+
+
+        $id = [];
+
+        //
+
+
+//        $danhSachLanhDao = User::whereHas('roles', function ($query) use ($roles) {
+//            return $query->whereIn('name', $roles);
+//        })
+//            ->where(function ($query) use ($id) {
+//                if (!empty($id)) {
+//                    return $query->whereIn('id', $id);
+//                }
+//            })
+//            ->where(function ($query) use ($donVi, $donViCapXa) {
+//                if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
+//                    return $query->where('don_vi_id', $donVi->id);
+//                } else {
+//                    return $query->whereNotIn('don_vi_id', [$donViCapXa->id]);
+//
+//                }
+//            })
+//            ->where('trang_thai', ACTIVE)
+//            ->orderBy('uu_tien', 'ASC')
+//            ->get();
+//
+//
+//        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+//
+//
+//            $danhSachLanhDao = User::where('don_vi_id',auth::user()->don_vi_id)
+//                ->where('trang_thai', ACTIVE)
+//                ->orderBy('uu_tien', 'ASC')
+//                ->get();
+//            $lanhDaoId = $currentUser->id;
+////            dd($danhSachLanhDao);
+////            $lanhDaoId = $danhSachLanhDao->id;
+//        }
+//
+//        $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi', 'congViecDonVi')
+//            ->where('ngay', '>=', $ngaybd)
+//            ->where('ngay', '<=', $ngaykt)
+//            ->where(function ($query) use ($lanhDaoId) {
+//                if (!empty($lanhDaoId)) {
+//                    return $query->where('lanh_dao_id', $lanhDaoId);
+//                }
+//            })
+//            ->whereNotNull('trang_thai')
+//            ->orderBy('buoi', 'ASC')->get();
+
+
+//        dd($danhSachLichCongTac);
+
+
+
+
+//        if ($danhSachLichCongTac) {
+//            foreach ($danhSachLichCongTac as $lichCongTac) {
+//
+//                $lichCongTac->CanBoChiDao = null;
+//                if ($lichCongTac->chuanBiTruocCuocHop()) {
+//                    $lichCongTac->CanBoChiDao = XuLyVanBanDen::where('van_ban_den_id', $lichCongTac->object_id)
+//                        ->where('id', '>=', $lichCongTac->chuanBiTruocCuocHop())->get();
+//                }
+//                $lichCongTac->parent = $lichCongTac->getParent();
+//                $lichCongTac->truyenNhanVanBanDonVi = $lichCongTac->donViChuTri();
+//                $lichCongTac->giaiQuyetVanBanHoanThanh = isset($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh() : null;
+//            }
+//        }
+
+        // don vi nhan vb xem lich ct cua ld
+
+//        dd($danhSachLichCongTac);
+
+        $danhSachLanhDao = User::where('don_vi_id',auth::user()->don_vi_id)
+            ->where('trang_thai', ACTIVE)
+            ->orderBy('uu_tien', 'ASC')
+            ->get();
+        return view('lichcongtac::caPhong', compact( 'year',
+            'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable

@@ -80,7 +80,7 @@
 
             @unlessrole(QUAN_TRI_HT)
 
-                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} ">
+                <li class="treeview {{ Route::is('lich-cong-tac.index') || Route::is('tham-du-cuoc-hop.index') || Route::is('caPhong')|| Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active menu-open' : '' }} ">
                     <a href="#">
                         <i class="fa fa-calendar"></i> <span>Lịch công tác</span>
                         <span class="pull-right-container">
@@ -89,6 +89,9 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="{{ Route::is('lich-cong-tac.index') ? 'active' : '' }}"><a href="{{ route('lich-cong-tac.index') }}"><i class="fa fa-circle-o"></i>Lịch công tác cá nhân</a></li>
+                        @if (auth::user()->hasRole([TRUONG_PHONG,PHO_PHONG,CHUYEN_VIEN]) && auth::user()->donVi->parent_id == 0)
+                        <li class="{{ Route::is('caPhong') ? 'active' : '' }}"><a href="{{ route('caPhong') }}"><i class="fa fa-circle-o"></i>Lịch công tác phòng</a></li>
+                        @endif
                         <li class="{{ Route::is('tham-du-cuoc-hop.index') ? 'active' : '' }}"><a href="{{ route('tham-du-cuoc-hop.index') }}"><i class="fa fa-circle-o"></i>Cuộc họp được mời tham dự</a></li>
                         <li class="{{ Route::is('thong-ke-tieu-chi-cuoc-hop.index') ? 'active' : '' }}"><a href="{{ route('thong-ke-tieu-chi-cuoc-hop.index') }}"><i class="fa fa-circle-o"></i>Tk các tiêu chí cuộc họp</a></li>
                     </ul>
@@ -107,6 +110,18 @@
                     </a>
                 </li>
             @endif
+            <li class="treeview {{ Route::is('van-ban-den-cu.index') || Route::is('vanBanCu') ? 'active menu-open' : '' }} ">
+                <a href="#">
+                    <i class="fa  fa-filter"></i> <span>Tra cứu văn bản cũ</span>
+                    <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Route::is('van-ban-den-cu.index') ? 'active' : '' }}"><a href="{{ route('van-ban-den-cu.index') }}"><i class="fa fa-circle-o"></i>Văn bản đến </a></li>
+                    <li class="{{ Route::is('vanBanCu') ? 'active' : '' }}"><a href="{{ route('vanBanCu') }}"><i class="fa fa-circle-o"></i>Văn bản đi</a></li>
+                </ul>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

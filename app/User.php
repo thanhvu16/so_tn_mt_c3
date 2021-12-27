@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\LichCongTac;
 use App\Models\UserDevice;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Modules\Admin\Entities\ChucVu;
 use Modules\Admin\Entities\DonVi;
+use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Auth;
@@ -131,6 +133,91 @@ class User extends Authenticatable
     public function userDevice()
     {
         return $this->hasOne(UserDevice::class, 'user_id', 'id');
+    }
+    public function caPhong($id,$tuan,$nam)
+    {
+        $currentUser = User::where('id',$id)->first();
+        $year = !empty($nam) ? $nam : date('Y');
+        $week = $tuan ? $tuan : date('W');
+
+//        $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
+
+        $donViId = null;
+        $donViDuHop = null;
+
+        $ngayTuan = [
+            array('Thứ Hai', date('d/m/Y', strtotime($year . "W" . $week . 1))),
+            array('Thứ Ba', date('d/m/Y', strtotime($year . "W" . $week . 2))),
+            array('Thứ Tư', date('d/m/Y', strtotime($year . "W" . $week . 3))),
+            array('Thứ Năm', date('d/m/Y', strtotime($year . "W" . $week . 4))),
+            array('Thứ Sáu', date('d/m/Y', strtotime($year . "W" . $week . 5))),
+            array('Thứ Bảy', date('d/m/Y', strtotime($year . "W" . $week . 6))),
+            array('Chủ Nhật', date('d/m/Y', strtotime($year . "W" . $week . 7)))
+        ];
+        $start_date = strtotime($year . "W" . $week . 1);
+        $end_date = strtotime($year . "W" . $week . 7);
+
+        $ngaybd = date('Y-m-d', $start_date);
+        $ngaykt = date('Y-m-d', $end_date);
+
+        $totalWeekOfYear = max(date("W", strtotime($year . "-12-27")),
+            date("W", strtotime($year . "-12-29")),
+            date("W", strtotime($year . "-12-31")));
+//        dd($totalWeekOfYear);
+
+        $tuanTruoc = $week != 1 ? $week - 1 : 01;
+        $tuanSau = $week != $totalWeekOfYear ? $week + 1 : $totalWeekOfYear;
+
+        $tuanTruoc = $tuanTruoc < 10 ? '0' . $tuanTruoc : $tuanTruoc;
+        $tuanSau = $tuanSau < 10 ? '0' . $tuanSau : $tuanSau;
+        $roles = [CHU_TICH, PHO_CHU_TICH, CHANH_VAN_PHONG, TRUONG_PHONG];
+
+        $donVi = $currentUser->donVi;
+        $donViCapXa = DonVi::whereNotNull('cap_xa')->whereNull('deleted_at')->first();
+
+
+        $id = [];
+
+        //
+
+
+
+
+
+        if ($currentUser->hasRole([CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG, TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])) {
+            $lanhDaoId = $currentUser->id;
+        }
+
+        $danhSachLichCongTac = LichCongTac::with('vanBanDen', 'vanBanDi', 'congViecDonVi')
+            ->where('ngay', '>=', $ngaybd)
+            ->where('ngay', '<=', $ngaykt)
+            ->where(function ($query) use ($lanhDaoId) {
+                if (!empty($lanhDaoId)) {
+                    return $query->where('lanh_dao_id', $lanhDaoId);
+                }
+            })
+            ->whereNotNull('trang_thai')
+            ->orderBy('buoi', 'asc')->get();
+
+
+
+        if ($danhSachLichCongTac) {
+            foreach ($danhSachLichCongTac as $lichCongTac) {
+
+                $lichCongTac->CanBoChiDao = null;
+                if ($lichCongTac->chuanBiTruocCuocHop()) {
+                    $lichCongTac->CanBoChiDao = XuLyVanBanDen::where('van_ban_den_id', $lichCongTac->object_id)
+                        ->where('id', '>=', $lichCongTac->chuanBiTruocCuocHop())->get();
+                }
+                $lichCongTac->parent = $lichCongTac->getParent();
+                $lichCongTac->truyenNhanVanBanDonVi = $lichCongTac->donViChuTri();
+                $lichCongTac->giaiQuyetVanBanHoanThanh = isset($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh() : null;
+            }
+        }
+
+        return $danhSachLichCongTac;
+
+
     }
 
 }

@@ -24,7 +24,7 @@
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <div class="col-md-12" style="margin-top: 20px">
                             <div class="row">
-                                <form action="{{route('van-ban-den-don-vi.index')}}" method="get">
+                                <form action="{{route('van-ban-den-don-vi.index')}}" id="formsb" method="get">
                                     <div class="col-md-3 form-group">
                                         <label>Tìm theo trích yếu</label>
                                         <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
@@ -64,7 +64,21 @@
                         </div>
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai', ['active' => $trinhTuNhanVanBan])
                         @include('dieuhanhvanbanden::gia-han.modal_gia_han')
-                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                        <div class="col-md-12 mb-2 mt-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <b>Sắp xếp:</b>
+                                    <select class="" name="sap_xep" form="formsb"   onchange="this.form.submit();">
+                                        <option value="" {{ Request::get('sap_xep') == '' ? 'selected' : '' }}>-- Mặc định --</option>
+                                        <option value="1" {{ Request::get('sap_xep') == 1 ? 'selected' : '' }}>-- Sắp xếp A-Z --</option>
+                                        <option value="2" {{ Request::get('sap_xep') == 2 ? 'selected' : '' }}>-- Sắp xếp Z-A --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -226,6 +240,22 @@
 @endsection
 @section('script')
     <script type="text/javascript">
+        function ghiNhanXem($id)
+        {
+            console.log($id);
+            $.ajax({
+                url: APP_URL + '/daXem',
+                type: 'POST',
+                beforeSend: showLoading(),
+                dataType: 'json',
+                data: {
+                    id: $id,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+            }).done(function (res) {
+                hideLoading();
+            })
+        }
         // tra lai van ban
         $('.tra-lai-van-ban').on('click', function () {
             let id = $(this).data('id');

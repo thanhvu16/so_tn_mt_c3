@@ -88,20 +88,20 @@
                                     <th width="9%" class="text-center" style="vertical-align: middle;">Thời
                                         gian
                                     </th>
-                                    <th width="25%" class="text-center" style="vertical-align: middle;">Nội
+                                    <th width="" class="text-center" style="vertical-align: middle;">Nội
                                         dung giấy mời
                                     </th>
-                                    <th width="15%" class="text-center" style="vertical-align: middle;">Lãnh
-                                        đạo chủ trì
-                                    </th>
-                                    <th width="25%" class="text-center" style="vertical-align: middle;">Chỉ
-                                        đạo trước cuộc họp
-                                    </th>
-                                    <th width="15%" class="text-center" style="vertical-align: middle;">Báo
-                                        cáo phục vụ họp
-                                    </th>
-                                    <th class="text-center" style="vertical-align: middle;">Soạn báo cáo
-                                    </th>
+{{--                                    <th width="15%" class="text-center" style="vertical-align: middle;">Lãnh--}}
+{{--                                        đạo chủ trì--}}
+{{--                                    </th>--}}
+{{--                                    <th width="25%" class="text-center" style="vertical-align: middle;">Chỉ--}}
+{{--                                        đạo trước cuộc họp--}}
+{{--                                    </th>--}}
+{{--                                    <th width="15%" class="text-center" style="vertical-align: middle;">Báo--}}
+{{--                                        cáo phục vụ họp--}}
+{{--                                    </th>--}}
+{{--                                    <th class="text-center" style="vertical-align: middle;">Soạn báo cáo--}}
+{{--                                    </th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -160,35 +160,35 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>
-                                                    <td>@if ($lichCongTac->vanBanDi->dvSoanThao)
-                                                            Đơn vị soạn
-                                                            thảo: {{ $lichCongTac->vanBanDi->dvSoanThao->ten_don_vi ?? null }}
-                                                         @endif
-                                                    </td>
-                                                    <td>
-                                                        <p>
-                                                            @if (isset($lichCongTac->vanBanDi->vanBanDiFile))
-                                                                @foreach($lichCongTac->vanBanDi->vanBanDiFile as $key => $file)
-                                                                    <a href="{{ $file->getUrlFile() }}"
-                                                                       target="popup"
-                                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                                        ]</a>
-                                                                    @if (count($lichCongTac->vanBanDi->vanBanDiFile)-1 != $key)
-                                                                        &nbsp;|&nbsp;
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </p>
+{{--                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>--}}
+{{--                                                    <td>@if ($lichCongTac->vanBanDi->dvSoanThao)--}}
+{{--                                                            Đơn vị soạn--}}
+{{--                                                            thảo: {{ $lichCongTac->vanBanDi->dvSoanThao->ten_don_vi ?? null }}--}}
+{{--                                                         @endif--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <p>--}}
+{{--                                                            @if (isset($lichCongTac->vanBanDi->vanBanDiFile))--}}
+{{--                                                                @foreach($lichCongTac->vanBanDi->vanBanDiFile as $key => $file)--}}
+{{--                                                                    <a href="{{ $file->getUrlFile() }}"--}}
+{{--                                                                       target="popup"--}}
+{{--                                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}--}}
+{{--                                                                        ]</a>--}}
+{{--                                                                    @if (count($lichCongTac->vanBanDi->vanBanDiFile)-1 != $key)--}}
+{{--                                                                        &nbsp;|&nbsp;--}}
+{{--                                                                    @endif--}}
+{{--                                                                @endforeach--}}
+{{--                                                            @endif--}}
+{{--                                                        </p>--}}
 {{--                                                        <hr style="border:1px dashed red">--}}
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"
-                                                           target="_blank"
-                                                           class="btn btn-primary btn-sm color-white">Soạn
-                                                            báo cáo kết quả
-                                                            họp</a>
-                                                    </td>
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"--}}
+{{--                                                           target="_blank"--}}
+{{--                                                           class="btn btn-primary btn-sm color-white">Soạn--}}
+{{--                                                            báo cáo kết quả--}}
+{{--                                                            họp</a>--}}
+{{--                                                    </td>--}}
                                                 </tr>
                                             @elseif($lichCongTac->type == 2)
                                                 <tr style="background-color: #fff; max-height: 300px; color:black">
@@ -233,20 +233,20 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}
-                                                        <br> <i>({{ $lichCongTac->lanhDao->donVi->ten_don_vi ?? null }})</i>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"
-                                                           target="_blank"
-                                                           class="btn btn-primary btn-sm color-white">Soạn
-                                                            báo cáo kết quả
-                                                            họp</a>
-                                                    </td>
+{{--                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}--}}
+{{--                                                        <br> <i>({{ $lichCongTac->lanhDao->donVi->ten_don_vi ?? null }})</i>--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.$lichCongTac->id) }}"--}}
+{{--                                                           target="_blank"--}}
+{{--                                                           class="btn btn-primary btn-sm color-white">Soạn--}}
+{{--                                                            báo cáo kết quả--}}
+{{--                                                            họp</a>--}}
+{{--                                                    </td>--}}
                                                 </tr>
                                             @else
 
@@ -262,13 +262,6 @@
 {{--                                                            - {{ date('H:i', strtotime($lichCongTac->gio)) }}</b>--}}
                                                     </td>
                                                     <td style="vertical-align: middle;">
-                                                        <p>
-                                                            <b>Cơ quan ban
-                                                                hành:</b> {{ $lichCongTac->vanBanDen->co_quan_ban_hanh ?? null }}
-                                                        </p>
-                                                        <p class="text-bold">GM đến số:
-                                                            <b class="color-red">{{ !empty($lichCongTac->vanBanDen->hasChild()) ? $lichCongTac->vanBanDen->hasChild()->so_den : $lichCongTac->vanBanDen->so_den }}</b>
-                                                        </p>
                                                         <p><b>Nội
                                                                 dung: </b><a href="{{ route('chitiethop', !empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}">{{ $lichCongTac->noi_dung ??  null  }}</a>
                                                         </p>
@@ -277,12 +270,19 @@
                                                             <b>{{ $lichCongTac->dia_diem ?? null }}</b>
                                                         </p>
                                                         <p>
+                                                            <b>Cơ quan ban
+                                                                hành:</b> {{ $lichCongTac->vanBanDen->co_quan_ban_hanh ?? null }}
+                                                        </p>
+                                                        <p class="text-bold">GM đến số:
+                                                            <b class="color-red">{{ !empty($lichCongTac->vanBanDen->hasChild()) ? $lichCongTac->vanBanDen->hasChild()->so_den : $lichCongTac->vanBanDen->so_den }}</b>
+                                                        </p>
+
+                                                        <p>
                                                             @if (isset($lichCongTac->vanBanDen->vanBanDenFile))
                                                                 @foreach($lichCongTac->vanBanDen->vanBanDenFile as $key => $file)
                                                                     <a href="{{ $file->getUrlFile() }}"
                                                                        target="popup"
-                                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                                        ]</a>
+                                                                       class="detail-file-name seen-new-window">[File]</a>
                                                                     @if (count($lichCongTac->vanBanDen->vanBanDenFile)-1 != $key)
                                                                         &nbsp;|&nbsp;
                                                                     @endif
@@ -316,66 +316,64 @@
                                                             </a>
                                                         @endcan
                                                     </td>
-                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>
-                                                    <td>
-                                                        @if($lichCongTac->CanBoChiDao)
-                                                            @foreach($lichCongTac->CanBoChiDao as $key => $chuyenVienXuLy)
-                                                                <p>
-                                                                    - {{$chuyenVienXuLy->noi_dung ?? null }}
-                                                                </p>
-                                                            @endforeach
-                                                        @endif
+{{--                                                    <td>{{ $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ChucVu->ten_chuc_vu : '' }} {{  $lichCongTac->parent ? $lichCongTac->parent->lanhDao->ho_ten : $lichCongTac->lanhDao->ho_ten  }}</td>--}}
+{{--                                                    <td>--}}
+{{--                                                        @if($lichCongTac->CanBoChiDao)--}}
+{{--                                                            @foreach($lichCongTac->CanBoChiDao as $key => $chuyenVienXuLy)--}}
+{{--                                                                <p>--}}
+{{--                                                                    - {{$chuyenVienXuLy->noi_dung ?? null }}--}}
+{{--                                                                </p>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        @endif--}}
 
-                                                        @if($lichCongTac->truyenNhanVanBanDonVi)
-                                                            @foreach($lichCongTac->truyenNhanVanBanDonVi as $key => $chuyenNhanVanBanDonVi)
-                                                                <p>
-                                                                    - {{ $chuyenNhanVanBanDonVi->noi_dung ?? null }}
-                                                                </p>
-                                                            @endforeach
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <p>
-                                                            <a href="{{ !empty($lichCongTac->vanBanDen->id) ? route('van_ban_den_chi_tiet.show', $lichCongTac->vanBanDen->id) : '' }}">{{ !empty($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->noi_dung ?? null : null }}</a>
-                                                        </p>
+{{--                                                        @if($lichCongTac->truyenNhanVanBanDonVi)--}}
+{{--                                                            @foreach($lichCongTac->truyenNhanVanBanDonVi as $key => $chuyenNhanVanBanDonVi)--}}
+{{--                                                                <p>--}}
+{{--                                                                    - {{ $chuyenNhanVanBanDonVi->noi_dung ?? null }}--}}
+{{--                                                                </p>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        @endif--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                        <p>--}}
+{{--                                                            <a href="{{ !empty($lichCongTac->vanBanDen->id) ? route('van_ban_den_chi_tiet.show', $lichCongTac->vanBanDen->id) : '' }}">{{ !empty($lichCongTac->vanBanDen) ? $lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->noi_dung ?? null : null }}</a>--}}
+{{--                                                        </p>--}}
 
-                                                        @if (isset($lichCongTac->vanBanDen) && !empty($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()))
-                                                            @foreach($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile as $key => $file)
-                                                                <a href="{{ $file->getUrlFile() }}"
-                                                                   target="popup"
-                                                                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                                    ]</a>
-                                                                @if (count($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile)-1 != $key)
-                                                                    &nbsp;|&nbsp;
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($lichCongTac->congViecDonVi) && $lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi)
-                                                            <b>kết quả:</b>
-                                                            <p>
-                                                                <a href="{{ route('cong-viec-hoan-thanh.show', $lichCongTac->congViecDonVi->id) }}">{{ $lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->noi_dung }}</a>
-                                                            </p>
-                                                            @if (isset($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile))
-                                                                @foreach($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile as $key => $file)
-                                                                    <a href="{{ $file->getUrlFile() }}"
-                                                                       target="popup"
-                                                                       class="detail-file-name seen-new-window">[{{ $file->ten_file }}
-                                                                        ]</a>
-                                                                    @if (count($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile)-1 != $key)
-                                                                        &nbsp;|&nbsp;
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        @else
-                                                            <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.!empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}"
-                                                               target="_blank"
-                                                               class="btn btn-primary btn-sm color-white">Soạn
-                                                                báo cáo kết quả
-                                                                họp</a>
-                                                        @endif
-                                                    </td>
+{{--                                                        @if (isset($lichCongTac->vanBanDen) && !empty($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()))--}}
+{{--                                                            @foreach($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile as $key => $file)--}}
+{{--                                                                <a href="{{ $file->getUrlFile() }}"--}}
+{{--                                                                   target="popup"--}}
+{{--                                                                   class="detail-file-name seen-new-window">[File]</a>--}}
+{{--                                                                @if (count($lichCongTac->vanBanDen->giaiQuyetVanBanHoanThanh()->giaiQuyetVanBanFile)-1 != $key)--}}
+{{--                                                                    &nbsp;|&nbsp;--}}
+{{--                                                                @endif--}}
+{{--                                                            @endforeach--}}
+{{--                                                        @endif--}}
+{{--                                                    </td>--}}
+{{--                                                    <td>--}}
+{{--                                                        @if (!empty($lichCongTac->congViecDonVi) && $lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi)--}}
+{{--                                                            <b>kết quả:</b>--}}
+{{--                                                            <p>--}}
+{{--                                                                <a href="{{ route('cong-viec-hoan-thanh.show', $lichCongTac->congViecDonVi->id) }}">{{ $lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->noi_dung }}</a>--}}
+{{--                                                            </p>--}}
+{{--                                                            @if (isset($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile))--}}
+{{--                                                                @foreach($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile as $key => $file)--}}
+{{--                                                                    <a href="{{ $file->getUrlFile() }}"--}}
+{{--                                                                       target="popup"--}}
+{{--                                                                       class="detail-file-name seen-new-window">[File]</a>--}}
+{{--                                                                    @if (count($lichCongTac->congViecDonVi->giaiQuyetCongViecDonVi->giaiQuyetCongViecDonViFile)-1 != $key)--}}
+{{--                                                                        &nbsp;|&nbsp;--}}
+{{--                                                                    @endif--}}
+{{--                                                                @endforeach--}}
+{{--                                                            @endif--}}
+{{--                                                        @else--}}
+{{--                                                            <a href="{{ route('soan_bao_cao.create', 'lich_cong_tac_id='.!empty($lichCongTac->parent_id) ? $lichCongTac->parent_id : $lichCongTac->id) }}"--}}
+{{--                                                               target="_blank"--}}
+{{--                                                               class="btn btn-primary btn-sm color-white">Soạn--}}
+{{--                                                                báo cáo kết quả--}}
+{{--                                                                họp</a>--}}
+{{--                                                        @endif--}}
+{{--                                                    </td>--}}
                                                 </tr>
                                             @endif
                                         @endif

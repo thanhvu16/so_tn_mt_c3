@@ -19,6 +19,7 @@ use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\NgayNghi;
 use Modules\Admin\Entities\SoVanBan;
 use File, auth, DB, Excel;
+use Modules\Admin\Entities\VanBanDenOld;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\DieuHanhVanBanDen\Entities\LuuVet;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
@@ -47,6 +48,14 @@ class VanBanDenController extends Controller
         $this->homeRepository = $homeRepository;
 //        dd($homeRepository);
 
+
+    }
+
+    public function tets()
+    {
+//        $dsLoaiVanBan = VanBanDenOld::query()->first();
+        $dsLoaiVanBan = DB::connection('mysql2')->table('vb_vanbanden')->paginate(10);
+        dd($dsLoaiVanBan);
 
     }
 
@@ -1382,7 +1391,7 @@ class VanBanDenController extends Controller
      */
     public function luuvanbantumail(Request $request)
     {
-
+//        dd($request->all());
         $loaiVanBan = LoaiVanBan::where('id', $request->loai_van_ban)->first();
         $tbl_email = null;
         if ($loaiVanBan->ten_loai_van_ban != 'Giấy mời') {
@@ -1528,6 +1537,30 @@ class VanBanDenController extends Controller
                             $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                             $vbDenFile->save();
                         }
+                    }
+                }
+
+                $FileThem = $request->File;
+                $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+                if ($FileThem && count($FileThem) > 0) {
+                    foreach ($FileThem as $key => $getFilethem) {
+                        if (!File::exists($uploadPath)) {
+                            File::makeDirectory($uploadPath, 0777, true, true);
+                        }
+                        $typeArray = explode('.', $getFilethem->getClientOriginalName());
+                        $tenchinhfile = strtolower($typeArray[0]);
+                        $extFile = $getFilethem->extension();
+                        $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFilethem->getClientOriginalName();
+                        $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+                        $getFilethem->move($uploadPath, $fileName);
+                        $vbDenFile = new FileVanBanDen();
+                        $vbDenFile->ten_file = $tenchinhfile;
+                        $vbDenFile->duong_dan = $urlFile;
+                        $vbDenFile->duoi_file = $extFile;
+                        $vbDenFile->vb_den_id = $vanbandv->id;
+                        $vbDenFile->nguoi_dung_id = auth::user()->id;
+                        $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                        $vbDenFile->save();
                     }
                 }
 
@@ -1713,6 +1746,29 @@ class VanBanDenController extends Controller
                                 $vbDenFile->don_vi_id = auth::user()->don_vi_id;
                                 $vbDenFile->save();
                             }
+                        }
+                    }
+                    $FileThem = $request->File;
+                    $uploadPath = UPLOAD_FILE_VAN_BAN_DEN;
+                    if ($FileThem && count($FileThem) > 0) {
+                        foreach ($FileThem as $key => $getFilethem) {
+                            if (!File::exists($uploadPath)) {
+                                File::makeDirectory($uploadPath, 0777, true, true);
+                            }
+                            $typeArray = explode('.', $getFilethem->getClientOriginalName());
+                            $tenchinhfile = strtolower($typeArray[0]);
+                            $extFile = $getFilethem->extension();
+                            $fileName = date('Y_m_d') . '_' . Time() . '_' . $getFilethem->getClientOriginalName();
+                            $urlFile = UPLOAD_FILE_VAN_BAN_DEN . '/' . $fileName;
+                            $getFilethem->move($uploadPath, $fileName);
+                            $vbDenFile = new FileVanBanDen();
+                            $vbDenFile->ten_file = $tenchinhfile;
+                            $vbDenFile->duong_dan = $urlFile;
+                            $vbDenFile->duoi_file = $extFile;
+                            $vbDenFile->vb_den_id = $vanbandv->id;
+                            $vbDenFile->nguoi_dung_id = auth::user()->id;
+                            $vbDenFile->don_vi_id = auth::user()->don_vi_id;
+                            $vbDenFile->save();
                         }
                     }
                 }
@@ -1988,11 +2044,11 @@ class VanBanDenController extends Controller
                 ->select('id')
                 ->get();
 //            dd($danhSachVanBanDenQuaHanDangXuLy->pluck('id'));
-            foreach ($danhSachVanBanDenQuaHanDangXuLy as $data) {
-                $vaBanDenID = VanBanDen::where('id', $data->id)->first();
-                $vaBanDenID->trinh_tu_nhan_van_ban = 6;
-                $vaBanDenID->save();
-            }
+//            foreach ($danhSachVanBanDenQuaHanDangXuLy as $data) {
+//                $vaBanDenID = VanBanDen::where('id', $data->id)->first();
+//                $vaBanDenID->trinh_tu_nhan_van_ban = 6;
+//                $vaBanDenID->save();
+//            }
 
 
             $danhSachVanBanDenTrongHanDangXuLy = VanBanDen::where(function ($query) use ($da) {
@@ -2013,7 +2069,7 @@ class VanBanDenController extends Controller
 //                })
                 ->select('id')
                 ->get();
-//            dd($danhSachVanBanDenTrongHanDangXuLy->pluck('id'));
+            dd($danhSachVanBanDenTrongHanDangXuLy->pluck('id'),$danhSachVanBanDenQuaHanDangXuLy->pluck('id'));
 
             foreach ($danhSachVanBanDenTrongHanDangXuLy as $data) {
                 $vaBanDenID = VanBanDen::where('id', $data->id)->first();

@@ -192,7 +192,7 @@
             @foreach($vanBanDen->vanBanDenFile as $key => $file)
                 <a href="{{ $file->getUrlFile() }}"
                    target="popup"
-                   class="detail-file-name seen-new-window">[{{ $file->ten_file }}]</a>
+                   class="detail-file-name seen-new-window" onclick="ghiNhanXem({{ $vanBanDen->id }})">[{{ $file->ten_file }}]</a>
                 @if (count($vanBanDen->vanBanDenFile)-1 != $key)
                     &nbsp;|&nbsp;
                 @endif

@@ -1,0 +1,13 @@
+{
+    "name": "TraCuuVanBanCu",
+    "alias": "tracuuvanbancu",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\TraCuuVanBanCu\\Providers\\TraCuuVanBanCuServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

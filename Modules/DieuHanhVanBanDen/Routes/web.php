@@ -102,6 +102,8 @@ Route::get('update-da-xem', 'DieuHanhVanBanDenController@updateDaXem')->name('up
 
 Route::post('remove-file/{id}', 'DieuHanhVanBanDenController@removeFile');
 
+Route::post('daXem', 'VanBanDenDonViController@daXem')->name('daXem');
+
 Route::resource('phan-loai-van-ban-phoi-hop', 'PhanLoaiVanBanPhoiHopController');
 Route::get('van-ban-phoi-hop-da-phan-loai', 'PhanLoaiVanBanPhoiHopController@index')->name('van-ban-phoi-hop.da_phan_loai');
 

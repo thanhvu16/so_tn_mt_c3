@@ -25,6 +25,7 @@ Route::post('soan-bao-cao/store', 'SoanBaoCaoController@store')->name('soan-bao-
 
 Route::resource('quan-ly-cuoc-hop', 'QuanLyCuocHopController');
 Route::get('chi-tiet-cuoc-hop/{id}', 'QuanLyCuocHopController@chiTietCuocHop')->name('chitiethop');
+Route::get('lich-hop-phong', 'LichCongTacController@caPhong')->name('caPhong');
 Route::post('xoa-nguoi-tham-du/{id}', 'QuanLyCuocHopController@deleteNguoiDuHop')->name('xoanguoithamdu');
 Route::post('them-du-lieu/{id}', 'QuanLyCuocHopController@themDuLieuCuocHop')->name('themDuLieuCuocHop');
 Route::post('luu_ghichepcuochop_qu/{id}', 'QuanLyCuocHopController@luu_ghichepcuochop_qu')->name('luu_ghichepcuochop_qu');

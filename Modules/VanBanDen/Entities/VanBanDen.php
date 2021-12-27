@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Entities\DoKhan;
 use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\DonVi;
+use Modules\Admin\Entities\GhiNhanDaXem;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\SoVanBan;
 use Modules\DieuHanhVanBanDen\Entities\ChuyenVienPhoiHop;
@@ -218,7 +219,10 @@ class VanBanDen extends Model
 //        dd($db);
         return $db;
     }
-
+    public function vanBanDaXem()
+    {
+        return $this->hasMany(GhiNhanDaXem::class, 'van_ban_den_id', 'id');
+    }
 
     public function vanBanDenFile()
     {

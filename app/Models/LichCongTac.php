@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use Illuminate\Http\Request;
 use Modules\Admin\Entities\DonVi;
 use Modules\CongViecDonVi\Entities\CongViecDonVi;
 use Modules\LichCongTac\Entities\CuocHopChiTiet;
@@ -399,4 +400,5 @@ class LichCongTac extends Model
             return $soluong;
         }
     }
+
 }
