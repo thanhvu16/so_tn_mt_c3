@@ -220,7 +220,15 @@ class VanBanDenDonViController extends Controller
         if ($donVi1->parent_id != 0) {
             $donVi = $donVi1->parent_id;
         }
-
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $soDen = (int)$request->get('so_den') ?? null;
@@ -313,6 +321,7 @@ class VanBanDenDonViController extends Controller
                         return $query->where('updated_at', "LIKE", $date);
                     }
                 })
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         } else {
             $danhSachVanBanDen = VanBanDen::with(['checkLuuVetVanBanDen',
@@ -356,6 +365,7 @@ class VanBanDenDonViController extends Controller
                         return $query->where('updated_at', "LIKE", $date);
                     }
                 })
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }
 
@@ -410,7 +420,15 @@ class VanBanDenDonViController extends Controller
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ? formatYMD($request->get('date')) : null;
-
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
 
         $trinhTuNhanVanBan = null;
         if ($currentUser->hasRole(CHU_TICH)) {
@@ -500,6 +518,7 @@ class VanBanDenDonViController extends Controller
                         }
                     })
                     ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
+                    ->orderBy('updated_at', $a)
                     ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                         'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
                         'noi_dung_hop', 'gio_hop', 'ngay_hop', 'dia_diem', 'noi_dung', 'trinh_tu_nhan_van_ban', 'created_at')
@@ -545,6 +564,7 @@ class VanBanDenDonViController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
+                    ->orderBy('updated_at', $a)
                     ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                     ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                         'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
@@ -604,6 +624,7 @@ class VanBanDenDonViController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
+                    ->orderBy('updated_at', $a)
                     ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                     ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                         'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
@@ -649,6 +670,7 @@ class VanBanDenDonViController extends Controller
                             return $query->where('created_at', "LIKE", $date);
                         }
                     })
+                    ->orderBy('updated_at', $a)
                     ->where('trinh_tu_nhan_van_ban', '>=', $trinhTuNhanVanBan)
                     ->select('id', 'so_ky_hieu', 'loai_van_ban_id', 'so_den', 'ngay_ban_hanh', 'co_quan_ban_hanh',
                         'nguoi_ky', 'nguoi_tao', 'han_xu_ly', 'trich_yeu', 'do_khan_cap_id', 'do_bao_mat_id', 'van_ban_can_tra_loi',
@@ -709,6 +731,7 @@ class VanBanDenDonViController extends Controller
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
         $dataHanXuLy = $data['han_xu_ly'] ?? null;
+        $dataCapDo = $data['cap_do'] ?? null;
 
         // them moi
         $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
@@ -771,6 +794,7 @@ class VanBanDenDonViController extends Controller
                     if ($vanBanQuanTrongDV) {
                         if (!empty($vanBanQuanTrongDV[$vanBanDenId])) {
                             $donViChuTri->vb_quan_tron_don_vi = $vanBanQuanTrongDV[$vanBanDenId];
+                            $donViChuTri->cap_do = $dataCapDo[$vanBanDenId];
                             $donViChuTri->save();
                         }
                     }

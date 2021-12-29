@@ -53,7 +53,26 @@
                             </div>
                         </form>
                         <br>
-                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                        <div class="col-md-12 mb-2 mt-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <form action="@if(Request::get('type') == 1) {{route('giay-moi-den-hoan-thanh.index')}} @else {{route('van-ban-den-hoan-thanh.index')}} @endif" id="formsb">
+                                        <b>Sắp xếp:</b>
+
+                                        <select class="" name="sap_xep" form="formsb"   onchange="this.form.submit();">
+                                            <option value="" {{ Request::get('sap_xep') == '' ? 'selected' : '' }}>-- Mặc định --</option>
+                                            <option value="1" {{ Request::get('sap_xep') == 1 ? 'selected' : '' }}>-- Sắp xếp A-Z --</option>
+                                            <option value="2" {{ Request::get('sap_xep') == 2 ? 'selected' : '' }}>-- Sắp xếp Z-A --</option>
+                                        </select>
+                                    </form>
+                                    <input type="hidden" name="type" form="formsb" value="{{Request::get('type')}}">
+
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -165,7 +184,8 @@
 
                             </div>
                             <div class="col-md-6 text-right">
-                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
+                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'), 'type'  => Request::get('type'),
+ 'sap_xep'  => Request::get('sap_xep'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
                             </div>
                         </div>
                     </div>

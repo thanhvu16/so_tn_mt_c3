@@ -24,7 +24,7 @@
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <div class="col-md-12" style="margin-top: 20px">
                             <div class="row">
-                                <form action="{{route('van-ban-den-don-vi.index')}}" id="formsb" method="get">
+                                <form action="@if(Request::get('type') == 1) {{route('giay_moi_den_don_vi_index')}} @else {{route('van-ban-den-don-vi.index')}} @endif" id="formsb" method="get">
                                     <div class="col-md-3 form-group">
                                         <label>Tìm theo trích yếu</label>
                                         <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
@@ -76,6 +76,7 @@
                                         <option value="1" {{ Request::get('sap_xep') == 1 ? 'selected' : '' }}>-- Sắp xếp A-Z --</option>
                                         <option value="2" {{ Request::get('sap_xep') == 2 ? 'selected' : '' }}>-- Sắp xếp Z-A --</option>
                                     </select>
+                                    <input type="hidden" name="type" form="formsb" value="{{Request::get('type')}}">
                                 </div>
                             </div>
                         </div>

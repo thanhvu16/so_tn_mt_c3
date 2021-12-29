@@ -32,7 +32,9 @@
                                 @endif
                             </td>
                             <td class="text-center">
+                                @if($data->ngay_chuyen)
                                 {{  date('d/m/Y', strtotime($data->ngay_chuyen)) }}
+                                @endif
 
                             </td>
                             <td class="text-center">

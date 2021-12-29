@@ -423,6 +423,15 @@ class VanBanTraLaiController extends Controller
         $donVi = $user->donVi;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
 
         $checkThamMuuSo = User::permission(AllPermission::thamMuu())
             ->whereHas('donVi', function ($query) {
@@ -451,7 +460,7 @@ class VanBanTraLaiController extends Controller
                             }
                         })
                         ->whereIn('id', $arrVanBanDenId)
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('updated_at', $a)
                         ->paginate(PER_PAGE);
                 }else{
                     $danhSachVanBanDen = VanBanDen::with('vanBanTraLaiChoDuyet')
@@ -461,7 +470,7 @@ class VanBanTraLaiController extends Controller
                             }
                         })
                         ->whereIn('id', $arrVanBanDenId)
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('updated_at', $a)
                         ->paginate(PER_PAGE);
                 }
 
@@ -472,7 +481,7 @@ class VanBanTraLaiController extends Controller
                 }
                 return view('dieuhanhvanbanden::van-ban-tra-lai.cho_duyet', compact('danhSachVanBanDen'));
             } else {
-                return $this->donViTraLai($arrVanBanDenId, $user, $loaiVanBanGiayMoi, $donVi);
+                return $this->donViTraLai($arrVanBanDenId, $user, $loaiVanBanGiayMoi, $donVi,$a);
             }
 
         }
@@ -598,7 +607,7 @@ class VanBanTraLaiController extends Controller
         }
     }
 
-    public function donViTraLai($arrVanBanDenId, $currentUser, $loaiVanBanGiayMoi, $donVi)
+    public function donViTraLai($arrVanBanDenId, $currentUser, $loaiVanBanGiayMoi, $donVi,$a)
     {
         $trinhTuNhanVanBan = null;
 
@@ -618,6 +627,7 @@ class VanBanTraLaiController extends Controller
             return $query->select('id', 'van_ban_den_id', 'lanh_dao_id');
         }])
             ->whereIn('id', $arrVanBanDenId)
+            ->orderBy('updated_at', $a)
             ->paginate(PER_PAGE);
 
         $roles = [PHO_PHONG, PHO_CHANH_VAN_PHONG, PHO_TRUONG_BAN];

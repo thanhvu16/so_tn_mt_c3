@@ -35,6 +35,15 @@ class VanBanDenPhoiHopController extends Controller
         $donVi = $currentUser->donVi;
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
 
         $soDen = $request->get('so_den') ?? null;
         $date = $request->get('date') ?? null;
@@ -172,6 +181,7 @@ class VanBanDenPhoiHopController extends Controller
                 })
                 ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
                 ->whereIn('id', $arrVanBanDenId)
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }else{
             $danhSachVanBanDen = VanBanDen::with([
@@ -219,6 +229,7 @@ class VanBanDenPhoiHopController extends Controller
                 })
                 ->where('trinh_tu_nhan_van_ban', '!=',VanBanDen::HOAN_THANH_VAN_BAN)
                 ->whereIn('id', $arrVanBanDenId)
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }
 
@@ -245,7 +256,7 @@ class VanBanDenPhoiHopController extends Controller
 
         if ($currentUser->hasrole(CHUYEN_VIEN)) {
 
-            return view('dieuhanhvanbanden::don-vi-phoi-hop.chuyen-vien',
+            return view('dieuhanhvanbanden::don-vi-phoi-hop.chuyen-vien2',
                 compact('danhSachVanBanDen', 'order'));
 
         }
@@ -603,7 +614,15 @@ class VanBanDenPhoiHopController extends Controller
             ->where('hoan_thanh', DonViPhoiHop::HOAN_THANH_VB)
             ->select('id', 'van_ban_den_id')
             ->get();
-
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
         $arrVanBanDenId = $donViPhoiHop->pluck('van_ban_den_id')->toArray();
         if($request->type != null)
         {
@@ -621,6 +640,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
                 })
                 ->whereIn('id', $arrVanBanDenId)
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }else{
             $danhSachVanBanDen = VanBanDen::with([
@@ -637,6 +657,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
                 })
                 ->whereIn('id', $arrVanBanDenId)
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }
 
@@ -656,6 +677,15 @@ class VanBanDenPhoiHopController extends Controller
     {
 
         $currentUser = auth::user();
+        $sapXep = $request->sap_xep;
+        $a = 'asc';
+        if (!empty($sapXep)) {
+            if ($sapXep == 1) {
+                $a = 'asc';
+            } elseif ($sapXep == 2) {
+                $a = 'desc';
+            }
+        }
         $status = $request->get('status') ?? null;
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')
             ->select('id')->first();
@@ -684,7 +714,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
                 })
                 ->whereIn('id', $arrIdVanBanDen)
-                ->orderBy('updated_at', 'DESC')
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }else{
             $danhSachVanBanDen = VanBanDen::with([
@@ -701,7 +731,7 @@ class VanBanDenPhoiHopController extends Controller
                     }
                 })
                 ->whereIn('id', $arrIdVanBanDen)
-                ->orderBy('updated_at', 'DESC')
+                ->orderBy('updated_at', $a)
                 ->paginate(PER_PAGE);
         }
 

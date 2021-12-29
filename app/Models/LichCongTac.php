@@ -193,7 +193,8 @@ class LichCongTac extends Model
             $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
             $lichCongTac->save();
         } else {
-            $lichCongTac->trang_thai = null;
+//            $lichCongTac->trang_thai = null;
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
             $lichCongTac->save();
         }
 

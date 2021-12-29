@@ -8,7 +8,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="header-title pt-2">Văn bản chờ xử lý</h4>
+                                <h4 class="header-title pt-2">@if(Request::get('type') == 1)Giấy mời chờ xử lý @else Văn bản chờ xử lý @endif</h4>
                             </div>
                             <div class="col-md-6">
                                 <form action="{{ route('van-ban-den-don-vi.store') }}" method="post"
@@ -29,7 +29,7 @@
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         <div class="col-md-12" style="margin-top: 20px">
                             <div class="row">
-                                <form action="{{route('van-ban-den-don-vi.index')}}" id="formsb" method="get">
+                                <form action="@if(Request::get('type') == 1) {{route('giay_moi_den_don_vi_index')}} @else {{route('van-ban-den-don-vi.index')}} @endif" id="formsb" method="get">
                                     <div class="col-md-3 form-group">
                                         <label>Tìm theo trích yếu</label>
                                         <input type="text" class="form-control" value="{{Request::get('trich_yeu')}}"
@@ -80,6 +80,7 @@
                                         <option value="1" {{ Request::get('sap_xep') == 1 ? 'selected' : '' }}>-- Sắp xếp A-Z --</option>
                                         <option value="2" {{ Request::get('sap_xep') == 2 ? 'selected' : '' }}>-- Sắp xếp Z-A --</option>
                                     </select>
+                                    <input type="hidden" name="type" form="formsb"  value="{{Request::get('type')}}">
                                 </div>
                             </div>
                         </div>
@@ -299,9 +300,19 @@
                                         @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0)
                                         <div class="form-group">
                                             <label>
-                                                <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                                                &ensp;Văn bản quan trọng
+{{--                                                <div class="icheckbox_flat-green checked" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="flat-red" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" form="form-tham-muu" value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>--}}
+{{--                                                &ensp;Văn bản quan trọng--}}
+                                                <input type="checkbox" class="check-qt-{{ $vanBanDen->id }}" name="van_ban_quan_trong[{{ $vanBanDen->id }}]" form="form-tham-muu" onclick="CapDo({{ $vanBanDen->id }})" value="1"> &emsp;<span onclick="CapDo({{ $vanBanDen->id }})">Văn bản quan trọng</span>
                                             </label>
+                                            <br>
+                                            <div class="form-group cap-do-{{ $vanBanDen->id }} hide"  id="capvb2">
+                                                <label class="">
+                                                    <input type="radio" name="cap_do[{{ $vanBanDen->id }}]" form="form-tham-muu" class="flat-red" value="1" > Cấp 1 &emsp;
+                                                    <input type="radio" name="cap_do[{{ $vanBanDen->id }}]" form="form-tham-muu" class="flat-red" value="2"> Cấp 2 &emsp;
+                                                    <input type="radio" name="cap_do[{{ $vanBanDen->id }}]" form="form-tham-muu" class="flat-red" value="3" checked> Cấp 3
+
+                                                </label>
+                                            </div>
 
                                         </div>
                                         @endif
@@ -392,7 +403,24 @@
         let vanBanDenDonViId = null;
         let ArrVanBanDenDonViId = [];
         let txtChuyenVien = null;
+        function CapDo($id)
+        {
+            // if()van_ban_quan_trong
+            //     $('.cap-do-'.$id).addClass('hidden');
+            // $qt = $('.check-qt-'+ $id).val();
+            $qt = $(".check-qt-"+ $id).is(":checked");
+            // $qt = $('.check-qt'+ $id).is(":checked")?0:1;
+            // $qt = $('.check-qt-'+ $id).is(':checked').val();
+            // $qt = document.getElementById(".check-qt-"+ $id).value;
+            if($qt == true)
+            {
+                $(".cap-do-"+ $id).removeClass('hide');
+            }else {
+                $(".cap-do-"+$id).addClass('hide');
+            }
+            console.log($id,$qt);
 
+        }
         function ghiNhanXem($id)
         {
             console.log($id);

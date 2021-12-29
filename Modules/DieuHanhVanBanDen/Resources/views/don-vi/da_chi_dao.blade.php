@@ -62,7 +62,26 @@
                     </div>
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
                         @include('dieuhanhvanbanden::van-ban-den.fom_tra_lai')
-                        Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                        <div class="col-md-12 mb-2 mt-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Tổng số loại văn bản: <b>{{ $danhSachVanBanDen->total() }}</b>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <form action="@if(Request::get('type') == 1) {{route('giay_moi_don_vi.da_chi_dao')}} @else {{route('van_ban_don_vi.da_chi_dao')}} @endif" id="formsb">
+                                        <b>Sắp xếp:</b>
+
+                                        <select class="" name="sap_xep" form="formsb"   onchange="this.form.submit();">
+                                            <option value="" {{ Request::get('sap_xep') == '' ? 'selected' : '' }}>-- Mặc định --</option>
+                                            <option value="1" {{ Request::get('sap_xep') == 1 ? 'selected' : '' }}>-- Sắp xếp A-Z --</option>
+                                            <option value="2" {{ Request::get('sap_xep') == 2 ? 'selected' : '' }}>-- Sắp xếp Z-A --</option>
+                                        </select>
+                                        <input type="hidden" name="type" value="{{Request::get('type')}}">
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-striped table-bordered table-hover data-row">
                             <thead>
                             <tr role="row" class="text-center">
@@ -220,16 +239,16 @@
                                                     </div>
                                                 @endif
                                                 <p>
-                                                    <input
-                                                        id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"
-                                                        type="checkbox"
-                                                        name="van_ban_tra_loi[{{ $vanBanDen->id }}]"
-                                                        value="1" form="form-tham-muu" {{ $vanBanDen->van_ban_can_tra_loi == 1 ? 'checked' : null }}>
-                                                    <label
-                                                        for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">
-                                                        VB cần trả lời
-                                                    </label>
-                                                    <small><i>(có văn bản đi)</i></small>
+{{--                                                    <input--}}
+{{--                                                        id="van-ban-can-tra-loi-{{ $vanBanDen->id }}"--}}
+{{--                                                        type="checkbox"--}}
+{{--                                                        name="van_ban_tra_loi[{{ $vanBanDen->id }}]"--}}
+{{--                                                        value="1" form="form-tham-muu" {{ $vanBanDen->van_ban_can_tra_loi == 1 ? 'checked' : null }}>--}}
+{{--                                                    <label--}}
+{{--                                                        for="van-ban-can-tra-loi-{{ $vanBanDen->id }}">--}}
+{{--                                                        VB cần trả lời--}}
+{{--                                                    </label>--}}
+{{--                                                    <small><i>(có văn bản đi)</i></small>--}}
                                                 </p>
                                             @endif
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
@@ -312,7 +331,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {!! $danhSachVanBanDen->appends(['type' => Request::get('type') ,'trich_yeu' => Request::get('trich_yeu'),'so_ky_hieu' => Request::get('so_ky_hieu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}
+                                {!! $danhSachVanBanDen->appends(['type' => Request::get('type') ,'trich_yeu' => Request::get('trich_yeu'),'sap_xep' => Request::get('sap_xep'),'so_ky_hieu' => Request::get('so_ky_hieu'), 'so_den' => Request::get('so_den'), 'date' => Request::get('date')])->render() !!}
                             </div>
                         </div>
                     </div>

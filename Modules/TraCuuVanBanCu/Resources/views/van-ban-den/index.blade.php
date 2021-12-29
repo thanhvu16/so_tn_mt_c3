@@ -280,6 +280,8 @@
                                 <th width="10%" style="vertical-align: middle" class="text-center">Số ký hiệu</th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Ngày ban hành</th>
                                 <th width="15%"  style="vertical-align: middle"class="text-center">Cơ quan ban hành</th>
+                                <th width="15%"  style="vertical-align: middle"class="text-center">Đơn vị chủ trì</th>
+                                <th width="15%"  style="vertical-align: middle"class="text-center">Đơn vị phối hợp</th>
                                 <th width="" style="vertical-align: middle" class="text-center">Trích yếu</th>
 
                             </tr>
@@ -294,6 +296,18 @@
                                         {{ date('d/m/Y', strtotime($vbDen->NgayPhatHanh)) }}
                                     </td>
                                     <td>{{$vbDen->DonViGui}}</td>
+                                    <td>
+                                        @if($vbDen->donViChuTri)
+                                            {{$vbDen->donViChuTri->tenDonVi->ten_donvi ?? ''}}
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        @if($vbDen->donViPhoiHop)
+                                            {{$vbDen->donViPhoiHop->tenDonVi->ten_donvi ?? ''}}
+                                        @endif
+
+                                    </td>
                                     <td style="text-align: justify">
                                         <b>{{$vbDen->TrichYeu}}</b><br>
 

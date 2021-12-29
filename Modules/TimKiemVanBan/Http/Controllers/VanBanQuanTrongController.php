@@ -12,6 +12,7 @@ use Modules\Admin\Entities\DoMat;
 use Modules\Admin\Entities\DonVi;
 use Modules\Admin\Entities\LoaiVanBan;
 use Modules\Admin\Entities\SoVanBan;
+use Modules\DieuHanhVanBanDen\Entities\DonViChuTri;
 use Modules\DieuHanhVanBanDen\Entities\DonViPhoiHop;
 use Modules\VanBanDen\Entities\VanBanDen;
 use auth, DB;
@@ -25,6 +26,7 @@ class VanBanQuanTrongController extends Controller
 
     public function index(Request $request)
     {
+        $dact = DonViChuTri::whereNull('cap_do')->count();
         $donVi = auth::user()->donVi;
         $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');
@@ -247,6 +249,8 @@ class VanBanQuanTrongController extends Controller
 
     public function vbDonVi(Request $request)
     {
+
+        $capDoVanBan = $request->get('cap_do') ?? 3;
         $donVi = auth::user()->donVi;
         $user = auth::user();
         $trichyeu = $request->get('vb_trich_yeu');
@@ -292,9 +296,9 @@ class VanBanQuanTrongController extends Controller
 
         $ds_vanBanDen = VanBanDen::query()
             ->whereNull('deleted_at')
-            ->where(function ($query) use ($searchDonVi) {
-                return $query->whereHas('searchDonViChuTriQuanTrongDV', function ($q) use ($searchDonVi) {
-                    return $q->where('don_vi_id', $searchDonVi);
+            ->where(function ($query) use ($searchDonVi,$capDoVanBan) {
+                return $query->whereHas('searchDonViChuTriQuanTrongDV', function ($q) use ($searchDonVi,$capDoVanBan) {
+                    return $q->where(['don_vi_id'=> $searchDonVi,'cap_do'=>$capDoVanBan]);
                 });
             })
             ->where(function ($query) use ($searchDonViPhoiHop, $arrVanBanDenId2) {
@@ -462,7 +466,7 @@ class VanBanQuanTrongController extends Controller
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
 
 
-        return view('timkiemvanban::vb_quan_trong',
+        return view('timkiemvanban::vb_quan_trong_don_vi',
             compact('ds_vanBanDen', 'ds_soVanBan', 'ds_doKhanCap',
                 'ds_mucBaoMat', 'ds_loaiVanBan', 'danhSachDonVi'));
     }

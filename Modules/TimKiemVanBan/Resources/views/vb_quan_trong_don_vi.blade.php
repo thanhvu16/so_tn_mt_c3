@@ -25,38 +25,16 @@
                                         style="font-size: 14px">Tìm kiếm văn bản</span>
                                 </a>
                             </div>
-                                <div class="col-md-6 text-right">
-                                    @if(auth::user()->hasRole([VAN_THU_HUYEN, VAN_THU_DON_VI]))
-                                    <form action method="GET" action="{{ route('van-ban-den.index') }}" class="form-export">
-                                        <input type="hidden" name="type"  value="">
-                                        <input type="hidden" name="loai_van_ban_id"  value="{{Request::get('loai_van_ban_id') }}">
-                                        <input type="hidden" name="so_van_ban_id"  value="{{Request::get('so_van_ban_id') }}">
-                                        <input type="hidden" name="vb_so_den" value="{{Request::get('vb_so_den') }}">
-                                        <input type="hidden" name="vb_so_den" value="{{Request::get('vb_so_den_end') }}">
-                                        <input type="hidden" name="vb_so_ky_hieu"  value="{{Request::get('vb_so_ky_hieu') }}">
-                                        <input type="hidden" name="don_vi_phoi_hop_id" value="{{Request::get('don_vi_phoi_hop_id') }}">
-                                        <input type="hidden" name="start_date"  value="{{Request::get('start_date') }}">
-                                        <input type="hidden" name="end_date" value="{{Request::get('end_date') }}">
-                                        <input type="hidden" name="cap_ban_hanh_id"  value="{{Request::get('cap_ban_hanh_id') }}">
-                                        <input type="hidden" name="co_quan_ban_hanh_id" value="{{Request::get('co_quan_ban_hanh_id') }}">
-                                        <input type="hidden" name="nguoi_ky_id"  value="{{Request::get('nguoi_ky_id') }}">
-                                        <input type="hidden" name="vb_trich_yeu"  value="{{Request::get('vb_trich_yeu') }}">
-                                        <input type="hidden" name="year"  value="{{Request::get('year') }}">
-                                        <input type="hidden" name="don_vi_id" value="{{Request::get('don_vi_id') }}">
-                                        <input type="hidden" name="trinh_tu_nhan_van_ban" value="{{Request::get('trinh_tu_nhan_van_ban') }}">
-                                        <input type="hidden" name="page" value="{{Request::get('page') }}">
-
-{{--                                        <button type="button" data-type="excel"--}}
-{{--                                                class="btn btn-success waves-effect waves-light btn-sm btn-export-data"><i--}}
-{{--                                                class="fa fa-file-excel-o"></i> Xuất Excel--}}
-{{--                                        </button>--}}
-{{--                                        <button type="button" data-type="word"--}}
-{{--                                                class="btn btn-info waves-effect waves-light btn-sm btn-export-data"><i--}}
-{{--                                                class="fa fa-file-word-o"></i> Xuất Word--}}
-{{--                                        </button>--}}
-                                    </form>
-                                    @endif
-                                </div>
+                            <div class="col-md-6 text-right">
+                                <form action="{{route('vanBanqt')}}" id="cd">
+                                    <b>Cấp độ quan trọng:</b>
+                                    <select class="" name="cap_do" form="cd"   onchange="this.form.submit();">
+                                        <option value="3" @if(Request::get('cap_do') == '' || Request::get('cap_do') == 3) selected @endif >-- Cấp 3 --</option>
+                                        <option value="2" {{ Request::get('cap_do') == 2 ? 'selected' : '' }}>-- Cấp 2 --</option>
+                                        <option value="1" {{ Request::get('cap_do') == 1 ? 'selected' : '' }}>-- Cấp 1 --</option>
+                                    </select>
+                                </form>
+                            </div>
 
 {{--                            @can('in sổ văn bản đơn vị')--}}
 {{--                           --}}
