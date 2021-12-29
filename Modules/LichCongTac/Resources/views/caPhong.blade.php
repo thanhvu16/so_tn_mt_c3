@@ -103,7 +103,8 @@
                                                         <b style="font-size: 18px">
                                                             - {{ date('H:i', strtotime($lichCongTac->gio)) }} :</b> <a
                                                             href="{{ route('van_ban_den_chi_tiet.show', $lichCongTac->object_id ) }}">{{ $lichCongTac->noi_dung ??  null  }}</a> <br>
-                                                        <div class="text-center bg-table-gray">------------------</div>
+                                                        <div class="text-center bg-table-gray mt-2 mb-2">------------------
+                                                            <a href="{{route('giay_moi_don_vi.da_chi_dao','type=1&id='.$lichCongTac->object_id)}}"><i class="fa fa-edit"></i></a> <br>    </div>
                                                     @endif
                                                 @endforeach
                                             </td>

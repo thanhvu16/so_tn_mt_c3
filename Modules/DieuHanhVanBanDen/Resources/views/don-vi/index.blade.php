@@ -16,6 +16,8 @@
                                     @csrf
                                     <input type="hidden" name="van_ban_den_id" value="">
                                     <input type="hidden" name="van_ban_tra_lai" value="">
+                                    <input type="hidden" name="type"   value="{{Request::get('type')}}">
+                                    <input type="hidden" name="sap_xep"   value="{{Request::get('sap_xep')}}">
 
                                     <button type="button"
                                             class="btn btn-sm mt-1 btn-submit btn-primary waves-effect waves-light pull-right btn-duyet-all disabled pull-right btn-sm mb-2"
@@ -263,6 +265,27 @@
                                                 </p>
                                             @endif
                                                 @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
+                                                    @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0)
+                                                    <p>
+                                                        <select
+                                                            name="chuyen_vien_du_hop[{{ $vanBanDen->id }}][]"
+                                                            id="chuyen-vien-du_hop{{ $vanBanDen->id }}"
+                                                            class="form-control chuyen-vien-du-hop  select2"
+                                                            data-id="{{ $vanBanDen->id }}"
+                                                            data-placeholder="Chọn chuyên viên dự họp"
+                                                            form="form-tham-muu" multiple="multiple">
+                                                            @forelse($danhSachChuyenVien as $chuyenVien)
+                                                                @if (!empty($vanBanDen->chuyenVien) && $chuyenVien->id != $vanBanDen->chuyenVien->can_bo_nhan_id)
+                                                                    <option
+                                                                        value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->getChuyenVienPhoiHop) && in_array($chuyenVien->id, $vanBanDen->getChuyenVienPhoiHop) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
+                                                                @endif
+                                                            @empty
+                                                            @endforelse
+                                                        </select>
+                                                        {{--                                                <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-id="{{ $vanBanDen->id }}" class="check-all-cv">--}}
+                                                        {{--                                                <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả cv phối hợp</label>--}}
+                                                    </p>
+                                                    @endif
                                                     <p>Lãnh đạo dự họp:</p>
                                                     @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                         <input type="radio"
@@ -275,7 +298,7 @@
                                                             for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
                                                         ><i>Trưởng phòng dự họp</i></label><br>
                                                     @endif
-                                                    @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::PHO_PHONG_NHAN_VB || $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
+                                                    @if ( $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                                id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
@@ -512,8 +535,10 @@
                             }));
 
                             $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-phoi-hop').html(selectAttributes);
+                            $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-du-hop').html(selectAttributes);
                         } else {
                             $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-phoi-hop').html(html);
+                            $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-du-hop').html(html);
                         }
                         hideLoading();
                     })

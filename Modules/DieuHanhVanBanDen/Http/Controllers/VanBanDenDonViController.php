@@ -229,6 +229,7 @@ class VanBanDenDonViController extends Controller
                 $a = 'desc';
             }
         }
+        $id = $request->get('id') ?? null;
         $trichYeu = $request->get('trich_yeu') ?? null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $soDen = (int)$request->get('so_den') ?? null;
@@ -284,6 +285,11 @@ class VanBanDenDonViController extends Controller
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->where(function ($query) use ($id) {
+                    if (!empty($id)) {
+                        return $query->where('id', $id);
                     }
                 })
 //                ->whereIn('id', $arrVanBanDenId)
@@ -730,8 +736,11 @@ class VanBanDenDonViController extends Controller
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
         $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
+        $danhSachchuyenVienDUHopIds = $data['chuyen_vien_du_hop'] ?? null;
         $dataHanXuLy = $data['han_xu_ly'] ?? null;
         $dataCapDo = $data['cap_do'] ?? null;
+        $type = $request->type;
+        $sapXep = $request->sap_xep;
 
         // them moi
         $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
@@ -754,40 +763,66 @@ class VanBanDenDonViController extends Controller
                 DB::beginTransaction();
 
                 foreach ($vanBanDenIds as $vanBanDenId) {
-
+                    $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
                     //lưu bảng  nhận biết đã xem chưa xem
 
-                    if ((auth::user()->hasRole([TRUONG_PHONG]) || auth::user()->hasRole([PHO_PHONG])) && auth::user()->donVi->parent_id == 0) {
+                    if ($request->type == 'update') {
+//                        kiểm tra lịch họp
                         if (auth::user()->hasRole([TRUONG_PHONG]) && auth::user()->donVi->parent_id == 0) {
-                            if (!empty($danhSachPhoPhongIds[$vanBanDenId])) {
-                                $vanBanDaXem = new GhiNhanDaXem();
-                                $vanBanDaXem->van_ban_den_id = $vanBanDenId;
-                                $vanBanDaXem->can_bo_nhan_id = $danhSachPhoPhongIds[$vanBanDenId];
-                                $vanBanDaXem->save();
+                            if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
+                                if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
+                                    LichCongTac::kiemTraLich($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                }
+                                if (!empty($danhSachPhoPhongIds[$vanBanDenId])) {
+                                    LichCongTac::kiemTraLich($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                }
                             }
-                            if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
-                                $vanBanDaXem = new GhiNhanDaXem();
-                                $vanBanDaXem->van_ban_den_id = $vanBanDenId;
-                                $vanBanDaXem->can_bo_nhan_id = $danhSachChuyenVienIds[$vanBanDenId];
-                                $vanBanDaXem->save();
+
+                            if ($danhSachchuyenVienDUHopIds) {
+                                if (count($danhSachchuyenVienDUHopIds[$vanBanDenId]) > 0) {
+                                    foreach ($danhSachchuyenVienDUHopIds[$vanBanDenId] as $dataHop) {
+                                        LichCongTac::taoLichHopVanBanDenCV($vanBanDenId, $dataHop, 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                    }
+                                }
                             }
                         }
 
-                        if (auth::user()->hasRole([PHO_PHONG]) && auth::user()->donVi->parent_id == 0) {
 
-                            if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
-                                $chuyenVienXem = GhiNhanDaXem::where(['can_bo_nhan_id' => $danhSachChuyenVienIds[$vanBanDenId], 'van_ban_den_id' => $vanBanDenId])->first();
-                                if ($chuyenVienXem == null) {
+                    } else {
+                        if ((auth::user()->hasRole([TRUONG_PHONG]) || auth::user()->hasRole([PHO_PHONG])) && auth::user()->donVi->parent_id == 0) {
+                            if (auth::user()->hasRole([TRUONG_PHONG]) && auth::user()->donVi->parent_id == 0) {
+                                if (!empty($danhSachPhoPhongIds[$vanBanDenId])) {
+                                    $vanBanDaXem = new GhiNhanDaXem();
+                                    $vanBanDaXem->van_ban_den_id = $vanBanDenId;
+                                    $vanBanDaXem->can_bo_nhan_id = $danhSachPhoPhongIds[$vanBanDenId];
+                                    $vanBanDaXem->save();
+                                }
+                                if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
                                     $vanBanDaXem = new GhiNhanDaXem();
                                     $vanBanDaXem->van_ban_den_id = $vanBanDenId;
                                     $vanBanDaXem->can_bo_nhan_id = $danhSachChuyenVienIds[$vanBanDenId];
                                     $vanBanDaXem->save();
                                 }
-
                             }
-                        }
 
+                            if (auth::user()->hasRole([PHO_PHONG]) && auth::user()->donVi->parent_id == 0) {
+
+                                if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
+                                    $chuyenVienXem = GhiNhanDaXem::where(['can_bo_nhan_id' => $danhSachChuyenVienIds[$vanBanDenId], 'van_ban_den_id' => $vanBanDenId])->first();
+                                    if ($chuyenVienXem == null) {
+                                        $vanBanDaXem = new GhiNhanDaXem();
+                                        $vanBanDaXem->van_ban_den_id = $vanBanDenId;
+                                        $vanBanDaXem->can_bo_nhan_id = $danhSachChuyenVienIds[$vanBanDenId];
+                                        $vanBanDaXem->save();
+                                    }
+
+                                }
+                            }
+
+                        }
                     }
+
+
                     $donViChuTri = DonViChuTri::where('van_ban_den_id', $vanBanDenId)
                         ->where('can_bo_nhan_id', $currentUser->id)
                         ->whereNull('hoan_thanh')->first();
@@ -822,7 +857,7 @@ class VanBanDenDonViController extends Controller
                             ->delete();
                     }
 
-                    $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+
                     if ($vanBanDen) {
                         if (isset($vanBanTraLoi[$vanBanDenId]) && !empty($vanBanTraLoi[$vanBanDenId])) {
                             $vanBanDen->van_ban_can_tra_loi = VanBanDen::VB_TRA_LOI;
@@ -893,6 +928,33 @@ class VanBanDenDonViController extends Controller
 
                                 } else {
                                     LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                    if ($danhSachchuyenVienDUHopIds) {
+                                        if (count($danhSachchuyenVienDUHopIds[$vanBanDenId]) > 0) {
+                                            foreach ($danhSachchuyenVienDUHopIds[$vanBanDenId] as $dataHop) {
+                                                LichCongTac::taoLichHopVanBanDenCV($vanBanDenId, $dataHop, 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                            }
+                                        }
+                                    }
+
+                                    if ($request->type == 'update') {
+
+                                    } else {
+                                        if ($danhSachChuyenVienIds) {
+                                            if ($danhSachChuyenVienIds[$vanBanDenId]) {
+                                                LichCongTac::taoLichHopVB($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+
+                                            }
+                                        }
+
+                                        if ($danhSachPhoPhongIds) {
+                                            if ($danhSachPhoPhongIds[$vanBanDenId]) {
+                                                LichCongTac::taoLichHopVB($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+
+                                            }
+                                        }
+                                    }
+
+
                                 }
                             }
                         }
@@ -1113,8 +1175,24 @@ class VanBanDenDonViController extends Controller
                 }
 
                 DB::commit();
+                $user = auth::user();
+                if (($user->hasRole(TRUONG_PHONG) || $user->hasRole(PHO_PHONG) || $user->hasRole(CHUYEN_VIEN)) && $user->donVi->parent_id == 0) {
+                    if ($sapXep == 2) {
+                        if ($type == 1) {
+                            return redirect()->route('giay_moi_den_don_vi_index', 'type=1&sap_xep=2')->with('success', 'Đã gửi thành công.');
+                        } else {
+                            return redirect()->route('van-ban-den-don-vi.index', 'sap_xep=2')->with('success', 'Đã gửi thành công.');
+                        }
 
-                return redirect()->back()->with('success', 'Đã gửi thành công.');
+                    } else {
+                        return redirect()->back()->with('success', 'Đã gửi thành công.');
+
+                    }
+                } else {
+                    return redirect()->back()->with('success', 'Đã gửi thành công.');
+
+                }
+
 
             } catch (\Exception $e) {
                 DB::rollback();
@@ -1149,6 +1227,7 @@ class VanBanDenDonViController extends Controller
 
 
     }
+
     /**
      * Show the specified resource.
      * @param int $id

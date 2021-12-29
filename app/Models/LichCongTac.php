@@ -212,6 +212,45 @@ class LichCongTac extends Model
         }
     }
 
+    public static function taoLichHopVanBanDenCV($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $lanhDaoId = $lanhDaoDuHopId;
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId);
+
+        if (!empty($lanhDaoDuHop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        $dataLichCongTac = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //check lich cong tac
+        $lichCongTac = new LichCongTac();
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+        $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+        $lichCongTac->save();
+
+    }
+
     public static function taoLichHopPhoChuTich($vanBanDenId, $phoGiamDocDuHop)
     {
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
@@ -241,6 +280,88 @@ class LichCongTac extends Model
             $lichCongTac->fill($dataLichCongTac);
             $lichCongTac->save();
         }
+
+
+    }
+    public static function taoLichHopVB($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $lanhDaoId = $lanhDaoDuHopId;
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId);
+
+        if (!empty($lanhDaoDuHop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        $dataLichCongTac = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //check lich cong tac
+        $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->first();
+        if (empty($lichCongTac)) {
+            $lichCongTac = new LichCongTac();
+            $lichCongTac->fill($dataLichCongTac);
+            $lichCongTac->save();
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->save();
+        }
+
+
+    }
+    public static function kiemTraLich($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $lanhDaoId = $lanhDaoDuHopId;
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId);
+
+        if (!empty($lanhDaoDuHop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        $dataLichCongTac = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //check lich cong tac
+        $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->delete();
+            $lichCongTac = new LichCongTac();
+            $lichCongTac->fill($dataLichCongTac);
+            $lichCongTac->save();
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->save();
 
 
     }
