@@ -140,7 +140,7 @@ class User extends Authenticatable
         $year = !empty($nam) ? $nam : date('Y');
         $week = $tuan ? $tuan : date('W');
 
-//        $lanhDaoId = $request->get('lanh_dao_id') ?? $currentUser->id;
+        $lanhDaoId =  $currentUser->id;
 
         $donViId = null;
         $donViDuHop = null;

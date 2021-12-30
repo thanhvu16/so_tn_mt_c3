@@ -287,7 +287,7 @@
 {{--                                                           form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 2 ? 'checked' : null  }}>--}}
 {{--                                                    <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự họp</i></label>--}}
 {{--                                                    @endif--}}
-                                                    @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) )
+                                                    @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0 )
                                                         <p>Lãnh đạo dự họp:</p>
 
                                                         <input type="radio"
@@ -300,19 +300,19 @@
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
                                                                id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
-                                                               class="radio-col-cyan pho-phong-du-hop"
+                                                               class="radio-col-cyan "
                                                                value="2"
                                                                form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 2 ? 'checked' : null  }}>
                                                         <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự họp</i></label><br>
+
                                                         <input type="radio"
                                                                name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
-                                                               id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
-                                                               class="radio-col-cyan pho-phong-du-hop"
+                                                               id="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"
+                                                               class="radio-col-cyan "
                                                                value="3"
                                                                form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 3 ? 'checked' : null  }}>
-                                                        <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Chuyên viên dự họp</i></label>
+                                                        <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"><i>Chuyên viên dự họp</i></label>
                                                     @endif
-{{--                                                    @endif--}}
                                                 @endif
                                         </div>
                                     </td>

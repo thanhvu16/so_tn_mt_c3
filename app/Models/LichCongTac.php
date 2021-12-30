@@ -245,8 +245,8 @@ class LichCongTac extends Model
         );
         //check lich cong tac
         $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->first();
-        $lichCongTac2 = LichCongTac::where('object_id', $vanBanDenId)->where('du_hop',1)->delete();
-        if($lichCongTac != null)
+//        $lichCongTac3 = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->where('chu_tri',1)->first();
+        if($lichCongTac == null  )
         {
             $lichCongTac = new LichCongTac();
             $lichCongTac->fill($dataLichCongTac);
@@ -333,7 +333,7 @@ class LichCongTac extends Model
 
 
     }
-    public static function kiemTraLich($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null)
+    public static function kiemTraLichPP($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null,$trangThai)
     {
         $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
         $currentUser = auth::user();
@@ -364,12 +364,77 @@ class LichCongTac extends Model
             'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
         );
         //check lich cong tac
+
+
+
         $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->delete();
-            $lichCongTac = new LichCongTac();
-            $lichCongTac->fill($dataLichCongTac);
-            $lichCongTac->save();
-            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
-            $lichCongTac->save();
+        $lichCongTac = new LichCongTac();
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+        if($trangThai == 2)
+        {
+            $LichCongTac1 = LichCongTac::where('object_id', $vanBanDenId)->where('chu_tri',1)->first();
+            if($LichCongTac1)
+            {
+                $LichCongTac1->chu_tri = null;
+                $LichCongTac1->save();
+            }
+            $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+        }
+        $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+        $lichCongTac->save();
+
+
+    }
+    public static function kiemTraLichCV($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $chuyenTuDonVi = null,$trangThai)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $lanhDaoId = $lanhDaoDuHopId;
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+        $lanhDaoDuHop = LichCongTac::checkLanhDaoDuHop($lanhDaoDuHopId);
+
+        if (!empty($lanhDaoDuHop)) {
+
+            $noiDungMoiHop = 'Kính mời ' . $lanhDaoDuHop->chucVu->ten_chuc_vu . ' ' . $lanhDaoDuHop->ho_ten . ' dự họp';
+        }
+
+        $dataLichCongTac = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //check lich cong tac
+
+        $lichCongTac2 = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->delete();
+
+        $lichCongTac = new LichCongTac();
+        $lichCongTac->fill($dataLichCongTac);
+        $lichCongTac->save();
+        if($trangThai == 3)
+        {
+            $LichCongTac1 = LichCongTac::where('object_id', $vanBanDenId)->where('chu_tri',1)->first();
+            if($LichCongTac1)
+            {
+                $LichCongTac1->chu_tri = null;
+                $LichCongTac1->save();
+            }
+            $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+        }
+        $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+        $lichCongTac->save();
 
 
     }

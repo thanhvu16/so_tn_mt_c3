@@ -741,6 +741,7 @@ class VanBanDenDonViController extends Controller
         $dataCapDo = $data['cap_do'] ?? null;
         $type = $request->type;
         $sapXep = $request->sap_xep;
+        $lanhDaoPhong = User::role([TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->first();
 
         // them moi
         $danhSachDonViChuTriIds = $data['don_vi_chu_tri_id'] ?? null;
@@ -770,21 +771,36 @@ class VanBanDenDonViController extends Controller
 //                        kiểm tra lịch họp
                         if (auth::user()->hasRole([TRUONG_PHONG]) && auth::user()->donVi->parent_id == 0) {
                             if (!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id) {
+                                if ($lanhDaoDuHopId[$vanBanDenId] == 1) {
+                                    $LichCongTac1 = LichCongTac::where('object_id', $vanBanDenId)->where('chu_tri',1)->first();
+                                    $LichCongTac2 = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoPhong->id)->first();
+                                    if($LichCongTac1)
+                                    {
+                                        $LichCongTac1->chu_tri = null;
+                                        $LichCongTac1->save();
+                                    }
+                                    if($LichCongTac2)
+                                    {
+                                        $LichCongTac2->chu_tri = 1;
+                                        $LichCongTac2->save();
+                                    }
+                                }
                                 if (!empty($danhSachChuyenVienIds[$vanBanDenId])) {
-                                    LichCongTac::kiemTraLich($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                    LichCongTac::kiemTraLichCV($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1,$lanhDaoDuHopId[$vanBanDenId]);
                                 }
                                 if (!empty($danhSachPhoPhongIds[$vanBanDenId])) {
-                                    LichCongTac::kiemTraLich($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+                                    LichCongTac::kiemTraLichPP($vanBanDenId, $danhSachPhoPhongIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1,$lanhDaoDuHopId[$vanBanDenId]);
                                 }
                             }
-
                             if ($danhSachchuyenVienDUHopIds) {
                                 if (count($danhSachchuyenVienDUHopIds[$vanBanDenId]) > 0) {
+                                    $lichCongTac2 = LichCongTac::where('object_id', $vanBanDenId)->where('du_hop',1)->delete();
                                     foreach ($danhSachchuyenVienDUHopIds[$vanBanDenId] as $dataHop) {
                                         LichCongTac::taoLichHopVanBanDenCV($vanBanDenId, $dataHop, 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
                                     }
                                 }
                             }
+
                         }
 
 
@@ -927,7 +943,6 @@ class VanBanDenDonViController extends Controller
                                     LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], $donViDuHop ? $donViDuHop[$vanBanDenId] : null, $danhSachDonViChuTriIds ? $danhSachDonViChuTriIds[$vanBanDenId] : null, $chuyenTuDonVi = 1);
 
                                 } else {
-                                    LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
                                     if ($danhSachchuyenVienDUHopIds) {
                                         if (count($danhSachchuyenVienDUHopIds[$vanBanDenId]) > 0) {
                                             foreach ($danhSachchuyenVienDUHopIds[$vanBanDenId] as $dataHop) {
@@ -939,6 +954,8 @@ class VanBanDenDonViController extends Controller
                                     if ($request->type == 'update') {
 
                                     } else {
+                                        LichCongTac::taoLichHopVanBanDen($vanBanDenId, $lanhDaoDuHopId[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
+
                                         if ($danhSachChuyenVienIds) {
                                             if ($danhSachChuyenVienIds[$vanBanDenId]) {
                                                 LichCongTac::taoLichHopVB($vanBanDenId, $danhSachChuyenVienIds[$vanBanDenId], 1, $currentUser->don_vi_id, $chuyenTuDonVi = 1);
