@@ -187,6 +187,7 @@ class LichCongTac extends Model
         }
         $lichCongTac->fill($dataLichCongTac);
         $lichCongTac->save();
+        $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
 
         //lanh dao duyet
         if (auth::user()->id == $lanhDaoId) {
@@ -243,11 +244,18 @@ class LichCongTac extends Model
             'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
         );
         //check lich cong tac
-        $lichCongTac = new LichCongTac();
-        $lichCongTac->fill($dataLichCongTac);
-        $lichCongTac->save();
-        $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
-        $lichCongTac->save();
+        $lichCongTac = LichCongTac::where('object_id', $vanBanDenId)->where('lanh_dao_id',$lanhDaoId)->first();
+        $lichCongTac2 = LichCongTac::where('object_id', $vanBanDenId)->where('du_hop',1)->delete();
+        if($lichCongTac != null)
+        {
+            $lichCongTac = new LichCongTac();
+            $lichCongTac->fill($dataLichCongTac);
+            $lichCongTac->save();
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->du_hop = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->save();
+        }
+
 
     }
 

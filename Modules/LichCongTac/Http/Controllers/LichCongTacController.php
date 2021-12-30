@@ -13,6 +13,7 @@ use Modules\Admin\Entities\DonVi;
 use Modules\DieuHanhVanBanDen\Entities\XuLyVanBanDen;
 use Auth;
 use Modules\LichCongTac\Entities\ThanhPhanDuHop;
+use Modules\VanBanDen\Entities\VanBanDen;
 
 class LichCongTacController extends Controller
 {
@@ -297,6 +298,15 @@ class LichCongTacController extends Controller
             ->get();
         return view('lichcongtac::caPhong', compact( 'year',
             'tuanTruoc', 'tuanSau', 'totalWeekOfYear', 'week', 'ngayTuan', 'danhSachLanhDao'));
+    }
+
+    public function updatevb($id)
+    {
+        $vanbanden = VanBanDen::where('id',$id)->first();
+        $vanbanden->trinh_tu_nhan_van_ban = 6;
+        $vanbanden->save();
+        return redirect()->back();
+
     }
 
     /**

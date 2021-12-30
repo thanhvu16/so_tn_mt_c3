@@ -348,6 +348,43 @@ class VanBanDen extends Model
         return $this->hasMany(DonViPhoiHop::class, 'van_ban_den_id', 'id')
             ->whereNull('parent_don_vi_id');
     }
+    public function layNguoiDuHop($id)
+    {
+        $danhSachChuyenVien = LichCongTac::where('object_id', $id)->where('du_hop',1)
+            ->get();
+
+        $arrId = null;
+
+        if (!empty($danhSachChuyenVien)) {
+            $arrId = $danhSachChuyenVien->pluck('lanh_dao_id')->toArray();
+        }
+        return $arrId;
+    }
+
+    public function checkLichCongTacDonViPhong($id)
+    {
+        $lichCongTac = LichCongTac::where('object_id', $id)->where('chu_tri', 1)->first();
+        if($lichCongTac)
+        {
+            $user = User::where('id',$lichCongTac->lanh_dao_id)->first();
+            if ($user->hasRole(TRUONG_PHONG))
+            {
+                return 1;
+            }
+            if ($user->hasRole(PHO_PHONG))
+            {
+                return 2;
+            }
+            if ($user->hasRole(CHUYEN_VIEN))
+            {
+                return 3;
+            }
+
+        }else{
+            return 0;
+        }
+
+    }
 
     public function DonViCapXaPhoiHop()
     {

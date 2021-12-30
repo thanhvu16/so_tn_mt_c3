@@ -24,6 +24,7 @@ Route::post('soan-bao-cao/store', 'SoanBaoCaoController@store')->name('soan-bao-
 
 
 Route::resource('quan-ly-cuoc-hop', 'QuanLyCuocHopController');
+Route::get('van-ban/{id}', 'LichCongTacController@updatevb')->name('updatevb');
 Route::get('chi-tiet-cuoc-hop/{id}', 'QuanLyCuocHopController@chiTietCuocHop')->name('chitiethop');
 Route::get('lich-hop-phong', 'LichCongTacController@caPhong')->name('caPhong');
 Route::post('xoa-nguoi-tham-du/{id}', 'QuanLyCuocHopController@deleteNguoiDuHop')->name('xoanguoithamdu');
@@ -44,6 +45,8 @@ Route::post('luu_noidungchat/{id}', 'QuanLyCuocHopController@luu_noidungchat')->
 Route::post('nhanxetTaiLieu/{id}', 'QuanLyCuocHopController@nhanxetTaiLieu')->name('nhanxetTaiLieu');
 Route::post('danh-gia-y-kien/{id}', 'QuanLyCuocHopController@danhgiaykien')->name('danhgiaykien');
 Route::post('tham-du-ngoai/{id}', 'QuanLyCuocHopController@thamDuNgoai')->name('thamDuNgoai');
+
+
 
 
 

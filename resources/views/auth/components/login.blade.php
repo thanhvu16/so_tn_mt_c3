@@ -134,7 +134,7 @@
                 </div>
                 <!-- /.col -->
                     <div class="col-xs-7 text-right">
-                        <a id="loginSSO" style="cursor: pointer;font-weight: bold;color: red"><i class="fa fa-refresh fa-spin"></i> Đăng nhập bằng sso</a><br>
+                        <a id="loginSSO" style="cursor: pointer;font-weight: bold;color: red"> Đăng nhập bằng sso</a><br>
 
                     </div>
 

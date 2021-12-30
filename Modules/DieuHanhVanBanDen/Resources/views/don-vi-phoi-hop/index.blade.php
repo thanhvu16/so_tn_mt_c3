@@ -207,6 +207,7 @@
                                                 rows="3">{{ !empty($vanBanDen->chuyenVien) ? $vanBanDen->chuyenVien->noi_dung : null }}</textarea>
                                         </p>
                                     </td>
+
                                     @role ('phó trưởng phòng|phó tp đơn vị cấp 2|phó chánh văn phòng')
                                     @if (empty(Request::get('chuyen_tiep')))
                                         <td class="text-center">
