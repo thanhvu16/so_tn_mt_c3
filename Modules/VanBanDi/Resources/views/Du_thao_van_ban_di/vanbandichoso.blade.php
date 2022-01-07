@@ -115,7 +115,7 @@
                                             class="text-center" style="vertical-align: middle"> {{$key+1}}</td>
                                         <td style="vertical-align: middle">
                                             <a href="{{ route('Quytrinhxulyvanbandi',$data->id) }}">{{$data->trich_yeu ?? ''}}</a><br>
-                                            <p>- Số ký hiệu: {{$data->so_ky_hieu ?? ''}}</p>
+                                            <p>- Số ký hiệu: <span style="text-transform: uppercase ">{{$data->so_ky_hieu ?? ''}}</span></p>
                                             <p>- Loại văn
                                                 bản: {{$data->loaivanban->ten_loai_van_ban ?? null }}</p>
 

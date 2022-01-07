@@ -596,4 +596,123 @@ class LichCongTac extends Model
         }
     }
 
+    public static function taoLichTruongPhong($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $phoPhong, $chuyeVien, $trangThai, $donViPhoiHop)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+
+
+
+        $dataLichCongTac1 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoDuHopId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        $dataLichCongTac2 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $phoPhong,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        $dataLichCongTac3 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $chuyeVien,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //lịch lãnh đạo
+        if ($trangThai == 1) {
+            $lichCongTac = new LichCongTac();
+            $lichCongTac->fill($dataLichCongTac1);
+            $lichCongTac->save();
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            if ($trangThai == 1) {
+                $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+            }
+            $lichCongTac->save();
+        }
+        if ($trangThai == 2) {
+            if (!empty($phoPhong)) {
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac2);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                if ($trangThai == 2) {
+                    $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+                }
+                $lichCongTac->save();
+            }
+        }
+        // lịch của phó phòng
+
+        // lịch của chuyên viên
+        if($trangThai == 3)
+        {
+            if (!empty($chuyeVien)) {
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac3);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                if ($trangThai == 3) {
+                    $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+                }
+                $lichCongTac->save();
+            }
+        }
+        if ($donViPhoiHop != null) {
+            foreach ($donViPhoiHop as $dataHop) {
+                $dataLichCongTac = array(
+                    'object_id' => $vanBanDen->id,
+                    'lanh_dao_id' => $dataHop,
+                    'ngay' => $vanBanDen->ngay_hop,
+                    'gio' => $vanBanDen->gio_hop,
+                    'tuan' => $tuan,
+                    'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+                    'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+                    'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+                    'user_id' => $currentUser->id,
+                    'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+                    'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+                );
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->du_hop = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->save();
+            }
+        }
+
+
+    }
+
 }

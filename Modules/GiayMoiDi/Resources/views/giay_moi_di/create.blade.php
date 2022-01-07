@@ -33,7 +33,7 @@
 
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Ký hiệu <span style="color: red">*</span></label>
-                                <input type="text" value=""
+                                <input type="text" value="" style="text-transform: uppercase "
                                        id="vb_sokyhieu" name="vb_sokyhieu"  class="form-control"
                                        placeholder="Nhập ký hiệu văn bản đi..." required>
                             </div>

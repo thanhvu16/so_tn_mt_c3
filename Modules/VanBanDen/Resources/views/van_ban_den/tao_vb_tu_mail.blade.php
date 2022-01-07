@@ -436,12 +436,18 @@
                     _token: $('meta[name="csrf-token"]').attr('content'),
                 },
             }).done(function (res) {
-                if (res.is_relate) {
+                if (res.is_relate || res.is_relate2) {
                     hideLoading();
                     // document.getElementById("them-moi").submit();
                     // document.getElementById("them-moi").submit();
-                    $('#moda-search').html(res.html);
-                    $('#moda-search').modal('show');
+                    if(res.is_relate)
+                    {
+                        $('#moda-search').html(res.html);
+                        $('#moda-search').modal('show');
+                    }else{
+                        $('#moda-search').html(res.html2);
+                        $('#moda-search').modal('show');
+                    }
                 } else {
                     var co_quan_ban_hanh = document.getElementById("co-quan-ban-hanh");
                     var so_ky_hieu = document.getElementById("so-ky-hieu-vb");

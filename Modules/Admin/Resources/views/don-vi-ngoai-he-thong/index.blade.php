@@ -10,6 +10,7 @@
                         <i class="fa fa-tasks"></i> Danh sách đơn vị ngoài hệ thống
                     </a>
                 </li>
+                @role(QUAN_TRI_HT)
                 <li>
                     <button type="button" class="btn btn-success update-all waves-effect waves-light" data-status="1">
                         <span>Cập nhật cho phép gửi qua email</span>
@@ -20,11 +21,14 @@
                         <span>Huỷ cho phép gửi qua email</span>
                     </button>
                 </li>
+                @endrole
             </ul>
+            @role(QUAN_TRI_HT)
             <form action="{{ route('email-don-vi-ngoai-he-thong.update_all') }}" method="post" class="form-update-status">
                 @csrf
                 <input type="hidden" name="accepted" value="">
             </form>
+            @endrole
             <div class="tab-content">
                 <div
                     class="tab-pane {{ Request::get('tab') == 'tab_1' || empty(Request::get('tab')) ? 'active' : null }}"
@@ -32,6 +36,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <!-- /.box-header -->
+                            @role(QUAN_TRI_HT)
                             <div class="col-md-3">
                                 <button type="button" class="btn btn-sm btn-primary waves-effect waves-light mb-1"
                                         data-toggle="collapse"
@@ -41,7 +46,6 @@
                                     THÊM MỚI
                                 </button>
                             </div>
-
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="collapse " id="collapseExample">
@@ -51,8 +55,10 @@
                                     </div>
                                 </div>
                             </div>
+                            @endrole
 
                             <div class="col-md-12 mb-4">
+
                                 <form method="GET" action="{{ route('email-don-vi-ngoai-he-thong.index') }}">
                                     <div class="row">
                                         <div class="col-md-3">

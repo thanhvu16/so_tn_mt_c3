@@ -3,6 +3,7 @@
 namespace Modules\DieuHanhVanBanDen\Entities;
 
 use App\Common\AllPermission;
+use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Entities\ChucVu;
@@ -38,11 +39,11 @@ class DonViPhoiHop extends Model
     const GIAI_QUYET = 2;
 
     const ACTIVE_VB = [
-      CHU_TICH => 1,
-      PHO_CHU_TICH => 2,
-      TRUONG_PHONG => 3,
-      PHO_PHONG => 4,
-      CHUYEN_VIEN => 5
+        CHU_TICH => 1,
+        PHO_CHU_TICH => 2,
+        TRUONG_PHONG => 3,
+        PHO_PHONG => 4,
+        CHUYEN_VIEN => 5
     ];
 
     const ACTIVE = 1;
@@ -76,10 +77,10 @@ class DonViPhoiHop extends Model
 
 
                 }
-                $vanBanDenTY = VanBanDen::where('id',$vanBanDenId)->first();
-                $noidungtn = $vanBanDenTY->so_den.','.$vanBanDenTY->trich_yeu.'. Thoi gian:'.$vanBanDenTY->gio_hop.', ngày:'.formatDMY($vanBanDenTY->ngay_hop).', Tại:'.$vanBanDenTY->dia_diem;
+                $vanBanDenTY = VanBanDen::where('id', $vanBanDenId)->first();
+                $noidungtn = $vanBanDenTY->so_den . ',' . $vanBanDenTY->trich_yeu . '. Thoi gian:' . $vanBanDenTY->gio_hop . ', ngày:' . formatDMY($vanBanDenTY->ngay_hop) . ', Tại:' . $vanBanDenTY->dia_diem;
                 $conVertTY = vn_to_str($noidungtn);
-                if ($nguoiDung ->so_dien_thoai != null) {
+                if ($nguoiDung->so_dien_thoai != null) {
                     $arayOffice = array();
                     $arayOffice['RQST']['name'] = 'send_sms_list';
                     $arayOffice['RQST']['REQID'] = "1234352";
@@ -92,7 +93,7 @@ class DonViPhoiHop extends Model
                         'CONTENT' => $conVertTY
                     );
                     $arayOffice['RQST']['SCHEDULETIME'] = '';
-                    $arayOffice['RQST']['MOBILELIST'] = $nguoiDung ->so_dien_thoai;
+                    $arayOffice['RQST']['MOBILELIST'] = $nguoiDung->so_dien_thoai;
                     $arayOffice['RQST']['ISTELCOSUB'] = '0';
                     $arayOffice['RQST']['AGENTID'] = '244';
                     $arayOffice['RQST']['APIUSER'] = 'SOTNMT_HN';
@@ -121,12 +122,12 @@ class DonViPhoiHop extends Model
     {
 
         if (!empty($arrDonViId) && count($arrDonViId) > 0) {
-                DonViPhoiHop::where([
-                    'van_ban_den_id' => $vanBanDenId,
-                    'chuyen_tiep'  => null,
-                    'parent_don_vi_id' => null,
-                    'hoan_thanh'  => null
-                ])->delete();
+            DonViPhoiHop::where([
+                'van_ban_den_id' => $vanBanDenId,
+                'chuyen_tiep' => null,
+                'parent_don_vi_id' => null,
+                'hoan_thanh' => null
+            ])->delete();
             $active = null;
             foreach ($arrDonViId as $donViId) {
 
@@ -158,7 +159,7 @@ class DonViPhoiHop extends Model
                             ->orderBy('thu_tu_tp', 'desc')
                             ->whereNull('deleted_at')->first();
 
-                    }else{
+                    } else {
                         $nguoiDung = User::where('trang_thai', ACTIVE)
                             ->where('don_vi_id', $donViId)
                             ->whereHas('roles', function ($query) use ($roles) {
@@ -171,8 +172,8 @@ class DonViPhoiHop extends Model
                     $active = self::ACTIVE;
                 }
 
-                $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;
-                $donViPhoiHop  = new DonViPhoiHop();
+                $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: ' . $donVi->ten_don_vi : Null;
+                $donViPhoiHop = new DonViPhoiHop();
                 $donViPhoiHop->van_ban_den_id = $vanBanDenId;
                 $donViPhoiHop->can_bo_chuyen_id = auth::user()->id;
                 $donViPhoiHop->can_bo_nhan_id = $nguoiDung->id ?? null;
@@ -233,12 +234,12 @@ class DonViPhoiHop extends Model
 
         $dataLuuDonViPhoiHop = [
             'van_ban_den_id' => $vanBanDenId,
-            'can_bo_chuyen_id'=> auth::user()->id,
-            'can_bo_nhan_id'=> $nguoiDung->id ?? null,
-            'don_vi_id'=> $donViId,
-            'noi_dung'=> 'Chuyển đơn vị phối hợp: '. $tenDonVi,
-            'don_vi_co_dieu_hanh'=> $dieuHanh,
-            'vao_so_van_ban' =>  1,
+            'can_bo_chuyen_id' => auth::user()->id,
+            'can_bo_nhan_id' => $nguoiDung->id ?? null,
+            'don_vi_id' => $donViId,
+            'noi_dung' => 'Chuyển đơn vị phối hợp: ' . $tenDonVi,
+            'don_vi_co_dieu_hanh' => $dieuHanh,
+            'vao_so_van_ban' => 1,
             'type' => 1,
             'user_id' => auth::user()->id,
             'da_tham_muu' => $daThamMuu,
@@ -278,12 +279,13 @@ class DonViPhoiHop extends Model
     public function giayMoiDen()
     {
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id',$loaiVanBanGiayMoi->id);
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
     }
+
     public function vanBanDenDen()
     {
         $loaiVanBanGiayMoi = LoaiVanBan::where('ten_loai_van_ban', "LIKE", 'giấy mời')->select('id')->first();
-        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id','!=',$loaiVanBanGiayMoi->id);
+        return $this->belongsTo(VanBanDen::class, 'van_ban_den_id', 'id')->where('loai_van_ban_id', '!=', $loaiVanBanGiayMoi->id);
     }
 
     public static function luuDonViPhoiHopCapXa($arrDonViId, $vanBanDenId, $phoChuTichId)
@@ -291,8 +293,8 @@ class DonViPhoiHop extends Model
         if (!empty($arrDonViId) && count($arrDonViId) > 0) {
             DonViPhoiHop::where([
                 'van_ban_den_id' => $vanBanDenId,
-                'chuyen_tiep'  => null,
-                'hoan_thanh'  => null,
+                'chuyen_tiep' => null,
+                'hoan_thanh' => null,
                 'parent_don_vi_id' => auth::user()->don_vi_id
             ])->delete();
 
@@ -311,8 +313,8 @@ class DonViPhoiHop extends Model
                     ->whereNull('deleted_at')->first();
 
 
-                $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: '.$donVi->ten_don_vi : Null;
-                $donViPhoiHop  = new DonViPhoiHop();
+                $noiDung = !empty($donVi) ? 'Chuyển đơn vị phối hợp: ' . $donVi->ten_don_vi : Null;
+                $donViPhoiHop = new DonViPhoiHop();
                 $donViPhoiHop->van_ban_den_id = $vanBanDenId;
                 $donViPhoiHop->can_bo_chuyen_id = auth::user()->id;
                 $donViPhoiHop->can_bo_nhan_id = $nguoiDung->id ?? null;
@@ -332,7 +334,130 @@ class DonViPhoiHop extends Model
         }
     }
 
-    public static function luuVanBanPhoiHopCapXa($donViId, $txtDonViChuTri,  $vanBanDenId, $donViChuTri)
+    public static function luuLichHop($vanBanDenId, $lanhDaoDuHopId, $donViDuHop, $donViChuTriId, $phoPhong, $chuyeVien, $trangThai, $donViPhoiHop)
+    {
+        $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+        $currentUser = auth::user();
+        $donVi = DonVi::where('id', $donViChuTriId)->whereNull('deleted_at')->first();
+        $parentDonVi = DonVi::where('id', $donVi->parent_id ?? null)->whereNull('deleted_at')->first();
+        $tuan = date('W', strtotime($vanBanDen->ngay_hop_chinh));
+
+
+
+
+        $dataLichCongTac1 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $lanhDaoDuHopId,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        $dataLichCongTac2 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $phoPhong,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        $dataLichCongTac3 = array(
+            'object_id' => $vanBanDen->id,
+            'lanh_dao_id' => $chuyeVien,
+            'ngay' => $vanBanDen->ngay_hop,
+            'gio' => $vanBanDen->gio_hop,
+            'tuan' => $tuan,
+            'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+            'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+            'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+            'user_id' => $currentUser->id,
+            'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+            'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+        );
+        //lịch lãnh đạo
+        if ($trangThai == 1) {
+            $lichCongTac = new LichCongTac();
+            $lichCongTac->fill($dataLichCongTac1);
+            $lichCongTac->save();
+            $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+            if ($trangThai == 1) {
+                $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+            }
+            $lichCongTac->ct_ph = LichCongTac::TRANG_THAI_HOAT_DONG;
+            $lichCongTac->save();
+        }
+        if ($trangThai == 2) {
+            if (!empty($phoPhong)) {
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac2);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                if ($trangThai == 2) {
+                    $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+                }
+                $lichCongTac->ct_ph = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->save();
+            }
+        }
+        // lịch của phó phòng
+
+        // lịch của chuyên viên
+        if($trangThai == 3)
+        {
+            if (!empty($chuyeVien)) {
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac3);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                if ($trangThai == 3) {
+                    $lichCongTac->chu_tri = LichCongTac::TRANG_THAI_HOAT_DONG;
+
+                }
+                $lichCongTac->ct_ph = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->save();
+            }
+        }
+        if ($donViPhoiHop != null) {
+            foreach ($donViPhoiHop as $dataHop) {
+                $dataLichCongTac = array(
+                    'object_id' => $vanBanDen->id,
+                    'lanh_dao_id' => $dataHop,
+                    'ngay' => $vanBanDen->ngay_hop,
+                    'gio' => $vanBanDen->gio_hop,
+                    'tuan' => $tuan,
+                    'buoi' => ($vanBanDen->gio_hop <= '12:00') ? 1 : 2,
+                    'noi_dung' => !empty($vanBanDen->noi_dung_hop) ? $vanBanDen->noi_dung_hop : $vanBanDen->trich_yeu,
+                    'dia_diem' => !empty($vanBanDen->dia_diem) ? $vanBanDen->dia_diem : null,
+                    'user_id' => $currentUser->id,
+                    'don_vi_du_hop' => !empty($donViDuHop) ? $donViChuTriId : null,
+                    'parent_don_vi_id' => !empty($parentDonVi) ? $parentDonVi->id : $donVi->id ?? null
+                );
+                $lichCongTac = new LichCongTac();
+                $lichCongTac->fill($dataLichCongTac);
+                $lichCongTac->save();
+                $lichCongTac->trang_thai = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->du_hop = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->ct_ph = LichCongTac::TRANG_THAI_HOAT_DONG;
+                $lichCongTac->save();
+            }
+        }
+
+
+    }
+
+    public static function luuVanBanPhoiHopCapXa($donViId, $txtDonViChuTri, $vanBanDenId, $donViChuTri)
     {
         // luu don vi chu tri
         $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();

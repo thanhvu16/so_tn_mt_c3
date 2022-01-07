@@ -27,6 +27,11 @@
                             <td>Đ/c {{ $logChuyenVanBanDen->canBoChuyen->ho_ten ?? null }}</td>
                             <td>
                                 <p>{{ $logChuyenVanBanDen->noi_dung }}</p>
+                                <div class="col-md-12 text-right">
+                                    @if($logChuyenVanBanDen->fileChuyen($logChuyenVanBanDen->van_ban_den_id,$logChuyenVanBanDen->can_bo_chuyen_id))
+                                        <a href="{{$logChuyenVanBanDen->fileChuyen($logChuyenVanBanDen->van_ban_den_id,$logChuyenVanBanDen->can_bo_chuyen_id)->getUrlFile()}}">[File lý do]</a>
+                                    @endif
+                                </div>
                                 @if ($logChuyenVanBanDen->status == 1)
                                     <p><span class="label label-danger">VB trả lại</span></p>
                                 @endif

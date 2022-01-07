@@ -297,8 +297,10 @@
                                     </td>
                                     <td>{{$vbDen->DonViGui}}</td>
                                     <td>
+                                        {{$vbDen->tenDonVi->ten_donvi ?? ''}}
                                         @if($vbDen->donViChuTri)
                                             {{$vbDen->donViChuTri->tenDonVi->ten_donvi ?? ''}}
+                                            {{$vbDen->tenDonVi->ten_donvi ?? ''}}
                                         @endif
 
                                     </td>

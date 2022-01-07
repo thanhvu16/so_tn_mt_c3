@@ -20,6 +20,10 @@ class VanBanDenOld extends Model
     {
         return $this->belongsTo(GiaoXuLyold::class, 'ID_VanBanDen', 'id_van_ban')->where('xu_ly_chinh',null);
     }
+    public function tenDonVi()
+    {
+        return $this->belongsTo(DonViOld::class, 'ID_DonViNhan', 'id_donvi');
+    }
 
 }
 

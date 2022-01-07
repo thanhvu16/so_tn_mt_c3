@@ -37,7 +37,7 @@
 
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Ký hiệu <span class="color-red">*</span></label>
-                                <input type="text" value=""
+                                <input type="text" value="" style="text-transform: uppercase "
                                        id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
                                        placeholder="Nhập ký hiệu văn bản đi..." required>
                             </div>
@@ -86,6 +86,10 @@
                                 <label for="co_quan_ban_hanh_id" class="col-form-label">Chức vụ</label>
                                 <input type="text" class="form-control" placeholder="chức vụ" name="chuc_vu" value="">
                             </div>
+                            <div class="form-group col-md-3" >
+                                <label for="so-ban" class="col-form-label">Số bản</label>
+                                <input type="text" id="so-ban" class="form-control" placeholder="số bản.." name="so_ban" value="">
+                            </div>
 
                             <div class="form-group col-md-12">
                                 <label for="sokyhieu" class="col-form-label ">Trích yếu <span class="color-red">*</span></label>
@@ -129,7 +133,7 @@
                                 <label for="sokyhieu" class="col-form-label">Đơn vị nội bộ </label>
                                 <select name="don_vi_nhan_van_ban_di[]" id="don_vi_nhan"
                                         class="form-control select2 select2-hidden-accessible"
-                                        multiple
+                                        multiple required
                                         data-placeholder=" Chọn đơn vị nhận ...">
                                     @foreach ($ds_DonVi_nhan as $donVi)
                                         <option value="{{ $donVi->id }}"

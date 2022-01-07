@@ -133,7 +133,7 @@
 
                             </div>
                             <div class="col-md-6 text-right">
-                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'),'type'  => Request::get('type'), 'han_xu_ly'  => Request::get('han_xu_ly'),
+                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'chuyen_tiep'  => Request::get('chuyen_tiep'),'type'  => Request::get('type'), 'han_xu_ly'  => Request::get('han_xu_ly'),
  'sap_xep'  => Request::get('sap_xep'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
                             </div>
                         </div>

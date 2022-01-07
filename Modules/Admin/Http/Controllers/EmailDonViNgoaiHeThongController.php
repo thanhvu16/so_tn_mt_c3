@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\MailNgoaiThanhPho;
+use DB;
 
 class EmailDonViNgoaiHeThongController extends Controller
 {
@@ -23,7 +24,7 @@ class EmailDonViNgoaiHeThongController extends Controller
 
         $danhSachEmails = MailNgoaiThanhPho::where(function ($query) use ($ten) {
             if (!empty($ten)) {
-                return $query->where('ten_don_vi', 'LIKE', "%$ten%");
+                return $query->where(DB::raw('lower(ten_don_vi)'), 'LIKE', "%" . mb_strtolower($ten) . "%");
             }
         })->where(function ($query) use ($madinhdanh) {
             if (!empty($madinhdanh)) {

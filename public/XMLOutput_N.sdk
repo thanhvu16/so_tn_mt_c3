@@ -2,25 +2,41 @@
 <EXPORTMAIL>
   <NOIGUI>
     <STRMADONVI></STRMADONVI>
-    <STRTENDONVI>Văn phòng đăng ký đất đai Hà Nội</STRTENDONVI>
+    <STRTENDONVI>Sở Tài Nguyên môi trường</STRTENDONVI>
   </NOIGUI>
   <NOINHANVANBAN>
     <NOINHAN ID="1">
       <STRMADONVI>0</STRMADONVI>
-      <STRTENDONVI>Công ty TNHH A</STRTENDONVI>
+      <STRTENDONVI>Cục thuế Hà Nội</STRTENDONVI>
       <STRDIACHI></STRDIACHI>
       <STRDIENTHOAI></STRDIENTHOAI>
       <STRWEBSITE></STRWEBSITE>
-      <STREMAIL>manhhumg@gmail.com</STREMAIL>
+      <STREMAIL>vanthu_cthn@hanoi.gov.vn</STREMAIL>
+    </NOINHAN>
+    <NOINHAN ID="2">
+      <STRMADONVI>0</STRMADONVI>
+      <STRTENDONVI>UBND quận Long Biên</STRTENDONVI>
+      <STRDIACHI></STRDIACHI>
+      <STRDIENTHOAI></STRDIENTHOAI>
+      <STRWEBSITE></STRWEBSITE>
+      <STREMAIL>vanthu_longbien@hanoi.gov.vn</STREMAIL>
+    </NOINHAN>
+    <NOINHAN ID="3">
+      <STRMADONVI>0</STRMADONVI>
+      <STRTENDONVI>UBND phường Ngọc Thụy, quận Long Biên</STRTENDONVI>
+      <STRDIACHI></STRDIACHI>
+      <STRDIENTHOAI></STRDIENTHOAI>
+      <STRWEBSITE></STRWEBSITE>
+      <STREMAIL>pnt_longbien@hanoi.gov.vn</STREMAIL>
     </NOINHAN>
   </NOINHANVANBAN>
   <NOIDUNGVANBAN>
     <STRLOAIVANBAN>Công văn</STRLOAIVANBAN>
-    <STRKYHIEU>2/CV-02/VPĐK-KHTC</STRKYHIEU>
-    <STRTRICHYEU>1991-1994/TB-UBND Về việc thu hồi giấy chứng nhận Quyền sử dụng đất đã cấp tại xã Đồng Quang ; Vũ Văn Long; Vũ Văn Hảo; Vương Văn Tườn</STRTRICHYEU>
-    <STRNGAYKY>25/09/2021</STRNGAYKY>
-    <STRNGUOIKY>Đặng Hữu Nghiệp</STRNGUOIKY>
-    <STRNOIGUI></STRNOIGUI>
+    <STRKYHIEU>43/43/STNMT-TTr</STRKYHIEU>
+    <STRTRICHYEU>Về việc đặt lịch làm việc để rà soát nội dung giải quyết đơn của bà Phạm Thị Thanh Nhàn liên quan đến việc xác định nguồn gốc đất, thời điểm sử dụng đất vào mục đích đất ở của gia đình ông Phạm Văn Hùng ở phường Ngọc Thụy, quận Long Biên.</STRTRICHYEU>
+    <STRNGAYKY>06/01/2022</STRNGAYKY>
+    <STRNGUOIKY>Lê Thanh Nam</STRNGUOIKY>
+    <STRNOIGUI>Công Văn</STRNOIGUI>
     <STRHANXULY></STRHANXULY>
     <STRTHUOCLOAIVANBAN>Công văn</STRTHUOCLOAIVANBAN>
   </NOIDUNGVANBAN>

@@ -28,12 +28,12 @@ class TimKiemVanBanDenController extends Controller
             })
             ->where(function ($query) use ($soKyHieu) {
                 if (!empty($soKyHieu)) {
-                    return $query->where('so_ky_hieu', 'LIKE', "%$soKyHieu%");
+                    return $query->where(DB::raw('lower(so_ky_hieu)'), 'LIKE', "%" . mb_strtolower($soKyHieu) . "%");
                 }
             })
             ->where(function ($query) use ($trichYeu) {
                 if (!empty($trichYeu)) {
-                    return $query->where('trich_yeu', 'LIKE', "%$trichYeu%");
+                    return $query->where(DB::raw('lower(trich_yeu)'), 'LIKE', "%" . mb_strtolower($trichYeu) . "%");
                 }
             })->take(10)->get();
 

@@ -16,6 +16,9 @@
                                     @csrf
                                     <input type="hidden" name="van_ban_den_id" value="">
                                     <input type="hidden" name="van_ban_tra_lai" value="">
+                                    <input type="hidden" name="sap_xep" value="{{Request::get('sap_xep')}}">
+                                    <input type="hidden" name="da_chi_dao" value="{{Request::get('sap_xep')}}">
+                                    <input type="hidden" name="giay_moi" value="{{Request::get('type')}}">
                                     <input type="hidden" name="type" value="update">
                                 </form>
                             </div>

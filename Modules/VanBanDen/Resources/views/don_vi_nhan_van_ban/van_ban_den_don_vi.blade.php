@@ -152,6 +152,18 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail4">Ngày nhận </label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control han-xu-ly datepicker ngay-nhan"
+                                               name="ngay_nhan" value="{{date('d/m/Y')}}" placeholder="Ngày nhận">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <div class="col-md-6 mt-4">

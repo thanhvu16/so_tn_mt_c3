@@ -43,6 +43,16 @@ class XuLyVanBanDen extends Model
     {
         return $this->belongsTo(User::class, 'can_bo_nhan_id', 'id')->select('id', 'ho_ten', 'chuc_vu_id');
     }
+    public function fileChuyen($vbden,$canbochuyen)
+    {
+        $tralai = VanBanTraLai::where(['van_ban_den_id'=>$vbden,'can_bo_chuyen_id'=>$canbochuyen])->first();
+        if($tralai)
+        {
+            $file = VanBanTraLaiFile::where('van_ban_tra_lai_id',$tralai->id)->first();
+            return $file;
+        }
+        return false;
+    }
 
     public function vanBanDen()
     {

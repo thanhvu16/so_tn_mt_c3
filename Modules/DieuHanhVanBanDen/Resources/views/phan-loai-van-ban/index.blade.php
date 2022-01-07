@@ -261,6 +261,10 @@
                                                     @endif
                                                 </select>
                                             </p>
+                                            <p>
+                                                <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-idvb="{{ $vanBanDen->id }}" class="check-all-cv1">
+                                                <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả đơn vị phối hợp</label>
+                                            </p>
                                         </div>
 
                                         <div class="form-group">
@@ -366,6 +370,20 @@
 @section('script')
     <script src="{{ asset('modules/xu_ly_van_ban_den/js/index.js') }}"></script>
     <script>
+        $('.check-all-cv1').on('click', function () {
+            let id = $(this).data('idvb');
+            console.log(id);
+            let chuyenVienPhoiHopId = `#don-vi-phoi-hop-${id}`;
+            if($(this).is(':checked') ){
+                console.log(1);
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId + "> option").prop("selected","selected");
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId).trigger("change");
+
+            }else{
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId + "> option").prop('selected', '');
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId).trigger("change");
+            }
+        });
         function showModal() {
             $("#myModal").modal('show');
         }

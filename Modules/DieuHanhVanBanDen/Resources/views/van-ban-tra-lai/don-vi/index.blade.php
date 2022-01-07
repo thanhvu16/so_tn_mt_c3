@@ -223,7 +223,41 @@
                                                 </p>
                                             @endif
                                             @if (!empty($loaiVanBanGiayMoi) && $vanBanDen->loai_van_ban_id == $loaiVanBanGiayMoi->id && !empty($vanBanDen->lichCongTacDonVi))
-                                                <p>Lãnh đạo dự họp:</p>
+
+                                                    @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0)
+                                                        <p>Lãnh đạo dự họp:</p>
+                                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
+                                                            <input type="radio"
+                                                                   name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                                   id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
+                                                                   class="radio-col-cyan "
+                                                                   value="1"
+                                                                   form="form-tham-muu" {{ $vanBanDen->lichCongTacDonVi->lanh_dao_id == auth::user()->id ? 'checked' : null  }}>
+                                                            <label
+                                                                for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
+                                                            ><i>Trưởng phòng dự họp</i></label><br>
+                                                        @endif
+                                                        @if ( $trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
+                                                            <input type="radio"
+                                                                   name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                                   id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
+                                                                   class="radio-col-cyan"
+                                                                   value="2"
+                                                                   form="form-tham-muu" {{ in_array($vanBanDen->lichCongTacDonVi->lanh_dao_id, $danhSachPhoPhong->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                            <label
+                                                                for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự
+                                                                    họp</i></label><br>
+                                                        @endif
+                                                        @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
+                                                            <input type="radio" id="chuyen-vien-du-hop-{{ $vanBanDen->id .'.4' }}"
+                                                                   name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                                   class="radio-col-cyan " value="3"
+                                                                   form="form-tham-muu" {{ in_array($vanBanDen->lichCongTacDonVi->lanh_dao_id, $danhSachPhoPhong->pluck('id')->toArray()) ? 'checked' : null  }}>
+                                                            <label
+                                                                for="chuyen-vien-du-hop-{{ $vanBanDen->id .'.4' }}"><i>Chuyên viên dự họp</i></label>
+                                                        @endif
+                                                    @else
+                                                    <p>Lãnh đạo dự họp:</p>
                                                 @if ($trinhTuNhanVanBan == \Modules\VanBanDen\Entities\VanBanDen::TRUONG_PHONG_NHAN_VB)
                                                     <input type="radio"
                                                            name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
@@ -244,6 +278,7 @@
                                                 <label
                                                     for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự
                                                         họp</i></label>
+                                                @endif
                                             @endif
                                         </div>
                                     </td>

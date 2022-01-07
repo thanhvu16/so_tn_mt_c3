@@ -35,6 +35,7 @@
                                 <th width="10%" class="text-center">File</th>
                                 <th width="15%" class="text-center">Đơn vị gửi đến</th>
                                 <th width="15%" class="text-center">Cơ quan ban hành</th>
+                                <th width="10%" class="text-center">Thời gian nhận</th>
                                 <th width="7%" class="text-center">Trạng thái</th>
                             </tr>
                             </thead>
@@ -44,10 +45,10 @@
                                     <td class="text-center">{{$key+1}}</td>
                                     <td class="text-center">{{$vbDen->vanbandi->loaiVanBanid->ten_loai_van_ban ?? ''}}</td>
                                     <td>
-                                        <p> {{ isset($vbDen->vanbandi) && $vbDen->vanbandi->so_ky_hieu ?? null }}</p>
+                                        <p> {{ isset($vbDen->vanbandi) ? $vbDen->vanbandi->so_ky_hieu : null }}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="@if(isset($vbDen->vanbandi) && $vbDen->vanbandi->loai_van_ban_id == 1000){{route('thongtinvb',$vbDen->id)}}@else{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}} @endif" title="{{isset($vbDen->vanbandi) && $vbDen->vanbandi->trich_yeu}}">{{isset($vbDen->vanbandi) && $vbDen->vanbandi->trich_yeu}}</a><br>
+                                        <a href="@if(isset($vbDen->vanbandi) && $vbDen->vanbandi->loai_van_ban_id == 1000){{route('thongtinvb',$vbDen->id)}}@else{{route('don-vi-nhan-van-ban-den.edit',$vbDen->id)}} @endif" title="{{isset($vbDen->vanbandi) && $vbDen->vanbandi->trich_yeu}}">{{isset($vbDen->vanbandi) ? $vbDen->vanbandi->trich_yeu : ''}}</a><br>
                                     </td>
                                     <td>
                                         @if (isset($vbDen->vanbandi))
@@ -64,6 +65,7 @@
                                         {{$vbDen->donvigui->ten_don_vi ?? ''}}
                                     </td>
                                     <td></td>
+                                    <td class="text-center"><span>  {{!empty($vbDen->updated_at) ? date_format($vbDen->updated_at, 'd/m/Y H:i:s') : ''}}</span></td>
                                     <td>@if($vbDen->trang_thai == 1 || $vbDen->trang_thai == 2)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
 
 
@@ -118,6 +120,7 @@
                                         <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
                                     <td>{{$vbDen2->vanBanDen->co_quan_ban_hanh ?? ''}}</td>
+                                    <td class="text-center"><span> {{!empty($vbDen2->updated_at) ? date_format($vbDen2->updated_at, 'd/m/Y H:i:s') : ''}}</span></td>
 
                                     <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>
@@ -125,27 +128,27 @@
                             @endforelse
 
                             <!--Don vi phoi hop-->
-                            @forelse ($vanBanHuyenChuyenDonViPhoiHop as $key=>$vbDen2)
+                            @forelse ($vanBanHuyenChuyenDonViPhoiHop as $key=>$vbDen3)
                                 <tr>
                                     <td class="text-center">{{$countphoihop +  $key + 1 }}</td>
-                                    <td class="text-center">{{$vbDen2->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
+                                    <td class="text-center">{{$vbDen3->vanBanDen->loaiVanBan->ten_loai_van_ban ?? ''}}</td>
                                     <td>
-                                        <p> {{$vbDen2->vanBanDen->so_ky_hieu ?? ''}}</p>
+                                        <p> {{$vbDen3->vanBanDen->so_ky_hieu ?? ''}}</p>
                                     </td>
                                     <td style="text-align: justify">
-                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen2->id.'?type=phoi_hop')}}" title="{{$vbDen2->vanBanDen->trich_yeu ?? ''}}">{{$vbDen2->vanBanDen->trich_yeu ?? ''}}</a>
+                                        <a href="{{route('chi_tiet_van_ban_den_don_vi',$vbDen3->id.'?type=phoi_hop')}}" title="{{$vbDen3->vanBanDen->trich_yeu ?? ''}}">{{$vbDen3->vanBanDen->trich_yeu ?? ''}}</a>
                                         <br>
-                                        @if($vbDen2->vanBanDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
+                                        @if($vbDen3->vanBanDen->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
                                         <span
-                                            style="font-style: italic">{{$vbDen2->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen2->vanBanDen->noi_dung != null)
+                                            style="font-style: italic">{{$vbDen3->vanBanDen->noi_dung ?? ''}}</span>@if($vbDen3->vanBanDen->noi_dung != null)
                                             <br>@endif
-                                        Hạn giải quyết: {{ !empty($vbDen2->vanBanDen->han_giai_quyet) ? date('d/m/Y', strtotime($vbDen2->vanBanDen->han_giai_quyet)) : '' }} -
+                                        Hạn giải quyết: {{ !empty($vbDen3->vanBanDen->han_giai_quyet) ? date('d/m/Y', strtotime($vbDen3->vanBanDen->han_giai_quyet)) : '' }} -
                                         <span
-                                            style="font-style: italic">Người nhập : {{$vbDen2->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
+                                            style="font-style: italic">Người nhập : {{$vbDen3->vanBanDen->nguoiDung->ho_ten ?? ''}}</span>
                                         <p class="mt-2">
-                                            <input id="van-ban-don-vi-{{ $vbDen2->id }}" type="checkbox"
+                                            <input id="van-ban-don-vi-{{ $vbDen3->id }}" type="checkbox"
                                                    name="van_ban-don_vi" value="1" checked>
-                                            <label for="van-ban-don-vi-{{ $vbDen2->id }}"
+                                            <label for="van-ban-don-vi-{{ $vbDen3->id }}"
                                                    class="color-red font-weight-normal">
                                                 văn bản đơn vị phối hợp
                                             </label>
@@ -153,8 +156,8 @@
                                     </td>
                                     <td>
                                         <div class="text-center " style="pointer-events: auto">
-                                            @if($vbDen2->vanBanDen)
-                                            @forelse($vbDen2->vanBanDen->vanBanDenFilehs as $filedata)
+                                            @if($vbDen3->vanBanDen)
+                                            @forelse($vbDen3->vanBanDen->vanBanDenFilehs as $filedata)
                                                 <a class="seen-new-window" target="popup" href="{{$filedata->getUrlFile()}}">[File]</a><br>
                                             @empty
                                             @endforelse
@@ -163,10 +166,14 @@
                                     </td>
 
                                     <td>
-                                        <span>{{ $vbDen2->canBoChuyen ? $vbDen2->canBoChuyen->donVi->ten_don_vi : null }}</span>
+                                        <span>{{ $vbDen3->canBoChuyen ? $vbDen3->canBoChuyen->donVi->ten_don_vi : null }}</span>
                                     </td>
-                                    <td></td>
-                                    <td>@if($vbDen2->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
+                                    <td>{{$vbDen3->vanBanDen->co_quan_ban_hanh ?? ''}}</td>
+                                    <td class="text-center">
+                                        <span>{{!empty($vbDen3->updated_at) ? date_format($vbDen3->updated_at, 'd/m/Y H:i:s') : ''}}</span>
+
+                                    </td>
+                                    <td>@if($vbDen3->vao_so_van_ban == null)<span class="label label-warning">Chưa vào sổ</span>@else <span class="label label-success">Đã vào sổ</span></td>@endif
                                 </tr>
                             @empty
                             @endforelse

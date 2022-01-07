@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="sokyhieu" class="col-form-label">Số ký hiệu </label>
-                                <input type="text" value="{{$vanbandi->so_ky_hieu}}"
+                                <input type="text" value="{{$vanbandi->so_ky_hieu}}" style="text-transform: uppercase "
                                        id="vb_sokyhieu" name="vb_sokyhieu" autofocus class="form-control"
                                        placeholder="Nhập ký hiệu văn bản đi..." >
                             </div>

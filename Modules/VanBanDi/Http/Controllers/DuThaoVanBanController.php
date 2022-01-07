@@ -46,7 +46,7 @@ class DuThaoVanBanController extends Controller
         $vanThuVanBanDiPiceCharts = [];
         $date = Carbon::now()->format('Y-m-d');
         $donvikhongdieuhanh = DonVi::where('dieu_hanh', '!=', 1)->whereNull('deleted_at')->get();
-        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIN('loai_van_ban',[2,3])
             ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
@@ -57,6 +57,7 @@ class DuThaoVanBanController extends Controller
         $donVi = $user->donVi;
         $nhomDonVi = NhomDonVi::where('ten_nhom_don_vi', 'LIKE', LANH_DAO_UY_BAN)->first();
         $donViCapHuyen = DonVi::where('nhom_don_vi', $nhomDonVi->id)->first();
+        $chanhVanPhongKy = User::where('id', 106)->get();
 
 
         $dataNguoiKy = [];
@@ -76,7 +77,9 @@ class DuThaoVanBanController extends Controller
                     } else {
                         $truongpho = null;
                     }
-
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
                     if ($truongpho != null) {
                         foreach ($truongpho as $data2) {
                             array_push($dataNguoiKy, $data2);
@@ -89,10 +92,14 @@ class DuThaoVanBanController extends Controller
                         }
 
                     }
+                    if ($chanhVanPhongKy != null) {
+                        foreach ($chanhVanPhongKy as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
 
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
                     }
+
+
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
                     $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
@@ -121,6 +128,13 @@ class DuThaoVanBanController extends Controller
 
                 }
 
+                if ($chanhVanPhongKy != null) {
+                    foreach ($chanhVanPhongKy as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                }
+
                 if ($truongpho != null) {
                     foreach ($truongpho as $data2) {
                         array_push($dataNguoiKy, $data2);
@@ -135,15 +149,22 @@ class DuThaoVanBanController extends Controller
                 break;
             case TRUONG_PHONG:
                 if ($donVi->parent_id == 0) {
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
                     if ($phongThanhTra != null) {
                         foreach ($phongThanhTra as $data3) {
                             array_push($dataNguoiKy, $data3);
                         }
 
                     }
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
+                    if ($chanhVanPhongKy != null) {
+                        foreach ($chanhVanPhongKy as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
                     }
+
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
                     $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
@@ -411,7 +432,7 @@ class DuThaoVanBanController extends Controller
 
     public function laythongtinduthaocu($id)
     {
-        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIN('loai_van_ban',[2,3])
             ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN, TRUONG_BAN, PHO_TRUONG_BAN, CHANH_VAN_PHONG, PHO_CHANH_VAN_PHONG])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
@@ -438,6 +459,7 @@ class DuThaoVanBanController extends Controller
             ->whereHas('donVi', function ($query) {
                 return $query->whereNull('cap_xa');
             })->get();
+        $chanhVanPhongKy = User::where('id', 106)->get();
         $phongThanhTra = User::role([TRUONG_PHONG, PHO_PHONG])
             ->where('don_vi_id', 12)->whereNull('deleted_at')->get();
 
@@ -451,6 +473,9 @@ class DuThaoVanBanController extends Controller
                         $truongpho = null;
                     }
 
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
                     if ($truongpho != null) {
                         foreach ($truongpho as $data2) {
                             array_push($dataNguoiKy, $data2);
@@ -463,10 +488,14 @@ class DuThaoVanBanController extends Controller
                         }
 
                     }
+                    if ($chanhVanPhongKy != null) {
+                        foreach ($chanhVanPhongKy as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
 
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
                     }
+
+
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
                     $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
@@ -488,7 +517,9 @@ class DuThaoVanBanController extends Controller
                 } else {
                     $truongpho = null;
                 }
-
+                foreach ($lanhDaoSo as $data2) {
+                    array_push($dataNguoiKy, $data2);
+                }
                 if ($truongpho != null) {
                     foreach ($truongpho as $data2) {
                         array_push($dataNguoiKy, $data2);
@@ -501,22 +532,33 @@ class DuThaoVanBanController extends Controller
                     }
 
                 }
+                if ($chanhVanPhongKy != null) {
+                    foreach ($chanhVanPhongKy as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
 
-                foreach ($lanhDaoSo as $data2) {
-                    array_push($dataNguoiKy, $data2);
                 }
+
+
                 $ds_nguoiKy = $dataNguoiKy;
                 break;
             case TRUONG_PHONG:
                 if ($donVi->parent_id == 0) {
+
+                    foreach ($lanhDaoSo as $data2) {
+                        array_push($dataNguoiKy, $data2);
+                    }
+                    if ($chanhVanPhongKy != null) {
+                        foreach ($chanhVanPhongKy as $data3) {
+                            array_push($dataNguoiKy, $data3);
+                        }
+
+                    }
                     if ($phongThanhTra != null) {
                         foreach ($phongThanhTra as $data3) {
                             array_push($dataNguoiKy, $data3);
                         }
 
-                    }
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
                     }
                     $ds_nguoiKy = $dataNguoiKy;
                 } else {
@@ -615,7 +657,7 @@ class DuThaoVanBanController extends Controller
 
         }
 
-        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIN('loai_van_ban',[2,3])
             ->orderBy('thu_tu', 'asc')->get();
         $ds_DonVi = Donvi::whereNull('deleted_at')
             ->orderBy('thu_tu','asc')->get();
@@ -729,7 +771,7 @@ class DuThaoVanBanController extends Controller
     public function edit($id)
     {
         canPermission(AllPermission::suaDuThao());
-        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIn('loai_van_ban', [2, 3])
+        $ds_loaiVanBan = LoaiVanBan::whereNull('deleted_at')->whereIN('loai_van_ban',[2,3])
             ->orderBy('thu_tu', 'asc')->get();
         $lanhdaotrongphong = User::role([TRUONG_PHONG, PHO_PHONG, CHUYEN_VIEN])->where(['don_vi_id' => auth::user()->don_vi_id])->where('id', '!=', auth::user()->id)->whereNull('deleted_at')->get();
         $lanhdaokhac = User::role([TRUONG_PHONG])->where('don_vi_id', '!=', auth::user()->don_vi_id)->whereNull('deleted_at')->get();
@@ -1175,6 +1217,7 @@ class DuThaoVanBanController extends Controller
             $vanbandi->phong_phat_hanh = $request->phong_phat_hanh;
             $vanbandi->loai_van_ban_id = $request->loaivanban_id;
             $vanbandi->do_khan_cap_id = $request->dokhan_id;
+            $vanbandi->so_ban = $request->so_ban;
             $vanbandi->chuc_vu = $request->chuc_vu;
             $vanbandi->do_bao_mat_id = $request->dobaomat_id;
             if ($nguoiky->role_id == QUYEN_VAN_THU_HUYEN || $nguoiky->role_id == QUYEN_CHU_TICH || $nguoiky->role_id == QUYEN_PHO_CHU_TICH ||
@@ -1192,7 +1235,11 @@ class DuThaoVanBanController extends Controller
             } elseif ($nguoiky->role_id == QUYEN_CHUYEN_VIEN || $nguoiky->role_id == QUYEN_PHO_PHONG || $nguoiky->role_id == QUYEN_TRUONG_PHONG) {
                 //đây là đơn vị ký
                 $vanbandi->van_ban_huyen_ky = $request->donvisoanthao_id;
-                $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
+                if ($user->don_vi_id != 12 || $user->don_vi_id != 4) {
+                    $vanbandi->don_vi_soan_thao = $request->donvisoanthao_id;
+
+                }
+
                 $vanbandi->type = 2;
             }
             $vanbandi->so_van_ban_id = $request->sovanban_id;

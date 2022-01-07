@@ -250,6 +250,10 @@
                                                     @endforelse
                                                 </select>
                                             </p>
+                                                <p>
+                                                    <input type="checkbox" id="select-all-cv-ph-{{ $vanBanDen->id }}" data-idvb="{{ $vanBanDen->id }}" class="check-all-cv1">
+                                                    <label for="select-all-cv-ph-{{ $vanBanDen->id }}" class="font-weight-normal">Chọn tất cả cv phối hợp</label>
+                                                </p>
                                             {{--@if($vanBanDen->checkQuyenGiaHan)--}}
                                             <p>
                                                 <span>Gia hạn xử lý</span>
@@ -418,6 +422,21 @@
         let vanBanDenDonViId = null;
         let ArrVanBanDenDonViId = [];
         let txtChuTich = null;
+
+        $('.check-all-cv1').on('click', function () {
+            let id = $(this).data('idvb');
+            console.log(id);
+            let chuyenVienPhoiHopId = `#don-vi-phoi-hop-${id}`;
+            if($(this).is(':checked') ){
+                console.log(1);
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId + "> option").prop("selected","selected");
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId).trigger("change");
+
+            }else{
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId + "> option").prop('selected', '');
+                $(this).closest('.dau-viec-chi-tiet').find(chuyenVienPhoiHopId).trigger("change");
+            }
+        });
 
         $('.pho-chu-tich').on('change', function () {
             let $this = $(this);

@@ -3,6 +3,7 @@
 namespace Modules\DieuHanhVanBanDen\Http\Controllers;
 
 use App\Common\AllPermission;
+use App\Models\LichCongTac;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class VanBanDenPhoiHopController extends Controller
         $currentUser = auth::user();
         $donVi = $currentUser->donVi;
         $trichYeu = $request->get('trich_yeu') ?? null;
+        $id = $request->get('id') ?? null;
         $soKyHieu = $request->get('so_ky_hieu') ?? null;
         $sapXep = $request->sap_xep;
         $a = 'asc';
@@ -147,6 +149,11 @@ class VanBanDenPhoiHopController extends Controller
                 ->where(function ($query) use ($loaiVanBanGiayMoi) {
                     if (!empty($loaiVanBanGiayMoi)) {
                         return $query->where('loai_van_ban_id', $loaiVanBanGiayMoi->id);
+                    }
+                })
+                ->where(function ($query) use ($id) {
+                    if (!empty($id)) {
+                        return $query->where('id', $id);
                     }
                 })
                 ->where(function ($query) use ($trichYeu) {
@@ -280,8 +287,8 @@ class VanBanDenPhoiHopController extends Controller
             if (!empty($chuyenTiep)) {
                 return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.da_chi_dao',
                     compact('danhSachVanBanDen',
-                    'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
-                    'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan', 'chuTich', 'danhSachDonVi'));
+                        'danhSachPhoPhong', 'danhSachPhoChuTich', 'truongPhong', 'donVi',
+                        'danhSachChuyenVien', 'order', 'trinhTuNhanVanBan', 'chuTich', 'danhSachDonVi'));
             }
 
             return view('dieuhanhvanbanden::don-vi-phoi-hop.cap_xa.index', compact('danhSachVanBanDen',
@@ -340,6 +347,9 @@ class VanBanDenPhoiHopController extends Controller
         $arrLanhDaoXemDeBiet = $data['lanh_dao_xem_de_biet'] ?? null;
         $arrChuyenVienPhoiHopIds = $data['chuyen_vien_phoi_hop_id'] ?? null;
         $active = null;
+        $lanhDaoPhong = User::role([TRUONG_PHONG])->where('don_vi_id',auth::user()->don_vi_id)->first();
+        $lanhDaoDuHopId = $data['lanh_dao_du_hop_id'] ?? null;
+        $danhSachchuyenVienDUHopIds = $data['chuyen_vien_du_hop'] ?? null;
 
         if (isset($vanBanDenDonViIds) && count($vanBanDenDonViIds) > 0) {
             try {
@@ -360,6 +370,17 @@ class VanBanDenPhoiHopController extends Controller
                             ->delete();
                     }
                     $vanBanDen = VanBanDen::where('id', $vanBanDenId)->first();
+
+                    //Thêm lịch họp
+                    if ((!empty($giayMoi) && $vanBanDen->loai_van_ban_id == $giayMoi->id ) && (auth::user()->hasRole([TRUONG_PHONG,CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0)) {
+                        if($request->update == 1)
+                        {
+                            LichCongTac::where('object_id', $vanBanDenId)->where('ct_ph',1)->where('don_vi_du_hop',auth::user()->don_vi_id)->delete();
+                        }
+                        DonViPhoiHop::luuLichHop($vanBanDenId,$lanhDaoPhong->id , 1, $currentUser->don_vi_id, $danhSachPhoPhongIds[$vanBanDenId],$danhSachChuyenVienIds[$vanBanDenId],$lanhDaoDuHopId[$vanBanDenId],!empty($danhSachchuyenVienDUHopIds[$vanBanDenId]) ? $danhSachchuyenVienDUHopIds[$vanBanDenId] : null);
+
+
+                    }
 
                     if (isset($danhSachChuTichIds) && !empty($danhSachChuTichIds[$vanBanDenId])) {
                         $dataChuyenNhanVanBanDonVi = [

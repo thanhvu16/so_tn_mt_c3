@@ -122,6 +122,13 @@
                     <li class="{{ Route::is('vanBanCu') ? 'active' : '' }}"><a href="{{ route('vanBanCu') }}"><i class="fa fa-circle-o"></i>Văn bản đi</a></li>
                 </ul>
             </li>
+            <li class="{{ Route::is('ket-thuc-van-ban-den.index') ? 'active' : '' }} ">
+                <a href="{{ route('ket-thuc-van-ban-den.index') }}">
+                    <i class="fa   fa-legal"></i> <span>Kết thúc văn bản đến</span>
+                    <span class="pull-right-container">
+                </span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

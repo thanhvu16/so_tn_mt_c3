@@ -38,7 +38,7 @@
 {{--                                        </div>--}}
                                         <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Ký hiệu </label>
-                                            <input type="text" value="{{Request::get('vb_sokyhieu')}}"
+                                            <input type="text" value="{{Request::get('vb_sokyhieu')}}" style="text-transform: uppercase "
                                                    id="vb_sokyhieu" name="vb_sokyhieu"  class="form-control"
                                                    placeholder="Nhập số ký hiệu văn bản đi...">
                                         </div>
@@ -166,7 +166,7 @@
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
                                     <td>
-                                        <p>- Số ký hiệu: {{$vbDi->so_ky_hieu}}</p>
+                                        <p>- Số ký hiệu: <span style="text-transform: uppercase ">{{$vbDi->so_ky_hieu}}</span></p>
                                         <p>- Ngày nhập: {{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}</p>
                                         <p>- Loại văn bản: Giấy mời</p>
                                         <p>- Số đi: <span

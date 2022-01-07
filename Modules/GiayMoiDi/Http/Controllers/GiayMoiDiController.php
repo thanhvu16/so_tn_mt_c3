@@ -240,6 +240,9 @@ class GiayMoiDiController extends Controller
                 return $query->whereNull('cap_xa');
             })->get();
 
+        $phongThanhTra = User::role([TRUONG_PHONG, PHO_PHONG])
+            ->where('don_vi_id', 12)->whereNull('deleted_at')->get();
+
         switch (auth::user()->roles->pluck('name')[0]) {
             case CHUYEN_VIEN:
                 if ($donVi->parent_id == 0) {
@@ -253,6 +256,12 @@ class GiayMoiDiController extends Controller
                     if ($truongpho != null) {
                         foreach ($truongpho as $data2) {
                             array_push($dataNguoiKy, $data2);
+                        }
+
+                    }
+                    if ($phongThanhTra != null) {
+                        foreach ($phongThanhTra as $data3) {
+                            array_push($dataNguoiKy, $data3);
                         }
 
                     }
@@ -288,6 +297,12 @@ class GiayMoiDiController extends Controller
                     }
 
                 }
+                if ($phongThanhTra != null) {
+                    foreach ($phongThanhTra as $data3) {
+                        array_push($dataNguoiKy, $data3);
+                    }
+
+                }
 
                 foreach ($lanhDaoSo as $data2) {
                     array_push($dataNguoiKy, $data2);
@@ -298,32 +313,20 @@ class GiayMoiDiController extends Controller
                 if ($donVi->parent_id == 0) {
                     $ds_nguoiKy = $lanhDaoSo;
                 } else {
-                    $chiCuc = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
-
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
-                    }
-                    foreach ($chiCuc as $data3) {
+                    $ds_nguoiKy = User::role([CHU_TICH, PHO_CHU_TICH])->where('don_vi_id', auth::user()->donVi->parent_id)->get();
+                }
+                if ($phongThanhTra != null) {
+                    foreach ($phongThanhTra as $data3) {
                         array_push($dataNguoiKy, $data3);
                     }
 
-                    $ds_nguoiKy = $dataNguoiKy;
                 }
                 break;
             case PHO_CHU_TICH:
                 if ($donVi->parent_id == 0) {
                     $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', auth::user()->don_vi_id)->get();
                 } else {
-                    $chiCuc = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
-
-                    foreach ($lanhDaoSo as $data2) {
-                        array_push($dataNguoiKy, $data2);
-                    }
-                    foreach ($chiCuc as $data3) {
-                        array_push($dataNguoiKy, $data3);
-                    }
-
-                    $ds_nguoiKy = $dataNguoiKy;
+                    $ds_nguoiKy = User::role([CHU_TICH])->where('don_vi_id', $donVi->id)->get();
                 }
                 break;
             case CHU_TICH:
@@ -384,9 +387,6 @@ class GiayMoiDiController extends Controller
                     foreach ($danhSachLanhDaoPhongBan as $lanhDaoPhongBan) {
                         array_push($dataNguoiKy, $lanhDaoPhongBan);
                     }
-                }
-                foreach ($lanhDaoSo as $data2) {
-                    array_push($dataNguoiKy, $data2);
                 }
                 $ds_nguoiKy = $dataNguoiKy;
                 break;
@@ -471,7 +471,7 @@ class GiayMoiDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->whereIN('loai_van_ban',[2,3])->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         return view('giaymoidi::giay_moi_di.create', compact('ds_mucBaoMat', 'nguoinhan', 'ds_doKhanCap', 'ds_DonVi_nhan', 'ds_loaiVanBan', 'ds_soVanBan',
@@ -688,7 +688,7 @@ class GiayMoiDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->whereIN('loai_van_ban',[2,3])->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         return view('giaymoidi::giay_moi_di.GiayMoiVanThuSo', compact('ds_mucBaoMat', 'soDi','ds_doKhanCap', 'ds_DonVi_nhan', 'ds_loaiVanBan', 'ds_soVanBan',
@@ -1146,7 +1146,7 @@ class GiayMoiDiController extends Controller
             array_push($laysovanban, $data2);
         }
         $ds_soVanBan = $laysovanban;
-        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->orderBy('id', 'asc')->get();
+        $ds_loaiVanBan = LoaiVanBan::wherenull('deleted_at')->whereIN('loai_van_ban',[2,3])->orderBy('id', 'asc')->get();
         $ds_doKhanCap = DoKhan::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
         $ds_mucBaoMat = DoMat::wherenull('deleted_at')->orderBy('mac_dinh', 'desc')->get();
 

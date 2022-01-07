@@ -381,13 +381,13 @@ class GiayMoiDenController extends Controller
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => $donViId,
                 'so_van_ban_id' => 100,
                 'type' => 2
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         }
         $sodengiaymoi = $soDenvb + 1;
         $date = Carbon::now()->format('d/m/Y');
@@ -485,13 +485,13 @@ class GiayMoiDenController extends Controller
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 1
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDenvb = VanBanDen::where([
                 'don_vi_id' => auth::user()->don_vi_id,
                 'so_van_ban_id' => 100,
                 'type' => 2
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         }
         $sodengiaymoi = $soDenvb + 1;
         $gio_hop_chinh_fomart = date('H:i', strtotime($request->gio_hop_chinh));
@@ -914,13 +914,13 @@ class GiayMoiDenController extends Controller
                 'don_vi_id' => $lanhDaoSo->don_vi_id,
                 'so_van_ban_id' => $giayMoi->id,
                 'type' => 1
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         } elseif (auth::user()->hasRole(VAN_THU_DON_VI)) {
             $soDen = VanBanDen::where([
                 'don_vi_id' => auth::user()->donVi->parent_id,
                 'so_van_ban_id' => $giayMoi->id,
                 'type' => 2
-            ])->whereYear('ngay_ban_hanh', '=', $nam)->max('so_den');
+            ])->whereYear('ngay_nhan', '=', $nam)->max('so_den');
         }
 //        $soDen = VanBanDen::where([
 //            'don_vi_id' => auth::user()->don_vi_id,

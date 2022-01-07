@@ -17,7 +17,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse ($data as $key=>$vanBanDen)
+                        @forelse ($data2 as $key=>$vanBanDen)
                             <tr>
                                 <td scope="row" class="text-center" style="vertical-align: middle;">{{$key+1}}</td>
                                 <td style="word-wrap: break-word">
@@ -34,7 +34,6 @@
                             </tr>
                         @empty
                         @endforelse
-
                         </tbody>
                     </table>
                     <button class="btn btn-primary" form="myform" type="submit">Tiếp tục thêm</button>

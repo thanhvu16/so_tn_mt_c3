@@ -181,14 +181,56 @@
                                                 </select>
                                             </p>
                                             @endrole
+
+                                            @if (auth::user()->hasRole([TRUONG_PHONG, CHANH_VAN_PHONG]) && auth::user()->donVi->parent_id == 0 )
+                                                <p>
+                                                    <select
+                                                        name="chuyen_vien_du_hop[{{ $vanBanDen->id }}][]"
+                                                        id="chuyen-vien-du-hop{{ $vanBanDen->id }}"
+                                                        class="form-control chuyen-vien-du-hop  select2"
+                                                        data-id="{{ $vanBanDen->id }}"
+                                                        data-placeholder="Thêm chuyên viên dự họp"
+                                                        form="form-tham-muu" multiple="multiple">
+                                                        @forelse($danhSachChuyenVien as $chuyenVien)
+                                                            <option
+                                                                value="{{ $chuyenVien->id }}" {{ !empty($vanBanDen->layNguoiDuHop($vanBanDen->id)) && in_array($chuyenVien->id, $vanBanDen->layNguoiDuHop($vanBanDen->id)) ? 'selected' : '' }}>{{ $chuyenVien->ho_ten }}</option>
+                                                        @empty
+                                                        @endforelse
+                                                    </select>
+                                                </p>
+                                                <p>Lãnh đạo dự họp:</p>
+
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"
+                                                       class="radio-col-cyan tp-du-hop"
+                                                       value="1"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 1 || $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 0 ? 'checked' : null  }}>
+                                                <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.2' }}"><i>Trưởng phòng dự họp</i></label><br>
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"
+                                                       class="radio-col-cyan "
+                                                       value="2"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 2 ? 'checked' : null  }}>
+                                                <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.3' }}"><i>Phó phòng dự họp</i></label><br>
+
+                                                <input type="radio"
+                                                       name="lanh_dao_du_hop_id[{{ $vanBanDen->id }}]"
+                                                       id="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"
+                                                       class="radio-col-cyan "
+                                                       value="3"
+                                                       form="form-tham-muu" {{ $vanBanDen->checkLichCongTacDonViPhong($vanBanDen->id) == 3 ? 'checked' : null  }}>
+                                                <label for="lanh-dao-du-hop-{{ $vanBanDen->id .'.4' }}"><i>Chuyên viên dự họp</i></label>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
-{{--                                        @role ('trưởng phòng|tp đơn vị cấp 2')--}}
-{{--                                        <p>--}}
-{{--                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}--}}
-{{--                                        </p>--}}
-{{--                                        @endrole--}}
+                                        {{--                                        @role ('trưởng phòng|tp đơn vị cấp 2')--}}
+                                        {{--                                        <p>--}}
+                                        {{--                                            {{ !empty($vanBanDen->truongPhong) ? $vanBanDen->truongPhong->noi_dung : null }}--}}
+                                        {{--                                        </p>--}}
+                                        {{--                                        @endrole--}}
 
                                         @role('trưởng phòng|tp đơn vị cấp 2|chánh văn phòng')
                                         <p>
@@ -249,7 +291,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'han_xu_ly'  => Request::get('han_xu_ly'),'type'  => Request::get('type'),
+                                {{ $danhSachVanBanDen->appends(['so_den'  => Request::get('so_den'), 'chuyen_tiep'  => Request::get('chuyen_tiep'), 'han_xu_ly'  => Request::get('han_xu_ly'),'type'  => Request::get('type'),
  'sap_xep'  => Request::get('sap_xep'), 'trich_yeu' => Request::get('trich_yeu')])->render() }}
                             </div>
                         </div>
@@ -335,8 +377,10 @@
                             }));
 
                             $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-phoi-hop').html(selectAttributes);
+                            $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-du-hop').html(selectAttributes);
                         } else {
                             $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-phoi-hop').html(html);
+                            $this.parents('.dau-viec-chi-tiet').find('.chuyen-vien-du-hop').html(html);
                         }
                     })
                     .fail(function (error) {

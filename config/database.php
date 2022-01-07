@@ -128,6 +128,22 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+        'sqlsrv3' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => 'so_tai_nguyen_moi_truong',
+//            'database' => \Modules\VanBanDen\Entities\VanBanDen::laySession(),
+//            'database' => \App\Http\Controllers\Auth\LoginController::layDBT(),
+//            'database' => session('db_database', config('database.connections.sqlsrv.database')),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
         'sqlsrv2' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

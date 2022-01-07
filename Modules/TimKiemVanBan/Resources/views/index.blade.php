@@ -305,7 +305,7 @@
                         </div>
                     </div>
                     <div class="box-body" style=" width: 100%;overflow-x: auto;">
-                        Tổng số văn bản: <b style="font-size: 16px">{{ $ds_vanBanDen->total() }}</b>
+                        Tổng số văn bản: <b style="font-size: 16px">@if(session::get('nam') != 2021){{ $soluong }} @else {{$nam}} @endif</b>
                         <table class="table table-bordered table-striped dataTable mb-0">
                             <thead>
                             <tr>
@@ -316,7 +316,7 @@
                                 <th width="" style="vertical-align: middle" class="text-center">Trích yếu</th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị xử lý chính</th>
                                 <th width="10%" style="vertical-align: middle" class="text-center">Đơn vị phối hợp</th>
-                                <th width="5%" style="vertical-align: middle" class="text-center">Tác vụ</th>
+                                <th width="3%" style="vertical-align: middle" class="text-center">Năm</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -493,32 +493,90 @@
 
 
                                     </td>
+                                    <td style="vertical-align: middle">@if($vbDen->ngay_nhan){{ date('Y', strtotime($vbDen->ngay_nhan)) }}@else 2021 @endif</td>
 
-                                    <td class="text-center" style="vertical-align: middle">
-                                        @hasanyrole('văn thư đơn vị|văn thư sở')
-                                        <form method="POST" action="{{route('delete_vb_den')}}">
-                                            @csrf
-                                            <a href="{{route('chi_tiet_van_ban_den',$vbDen->id)}}"
-                                               class="fa fa-edit" role="button"
-                                               title="Sửa">
-                                                <i class="fas fa-file-signature"></i>
-                                            </a><br><br>
-                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item" role="button"
-                                                    title="Xóa">
-                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                                            </button>
-                                            <input type="text" class="hidden" value="{{$vbDen->id}}" name="id_vb">
-                                        </form>
-                                        @endrole
-                                    </td>
+{{--                                    <td class="text-center" style="vertical-align: middle">--}}
+{{--                                        @hasanyrole('văn thư đơn vị|văn thư sở')--}}
+{{--                                        <form method="POST" action="{{route('delete_vb_den')}}">--}}
+{{--                                            @csrf--}}
+{{--                                            <a href="{{route('chi_tiet_van_ban_den',$vbDen->id)}}"--}}
+{{--                                               class="fa fa-edit" role="button"--}}
+{{--                                               title="Sửa">--}}
+{{--                                                <i class="fas fa-file-signature"></i>--}}
+{{--                                            </a><br><br>--}}
+{{--                                            <button class="btn btn-action btn-color-red btn-icon btn-ligh btn-remove-item" role="button"--}}
+{{--                                                    title="Xóa">--}}
+{{--                                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>--}}
+{{--                                            </button>--}}
+{{--                                            <input type="text" class="hidden" value="{{$vbDen->id}}" name="id_vb">--}}
+{{--                                        </form>--}}
+{{--                                        @endrole--}}
+{{--                                    </td>--}}
 
                                 </tr>
 
 
 
                             @empty
-                                <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>
+{{--                                <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>--}}
                             @endforelse
+                            @if(session::get('nam') != 2021)
+                            @forelse ($data2 as $key=>$vbDen1)
+                                <tr >
+                                    <td class="text-center">{{$nam+1}} </td>
+                                    <td style="color: red;font-weight: bold">{{$vbDen1->so_den}}</td>
+                                    <td>
+                                    <p>- Số ký hiệu: <span style="text-transform: uppercase">{{$vbDen1->so_ky_hieu}}</span></p>
+                                    <p>- Ngày ban
+                                            hành: {{ date('d/m/Y', strtotime($vbDen1->ngay_ban_hanh)) }}</p>
+{{--                                    <p>- Số đến: <span--}}
+{{--                                                class="font-bold" style="color: red">{{$vbDen->so_den}}</span></p>--}}
+                                    {{--                                        <p>- Sổ văn bản: {{$vbDen->soVanBan->ten_so_van_ban ?? ''}}</p>--}}
+                                    </td>
+                                    <td>{{$vbDen1->co_quan_ban_hanh}}</td>
+                                    <td style="text-align: justify">
+                                        {{$vbDen1->trich_yeu}}
+
+                                        @if($vbDen1->noi_dung != null)<span style="font-weight: bold;">Nội dung:</span>@endif
+                                        <span
+                                            style="font-style: italic">{{$vbDen1->noi_dung ?? ''}}</span>@if($vbDen1->noi_dung != null)
+                                            <br>@endif
+                                                    @if($vbDen1->han_xu_ly != null)<p style="color: red">(Hạn giải quyết: {{ date('d/m/Y', strtotime($vbDen1->han_xu_ly)) }})</p>@endif
+                                        <span style="font-style: italic">Người nhập : {{$vbDen1->nguoiDung->ho_ten ?? ''}}</span> -
+                                        <span style="font-style: italic"> @if($vbDen1->ngay_nhan != null)Ngày nhập: {{ date('d/m/Y', strtotime($vbDen1->ngay_nhan)) }}@endif</span>
+                                        <div class="text-right " style="pointer-events: auto">
+                                        </div>
+                                            <i style="font-weight: initial">
+                                                @if( $vbDen1->chu_tri_phoi_hop == 1)(<span style="color: red">*</span> {{ $vbDen1->chu_tri_phoi_hop == 1 ? 'Là văn bản giao sở' : '' }})@endif
+                                            </i>
+
+
+                                    </td>
+                                    <td colspan="2" class="text-center" style="vertical-align: middle">
+                                        ( Xem bên năm làm việc 2021 )
+
+                                        <form action="{{route('setDB')}}" method="post" >
+                                            @csrf
+                                            <input type="hidden" value="2021" name="year">
+                                            ==> <button type="submit" class="btn btn-primary btn-sm">Xem ngay</button>
+                                        </form>
+
+
+
+                                    </td>
+                                    <td style="vertical-align: middle">@if($vbDen1->ngay_nhan){{ date('Y', strtotime($vbDen1->ngay_nhan)) }}@else 2021 @endif</td>
+
+
+
+
+                                </tr>
+
+
+
+                            @empty
+{{--                                <td colspan="5" class="text-center">Không tìm thấy dữ liệu.</td>--}}
+                            @endforelse
+                            @endif
                             </tbody>
                         </table>
                         <div class="row">
@@ -532,41 +590,6 @@
                        'cap_ban_hanh_id' => Request::get('cap_ban_hanh_id'),'co_quan_ban_hanh_id' => Request::get('co_quan_ban_hanh_id'),'nguoi_ky_id' => Request::get('nguoi_ky_id'),
                        'vb_trich_yeu' => Request::get('vb_trich_yeu'), 'search' =>Request::get('search'), 'year' => Request::get('year'),
                        'don_vi_id' => Request::get('don_vi_id'), 'trinh_tu_nhan_van_ban' => Request::get('trinh_tu_nhan_van_ban')])->render() !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="myModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="{{ route('multiple_file') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h4 class="modal-title"><i
-                                                class="fa fa-folder-open-o"></i> Tải nhiều tệp tin</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="form-group col-md-12">
-                                                <label for="sokyhieu" class="">Chọn tệp
-                                                    tin<br><small><i>(Đặt tên file theo định dạng: số đến (vd:
-                                                            1672.pdf))</i></small>
-                                                </label>
-
-                                                <input type="file" multiple name="ten_file[]"
-                                                       accept=".xlsx,.xls,.doc,.docx,.txt,.pdf"/>
-                                                <input type="text" id="url-file" value="123"
-                                                       class="hidden" name="txt_file[]">
-                                            </div>
-                                            <div class="form-group col-md-4" >
-                                                <button class="btn btn-primary"><i class="fa fa-cloud-upload"></i> Tải lên</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>

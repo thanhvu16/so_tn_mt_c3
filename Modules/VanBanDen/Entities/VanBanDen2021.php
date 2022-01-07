@@ -33,10 +33,9 @@ use Modules\VanBanDi\Entities\Duthaovanbandi;
 use Modules\VanBanDi\Entities\VanBanDi;
 use Spatie\Permission\Traits\HasRoles;
 
-class VanBanDen extends Model
+class VanBanDen2021 extends Model
 {
-    use Notifiable, SoftDeletes, HasRoles;
-
+    protected $connection = 'sqlsrv3';
     protected $table = 'van_ban_den';
 
 //    const CHU_TICH_NHAN_VB = 1;
@@ -862,10 +861,6 @@ class VanBanDen extends Model
     public function getParent()
     {
         return VanBanDen::where('id', $this->parent_id)->orderBy('id', 'DESC')->first();
-    }
-    public function getParent2()
-    {
-        return VanBanDen2021::where('id', $this->parent_id)->orderBy('id', 'DESC')->first();
     }
 
     // lay ds vb den , giay moi den

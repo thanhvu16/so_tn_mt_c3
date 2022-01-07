@@ -98,7 +98,7 @@
 
                                         <div class="form-group col-md-3">
                                             <label for="sokyhieu" class="col-form-label">Số ký hiệu</label>
-                                            <input type="text" value="{{Request::get('vb_sokyhieu')}}"
+                                            <input type="text" value="{{Request::get('vb_sokyhieu')}}" style="text-transform: uppercase "
                                                    id="vb_sokyhieu" name="vb_sokyhieu" class="form-control"
                                                    placeholder="Nhập số ký hiệu văn bản đi...">
                                         </div>
@@ -210,9 +210,11 @@
                                 <tr>
                                     <td class="text-center">{{$key+1}}</td>
                                     <td class="text-left"><span class="font-bold color-red" style="font-weight: bold;font-size: 16px">{{$vbDi->so_di}}</span></td>
-                                    <td class="text-center">{{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}</td>
+                                    <td class="text-center">{{ date('d-m-Y', strtotime($vbDi->ngay_ban_hanh)) }}<br>
+                                            ({{$vbDi->sovanban->ten_so_van_ban ?? ''}} - {{$vbDi->sovanban->ten_viet_tat ?? ''}})
+                                    </td>
                                     <td class="text-left">{{$vbDi->donViSoanThaoVBC($vbDi->van_ban_huyen_ky) ?? ''}}</td>
-                                    <td class="text-left">{{$vbDi->so_ky_hieu}}</td>
+                                    <td class="text-left" style="text-transform: uppercase ">{{$vbDi->so_ky_hieu}}</td>
                                     <td style="text-align: justify">
                                         <a href="{{ route('Quytrinhxulyvanbandi',$vbDi->id) }}" style="font-weight: bold" title="{{$vbDi->trich_yeu}}">{{$vbDi->trich_yeu}}</a>
                                         <div class="text-right " style="pointer-events: auto">
@@ -308,7 +310,7 @@
                                             <div class="form-group col-md-12">
                                                 <label for="sokyhieu" class="col-form-label">Chọn tệp tin
                                                     <br>
-                                                    <small><i>(Đặt tên file theo định dạng: tên viết tắt
+                                                    <small><i>(Đặt tên file theo định dạng: tên sổ + tên viết tắt
                                                             loại văn bản + số đi + năm (vd:
                                                             QD-1-2020.pdf))</i></small>
                                                 </label><br>
