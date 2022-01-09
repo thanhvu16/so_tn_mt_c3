@@ -44,7 +44,8 @@ class User extends Authenticatable
         'chu_ky_nhay',
         'trang_thai',
         'uu_tien',
-        'cap_xa'
+        'cap_xa',
+        'cap_chi_nhanh'
     ];
 
     /**

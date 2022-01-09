@@ -31,7 +31,8 @@ class DonViChuTri extends Model
         'chuyen_tiep',
         'hoan_thanh',
         'van_ban_quan_trong',
-        'da_tham_muu'
+        'da_tham_muu',
+        'van_thu_nhan'
     ];
 
     const HOAN_THANH_VB = 1;
@@ -253,6 +254,7 @@ class DonViChuTri extends Model
 
     public static function luuDonViXuLyVanBan($vanBanDenId, $textDonViChuTri, $danhSachDonViChuTriIds, $chuyenVanBanXuongDonVi,$vbquantrong)
     {
+
         $donVi = DonVi::where('id', $danhSachDonViChuTriIds[$vanBanDenId])->first();
         if (isset($donVi) && $donVi->cap_xa == DonVi::CAP_XA) {
             // chu tich cap xa nhan van ban
@@ -334,7 +336,13 @@ class DonViChuTri extends Model
     {
         // luu don vi chu tri
         $donVi = DonVi::where('id', $donViId)->select('id', 'ten_don_vi')->first();
-        $role = [TRUONG_BAN, TRUONG_PHONG];
+//        $role = [TRUONG_BAN, TRUONG_PHONG];
+        if($donVi->cap_chi_nhanh == 1)
+        {
+            $role = [TRUONG_BAN, TRUONG_PHONG];
+        }else{
+            $role = [VAN_THU_DON_VI];
+        }
         $nguoiDung = User::where('don_vi_id', $donViId)
             ->whereHas('roles', function ($query) use ($role) {
                 return $query->whereIn('name', $role);
@@ -358,7 +366,9 @@ class DonViChuTri extends Model
             'user_id' => auth::user()->id,
 //            'parent_don_vi_id' => auth::user()->can(AllPermission::thamMuu()) ? auth::user()->donVi->parent_id : auth::user()->don_vi_id,
             'parent_don_vi_id' =>  auth::user()->don_vi_id,
+            'van_thu_nhan' =>  $role == [VAN_THU_DON_VI] ? 1 : '' ,
         ];
+
 
         $donViChuTri = new DonViChuTri();
         $donViChuTri->fill($dataLuuDonViChuTri);

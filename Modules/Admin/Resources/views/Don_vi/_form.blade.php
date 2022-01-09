@@ -67,6 +67,12 @@
                        placeholder="Email" >
             </div>
         </div>
+        <div class="col-md-3">
+            <label>
+                <input type="checkbox" name="cap_chi_nhanh" value="1">
+                Cấp chi nhánh
+            </label> &emsp;
+        </div>
         <input type="hidden" name="dieu_hanh" value="0" checked>
         <input type="hidden" name="check_parent" class="check_parent" value="1" checked>
         <div class="col-md-12 mt-2">

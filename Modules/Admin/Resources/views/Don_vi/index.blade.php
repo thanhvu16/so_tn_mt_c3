@@ -83,6 +83,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="clearfix"></div>
                             <div class="col-md-3">
                                 <label>
@@ -90,6 +91,8 @@
                                     Cấp chi cục / Trung tâm
                                 </label> &emsp;
                             </div>
+
+
 {{--                            <div class="col-md-3">--}}
 {{--                                <div class="form-group">--}}
 {{--                                    <label >Có phòng ban trong đơn vị</label>--}}

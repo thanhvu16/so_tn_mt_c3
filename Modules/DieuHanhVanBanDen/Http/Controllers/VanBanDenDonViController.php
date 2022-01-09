@@ -913,7 +913,16 @@ class VanBanDenDonViController extends Controller
                             }
 
                             if (!empty($danhSachDonViChuTriIds[$vanBanDenId]) && empty($danhSachChuTichIds[$vanBanDenId]) && empty($danhSachPhoChuTichIds[$vanBanDenId])) {
-                                $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+
+                                //check để văn thư nhận
+                                $donViChiNhanh = DonVi::where('id',$danhSachDonViChuTriIds[$vanBanDenId])->first();
+                                if($donViChiNhanh->cap_chi_nhanh == 1)
+                                {
+                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::VAN_THU_CHI_NHANH_NHAN_VB;
+                                }else{
+                                    $vanBanDen->trinh_tu_nhan_van_ban = VanBanDen::TRUONG_PHONG_NHAN_VB;
+
+                                }
                                 $vanBanDen->save();
                             }
 

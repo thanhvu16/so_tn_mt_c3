@@ -81,6 +81,7 @@ class DonViController extends Controller
         $donvi->dieu_hanh = $request->dieu_hanh;
         $donvi->nhom_don_vi = $request->nhom_don_vi;
         $donvi->cap_xa = $request->cap_xa ?? null;
+        $donvi->cap_chi_nhanh = $request->cap_chi_nhanh ?? null;
         if ($request->check_parent == 1) {
             $donvi->parent_id = $request->get('parent_id');
         }

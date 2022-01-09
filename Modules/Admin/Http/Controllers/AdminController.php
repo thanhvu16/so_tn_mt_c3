@@ -255,45 +255,79 @@ class AdminController extends Controller
                     array_push($giayMoiCoLors, COLOR_GREEN_LIGHT);
                 }
             }
+            $donViVT = DonVi::where('id',$user->don_vi_id)->first();
+            if($donViVT->cap_chi_nhanh == 1)
+            {
+                $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
+                    ->where('type', VanBanDen::TYPE_VB_DON_VI)
+                    ->where('van_ban_chi_nhanh', $user->donVi->id)
+                    ->whereNull('deleted_at')
+                    ->count();
+            }else{
+                $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
+                    ->where('type', VanBanDen::TYPE_VB_DON_VI)
+                    ->where('don_vi_id', $user->donVi->parent_id)
+                    ->whereNull('deleted_at')
+                    ->count();
+            }
 
-            $danhSachVanBanDen = VanBanDen::where('so_van_ban_id', '!=', $giayMoi->id ?? null)
-                ->where('type', VanBanDen::TYPE_VB_DON_VI)
-                ->where('don_vi_id', $user->donVi->parent_id)
-                ->whereNull('deleted_at')
-                ->count();
 
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách văn bản đến', $danhSachVanBanDen));
             array_push($vanThuVanBanDenCoLors, COLOR_PINTEREST);
 
-            $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->donVi->parent_id])
-                ->whereNull('vao_so_van_ban')
-                ->whereNull('parent_id')
-                ->whereNull('tra_lai')
-                ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
-                ->whereNull('type')
-                ->count();
+            if($donViVT->cap_chi_nhanh == 1)
+            {
+                $vanBanDonViPhoiHop = DonViChuTri::with('canBoChuyen')
+                    ->where(['don_vi_id' => $user->donVi->id])
+                    ->where('van_thu_nhan',1)
+                    ->whereNull('da_vao_so')
+                    ->where('can_bo_nhan_id',auth::user()->id)
+                   ->count();
+                $vanBanDenDonViChoVaoSo = $vanBanDonViPhoiHop;
+            }else{
+                $vanBanDonViChuTri = DonViChuTri::where(['don_vi_id' => $user->donVi->parent_id])
+                    ->whereNull('vao_so_van_ban')
+                    ->whereNull('parent_id')
+                    ->whereNull('tra_lai')
+                    ->where('da_chuyen_xuong_don_vi', DonViChuTri::VB_DA_CHUYEN_XUONG_DON_VI)
+                    ->whereNull('type')
+                    ->count();
 
-            $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->donVi->parent_id])
-                ->whereIn('trang_thai', [2])
-                ->count();
+                $noiNhanVanBanDi = NoiNhanVanBanDi::where(['don_vi_id_nhan' => $user->donVi->parent_id])
+                    ->whereIn('trang_thai', [2])
+                    ->count();
 
-            $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->donVi->parent_id)
-                ->whereNull('vao_so_van_ban')
-                ->whereNull('parent_id')
-                ->whereNull('type')
-                ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
-                ->count();
+                $vanBanDonViPhoiHop = DonViPhoiHop::where('don_vi_id', $user->donVi->parent_id)
+                    ->whereNull('vao_so_van_ban')
+                    ->whereNull('parent_id')
+                    ->whereNull('type')
+                    ->select('id', 'van_ban_den_id', 'can_bo_chuyen_id')
+                    ->count();
+                $vanBanDenDonViChoVaoSo = $vanBanDonViChuTri + $noiNhanVanBanDi + $vanBanDonViPhoiHop;
+            }
 
-            $vanBanDenDonViChoVaoSo = $vanBanDonViChuTri + $noiNhanVanBanDi + $vanBanDonViPhoiHop;
+
+
+
 
             array_push($vanThuVanBanDenPiceCharts, array('Văn bản đến chờ vào sổ', $vanBanDenDonViChoVaoSo));
             array_push($vanThuVanBanDenCoLors, COLOR_WARNING);
 
-            $giayMoiDen = VanBanDen::where('so_van_ban_id', '=', $giayMoi->id ?? null)
-                ->where('type', VanBanDen::TYPE_VB_DON_VI)
-                ->where('don_vi_id', $user->donVi->parent_id)
-                ->whereNull('deleted_at')
-                ->count();
+
+            if($donViVT->cap_chi_nhanh == 1)
+            {
+                $giayMoiDen = VanBanDen::where('so_van_ban_id', '=', $giayMoi->id ?? null)
+                    ->where('type', VanBanDen::TYPE_VB_DON_VI)
+                    ->where('van_ban_chi_nhanh', $user->donVi->id)
+                    ->whereNull('deleted_at')
+                    ->count();
+            }else{
+                $giayMoiDen = VanBanDen::where('so_van_ban_id', '=', $giayMoi->id ?? null)
+                    ->where('type', VanBanDen::TYPE_VB_DON_VI)
+                    ->where('don_vi_id', $user->donVi->parent_id)
+                    ->whereNull('deleted_at')
+                    ->count();
+            }
 
             array_push($vanThuVanBanDenPiceCharts, array('Danh sách giấy mời đến', $giayMoiDen));
             array_push($vanThuVanBanDenCoLors, COLOR_GREEN);

@@ -105,55 +105,55 @@
 {{--<script src=" http://14.177.182.250:10603/sso/js/sso.min.js "></script>--}}
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!}
-    $(document).ready(function(){
-        var host = window.location.host;
-        debugger;
-        if(host == '14.177.182.250:6080')
-        {
+    {{--$(document).ready(function(){--}}
+    {{--    var host = window.location.host;--}}
+    {{--    debugger;--}}
+    {{--    if(host == '14.177.182.250:6080')--}}
+    {{--    {--}}
 
-            const script = document.createElement("script");
-            script.src = 'http://14.177.182.250:10603/sso/js/sso.min.js';
-            script.type = 'text/javascript';
-            script.addEventListener('load', () => {
-                console.log(`jQuery ${$.fn.jquery} has been loaded successfully!`);
-            });
-            document.head.appendChild(script);
+    {{--        const script = document.createElement("script");--}}
+    {{--        script.src = 'http://14.177.182.250:10603/sso/js/sso.min.js';--}}
+    {{--        script.type = 'text/javascript';--}}
+    {{--        script.addEventListener('load', () => {--}}
+    {{--            console.log(`jQuery ${$.fn.jquery} has been loaded successfully!`);--}}
+    {{--        });--}}
+    {{--        document.head.appendChild(script);--}}
 
-        }else {
+    {{--    }else {--}}
 
-            {{--<script src=" http://200.200.200.11/sso/js/sso.min.js "></script>--}}
-            const script = document.createElement("script");
-            script.src = 'http://200.200.200.11/sso/js/sso.min.js';
-            script.type = 'text/javascript';
-            script.addEventListener('load', () => {
-                console.log(`jQuery ${$.fn.jquery} has been loaded successfully!`);
-            });
-            document.head.appendChild(script);
-
-
-        }
-        SSO.isAuthen();
-    })
-
-    function doiMatKhau()
-    {
-        SSO.changePass();
-    }
+    {{--        --}}{{--<script src=" http://200.200.200.11/sso/js/sso.min.js "></script>--}}
+    {{--        const script = document.createElement("script");--}}
+    {{--        script.src = 'http://200.200.200.11/sso/js/sso.min.js';--}}
+    {{--        script.type = 'text/javascript';--}}
+    {{--        script.addEventListener('load', () => {--}}
+    {{--            console.log(`jQuery ${$.fn.jquery} has been loaded successfully!`);--}}
+    {{--        });--}}
+    {{--        document.head.appendChild(script);--}}
 
 
-    $("#sso-logout").off('click').on('click', function () {
-        $.ajax({
-            url: APP_URL + '/logout',
-            type:'get',
-            dataType:'json',
-        }).done(function (res){
-            console.log(2);
-            SSO.logout();
-        }).fail(function (error) {
-            console.log(1);
-            SSO.logout();
-        });
-    })
+    {{--    }--}}
+    {{--    SSO.isAuthen();--}}
+    {{--})--}}
+
+    {{--function doiMatKhau()--}}
+    {{--{--}}
+    {{--    SSO.changePass();--}}
+    {{--}--}}
+
+
+    {{--$("#sso-logout").off('click').on('click', function () {--}}
+    {{--    $.ajax({--}}
+    {{--        url: APP_URL + '/logout',--}}
+    {{--        type:'get',--}}
+    {{--        dataType:'json',--}}
+    {{--    }).done(function (res){--}}
+    {{--        console.log(2);--}}
+    {{--        SSO.logout();--}}
+    {{--    }).fail(function (error) {--}}
+    {{--        console.log(1);--}}
+    {{--        SSO.logout();--}}
+    {{--    });--}}
+    {{--})--}}
 
     $.ajaxSetup({
         headers: {

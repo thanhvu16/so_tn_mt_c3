@@ -60,6 +60,7 @@ class VanBanDen extends Model
     const CHUYEN_VIEN_NHAN_VB = 8;
     const HOAN_THANH_CHO_DUYET = 9;
     const HOAN_THANH_VAN_BAN = 10;
+    const VAN_THU_CHI_NHANH_NHAN_VB = 11;
 
 
 

@@ -187,6 +187,8 @@ class NguoiDungController extends Controller
         $donVi = DonVi::where('id', $data['don_vi_id'])->whereNull('deleted_at')->first();
         if ($donVi) {
             $data['cap_xa'] = $donVi->cap_xa ?? null;
+            $data['cap_chi_nhanh'] = $donVi->cap_chi_nhanh ?? null;
+
         }
         $user->fill($data);
         if (!empty($data['password'])) {
